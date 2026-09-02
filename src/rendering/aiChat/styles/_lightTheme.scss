@@ -1,0 +1,606 @@
+/* ============================================================
+   LIGHT MODE STYLING OVERRIDES FOR AI CHAT
+   ============================================================ */
+:global(html.light) .pageWrapper,
+:global(html.light) .aiChatWrapper,
+:global(html.light) .mainWrapper {
+    background: #F8FAFC !important;
+    color: #0F172A !important;
+
+    .sectionDivider {
+        display: block !important;
+        width: 100% !important;
+        height: 1px !important;
+        background: linear-gradient(90deg, transparent 0%, rgba(24, 201, 139, 0.35) 50%, transparent 100%) !important;
+        margin: 40px 0 !important;
+    }
+
+    /* Section Headings */
+    .sectionTitle {
+        color: #0F172A !important;
+    }
+
+    .sectionSubtitle {
+        color: #475569 !important;
+    }
+
+    .sectionBadge {
+        background: rgba(24, 201, 139, 0.12) !important;
+        border: 1px solid rgba(24, 201, 139, 0.3) !important;
+        color: #047857 !important;
+    }
+
+    /* 1. Hero Section & Status Pill */
+    .statusPill {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.4) !important;
+        box-shadow: 0 4px 18px rgba(24, 201, 139, 0.1) !important;
+
+        .pillTag {
+            color: #047857 !important;
+        }
+
+        .pillText {
+            color: #0F172A !important;
+            font-weight: 600 !important;
+        }
+
+        .pillBadge {
+            background: rgba(24, 201, 139, 0.12) !important;
+            border: 1px solid rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+    }
+
+    .heroMainTitle {
+        color: #0F172A !important;
+    }
+
+    .heroSubtitle {
+        color: #475569 !important;
+    }
+
+    .heroSecondaryBtn {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.15) !important;
+        color: #0F172A !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+
+        &:hover {
+            background: #F8FAFC !important;
+            border-color: #18C98B !important;
+            color: #047857 !important;
+        }
+    }
+
+    /* 2. Top 3 Value Badges */
+    .valueBadgeCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.25) !important;
+        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05) !important;
+
+        &:hover {
+            border-color: #18C98B !important;
+            box-shadow: 0 10px 30px rgba(24, 201, 139, 0.12) !important;
+        }
+
+        .badgeIconWrap {
+            background: #F0FDF4 !important;
+            border-color: rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+
+        .iconGreen {
+            background: #F0FDF4 !important;
+            border-color: rgba(16, 185, 129, 0.35) !important;
+            color: #047857 !important;
+        }
+
+        .iconAmber {
+            background: #F0FDF4 !important;
+            border-color: rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+
+        .badgeContent {
+            background: transparent !important;
+
+            h4 {
+                color: #0F172A !important;
+                background: transparent !important;
+            }
+
+            p {
+                color: #64748B !important;
+                background: transparent !important;
+            }
+        }
+    }
+
+    /* 3. Pre-Built Quick Prompt Cards */
+    .promptCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.22) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+
+        &:hover,
+        &.promptCardActive {
+            background: #FFFFFF !important;
+            border-color: #18C98B !important;
+            box-shadow: 0 8px 25px rgba(24, 201, 139, 0.14) !important;
+        }
+
+        .promptIconWrap {
+            background: #F0FDF4 !important;
+            border-color: rgba(24, 201, 139, 0.3) !important;
+            color: #047857 !important;
+        }
+
+        .promptCategory {
+            color: #0F172A !important;
+        }
+
+        .promptText {
+            color: #475569 !important;
+        }
+
+        .promptBadge {
+            background: rgba(24, 201, 139, 0.12) !important;
+            color: #047857 !important;
+            border: 1px solid rgba(24, 201, 139, 0.3) !important;
+        }
+
+        .promptActionLink {
+            color: #047857 !important;
+        }
+    }
+
+    /* 4. Live Interactive Chat Demo Cockpit */
+    .terminalCockpit {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.28) !important;
+        box-shadow: 0 15px 45px rgba(15, 23, 42, 0.08) !important;
+
+        .terminalHeader {
+            background: #F8FAFC !important;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            .terminalBrand {
+                color: #0F172A !important;
+                font-weight: 700 !important;
+            }
+
+            .termTabBtn {
+                background: #FFFFFF !important;
+                border: 1px solid rgba(15, 23, 42, 0.12) !important;
+                color: #475569 !important;
+
+                &:hover {
+                    color: #047857 !important;
+                    border-color: #18C98B !important;
+                }
+
+                &.termTabActive {
+                    background: #18C98B !important;
+                    color: #040605 !important;
+                    border-color: #18C98B !important;
+                    font-weight: 700 !important;
+                }
+            }
+        }
+
+        .chatStreamArea {
+            background: #FAFAFA !important;
+        }
+
+        .traderAvatar {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+        }
+
+        .traderBubble {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(24, 201, 139, 0.28) !important;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04) !important;
+
+            .bubbleSender {
+                color: #047857 !important;
+                font-weight: 700 !important;
+            }
+
+            .bubbleText {
+                color: #0F172A !important;
+            }
+        }
+
+        .aiAvatar {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+        }
+
+        .aiResponseCard {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(15, 23, 42, 0.1) !important;
+            box-shadow: 0 6px 25px rgba(15, 23, 42, 0.05) !important;
+
+            .aiCardHeader {
+                border-bottom: 1px solid #F1F5F9 !important;
+
+                .aiName {
+                    color: #0F172A !important;
+                }
+
+                .aiTag {
+                    background: rgba(24, 201, 139, 0.12) !important;
+                    color: #047857 !important;
+                    border: 1px solid rgba(24, 201, 139, 0.3) !important;
+                }
+
+                .aiPairBadge {
+                    background: #F1F5F9 !important;
+                    color: #334155 !important;
+                    border: 1px solid #E2E8F0 !important;
+                }
+
+                .copyBtn {
+                    background: #F1F5F9 !important;
+                    border: 1px solid #E2E8F0 !important;
+                    color: #475569 !important;
+
+                    &:hover {
+                        background: #18C98B !important;
+                        color: #040605 !important;
+                        border-color: #18C98B !important;
+                    }
+                }
+            }
+
+            .setupTitleRow {
+                .setupTitleIconBox {
+                    background: #F0FDF4 !important;
+                    border-color: rgba(24, 201, 139, 0.35) !important;
+                    color: #047857 !important;
+                }
+
+                .setupTitle {
+                    color: #0F172A !important;
+                }
+            }
+
+            .telemetryGrid {
+                background: #F1F5F9 !important;
+                border: 1px solid #E2E8F0 !important;
+
+                .telLabel {
+                    color: #64748B !important;
+                    font-weight: 700 !important;
+                }
+
+                .telVal {
+                    color: #0F172A !important;
+                    font-weight: 700 !important;
+                }
+
+                .telPrice {
+                    color: #047857 !important;
+                    font-weight: 800 !important;
+                }
+
+                .telBullish {
+                    color: #047857 !important;
+                    font-weight: 700 !important;
+                }
+
+                .telNeutral {
+                    color: #0284C7 !important;
+                    font-weight: 700 !important;
+                }
+            }
+
+            .tradePlanBox {
+                background: #FFFFFF !important;
+                border: 1px solid rgba(24, 201, 139, 0.3) !important;
+                box-shadow: 0 4px 15px rgba(24, 201, 139, 0.05) !important;
+
+                .planHeader {
+                    .targetIconBox {
+                        background: #F0FDF4 !important;
+                        border-color: rgba(24, 201, 139, 0.35) !important;
+                        color: #047857 !important;
+                    }
+
+                    h5 {
+                        color: #047857 !important;
+                        font-weight: 800 !important;
+                    }
+                }
+
+                .planRow {
+                    border-bottom: 1px dashed #E2E8F0 !important;
+
+                    .planKey {
+                        color: #475569 !important;
+                        font-weight: 600 !important;
+                    }
+
+                    .planValHighlight {
+                        color: #047857 !important;
+                        font-weight: 700 !important;
+                    }
+
+                    .planValSl {
+                        color: #DC2626 !important;
+                        font-weight: 700 !important;
+                    }
+
+                    .planValTp {
+                        color: #047857 !important;
+                        font-weight: 700 !important;
+                    }
+
+                    .planValRrr {
+                        background: rgba(24, 201, 139, 0.14) !important;
+                        color: #047857 !important;
+                        font-weight: 800 !important;
+                        border: 1px solid rgba(24, 201, 139, 0.3) !important;
+                    }
+                }
+            }
+
+            .calcBreakdownBox {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(24, 201, 139, 0.3) !important;
+
+                .calcHeader {
+                    .calcIconBox {
+                        background: #F0FDF4 !important;
+                        border-color: rgba(24, 201, 139, 0.35) !important;
+                        color: #047857 !important;
+                    }
+
+                    h5 {
+                        color: #047857 !important;
+                    }
+                }
+
+                .calcItem {
+                    color: #475569 !important;
+
+                    strong {
+                        color: #0F172A !important;
+                    }
+
+                    .lotHighlight {
+                        color: #047857 !important;
+                    }
+                }
+            }
+
+            .indPill {
+                background: #F8FAFC !important;
+                border: 1px solid #E2E8F0 !important;
+
+                .indName {
+                    color: #64748B !important;
+                }
+
+                .indStatus {
+                    color: #047857 !important;
+                    font-weight: 700 !important;
+                }
+            }
+
+            .alertNoteBox {
+                background: #FEF2F2 !important;
+                border: 1px solid #FECACA !important;
+                color: #991B1B !important;
+
+                .alertIconBox {
+                    background: #FEE2E2 !important;
+                    color: #DC2626 !important;
+                }
+
+                p strong {
+                    color: #991B1B !important;
+                }
+            }
+        }
+
+        .terminalInputBar {
+            background: #FFFFFF !important;
+            border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            .inputForm {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.15) !important;
+
+                &:focus-within {
+                    border-color: #18C98B !important;
+                    box-shadow: 0 0 0 3px rgba(24, 201, 139, 0.15) !important;
+                }
+
+                .inputPrefix {
+                    color: #047857 !important;
+                }
+
+                .customChatInput {
+                    color: #0F172A !important;
+                    background: transparent !important;
+
+                    &::placeholder {
+                        color: #94A3B8 !important;
+                    }
+                }
+
+                .inputSubmitBtn {
+                    background: #18C98B !important;
+                    color: #040605 !important;
+                    font-weight: 700 !important;
+                }
+            }
+        }
+    }
+
+    /* 5. 3 Steps Section */
+    .stepCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.22) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+
+        .stepNumBadge {
+            background: #F0FDF4 !important;
+            border: 1px solid rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+
+        .stepTag {
+            background: transparent !important;
+            background-color: transparent !important;
+            color: #64748B !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .stepIconWrap {
+            background: #F0FDF4 !important;
+            border-color: rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+
+        .stepTitle {
+            color: #0F172A !important;
+        }
+
+        .stepDesc {
+            color: #475569 !important;
+        }
+    }
+
+    /* 6. Key Features Grid */
+    .featureCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.25) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+
+        .cardGlowHover {
+            background: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.08) 0%, transparent 70%) !important;
+        }
+
+        .featureIconWrap {
+            background: #F0FDF4 !important;
+            border: 1px solid rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+
+        .featureNum {
+            color: rgba(4, 120, 87, 0.45) !important;
+        }
+
+        .featureBadgePill {
+            background: #F1F5F9 !important;
+            border: 1px solid rgba(15, 23, 42, 0.1) !important;
+            color: #475569 !important;
+        }
+
+        .featureCardTitle,
+        .featureTitle {
+            color: #0F172A !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .featureCardDesc,
+        .featureDesc {
+            color: #475569 !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .featureCardStat,
+        .statBox {
+            background: transparent !important;
+            border: none !important;
+            border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+            box-shadow: none !important;
+
+            .statLabel {
+                color: #64748B !important;
+                background: transparent !important;
+                border: none !important;
+            }
+
+            .statVal,
+            .statValue {
+                color: #047857 !important;
+                font-weight: 800 !important;
+                background: transparent !important;
+                border: none !important;
+            }
+        }
+    }
+
+    /* 7. Comparison Table */
+    .tableCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.28) !important;
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05) !important;
+
+        th {
+            background: #F1F5F9 !important;
+            color: #475569 !important;
+        }
+
+        td {
+            color: #1E293B !important;
+            border-bottom-color: #F1F5F9 !important;
+        }
+
+        .genericText {
+            color: #64748B !important;
+        }
+
+        .chronosText {
+            color: #047857 !important;
+            font-weight: 700 !important;
+        }
+    }
+
+    /* 8. FAQs */
+    .faqItem,
+    .faqItemOpen {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.28) !important;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.03) !important;
+
+        .faqQuestionBtn {
+            color: #0F172A !important;
+            background: transparent !important;
+        }
+
+        .qText {
+            color: #0F172A !important;
+        }
+
+        .faqAnswerWrapper {
+            background: #FFFFFF !important;
+            background-color: #FFFFFF !important;
+        }
+
+        .faqAnswerContent {
+            border-top: 1px solid #F1F5F9 !important;
+            background: #FFFFFF !important;
+            background-color: #FFFFFF !important;
+
+            p {
+                color: #475569 !important;
+            }
+        }
+    }
+}

@@ -98,7 +98,7 @@ export default function TermsAndConditions() {
                     <section>
                         <h2>Contact Information</h2>
                         <p>For legal inquiries, questions regarding these Terms and Conditions, or requests related to the platform, please contact:</p>
-                        <p><strong>Email:</strong> <a href="mailto:support@chronosx.io">support@chronosx.io</a></p>
+                        <p><strong>Email:</strong> <a href="mailto:support@chronosx.com">support@chronosx.com</a></p>
                     </section>
 
                     <section>

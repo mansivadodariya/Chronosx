@@ -20,7 +20,7 @@ import {
     PatternsIcon,
     WarningIcon,
     ChevronDownIcon
-} from './VisionIcons';
+} from '@/icons/visionIcons';
 
 /**
  * Interface definition for AnalysisReportJSON

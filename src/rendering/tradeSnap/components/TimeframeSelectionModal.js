@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from '../aiSnapDashboard.module.scss';
-import { ClockIcon, FlameIcon, TrendingUpIcon } from './AiSnapIcons';
+import { ClockIcon, FlameIcon, TrendingUpIcon } from '@/icons/aiSnapIcons';
 
 export default function TimeframeSelectionModal({ open, onClose, onSelectTimeframe, timeframeOptions }) {
     if (!open) return null;

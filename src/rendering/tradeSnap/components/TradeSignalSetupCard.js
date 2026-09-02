@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import styles from '../aiSnapDashboard.module.scss';
-import { TrendingUpIcon, TrendingDownIcon, CheckCircle2Icon, CopyIcon, InfoIcon } from './AiSnapIcons';
+import { TrendingUpIcon, TrendingDownIcon, CheckCircle2Icon, CopyIcon, InfoIcon } from '@/icons/aiSnapIcons';
 import { toast } from '@/components/toast';
 
 function safeVal(val) {

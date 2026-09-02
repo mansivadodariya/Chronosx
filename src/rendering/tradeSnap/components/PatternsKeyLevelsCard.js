@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import styles from '../aiSnapDashboard.module.scss';
-import { CopyIcon, BellIcon, FlameIcon } from './AiSnapIcons';
+import { CopyIcon, BellIcon, FlameIcon } from '@/icons/aiSnapIcons';
 import { toast } from '@/components/toast';
 
 export default function PatternsKeyLevelsCard({ patternsDetected }) {

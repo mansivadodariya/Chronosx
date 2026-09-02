@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { authNavigate, getAuthHref, isUserLoggedIn } from '@/lib/authRedirect';
+import { useLanguage } from '@/context/LanguageContext';
+import { DashboardGridIcon } from '@/icons/sidebarIcons';
 import styles from './header.module.scss';
 import Button from '../button';
 import ThemeToggle from '../themeToggle';
@@ -12,6 +14,7 @@ const Logo = '/assets/logo/logo.png';
 const RightIcon = '/assets/icons/right.svg';
 
 export default function Header() {
+    const { t } = useLanguage();
     const router = useRouter();
     const pathname = usePathname();
     const [scrolled, setScrolled] = useState(false);
@@ -397,9 +400,15 @@ export default function Header() {
                     <div className={styles.desktopAction}>
                         {/* <ThemeToggle /> */}
                         <Button
-                            text="Get Started"
-                            icon={RightIcon}
-                            onClick={() => authNavigate(router, '/dashboard')}
+                            text={isLoggedIn ? t('nav.dashboard', 'Dashboard') : t('nav.getStarted', 'Get Started')}
+                            icon={isLoggedIn ? DashboardGridIcon : RightIcon}
+                            onClick={() => {
+                                if (isLoggedIn) {
+                                    router.push('/dashboard');
+                                } else {
+                                    authNavigate(router, '/dashboard');
+                                }
+                            }}
                         />
                     </div>
 
@@ -515,11 +524,15 @@ export default function Header() {
 
                                 <div className={styles.drawerCta}>
                                     <Button
-                                        text="Get Started"
-                                        icon={RightIcon}
+                                        text={isLoggedIn ? t('nav.dashboard', 'Dashboard') : t('nav.getStarted', 'Get Started')}
+                                        icon={isLoggedIn ? DashboardGridIcon : RightIcon}
                                         onClick={() => {
                                             setMobileMenuOpen(false);
-                                            authNavigate(router, '/dashboard');
+                                            if (isLoggedIn) {
+                                                router.push('/dashboard');
+                                            } else {
+                                                authNavigate(router, '/dashboard');
+                                            }
                                         }}
                                     />
                                 </div>

@@ -1,0 +1,83 @@
+'use client';
+
+import React from 'react';
+import Modal from '@/rendering/tradeSnap/Modal';
+import Loader from '@/components/loader';
+import RemoveIcon from '@/icons/removeIcon';
+import { getBidiProps } from '@/lib/bidi';
+import styles from '../aiAssistant.module.scss';
+
+export default function AssistantModals({
+    confirmDeleteOpen,
+    closeDeleteConfirm,
+    handleConfirmDelete,
+    pendingDeleteItem,
+    historyModalOpen,
+    setHistoryModalOpen,
+    loadingHistory,
+    chatHistory,
+    selectedChat,
+    handleSelectChat,
+    openDeleteConfirm,
+    getQuestionText,
+    t
+}) {
+    return (
+        <>
+            <Modal
+                open={confirmDeleteOpen}
+                onClose={closeDeleteConfirm}
+                title="Delete history item?"
+                description="This action cannot be undone."
+                footer={
+                    <>
+                        <button type="button" className={styles.modalCancelBtn} onClick={closeDeleteConfirm}>
+                            Cancel
+                        </button>
+                        <button type="button" className={styles.modalDeleteBtn} onClick={handleConfirmDelete}>
+                            Delete
+                        </button>
+                    </>
+                }
+            >
+                <p className={styles.modalText}>
+                    Are you sure you want to delete this {pendingDeleteItem?.type === 'chat' ? 'chat' : 'blog'} history item?
+                </p>
+            </Modal>
+
+            <Modal
+                open={historyModalOpen}
+                onClose={() => setHistoryModalOpen(false)}
+                title={t('aiChat.history', 'Chat History')}
+            >
+                <div className={styles.historyModalContent}>
+                    <div className={styles.allMessage}>
+                        {loadingHistory ? (
+                            <Loader centered />
+                        ) : chatHistory.length === 0 ? (
+                            <div className={styles.noHistory}>No past questions found</div>
+                        ) : (
+                            chatHistory.map((item, index) => (
+                                <div
+                                    className={`${styles.messageBox} ${selectedChat === item ? styles.selectedBox : ''}`}
+                                    key={item.id || index}
+                                    onClick={() => handleSelectChat(item)}
+                                >
+                                    <p {...getBidiProps(getQuestionText(item), styles.truncate)}>
+                                        {getQuestionText(item)}
+                                    </p>
+                                    <div
+                                        className={styles.icon}
+                                        onClick={(e) => openDeleteConfirm(e, 'chat', index, item)}
+                                    >
+                                        <RemoveIcon />
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+            </Modal>
+        </>
+    );
+}

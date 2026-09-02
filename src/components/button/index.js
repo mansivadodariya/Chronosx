@@ -4,7 +4,22 @@ import { motion } from 'framer-motion';
 import styles from './button.module.scss';
 import classNames from 'classnames';
 
-export default function Button({ text, icon, onClick, btnmd, type = "button" }) {
+export default function Button({ text, icon, iconPosition = "right", onClick, btnmd, type = "button" }) {
+    const renderIcon = () => {
+        if (!icon) return null;
+        if (typeof icon === 'string') {
+            return <img src={icon} alt={text} />;
+        }
+        if (React.isValidElement(icon)) {
+            return icon;
+        }
+        if (typeof icon === 'function') {
+            const IconComponent = icon;
+            return <IconComponent />;
+        }
+        return null;
+    };
+
     return (
         <div className={classNames(styles.button, btnmd ? styles.btnmd : "")}>
             <motion.button
@@ -27,8 +42,19 @@ export default function Button({ text, icon, onClick, btnmd, type = "button" }) 
                     }
                 }}
             >
+                {icon && iconPosition === "left" && (
+                    <motion.span
+                        className={styles.iconWrapper}
+                        variants={{
+                            rest: { x: 0 },
+                            hover: { x: -3, transition: { type: "spring", stiffness: 400, damping: 15 } }
+                        }}
+                    >
+                        {renderIcon()}
+                    </motion.span>
+                )}
                 <span className={styles.btnText}>{text}</span>
-                {icon && (
+                {icon && iconPosition !== "left" && (
                     <motion.span
                         className={styles.iconWrapper}
                         variants={{
@@ -36,7 +62,7 @@ export default function Button({ text, icon, onClick, btnmd, type = "button" }) 
                             hover: { x: 4, transition: { type: "spring", stiffness: 400, damping: 15 } }
                         }}
                     >
-                        <img src={icon} alt={text} />
+                        {renderIcon()}
                     </motion.span>
                 )}
             </motion.button>

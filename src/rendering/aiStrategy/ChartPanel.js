@@ -113,6 +113,16 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
     const prevPriceRef = useRef(0);
     const [tickClass, setTickClass] = useState('normal');
 
+    // Safety Watchdog: Never let chart overlay get stuck for more than 2.5s
+    useEffect(() => {
+        if (loading) {
+            const safetyTimer = setTimeout(() => {
+                setLoading(false);
+            }, 2500);
+            return () => clearTimeout(safetyTimer);
+        }
+    }, [loading]);
+
     const [hoveredData, setHoveredData] = useState(null);
     const [dotPositions, setDotPositions] = useState(null);
     const chartDataRef = useRef({
@@ -607,7 +617,7 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
             </div>
 
             <div className={styles.chartCanvasContainer} style={{ cursor: 'crosshair' }}>
-                {loading && (
+                {loading && (!chartDataRef.current?.candles || chartDataRef.current.candles.length === 0) && (
                     <div className={styles.chartOverlay}>
                         <div className={styles.chartSpinner} />
                         <span>Loading chart...</span>

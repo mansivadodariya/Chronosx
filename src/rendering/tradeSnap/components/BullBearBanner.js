@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import styles from '../aiSnapDashboard.module.scss';
-import { FlameIcon, ActivityIcon } from './AiSnapIcons';
+import { FlameIcon, ActivityIcon } from '@/icons/aiSnapIcons';
 import { useTheme } from '@/context/ThemeContext';
 
 function ConvictionCircle({ value, color = '#10B981', trackColor = 'rgba(255, 255, 255, 0.08)' }) {

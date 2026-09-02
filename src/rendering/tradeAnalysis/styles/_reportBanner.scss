@@ -1,0 +1,237 @@
+/* ============================================================
+   UPLOADED REPORT SUCCESS BANNER CARD (MATCHING USER SCREENSHOT)
+   ============================================================ */
+.reportSuccessBannerCard {
+    background: 
+        radial-gradient(ellipse 25% 85% at 0% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
+        radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.12) 0%, rgba(110, 231, 183, 0.05) 50%, transparent 70%),
+        radial-gradient(ellipse 25% 85% at 100% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
+        #121514;
+    border: 1px solid rgba(24, 201, 139, 0.35);
+    border-radius: 20px;
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 24px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(24, 201, 139, 0.15);
+
+    .bannerContentLeft {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        z-index: 2;
+        max-width: 620px;
+
+        .bannerFileMetaRow {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+
+            .fileBadgeBox {
+                width: 48px;
+                height: 48px;
+                border-radius: 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+                font-weight: 800;
+                flex-shrink: 0;
+                letter-spacing: 0.5px;
+                background: rgba(239, 68, 68, 0.15);
+                border: 1px solid rgba(239, 68, 68, 0.35);
+                color: #EF4444;
+
+                &.fileBadgePdf {
+                    background: rgba(239, 68, 68, 0.15);
+                    border: 1px solid rgba(239, 68, 68, 0.35);
+                    color: #EF4444;
+                }
+
+                &.fileBadgeExcel {
+                    background: rgba(16, 185, 129, 0.15);
+                    border: 1px solid rgba(16, 185, 129, 0.35);
+                    color: #10B981;
+                }
+
+                &.fileBadgeCsv {
+                    background: rgba(56, 189, 248, 0.15);
+                    border: 1px solid rgba(56, 189, 248, 0.35);
+                    color: #38BDF8;
+                }
+
+                &.fileBadgeTxt {
+                    background: rgba(24, 201, 139, 0.15);
+                    border: 1px solid rgba(24, 201, 139, 0.35);
+                    color: #18C98B;
+                }
+            }
+
+            .fileMetaDetails {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+
+                span.fileName {
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: $textWhite;
+                }
+
+                span.fileSub {
+                    font-size: 12px;
+                    color: $textMuted;
+                }
+            }
+
+            .completePillBadge {
+                margin-left: 8px;
+                background: rgba(16, 185, 129, 0.12);
+                border: 1px solid rgba(16, 185, 129, 0.35);
+                color: #34D399;
+                font-size: 11.5px;
+                font-weight: 700;
+                padding: 4px 12px;
+                border-radius: 12px;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+            }
+        }
+
+        .bannerMessageRow {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+
+            .checkTitleGroup {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                .checkCircle {
+                    width: 26px;
+                    height: 26px;
+                    border-radius: 50%;
+                    background: rgba(24, 201, 139, 0.15);
+                    border: 1px solid rgba(24, 201, 139, 0.4);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: $primaryGold;
+                    flex-shrink: 0;
+                }
+
+                h3 {
+                    font-size: 18px;
+                    font-weight: 800;
+                    color: $primaryGold;
+                    margin: 0;
+                    letter-spacing: -0.2px;
+                }
+            }
+
+            p.bannerSubtext {
+                font-size: 13px;
+                color: $textMuted;
+                margin: 0 0 0 36px;
+            }
+        }
+
+        .bannerActionsRow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 4px;
+
+            .viewTradesBtn {
+                background: #18C98B;
+                border: 1px solid #18C98B;
+                color: #040605;
+                padding: 10px 24px;
+                border-radius: 9999px;
+                font-size: 13px;
+                font-weight: 800;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                box-shadow: 0 4px 16px rgba(24, 201, 139, 0.3);
+                transition: all 0.2s ease;
+
+                &:hover {
+                    background: #15b77e;
+                    border-color: #15b77e;
+                    box-shadow: 0 6px 20px rgba(24, 201, 139, 0.4);
+                    transform: translateY(-1px);
+                }
+            }
+
+            .reuploadBtn {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                color: $textWhite;
+                padding: 10px 20px;
+                border-radius: 9999px;
+                font-size: 12.5px;
+                font-weight: 600;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.12);
+                }
+            }
+        }
+    }
+
+    .bannerGraphicRight {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .brainImg {
+            width: 320px;
+            height: auto;
+            max-height: 200px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 28px rgba(24, 201, 139, 0.45));
+            animation: brainPulseGlow 4s ease-in-out infinite;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            opacity: 0.9;
+
+            &:hover {
+                transform: translateY(-8px) scale(1.07);
+                filter: drop-shadow(0 0 45px rgba(24, 201, 139, 0.75));
+            }
+        }
+    }
+}
+
+@keyframes brainPulseGlow {
+    0% {
+        transform: translateY(0px) scale(1);
+        filter: drop-shadow(0 0 22px rgba(24, 201, 139, 0.35));
+    }
+    50% {
+        transform: translateY(-8px) scale(1.03);
+        filter: drop-shadow(0 0 38px rgba(24, 201, 139, 0.65));
+    }
+    100% {
+        transform: translateY(0px) scale(1);
+        filter: drop-shadow(0 0 22px rgba(24, 201, 139, 0.35));
+    }
+}
+

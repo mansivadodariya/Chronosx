@@ -20,7 +20,7 @@ export const metadata = {
         title: "AI Trade Analysis — Instant Vision AI Chart Scanner | ChronosX",
         description:
             "Upload any chart screenshot. Get instant institutional AI trade setups powered by Vision AI + MT5 indicator engines.",
-        url: "https://chronosx.io/ai-trade",
+        url: "https://chronosx.com/ai-trade",
         siteName: "ChronosX",
         images: [
             {
@@ -41,7 +41,7 @@ export const metadata = {
         images: ["/assets/images/ai-trade.png"]
     },
     alternates: {
-        canonical: "https://chronosx.io/ai-trade"
+        canonical: "https://chronosx.com/ai-trade"
     }
 };
 

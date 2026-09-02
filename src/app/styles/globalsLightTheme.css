@@ -1,0 +1,641 @@
+/* Light Theme Section & Card Depth Overrides */
+html.light [class*="sectionCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
+html.light [class*="cardWrapper"],
+html.light [class*="featureCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Badge"]):not([class*="badge"]),
+html.light [class*="bentoCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
+html.light [class*="assetCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
+html.light [class*="cockpitCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
+html.light [class*="comparisonCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
+html.light [class*="chatCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
+html.light [class*="marketCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
+html.light [class*="stepCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
+html.light [class*="testimonialCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
+html.light [class*="planCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
+html.light [class*="pricingCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
+html.light [class*="brokerCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]) {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(24, 201, 139, 0.22) !important;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light [class*="featureCardTitle"],
+html.light [class*="featureCardDesc"],
+html.light [class*="featureCardStat"],
+html.light [class*="featureTitle"],
+html.light [class*="featureDesc"],
+html.light [class*="statLabel"],
+html.light [class*="statVal"],
+html.light [class*="statValue"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+html.light [class*="sectionDivider"] {
+  display: block !important;
+  width: 100% !important;
+  height: 1px !important;
+  background: linear-gradient(90deg, transparent 0%, rgba(24, 201, 139, 0.35) 50%, transparent 100%) !important;
+  margin: 40px 0 !important;
+}
+
+html.light [class*="navLink"],
+html.light [class*="navItem"],
+html.light [class*="menuItem"],
+html.light [class*="navMenu"] a {
+  color: #334155 !important;
+}
+
+html.light [class*="navLink"]:hover,
+html.light [class*="navItem"]:hover,
+html.light [class*="menuItem"]:hover {
+  color: #059669 !important;
+}
+
+/* Mega Dropdown & Mobile Drawer in Header */
+html.light [class*="dropdownMenu"] {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 20px !important;
+}
+
+html.light [class*="dropdownCard"],
+html.light [class*="dropdownWrapper"],
+html.light [class*="mobileMenuDrawer"],
+html.light [class*="mobileDrawer"],
+html.light [class*="megaMenu"] {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1) !important;
+  overflow: hidden;
+}
+
+/* Sidebar & Topbar */
+html.light [class*="sidebar"],
+html.light .sidebar-wrapper,
+html.light [class*="sidebarContainer"] {
+  background-color: #FFFFFF !important;
+  border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
+}
+
+html.light [class*="topbar"],
+html.light [class*="topbarWrapper"] {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+  color: #0F172A !important;
+}
+
+html.light [class*="sidebarmenu"] a,
+html.light [class*="sidebarItem"],
+html.light [class*="navMenuItem"] {
+  color: #475569 !important;
+}
+
+html.light [class*="sidebarmenu"] a:hover,
+html.light [class*="sidebarItem"]:hover,
+html.light [class*="navMenuItem"]:hover {
+  background: rgba(24, 201, 139, 0.1) !important;
+  color: #047857 !important;
+  box-shadow: none !important;
+}
+
+html.light [class*="sidebarmenu"] a.active,
+html.light [class*="sidebarmenu"] a[class*="active"],
+html.light [class*="navMenuItemActive"],
+html.light [class*="sidebarItemActive"],
+html.light [data-active="true"] {
+  background: rgba(24, 201, 139, 0.15) !important;
+  color: #047857 !important;
+  font-weight: 700 !important;
+}
+
+/* Header navbar items must remain transparent with clean text hover */
+html.light [class*="headerAlignment"] ul,
+html.light [class*="headerAlignment"] nav,
+html.light [class*="headerAlignment"] li,
+html.light [class*="headerAlignment"] ul:hover,
+html.light [class*="headerAlignment"] nav:hover,
+html.light [class*="headerAlignment"] li:hover {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Tables */
+html.light table {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+html.light th {
+  background-color: #F1F5F9 !important;
+  color: #334155 !important;
+  font-weight: 600 !important;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.1) !important;
+}
+
+html.light td {
+  color: #1E293B !important;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06) !important;
+}
+
+html.light tr:hover td {
+  background-color: #F8FAFC !important;
+}
+
+/* SVG Line & Path Contrast */
+html.light svg path[stroke="#ffffff"],
+html.light svg path[stroke="#FFFFFF"],
+html.light svg path[stroke="white"],
+html.light svg line[stroke="#ffffff"],
+html.light svg line[stroke="#FFFFFF"],
+html.light svg line[stroke="white"],
+html.light svg circle[stroke="#ffffff"],
+html.light svg circle[stroke="#FFFFFF"],
+html.light svg circle[stroke="white"] {
+  stroke: #334155 !important;
+}
+
+html.light svg path[fill="#ffffff"],
+html.light svg path[fill="#FFFFFF"],
+html.light svg path[fill="white"] {
+  fill: #0F172A !important;
+}
+
+html.light line[stroke="rgba(255, 255, 255, 0.05)"],
+html.light line[stroke*="rgba(255, 255, 255"] {
+  stroke: rgba(15, 23, 42, 0.12) !important;
+}
+
+html.light text[fill="rgba(255, 255, 255, 0.5)"],
+html.light text[fill*="rgba(255, 255, 255"] {
+  fill: #475569 !important;
+}
+
+/* Ambient glow & backdrop grid softness in Light Mode */
+html.light [class*="ambient"],
+html.light [class*="gridOverlay"],
+html.light [class*="glow"] {
+  opacity: 0.15 !important;
+}
+
+/* Eyebrow Badges & Section Tags */
+html.light [class*="eyebrowBadge"],
+html.light [class*="sectionTag"],
+html.light [class*="statusBadge"],
+html.light [class*="chip"],
+html.light span[class*="badge"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="Label"]):not([class*="label"]),
+html.light span[class*="Badge"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="Label"]):not([class*="label"]),
+html.light span[class*="tag"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="pill"]):not([class*="Pill"]):not([class*="faq"]):not([class*="Faq"]):not([class*="Label"]):not([class*="label"]),
+html.light span[class*="Tag"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="pill"]):not([class*="Pill"]):not([class*="faq"]):not([class*="Faq"]):not([class*="Label"]):not([class*="label"]),
+html.light [class*="pillBadge"],
+html.light [class*="statBadge"] {
+  color: #047857 !important;
+  background: rgba(24, 201, 139, 0.12) !important;
+  border: 1px solid rgba(24, 201, 139, 0.3) !important;
+  box-shadow: none !important;
+}
+
+html.light [class*="badgeText"],
+html.light span[class*="badgeText"],
+html.light [class*="badgeTitle"],
+html.light [class*="labelText"],
+html.light span[class*="labelText"],
+html.light [class*="stepTag"],
+html.light span[class*="stepTag"],
+html.light [class*="pillTag"],
+html.light span[class*="pillTag"],
+html.light [class*="pillText"],
+html.light span[class*="pillText"],
+html.light [class*="pillDivider"],
+html.light span[class*="pillDivider"],
+html.light [class*="faqTag"],
+html.light span[class*="faqTag"],
+html.light [class*="badgeContent"],
+html.light [class*="badgeContent"] h4,
+html.light [class*="badgeContent"] p,
+html.light [class*="badgeWrapper"],
+html.light [class*="badgeRow"],
+html.light [class*="cardHeaderMeta"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Secondary & Neutral Buttons */
+html.light [class*="secondaryBtn"],
+html.light [class*="outlineBtn"],
+html.light [class*="ghostBtn"],
+html.light [class*="btnSecondary"],
+html.light [class*="actionGridBtn"] {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 1px solid rgba(15, 23, 42, 0.15) !important;
+}
+
+html.light [class*="secondaryBtn"]:hover,
+html.light [class*="outlineBtn"]:hover,
+html.light [class*="ghostBtn"]:hover,
+html.light [class*="actionGridBtn"]:hover {
+  background: #F1F5F9 !important;
+  border-color: rgba(24, 201, 139, 0.4) !important;
+}
+
+/* Auth & Onboarding Views */
+html.light .auth-layout,
+html.light [class*="authLayout"],
+html.light [class*="authPage"],
+html.light [class*="onboardingWrapper"] {
+  background-color: #F8FAFC !important;
+  background-image:
+    radial-gradient(circle at 50% 15%, rgba(24, 201, 139, 0.1) 0%, transparent 55%),
+    radial-gradient(circle at 50% 85%, rgba(24, 201, 139, 0.05) 0%, transparent 60%) !important;
+}
+
+html.light [class*="authCard"],
+html.light [class*="formCard"],
+html.light [class*="onboardingCard"] {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Chat & AI Analyst Bubbles */
+html.light [class*="chatBox"],
+html.light [class*="chatBubble"],
+html.light [class*="botMessage"],
+html.light [class*="assistantMessage"],
+html.light [class*="messageBubble"] {
+  background: #F1F5F9 !important;
+  color: #0F172A !important;
+  border: 1px solid rgba(24, 201, 139, 0.25) !important;
+  box-shadow: none !important;
+}
+
+html.light [class*="chatBox"] p,
+html.light [class*="chatBubble"] p,
+html.light [class*="botMessage"] p,
+html.light [class*="assistantMessage"] p,
+html.light [class*="messageBubble"] p {
+  color: #0F172A !important;
+}
+
+html.light [class*="userMessage"],
+html.light [class*="userBubble"] {
+  background: #18C98B !important;
+  color: #040605 !important;
+}
+
+html.light [class*="userMessage"] p,
+html.light [class*="userBubble"] p {
+  color: #040605 !important;
+}
+
+/* ============================================================
+   GLOBAL BUTTON SYSTEM - 100% FULLY ROUNDED & SOLID COLORS
+   ============================================================ */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+[role="button"]:not([class*="switch"]):not([class*="checkbox"]),
+.button button,
+[class*="btnPrimary"],
+[class*="BtnPrimary"],
+[class*="primaryBtn"],
+[class*="PrimaryBtn"],
+[class*="ctaBtn"],
+[class*="CtaBtn"],
+[class*="ctaGoldBtn"],
+[class*="ctaPrimaryBtn"],
+[class*="ctaSecondaryBtn"],
+[class*="buyBtn"],
+[class*="basicBuyBtn"],
+[class*="featuredBuyBtn"],
+[class*="premiumBuyBtn"],
+[class*="submitBtn"],
+[class*="submitButton"],
+[class*="actionBtn"],
+[class*="btnSecondary"],
+[class*="secondaryBtn"],
+[class*="SecondaryBtn"],
+[class*="outlineBtn"],
+[class*="ghostBtn"],
+[class*="historyBtn"],
+[class*="actionGridBtn"],
+[class*="exploreBtn"],
+[class*="tradeBtn"],
+[class*="analyzeBtn"],
+[class*="btnAnalyze"],
+[class*="btnDanger"],
+[class*="googleBtnWrapper"],
+[class*="customGoogleBtn"],
+[class*="statusPill"],
+[class*="textbutton"] button {
+  border-radius: 9999px !important;
+}
+
+/* Primary Solid Buttons (Remove All Gradients) */
+[class*="btnPrimary"],
+[class*="BtnPrimary"],
+[class*="primaryBtn"],
+[class*="PrimaryBtn"],
+[class*="ctaPrimaryBtn"],
+[class*="ctaGoldBtn"],
+[class*="ctaBtn"],
+[class*="submitButton"],
+[class*="basicBuyBtn"],
+[class*="featuredBuyBtn"],
+[class*="premiumBuyBtn"],
+[class*="btnAnalyze"],
+.button button {
+  background: #18C98B !important;
+  background-image: none !important;
+  color: #040605 !important;
+  border: 1px solid #18C98B !important;
+  box-shadow: 0 4px 16px rgba(24, 201, 139, 0.3) !important;
+  font-weight: 700 !important;
+  transition: all 0.25s ease !important;
+}
+
+[class*="btnPrimary"]:hover:not(:disabled),
+[class*="BtnPrimary"]:hover:not(:disabled),
+[class*="primaryBtn"]:hover:not(:disabled),
+[class*="PrimaryBtn"]:hover:not(:disabled),
+[class*="ctaPrimaryBtn"]:hover:not(:disabled),
+[class*="ctaGoldBtn"]:hover:not(:disabled),
+[class*="ctaBtn"]:hover:not(:disabled),
+[class*="submitButton"]:hover:not(:disabled),
+[class*="basicBuyBtn"]:hover:not(:disabled),
+[class*="featuredBuyBtn"]:hover:not(:disabled),
+[class*="premiumBuyBtn"]:hover:not(:disabled),
+[class*="btnAnalyze"]:hover:not(:disabled),
+.button button:hover {
+  background: #15B77E !important;
+  background-image: none !important;
+  border-color: #15B77E !important;
+  color: #040605 !important;
+  box-shadow: 0 6px 22px rgba(24, 201, 139, 0.45) !important;
+}
+
+/* Ensure Button Text & Icon visibility */
+[class*="btnPrimary"] span,
+[class*="BtnPrimary"] span,
+[class*="primaryBtn"] span,
+[class*="PrimaryBtn"] span,
+[class*="ctaPrimaryBtn"] span,
+[class*="ctaGoldBtn"] span,
+[class*="ctaBtn"] span,
+[class*="submitButton"] span,
+[class*="btnAnalyze"] span,
+.button button span {
+  color: #040605 !important;
+}
+
+[class*="btnPrimary"] svg,
+[class*="BtnPrimary"] svg,
+[class*="primaryBtn"] svg,
+[class*="PrimaryBtn"] svg,
+[class*="ctaPrimaryBtn"] svg,
+[class*="ctaGoldBtn"] svg,
+[class*="ctaBtn"] svg,
+[class*="submitButton"] svg,
+[class*="btnAnalyze"] svg {
+  color: #040605 !important;
+  stroke: currentColor;
+}
+
+/* ============================================================
+   LIGHT MODE: BUTTONS & INTERACTIVE ELEMENTS
+   ============================================================ */
+html.light [class*="btnPrimary"],
+html.light [class*="BtnPrimary"],
+html.light [class*="primaryBtn"],
+html.light [class*="PrimaryBtn"],
+html.light [class*="ctaPrimaryBtn"],
+html.light [class*="ctaGoldBtn"],
+html.light [class*="ctaBtn"],
+html.light [class*="submitButton"],
+html.light [class*="basicBuyBtn"],
+html.light [class*="featuredBuyBtn"],
+html.light [class*="premiumBuyBtn"],
+html.light [class*="btnAnalyze"],
+html.light .button button {
+  background: #18C98B !important;
+  background-image: none !important;
+  color: #040605 !important;
+  border-color: #18C98B !important;
+  box-shadow: 0 2px 8px rgba(24, 201, 139, 0.25) !important;
+}
+
+html.light [class*="btnPrimary"]:hover,
+html.light [class*="BtnPrimary"]:hover,
+html.light [class*="primaryBtn"]:hover,
+html.light [class*="PrimaryBtn"]:hover,
+html.light [class*="ctaPrimaryBtn"]:hover,
+html.light [class*="ctaGoldBtn"]:hover,
+html.light [class*="ctaBtn"]:hover,
+html.light [class*="submitButton"]:hover:not(:disabled),
+html.light [class*="basicBuyBtn"]:hover,
+html.light [class*="featuredBuyBtn"]:hover,
+html.light [class*="premiumBuyBtn"]:hover,
+html.light [class*="btnAnalyze"]:hover:not(:disabled),
+html.light .button button:hover {
+  background: #15B77E !important;
+  border-color: #15B77E !important;
+  color: #040605 !important;
+  box-shadow: 0 4px 14px rgba(24, 201, 139, 0.35) !important;
+}
+
+/* Light Mode Secondary, Outline, Ghost, Action & Google Buttons */
+html.light [class*="btnSecondary"],
+html.light [class*="secondaryBtn"],
+html.light [class*="SecondaryBtn"],
+html.light [class*="ctaSecondaryBtn"],
+html.light [class*="outlineBtn"],
+html.light [class*="ghostBtn"],
+html.light [class*="historyBtn"],
+html.light [class*="actionGridBtn"],
+html.light [class*="googleBtnWrapper"] {
+  background: #FFFFFF !important;
+  background-image: none !important;
+  border: 1px solid rgba(15, 23, 42, 0.16) !important;
+  color: #0F172A !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light [class*="btnSecondary"]:hover,
+html.light [class*="secondaryBtn"]:hover,
+html.light [class*="SecondaryBtn"]:hover,
+html.light [class*="ctaSecondaryBtn"]:hover,
+html.light [class*="outlineBtn"]:hover,
+html.light [class*="ghostBtn"]:hover,
+html.light [class*="historyBtn"]:hover,
+html.light [class*="actionGridBtn"]:hover,
+html.light [class*="googleBtnWrapper"]:hover {
+  background: #F1F5F9 !important;
+  border-color: #18C98B !important;
+  color: #047857 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light [class*="customGoogleBtn"] {
+  color: #0F172A !important;
+}
+
+/* ============================================================
+   LIGHT MODE: HEADER, FOOTER, SIDEBAR, TOPBAR & SECTIONS
+   ============================================================ */
+/* Header */
+
+
+html.light [class*="headerAlignment"].alignmentScrolled {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  border-color: rgba(15, 23, 42, 0.12) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light [class*="menu"] a,
+html.light [class*="dropdownTrigger"] {
+  color: #0F172A !important;
+}
+
+html.light [class*="menu"] a:hover,
+html.light [class*="dropdownTrigger"]:hover,
+html.light [class*="menu"] li.active a,
+html.light [class*="menu"] li.dropdownOpen .dropdownTrigger {
+  color: #047857 !important;
+}
+
+html.light [class*="dropdownTrigger"] .chevron {
+  color: #475569 !important;
+}
+
+html.light [class*="dropdownCard"],
+html.light [class*="mobileDrawer"],
+html.light [class*="megaMenu"] {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.09) !important;
+  overflow: hidden;
+}
+
+html.light [class*="dropdownItem"]:hover {
+  background: #F1F5F9 !important;
+}
+
+html.light [class*="dropdownItem"]:hover [class*="itemIconBox"] {
+  background: #18C98B !important;
+  color: #040605 !important;
+}
+
+/* Footer */
+html.light footer,
+html.light [class*="footer"],
+html.light [class*="footerSection"],
+html.light [class*="footerWrapper"] {
+  background-color: #F8FAFC !important;
+  border-top: none !important;
+  border: none !important;
+  color: #334155 !important;
+  box-shadow: none !important;
+}
+
+html.light [class*="navCol"] h4 {
+  color: #0F172A !important;
+}
+
+html.light [class*="navCol"] h4::after {
+  background: #047857 !important;
+}
+
+html.light [class*="footer"] a,
+html.light footer a,
+html.light [class*="navCol"] ul li a,
+html.light [class*="footerWrapper"] a {
+  color: #475569 !important;
+}
+
+html.light [class*="footer"] a:hover,
+html.light footer a:hover,
+html.light [class*="navCol"] ul li a:hover,
+html.light [class*="footerWrapper"] a:hover {
+  color: #047857 !important;
+}
+
+html.light [class*="brandDesc"],
+html.light [class*="disclaimerSection"] p,
+html.light [class*="bottomSection"] p {
+  color: #64748B !important;
+}
+
+html.light [class*="socialBtn"] {
+  background: #FFFFFF !important;
+  border: 1px solid #CBD5E1 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light [class*="socialBtn"]:hover {
+  background: #F1F5F9 !important;
+  border-color: #047857 !important;
+}
+
+html.light [class*="socialIcon"] {
+  background-color: #0F172A !important;
+}
+
+html.light [class*="socialBtn"]:hover [class*="socialIcon"] {
+  background-color: #047857 !important;
+}
+
+/* Sidebar & Topbar */
+html.light [class*="sidebar"],
+html.light .sidebar-wrapper,
+html.light [class*="sidebarContainer"] {
+  background-color: #FFFFFF !important;
+  border-right: 1px solid #E2E8F0 !important;
+}
+
+html.light [class*="topbar"],
+html.light [class*="topbarWrapper"] {
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+html.light [class*="sidebarmenu"] a,
+html.light [class*="sidebarItem"],
+html.light [class*="navMenuItem"] {
+  color: #475569 !important;
+}
+
+html.light [class*="sidebarmenu"] a:hover,
+html.light [class*="sidebarItem"]:hover,
+html.light [class*="navMenuItem"]:hover {
+  background: rgba(24, 201, 139, 0.1) !important;
+  color: #047857 !important;
+}
+
+html.light [class*="sidebarmenu"] a.active,
+html.light [class*="sidebarmenu"] a[class*="active"],
+html.light [class*="navMenuItemActive"],
+html.light [class*="sidebarItemActive"],
+html.light [data-active="true"] {
+  background: rgba(24, 201, 139, 0.14) !important;
+  border-color: rgba(24, 201, 139, 0.3) !important;
+  color: #047857 !important;
+}
+
+/* Hide Dark Background Glows and Vignettes in Light Mode */
+html.light [class*="radialVignette"],
+html.light [class*="ambientGlowCenter"],
+html.light [class*="ambientGlowBottom"],
+html.light [class*="mobileTechAtmosphere"],
+html.light [class*="mobileQuantumHalo"] {
+  display: none !important;
+}

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import styles from './TickerSearchDropdown.module.scss';
 import { SYMBOL_DATABASE, normalizeSymbol } from '@/rendering/aiAssistant/TradingViewChartPane';
-import SymbolIcon from '@/components/SymbolIcon';
+import SymbolIcon from '@/icons/symbolIcon';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function TickerSearchDropdown({

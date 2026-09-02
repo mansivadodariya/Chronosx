@@ -20,7 +20,7 @@ export const metadata = {
         title: "AI Forex & Trading Chat Copilot | ChronosX",
         description:
             "Ask questions, analyze real-time market trends, calculate precise risk parameters, and receive instant trade setups powered by live MT5 feeds.",
-        url: "https://chronosx.io/ai-chat",
+        url: "https://chronosx.com/ai-chat",
         siteName: "ChronosX",
         images: [
             {
@@ -41,7 +41,7 @@ export const metadata = {
         images: ["/assets/images/ai-chat.png"]
     },
     alternates: {
-        canonical: "https://chronosx.io/ai-chat"
+        canonical: "https://chronosx.com/ai-chat"
     }
 };
 

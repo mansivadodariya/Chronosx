@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import styles from '../aiSnapDashboard.module.scss';
-import { ClockIcon, TrendingUpIcon, TrendingDownIcon, ActivityIcon, CheckCircle2Icon } from './AiSnapIcons';
+import { ClockIcon, TrendingUpIcon, TrendingDownIcon, ActivityIcon, CheckCircle2Icon } from '@/icons/aiSnapIcons';
 
 export default function AnalysisSummaryHeader({ symbol, timeframe, currentPrice, volume, change, isChartValid, onOpenTimeframeModal }) {
     const isChangePositive = typeof change === 'string' ? !change.startsWith('-') : change >= 0;

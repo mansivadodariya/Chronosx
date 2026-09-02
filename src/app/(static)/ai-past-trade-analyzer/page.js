@@ -19,7 +19,7 @@ export const metadata = {
         title: "AI Past Trade Analyzer — Learn From Every Trade | ChronosX",
         description:
             "Stop guessing why you lost. Let ChronosX AI analyze your completed trade screenshots, detect execution flaws, and give you actionable improvements in seconds.",
-        url: "https://chronosx.io/ai-past-trade-analyzer",
+        url: "https://chronosx.com/ai-past-trade-analyzer",
         siteName: "ChronosX",
         images: [
             {
@@ -40,7 +40,7 @@ export const metadata = {
         images: ["/assets/images/ai-past-trade-analyzer/brain-pedestal.jpg"]
     },
     alternates: {
-        canonical: "https://chronosx.io/ai-past-trade-analyzer"
+        canonical: "https://chronosx.com/ai-past-trade-analyzer"
     }
 };
 

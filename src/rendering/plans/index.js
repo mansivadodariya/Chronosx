@@ -13,7 +13,7 @@ import { getBidiProps } from '@/lib/bidi';
 import toast from 'react-hot-toast';
 import CommonCta from '@/components/commonCta';
 
-import { HexGiftBoxIcon, Gold3DGiftBox } from './GiftBoxIcon';
+import { HexGiftBoxIcon, Gold3DGiftBox } from '@/icons/giftBoxIcon';
 
 const GoldenCheckCircleIcon = () => (
     <div className={styles.goldenCheckCircle}>

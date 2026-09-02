@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import styles from '../aiSnapDashboard.module.scss';
-import { ActivityIcon, ChevronDownIcon } from './AiSnapIcons';
+import { ActivityIcon, ChevronDownIcon } from '@/icons/aiSnapIcons';
 
 export default function IndicatorPivotTabs({ trendIndicators, momentumIndicators, volatilityIndicators, pivotPoints }) {
     const [activeTab, setActiveTab] = useState('trend');

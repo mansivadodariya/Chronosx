@@ -1,0 +1,554 @@
+/* ============================================================
+   LIGHT MODE STYLING OVERRIDES FOR AI TRADE
+   ============================================================ */
+:global(html.light) .pageWrapper,
+:global(html.light) .aiTradeWrapper,
+:global(html.light) .mainWrapper {
+    background: #F8FAFC !important;
+    color: #0F172A !important;
+
+    .sectionDivider {
+        display: block !important;
+        width: 100% !important;
+        height: 1px !important;
+        background: linear-gradient(90deg, transparent 0%, rgba(24, 201, 139, 0.35) 50%, transparent 100%) !important;
+        margin: 40px 0 !important;
+    }
+
+    /* Section Headings */
+    .sectionTitle {
+        color: #0F172A !important;
+    }
+
+    .sectionSubtitle {
+        color: #475569 !important;
+    }
+
+    .sectionBadge {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.35) !important;
+        color: #047857 !important;
+        box-shadow: 0 2px 10px rgba(24, 201, 139, 0.08) !important;
+
+        span {
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            color: #047857 !important;
+            font-weight: 800 !important;
+        }
+    }
+
+    /* 1. Hero Section */
+    .heroMainTitle {
+        color: #0F172A !important;
+    }
+
+    .heroSubtitle {
+        color: #475569 !important;
+    }
+
+    .heroSecondaryBtn {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.15) !important;
+        color: #0F172A !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+
+        &:hover {
+            background: #F8FAFC !important;
+            border-color: #18C98B !important;
+            color: #047857 !important;
+        }
+    }
+
+    /* 2. Top Feature Highlights */
+    .highlightCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.25) !important;
+        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05) !important;
+
+        &:hover {
+            border-color: #18C98B !important;
+            box-shadow: 0 10px 30px rgba(24, 201, 139, 0.12) !important;
+        }
+
+        .highlightIconBox {
+            background: #F0FDF4 !important;
+            border: 1px solid rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+
+        .highlightContent {
+            background: transparent !important;
+
+            h4 {
+                color: #0F172A !important;
+                background: transparent !important;
+            }
+
+            p {
+                color: #64748B !important;
+                background: transparent !important;
+            }
+        }
+    }
+
+    /* 3. 3-Step Process Cards */
+    .stepCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.22) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+
+        .stepNumBadge {
+            background: #F0FDF4 !important;
+            border: 1px solid rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+
+        .stepTag {
+            background: transparent !important;
+            background-color: transparent !important;
+            color: #64748B !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .stepIconWrap {
+            background: #F0FDF4 !important;
+            border-color: rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+
+        .stepTitle {
+            color: #0F172A !important;
+        }
+
+        .stepDesc {
+            color: #475569 !important;
+        }
+    }
+
+    /* 4. Live Vision AI Scanner Demo Cockpit */
+    .scannerCockpit {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.28) !important;
+        box-shadow: 0 15px 45px rgba(15, 23, 42, 0.08) !important;
+
+        .cockpitNavHeader {
+            background: #F8FAFC !important;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            .brandTitle {
+                color: #0F172A !important;
+                font-weight: 700 !important;
+            }
+
+            .tabBtn {
+                background: #FFFFFF !important;
+                border: 1px solid rgba(15, 23, 42, 0.12) !important;
+                color: #475569 !important;
+
+                &:hover {
+                    color: #047857 !important;
+                    border-color: #18C98B !important;
+                }
+
+                &.tabBtnActive {
+                    background: #18C98B !important;
+                    color: #040605 !important;
+                    border-color: #18C98B !important;
+                    font-weight: 700 !important;
+                    box-shadow: none !important;
+                }
+            }
+
+            .telemetryStatus {
+                color: #047857 !important;
+            }
+        }
+
+        .chartVisualCol {
+            background: #FAFAFA !important;
+            border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            @include respond-to('md') {
+                border-right: none !important;
+                border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+            }
+        }
+
+        .chartFrame {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(24, 201, 139, 0.28) !important;
+            box-shadow: 0 6px 25px rgba(15, 23, 42, 0.05) !important;
+        }
+
+        .candlestickStage {
+            background: #FFFFFF !important;
+
+            .chartSvg {
+                line[stroke="rgba(255,255,255,0.06)"] {
+                    stroke: rgba(15, 23, 42, 0.08) !important;
+                }
+
+                rect[fill="rgba(24, 201, 139, 0.05)"] {
+                    fill: rgba(24, 201, 139, 0.08) !important;
+                    stroke: rgba(24, 201, 139, 0.55) !important;
+                }
+
+                text[fill="#18C98B"] {
+                    fill: #047857 !important;
+                    font-weight: 800 !important;
+                }
+
+                line[stroke="#10B981"] {
+                    stroke: #059669 !important;
+                }
+
+                rect[fill="#10B981"] {
+                    fill: #059669 !important;
+                }
+
+                text[fill="#10B981"] {
+                    fill: #047857 !important;
+                    font-weight: 800 !important;
+                }
+
+                line[stroke="#EF4444"] {
+                    stroke: #DC2626 !important;
+                }
+
+                rect[fill="#EF4444"] {
+                    fill: #DC2626 !important;
+                }
+
+                text[fill="#EF4444"] {
+                    fill: #DC2626 !important;
+                    font-weight: 800 !important;
+                }
+            }
+        }
+
+        .scanningOverlay {
+            background: rgba(255, 255, 255, 0.95) !important;
+
+            .scanAnimationBox {
+                h4 {
+                    color: #0F172A !important;
+                }
+
+                p {
+                    color: #475569 !important;
+                }
+
+                .scanProgressBar {
+                    background: #E2E8F0 !important;
+                }
+            }
+        }
+
+        .visionCallout {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(24, 201, 139, 0.38) !important;
+            color: #047857 !important;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08) !important;
+
+            .calloutDot {
+                background: #10B981 !important;
+            }
+        }
+
+        .uploadTriggerBar {
+            background: #F8FAFC !important;
+            border-top: 1px solid #F1F5F9 !important;
+        }
+
+        .uploadDropBtn {
+            background: #FFFFFF !important;
+            border: 1.5px dashed rgba(24, 201, 139, 0.45) !important;
+            color: #047857 !important;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03) !important;
+
+            &:hover {
+                background: #F0FDF4 !important;
+                border-color: #18C98B !important;
+            }
+        }
+
+        .resultCardCol {
+            background: #FFFFFF !important;
+        }
+
+        .resultHeaderRow {
+            border-bottom: 1px solid #F1F5F9 !important;
+
+            .resultHeaderTag {
+                color: #047857 !important;
+            }
+
+            .resultPairTitle {
+                color: #0F172A !important;
+            }
+
+            .tfBadge {
+                background: #F1F5F9 !important;
+                color: #334155 !important;
+                border: 1px solid #E2E8F0 !important;
+            }
+
+            .resultIconBox {
+                background: #F0FDF4 !important;
+                border-color: rgba(24, 201, 139, 0.35) !important;
+                color: #047857 !important;
+            }
+
+            .copyBtn {
+                background: #F1F5F9 !important;
+                border: 1px solid #E2E8F0 !important;
+                color: #475569 !important;
+
+                &:hover {
+                    background: #18C98B !important;
+                    color: #040605 !important;
+                    border-color: #18C98B !important;
+                }
+            }
+        }
+
+        .decisionBanner {
+            background: #F1F5F9 !important;
+            border: 1px solid #E2E8F0 !important;
+
+            .decisionLabel {
+                color: #475569 !important;
+                font-weight: 700 !important;
+            }
+
+            .decisionBuy {
+                color: #047857 !important;
+                font-weight: 800 !important;
+            }
+
+            .decisionSell {
+                color: #DC2626 !important;
+                font-weight: 800 !important;
+            }
+
+            .convLabel {
+                color: #475569 !important;
+                font-weight: 700 !important;
+            }
+
+            .convVal {
+                color: #047857 !important;
+                font-weight: 900 !important;
+            }
+        }
+
+        .executionBox {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(24, 201, 139, 0.3) !important;
+            box-shadow: 0 4px 15px rgba(24, 201, 139, 0.05) !important;
+
+            .execHeader {
+                .targetIconBox {
+                    background: #F0FDF4 !important;
+                    border-color: rgba(24, 201, 139, 0.35) !important;
+                    color: #047857 !important;
+                }
+
+                h5 {
+                    color: #047857 !important;
+                    font-weight: 800 !important;
+                }
+            }
+
+            .execRow {
+                border-bottom: 1px dashed #E2E8F0 !important;
+
+                .execKey {
+                    color: #0F172A !important;
+                    font-weight: 600 !important;
+                }
+
+                .execValHighlight {
+                    color: #047857 !important;
+                    font-weight: 800 !important;
+                }
+
+                .execValSl {
+                    color: #DC2626 !important;
+                    font-weight: 800 !important;
+                }
+
+                .execValTp {
+                    color: #047857 !important;
+                    font-weight: 800 !important;
+                }
+
+                .execValRrr {
+                    background: rgba(24, 201, 139, 0.14) !important;
+                    color: #047857 !important;
+                    font-weight: 800 !important;
+                    border: 1px solid rgba(24, 201, 139, 0.3) !important;
+                }
+            }
+        }
+
+        .rationaleBox {
+            background: #F8FAFC !important;
+            border: 1px solid #E2E8F0 !important;
+
+            .rationaleHeader {
+                .lightbulbIconBox {
+                    background: #F0FDF4 !important;
+                    border-color: rgba(24, 201, 139, 0.35) !important;
+                    color: #047857 !important;
+                }
+
+                h5 {
+                    color: #047857 !important;
+                    font-weight: 800 !important;
+                }
+            }
+
+            .rationaleText {
+                color: #334155 !important;
+                line-height: 1.6 !important;
+            }
+        }
+
+        .deskActionRow {
+            .openLiveDeskBtn {
+                background: #18C98B !important;
+                color: #040605 !important;
+                font-weight: 700 !important;
+            }
+        }
+    }
+
+    /* 5. Key Capabilities Grid */
+    .featureCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.25) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+
+        .cardGlowHover {
+            background: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.08) 0%, transparent 70%) !important;
+        }
+
+        .featureIconWrap {
+            background: #F0FDF4 !important;
+            border: 1px solid rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+
+        .featureNum {
+            color: rgba(4, 120, 87, 0.45) !important;
+        }
+
+        .featureBadgePill {
+            background: #F1F5F9 !important;
+            border: 1px solid rgba(15, 23, 42, 0.1) !important;
+            color: #475569 !important;
+        }
+
+        .featureCardTitle,
+        .featureTitle {
+            color: #0F172A !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .featureCardDesc,
+        .featureDesc {
+            color: #475569 !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .featureCardStat,
+        .statBox {
+            background: transparent !important;
+            border: none !important;
+            border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+            box-shadow: none !important;
+
+            .statLabel {
+                color: #64748B !important;
+                background: transparent !important;
+                border: none !important;
+            }
+
+            .statVal,
+            .statValue {
+                color: #047857 !important;
+                font-weight: 800 !important;
+                background: transparent !important;
+                border: none !important;
+            }
+        }
+    }
+
+    /* 6. Comparison Table */
+    .tableCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.28) !important;
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05) !important;
+
+        th {
+            background: #F1F5F9 !important;
+            color: #475569 !important;
+        }
+
+        td {
+            color: #1E293B !important;
+            border-bottom-color: #F1F5F9 !important;
+        }
+
+        .genericText {
+            color: #64748B !important;
+        }
+
+        .chronosText {
+            color: #047857 !important;
+            font-weight: 700 !important;
+        }
+    }
+
+    /* 7. FAQs */
+    .faqItem,
+    .faqItemOpen {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.28) !important;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.03) !important;
+
+        .faqQuestionBtn {
+            color: #0F172A !important;
+            background: transparent !important;
+        }
+
+        .qText {
+            color: #0F172A !important;
+        }
+
+        .faqAnswerWrapper {
+            background: #FFFFFF !important;
+            background-color: #FFFFFF !important;
+        }
+
+        .faqAnswerContent {
+            border-top: 1px solid #F1F5F9 !important;
+            background: #FFFFFF !important;
+            background-color: #FFFFFF !important;
+
+            p {
+                color: #475569 !important;
+            }
+        }
+    }
+}

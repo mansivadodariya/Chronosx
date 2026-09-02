@@ -1,0 +1,425 @@
+/* Strategy Tab layout */
+.tabContent {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.strategyAccordion {
+    background: #040605;
+    border: 1px solid rgba(24, 201, 139, 0.3);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+
+    .accordionTrigger {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+        background: #0D0E13;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        gap: 12px;
+
+        @include respond-to('md') {
+            padding: 14px 16px;
+        }
+
+        @include respond-to('sm') {
+            padding: 12px 14px;
+            gap: 10px;
+        }
+
+        &:hover {
+            background: rgba(22, 23, 31, 0.95);
+        }
+
+        &.accordionOpen {
+            background: rgba(18, 17, 13, 0.95);
+            border-bottom: 1px solid rgba(24, 201, 139, 0.2);
+        }
+
+        .accordionLeft {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .accordionTitle {
+                font-size: 15px;
+                font-weight: 700;
+                color: #FFFFFF;
+                font-family: "Euclid-Bold", sans-serif;
+            }
+
+            .accordionBadge {
+                background: rgba(24, 201, 139, 0.15);
+                border: 1px solid rgba(24, 201, 139, 0.35);
+                color: #18C98B;
+                font-size: 11px;
+                font-weight: 700;
+                padding: 2px 8px;
+                border-radius: 99px;
+            }
+        }
+
+        .accordionRight {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .accordionWsBadge {
+                font-size: 11px;
+                font-weight: 700;
+                padding: 3px 10px;
+                border-radius: 20px;
+                border: 1px solid transparent;
+
+                &.connected {
+                    color: #34D399;
+                    background: rgba(52, 211, 153, 0.1);
+                    border-color: rgba(52, 211, 153, 0.3);
+                }
+
+                &.connecting {
+                    color: #60A5FA;
+                    background: rgba(96, 165, 250, 0.1);
+                    border-color: rgba(96, 165, 250, 0.3);
+                }
+
+                &.disconnected {
+                    color: rgba(255, 255, 255, 0.45);
+                    background: rgba(255, 255, 255, 0.05);
+                    border-color: rgba(255, 255, 255, 0.1);
+                }
+            }
+
+            .dropdownArrow {
+                color: #18C98B;
+                font-size: 11px;
+                transition: transform 0.2s ease;
+
+                &.open {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    }
+}
+
+/* Strategy dot indicators */
+.strategyDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+
+    &.buyDot {
+        background: #34D399;
+        box-shadow: 0 0 6px rgba(52, 211, 153, 0.6);
+    }
+
+    &.sellDot {
+        background: #F87171;
+        box-shadow: 0 0 6px rgba(248, 113, 113, 0.6);
+    }
+
+    &.holdDot {
+        background: rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* Pairs Responsive 3-Column Grid */
+.pairsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 16px;
+
+    @include respond-to('lg') {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include respond-to('md') {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        padding: 14px;
+    }
+
+    @include respond-to('sm') {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 12px;
+    }
+}
+
+/* Individual Pair Card */
+.pairCard {
+    background: #0D0E13;
+    border: 1px solid rgba(24, 201, 139, 0.25);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        border-color: rgba(24, 201, 139, 0.5);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+    }
+
+    &.activeBuy {
+        border-left: 4px solid #34D399;
+        box-shadow: 0 4px 16px rgba(52, 211, 153, 0.15);
+    }
+
+    &.activeSell {
+        border-left: 4px solid #F87171;
+        box-shadow: 0 4px 16px rgba(248, 113, 113, 0.15);
+    }
+
+    .pairCardHead {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+
+        .cardHeaderTitle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            h4 {
+                color: #FFFFFF;
+                font-size: 15px;
+                font-weight: 700;
+                font-family: "Euclid-Bold", sans-serif;
+                margin: 0;
+                display: flex;
+                align-items: center;
+
+                .timeTag {
+                    font-size: 11px;
+                    color: rgba(255, 255, 255, 0.45);
+                    font-weight: normal;
+                }
+            }
+        }
+
+        .strategyTypeTag {
+            background: rgba(24, 201, 139, 0.12);
+            border: 1px solid rgba(24, 201, 139, 0.3);
+            color: #18C98B;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+    }
+
+    .directionBadge {
+        font-size: 11.5px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 6px;
+        width: fit-content;
+
+        &.buyColor {
+            color: #34D399;
+            background: rgba(52, 211, 153, 0.12);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+
+        &.sellColor {
+            color: #F87171;
+            background: rgba(248, 113, 113, 0.12);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+
+        &.holdColor {
+            color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    }
+
+    .inactiveMessage {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: rgba(255, 255, 255, 0.45);
+        font-size: 12px;
+        padding: 8px 0 4px;
+
+        svg {
+            color: rgba(24, 201, 139, 0.5);
+            flex-shrink: 0;
+        }
+    }
+
+    .levelsCard {
+        background: #080705;
+        border: 1px solid rgba(24, 201, 139, 0.18);
+        border-radius: 8px;
+        padding: 10px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+
+        .gridLevelRow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+
+            .gridLevelLabel {
+                color: rgba(255, 255, 255, 0.6);
+            }
+
+            .gridLevelValue {
+                color: #FFFFFF;
+                font-weight: 600;
+            }
+
+            .slColor {
+                color: #F87171;
+            }
+
+            .tpColor {
+                color: #34D399;
+            }
+        }
+    }
+
+    .confluenceBox {
+        background: #08110D;
+        border: 1px solid rgba(24, 201, 139, 0.18);
+        border-radius: 8px;
+        padding: 10px 12px;
+
+        .confluenceStats {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+
+            .confKicker {
+                font-size: 10.5px;
+                font-weight: 700;
+                color: rgba(255, 255, 255, 0.5);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .confItem {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 11.5px;
+                color: rgba(255, 255, 255, 0.8);
+
+                strong {
+                    color: #FFFFFF;
+                }
+
+                .strongText {
+                    color: #34D399;
+                }
+            }
+
+            .confStrengthBadge {
+                margin-top: 4px;
+                font-size: 10px;
+                font-weight: 700;
+                padding: 2px 6px;
+                border-radius: 4px;
+                width: fit-content;
+
+                &.highConf {
+                    background: rgba(52, 211, 153, 0.15);
+                    color: #34D399;
+                }
+
+                &.medConf {
+                    background: rgba(24, 201, 139, 0.15);
+                    color: #18C98B;
+                }
+            }
+        }
+    }
+
+    .strategyReasoning {
+        background: #08110D;
+        border: 1px solid rgba(24, 201, 139, 0.18);
+        border-radius: 8px;
+        padding: 10px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .reasoningLabel {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #18C98B;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        p {
+            margin: 0;
+            font-size: 11.5px;
+            line-height: 1.45;
+            color: rgba(255, 255, 255, 0.75);
+        }
+    }
+
+    .tagFlex {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 2px;
+
+        .strategyTag {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            letter-spacing: 0.3px;
+        }
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes tickGreen {
+    0% {
+        background: rgba(16, 185, 129, 0.3);
+    }
+
+    100% {
+        background: #0D0E13;
+    }
+}
+
+@keyframes tickRed {
+    0% {
+        background: rgba(239, 68, 68, 0.3);
+    }
+
+    100% {
+        background: #0D0E13;
+    }
+}
+

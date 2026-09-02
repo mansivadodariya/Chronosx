@@ -1,0 +1,524 @@
+/* ============================================================
+   LIGHT MODE STYLING OVERRIDES FOR AI STRATEGY PAGE
+   ============================================================ */
+:global(html.light) .pageWrapper,
+:global(html.light) .aiStrategyPageWrapper,
+:global(html.light) .mainWrapper {
+    background: #F8FAFC !important;
+    color: #0F172A !important;
+
+    .sectionDivider {
+        display: block !important;
+        width: 100% !important;
+        height: 1px !important;
+        background: linear-gradient(90deg, transparent 0%, rgba(24, 201, 139, 0.35) 50%, transparent 100%) !important;
+        margin: 40px 0 !important;
+    }
+
+    .faqItem,
+    .faqItemOpen {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.28) !important;
+        box-shadow: none !important;
+
+        .faqQuestionBtn {
+            color: #0F172A !important;
+            background: transparent !important;
+        }
+
+        .qText {
+            color: #0F172A !important;
+        }
+
+        .faqAnswerWrapper {
+            background: #FFFFFF !important;
+            background-color: #FFFFFF !important;
+        }
+
+        .faqAnswerContent {
+            border-top: 1px solid #F1F5F9 !important;
+            background: #FFFFFF !important;
+            background-color: #FFFFFF !important;
+
+            p {
+                color: #475569 !important;
+            }
+        }
+    }
+
+    /* Section Headings */
+    .sectionTitle {
+        color: #0F172A !important;
+    }
+
+    .sectionSubtitle {
+        color: #475569 !important;
+    }
+
+    .sectionBadge {
+        background: rgba(24, 201, 139, 0.12) !important;
+        border: 1px solid rgba(24, 201, 139, 0.3) !important;
+        color: #047857 !important;
+    }
+
+    /* 1. Hero Section */
+    .heroMainTitle {
+        color: #0F172A !important;
+    }
+
+    .heroSubtitle {
+        color: #475569 !important;
+    }
+
+    .heroSecondaryBtn {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.15) !important;
+        color: #0F172A !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+
+        &:hover {
+            background: #F8FAFC !important;
+            border-color: #18C98B !important;
+            color: #047857 !important;
+        }
+    }
+
+    /* 2. Top Feature Highlights */
+    .highlightCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.25) !important;
+        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05) !important;
+
+        &:hover {
+            border-color: #18C98B !important;
+            box-shadow: 0 10px 30px rgba(24, 201, 139, 0.12) !important;
+        }
+
+        .highlightIconBox {
+            background: #F0FDF4 !important;
+            border: 1px solid rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+
+        .highlightContent {
+            background: transparent !important;
+
+            h4 {
+                color: #0F172A !important;
+                background: transparent !important;
+            }
+
+            p {
+                color: #64748B !important;
+                background: transparent !important;
+            }
+        }
+    }
+
+    /* 3. 3-Step Process Cards */
+    .stepCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.22) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+
+        .stepNumBadge {
+            background: #F0FDF4 !important;
+            border: 1px solid rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+
+        .stepTag {
+            background: transparent !important;
+            background-color: transparent !important;
+            color: #64748B !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .stepIconWrap {
+            background: #F0FDF4 !important;
+            border-color: rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+
+        .stepTitle {
+            color: #0F172A !important;
+        }
+
+        .stepDesc {
+            color: #475569 !important;
+        }
+    }
+
+    /* 4. Live Technical Score Feed Cockpit */
+    .feedCockpit {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.28) !important;
+        box-shadow: 0 15px 45px rgba(15, 23, 42, 0.08) !important;
+
+        .cockpitNavHeader {
+            background: #F8FAFC !important;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            .brandTitle {
+                color: #0F172A !important;
+                font-weight: 700 !important;
+            }
+
+            .stratLabel {
+                color: #475569 !important;
+                font-weight: 700 !important;
+            }
+
+            .stratBtn {
+                background: #FFFFFF !important;
+                border: 1px solid rgba(15, 23, 42, 0.12) !important;
+                color: #475569 !important;
+
+                &:hover {
+                    color: #047857 !important;
+                    border-color: #18C98B !important;
+                }
+
+                &.stratBtnActive {
+                    background: rgba(24, 201, 139, 0.15) !important;
+                    color: #047857 !important;
+                    border-color: #18C98B !important;
+                    font-weight: 800 !important;
+                    box-shadow: none !important;
+                }
+            }
+
+            .telemetryStatus {
+                color: #047857 !important;
+            }
+        }
+
+        /* Top Pair Selector Horizontal Strip (Screenshot Fix) */
+        .pairsTabsBar {
+            background: #F8FAFC !important;
+            border-bottom: 1px solid #E2E8F0 !important;
+
+            .pairTabBtn {
+                background: #FFFFFF !important;
+                border-right: 1px solid #F1F5F9 !important;
+                border-bottom: 1px solid #F1F5F9 !important;
+
+                &:hover {
+                    background: #F8FAFC !important;
+                }
+
+                &.pairTabBtnActive {
+                    background: #F0FDF4 !important;
+                    border-bottom: 2px solid #18C98B !important;
+                }
+
+                .pairSym {
+                    color: #0F172A !important;
+                    font-weight: 800 !important;
+                }
+
+                .pairPrice {
+                    color: #475569 !important;
+                    font-weight: 600 !important;
+                }
+            }
+        }
+
+        /* Left Column: 100-Point Score Dial Card */
+        .scoreDialCol {
+            background: #FAFAFA !important;
+            border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            @include respond-to('md') {
+                border-right: none !important;
+                border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+            }
+
+            .dialCard {
+                background: #FFFFFF !important;
+                border: 1px solid rgba(24, 201, 139, 0.28) !important;
+                box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+
+                .dialHeader {
+                    border-bottom: 1px solid #F1F5F9 !important;
+
+                    .dialSub {
+                        color: #047857 !important;
+                    }
+
+                    .dialPairTitle {
+                        color: #0F172A !important;
+                    }
+
+                    .dialPairName {
+                        color: #64748B !important;
+                    }
+
+                    .priceLabel {
+                        color: #64748B !important;
+                        font-weight: 700 !important;
+                    }
+
+                    .priceValue {
+                        color: #047857 !important;
+                        font-weight: 900 !important;
+                    }
+                }
+
+                .meterContainer {
+                    .dialSvg circle:first-child {
+                        stroke: rgba(15, 23, 42, 0.08) !important;
+                    }
+
+                    .dialScoreNum {
+                        color: #0F172A !important;
+                        font-weight: 900 !important;
+                    }
+
+                    .dialScoreMax {
+                        color: #64748B !important;
+                    }
+
+                    .confidenceRow {
+                        color: #64748B !important;
+
+                        strong {
+                            color: #047857 !important;
+                        }
+                    }
+                }
+
+                .indicatorsRow {
+                    border-top: 1px solid #F1F5F9 !important;
+
+                    .indPill {
+                        background: #F8FAFC !important;
+                        border: 1px solid #E2E8F0 !important;
+
+                        .indName {
+                            color: #64748B !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        /* Right Column: 4-Pillar Score Breakdown */
+        .pillarsCol {
+            background: #FFFFFF !important;
+
+            .pillarsHeaderRow {
+                border-bottom: 1px solid #F1F5F9 !important;
+
+                .pillarIconBox {
+                    background: #F0FDF4 !important;
+                    border-color: rgba(24, 201, 139, 0.35) !important;
+                    color: #047857 !important;
+                }
+
+                .pillarHeaderTag {
+                    color: #047857 !important;
+                }
+
+                .pillarMainTitle {
+                    color: #0F172A !important;
+                }
+
+                .copyBtn {
+                    background: #F1F5F9 !important;
+                    border: 1px solid #E2E8F0 !important;
+                    color: #475569 !important;
+
+                    &:hover {
+                        background: #18C98B !important;
+                        color: #040605 !important;
+                        border-color: #18C98B !important;
+                    }
+                }
+            }
+
+            /* 4 Pillar Cards (Screenshot Fix) */
+            .pillarsList {
+                .pillarItem {
+                    background: #F8FAFC !important;
+                    border: 1px solid rgba(15, 23, 42, 0.09) !important;
+                    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03) !important;
+
+                    .pillarItemTop {
+                        .pillarName {
+                            color: #0F172A !important;
+
+                            strong {
+                                color: #0F172A !important;
+                                font-weight: 800 !important;
+                            }
+                        }
+
+                        .pillarScoreNum {
+                            color: #047857 !important;
+                            font-weight: 800 !important;
+                        }
+                    }
+
+                    .pillarProgressBar {
+                        background: #E2E8F0 !important;
+                    }
+
+                    .pillarNote {
+                        color: #475569 !important;
+                        font-weight: 500 !important;
+                    }
+                }
+            }
+
+            /* AI Confluence Summary Card */
+            .summaryCard {
+                background: #F8FAFC !important;
+                border: 1px solid #E2E8F0 !important;
+
+                .summaryTitle {
+                    color: #047857 !important;
+                    font-weight: 800 !important;
+                }
+
+                p {
+                    color: #334155 !important;
+                    line-height: 1.6 !important;
+                }
+            }
+
+            /* Launch Button */
+            .launchDeskActionBtn {
+                background: #18C98B !important;
+                color: #040605 !important;
+                font-weight: 700 !important;
+            }
+        }
+    }
+
+    /* 5. Key Features Grid */
+    .featureCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.25) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+
+        .cardGlowHover {
+            background: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.08) 0%, transparent 70%) !important;
+        }
+
+        .featureIconWrap {
+            background: #F0FDF4 !important;
+            border: 1px solid rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+
+        .featureNum {
+            color: rgba(4, 120, 87, 0.45) !important;
+        }
+
+        .featureBadgePill {
+            background: #F1F5F9 !important;
+            border: 1px solid rgba(15, 23, 42, 0.1) !important;
+            color: #475569 !important;
+        }
+
+        .featureCardTitle,
+        .featureTitle {
+            color: #0F172A !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .featureCardDesc,
+        .featureDesc {
+            color: #475569 !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .featureCardStat,
+        .statBox {
+            background: transparent !important;
+            border: none !important;
+            border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+            box-shadow: none !important;
+
+            .statLabel {
+                color: #64748B !important;
+                background: transparent !important;
+                border: none !important;
+            }
+
+            .statVal,
+            .statValue {
+                color: #047857 !important;
+                font-weight: 800 !important;
+                background: transparent !important;
+                border: none !important;
+            }
+        }
+    }
+
+    /* 6. Comparison Table */
+    .tableCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.28) !important;
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05) !important;
+
+        th {
+            background: #F1F5F9 !important;
+            color: #475569 !important;
+        }
+
+        td {
+            color: #1E293B !important;
+            border-bottom-color: #F1F5F9 !important;
+        }
+
+        .genericText {
+            color: #64748B !important;
+        }
+
+        .chronosText {
+            color: #047857 !important;
+            font-weight: 700 !important;
+        }
+    }
+
+    /* 7. FAQs */
+    .faqItem,
+    .faqItemOpen {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.28) !important;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.03) !important;
+
+        .faqQuestionBtn {
+            color: #0F172A !important;
+            background: transparent !important;
+        }
+
+        .qText {
+            color: #0F172A !important;
+        }
+
+        .faqAnswerWrapper {
+            background: #FFFFFF !important;
+            background-color: #FFFFFF !important;
+        }
+
+        .faqAnswerContent {
+            border-top: 1px solid #F1F5F9 !important;
+            background: #FFFFFF !important;
+            background-color: #FFFFFF !important;
+
+            p {
+                color: #475569 !important;
+            }
+        }
+    }
+}

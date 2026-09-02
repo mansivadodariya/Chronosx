@@ -1,0 +1,414 @@
+/* UNANALYZED STATE VIEW (FULL WIDTH) */
+.fullWidthUploadSection {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+}
+
+/* 4-STEP HEADER STEPPER */
+.stepperCard {
+    background: $cardObsidian;
+    border: 1px solid $cardBlackBorder;
+    border-radius: 14px;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .stepItem {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .stepCircle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            background: rgba(255, 255, 255, 0.08);
+            color: $textMuted;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+
+            &.active {
+                background: $primaryGold;
+                color: #120D04;
+                border-color: $primaryGold;
+                box-shadow: 0 0 12px rgba(24, 201, 139, 0.4);
+            }
+        }
+
+        .stepMeta {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+
+            span.stepTitle {
+                font-size: 13px;
+                font-weight: 700;
+                color: $textWhite;
+            }
+
+            span.stepSub {
+                font-size: 11px;
+                color: $textDim;
+            }
+        }
+    }
+
+    .stepArrow {
+        color: rgba(255, 255, 255, 0.25);
+        font-size: 14px;
+    }
+}
+
+/* CENTRAL UPLOAD BOX */
+.uploadCard {
+    background: 
+        radial-gradient(ellipse 25% 85% at 0% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
+        radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.12) 0%, rgba(110, 231, 183, 0.05) 50%, transparent 70%),
+        radial-gradient(ellipse 25% 85% at 100% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
+        #121514;
+    border: 1px dashed rgba(24, 201, 139, 0.4);
+    border-radius: 20px;
+    padding: 52px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+    &:hover,
+    &.activeDrag {
+        border-color: $primaryGold;
+        background: 
+            radial-gradient(ellipse 30% 90% at 0% 50%, rgba(24, 201, 139, 0.28) 0%, rgba(16, 185, 129, 0.1) 50%, transparent 75%),
+            radial-gradient(ellipse 55% 65% at 50% 30%, rgba(0, 242, 254, 0.18) 0%, rgba(110, 231, 183, 0.08) 50%, transparent 70%),
+            radial-gradient(ellipse 30% 90% at 100% 50%, rgba(24, 201, 139, 0.28) 0%, rgba(16, 185, 129, 0.1) 50%, transparent 75%),
+            #121514;
+        box-shadow: 0 0 32px rgba(24, 201, 139, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .pdfIconBadge {
+        width: 68px;
+        height: 68px;
+        border-radius: 14px;
+        background: rgba(24, 201, 139, 0.1);
+        border: 1px solid rgba(24, 201, 139, 0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $primaryGold;
+        box-shadow: 0 0 20px rgba(24, 201, 139, 0.15);
+    }
+
+    .uploadHeadingGroup {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+
+        h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: $textWhite;
+            margin: 0;
+        }
+
+        p {
+            font-size: 13.5px;
+            color: $textMuted;
+            margin: 0;
+        }
+    }
+
+    .uploadButtonRow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .chooseFileBtn {
+            background: linear-gradient(135deg, $primaryGold 0%, #059669 100%);
+            border: none;
+            color: #1A1204;
+            padding: 13px 30px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 18px rgba(24, 201, 139, 0.35);
+            transition: all 0.2s ease;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 24px rgba(24, 201, 139, 0.5);
+            }
+        }
+
+        .sampleFileBtn {
+            background: rgba(24, 201, 139, 0.08);
+            border: 1px solid rgba(24, 201, 139, 0.3);
+            color: $primaryGold;
+            padding: 13px 22px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+
+            &:hover {
+                background: rgba(24, 201, 139, 0.18);
+                border-color: $primaryGold;
+            }
+        }
+    }
+
+    .dragDropText {
+        font-size: 12.5px;
+        color: $textDim;
+    }
+
+    .securityNotice {
+        font-size: 12px;
+        color: $textMuted;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 4px;
+    }
+
+    .hiddenInput {
+        display: none;
+    }
+}
+
+/* SUPPORTED FORMATS CARD */
+.supportedFormatsCard {
+    background: $cardObsidian;
+    border: 1px solid $cardBlackBorder;
+    border-radius: 14px;
+    padding: 22px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+
+    .formatsLeft {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+
+        .formatIconBox {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $primaryGold;
+            font-weight: 800;
+            font-size: 12px;
+        }
+
+        .formatText {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+
+            h4 {
+                font-size: 14px;
+                font-weight: 700;
+                margin: 0;
+                color: $textWhite;
+            }
+
+            p {
+                font-size: 12px;
+                color: $textMuted;
+                margin: 0;
+            }
+        }
+    }
+
+    .extractChecklist {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+
+        .checklistHeading {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: $primaryGold;
+        }
+
+        .checklistGrid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px 20px;
+            font-size: 12px;
+            color: $textMuted;
+
+            span {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+
+                svg {
+                    color: $successGreen;
+                    flex-shrink: 0;
+                }
+            }
+        }
+    }
+}
+
+/* HOW IT WORKS SECTION */
+.howItWorksBox {
+    background: $cardObsidian;
+    border: 1px solid $cardBlackBorder;
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    h3 {
+        font-size: 15px;
+        font-weight: 700;
+        margin: 0;
+        color: $textWhite;
+    }
+
+    .stepsRow {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+
+        .workStepCard {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 18px 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 10px;
+
+            .stepIconCircle {
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                background: rgba(24, 201, 139, 0.12);
+                border: 1px solid rgba(24, 201, 139, 0.35);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $primaryGold;
+            }
+
+            h4 {
+                font-size: 13px;
+                font-weight: 700;
+                margin: 0;
+                color: $textWhite;
+            }
+
+            p {
+                font-size: 11.5px;
+                color: $textDim;
+                margin: 0;
+                line-height: 1.35;
+            }
+        }
+    }
+}
+
+/* WHAT YOU'LL GET SECTION */
+.whatYouGetBox {
+    background: $cardObsidian;
+    border: 1px solid $cardBlackBorder;
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    h3 {
+        font-size: 15px;
+        font-weight: 700;
+        margin: 0;
+        color: $textWhite;
+    }
+
+    .featureGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 14px;
+
+        .featureCard {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+
+            .featIconBox {
+                width: 36px;
+                height: 36px;
+                border-radius: 8px;
+                background: rgba(24, 201, 139, 0.12);
+                border: 1px solid rgba(24, 201, 139, 0.3);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $primaryGold;
+                flex-shrink: 0;
+            }
+
+            .featText {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+
+                h5 {
+                    font-size: 12.5px;
+                    font-weight: 700;
+                    margin: 0;
+                    color: $textWhite;
+                }
+
+                p {
+                    font-size: 11px;
+                    color: $textDim;
+                    margin: 0;
+                    line-height: 1.3;
+                }
+            }
+        }
+    }
+}
+

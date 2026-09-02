@@ -1,0 +1,341 @@
+.cockpitSection {
+  position: relative;
+  width: 100%;
+  padding: 90px 0 100px 0;
+  overflow: visible;
+  background: radial-gradient(ellipse at 50% 0%, #050e0d 0%, #020605 50%, #000403 100%);
+
+  :global(html.light) & {
+    background: #F8FAFC !important;
+  }
+
+  &.heroMode {
+    padding: 0 !important;
+    background: transparent !important;
+    overflow: visible !important;
+
+    &::after {
+      display: none !important;
+    }
+
+    .ambientBackdropGlow {
+      display: none !important;
+    }
+  }
+
+  .heroContainer {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    z-index: 5;
+  }
+
+  @include respond-to("tab") {
+    padding: 60px 0 70px 0;
+  }
+
+  @include respond-to("sm") {
+    padding: 45px 0 50px 0;
+  }
+
+
+
+  :global(.container) {
+    position: relative;
+    z-index: 5;
+    max-width: 1380px;
+  }
+
+  .ambientBackdropGlow {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1100px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(24, 201, 139, 0.12) 0%, rgba(24, 201, 139, 0.04) 45%, transparent 75%);
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 1;
+
+    @include respond-to("md") {
+      width: 80%;
+      height: 400px;
+    }
+  }
+
+  /* Section Header */
+  .sectionHeader {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 36px;
+    gap: 14px;
+    position: relative;
+    z-index: 6;
+
+    .badgeWrapper {
+      display: inline-block;
+    }
+
+    h2 {
+      font-family: var(--font-syne), "Syne", sans-serif;
+      color: #FFFFFF;
+      font-size: 46px;
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -1.2px;
+      margin: 0;
+
+      @include respond-to("md") {
+        font-size: 34px;
+        letter-spacing: -0.8px;
+      }
+
+      @include respond-to("sm") {
+        font-size: 28px;
+      }
+
+      span {
+        color: #18c98b;
+        background: none;
+        -webkit-text-fill-color: initial;
+      }
+    }
+
+    p {
+      color: #94A3B8;
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 680px;
+      margin: 0;
+      @include font-normal;
+
+      @include respond-to("sm") {
+        font-size: 13.5px;
+      }
+    }
+  }
+
+  .perspectiveWrapper {
+    perspective: 2000px;
+    width: 100%;
+    position: relative;
+    z-index: 5;
+  }
+
+  /* ============================================================
+     ONE MASTER UNIFIED CONTAINER BOX - OBSIDIAN GREEN GLASS
+     ============================================================ */
+  .masterTerminalBox {
+    background: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.07) 0%, transparent 65%), #080B12;
+    border: 1px solid rgba(24, 201, 139, 0.22);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 32px 90px rgba(0, 0, 0, 0.95), 0 0 45px rgba(24, 201, 139, 0.08), inset 0 1px 0 rgba(24, 201, 139, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: transform;
+
+    :global(html.light) & {
+      background: #FFFFFF !important;
+      border-color: rgba(24, 201, 139, 0.3) !important;
+      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08) !important;
+
+      [class*="partOneChart"],
+      [class*="partTwoCockpit"] {
+        background: #FFFFFF !important;
+        border-color: #E2E8F0 !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+      }
+
+      [class*="partHeader"] {
+        background: #F8FAFC !important;
+        border-color: #E2E8F0 !important;
+      }
+
+      [class*="svgChartContainer"] {
+        background: #FFFFFF !important;
+      }
+
+      [class*="yAxisScaleGutter"] {
+        background: #F1F5F9 !important;
+        border-color: #E2E8F0 !important;
+        span { color: #475569 !important; }
+      }
+
+      [class*="bigPriceVal"],
+      [class*="priceVal"],
+      [class*="assetTitle"],
+      [class*="symbolText"] {
+        color: #0F172A !important;
+      }
+
+      [class*="breadcrumbText"],
+      [class*="metaSub"],
+      [class*="subLabel"] {
+        color: #64748B !important;
+      }
+
+      [class*="metricCard"],
+      [class*="statBox"],
+      [class*="infoCard"] {
+        background: #F8FAFC !important;
+        border-color: #E2E8F0 !important;
+        color: #0F172A !important;
+      }
+
+      /* Light Grey Styling for Bottom 3-Column Meta Matrix Cards */
+      .metaCol,
+      [class*="metaCol"] {
+        background: #F1F5F9 !important;
+        border: 1px solid #E2E8F0 !important;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+
+        &:hover {
+          background: #E2E8F0 !important;
+          border-color: rgba(16, 185, 129, 0.45) !important;
+        }
+
+        .metaLabel,
+        [class*="metaLabel"] {
+          color: #64748B !important;
+          font-weight: 800 !important;
+        }
+
+        .metaVal,
+        [class*="metaVal"] {
+          color: #0F172A !important;
+          font-weight: 800 !important;
+        }
+
+        .metaSub,
+        [class*="metaSub"] {
+          color: #64748B !important;
+        }
+
+        .metaBadgeGold,
+        [class*="metaBadgeGold"] {
+          background: rgba(16, 185, 129, 0.12) !important;
+          color: #047857 !important;
+          border: 1px solid rgba(16, 185, 129, 0.35) !important;
+        }
+
+        .metaBadgeGreen,
+        [class*="metaBadgeGreen"] {
+          background: rgba(16, 185, 129, 0.12) !important;
+          color: #047857 !important;
+          border: 1px solid rgba(16, 185, 129, 0.35) !important;
+        }
+
+        .metaBadgeLive,
+        [class*="metaBadgeLive"] {
+          background: rgba(2, 132, 199, 0.12) !important;
+          color: #0284C7 !important;
+          border: 1px solid rgba(2, 132, 199, 0.35) !important;
+        }
+
+        .signalBadgeGreen,
+        [class*="signalBadgeGreen"] {
+          color: #047857 !important;
+          font-weight: 800 !important;
+
+          .signalDot,
+          [class*="signalDot"] {
+            background: #059669 !important;
+            box-shadow: 0 0 6px rgba(5, 150, 105, 0.5) !important;
+          }
+        }
+      }
+
+      /* Live WebSocket Footer Bar in Light Mode */
+      .cockpitFooterBar,
+      [class*="cockpitFooterBar"] {
+        border-top: 1px solid #E2E8F0 !important;
+        color: #64748B !important;
+
+        .footerLeft,
+        [class*="footerLeft"] {
+          span {
+            color: #475569 !important;
+          }
+
+          .liveGreenDotSmall,
+          [class*="liveGreenDotSmall"] {
+            background: #059669 !important;
+            box-shadow: 0 0 6px rgba(5, 150, 105, 0.5) !important;
+          }
+        }
+
+        .footerRight,
+        [class*="footerRight"] {
+          span {
+            color: #64748B !important;
+          }
+        }
+      }
+
+      .tabLink,
+      [class*="tabLink"] {
+        background: #F1F5F9 !important;
+        border-color: #E2E8F0 !important;
+
+        span { color: #334155 !important; }
+        svg { color: #64748B !important; }
+
+        &:hover {
+          background: #E2E8F0 !important;
+          border-color: rgba(16, 185, 129, 0.4) !important;
+          span { color: #047857 !important; }
+          svg { color: #047857 !important; }
+        }
+      }
+
+      .intelCard,
+      [class*="intelCard"] {
+        background: #F8FAFC !important;
+        border: 1px solid #E2E8F0 !important;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04) !important;
+      }
+    }
+
+    @include respond-to("sm") {
+      padding: 14px 12px;
+      border-radius: 16px;
+      gap: 14px;
+    }
+  }
+
+  /* 2-Part Grid Layout */
+  .twoPartLayout {
+    display: grid;
+    grid-template-columns: 1.16fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+    width: 100%;
+    min-width: 0;
+
+    @include respond-to("lg") {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @include respond-to("sm") {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+
+}

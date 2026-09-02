@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import styles from '../aiSnapDashboard.module.scss';
-import { ShieldAlertIcon, InfoIcon } from './AiSnapIcons';
+import { ShieldAlertIcon, InfoIcon } from '@/icons/aiSnapIcons';
 
 export default function RiskFlagsStack({ riskFlags }) {
     if (!riskFlags || !Array.isArray(riskFlags) || riskFlags.length === 0) return null;

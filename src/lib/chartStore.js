@@ -37,17 +37,23 @@ export async function fetchChartCandlesOnce(symbol, timeframe = '15m', strategyI
     const baseUrl = (process.env.NEXT_PUBLIC_BACKEND_URL || 'https://api.thetradermaster.com').replace(/\/+$/, '');
     const url = `${baseUrl}/api/v1/chart/candles?symbol=${cleanSymbol}&timeframe=${timeframe}&strategy_id=${strategyId}`;
 
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timeoutId = controller ? setTimeout(() => controller.abort(), 4000) : null;
+
     const fetchPromise = fetch(url, {
         headers: {
             'accept': 'application/json',
             'ngrok-skip-browser-warning': 'true'
-        }
+        },
+        signal: controller ? controller.signal : undefined
     })
     .then(async (res) => {
+        if (timeoutId) clearTimeout(timeoutId);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
     })
     .catch((err) => {
+        if (timeoutId) clearTimeout(timeoutId);
         activeFetches.delete(key);
         throw err;
     })

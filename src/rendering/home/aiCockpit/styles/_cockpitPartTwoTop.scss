@@ -1,0 +1,358 @@
+.cockpitSection {
+  .partTwoCockpit {
+    background: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.04) 0%, transparent 70%), #06080E;
+    border: 1px solid rgba(24, 201, 139, 0.14);
+    border-radius: 18px;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    @include respond-to("sm") {
+      padding: 16px 14px;
+      border-radius: 14px;
+      gap: 14px;
+    }
+
+    .cockpitTopBreadcrumb {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      min-width: 0;
+      flex-wrap: wrap;
+      gap: 8px;
+
+      .breadcrumbTitle {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: monospace, sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        color: #64748B;
+        letter-spacing: 0.5px;
+        flex-wrap: wrap;
+
+        .arrowLeft {
+          font-size: 14px;
+          color: #94A3B8;
+        }
+
+        .parentName {
+          color: #94A3B8;
+        }
+
+        .slash {
+          color: #475569;
+        }
+
+        .activeAssetTicker {
+          color: #6EE7B7;
+        }
+      }
+
+      .watchlistTag {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-family: monospace, sans-serif;
+        font-size: 10px;
+        font-weight: 800;
+        color: #6EE7B7;
+        letter-spacing: 0.6px;
+
+        .starIcon {
+          color: #6EE7B7;
+          font-size: 11px;
+        }
+      }
+    }
+
+    .assetHeaderRow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      min-width: 0;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      .identityLeft {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+        max-width: 100%;
+
+        .logoGold {
+          width: 38px;
+          height: 38px;
+          border-radius: 10px;
+          background: rgba(24, 201, 139, 0.12);
+          border: 1px solid rgba(24, 201, 139, 0.35);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          box-shadow: 0 0 12px rgba(24, 201, 139, 0.2);
+
+          @include respond-to("sm") {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+
+            svg {
+              width: 18px;
+              height: 18px;
+            }
+          }
+        }
+
+        .titleAndSub {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          min-width: 0;
+          overflow: hidden;
+
+          .tickerBadgeLine {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+
+            .assetTickerText {
+              color: #FFFFFF;
+              font-size: 22px;
+              font-weight: 800;
+              margin: 0;
+              letter-spacing: 0.5px;
+              @include font-bold;
+
+              @include respond-to("sm") {
+                font-size: 18px;
+              }
+            }
+
+            .liveStatusPill {
+              display: inline-flex;
+              align-items: center;
+              gap: 4px;
+              background: rgba(16, 185, 129, 0.15);
+              border: 1px solid rgba(16, 185, 129, 0.4);
+              color: #34D399;
+              font-family: monospace, sans-serif;
+              font-size: 9.5px;
+              font-weight: 800;
+              letter-spacing: 0.6px;
+              padding: 2px 6px;
+              border-radius: 4px;
+
+              .liveGreenBeacon {
+                width: 4.5px;
+                height: 4.5px;
+                border-radius: 50%;
+                background: #34D399;
+                box-shadow: 0 0 6px #34D399;
+                animation: pulseDot 1.5s infinite;
+              }
+            }
+          }
+
+          .assetSubDetails {
+            color: #94A3B8;
+            font-size: 12px;
+            margin: 0;
+            @include font-normal;
+            white-space: normal;
+            word-break: break-word;
+
+            @include respond-to("sm") {
+              font-size: 11px;
+            }
+          }
+        }
+      }
+    }
+
+    .hugePriceRow {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      width: 100%;
+      min-width: 0;
+
+      .mainPriceNumber {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 34px;
+        font-weight: 500;
+        letter-spacing: -1px;
+        font-variant-numeric: tabular-nums;
+        transition: all 0.25s ease;
+
+        @include respond-to("sm") {
+          font-size: 26px;
+          letter-spacing: -0.5px;
+        }
+
+        &.priceGreen {
+          color: #34D399;
+          text-shadow: 0 0 16px rgba(52, 211, 153, 0.35);
+        }
+
+        &.priceRed {
+          color: #F87171;
+          text-shadow: 0 0 16px rgba(248, 113, 113, 0.35);
+        }
+
+        &.flashUp {
+          color: #34D399;
+          text-shadow: 0 0 24px rgba(52, 211, 153, 0.85);
+        }
+
+        &.flashDown {
+          color: #F87171;
+          text-shadow: 0 0 24px rgba(248, 113, 113, 0.85);
+        }
+      }
+
+
+      .priceChangeAndClock {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 3px;
+
+        @include respond-to("sm") {
+          align-items: flex-start;
+        }
+
+        .changePercentTag {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          font-size: 13.5px;
+          font-weight: 700;
+          color: #10B981;
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-variant-numeric: tabular-nums;
+
+          @include respond-to("sm") {
+            font-size: 12px;
+          }
+
+
+          .upArrow {
+            font-size: 11px;
+          }
+
+          &.changeNegative {
+            color: #F43F5E;
+          }
+        }
+
+        .liveClockET {
+          font-family: monospace, sans-serif;
+          font-size: 11px;
+          color: #64748B;
+
+          @include respond-to("sm") {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+
+    .cockpitSubTabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      width: 100%;
+      min-width: 0;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 12px;
+      user-select: none;
+
+      @include respond-to("sm") {
+        display: flex;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        gap: 6px;
+        padding-bottom: 10px;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+
+      .tabLink {
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        padding: 8px 10px;
+        color: #94A3B8;
+        font-size: 12.5px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        position: relative;
+        cursor: pointer;
+        outline: none;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        min-width: 0;
+
+        @include respond-to("sm") {
+          flex: 1 0 auto;
+          padding: 7px 10px;
+          font-size: 11.5px;
+          gap: 5px;
+          border-radius: 8px;
+        }
+
+        svg {
+          color: #64748B;
+          flex-shrink: 0;
+          transition: all 0.25s ease;
+        }
+
+        span {
+          color: #CBD5E1;
+          letter-spacing: 0.2px;
+          white-space: nowrap;
+          transition: color 0.25s ease;
+        }
+
+        &:hover {
+          background: rgba(24, 201, 139, 0.12);
+          border-color: rgba(24, 201, 139, 0.35);
+          box-shadow: 0 0 16px rgba(24, 201, 139, 0.22), inset 0 1px 0 rgba(24, 201, 139, 0.25);
+          transform: translateY(-1px);
+
+          svg {
+            color: #6EE7B7;
+            transform: scale(1.1);
+          }
+
+          span {
+            color: #6EE7B7;
+          }
+        }
+
+
+      }
+    }
+  }
+}

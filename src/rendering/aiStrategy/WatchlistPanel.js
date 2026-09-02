@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, memo } from 'react';
 import styles from './aiStrategy.module.scss';
-import { SearchIcon } from './icons';
+import { SearchIcon } from '@/icons/aiStrategyIcons';
 import { useLanguage } from '@/context/LanguageContext';
 
 const PAIRS = [
@@ -349,6 +349,17 @@ export default function WatchlistPanel({ selectedSymbol, onSelectSymbol, globalT
                 {searchQuery && (
                     <button onClick={() => setSearchQuery('')} className={styles.searchClearBtn}>×</button>
                 )}
+            </div>
+
+            {/* Quote Columns Header */}
+            <div className={styles.quoteColumnHeader}>
+                <div className={styles.colHeaderLeft}>
+                    <span>{t('aiStrategy.colSymbol', 'Symbol')}</span>
+                </div>
+                <div className={styles.colHeaderRight}>
+                    <span className={styles.colHeaderBid}>{t('aiStrategy.colBid', 'Bid')}</span>
+                    <span className={styles.colHeaderAsk}>{t('aiStrategy.colAsk', 'Ask')}</span>
+                </div>
             </div>
 
             {/* Pairs Quote List */}

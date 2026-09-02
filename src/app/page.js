@@ -7,7 +7,7 @@ export const metadata = {
   title: "ChronosX — Institutional AI Forex & MT5 Trading Terminal",
   description: "Trade smarter with AI that never sleeps. Real-time AI trading signals, instant neural chart pattern recognition, and institutional risk management.",
   alternates: {
-    canonical: 'https://chronosx.io',
+    canonical: 'https://chronosx.com',
   },
 };
 

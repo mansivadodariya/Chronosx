@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import styles from '../aiSnapDashboard.module.scss';
-import { GaugeIcon } from './AiSnapIcons';
+import { GaugeIcon } from '@/icons/aiSnapIcons';
 import { useTheme } from '@/context/ThemeContext';
 
 export default function TechnicalScoreGauge({ technicalScore, marketAssessment }) {

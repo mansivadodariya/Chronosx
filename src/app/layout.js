@@ -36,7 +36,7 @@ export const viewport = {
 };
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://chronosx.io'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://chronosx.com'),
   title: {
     default: "ChronosX — Institutional AI Forex & MT5 Trading Terminal",
     template: "%s | ChronosX"
@@ -55,7 +55,7 @@ export const metadata = {
     "Gold Trading Signals",
     "XAUUSD AI Analysis"
   ],
-  authors: [{ name: "ChronosX AI Technologies", url: "https://chronosx.io" }],
+  authors: [{ name: "ChronosX AI Technologies", url: "https://chronosx.com" }],
   creator: "ChronosX",
   publisher: "ChronosX",
   category: "Finance & Trading Technology",
@@ -71,12 +71,12 @@ export const metadata = {
     },
   },
   alternates: {
-    canonical: 'https://chronosx.io',
+    canonical: 'https://chronosx.com',
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://chronosx.io",
+    url: "https://chronosx.com",
     title: "ChronosX — Institutional AI Forex & MT5 Trading Terminal",
     description: "Trade smarter with AI that never sleeps. Real-time AI trading signals, instant neural chart insights, and algorithmic market analysis.",
     siteName: "ChronosX",

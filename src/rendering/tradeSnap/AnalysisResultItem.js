@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import styles from './tradeSnap.module.scss';
-import { ClockIcon, TrendUpIcon, TrendDownIcon, ChartIcon, EyeIcon } from './icons';
+import { ClockIcon, TrendUpIcon, TrendDownIcon, ChartIcon, EyeIcon } from '@/icons/tradeSnapIcons';
 
 function formatSymbol(symbol) {
     if (!symbol) return 'Unknown';

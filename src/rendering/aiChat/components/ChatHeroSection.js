@@ -1,0 +1,141 @@
+'use client';
+
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { authNavigate } from '@/lib/authRedirect';
+import styles from '../aiChat.module.scss';
+
+export default function ChatHeroSection({ scrollToDemo }) {
+    const router = useRouter();
+
+    return (
+        <section className={styles.heroSection}>
+            <div className="container">
+                <div className={styles.heroCenterWrapper}>
+                    {/* Top Telemetry Live Pill */}
+                    <motion.div
+                        className={styles.statusPillRow}
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <div className={styles.statusPill}>
+                            <span className={styles.pillText}>Institutional AI Trading Desk</span>
+                            <span className={styles.pillBadge}>0-DELAY TICK STREAM</span>
+                        </div>
+                    </motion.div>
+
+                    {/* Main Cinematic H1 */}
+                    <motion.h1
+                        className={styles.heroMainTitle}
+                        initial={{ opacity: 0, y: 25 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.1 }}
+                    >
+                        Your 24/7 AI-Powered <br />
+                        <span className={styles.goldGradient}>Institutional Forex &amp; Trading Copilot</span>
+                    </motion.h1>
+
+                    {/* Subtitle */}
+                    <motion.p
+                        className={styles.heroSubtitle}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                        Ask questions, analyze real-time market trends, calculate precise risk management parameters, and receive instant data-driven trade setups powered by live MetaTrader 5 (MT5) market feeds.
+                    </motion.p>
+
+                    {/* Hero CTAs */}
+                    <motion.div
+                        className={styles.heroCtaGroup}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.25 }}
+                    >
+                        <button
+                            type="button"
+                            onClick={() => authNavigate(router, '/ai-assistant')}
+                            className={styles.heroPrimaryBtn}
+                        >
+                            <span>LAUNCH AI CHAT NOW</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg>
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={scrollToDemo}
+                            className={styles.heroSecondaryBtn}
+                        >
+                            <span>VIEW LIVE DEMO</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M12 5v14M19 12l-7 7-7-7" />
+                            </svg>
+                        </button>
+                    </motion.div>
+
+                    {/* 2. TOP BANNER / VALUE PROPOSITION BADGES (3 CARDS) */}
+                    <motion.div
+                        className={styles.valueBadgesRow}
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                    >
+                        {/* Card 1: Institutional Technical Analysis */}
+                        <div className={styles.valueBadgeCard}>
+                            <div className={styles.badgeIconWrap}>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <circle cx="12" cy="12" r="6" />
+                                    <circle cx="12" cy="12" r="2" />
+                                    <line x1="12" y1="2" x2="12" y2="4" />
+                                    <line x1="12" y1="20" x2="12" y2="22" />
+                                    <line x1="2" y1="12" x2="4" y2="12" />
+                                    <line x1="20" y1="12" x2="22" y2="12" />
+                                </svg>
+                            </div>
+                            <div className={styles.badgeContent}>
+                                <h4>Institutional Technical Analysis</h4>
+                                <p>EMAs, SuperTrend &amp; Pivot Point engines</p>
+                            </div>
+                        </div>
+
+                        {/* Card 2: Automated Risk & Position Sizing */}
+                        <div className={styles.valueBadgeCard}>
+                            <div className={`${styles.badgeIconWrap} ${styles.iconGreen}`}>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                    <polyline points="9 12 11 14 15 10" />
+                                </svg>
+                            </div>
+                            <div className={styles.badgeContent}>
+                                <h4>Automated Risk &amp; Position Sizing</h4>
+                                <p>Capital preservation &amp; strict RRR logic</p>
+                            </div>
+                        </div>
+
+                        {/* Card 3: Multi-Timeframe Trend Insights */}
+                        <div className={styles.valueBadgeCard}>
+                            <div className={`${styles.badgeIconWrap} ${styles.iconAmber}`}>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <line x1="18" y1="20" x2="18" y2="10" />
+                                    <line x1="12" y1="20" x2="12" y2="4" />
+                                    <line x1="6" y1="20" x2="6" y2="14" />
+                                    <path d="M4 8l4-4 4 3 6-5" />
+                                </svg>
+                            </div>
+                            <div className={styles.badgeContent}>
+                                <h4>Multi-Timeframe Trend Insights</h4>
+                                <p>From M1/M15 scalps to H4/Daily swing models</p>
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
+            </div>
+        </section>
+    );
+}

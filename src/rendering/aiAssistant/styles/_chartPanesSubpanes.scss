@@ -1,0 +1,327 @@
+@keyframes attachMenuPop {
+    from {
+        opacity: 0;
+        transform: translateY(6px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Header Badges */
+.badgeBar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+    }
+
+    .pairBadgeTag {
+        background: rgba(0, 229, 255, 0.12);
+        color: #00e5ff;
+        border: 1px solid rgba(0, 229, 255, 0.3);
+    }
+
+    .tfBadgeTag {
+        background: rgba(56, 189, 248, 0.12);
+        color: #38bdf8;
+        border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+}
+
+/* Image Warning Banner */
+.warningBanner {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+/* Indicator Dropdown & Sub-panes Styling */
+.indicatorsDropdownMenu {
+    min-width: 210px;
+    padding: 8px 0;
+    background: #000000 !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85);
+
+    .dropdownCategoryHeader {
+        padding: 6px 12px 4px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: #94a3b8 !important;
+        text-transform: uppercase;
+    }
+
+    .indicatorToggleRow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 12px;
+        cursor: pointer;
+        transition: background 0.15s ease;
+
+        &:hover {
+            background: rgba(24, 201, 139, 0.18) !important;
+        }
+
+        input[type="checkbox"] {
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+            width: 15px !important;
+            height: 15px !important;
+            background: transparent !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
+            border-radius: 3px !important;
+            cursor: pointer;
+            outline: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.15s ease;
+
+            &:hover {
+                border-color: rgba(255, 255, 255, 0.9) !important;
+            }
+
+            &:checked {
+                background: #18C98B !important;
+                border-color: #18C98B !important;
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    width: 4px;
+                    height: 8px;
+                    border: solid #ffffff;
+                    border-width: 0 2px 2px 0;
+                    transform: rotate(45deg) translate(-1px, -1px);
+                }
+            }
+        }
+
+        .indicatorLabel {
+            font-size: 0.85rem;
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+    }
+}
+
+/* Chart Canvas Area & Sub-panes Layout */
+.chartCanvasArea {
+    position: relative;
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #040605;
+}
+
+.mainChartContainer {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    transition: all 0.2s ease;
+
+    &.hasSubPanes {
+        flex: 1 1 65%;
+    }
+}
+
+.subPanesWrapper {
+    width: 100%;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    background: #FFFFFF;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: none;
+
+    :global(html.dark) & {
+        background: #040605;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.subPaneItem {
+    position: relative;
+    width: 100%;
+    height: 125px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    :global(html.dark) & {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+}
+
+.subPaneHeader {
+    position: absolute;
+    top: 6px;
+    left: 12px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.subPaneTitle {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #16130e;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+
+    :global(html.dark) & {
+        color: #94a3b8;
+    }
+}
+
+.subPaneActions {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .indicatorActionBtn {
+        color: #64748b;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.06);
+            color: #18C98B;
+        }
+
+        :global(html.dark) & {
+            color: #94a3b8;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.12);
+                color: #18C98B;
+            }
+        }
+    }
+}
+
+.subPaneCanvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* TradingView Style Floating Indicator Widget Legend Pills */
+.indicatorWidgetsContainer {
+    position: absolute;
+    top: 84px;
+    left: 12px;
+    z-index: 45;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    pointer-events: auto;
+}
+
+.indicatorWidgetPill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #e2e8f0;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+    user-select: none;
+    transition: all 0.15s ease;
+
+    &:hover {
+        border-color: rgba(24, 201, 139, 0.5);
+        background: #040605;
+    }
+}
+
+.indicatorDot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.indicatorWidgetTitle {
+    letter-spacing: 0.2px;
+    color: #f1f5f9;
+    font-size: 11.5px;
+}
+
+.indicatorActionBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.15s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #18C98B;
+    }
+
+    &.dimmed {
+        color: #64748b;
+        opacity: 0.6;
+    }
+
+    &.trashBtn:hover {
+        color: #ef5350;
+        background: rgba(239, 83, 80, 0.15);
+    }
+}
+
+.subPaneActions {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    pointer-events: auto;
+}

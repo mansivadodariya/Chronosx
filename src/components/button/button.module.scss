@@ -42,6 +42,14 @@
                 display: block;
                 filter: brightness(0);
             }
+
+            svg {
+                width: 16px;
+                height: 16px;
+                display: block;
+                color: #040605;
+                stroke: currentColor;
+            }
         }
 
         &:hover {
@@ -69,6 +77,11 @@
 
             .iconWrapper img {
                 filter: brightness(0) !important;
+            }
+
+            .iconWrapper svg {
+                color: #040605 !important;
+                stroke: currentColor;
             }
 
             &:hover {

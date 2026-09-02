@@ -20,7 +20,7 @@ export const metadata = {
         title: "AI Strategy & Live Analysis Feed — Quantitative AI Generator | ChronosX",
         description:
             "Track live 100-point Technical Scores across 6+ Forex pairs. 4-pillar algorithmic evaluation covering Trend, Momentum, Volume, and Structure.",
-        url: "https://chronosx.io/ai-strategy",
+        url: "https://chronosx.com/ai-strategy",
         siteName: "ChronosX",
         images: [
             {
@@ -41,7 +41,7 @@ export const metadata = {
         images: ["/assets/images/ai-strategy.png"]
     },
     alternates: {
-        canonical: "https://chronosx.io/ai-strategy"
+        canonical: "https://chronosx.com/ai-strategy"
     }
 };
 

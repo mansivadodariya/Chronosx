@@ -1,0 +1,282 @@
+/* 3. Right Column: Account Summary & Quick Actions */
+.rightSummaryColumn {
+    background: 
+        radial-gradient(ellipse 70% 80% at 100% 0%, rgba(24, 201, 139, 0.18) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 80%),
+        radial-gradient(ellipse 70% 80% at 0% 100%, rgba(0, 242, 254, 0.1) 0%, transparent 75%),
+        #121514;
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+    .rightCard {
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 0 0 18px 0 !important;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        box-shadow: none !important;
+        border-bottom: 1px solid rgba(24, 201, 139, 0.14) !important;
+
+        &:last-child {
+            border-bottom: none !important;
+            padding-bottom: 0 !important;
+        }
+
+        .rightCardTitle {
+            color: #18C98B;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: "Euclid-Bold", sans-serif;
+            margin: 0;
+            letter-spacing: 0.2px;
+        }
+
+        .summaryMetaRows {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .summaryRow {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-size: 13px;
+
+                .summaryLabel {
+                    color: rgba(255, 255, 255, 0.6);
+                }
+
+                .summaryProTag {
+                    color: #18C98B;
+                    font-weight: 700;
+                    font-size: 12.5px;
+                }
+
+                .summaryActiveTag {
+                    color: #34D399;
+                    font-weight: 700;
+                    font-size: 12.5px;
+                }
+            }
+        }
+
+        /* Credits Box */
+        .creditsCardBox {
+            background: rgba(13, 14, 19, 0.55);
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .creditsHead {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .creditsLabel {
+                    color: rgba(255, 255, 255, 0.55);
+                    font-size: 12px;
+                    font-weight: 600;
+                }
+
+                .viewPlansBtn {
+                    background: transparent;
+                    border: none;
+                    cursor: pointer;
+                    padding: 0;
+                    color: #18C98B;
+                    font-size: 11.5px;
+                    font-weight: 600;
+                    transition: color 0.15s ease;
+
+                    &:hover {
+                        color: #FFFFFF;
+                    }
+                }
+            }
+
+            .creditsValueRow {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+
+                .creditsNumbers {
+                    .creditsAmount {
+                        color: #FFFFFF;
+                        font-size: 22px;
+                        font-weight: 700;
+                        font-family: "Euclid-Bold", sans-serif;
+                        margin: 0;
+
+                        span {
+                            font-size: 13px;
+                            color: #18C98B;
+                            font-weight: 600;
+                        }
+                    }
+                }
+            }
+        }
+
+        /* Verification List */
+        .verificationList {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+            .verifItem {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-size: 13px;
+                background: rgba(13, 14, 19, 0.55);
+                border-radius: 10px;
+                padding: 10px 14px;
+
+                .verifLeft {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    color: rgba(255, 255, 255, 0.8);
+                }
+
+                .verifStatusGreen {
+                    color: #34D399;
+                    font-weight: 700;
+                    font-size: 12px;
+                }
+
+                .verifStatusGold {
+                    color: #18C98B;
+                    font-weight: 700;
+                    font-size: 12px;
+                }
+
+                .verifActionBtn {
+                    background: rgba(24, 201, 139, 0.1);
+                    border: 1px solid rgba(24, 201, 139, 0.3);
+                    color: #18C98B;
+                    border-radius: 6px;
+                    padding: 3px 8px;
+                    font-size: 11px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.15s ease;
+
+                    &:hover {
+                        background: rgba(24, 201, 139, 0.2);
+                        color: #FFFFFF;
+                    }
+                }
+            }
+        }
+
+        /* Quick Actions Grid */
+        .quickActionsGrid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+
+            .actionGridBtn {
+            background: #0d0e136d;
+            border: none;
+            border-radius: 10px;
+                padding: 12px 4px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                color: rgba(255, 255, 255, 0.85);
+                font-size: 10.5px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                text-align: center;
+
+                &:hover {
+                    border-color: rgba(24, 201, 139, 0.6);
+                    background: rgba(24, 201, 139, 0.12);
+                    color: #18C98B;
+                    transform: translateY(-2px);
+                }
+
+                &.actionDanger {
+                    &:hover {
+                        border-color: rgba(239, 68, 68, 0.6);
+                        background: rgba(239, 68, 68, 0.12);
+                        color: #F87171;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* Security Priority Banner */
+.securityPriorityCard {
+    background: rgba(13, 14, 19, 0.55);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    .securityPriorityLeft {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .secShieldIcon {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: rgba(24, 201, 139, 0.12);
+            border: 1px solid rgba(24, 201, 139, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .secPriorityTexts {
+            h5 {
+                color: #FFFFFF;
+                font-size: 13px;
+                font-weight: 700;
+                margin: 0 0 2px;
+            }
+
+            p {
+                color: rgba(255, 255, 255, 0.5);
+                font-size: 11px;
+                margin: 0;
+            }
+        }
+    }
+
+    .secShieldImgWrap {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 1px solid rgba(24, 201, 139, 0.4);
+        box-shadow: 0 0 10px rgba(24, 201, 139, 0.2);
+        flex-shrink: 0;
+
+        .shieldImg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}
+

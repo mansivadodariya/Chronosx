@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import styles from '../aiSnapDashboard.module.scss';
-import { ActivityIcon, TrendingUpIcon, TrendingDownIcon } from './AiSnapIcons';
+import { ActivityIcon, TrendingUpIcon, TrendingDownIcon } from '@/icons/aiSnapIcons';
 
 export default function LiveIndicatorsGrid({ liveIndicators, marketAssessment }) {
     const rsi = liveIndicators?.rsi || { period: 14, label: 'Neutral', value: 38.73 };
