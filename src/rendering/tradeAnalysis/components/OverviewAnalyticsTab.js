@@ -48,6 +48,7 @@ export default function OverviewAnalyticsTab({
                                         <h3>AI Entry & Execution Quality Analysis</h3>
                                         {entryAnalysis.quality_rating && (
                                             <span className={`${styles.qualityBadge} ${String(entryAnalysis.quality_rating).toLowerCase() === 'strong' ? styles.qualityStrong : styles.qualityModerate}`}>
+                                                <span className={styles.badgePulseDot} />
                                                 {entryAnalysis.quality_rating} Execution
                                             </span>
                                         )}
@@ -63,8 +64,10 @@ export default function OverviewAnalyticsTab({
                         <div className={styles.entryKpiGrid}>
                             <div className={styles.entryKpiCard}>
                                 <div className={styles.kpiTop}>
-                                    <ClockIcon />
-                                    <span>Optimal Entry Window</span>
+                                    <div className={styles.kpiIconWrap}>
+                                        <ClockIcon />
+                                    </div>
+                                    <span className={styles.kpiLabel}>Optimal Entry Window</span>
                                 </div>
                                 <div className={styles.kpiValueHighlight}>
                                     {entryAnalysis.optimal_entry_window || 'Session Open'}
@@ -74,8 +77,10 @@ export default function OverviewAnalyticsTab({
 
                             <div className={styles.entryKpiCard}>
                                 <div className={styles.kpiTop}>
-                                    <ZapIcon />
-                                    <span>Late Entry Rate</span>
+                                    <div className={styles.kpiIconWrap}>
+                                        <ZapIcon />
+                                    </div>
+                                    <span className={styles.kpiLabel}>Late Entry Rate</span>
                                 </div>
                                 <div className={`${styles.kpiValue} ${Number(entryAnalysis.late_entry_percentage) > 30 ? styles.amberText : styles.greenText}`}>
                                     {entryAnalysis.late_entry_percentage ?? 0}%
@@ -85,8 +90,10 @@ export default function OverviewAnalyticsTab({
 
                             <div className={styles.entryKpiCard}>
                                 <div className={styles.kpiTop}>
-                                    <TargetIcon />
-                                    <span>Chasing Trades</span>
+                                    <div className={styles.kpiIconWrap}>
+                                        <TargetIcon />
+                                    </div>
+                                    <span className={styles.kpiLabel}>Chasing Trades</span>
                                 </div>
                                 <div className={`${styles.kpiValue} ${Number(entryAnalysis.possible_chasing_trades) > 0 ? styles.redText : styles.greenText}`}>
                                     {entryAnalysis.possible_chasing_trades ?? 0}
@@ -96,8 +103,10 @@ export default function OverviewAnalyticsTab({
 
                             <div className={styles.entryKpiCard}>
                                 <div className={styles.kpiTop}>
-                                    <HistoryIcon />
-                                    <span>Rapid Re-entries</span>
+                                    <div className={styles.kpiIconWrap}>
+                                        <HistoryIcon />
+                                    </div>
+                                    <span className={styles.kpiLabel}>Rapid Re-entries</span>
                                 </div>
                                 <div className={`${styles.kpiValue} ${Number(entryAnalysis.rapid_reentry_trades) > 0 ? styles.redText : styles.greenText}`}>
                                     {entryAnalysis.rapid_reentry_trades ?? 0}
@@ -107,8 +116,10 @@ export default function OverviewAnalyticsTab({
 
                             <div className={styles.entryKpiCard}>
                                 <div className={styles.kpiTop}>
-                                    <LockIcon />
-                                    <span>Overtrading Risk</span>
+                                    <div className={styles.kpiIconWrap}>
+                                        <LockIcon />
+                                    </div>
+                                    <span className={styles.kpiLabel}>Overtrading Risk</span>
                                 </div>
                                 <div className={`${styles.kpiValue} ${entryAnalysis.potential_overtrading ? styles.redText : styles.greenText}`}>
                                     {entryAnalysis.potential_overtrading ? 'High Risk' : 'Protected (0)'}
@@ -118,8 +129,10 @@ export default function OverviewAnalyticsTab({
 
                             <div className={styles.entryKpiCard}>
                                 <div className={styles.kpiTop}>
-                                    <BarChartIcon />
-                                    <span>Avg Duration</span>
+                                    <div className={styles.kpiIconWrap}>
+                                        <BarChartIcon />
+                                    </div>
+                                    <span className={styles.kpiLabel}>Avg Duration</span>
                                 </div>
                                 <div className={styles.kpiValue}>
                                     {entryAnalysis.avg_trade_duration || 'Intraday'}
@@ -132,7 +145,10 @@ export default function OverviewAnalyticsTab({
                         <div className={styles.entryContextRow}>
                             {entryAnalysis.best_setup_condition && (
                                 <div className={styles.setupConditionBox}>
-                                    <div className={styles.boxTag}>OPTIMAL SETUP CONDITION</div>
+                                    <div className={styles.boxTag}>
+                                        <span className={styles.tagDot} />
+                                        OPTIMAL SETUP CONDITION
+                                    </div>
                                     <h4>{entryAnalysis.best_setup_condition}</h4>
                                     {entryAnalysis.assessment && <p>{entryAnalysis.assessment}</p>}
                                 </div>
@@ -140,7 +156,10 @@ export default function OverviewAnalyticsTab({
 
                             {entryAnalysis.volatility_performance && (
                                 <div className={styles.volatilityBox}>
-                                    <div className={styles.boxTag}>VOLATILITY & NEWS ENVIRONMENT</div>
+                                    <div className={styles.boxTag}>
+                                        <span className={styles.tagDot} />
+                                        VOLATILITY & NEWS ENVIRONMENT
+                                    </div>
                                     <p className={styles.volatilityText}>{entryAnalysis.volatility_performance}</p>
                                     {entryAnalysis.news_event_summary && (
                                         <div className={styles.newsTagRow}>
@@ -157,13 +176,19 @@ export default function OverviewAnalyticsTab({
                             {Array.isArray(entryAnalysis.entry_strengths) && entryAnalysis.entry_strengths.length > 0 && (
                                 <div className={styles.entryColBox}>
                                     <div className={styles.entryColHeader}>
-                                        <SuccessCircleIcon />
+                                        <div className={styles.colHeaderIconWrap}>
+                                            <SuccessCircleIcon />
+                                        </div>
                                         <h4>Execution Strengths</h4>
                                     </div>
                                     <div className={styles.entryItemsList}>
                                         {entryAnalysis.entry_strengths.map((st, sIdx) => (
                                             <div key={sIdx} className={styles.strengthItem}>
-                                                <span className={styles.checkBullet}>✓</span>
+                                                <div className={styles.checkBulletBadge}>
+                                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                                        <polyline points="20 6 9 17 4 12" />
+                                                    </svg>
+                                                </div>
                                                 <span>{st}</span>
                                             </div>
                                         ))}
@@ -172,15 +197,23 @@ export default function OverviewAnalyticsTab({
                             )}
 
                             {Array.isArray(entryAnalysis.entry_risks) && entryAnalysis.entry_risks.length > 0 && (
-                                <div className={styles.entryColBox}>
+                                <div className={`${styles.entryColBox} ${styles.riskColBox}`}>
                                     <div className={styles.entryColHeader}>
-                                        <AlertTriangleIcon />
+                                        <div className={`${styles.colHeaderIconWrap} ${styles.riskHeaderIconWrap}`}>
+                                            <AlertTriangleIcon />
+                                        </div>
                                         <h4>Entry Risks & Noise Vulnerabilities</h4>
                                     </div>
                                     <div className={styles.entryItemsList}>
                                         {entryAnalysis.entry_risks.map((rk, rIdx) => (
                                             <div key={rIdx} className={styles.riskItem}>
-                                                <span className={styles.riskBullet}>⚠</span>
+                                                <div className={styles.riskBulletBadge}>
+                                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                                        <line x1="12" y1="9" x2="12" y2="13" />
+                                                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                                                    </svg>
+                                                </div>
                                                 <span>{rk}</span>
                                             </div>
                                         ))}

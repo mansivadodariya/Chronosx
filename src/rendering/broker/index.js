@@ -1,5 +1,6 @@
 'use client';
 
+import CommonSectionHeader from '@/components/CommonSectionHeader';
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -84,56 +85,37 @@ export default function BrokerPage() {
     return (
         <div className={styles.brokerPage}>
             {/* 1. Hero Infrastructure Banner */}
-            <div className={styles.heroBanner}>
-                <div className={styles.heroBackdropWrap}>
-                    <Image
-                        src={BrokerHeroGraphic}
-                        alt="Brokerage Infrastructure"
-                        fill
-                        className={styles.heroBackdropImg}
-                        priority
-                    />
-                    <div className={styles.heroOverlayFade} />
-                </div>
-
-                <div className={styles.heroContent}>
-                    <div {...getBidiProps(t('broker.hubBadge', 'Broker & Platform Hub'), styles.badge)}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5">
-                            <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-                            <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-                            <line x1="6" y1="6" x2="6.01" y2="6" strokeWidth="3" />
-                            <line x1="6" y1="18" x2="6.01" y2="18" strokeWidth="3" />
-                        </svg>
-                        <span>{t('broker.hubBadge', 'Institutional Broker & Platform Hub')}</span>
+            <CommonSectionHeader
+                badge="INSTITUTIONAL BROKER & PLATFORM HUB"
+                badgeIcon={
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5">
+                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
+                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
+                        <line x1="6" y1="6" x2="6.01" y2="6" strokeWidth="3" />
+                        <line x1="6" y1="18" x2="6.01" y2="18" strokeWidth="3" />
+                    </svg>
+                }
+                title={t('broker.title', 'Integrated Brokerage & Trading Infrastructure')}
+                subtitle={t('broker.subtitle', 'Connect your MT5 account, view verified broker partners, and earn AI credits automatically through your daily trading volume.')}
+                isCard={true}
+            >
+                <div className={styles.heroStatsRow}>
+                    <div className={styles.heroStatItem}>
+                        <span className={styles.statVal}>Tier-1 Regulated</span>
+                        <span className={styles.statLbl}>Verified Security</span>
                     </div>
-
-                    <h1 {...getBidiProps(t('broker.title', 'Integrated Brokerage & Trading Infrastructure'))}>
-                        {t('broker.title', 'Integrated Brokerage & Trading Infrastructure')}
-                    </h1>
-
-                    <p {...getBidiProps(t('broker.subtitle', 'Connect your MT5 account, view verified broker partners, and earn AI credits automatically through your daily trading volume.'))}>
-                        {t('broker.subtitle', 'Connect your MT5 account, view verified broker partners, and earn AI credits automatically through your daily trading volume.')}
-                    </p>
-
-                    {/* Stats Metric Row inside Hero */}
-                    <div className={styles.heroStatsRow}>
-                        <div className={styles.heroStatItem}>
-                            <span className={styles.statVal}>Tier-1 Regulated</span>
-                            <span className={styles.statLbl}>Verified Security</span>
-                        </div>
-                        <div className={styles.heroStatDivider} />
-                        <div className={styles.heroStatItem}>
-                            <span className={styles.statVal}>&lt; 15ms Latency</span>
-                            <span className={styles.statLbl}>Ultra-Fast MT5 Bridge</span>
-                        </div>
-                        <div className={styles.heroStatDivider} />
-                        <div className={styles.heroStatItem}>
-                            <span className={styles.statVal}>Volume Cashbacks</span>
-                            <span className={styles.statLbl}>Auto AI Credits per Lot</span>
-                        </div>
+                    <div className={styles.heroStatDivider} />
+                    <div className={styles.heroStatItem}>
+                        <span className={styles.statVal}>&lt; 15ms Latency</span>
+                        <span className={styles.statLbl}>Ultra-Fast MT5 Bridge</span>
+                    </div>
+                    <div className={styles.heroStatDivider} />
+                    <div className={styles.heroStatItem}>
+                        <span className={styles.statVal}>Volume Cashbacks</span>
+                        <span className={styles.statLbl}>Auto AI Credits per Lot</span>
                     </div>
                 </div>
-            </div>
+            </CommonSectionHeader>
 
             {/* 2. Controls Row: Category Tabs & Search */}
             <div className={styles.controlsRow}>

@@ -93,3 +93,12 @@ export const DEFAULT_MAIN_OVERLAYS = [
 ];
 
 export const MA_COLOR_PALETTE = ['#38BDF8', '#00E5FF', '#AA00FF', '#0284C7', '#FF1744', '#00E676', '#26A69A', '#E91E63', '#18C98B'];
+
+export const DEFAULT_ACTIVE_INDICATORS = {
+    bollinger: false,
+    pivot: false,
+    rsi: false,
+    macd: false,
+    stochastic: false,
+};
+

@@ -88,8 +88,13 @@
                     color: $textWhite;
                     letter-spacing: -0.5px;
 
-                    &.green { color: $successGreen; }
-                    &.red { color: $dangerRed; }
+                    &.green {
+                        color: $successGreen;
+                    }
+
+                    &.red {
+                        color: $dangerRed;
+                    }
                 }
 
                 .pillBadge {
@@ -181,6 +186,7 @@
         thead {
             tr {
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
                 th {
                     padding: 8px 12px;
                     color: $textDim;
@@ -215,8 +221,13 @@
                         color: $textWhite;
                     }
 
-                    &.greenText { color: $successGreen; }
-                    &.redText { color: $dangerRed; }
+                    &.greenText {
+                        color: $successGreen;
+                    }
+
+                    &.redText {
+                        color: $dangerRed;
+                    }
                 }
             }
         }
@@ -253,6 +264,7 @@
         thead {
             tr {
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
                 th {
                     padding: 8px 10px;
                     color: $textDim;
@@ -261,7 +273,9 @@
                     text-transform: uppercase;
                     text-align: right;
 
-                    &:first-child { text-align: left; }
+                    &:first-child {
+                        text-align: left;
+                    }
                 }
             }
         }
@@ -329,21 +343,30 @@
                 background: rgba(239, 68, 68, 0.08);
                 border: 1px solid rgba(239, 68, 68, 0.35);
                 color: #FFFFFF;
-                strong.prefix { color: #F87171; }
+
+                strong.prefix {
+                    color: #F87171;
+                }
             }
 
             &.peak {
                 background: rgba(56, 189, 248, 0.08);
                 border: 1px solid rgba(56, 189, 248, 0.35);
                 color: #FFFFFF;
-                strong.prefix { color: #38BDF8; }
+
+                strong.prefix {
+                    color: #38BDF8;
+                }
             }
 
             &.recommendation {
                 background: rgba(16, 185, 129, 0.08);
                 border: 1px solid rgba(16, 185, 129, 0.35);
                 color: #FFFFFF;
-                strong.prefix { color: #34D399; }
+
+                strong.prefix {
+                    color: #34D399;
+                }
             }
         }
     }
@@ -402,7 +425,6 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 12px;
     margin-bottom: 8px;
 
@@ -411,7 +433,7 @@
         border: none;
         color: $textMuted;
         font-size: 13px;
-        font-weight: 700;
+        font-weight: 400;
         padding: 8px 16px;
         border-radius: 8px;
         cursor: pointer;
@@ -426,9 +448,9 @@
         }
 
         &.active {
-            background: rgba(24, 201, 139, 0.12);
-            color: $primaryGold;
-            border: 1px solid rgba(24, 201, 139, 0.35);
+            font-weight: 700;
+            background: rgba(24, 201, 139, 0.2);
+            color: #FFFFFF;
         }
     }
 }
@@ -553,4 +575,3 @@
         }
     }
 }
-

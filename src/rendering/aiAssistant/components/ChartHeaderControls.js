@@ -23,7 +23,10 @@ export default function ChartHeaderControls({
             <div className={styles.leftControlsGroup}>
                 {/* Live Real-time Price Display (Top Left Header with 1-Second Tick Stream) */}
                 {currentPrice > 0 && (
-                    <div className={`${styles.headerLivePriceBadge} ${isUp ? styles.badgeUp : styles.badgeDown} ${flashClass}`}>
+                    <div 
+                        className={`${styles.headerLivePriceBadge} ${isUp ? styles.badgeUp : styles.badgeDown}`}
+                        style={{ background: 'transparent', backgroundColor: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}
+                    >
                         <span className={styles.livePriceText}>{formatPrice(currentPrice, chartSymbol)}</span>
                         {isUp ? (
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

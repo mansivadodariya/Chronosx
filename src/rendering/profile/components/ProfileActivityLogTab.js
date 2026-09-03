@@ -3,6 +3,43 @@
 import React from 'react';
 import styles from '../profile.module.scss';
 
+function formatLoginEntry(entry, idx, total) {
+    let timestamp = null;
+    let description = 'Successful WebApp Authentication';
+
+    if (typeof entry === 'string') {
+        timestamp = new Date(entry);
+    } else if (entry && typeof entry === 'object') {
+        timestamp = entry.timestamp ? new Date(entry.timestamp) : 
+                    entry.time ? new Date(entry.time) :
+                    entry.created_at ? new Date(entry.created_at) :
+                    entry.login_at ? new Date(entry.login_at) : null;
+        description = entry.description || entry.type || entry.action || description;
+    }
+
+    let dateStr = '';
+    let timeStr = '';
+
+    if (timestamp && !isNaN(timestamp.getTime())) {
+        dateStr = timestamp.toLocaleDateString('en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+        timeStr = timestamp.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        });
+    }
+
+    const isActive = idx === 0;
+
+    return { dateStr, timeStr, description, isActive };
+}
+
 export default function ProfileActivityLogTab({
     displayLogins,
     t
@@ -10,32 +47,46 @@ export default function ProfileActivityLogTab({
     return (
         <div className={styles.tabContentPanel}>
             <div className={styles.panelHeaderRow}>
-                <h3>{t('profile.activityLogTitle', 'Recent Activity & Login Sessions')}</h3>
+                <h3>{t('profile.recentActivity', 'Recent Activity')}</h3>
+                <p className={styles.panelSubtitle}>
+                    {t('profile.activitySubtitle', 'Monitor your 5 most recent login sessions for account security.')}
+                </p>
             </div>
             {displayLogins.length > 0 ? (
-                <div className={styles.activityTimeline}>
-                    {displayLogins.map((entry, idx) => (
-                        <div key={idx} className={styles.timelineItem}>
-                            <div className={styles.timelineDot} />
-                            <div className={styles.timelineContent}>
-                                <div className={styles.timelineHeader}>
-                                    <span className={styles.timelineTitle}>
-                                        {entry.status === 'Active'
-                                            ? t('profile.currentSession', 'Current Active Session')
-                                            : t('profile.successfulLogin', 'Successful Login')}
-                                    </span>
-                                    <span className={styles.timelineTime}>{entry.time}</span>
+                <div className={styles.activityCardsList}>
+                    {displayLogins.map((entry, idx) => {
+                        const { dateStr, timeStr, description, isActive } = formatLoginEntry(entry, idx, displayLogins.length);
+                        return (
+                            <div key={idx} className={`${styles.activityItemRow} ${isActive ? styles.activeActivityRow : ''}`}>
+                                <div className={styles.activityItemLeft}>
+                                    <div className={`${styles.activityIconBox} ${isActive ? styles.activeActivityIconBox : ''}`}>
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                                            <line x1="8" y1="21" x2="16" y2="21" />
+                                            <line x1="12" y1="17" x2="12" y2="21" />
+                                        </svg>
+                                    </div>
+                                    <div className={styles.activityMeta}>
+                                        <div className={styles.activityDateRow}>
+                                            <span className={styles.activityDateText}>{dateStr || 'Unknown Date'}</span>
+                                            {timeStr && <span className={styles.activityTimeText}>at {timeStr}</span>}
+                                        </div>
+                                        <span className={styles.activityDescText}>{description}</span>
+                                    </div>
                                 </div>
-                                <div className={styles.timelineDetails}>
-                                    <span>{entry.device}</span>
-                                    <span>•</span>
-                                    <span>{entry.location}</span>
-                                    <span>•</span>
-                                    <span className={styles.ipBadge}>{entry.ip}</span>
+                                <div className={styles.activityItemRight}>
+                                    {isActive ? (
+                                        <span className={styles.activeSessionBadge}>
+                                            <span className={styles.activePulseDot} />
+                                            Active Session
+                                        </span>
+                                    ) : (
+                                        <span className={styles.pastSessionBadge}>Past Session</span>
+                                    )}
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             ) : (
                 <div className={styles.emptyActivityState}>
@@ -49,3 +100,4 @@ export default function ProfileActivityLogTab({
         </div>
     );
 }
+

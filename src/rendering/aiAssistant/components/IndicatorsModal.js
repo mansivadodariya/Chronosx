@@ -109,8 +109,12 @@ export default function IndicatorsModal({
     };
 
     const totalActiveCount = useMemo(() => {
-        const activeOverlayCount = Object.keys(activeIndicators || {}).filter((k) => activeIndicators[k]).length;
-        const activeMACount = movingAverages ? movingAverages.filter((m) => m.visible).length : 0;
+        const activeOverlayCount = ['bollinger', 'pivot', 'rsi', 'macd', 'stochastic'].filter(
+            (k) => Boolean(activeIndicators?.[k])
+        ).length;
+        const activeMACount = Array.isArray(movingAverages)
+            ? movingAverages.filter((m) => m.visible).length
+            : 0;
         return activeOverlayCount + activeMACount;
     }, [activeIndicators, movingAverages]);
 
@@ -270,8 +274,6 @@ export default function IndicatorsModal({
                                             key={item.id}
                                             className={`${styles.indicatorListItemRow} ${active ? styles.indicatorRowActive : ''}`}
                                             onClick={() => handleIndicatorClick(item.id)}
-                                            role="button"
-                                            tabIndex={0}
                                         >
                                             <div className={styles.rowLeftContent}>
                                                 <span className={styles.indicatorRowName}>

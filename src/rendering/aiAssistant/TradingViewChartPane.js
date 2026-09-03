@@ -52,7 +52,7 @@ export {
 
 import {
     DEFAULT_INDICATOR_CONFIGS,
-    DEFAULT_MAIN_OVERLAYS,
+    DEFAULT_ACTIVE_INDICATORS,
     MA_COLOR_PALETTE
 } from './constants/chartConstants';
 
@@ -77,7 +77,7 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
     const [chartType, setChartType] = useState('candlestick');
     const [loading, setLoading] = useState(true);
     const [latestCandle, setLatestCandle] = useState(null);
-    const [activeIndicators, setActiveIndicators] = useState(DEFAULT_MAIN_OVERLAYS);
+    const [activeIndicators, setActiveIndicators] = useState(DEFAULT_ACTIVE_INDICATORS);
 
     // Safety Watchdog: Never let chart loader stay stuck for more than 2.5s
     useEffect(() => {
@@ -89,12 +89,8 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
         }
     }, [loading]);
 
-    // Dynamic Moving Averages Array State (EMAs and SMAs)
-    const [movingAverages, setMovingAverages] = useState([
-        { id: 'ema_10', name: 'EMA 10', type: 'EMA', length: 10, period: 10, source: 'close', color: MA_COLOR_PALETTE[0], lineWidth: 1.5, visible: true },
-        { id: 'ema_20', name: 'EMA 20', type: 'EMA', length: 20, period: 20, source: 'close', color: MA_COLOR_PALETTE[1], lineWidth: 1.5, visible: true },
-        { id: 'ema_50', name: 'EMA 50', type: 'EMA', length: 50, period: 50, source: 'close', color: MA_COLOR_PALETTE[2], lineWidth: 1.5, visible: true },
-    ]);
+    // Dynamic Moving Averages Array State (EMAs and SMAs) - Removed default EMAs per user request
+    const [movingAverages, setMovingAverages] = useState([]);
 
     // Appearance & Color Customization
     const [bullishColor, setBullishColor] = useState('#26a69a');
@@ -137,32 +133,33 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
     const indicatorsDropdownRef = useRef(null);
     const cameraDropdownRef = useRef(null);
 
-    // Price updates via shared WebSocket hook
-    const priceData = useLivePrice(activeSymbolClean);
+    // Price updates via shared WebSocket hook (destructuring priceData & tickDirection)
+    const { priceData, tickDirection: liveTickDirection } = useLivePrice(activeSymbolClean);
     const [tickDirection, setTickDirection] = useState(null);
     const prevPriceRef = useRef(null);
 
     useEffect(() => {
-        if (!priceData || priceData.price === undefined || priceData.price === null) return;
-        const p = parseFloat(priceData.price);
-        if (isNaN(p)) return;
-
-        if (prevPriceRef.current !== null && prevPriceRef.current !== p) {
-            setTickDirection(p > prevPriceRef.current ? 'up' : 'down');
+        if (liveTickDirection) {
+            setTickDirection(liveTickDirection);
             const timer = setTimeout(() => setTickDirection(null), 800);
             return () => clearTimeout(timer);
         }
-        prevPriceRef.current = p;
-    }, [priceData?.price]);
+    }, [liveTickDirection, priceData?.price]);
 
-    // Live tick updates to candle series
+    // Live tick updates to candle series from socket
     useEffect(() => {
+        if (loading) return;
         if (!priceData || priceData.price === undefined || priceData.price === null) return;
+        if (priceData.symbol && priceData.symbol !== activeSymbolClean) return;
         const newPrice = parseFloat(priceData.price);
-        if (isNaN(newPrice)) return;
+        if (isNaN(newPrice) || newPrice <= 0) return;
 
         setLatestCandle((prev) => {
             if (!prev) return prev;
+            // Prevent cross-symbol price distortion (e.g. 4300 vs 0.65)
+            if (prev.close && (newPrice > prev.close * 3 || newPrice < prev.close / 3)) {
+                return prev;
+            }
             const updated = {
                 ...prev,
                 high: Math.max(prev.high, newPrice),
@@ -171,11 +168,15 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
                 value: newPrice,
             };
             if (seriesRef.current) {
-                try { seriesRef.current.update(updated); } catch {}
+                try {
+                    seriesRef.current.update(updated);
+                } catch (err) {
+                    console.warn('Series live update notice:', err);
+                }
             }
             return updated;
         });
-    }, [priceData]);
+    }, [priceData?.price, loading, activeSymbolClean]);
 
     // Indicator Configs & Visibility States
     const [indicatorConfigs, setIndicatorConfigs] = useState(DEFAULT_INDICATOR_CONFIGS);
@@ -214,7 +215,7 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
             return;
         }
 
-        const activeOverlayCount = Object.keys(activeIndicators || {}).filter(k => activeIndicators[k]).length;
+        const activeOverlayCount = ['bollinger', 'pivot', 'rsi', 'macd', 'stochastic'].filter(k => Boolean(activeIndicators?.[k])).length;
         const activeMACount = movingAverages ? movingAverages.filter(m => m.visible).length : 0;
         if (activeOverlayCount + activeMACount >= 3) {
             toast('Maximum 3 indicators can be selected at a time');
@@ -253,7 +254,7 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
         setMovingAverages(prev => {
             const target = prev.find(m => m.id === id);
             if (target && !target.visible) {
-                const activeOverlayCount = Object.keys(activeIndicators || {}).filter(k => activeIndicators[k]).length;
+                const activeOverlayCount = ['bollinger', 'pivot', 'rsi', 'macd', 'stochastic'].filter(k => Boolean(activeIndicators?.[k])).length;
                 const activeMACount = prev.filter(m => m.visible).length;
                 if (activeOverlayCount + activeMACount >= 3) {
                     toast('Maximum 3 indicators can be selected at a time');
@@ -453,10 +454,29 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
                 vertLine: { color: 'rgba(24, 201, 139, 0.5)', width: 1, style: 2 },
                 horzLine: { color: 'rgba(24, 201, 139, 0.5)', width: 1, style: 2 },
             },
+            handleScroll: {
+                mouseWheel: false,
+                pressedMouseMove: true,
+                horzTouchDrag: true,
+                vertTouchDrag: true,
+            },
+            handleScale: {
+                axisPressedMouseMove: {
+                    time: true,
+                    price: true,
+                },
+                axisDoubleClickReset: {
+                    time: true,
+                    price: true,
+                },
+                mouseWheel: true,
+                pinch: true,
+            },
             timeScale: {
                 borderColor: initialBorder,
                 timeVisible: true,
                 secondsVisible: false,
+                rightBarStaysOnScroll: true,
             },
             rightPriceScale: {
                 borderColor: initialBorder,
@@ -475,10 +495,38 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
             }
         };
 
+        const containerEl = containerRef.current;
+        const handleWheelZoom = (e) => {
+            if (e.cancelable) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            if (!chartRef.current) return;
+            const timeScale = chartRef.current.timeScale();
+            const currentSpacing = timeScale.options().barSpacing || 9;
+
+            const zoomIn = e.deltaY < 0;
+            const zoomMultiplier = zoomIn ? 1.15 : 0.87;
+            const nextSpacing = Math.max(2, Math.min(80, currentSpacing * zoomMultiplier));
+
+            timeScale.applyOptions({
+                barSpacing: nextSpacing,
+                rightBarStaysOnScroll: true,
+            });
+        };
+
+        if (containerEl) {
+            containerEl.addEventListener('wheel', handleWheelZoom, { passive: false });
+        }
+
         const resizeObserver = new ResizeObserver(handleResize);
         resizeObserver.observe(containerRef.current);
 
         return () => {
+            if (containerEl) {
+                containerEl.removeEventListener('wheel', handleWheelZoom);
+            }
             resizeObserver.disconnect();
             if (chartRef.current) {
                 chartRef.current.remove();
@@ -678,7 +726,7 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
 
             {/* Live Chart Container */}
             <div className={styles.chartCanvasArea}>
-                {loading && !latestCandle && (!candlesDataRef.current || candlesDataRef.current.length === 0) && (
+                {loading && (
                     <ChartLoaderOverlay
                         activeSymbol={activeSymbolClean}
                         currentTimeframe={currentTimeframe}
@@ -688,7 +736,7 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
                 {/* Main Candlestick / Price Chart Container */}
                 <div
                     ref={containerRef}
-                    className={`${styles.mainChartContainer} ${hasSubPanes ? styles.hasSubPanes : ''} ${loading && !latestCandle && (!candlesDataRef.current || candlesDataRef.current.length === 0) ? styles.isChartLoading : ''}`}
+                    className={`${styles.mainChartContainer} ${hasSubPanes ? styles.hasSubPanes : ''} ${loading ? styles.isChartLoading : ''}`}
                     style={{ cursor: 'crosshair' }}
                 >
                     {/* Inside Chart Floating Control Bar (Top Left) */}

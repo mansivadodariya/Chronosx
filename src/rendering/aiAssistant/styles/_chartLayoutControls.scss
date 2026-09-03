@@ -319,19 +319,44 @@
         font-size: 13px;
         font-weight: 700;
         letter-spacing: 0.2px;
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
 
         &.badgeUp {
-            color: #10b981;
-            .livePriceText { color: #10b981; }
-            .liveDirectionTag { color: #10b981; font-size: 11px; }
-            .livePctTag { color: #10b981; }
+            color: #10b981 !important;
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+
+            .livePriceText { color: #10b981 !important; }
+            .liveDirectionTag { color: #10b981 !important; font-size: 11px; }
+            .livePctTag { color: #10b981 !important; }
+
+            svg {
+                color: #10b981 !important;
+                stroke: #10b981 !important;
+            }
         }
 
         &.badgeDown {
-            color: #ef4444;
-            .livePriceText { color: #ef4444; }
-            .liveDirectionTag { color: #ef4444; font-size: 11px; }
-            .livePctTag { color: #ef4444; }
+            color: #ef4444 !important;
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+
+            .livePriceText { color: #ef4444 !important; }
+            .liveDirectionTag { color: #ef4444 !important; font-size: 11px; }
+            .livePctTag { color: #ef4444 !important; }
+
+            svg {
+                color: #ef4444 !important;
+                stroke: #ef4444 !important;
+            }
         }
     }
 

@@ -18,6 +18,7 @@
         radial-gradient(ellipse 40% 70% at 100% 0%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 80%),
         radial-gradient(ellipse 40% 70% at 0% 100%, rgba(0, 242, 254, 0.12) 0%, transparent 75%),
         #121514;
+    border: 1px solid rgba(24, 201, 139, 0.22);
     border-radius: 16px;
     padding: 22px 24px;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
@@ -67,8 +68,8 @@
         }
 
         .editProfileBtn {
-            background: rgba(22, 19, 14, 0.95);
-            border: 1px solid rgba(24, 201, 139, 0.5);
+            background: rgba(24, 201, 139, 0.12);
+            border: 1px solid rgba(24, 201, 139, 0.4);
             color: #18C98B;
             border-radius: 8px;
             padding: 8px 18px;
@@ -79,8 +80,8 @@
             transition: all 0.2s ease;
 
             &:hover {
-                background: linear-gradient(180deg, #7A5620 0%, #3F2C0E 100%);
-                color: #FFFFFF;
+                background: #18C98B;
+                color: #040605;
                 border-color: #18C98B;
                 box-shadow: 0 0 12px rgba(24, 201, 139, 0.3);
             }
@@ -104,8 +105,8 @@
         flex-shrink: 0;
 
         .avatarCircle {
-            width: 90px;
-            height: 90px;
+            width: 84px;
+            height: 84px;
             border-radius: 50%;
             border: 2px solid #18C98B;
             background: #0D0E13;
@@ -115,7 +116,7 @@
             box-shadow: 0 0 20px rgba(24, 201, 139, 0.25);
 
             .avatarInitialsText {
-                font-size: 32px;
+                font-size: 30px;
                 font-weight: 700;
                 color: #18C98B;
                 font-family: "Euclid-Bold", sans-serif;
@@ -140,20 +141,10 @@
 
             h2 {
                 color: #FFFFFF;
-                font-size: 22px;
+                font-size: 20px;
                 font-weight: 700;
                 font-family: "Euclid-Bold", sans-serif;
                 margin: 0;
-            }
-
-            .proTraderBadge {
-                background: rgba(24, 201, 139, 0.15);
-                border: 1px solid rgba(24, 201, 139, 0.4);
-                color: #18C98B;
-                font-size: 11.5px;
-                font-weight: 700;
-                padding: 2px 9px;
-                border-radius: 6px;
             }
         }
 
@@ -234,7 +225,8 @@
         }
     }
 
-    .detailsGrid {
+    /* Grid for View Mode */
+    .detailsViewGrid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 14px;
@@ -242,41 +234,22 @@
         @include respond-to('sm') {
             grid-template-columns: 1fr;
         }
-    }
 
-    .detailPillBox {
-        background: #0d0e137a;
-        border-radius: 12px;
-        padding: 12px 16px;
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        transition: border-color 0.2s ease;
-
-        &:hover {
-            border-color: rgba(24, 201, 139, 0.4);
-        }
-
-        .pillIcon {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            background: rgba(24, 201, 139, 0.08);
-            border: 1px solid rgba(24, 201, 139, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .pillTexts {
+        .detailFieldItem {
+            background: rgba(13, 14, 19, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 14px 18px;
             display: flex;
             flex-direction: column;
-            gap: 2px;
-            min-width: 0;
-            flex: 1;
+            gap: 4px;
+            transition: border-color 0.2s ease;
 
-            .pillLabel {
+            &:hover {
+                border-color: rgba(24, 201, 139, 0.35);
+            }
+
+            .fieldLabel {
                 font-size: 11px;
                 color: rgba(255, 255, 255, 0.5);
                 font-weight: 600;
@@ -284,47 +257,23 @@
                 letter-spacing: 0.5px;
             }
 
-            .pillValue {
+            .fieldValue {
                 color: #FFFFFF;
-                font-size: 13.5px;
+                font-size: 14px;
                 font-weight: 600;
                 font-family: "Euclid-Medium", sans-serif;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .referralCodePillRow {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-
-                .refActionIcon {
-                    background: rgba(24, 201, 139, 0.12);
-                    border: 1px solid rgba(24, 201, 139, 0.3);
-                    border-radius: 5px;
-                    padding: 3px 5px;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    transition: all 0.15s ease;
-
-                    &:hover {
-                        background: rgba(24, 201, 139, 0.25);
-                    }
-                }
+                word-break: break-word;
             }
         }
     }
 
-    /* Edit form inside details */
-    .editFormArea {
+    /* Form for Edit Mode */
+    .editDetailsForm {
         display: flex;
         flex-direction: column;
         gap: 16px;
 
-        .formRow {
+        .formInputsGrid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
@@ -332,45 +281,20 @@
             @include respond-to('sm') {
                 grid-template-columns: 1fr;
             }
+
+            .inputCol {
+                display: flex;
+                flex-direction: column;
+            }
         }
 
-        .formActionsRow {
+        .formActionFooter {
             display: flex;
             align-items: center;
             justify-content: flex-end;
             gap: 12px;
             margin-top: 8px;
         }
-    }
-}
-
-.cancelFormBtn {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(24, 201, 139, 0.4);
-    color: #18C98B;
-    border-radius: 99px;
-    padding: 13px 26px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    outline: none;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-
-    &:hover {
-        background: rgba(24, 201, 139, 0.16);
-        border-color: #18C98B;
-        color: #FFFFFF;
-        box-shadow: 0 0 18px rgba(24, 201, 139, 0.25);
-        transform: translateY(-1px);
-    }
-
-    &:active {
-        transform: translateY(0) scale(0.97);
     }
 }
 

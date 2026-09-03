@@ -6,8 +6,9 @@ import { useLanguage } from '@/context/LanguageContext';
 import { getScoreColor } from '@/icons/analysisIcons';
 import { AnalysisSkeleton, AnalysisErrorState } from './components/AnalysisSkeleton';
 import TechnicalScoreSection from './components/TechnicalScoreSection';
-import EvidenceSection from './components/EvidenceSection';
-import IndicatorsBreakdownSection from './components/IndicatorsBreakdownSection';
+import TrendSection from './components/TrendSection';
+import MomentumSection from './components/MomentumSection';
+import StructureSection from './components/StructureSection';
 import AiIntelligenceSummarySection from './components/AiIntelligenceSummarySection';
 
 export default function AnalysisPanel({ symbol, strategyId, activeAnalysis, onAnalysisLoaded }) {
@@ -15,46 +16,6 @@ export default function AnalysisPanel({ symbol, strategyId, activeAnalysis, onAn
     const [analysis, setAnalysis] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    // Main Accordion Toggles
-    const [expandedAccordions, setExpandedAccordions] = useState({
-        score: true,
-        evidence: false,
-        trend: false,
-        momentum: false,
-        volume: false,
-        ai: false
-    });
-
-    // Score Sub-details Toggles
-    const [scoreSubToggles, setScoreSubToggles] = useState({
-        trend: true,
-        momentum: false,
-        volume: false,
-        structure: false
-    });
-
-    // Evidence Sub-details Toggles
-    const [evidenceSubToggles, setEvidenceSubToggles] = useState({
-        trend: true,
-        momentum: false,
-        volume: false,
-        structure: false
-    });
-
-    const toggleMainAccordion = (key) => {
-        setExpandedAccordions(prev => ({ ...prev, [key]: !prev[key] }));
-    };
-
-    const toggleScoreSub = (key, e) => {
-        e.stopPropagation();
-        setScoreSubToggles(prev => ({ ...prev, [key]: !prev[key] }));
-    };
-
-    const toggleEvidenceSub = (key, e) => {
-        e.stopPropagation();
-        setEvidenceSubToggles(prev => ({ ...prev, [key]: !prev[key] }));
-    };
 
     // Fetch analysis data from REST endpoint
     const fetchAnalysisData = async () => {
@@ -114,53 +75,45 @@ export default function AnalysisPanel({ symbol, strategyId, activeAnalysis, onAn
         pivot_points = {},
         trend_analysis = {},
         momentum = {},
-        volume_analysis = {}
     } = analysis;
 
     const scoreColor = getScoreColor(technical_score.label);
 
     return (
         <div className={styles.analysisPanel}>
-            {/* 1. TECHNICAL SCORE ACCORDION */}
+            {/* 1. MASTER TECHNICAL SCORE (Speedometer + Overview Pillars) */}
             <TechnicalScoreSection
                 technicalScore={technical_score}
+            />
+
+            {/* 2. TREND SECTION (Trend Speedometer + All SMA/EMA Data + Trend Evidence Together) */}
+            <TrendSection
                 trendIndicators={trend_indicators}
+                trendAnalysis={trend_analysis}
+                evidence={evidence.trend}
+                trendScore={technical_score?.breakdown?.trend?.score || 25}
+                maxScore={technical_score?.breakdown?.trend?.max || 25}
+            />
+
+            {/* 3. MOMENTUM SECTION (Visual Sliders + All Momentum Indicators + Momentum Evidence Together) */}
+            <MomentumSection
                 momentumIndicators={momentum_indicators}
-                volumeAnalysis={volume_analysis}
+                momentum={momentum}
+                evidence={evidence.momentum}
+            />
+
+            {/* 4. STRUCTURE SECTION (Progress Bar + 5 Key Levels + Structure Evidence Together) */}
+            <StructureSection
                 levels={levels}
                 pivotPoints={pivot_points}
-                isExpanded={expandedAccordions.score}
-                onToggle={() => toggleMainAccordion('score')}
-                scoreSubToggles={scoreSubToggles}
-                onToggleSub={toggleScoreSub}
+                evidence={evidence.structure}
+                structureScore={technical_score?.breakdown?.structure?.score || 12}
+                maxScore={technical_score?.breakdown?.structure?.max || 25}
             />
 
-            {/* 2. EVIDENCE ACCORDION */}
-            <EvidenceSection
-                evidence={evidence}
-                isExpanded={expandedAccordions.evidence}
-                onToggle={() => toggleMainAccordion('evidence')}
-                evidenceSubToggles={evidenceSubToggles}
-                onToggleSub={toggleEvidenceSub}
-                title={t('aiStrategy.evidenceTitle', 'EVIDENCE')}
-            />
-
-            {/* 3, 4, 5. TREND, MOMENTUM & VOLUME ACCORDIONS */}
-            <IndicatorsBreakdownSection
-                trendAnalysis={trend_analysis}
-                momentum={momentum}
-                volumeAnalysis={volume_analysis}
-                scoreColor={scoreColor}
-                expandedAccordions={expandedAccordions}
-                onToggleMain={toggleMainAccordion}
-                t={t}
-            />
-
-            {/* 6. AI SUMMARY ACCORDION */}
+            {/* 5. AI INTELLIGENCE SYNTHESIS */}
             <AiIntelligenceSummarySection
                 aiSummary={ai_summary}
-                isExpanded={expandedAccordions.ai}
-                onToggle={() => toggleMainAccordion('ai')}
                 t={t}
             />
         </div>

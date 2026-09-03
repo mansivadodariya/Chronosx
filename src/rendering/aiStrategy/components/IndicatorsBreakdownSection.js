@@ -1,316 +1,240 @@
 'use client';
 
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import styles from '../aiStrategy.module.scss';
 import {
-    ChevronIcon,
     TrendArrowIcon,
     TrendBoxIcon,
     getScoreColor,
     formatValue,
-    formatVolVal,
-    accordionVariants
 } from '@/icons/analysisIcons';
 
 export default function IndicatorsBreakdownSection({
     trendAnalysis = {},
     momentum = {},
-    volumeAnalysis = {},
     scoreColor,
-    expandedAccordions,
-    onToggleMain,
     t
 }) {
+    const isBullish = trendAnalysis.direction?.toLowerCase().includes('bull') || trendAnalysis.direction?.toLowerCase().includes('buy');
+
     return (
-        <>
-            {/* TREND ANALYSIS ACCORDION */}
-            <div className={styles.premiumAccordion}>
-                <div className={styles.premiumAccordionHeader} onClick={() => onToggleMain('trend')}>
-                    <span>{t('aiStrategy.trendTitle', 'TREND ANALYSIS')}</span>
-                    <ChevronIcon isOpen={expandedAccordions.trend} />
+        <div className={styles.indicatorsBreakdownGrid}>
+            {/* 1. TREND ANALYSIS CARD */}
+            <div className={styles.breakdownDetailCard}>
+                <div className={styles.cardHeaderRow}>
+                    <div className={styles.headerTitleGroup}>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                            <polyline points="16 7 22 7 22 13" />
+                        </svg>
+                        <span className={styles.headerMainTitle}>
+                            {t('aiStrategy.trendTitle', 'TREND ANALYSIS')}
+                        </span>
+                    </div>
+                    <span
+                        className={styles.directionStatusPill}
+                        style={{
+                            color: isBullish ? '#10b981' : '#ef4444',
+                            backgroundColor: isBullish ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.12)',
+                            borderColor: isBullish ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'
+                        }}
+                    >
+                        {trendAnalysis.direction || 'Neutral'}
+                    </span>
                 </div>
-                <AnimatePresence initial={false}>
-                    {expandedAccordions.trend && (
-                        <motion.div
-                            key="trend-content"
-                            initial="collapsed"
-                            animate="expanded"
-                            exit="collapsed"
-                            variants={accordionVariants}
-                            style={{ overflow: 'hidden' }}
-                        >
-                            <div className={styles.premiumAccordionBody}>
-                                <div className={styles.trendRowHeader}>
-                                    <TrendBoxIcon isBullish={trendAnalysis.direction?.toLowerCase().includes('bull') || trendAnalysis.direction?.toLowerCase().includes('buy')} />
-                                    <div className={styles.trendHeaderText}>
-                                        <h4>{trendAnalysis.direction || 'Neutral'}</h4>
-                                        <span>{trendAnalysis.strength || '-'}</span>
-                                    </div>
-                                </div>
 
-                                {/* EMA Grid list */}
-                                <div className={styles.indicatorMetricGrid}>
-                                    <div className={styles.metricGridItem}>
-                                        <div className={styles.indicatorLabelBox}>
-                                            <span className={`${styles.dotDot} ${styles.ema20}`} />
-                                            <span>EMA 20</span>
-                                        </div>
-                                        <div className={styles.indicatorValueAction}>
-                                            <span className={styles.positionTxt} style={{ color: trendAnalysis.ema_20?.position === 'Above' ? '#10b981' : '#ef4444' }}>
-                                                {trendAnalysis.ema_20?.position || 'Below'}
-                                            </span>
-                                            <TrendArrowIcon direction={trendAnalysis.ema_20?.position} />
-                                        </div>
-                                    </div>
+                <div className={styles.cardContentBody}>
+                    {/* Direction & Strength Banner */}
+                    <div className={styles.trendRowHeader}>
+                        <TrendBoxIcon isBullish={isBullish} />
+                        <div className={styles.trendHeaderText}>
+                            <h4>{trendAnalysis.direction || 'Neutral'} Trend</h4>
+                            <span>{trendAnalysis.strength || 'Consistent technical alignment'}</span>
+                        </div>
+                    </div>
 
-                                    <div className={styles.metricGridItem}>
-                                        <div className={styles.indicatorLabelBox}>
-                                            <span className={`${styles.dotDot} ${styles.ema50}`} />
-                                            <span>EMA 50</span>
-                                        </div>
-                                        <div className={styles.indicatorValueAction}>
-                                            <span className={styles.positionTxt} style={{ color: trendAnalysis.ema_50?.position === 'Above' ? '#10b981' : '#ef4444' }}>
-                                                {trendAnalysis.ema_50?.position || 'Below'}
-                                            </span>
-                                            <TrendArrowIcon direction={trendAnalysis.ema_50?.position} />
-                                        </div>
-                                    </div>
-
-                                    <div className={styles.metricGridItem}>
-                                        <div className={styles.indicatorLabelBox}>
-                                            <span className={`${styles.dotDot} ${styles.supertrend}`} />
-                                            <span>SuperTrend</span>
-                                        </div>
-                                        <div className={styles.indicatorValueAction}>
-                                            <span className={styles.positionTxt} style={{ color: trendAnalysis.supertrend?.direction === 'BULLISH' ? '#10b981' : '#ef4444' }}>
-                                                {trendAnalysis.supertrend?.direction === 'BULLISH' ? 'Above' : 'Below'}
-                                            </span>
-                                            <TrendArrowIcon direction={trendAnalysis.supertrend?.direction === 'BULLISH' ? 'Above' : 'Below'} />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Trend Confidence Fill */}
-                                <div className={styles.trendConfidenceContainer}>
-                                    <div className={styles.confidenceTexts}>
-                                        <span>Trend Confidence</span>
-                                        <strong>{trendAnalysis.trend_confidence || '-'}</strong>
-                                    </div>
-                                    <div className={styles.confidenceTrack}>
-                                        <div
-                                            className={styles.confidenceFill}
-                                            style={{
-                                                width: trendAnalysis.trend_confidence || '0%',
-                                                backgroundColor: scoreColor
-                                            }}
-                                        />
-                                    </div>
-                                </div>
+                    {/* EMA & SuperTrend 3-Column Metric Cards */}
+                    <div className={styles.indicatorMetricGrid}>
+                        <div className={styles.metricGridItem}>
+                            <div className={styles.indicatorLabelBox}>
+                                <span className={`${styles.dotDot} ${styles.ema20}`} />
+                                <span>EMA 20</span>
                             </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                            <div className={styles.indicatorValueAction}>
+                                <span
+                                    className={styles.positionTxt}
+                                    style={{ color: trendAnalysis.ema_20?.position === 'Above' ? '#10b981' : '#ef4444' }}
+                                >
+                                    {trendAnalysis.ema_20?.position || 'Below'}
+                                </span>
+                                <TrendArrowIcon direction={trendAnalysis.ema_20?.position} />
+                            </div>
+                        </div>
+
+                        <div className={styles.metricGridItem}>
+                            <div className={styles.indicatorLabelBox}>
+                                <span className={`${styles.dotDot} ${styles.ema50}`} />
+                                <span>EMA 50</span>
+                            </div>
+                            <div className={styles.indicatorValueAction}>
+                                <span
+                                    className={styles.positionTxt}
+                                    style={{ color: trendAnalysis.ema_50?.position === 'Above' ? '#10b981' : '#ef4444' }}
+                                >
+                                    {trendAnalysis.ema_50?.position || 'Below'}
+                                </span>
+                                <TrendArrowIcon direction={trendAnalysis.ema_50?.position} />
+                            </div>
+                        </div>
+
+                        <div className={styles.metricGridItem}>
+                            <div className={styles.indicatorLabelBox}>
+                                <span className={`${styles.dotDot} ${styles.supertrend}`} />
+                                <span>SuperTrend</span>
+                            </div>
+                            <div className={styles.indicatorValueAction}>
+                                <span
+                                    className={styles.positionTxt}
+                                    style={{ color: trendAnalysis.supertrend?.direction === 'BULLISH' ? '#10b981' : '#ef4444' }}
+                                >
+                                    {trendAnalysis.supertrend?.direction === 'BULLISH' ? 'Above' : 'Below'}
+                                </span>
+                                <TrendArrowIcon direction={trendAnalysis.supertrend?.direction === 'BULLISH' ? 'Above' : 'Below'} />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Trend Confidence Visual Progress */}
+                    <div className={styles.trendConfidenceContainer}>
+                        <div className={styles.confidenceTexts}>
+                            <span>Trend Confidence</span>
+                            <strong>{trendAnalysis.trend_confidence || '75%'}</strong>
+                        </div>
+                        <div className={styles.confidenceTrack}>
+                            <div
+                                className={styles.confidenceFill}
+                                style={{
+                                    width: trendAnalysis.trend_confidence || '75%',
+                                    backgroundColor: scoreColor || '#10b981'
+                                }}
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            {/* MOMENTUM ACCORDION */}
-            <div className={styles.premiumAccordion}>
-                <div className={styles.premiumAccordionHeader} onClick={() => onToggleMain('momentum')}>
-                    <span>{t('aiStrategy.momentumTitle', 'MOMENTUM')}</span>
-                    <ChevronIcon isOpen={expandedAccordions.momentum} />
+            {/* 2. MOMENTUM ANALYSIS CARD */}
+            <div className={styles.breakdownDetailCard}>
+                <div className={styles.cardHeaderRow}>
+                    <div className={styles.headerTitleGroup}>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#c084fc" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                        </svg>
+                        <span className={styles.headerMainTitle}>
+                            {t('aiStrategy.momentumTitle', 'MOMENTUM OSCILLATORS')}
+                        </span>
+                    </div>
+                    <span className={styles.momentumTagPill}>
+                        RSI &bull; MACD &bull; Stoch
+                    </span>
                 </div>
-                <AnimatePresence initial={false}>
-                    {expandedAccordions.momentum && (
-                        <motion.div
-                            key="momentum-content"
-                            initial="collapsed"
-                            animate="expanded"
-                            exit="collapsed"
-                            variants={accordionVariants}
-                            style={{ overflow: 'hidden' }}
-                        >
-                            <div className={styles.premiumAccordionBody}>
-                                {/* RSI Slider Range */}
-                                <div className={styles.momentumSliderContainer}>
-                                    <div className={styles.sliderLabelRow}>
-                                        <span className={styles.sliderName}>RSI (14)</span>
-                                        <span className={styles.sliderValTxt}>{formatValue(momentum.rsi?.value)}</span>
-                                    </div>
 
-                                    {/* Gradient Track & Pin Pointer */}
-                                    <div className={styles.gradientTrackBg}>
-                                        <div
-                                            className={styles.sliderPinPointer}
-                                            style={{ left: `${Math.min(100, Math.max(0, momentum.rsi?.value || 50))}%` }}
-                                        >
-                                            <div className={styles.pinDot} />
-                                            <div className={styles.pinLine} />
-                                        </div>
-                                        <span className={styles.axisMarker} style={{ left: '30%' }}>30</span>
-                                        <span className={styles.axisMarker} style={{ left: '70%' }}>70</span>
-                                    </div>
+                <div className={styles.cardContentBody}>
+                    {/* RSI Visual Range Slider */}
+                    <div className={styles.momentumSliderContainer}>
+                        <div className={styles.sliderLabelRow}>
+                            <div className={styles.rsiNameWithStatus}>
+                                <span className={styles.sliderName}>RSI (14)</span>
+                                <span className={styles.sliderStatusLabel}>
+                                    {momentum.rsi?.value < 30 ? 'Oversold (<30)' : momentum.rsi?.value > 70 ? 'Overbought (>70)' : 'Neutral Dynamic'}
+                                </span>
+                            </div>
+                            <span className={styles.sliderValTxt}>{formatValue(momentum.rsi?.value) || '50.0'}</span>
+                        </div>
 
-                                    <span className={styles.sliderStatusLabel}>
-                                        {momentum.rsi?.value < 30 ? 'Oversold' : momentum.rsi?.value > 70 ? 'Overbought' : 'Neutral'}
-                                    </span>
-                                </div>
+                        {/* Gradient Track & Pin Pointer */}
+                        <div className={styles.gradientTrackBg}>
+                            <div
+                                className={styles.sliderPinPointer}
+                                style={{ left: `${Math.min(100, Math.max(0, momentum.rsi?.value || 50))}%` }}
+                            >
+                                <div className={styles.pinDot} />
+                                <div className={styles.pinLine} />
+                            </div>
+                            <span className={styles.axisMarker} style={{ left: '30%' }}>30</span>
+                            <span className={styles.axisMarker} style={{ left: '70%' }}>70</span>
+                        </div>
+                    </div>
 
-                                {/* MACD Histogram Zero Center Bar */}
-                                {momentum.macd && (
-                                    <div className={styles.macdMetricsContainer}>
-                                        <div className={styles.macdHeaderRow}>
-                                            <span className={styles.macdTitle}>MACD ({momentum.macd.params})</span>
-                                            <span
-                                                className={styles.macdLabelValue}
-                                                style={{ color: getScoreColor(momentum.macd.direction) }}
-                                            >
-                                                {momentum.macd.direction}
-                                            </span>
-                                        </div>
+                    {/* MACD Histogram Visualizer */}
+                    {momentum.macd && (
+                        <div className={styles.macdMetricsContainer}>
+                            <div className={styles.macdHeaderRow}>
+                                <span className={styles.macdTitle}>MACD ({momentum.macd.params || '12, 26, 9'})</span>
+                                <span
+                                    className={styles.macdLabelValue}
+                                    style={{ color: getScoreColor(momentum.macd.direction) }}
+                                >
+                                    {momentum.macd.direction || 'Neutral'}
+                                </span>
+                            </div>
 
-                                        {/* Histogram Center Alignment Track */}
-                                        <div className={styles.macdHistogramTrack}>
-                                            <div className={styles.centerLine} />
-                                            {momentum.macd.histogram !== undefined && (
-                                                <div
-                                                    className={styles.histogramFillBar}
-                                                    style={{
-                                                        left: momentum.macd.histogram >= 0 ? '50%' : `calc(50% - ${Math.min(48, Math.abs(momentum.macd.histogram) * 2.5)}%)`,
-                                                        width: `${Math.min(48, Math.abs(momentum.macd.histogram) * 2.5)}%`,
-                                                        backgroundColor: momentum.macd.histogram >= 0 ? '#10b981' : '#ef4444'
-                                                    }}
-                                                />
-                                            )}
-                                        </div>
-                                        <div className={styles.macdSubDetailsRow}>
-                                            <span>Line: {formatValue(momentum.macd.line)}</span>
-                                            <span>Signal: {formatValue(momentum.macd.signal)}</span>
-                                            <span>Hist: {formatValue(momentum.macd.histogram)}</span>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Stochastic %K and %D progress rows */}
-                                {momentum.stochastic && (
-                                    <div className={styles.stochasticSubProgressList}>
-                                        <div className={styles.stochProgressRow}>
-                                            <span className={styles.stochLabel}>Stoch %K</span>
-                                            <div className={styles.stochTrackBg}>
-                                                <div
-                                                    className={styles.stochFillBar}
-                                                    style={{
-                                                        width: `${momentum.stochastic.k || 0}%`,
-                                                        backgroundColor: getScoreColor(momentum.stochastic.direction)
-                                                    }}
-                                                />
-                                            </div>
-                                            <span className={styles.stochValText}>{Math.round(momentum.stochastic.k || 0)}</span>
-                                        </div>
-
-                                        <div className={styles.stochProgressRow}>
-                                            <span className={styles.stochLabel}>Stoch %D</span>
-                                            <div className={styles.stochTrackBg}>
-                                                <div
-                                                    className={styles.stochFillBar}
-                                                    style={{
-                                                        width: `${momentum.stochastic.d || 0}%`,
-                                                        backgroundColor: getScoreColor(momentum.stochastic.direction)
-                                                    }}
-                                                />
-                                            </div>
-                                            <span className={styles.stochValText}>{Math.round(momentum.stochastic.d || 0)}</span>
-                                        </div>
-                                    </div>
+                            {/* Histogram Center Alignment Track */}
+                            <div className={styles.macdHistogramTrack}>
+                                <div className={styles.centerLine} />
+                                {momentum.macd.histogram !== undefined && (
+                                    <div
+                                        className={styles.histogramFillBar}
+                                        style={{
+                                            left: momentum.macd.histogram >= 0 ? '50%' : `calc(50% - ${Math.min(48, Math.abs(momentum.macd.histogram) * 2.5)}%)`,
+                                            width: `${Math.min(48, Math.abs(momentum.macd.histogram) * 2.5)}%`,
+                                            backgroundColor: momentum.macd.histogram >= 0 ? '#10b981' : '#ef4444'
+                                        }}
+                                    />
                                 )}
                             </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </div>
-
-            {/* VOLUME ANALYSIS ACCORDION */}
-            <div className={styles.premiumAccordion}>
-                <div className={styles.premiumAccordionHeader} onClick={() => onToggleMain('volume')}>
-                    <span>{t('aiStrategy.volumeTitle', 'VOLUME ANALYSIS')}</span>
-                    <ChevronIcon isOpen={expandedAccordions.volume} />
-                </div>
-                <AnimatePresence initial={false}>
-                    {expandedAccordions.volume && (
-                        <motion.div
-                            key="volume-content"
-                            initial="collapsed"
-                            animate="expanded"
-                            exit="collapsed"
-                            variants={accordionVariants}
-                            style={{ overflow: 'hidden' }}
-                        >
-                            <div className={styles.premiumAccordionBody}>
-                                {/* Relative Volume Track */}
-                                <div className={styles.relativeVolumeContainer}>
-                                    <div className={styles.volHeaderRow}>
-                                        <span>Relative Volume</span>
-                                        <strong>{volumeAnalysis.relative_volume || '0'}x</strong>
-                                    </div>
-                                    <div className={styles.relativeVolumeTrack}>
-                                        <div
-                                            className={styles.relativeVolPointer}
-                                            style={{ left: `${Math.min(100, (volumeAnalysis.relative_volume || 0) * 33.3)}%` }}
-                                        />
-                                        <span className={styles.volMarker} style={{ left: '0%' }}>0x</span>
-                                        <span className={styles.volMarker} style={{ left: '33.3%' }}>1x</span>
-                                        <span className={styles.volMarker} style={{ left: '66.6%' }}>2x</span>
-                                        <span className={styles.volMarker} style={{ left: '100%' }}>3x+</span>
-                                    </div>
-                                </div>
-
-                                {/* Current vs 20D Avg Cards Grid */}
-                                <div className={styles.volumeCompareGrid}>
-                                    <div className={styles.volCompareCard}>
-                                        <span className={styles.volCompareLabel}>Current</span>
-                                        <strong className={styles.volCompareValue}>{formatVolVal(volumeAnalysis.current_volume)}</strong>
-                                    </div>
-                                    <div className={styles.volCompareCard}>
-                                        <span className={styles.volCompareLabel}>20D Avg</span>
-                                        <strong className={styles.volCompareValue}>{formatVolVal(volumeAnalysis.avg_volume_20d)}</strong>
-                                    </div>
-                                </div>
-
-                                {/* Buying/Selling Pressure segments */}
-                                {volumeAnalysis.pressure && (
-                                    <div className={styles.volumePressureContainer}>
-                                        <div className={styles.pressureHeaderRow}>
-                                            <span>Pressure</span>
-                                            <strong style={{ color: getScoreColor(volumeAnalysis.pressure.label) }}>
-                                                {volumeAnalysis.pressure.label}
-                                            </strong>
-                                        </div>
-
-                                        {/* Segmented Bar Fill */}
-                                        <div className={styles.segmentedPressureBar}>
-                                            <div
-                                                className={styles.buySegment}
-                                                style={{ width: `${volumeAnalysis.pressure.buy_pct || 50}%` }}
-                                            >
-                                                <span>{volumeAnalysis.pressure.buy_pct}%</span>
-                                            </div>
-                                            <div
-                                                className={styles.sellSegment}
-                                                style={{ width: `${volumeAnalysis.pressure.sell_pct || 50}%` }}
-                                            >
-                                                <span>{volumeAnalysis.pressure.sell_pct}%</span>
-                                            </div>
-                                        </div>
-                                        <div className={styles.pressureLabelsRow}>
-                                            <span className={styles.buyText}>Buy</span>
-                                            <span className={styles.sellText}>Sell</span>
-                                        </div>
-                                    </div>
-                                )}
+                            <div className={styles.macdSubDetailsRow}>
+                                <span>Line: <strong>{formatValue(momentum.macd.line)}</strong></span>
+                                <span>Signal: <strong>{formatValue(momentum.macd.signal)}</strong></span>
+                                <span>Hist: <strong>{formatValue(momentum.macd.histogram)}</strong></span>
                             </div>
-                        </motion.div>
+                        </div>
                     )}
-                </AnimatePresence>
+
+                    {/* Stochastic %K and %D Rows */}
+                    {momentum.stochastic && (
+                        <div className={styles.stochasticSubProgressList}>
+                            <div className={styles.stochProgressRow}>
+                                <span className={styles.stochLabel}>Stoch %K</span>
+                                <div className={styles.stochTrackBg}>
+                                    <div
+                                        className={styles.stochFillBar}
+                                        style={{
+                                            width: `${momentum.stochastic.k || 0}%`,
+                                            backgroundColor: getScoreColor(momentum.stochastic.direction)
+                                        }}
+                                    />
+                                </div>
+                                <span className={styles.stochValText}>{Math.round(momentum.stochastic.k || 0)}</span>
+                            </div>
+
+                            <div className={styles.stochProgressRow}>
+                                <span className={styles.stochLabel}>Stoch %D</span>
+                                <div className={styles.stochTrackBg}>
+                                    <div
+                                        className={styles.stochFillBar}
+                                        style={{
+                                            width: `${momentum.stochastic.d || 0}%`,
+                                            backgroundColor: getScoreColor(momentum.stochastic.direction)
+                                        }}
+                                    />
+                                </div>
+                                <span className={styles.stochValText}>{Math.round(momentum.stochastic.d || 0)}</span>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
-        </>
+        </div>
     );
 }

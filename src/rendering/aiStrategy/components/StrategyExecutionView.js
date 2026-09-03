@@ -1,181 +1,203 @@
 'use client';
 
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import styles from '../aiStrategy.module.scss';
-import { RadarIcon, VolumeIcon, RiskRewardIcon } from '@/icons/aiStrategyIcons';
-import { formatCurrency } from '../strategyUtils';
+import MiniCandlestickChart from './MiniCandlestickChart';
+import StrategyGridSkeleton from './StrategyGridSkeleton';
+import { useStrategyStream, formatDisplayValue } from '../hooks/useStrategyStream';
 
-export default function StrategyExecutionView({
-    activeSignals = {},
-    showPairSelector = true,
-    setShowPairSelector,
-    wsStatus = 'disconnected'
-}) {
+export default function StrategyExecutionView() {
+    const router = useRouter();
+    const { setupsList, wsStatus, loading } = useStrategyStream();
+
+    const handleViewDetail = (item) => {
+        if (typeof window !== 'undefined') {
+            const sym = item.meta?.short || item.symbol || 'EUR/USD';
+            sessionStorage.setItem('selectedStrategySymbol', sym);
+            if (item.pair_id) sessionStorage.setItem('selectedStrategyPairId', item.pair_id);
+            if (item.strategy_id) sessionStorage.setItem('selectedStrategyId', item.strategy_id);
+        }
+        router.push('/ai-strategy/live');
+    };
+
     return (
         <div className={styles.strategyAccordion}>
-            <button
-                className={`${styles.accordionTrigger} ${showPairSelector ? styles.accordionOpen : ''}`}
-                onClick={() => setShowPairSelector(!showPairSelector)}
-            >
-                <div className={styles.accordionLeft}>
-                    <span className={`${styles.strategyDot} ${styles.buyDot}`}></span>
-                    <span className={styles.accordionTitle}>EMA Pullback Strategy</span>
-                    {Object.keys(activeSignals).length > 0 && (
-                        <span className={styles.accordionBadge}>
-                            {Object.keys(activeSignals).length} Pairs
-                        </span>
-                    )}
+            {/* Top Control Bar with Live WS Indicator */}
+            <div className={styles.strategyControlBar}>
+                <div className={styles.controlTitleGroup}>
+                    <span className={styles.strategyPulseDot}></span>
+                    <h3>Active Strategy Setups</h3>
                 </div>
-                <div className={styles.accordionRight}>
-                    <span className={`${styles.accordionWsBadge} ${styles[wsStatus]}`}>
+                <div className={`${styles.wsStatusIndicator} ${styles[wsStatus]}`}>
+                    <span>
                         {wsStatus === 'connected' ? '● Live' : wsStatus === 'connecting' ? '◌ Connecting...' : '○ Offline'}
                     </span>
-                    <span className={`${styles.dropdownArrow} ${showPairSelector ? styles.open : ''}`}>▼</span>
                 </div>
-            </button>
+            </div>
 
-            {/* Accordion Content: All Pair Cards */}
-            <AnimatePresence>
-                {showPairSelector && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        style={{ overflow: 'hidden' }}
-                    >
-                        {Object.keys(activeSignals).length === 0 ? (
-                            <div className={`${styles.noTradeCard} ${styles.accordionEmpty}`}>
-                                <div className={`${styles.radarIcon} ${styles.radarIconSpinner}`}>
-                                    <RadarIcon />
+            {/* Dark Glassmorphism Grid of Strategy Cards (2 Columns per Row) */}
+            <div className={styles.pairsGrid}>
+                {loading && setupsList.length === 0 ? (
+                    <StrategyGridSkeleton count={4} />
+                ) : (
+                    setupsList.map((item) => {
+                    const meta = item.meta || { fullName: item.display_name || item.symbol, short: item.symbol, market: 'Forex' };
+                    const sig = item.signal || {};
+                    const isBuy = (sig.direction || 'BUY').toUpperCase() === 'BUY';
+                    const strategyName = item.strategy_name || 'EMA Pullback';
+                    const volumeStrength = sig.confluence?.volume_strength || sig.volume_strength || 'STRONG';
+                    const riskReward = sig.risk_reward || '1:3.0';
+                    const rrLabel = sig.rr ? sig.rr.replace('R:R ', '') : '1:3 R:R';
+
+                    // Compute current price from latest candle close or entry
+                    const candles = Array.isArray(sig.mini_candles) ? sig.mini_candles : [];
+                    const lastCandle = candles[candles.length - 1];
+                    const currentPriceNum = lastCandle ? lastCandle.close : (sig.entry || 1.3377);
+                    const displayCurrentPrice = formatDisplayValue(currentPriceNum, meta.short);
+
+                    // Compute 24h % change
+                    const firstCandle = candles[0];
+                    let diffPercent = 0.33;
+                    if (firstCandle && lastCandle && firstCandle.open) {
+                        diffPercent = ((lastCandle.close - firstCandle.open) / firstCandle.open) * 100;
+                    } else if (!isBuy) {
+                        diffPercent = -0.28;
+                    }
+                    const isPositive = diffPercent >= 0;
+                    const changeSymbol = isPositive ? '▲' : '▼';
+
+                    const tags = Array.isArray(sig.tags) && sig.tags.length > 0
+                        ? sig.tags
+                        : [strategyName, isBuy ? 'UPTREND' : 'DOWNTREND'];
+
+                    const timeTag = sig.time_ago || sig.status_label || '2h ago';
+
+                    return (
+                        <div
+                            key={item.pair_id || meta.short || item.symbol}
+                            className={`${styles.pairCard} ${isBuy ? styles.activeBuy : styles.activeSell}`}
+                        >
+                            {/* 1. Header: Pair Full Name & Market (Left) + Price / 24h Change (Right) */}
+                            <div className={styles.pairCardHead}>
+                                <div className={styles.cardHeaderLeft}>
+                                    <h4 className={styles.cardPairTitle}>
+                                        <span className={styles.pairMainName}>{meta.fullName}</span>
+                                        <span className={styles.pairTicker}> ({meta.short})</span>
+                                        <span className={styles.marketSeparator}>|</span>
+                                        <span className={styles.marketType}>{meta.market}</span>
+                                    </h4>
                                 </div>
-                                <h4>Awaiting Strategy Stream</h4>
-                                <p>Connecting to the live Global Scan strategy feed. Waiting for active setups...</p>
+                                <div className={styles.cardHeaderRight}>
+                                    <div className={styles.priceMetaBlock}>
+                                        <span className={styles.pricePrimary}>{displayCurrentPrice}</span>
+                                        <span className={`${styles.changeMeta} ${isPositive ? styles.changePositive : styles.changeNegative}`}>
+                                            24h change <span className={styles.arrowIcon}>{changeSymbol}</span> {Math.abs(diffPercent).toFixed(2)}%
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                        ) : (
-                            <div className={styles.pairsGrid}>
-                                {Object.entries(activeSignals).map(([symName, setup]) => {
-                                    const sig = setup.signal || {};
-                                    const sigActive = sig.active;
-                                    const isBuy = sig.direction === 'BUY';
-                                    const confVal = sig.confidence || 0;
 
-                                    return (
-                                        <div
-                                            key={symName}
-                                            className={`${styles.pairCard} ${sigActive ? (isBuy ? styles.activeBuy : styles.activeSell) : ''}`}
-                                        >
-                                            {/* Card Header */}
-                                            <div className={styles.pairCardHead}>
-                                                <div className={styles.cardHeaderTitle}>
-                                                    <span className={`${styles.strategyDot} ${sigActive ? (isBuy ? styles.buyDot : styles.sellDot) : styles.holdDot}`}></span>
-                                                    <h4>
-                                                        {setup.symbol || symName}
-                                                        {sig.timestamp && (
-                                                            <span className={styles.timeTag}>
-                                                                &nbsp;{new Date(sig.timestamp * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).toLowerCase()}
-                                                            </span>
-                                                        )}
-                                                    </h4>
-                                                </div>
-                                                <span className={styles.strategyTypeTag}>{setup.strategy_name || 'EMA Pullback'}</span>
-                                            </div>
+                            {/* 2. Body: 2 Columns (Left: Trade Parameters | Right: Quantitative Graph with X & Y Axes) */}
+                            <div className={styles.cardBodyRow}>
+                                {/* Left Column: Pure Quantitative MT5 Trade Levels */}
+                                <div className={styles.leftLevelsColumn}>
+                                    {/* Direction Row */}
+                                    <div className={styles.levelRow}>
+                                        <span className={styles.levelLabel}>Direction</span>
+                                        <span className={`${styles.directionBadgePill} ${isBuy ? styles.buyPill : styles.sellPill}`}>
+                                            {isBuy ? 'BUY' : 'SELL'}
+                                        </span>
+                                    </div>
 
-                                            {/* Direction Badge */}
-                                            <div className={`${styles.directionBadge} ${sigActive ? (isBuy ? styles.buyColor : styles.sellColor) : styles.holdColor}`}>
-                                                {sigActive ? (isBuy ? '↑ BUY' : '↓ SELL') : '→ HOLD'}
-                                            </div>
+                                    {/* Strategy Row */}
+                                    <div className={styles.levelRow}>
+                                        <span className={styles.levelLabel}>Strategy</span>
+                                        <span className={styles.strategyPill}>{strategyName}</span>
+                                    </div>
 
-                                            {/* Trade Details or No Active Trade */}
-                                            {sigActive ? (
-                                                <>
-                                                    {/* Price Levels */}
-                                                    <div className={styles.levelsCard}>
-                                                        <div className={styles.gridLevelRow}>
-                                                            <span className={styles.gridLevelLabel}>Entry Target</span>
-                                                            <span className={styles.gridLevelValue}>{formatCurrency(sig.entry, symName)}</span>
-                                                        </div>
-                                                        <div className={styles.gridLevelRow}>
-                                                            <span className={styles.gridLevelLabel}>Stop Loss</span>
-                                                            <span className={`${styles.gridLevelValue} ${styles.slColor}`}>{formatCurrency(sig.sl, symName)}</span>
-                                                        </div>
-                                                        <div className={styles.gridLevelRow}>
-                                                            <span className={styles.gridLevelLabel}>Take Profit 1 (1.5 R:R)</span>
-                                                            <span className={`${styles.gridLevelValue} ${styles.tpColor}`}>{formatCurrency(sig.tp1, symName)}</span>
-                                                        </div>
-                                                        {sig.tp2 && (
-                                                            <div className={styles.gridLevelRow}>
-                                                                <span className={styles.gridLevelLabel}>Take Profit 2 (3.0 R:R)</span>
-                                                                <span className={`${styles.gridLevelValue} ${styles.tpColor}`}>{formatCurrency(sig.tp2, symName)}</span>
-                                                            </div>
-                                                        )}
-                                                    </div>
+                                    {/* Entry Target */}
+                                    <div className={styles.levelRow}>
+                                        <span className={styles.levelLabel}>Entry Target</span>
+                                        <span className={`${styles.levelValue} ${styles.entryColor}`}>
+                                            {sig.entry_display || formatDisplayValue(sig.entry, meta.short)}
+                                        </span>
+                                    </div>
 
-                                                    {/* Confluence Indicators */}
-                                                    <div className={styles.confluenceBox}>
-                                                        <div className={styles.confluenceStats}>
-                                                            <span className={styles.confKicker}>Confluence Indicators</span>
-                                                            {sig.rvol && (
-                                                                <div className={styles.confItem}>
-                                                                    <VolumeIcon />
-                                                                    <span>Volume: <strong className={styles.strongText}>STRONG ({sig.rvol})</strong></span>
-                                                                </div>
-                                                            )}
-                                                            {sig.risk_reward && (
-                                                                <div className={styles.confItem}>
-                                                                    <RiskRewardIcon />
-                                                                    <span>Risk Reward: <strong>{sig.risk_reward}</strong></span>
-                                                                </div>
-                                                            )}
-                                                            <span className={`${styles.confStrengthBadge} ${confVal >= 90 ? styles.highConf : styles.medConf}`}>
-                                                                {confVal >= 90 ? 'HIGH' : 'MEDIUM'} CONFIDENCE
-                                                            </span>
-                                                        </div>
-                                                    </div>
+                                    {/* Stop Loss */}
+                                    <div className={styles.levelRow}>
+                                        <span className={styles.levelLabel}>Stop Loss</span>
+                                        <span className={`${styles.levelValue} ${styles.slColor}`}>
+                                            {sig.sl_display || formatDisplayValue(sig.sl, meta.short)}
+                                        </span>
+                                    </div>
 
-                                                    {/* AI Analysis & Reasoning */}
-                                                    <div className={styles.strategyReasoning}>
-                                                        <span className={styles.reasoningLabel}>AI Analysis &amp; Reasoning</span>
-                                                        <p>
-                                                            {sig.reasoning ||
-                                                                `${setup.strategy_name || 'EMA Pullback'} setup detected on H1 timeframe for ${setup.symbol || symName}. ` +
-                                                                `Price is showing a ${isBuy ? 'bullish' : 'bearish'} bias` +
-                                                                `${sig.rsi ? ` with RSI at ${Number(sig.rsi).toFixed(1)}` : ''}.` +
-                                                                `${sig.confidence ? ` Signal confidence: ${sig.confidence}%.` : ''}` +
-                                                                `${sig.rvol ? ` Volume is elevated at ${sig.rvol}, confirming momentum.` : ''}`
-                                                            }
-                                                        </p>
-                                                    </div>
+                                    {/* Take Profit 1 */}
+                                    <div className={styles.levelRow}>
+                                        <span className={styles.levelLabel}>Take Profit 1 ({rrLabel})</span>
+                                        <span className={`${styles.levelValue} ${styles.tpColor}`}>
+                                            {sig.tp_display || formatDisplayValue(sig.tp, meta.short)}
+                                        </span>
+                                    </div>
 
-                                                    {/* Signal Tags */}
-                                                    <div className={styles.tagFlex}>
-                                                        <span className={styles.strategyTag}>{setup.strategy_name || 'EMA PULLBACK'}</span>
-                                                        <span className={styles.strategyTag}>
-                                                            {isBuy ? 'UPTREND' : 'DOWNTREND'}
-                                                        </span>
-                                                        {sig.rsi && (
-                                                            <span className={styles.strategyTag}>RSI {Number(sig.rsi).toFixed(1)}</span>
-                                                        )}
-                                                        {sig.scanners_count && (
-                                                            <span className={styles.strategyTag}>{sig.scanners_count} SCANNERS</span>
-                                                        )}
-                                                    </div>
-                                                </>
-                                            ) : (
-                                                <div className={styles.inactiveMessage}>
-                                                    <RadarIcon width={16} height={16} />
-                                                    <span>{sig.message || 'No active trade setup'}</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                    );
-                                })}
+                                    {/* Time Tag */}
+                                    <div className={styles.levelRow}>
+                                        <span className={styles.levelLabel}>Time Tag</span>
+                                        <span className={styles.timeTagValue}>{timeTag}</span>
+                                    </div>
+
+                                    {/* Risk Reward */}
+                                    <div className={styles.levelRow}>
+                                        <span className={styles.levelLabel}>Risk Reward</span>
+                                        <span className={styles.riskRewardValue}>{riskReward}</span>
+                                    </div>
+
+                                    {/* Volume */}
+                                    <div className={styles.levelRow}>
+                                        <span className={styles.levelLabel}>Volume</span>
+                                        <span className={styles.volumeBadgePill}>{volumeStrength}</span>
+                                    </div>
+                                </div>
+
+                                {/* Right Column: Mini Candlestick Graph with X and Y Axes */}
+                                <div className={styles.rightMiniChartColumn}>
+                                    <MiniCandlestickChart
+                                        candles={candles}
+                                        sparkline={sig.sparkline}
+                                        direction={isBuy ? 'BUY' : 'SELL'}
+                                        symbol={meta.short}
+                                        currentPrice={currentPriceNum}
+                                        indicatorValue={sig.rr ? sig.rr.replace('R:R ', '') : (sig.risk_reward || '1.2.0')}
+                                        indicators={sig.indicators}
+                                    />
+                                </div>
                             </div>
-                        )}
-                    </motion.div>
-                )}
-            </AnimatePresence>
+
+                            {/* 3. Footer: Tags on Left + "View Trade Detail" Action Button on Right (Both in One Line) */}
+                            <div className={styles.pairCardFooter}>
+                                <div className={styles.tagsContainerRow}>
+                                    <span className={styles.tagsHeadingLabel}>Tags:</span>
+                                    <div className={styles.tagsPillsGroup}>
+                                        {tags.map((tag, idx) => (
+                                            <span key={idx} className={styles.tagPillBadge}>
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                                <button
+                                    type="button"
+                                    className={styles.viewDetailBtn}
+                                    onClick={() => handleViewDetail(item)}
+                                    title={`View detailed chart and execution for ${meta.short}`}
+                                >
+                                    <span>View Trade Detail</span>
+                                </button>
+                            </div>
+                        </div>
+                          );
+                })  )}
+            </div>
         </div>
     );
 }

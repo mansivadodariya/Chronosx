@@ -33,7 +33,7 @@ export default function ProfileRightSidebar({
                 {/* Real Dynamic Credits Box */}
                 <div className={styles.creditsCardBox}>
                     <div className={styles.creditsHead}>
-                        <span className={styles.creditsLabel}>{t('topbar.credits', 'Available Credits')}</span>
+                        <span className={styles.creditsLabel}>{t('topbar.credits', 'credits')}</span>
                         {canViewPlans() && (
                             <button type="button" onClick={() => router.push('/plans')} className={styles.viewPlansBtn}>
                                 {t('sidebar.proAccount', 'View Plans')} →
@@ -44,7 +44,7 @@ export default function ProfileRightSidebar({
                     <div className={styles.creditsValueRow}>
                         <div className={styles.creditsNumbers}>
                             <h3 className={styles.creditsAmount}>
-                                {credits} <span>{t('topbar.credits', 'Credits')}</span>
+                                {credits} <span>{t('topbar.credits', 'credits')}</span>
                             </h3>
                         </div>
                     </div>
@@ -80,15 +80,6 @@ export default function ProfileRightSidebar({
                         <span>Change Password</span>
                     </button>
 
-                    {canViewPlans() && (
-                        <button type="button" className={styles.actionGridBtn} onClick={() => router.push('/plans')}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2">
-                                <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14v2H5v-2z" />
-                            </svg>
-                            <span>Subscription Plans</span>
-                        </button>
-                    )}
-
                     <button type="button" className={styles.actionGridBtn} onClick={() => setActiveTab('credit_history')}>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2">
                             <rect x="2" y="5" width="20" height="14" rx="2" />
@@ -102,19 +93,40 @@ export default function ProfileRightSidebar({
                             <circle cx="12" cy="12" r="10" />
                             <polyline points="12 6 12 12 16 14" />
                         </svg>
-                        <span>Recent Activity</span>
+                        <span>Activity Log</span>
                     </button>
-                </div>
 
-                <div className={styles.logoutActionWrap}>
-                    <button type="button" className={styles.logoutBtn} onClick={() => setShowLogoutConfirm(true)}>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <button type="button" className={styles.actionGridBtn} onClick={() => setActiveTab('profile')}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                        </svg>
+                        <span>Edit Profile</span>
+                    </button>
+
+                    <button type="button" className={`${styles.actionGridBtn}`} onClick={() => setShowLogoutConfirm(true)}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                             <polyline points="16 17 21 12 16 7" />
                             <line x1="21" y1="12" x2="9" y2="12" />
                         </svg>
-                        <span>Sign Out of Account</span>
+                        <span>Log Out</span>
                     </button>
+                </div>
+            </div>
+
+            {/* Security Priority Banner */}
+            <div className={styles.securityPriorityCard}>
+                <div className={styles.securityPriorityLeft}>
+                    <div className={styles.secShieldIcon}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                    </div>
+                    <div className={styles.secPriorityTexts}>
+                        <h5>Your security is our priority</h5>
+                        <p>We use bank-level encryption to protect your data.</p>
+                    </div>
                 </div>
             </div>
         </div>

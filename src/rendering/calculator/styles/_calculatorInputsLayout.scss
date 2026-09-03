@@ -1,7 +1,7 @@
 .calculatorContainer {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 24px 20px 48px;
+    padding: 14px 16px 36px;
     color: #FFFFFF;
     font-family: "Euclid-Regular", sans-serif;
     width: 100%;
@@ -22,7 +22,7 @@
 
 // Hero Title Banner
 .heroHeader {
-    margin-bottom: 28px;
+    margin-bottom: 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -157,7 +157,7 @@
     background: #08080B;
     border: 1px solid rgba(24, 201, 139, 0.22);
     border-radius: 9999px;
-    margin-bottom: 28px;
+    margin-bottom: 14px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;

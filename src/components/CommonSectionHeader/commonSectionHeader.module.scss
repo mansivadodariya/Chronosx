@@ -1,0 +1,188 @@
+/* ============================================================
+   CHRONOSX COMMON SECTION HEADER
+   Unified signature emerald hologram header (Compact & Sleek)
+   ============================================================ */
+
+.sectionHeaderCard {
+    background: 
+        radial-gradient(ellipse 25% 85% at 0% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
+        radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.12) 0%, rgba(110, 231, 183, 0.05) 50%, transparent 70%),
+        radial-gradient(ellipse 25% 85% at 100% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
+        #121514;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(24, 201, 139, 0.22);
+    position: relative;
+    overflow: hidden;
+    padding: 13px 20px;
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;   
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 10%;
+        right: 10%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent 0%, rgba(24, 201, 139, 0.7) 50%, transparent 100%);
+        pointer-events: none;
+    }
+
+    &:hover {
+        border-color: rgba(24, 201, 139, 0.35);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 16px rgba(24, 201, 139, 0.08);
+    }
+
+    &.inlineHeader {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        border-radius: 0;
+        margin-bottom: 0;
+        &::before {
+            display: none;
+        }
+    }
+}
+
+.headerTopRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.badgePill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(24, 201, 139, 0.12);
+    border: 1px solid rgba(24, 201, 139, 0.32);
+    color: #18C98B;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2.5px 9px;
+    border-radius: 99px;
+    width: fit-content;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+
+    .badgeIconWrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #18C98B;
+        font-size: 11px;
+        line-height: 1;
+
+        svg {
+            display: block;
+        }
+    }
+}
+
+.rightActions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.headerMainRow {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.textGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 240px;
+}
+
+.headline {
+    color: #FFFFFF;
+    font-size: 19px;
+    font-weight: 700;
+    font-family: "Euclid-Bold", sans-serif;
+    margin: 0;
+    line-height: 1.22;
+    letter-spacing: -0.01em;
+
+    @media (max-width: 640px) {
+        font-size: 17px;
+    }
+
+    .highlight {
+        color: #18C98B;
+    }
+
+    .emoji {
+        font-size: 18px;
+        margin-left: 5px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+.subtitle {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 11.8px;
+    line-height: 1.38;
+    margin: 0;
+    max-width: 720px;
+}
+
+/* Tabs Bar */
+.tabBar {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(24, 201, 139, 0.2);
+    border-radius: 8px;
+    padding: 2px;
+    flex-shrink: 0;
+
+    @media (max-width: 640px) {
+        width: 100%;
+        overflow-x: auto;
+    }
+}
+
+.tabBtn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.16s ease;
+    white-space: nowrap;
+    outline: none;
+
+    &:hover {
+        color: #FFFFFF;
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    &.activeTab {
+        background: #18C98B;
+        color: #040605;
+        font-weight: 700;
+        box-shadow: 0 2px 8px rgba(24, 201, 139, 0.35);
+    }
+}

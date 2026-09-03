@@ -1,5 +1,6 @@
 'use client';
 
+import CommonSectionHeader from '@/components/CommonSectionHeader';
 import React, { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -246,25 +247,19 @@ export default function SubscriptionPlansView() {
 
             <div className="container">
                 {/* 1. Header Section */}
-                <motion.div 
-                    className={styles.headerSection}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                >
-                    <div className={styles.eyebrowBadge}>
-                        <span className={styles.pulseDot} />
-                        <span>CHRONOSX PRICING TIERS</span>
-                    </div>
-
-                    <h1 {...getBidiProps(t('plans.mainTitle', 'Institutional AI Trading Intelligence'), styles.title)}>
-                        Institutional AI Power, <span className={styles.goldGradient}>Tailored For Your Edge</span>
-                    </h1>
-
-                    <p className={styles.subtitle}>
-                        {t('plans.subtitle', 'Unlock sub-second AI pattern recognition, live multi-timeframe scans, and automated quant strategy backtesting.')}
-                    </p>
-                </motion.div>
+                <CommonSectionHeader
+                    badge="CHRONOSX PRICING TIERS"
+                    badgeIcon={
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5">
+                            <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z" fill="#18C98B" fillOpacity="0.25" />
+                            <circle cx="12" cy="19" r="1.5" fill="#18C98B" />
+                        </svg>
+                    }
+                    title="Institutional AI Power,"
+                    highlightText="Tailored For Your Edge"
+                    subtitle={t('plans.subtitle', 'Unlock sub-second AI pattern recognition, live multi-timeframe scans, and automated quant strategy backtesting.')}
+                    isCard={true}
+                />
 
                 {/* 2. Pricing Plans Grid */}
                 {loading ? (

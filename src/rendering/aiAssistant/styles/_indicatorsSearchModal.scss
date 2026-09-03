@@ -346,6 +346,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+        gap: 2px;
 }
 
 .indicatorListItemRow {
@@ -358,9 +359,11 @@
     cursor: pointer;
     transition: all 0.12s ease;
     user-select: none;
+    border-radius: 0 !important;
 
     &:hover {
         background: rgba(24, 201, 139, 0.12);
+        border-radius: 0 !important;
 
         .indicatorRowName {
             color: #18C98B;
@@ -368,27 +371,10 @@
     }
 
     &.indicatorRowActive {
-        background: rgba(24, 201, 139, 0.07);
-    }
-
-    .rowLeftContent {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .indicatorRowName {
-        font-size: 13.5px;
-        font-weight: 500;
-        color: #ffffff;
-        letter-spacing: -0.01em;
-        transition: color 0.12s ease;
-    }
-
-    &.indicatorRowActive {
         background: rgba(24, 201, 139, 0.22) !important;
         border-left: 3px solid #18C98B;
         padding-left: 17px;
+        border-radius: 0 !important;
 
         .indicatorRowName {
             color: #18C98B !important;
@@ -398,6 +384,14 @@
         .indicatorCategoryTag {
             color: #18C98B !important;
         }
+    }
+
+    .indicatorRowName {
+        font-size: 13.5px;
+        font-weight: 500;
+        color: #ffffff;
+        letter-spacing: -0.01em;
+        transition: color 0.12s ease;
     }
 
     .rowLeftContent {

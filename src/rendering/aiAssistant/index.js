@@ -559,9 +559,7 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
                 <div className={styles.chatSingleBody} data-lenis-prevent="true">
                     <div className={styles.chatCard} data-lenis-prevent="true">
                         <div className={`${styles.chatHeader} ${chatWidthPercent <= 42 ? styles.compactHeader : ''}`}>
-                            <div className={styles.avatar}>
-                                <img src={Logo} alt='logo' />
-                            </div>
+                         
                             <div className={styles.headerInfo}>
                                 <h3>{t('aiAssistant.copilotTitle', 'ChronosX Copilot')}</h3>
                                 <span>{t('aiAssistant.activePair', 'Active Pair')}: {selectedPair}</span>

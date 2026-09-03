@@ -306,7 +306,22 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
                     chart.applyOptions({ width: r.width, height: r.height });
                 }
             }
-            chart.timeScale().fitContent();
+
+            // Set default initial zoom to ~75 visible bars (matching focused view)
+            const totalBars = candleData.length;
+            if (totalBars > 0) {
+                const visibleBars = Math.min(totalBars, 75);
+                chart.timeScale().applyOptions({
+                    barSpacing: 14,
+                    rightOffset: 8,
+                });
+                chart.timeScale().setVisibleLogicalRange({
+                    from: totalBars - visibleBars,
+                    to: totalBars + 4,
+                });
+            } else {
+                chart.timeScale().fitContent();
+            }
 
         } catch (err) {
             console.error('Error rendering candles:', err);
@@ -330,28 +345,48 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
             height: initialHeight,
             layout: {
                 background: { type: 'solid', color: 'transparent' },
-                textColor: isLight ? '#334155' : '#18C98B',
+                textColor: isLight ? '#475569' : '#94A3B8',
                 fontSize: 11,
                 fontFamily: "'Inter', sans-serif",
                 attributionLogo: false,
             },
             grid: {
-                vertLines: { color: isLight ? 'rgba(24, 201, 139, 0.08)' : 'rgba(24, 201, 139, 0.1)' },
-                horzLines: { color: isLight ? 'rgba(24, 201, 139, 0.08)' : 'rgba(24, 201, 139, 0.1)' },
+                vertLines: { color: isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)' },
+                horzLines: { color: isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)' },
             },
             crosshair: {
                 vertLine: { color: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)', width: 1 },
                 horzLine: { color: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)', width: 1 },
             },
+            handleScroll: {
+                mouseWheel: false,
+                pressedMouseMove: true,
+                horzTouchDrag: true,
+                vertTouchDrag: false,
+            },
+            handleScale: {
+                axisPressedMouseMove: {
+                    time: true,
+                    price: true,
+                },
+                axisDoubleClickReset: {
+                    time: true,
+                    price: true,
+                },
+                mouseWheel: false,
+                pinch: true,
+            },
             timeScale: {
-                borderColor: isLight ? 'rgba(24, 201, 139, 0.2)' : 'rgba(24, 201, 139, 0.25)',
+                borderColor: isLight ? '#cbd5e1' : 'rgba(255, 255, 255, 0.12)',
                 timeVisible: true,
                 secondsVisible: false,
-                rightOffset: 10,
-                barSpacing: 8,
+                rightOffset: 8,
+                barSpacing: 14,
+                minBarSpacing: 2,
+                rightBarStaysOnScroll: true,
             },
             rightPriceScale: {
-                borderColor: isLight ? 'rgba(24, 201, 139, 0.2)' : 'rgba(24, 201, 139, 0.25)',
+                borderColor: isLight ? '#cbd5e1' : 'rgba(255, 255, 255, 0.12)',
                 scaleMargins: { top: 0.05, bottom: 0.04 },
             },
         });
@@ -496,9 +531,39 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
             }
         });
 
+        const containerEl = containerRef.current;
+        const handleWheelZoom = (e) => {
+            if (e.cancelable) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            if (!chartRef.current?.chart) return;
+            const timeScale = chartRef.current.chart.timeScale();
+            const currentSpacing = timeScale.options().barSpacing || 14;
+
+            // Wheel UP (e.deltaY < 0) -> Zoom IN (increase candle width)
+            // Wheel DOWN (e.deltaY > 0) -> Zoom OUT (decrease candle width)
+            const zoomIn = e.deltaY < 0;
+            const zoomMultiplier = zoomIn ? 1.15 : 0.87;
+            const nextSpacing = Math.max(2, Math.min(80, currentSpacing * zoomMultiplier));
+
+            timeScale.applyOptions({
+                barSpacing: nextSpacing,
+                rightBarStaysOnScroll: true,
+            });
+        };
+
+        if (containerEl) {
+            containerEl.addEventListener('wheel', handleWheelZoom, { passive: false });
+        }
+
         fetchAndPlotData();
 
         return () => {
+            if (containerEl) {
+                containerEl.removeEventListener('wheel', handleWheelZoom);
+            }
             if (resizeObserver) resizeObserver.disconnect();
             window.removeEventListener('resize', handleResize);
             chart.remove();

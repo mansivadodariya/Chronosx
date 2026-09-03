@@ -1,15 +1,17 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { unifiedSocket, cleanPairSymbol } from '@/lib/unifiedSocket';
 
 /**
  * LandingPageLiveCard
- * Connects the Landing Page AI Live Feed card to the live WebSocket backend with
+ * Connects the Landing Page AI Live Feed card to the Unified MT5 Live WebSocket with
  * smooth flash glow animations and automatic reconnection.
- * WebSocket Endpoint: /api/v1/websocket/live-price?symbol={symbol}
+ * WebSocket Endpoint: /api/v1/ws/live?symbol={symbol}
  */
 export const LandingPageLiveCard = ({ symbol = 'XAUUSD', className = '' }) => {
-    const cleanSymbol = (symbol || 'XAUUSD').replace(/[^A-Z0-9]/gi, '').toUpperCase();
+    const cleanSymbol = cleanPairSymbol(symbol);
 
     const [price, setPrice] = useState(null);
     const [bid, setBid] = useState(null);
@@ -18,92 +20,49 @@ export const LandingPageLiveCard = ({ symbol = 'XAUUSD', className = '' }) => {
     const [lastUpdated, setLastUpdated] = useState('SYNCING');
     const [isConnected, setIsConnected] = useState(false);
     const [flashColor, setFlashColor] = useState('transparent');
-    const reconnectTimeoutRef = useRef(null);
 
     useEffect(() => {
         let isMounted = true;
-        let ws = null;
 
-        const protocol = typeof window !== 'undefined' && window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL;
-        let host = 'overbook-cognitive-platonic.ngrok-free.dev';
-
-        if (backendUrl) {
-            host = backendUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '');
-        } else if (typeof window !== 'undefined' && window.location.host) {
-            host = window.location.host;
-        }
-
-        const wsUrl = `${protocol}//${host}/api/v1/websocket/live-price?symbol=${cleanSymbol}`;
-
-        const connect = () => {
-            try {
-                ws = new WebSocket(wsUrl);
-
-                ws.onopen = () => {
-                    if (isMounted) setIsConnected(true);
-                };
-
-                ws.onmessage = (event) => {
-                    try {
-                        const payload = JSON.parse(event.data);
-                        if ((payload.type === 'price_update' || payload.price !== undefined) && isMounted) {
-                            const newPrice = parseFloat(payload.price);
-                            if (!isNaN(newPrice)) {
-                                setPrice((prevPrice) => {
-                                    if (prevPrice !== null && prevPrice !== undefined) {
-                                        if (newPrice > prevPrice) {
-                                            setFlashColor('rgba(0, 230, 118, 0.2)');
-                                        } else if (newPrice < prevPrice) {
-                                            setFlashColor('rgba(255, 82, 82, 0.2)');
-                                        }
-                                        setTimeout(() => {
-                                            if (isMounted) setFlashColor('transparent');
-                                        }, 400);
-                                    }
-                                    return newPrice;
-                                });
-                            }
-
-                            if (payload.bid !== undefined) setBid(parseFloat(payload.bid));
-                            if (payload.ask !== undefined) setAsk(parseFloat(payload.ask));
-
-                            const cp = payload.change_percent !== undefined
-                                ? parseFloat(payload.change_percent)
-                                : (payload.changePercent !== undefined ? parseFloat(payload.changePercent) : 0);
-                            setChangePct(cp);
-                            setLastUpdated('JUST NOW');
-                        }
-                    } catch (err) {
-                        console.error('Parse Error:', err);
-                    }
-                };
-
-                ws.onerror = () => {
-                    if (isMounted) setIsConnected(false);
-                };
-
-                ws.onclose = () => {
-                    if (isMounted) {
-                        setIsConnected(false);
-                        reconnectTimeoutRef.current = setTimeout(connect, 3000);
-                    }
-                };
-            } catch (e) {
-                if (isMounted) setIsConnected(false);
+        const unsubscribeStatus = unifiedSocket.subscribeStatus((status) => {
+            if (isMounted) {
+                setIsConnected(status === 'connected');
             }
-        };
+        });
 
-        connect();
+        const unsubscribePrice = unifiedSocket.subscribePrice((payload) => {
+            if (!isMounted) return;
+            const newPrice = parseFloat(payload.price);
+            if (!isNaN(newPrice)) {
+                setPrice((prevPrice) => {
+                    if (prevPrice !== null && prevPrice !== undefined) {
+                        if (newPrice > prevPrice) {
+                            setFlashColor('rgba(0, 230, 118, 0.2)');
+                        } else if (newPrice < prevPrice) {
+                            setFlashColor('rgba(255, 82, 82, 0.2)');
+                        }
+                        setTimeout(() => {
+                            if (isMounted) setFlashColor('transparent');
+                        }, 400);
+                    }
+                    return newPrice;
+                });
+            }
+
+            if (payload.bid !== undefined) setBid(parseFloat(payload.bid));
+            if (payload.ask !== undefined) setAsk(parseFloat(payload.ask));
+
+            const cp = payload.change_percent !== undefined
+                ? parseFloat(payload.change_percent)
+                : 0;
+            setChangePct(cp);
+            setLastUpdated('JUST NOW');
+        }, cleanSymbol);
 
         return () => {
             isMounted = false;
-            if (reconnectTimeoutRef.current) {
-                clearTimeout(reconnectTimeoutRef.current);
-            }
-            if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
-                ws.close();
-            }
+            unsubscribeStatus();
+            unsubscribePrice();
         };
     }, [cleanSymbol]);
 

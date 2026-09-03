@@ -1,4 +1,7 @@
-/* Strategy Tab layout */
+/* ============================================================
+   CHRONOSX AI STRATEGY GENERATOR (DARK GLASSMORPHISM)
+   ============================================================ */
+
 .tabContent {
     flex: 1;
     min-height: 0;
@@ -7,419 +10,519 @@
 }
 
 .strategyAccordion {
-    background: #040605;
-    border: 1px solid rgba(24, 201, 139, 0.3);
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    width: 100%;
+}
 
-    .accordionTrigger {
-        width: 100%;
+/* Header bar with Live Status indicator */
+.strategyControlBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px 18px;
+    margin-bottom: 8px;
+
+    .controlTitleGroup {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 16px 20px;
-        background: #0D0E13;
-        border: none;
-        cursor: pointer;
-        transition: background 0.2s ease;
         gap: 12px;
 
-        @include respond-to('md') {
-            padding: 14px 16px;
+        .strategyPulseDot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 10px #10B981;
         }
 
-        @include respond-to('sm') {
-            padding: 12px 14px;
-            gap: 10px;
+        h3 {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 700;
+            color: #FFFFFF;
+            font-family: "Euclid-Bold", sans-serif;
+            letter-spacing: -0.01em;
+        }
+    }
+
+    .wsStatusIndicator {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11.5px;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 20px;
+        border: 1px solid transparent;
+
+        &.connected {
+            color: #34D399;
+            background: rgba(52, 211, 153, 0.1);
+            border-color: rgba(52, 211, 153, 0.3);
+            box-shadow: 0 0 10px rgba(52, 211, 153, 0.15);
         }
 
-        &:hover {
-            background: rgba(22, 23, 31, 0.95);
+        &.connecting {
+            color: #60A5FA;
+            background: rgba(96, 165, 250, 0.1);
+            border-color: rgba(96, 165, 250, 0.3);
         }
 
-        &.accordionOpen {
-            background: rgba(18, 17, 13, 0.95);
-            border-bottom: 1px solid rgba(24, 201, 139, 0.2);
-        }
-
-        .accordionLeft {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-            .accordionTitle {
-                font-size: 15px;
-                font-weight: 700;
-                color: #FFFFFF;
-                font-family: "Euclid-Bold", sans-serif;
-            }
-
-            .accordionBadge {
-                background: rgba(24, 201, 139, 0.15);
-                border: 1px solid rgba(24, 201, 139, 0.35);
-                color: #18C98B;
-                font-size: 11px;
-                font-weight: 700;
-                padding: 2px 8px;
-                border-radius: 99px;
-            }
-        }
-
-        .accordionRight {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-            .accordionWsBadge {
-                font-size: 11px;
-                font-weight: 700;
-                padding: 3px 10px;
-                border-radius: 20px;
-                border: 1px solid transparent;
-
-                &.connected {
-                    color: #34D399;
-                    background: rgba(52, 211, 153, 0.1);
-                    border-color: rgba(52, 211, 153, 0.3);
-                }
-
-                &.connecting {
-                    color: #60A5FA;
-                    background: rgba(96, 165, 250, 0.1);
-                    border-color: rgba(96, 165, 250, 0.3);
-                }
-
-                &.disconnected {
-                    color: rgba(255, 255, 255, 0.45);
-                    background: rgba(255, 255, 255, 0.05);
-                    border-color: rgba(255, 255, 255, 0.1);
-                }
-            }
-
-            .dropdownArrow {
-                color: #18C98B;
-                font-size: 11px;
-                transition: transform 0.2s ease;
-
-                &.open {
-                    transform: rotate(180deg);
-                }
-            }
+        &.disconnected {
+            color: rgba(255, 255, 255, 0.45);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
         }
     }
 }
 
-/* Strategy dot indicators */
-.strategyDot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-
-    &.buyDot {
-        background: #34D399;
-        box-shadow: 0 0 6px rgba(52, 211, 153, 0.6);
-    }
-
-    &.sellDot {
-        background: #F87171;
-        box-shadow: 0 0 6px rgba(248, 113, 113, 0.6);
-    }
-
-    &.holdDot {
-        background: rgba(255, 255, 255, 0.3);
-    }
-}
-
-/* Pairs Responsive 3-Column Grid */
+/* Strategy Grid: 2 Boxes per Line (Spacious UI) */
 .pairsGrid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    padding: 16px;
-
-    @include respond-to('lg') {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    padding: 0 8px 36px;
 
     @include respond-to('md') {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
-        padding: 14px;
+        grid-template-columns: 1fr;
+        gap: 16px;
     }
 
     @include respond-to('sm') {
         grid-template-columns: 1fr;
-        gap: 12px;
-        padding: 12px;
+        gap: 14px;
+        padding: 0 4px 24px;
     }
 }
 
-/* Individual Pair Card */
+/* Individual Strategy Pair Card (Directional Left Accent Border & Spacious Layout) */
 .pairCard {
-    background: #0D0E13;
-    border: 1px solid rgba(24, 201, 139, 0.25);
-    border-radius: 12px;
-    padding: 16px;
+    background: radial-gradient(circle at 20% 0%, rgba(14, 38, 28, 0.5) 0%, rgba(7, 13, 11, 0.96) 80%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 16px;
+    border: 1px solid rgba(24, 201, 139, 0.16);
+    padding: 20px 22px 18px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    justify-content: space-between;
+    gap: 14px;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
 
-    &:hover {
-        transform: translateY(-2px);
-        border-color: rgba(24, 201, 139, 0.5);
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
-    }
-
+    /* Buy Card: Directional Green Accent Border on Left Edge */
     &.activeBuy {
-        border-left: 4px solid #34D399;
-        box-shadow: 0 4px 16px rgba(52, 211, 153, 0.15);
+        border-color: rgba(24, 201, 139, 0.16);
+        border-left: 4px solid #10B981;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), -3px 0 16px rgba(16, 185, 129, 0.22);
+
+        &:hover {
+            border-color: rgba(24, 201, 139, 0.3);
+            border-left: 4px solid #34D399;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75), -5px 0 22px rgba(16, 185, 129, 0.35);
+            transform: translateY(-2px);
+        }
     }
 
+    /* Sell Card: Directional Red Accent Border on Left Edge */
     &.activeSell {
-        border-left: 4px solid #F87171;
-        box-shadow: 0 4px 16px rgba(248, 113, 113, 0.15);
+        border-color: rgba(255, 255, 255, 0.08);
+        border-left: 4px solid #EF4444;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), -3px 0 16px rgba(239, 68, 68, 0.22);
+
+        &:hover {
+            border-color: rgba(255, 255, 255, 0.14);
+            border-left: 4px solid #F87171;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75), -5px 0 22px rgba(239, 68, 68, 0.35);
+            transform: translateY(-2px);
+        }
     }
 
+    /* 1. Header: Full Pair Title (Left) + Price & 24h Change (Right) */
     .pairCardHead {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
-        gap: 8px;
+        gap: 12px;
 
-        .cardHeaderTitle {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .cardHeaderLeft {
+            flex: 1;
+            min-width: 0;
 
-            h4 {
+            .cardPairTitle {
                 color: #FFFFFF;
                 font-size: 15px;
                 font-weight: 700;
                 font-family: "Euclid-Bold", sans-serif;
                 margin: 0;
+                line-height: 1.35;
                 display: flex;
                 align-items: center;
+                flex-wrap: wrap;
+                gap: 5px;
 
-                .timeTag {
-                    font-size: 11px;
-                    color: rgba(255, 255, 255, 0.45);
-                    font-weight: normal;
-                }
-            }
-        }
-
-        .strategyTypeTag {
-            background: rgba(24, 201, 139, 0.12);
-            border: 1px solid rgba(24, 201, 139, 0.3);
-            color: #18C98B;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 6px;
-        }
-    }
-
-    .directionBadge {
-        font-size: 11.5px;
-        font-weight: 700;
-        padding: 4px 10px;
-        border-radius: 6px;
-        width: fit-content;
-
-        &.buyColor {
-            color: #34D399;
-            background: rgba(52, 211, 153, 0.12);
-            border: 1px solid rgba(52, 211, 153, 0.3);
-        }
-
-        &.sellColor {
-            color: #F87171;
-            background: rgba(248, 113, 113, 0.12);
-            border: 1px solid rgba(248, 113, 113, 0.3);
-        }
-
-        &.holdColor {
-            color: rgba(255, 255, 255, 0.6);
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-    }
-
-    .inactiveMessage {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: rgba(255, 255, 255, 0.45);
-        font-size: 12px;
-        padding: 8px 0 4px;
-
-        svg {
-            color: rgba(24, 201, 139, 0.5);
-            flex-shrink: 0;
-        }
-    }
-
-    .levelsCard {
-        background: #080705;
-        border: 1px solid rgba(24, 201, 139, 0.18);
-        border-radius: 8px;
-        padding: 10px 12px;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-
-        .gridLevelRow {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 12px;
-
-            .gridLevelLabel {
-                color: rgba(255, 255, 255, 0.6);
-            }
-
-            .gridLevelValue {
-                color: #FFFFFF;
-                font-weight: 600;
-            }
-
-            .slColor {
-                color: #F87171;
-            }
-
-            .tpColor {
-                color: #34D399;
-            }
-        }
-    }
-
-    .confluenceBox {
-        background: #08110D;
-        border: 1px solid rgba(24, 201, 139, 0.18);
-        border-radius: 8px;
-        padding: 10px 12px;
-
-        .confluenceStats {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-
-            .confKicker {
-                font-size: 10.5px;
-                font-weight: 700;
-                color: rgba(255, 255, 255, 0.5);
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
-
-            .confItem {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                font-size: 11.5px;
-                color: rgba(255, 255, 255, 0.8);
-
-                strong {
+                .pairMainName {
                     color: #FFFFFF;
                 }
 
-                .strongText {
-                    color: #34D399;
+                .pairTicker {
+                    color: #CBD5E1;
+                    font-weight: 600;
+                }
+
+                .marketSeparator {
+                    color: rgba(255, 255, 255, 0.25);
+                    margin: 0 2px;
+                }
+
+                .marketType {
+                    color: #94A3B8;
+                    font-weight: 500;
+                    font-size: 13.5px;
                 }
             }
+        }
 
-            .confStrengthBadge {
-                margin-top: 4px;
-                font-size: 10px;
-                font-weight: 700;
-                padding: 2px 6px;
-                border-radius: 4px;
-                width: fit-content;
+        .cardHeaderRight {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2px;
+            flex-shrink: 0;
 
-                &.highConf {
-                    background: rgba(52, 211, 153, 0.15);
-                    color: #34D399;
+            .priceMetaBlock {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                margin-top: -2px;
+
+                .pricePrimary {
+                    font-size: 19px;
+                    font-weight: 700;
+                    color: #FFFFFF;
+                    font-family: "Euclid-Bold", "Inter", -apple-system, sans-serif;
+                    font-variant-numeric: tabular-nums;
+                    letter-spacing: -0.02em;
+                    line-height: 1.2;
                 }
 
-                &.medConf {
-                    background: rgba(24, 201, 139, 0.15);
-                    color: #18C98B;
+                .changeMeta {
+                    font-size: 11.5px;
+                    font-weight: 600;
+                    font-family: "Euclid-Medium", "Inter", sans-serif;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 3px;
+                    margin-top: 2px;
+
+                    .arrowIcon {
+                        font-size: 8.5px;
+                    }
+
+                    &.changePositive {
+                        color: #10B981;
+                    }
+
+                    &.changeNegative {
+                        color: #EF4444;
+                    }
                 }
             }
         }
     }
 
-    .strategyReasoning {
-        background: #08110D;
-        border: 1px solid rgba(24, 201, 139, 0.18);
+    /* 2. Card Body: 2 Proper Equal/Balanced Parts */
+    .cardBodyRow {
+        display: grid;
+        grid-template-columns: 1fr 1.15fr;
+        align-items: center;
+        gap: 22px;
+        margin: 4px 0 2px;
+
+        @include respond-to('sm') {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        /* Left Column: Pure Quantitative MT5 Trade Levels */
+        .leftLevelsColumn {
+            display: flex;
+            flex-direction: column;
+            gap: 7.5px;
+            min-width: 0;
+
+            .levelRow {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+
+                .levelLabel {
+                    font-size: 13.5px;
+                    color: #94A3B8;
+                    font-weight: 600;
+                    font-family: "Euclid-Medium", "Inter", -apple-system, sans-serif;
+                    white-space: nowrap;
+                    letter-spacing: 0.01em;
+                }
+
+                .levelValue {
+                    font-size: 14.5px;
+                    font-weight: 700;
+                    color: #FFFFFF;
+                    font-family: "Euclid-SemiBold", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                    font-variant-numeric: tabular-nums;
+                    font-feature-settings: "tnum";
+                    letter-spacing: -0.01em;
+
+                    &.entryColor {
+                        color: #F8FAFC;
+                    }
+
+                    &.slColor {
+                        color: #F87171;
+                    }
+
+                    &.tpColor {
+                        color: #34D399;
+                    }
+                }
+
+                .timeTagValue,
+                .riskRewardValue {
+                    font-size: 13.5px;
+                    font-weight: 700;
+                    color: #F8FAFC;
+                    font-family: "Euclid-SemiBold", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                    font-variant-numeric: tabular-nums;
+                    font-feature-settings: "tnum";
+                }
+
+                /* Direction Badge Pill */
+                .directionBadgePill {
+                    font-size: 11.5px;
+                    font-weight: 800;
+                    font-family: "Euclid-Bold", "Inter", sans-serif;
+                    padding: 3px 12px;
+                    border-radius: 99px;
+                    letter-spacing: 0.04em;
+                    display: inline-block;
+
+                    &.buyPill {
+                        background: #10B981;
+                        color: #05080A;
+                        box-shadow: 0 0 12px rgba(16, 185, 129, 0.45);
+                    }
+
+                    &.sellPill {
+                        background: #EF4444;
+                        color: #FFFFFF;
+                        box-shadow: 0 0 12px rgba(239, 68, 68, 0.45);
+                    }
+                }
+
+                /* Strategy Pill */
+                .strategyPill {
+                    background: rgba(24, 201, 139, 0.08);
+                    border: 1px solid rgba(24, 201, 139, 0.32);
+                    color: #CBD5E1;
+                    font-size: 11.5px;
+                    font-weight: 600;
+                    font-family: "Euclid-Medium", "Inter", sans-serif;
+                    padding: 2.5px 10px;
+                    border-radius: 99px;
+                }
+
+                /* Volume Badge Pill */
+                .volumeBadgePill {
+                    font-size: 11px;
+                    font-weight: 700;
+                    font-family: "Euclid-Bold", "Inter", sans-serif;
+                    color: #10B981;
+                    background: rgba(16, 185, 129, 0.08);
+                    border: 1px solid rgba(16, 185, 129, 0.4);
+                    padding: 2.5px 10px;
+                    border-radius: 99px;
+                    letter-spacing: 0.03em;
+                }
+            }
+        }
+
+        /* Right Column: Mini Candlestick Graph (Bigger & Clearer) */
+        .rightMiniChartColumn {
+            width: 100%;
+            height: 195px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-top: -2px;
+
+            @include respond-to('sm') {
+                height: 160px;
+            }
+        }
+    }
+
+    /* 3. Footer: Tags on Left + View Trade Detail Button on Right (Both in One Line) */
+    .pairCardFooter {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding-top: 14px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+        .tagsContainerRow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+
+            .tagsHeadingLabel {
+                font-size: 12.5px;
+                font-weight: 600;
+                color: #94A3B8;
+                font-family: "Euclid-Medium", "Inter", sans-serif;
+                flex-shrink: 0;
+            }
+
+            .tagsPillsGroup {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                flex-wrap: wrap;
+
+                .tagPillBadge {
+                    font-size: 11.5px;
+                    font-weight: 600;
+                    font-family: "Euclid-Medium", "Inter", sans-serif;
+                    color: #E2E8F0;
+                    background: rgba(255, 255, 255, 0.06);
+                    border: 1px solid rgba(255, 255, 255, 0.14);
+                    border-radius: 6px;
+                    padding: 3px 10px;
+                    letter-spacing: 0.02em;
+                    transition: all 0.15s ease;
+
+                    &:hover {
+                        background: rgba(24, 201, 139, 0.14);
+                        border-color: rgba(24, 201, 139, 0.4);
+                        color: #10B981;
+                    }
+                }
+            }
+        }
+
+        .viewDetailBtn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #FFFFFF;
+            background: rgba(24, 201, 139, 0.08);
+            border: 1px solid rgba(24, 201, 139, 0.45);
+            border-radius: 8px;
+            padding: 6px 18px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            outline: none;
+            white-space: nowrap;
+            flex-shrink: 0;
+
+            &:hover {
+                background: rgba(24, 201, 139, 0.22);
+                border-color: #10B981;
+                box-shadow: 0 0 14px rgba(16, 185, 129, 0.35);
+            }
+        }
+    }
+}
+
+/* ============================================================
+   STRATEGY GRID SKELETON LOADING SHIMMER
+   ============================================================ */
+@keyframes strategyCardShimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.strategySkeletonCard {
+    background: radial-gradient(circle at 20% 0%, rgba(14, 38, 28, 0.3) 0%, rgba(7, 13, 11, 0.85) 80%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.07) !important;
+    border-left: 4px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5) !important;
+    min-height: 290px;
+    pointer-events: none;
+
+    .skeletonPulse {
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.03) 25%,
+            rgba(255, 255, 255, 0.09) 50%,
+            rgba(255, 255, 255, 0.03) 75%
+        );
+        background-size: 200% 100%;
+        animation: strategyCardShimmer 1.6s infinite ease-in-out;
+    }
+
+    .stratSkelTitle {
+        width: 190px;
+        height: 18px;
+        border-radius: 4px;
+    }
+
+    .stratSkelPrice {
+        width: 100px;
+        height: 22px;
+        border-radius: 4px;
+    }
+
+    .stratSkelParamRow {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 4px 0;
+
+        .stratSkelParamLabel {
+            width: 75px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .stratSkelParamValue {
+            width: 55px;
+            height: 12px;
+            border-radius: 3px;
+        }
+    }
+
+    .stratSkelChart {
+        width: 100%;
+        height: 155px;
         border-radius: 8px;
-        padding: 10px 12px;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-
-        .reasoningLabel {
-            font-size: 10.5px;
-            font-weight: 700;
-            color: #18C98B;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        p {
-            margin: 0;
-            font-size: 11.5px;
-            line-height: 1.45;
-            color: rgba(255, 255, 255, 0.75);
-        }
     }
 
-    .tagFlex {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin-top: 2px;
-
-        .strategyTag {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 7px;
-            border-radius: 4px;
-            letter-spacing: 0.3px;
-        }
-    }
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes tickGreen {
-    0% {
-        background: rgba(16, 185, 129, 0.3);
+    .stratSkelTag {
+        width: 80px;
+        height: 24px;
+        border-radius: 6px;
     }
 
-    100% {
-        background: #0D0E13;
-    }
-}
-
-@keyframes tickRed {
-    0% {
-        background: rgba(239, 68, 68, 0.3);
-    }
-
-    100% {
-        background: #0D0E13;
+    .stratSkelBtn {
+        width: 130px;
+        height: 32px;
+        border-radius: 6px;
     }
 }
 

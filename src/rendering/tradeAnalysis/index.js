@@ -1,16 +1,16 @@
 'use client';
+
+import CommonSectionHeader from '@/components/CommonSectionHeader';
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import styles from './tradeAnalysis.module.scss';
 import { toast } from '@/components/toast';
-import { analyzeTradesReport, analyzeIndividualTrade, getSampleTradeCsvFile, validateStatementFiles } from '@/lib/tradeAnalyzeApi';
+import { analyzeTradesReport, analyzeIndividualTrade, validateStatementFiles } from '@/lib/tradeAnalyzeApi';
 import TraderScorecard from './TraderScorecard';
 
 import {
-    ScorecardTabIcon,
-    SparklesIcon,
     HistoryIcon,
     formatCurrency
 } from '@/icons/tradeAnalysisIcons';
@@ -22,6 +22,7 @@ import NarrativeReportTab from './components/NarrativeReportTab';
 import SidebarStatsColumn from './components/SidebarStatsColumn';
 import AnalysisHistoryModal from './components/AnalysisHistoryModal';
 import TradeAuditModal from './components/TradeAuditModal';
+import AnalysisLoadingOverlay from './components/AnalysisLoadingOverlay';
 
 export default function TradeAnalysis() {
     const fileInputRef = useRef(null);
@@ -86,13 +87,6 @@ export default function TradeAnalysis() {
         runAnalysis(fileArr);
     };
 
-    const handleLoadSample = () => {
-        setShowHistoryModal(false);
-        const sampleFile = getSampleTradeCsvFile();
-        setFiles([sampleFile]);
-        toast.info('Loaded MEX Atlantic statement.');
-        runAnalysis([sampleFile]);
-    };
 
     const runAnalysis = async (filesToAnalyze = files) => {
         if (!filesToAnalyze || filesToAnalyze.length === 0) {
@@ -381,12 +375,19 @@ export default function TradeAnalysis() {
     return (
         <div className={styles.container}>
             {/* 1. TOP PAGE HEADER WITH HISTORY BUTTON */}
-            <div className={styles.headerBar}>
-                <div className={styles.headerLeft}>
-                    <h1>AI Past Trade Analyzer</h1>
-                    <p>Upload your trade report and get AI-powered insights to improve your trading.</p>
-                </div>
-                <div className={styles.headerRight}>
+            <CommonSectionHeader
+                badge="STATEMENT AUDIT & BEHAVIORAL QUANT"
+                badgeIcon={
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                    </svg>
+                }
+                title="AI Past Trade Analyzer"
+                subtitle="Upload your broker statement (MT4, MT5, cTrader, CSV) to reveal execution leaks, win-rate edge, and psychological biases."
+                isCard={true}
+                rightAction={
                     <button
                         type="button"
                         className={styles.historyBtn}
@@ -395,134 +396,186 @@ export default function TradeAnalysis() {
                         <HistoryIcon />
                         <span>Analysis History</span>
                     </button>
-                </div>
-            </div>
+                }
+            />
 
-            {/* 2. UNANALYZED UPLOAD VIEW */}
-            {!analysisData && (
-                <UploadSection
-                    fileInputRef={fileInputRef}
-                    isDragging={isDragging}
-                    handleDragOver={handleDragOver}
-                    handleDragLeave={handleDragLeave}
-                    handleDrop={handleDrop}
-                    handleFilesSelected={handleFilesSelected}
-                    loading={loading}
-                />
-            )}
+            {/* LOADER OVERLAY WHILE INGESTING & ANALYZING */}
+            <AnimatePresence>
+                {loading && (
+                    <AnalysisLoadingOverlay
+                        file={files && files.length > 0 ? files[0] : null}
+                    />
+                )}
+            </AnimatePresence>
 
-            {/* 3. ANALYSIS RESULTS VIEW WITH UPLOADED REPORT SUCCESS BANNER */}
-            {analysisData && !loading && (
-                <div className={styles.analyzerGrid}>
-                    {/* LEFT MAIN ANALYSIS VIEW */}
-                    <div className={styles.mainColumn}>
-                        {/* UPLOADED REPORT SUCCESS BANNER CARD */}
-                        <ReportSuccessBanner
-                            fileDetails={fileDetails}
-                            totalTradesCount={totalTradesCount}
-                            onViewTrades={() => setActiveTab('ledger')}
-                            onReupload={() => { setAnalysisData(null); setFiles([]); }}
+            <AnimatePresence mode="wait">
+                {/* 2. UNANALYZED UPLOAD VIEW */}
+                {!analysisData && (
+                    <motion.div
+                        key="upload-view"
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.98, transition: { duration: 0.2 } }}
+                        transition={{ duration: 0.35 }}
+                    >
+                        <UploadSection
+                            fileInputRef={fileInputRef}
+                            isDragging={isDragging}
+                            handleDragOver={handleDragOver}
+                            handleDragLeave={handleDragLeave}
+                            handleDrop={handleDrop}
+                            handleFilesSelected={handleFilesSelected}
+                            loading={loading}
                         />
+                    </motion.div>
+                )}
 
-                        {/* View Toggles Row */}
-                        <div className={styles.resultsTabRow}>
-                            <button
-                                type="button"
-                                className={`${styles.tabBtn} ${activeTab === 'scorecard' ? styles.active : ''}`}
-                                onClick={() => setActiveTab('scorecard')}
+                {/* 3. ANALYSIS RESULTS VIEW WITH UPLOADED REPORT SUCCESS BANNER */}
+                {analysisData && !loading && (
+                    <motion.div
+                        key="analysis-results"
+                        className={styles.analyzerGrid}
+                        initial={{ opacity: 0, y: 28 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                        {/* LEFT MAIN ANALYSIS VIEW */}
+                        <div className={styles.mainColumn}>
+                            {/* UPLOADED REPORT SUCCESS BANNER CARD */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 14 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.4, delay: 0.08 }}
                             >
-                                <ScorecardTabIcon />
-                                <span>Trader Scorecard</span>
-                            </button>
-                            <button
-                                type="button"
-                                className={`${styles.tabBtn} ${activeTab === 'overview' ? styles.active : ''}`}
-                                onClick={() => setActiveTab('overview')}
+                                <ReportSuccessBanner
+                                    fileDetails={fileDetails}
+                                    totalTradesCount={totalTradesCount}
+                                    onViewTrades={() => setActiveTab('ledger')}
+                                    onReupload={() => { setAnalysisData(null); setFiles([]); }}
+                                />
+                            </motion.div>
+
+                            {/* View Toggles Row */}
+                            <motion.div
+                                className={styles.resultsTabRow}
+                                initial={{ opacity: 0, y: 12 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.4, delay: 0.16 }}
                             >
-                                <SparklesIcon />
-                                <span>Overview & Analytics</span>
-                            </button>
-                            <button
-                                type="button"
-                                className={`${styles.tabBtn} ${activeTab === 'ledger' ? styles.active : ''}`}
-                                onClick={() => setActiveTab('ledger')}
-                            >
-                                <span>Trade Ledger ({totalTradesCount})</span>
-                            </button>
-                            <button
-                                type="button"
-                                className={`${styles.tabBtn} ${activeTab === 'report' ? styles.active : ''}`}
-                                onClick={() => setActiveTab('report')}
-                            >
-                                <span>AI Narrative Report</span>
-                            </button>
+                                <button
+                                    type="button"
+                                    className={`${styles.tabBtn} ${activeTab === 'scorecard' ? styles.active : ''}`}
+                                    onClick={() => setActiveTab('scorecard')}
+                                >
+                                    <span>Trader Scorecard</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`${styles.tabBtn} ${activeTab === 'overview' ? styles.active : ''}`}
+                                    onClick={() => setActiveTab('overview')}
+                                >
+                                    <span>Overview & Analytics</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`${styles.tabBtn} ${activeTab === 'ledger' ? styles.active : ''}`}
+                                    onClick={() => setActiveTab('ledger')}
+                                >
+                                    <span>Trade Ledger ({totalTradesCount})</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`${styles.tabBtn} ${activeTab === 'report' ? styles.active : ''}`}
+                                    onClick={() => setActiveTab('report')}
+                                >
+                                    <span>AI Narrative Report</span>
+                                </button>
+                            </motion.div>
+
+                            {/* Dynamic Tab Panes with Motion Transitions */}
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={activeTab}
+                                    initial={{ opacity: 0, y: 12 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -8 }}
+                                    transition={{ duration: 0.28, ease: 'easeOut' }}
+                                >
+                                    {/* TRADER SCORECARD VIEW */}
+                                    {activeTab === 'scorecard' && (
+                                        <TraderScorecard
+                                            scorecardData={scorecardData}
+                                            fileName={fileDetails.name}
+                                            totalTrades={totalTradesCount}
+                                            onDeleteStatement={() => { setAnalysisData(null); setFiles([]); }}
+                                        />
+                                    )}
+
+                                    {/* OVERVIEW & ANALYTICS VIEW */}
+                                    {activeTab === 'overview' && (
+                                        <OverviewAnalyticsTab
+                                            entryAnalysis={entryAnalysis}
+                                            summary={summary}
+                                            trades={trades}
+                                            timeInsights={timeInsights}
+                                            quickAnalysis={quickAnalysis}
+                                            winRateVal={winRateVal}
+                                            netProfitVal={netProfitVal}
+                                            avgWinningTrade={avgWinningTrade}
+                                            avgLosingTrade={avgLosingTrade}
+                                            handleAnalyzeIndividualTrade={handleAnalyzeIndividualTrade}
+                                            setFilterSide={setFilterSide}
+                                            setActiveTab={setActiveTab}
+                                        />
+                                    )}
+
+                                    {/* LEDGER TAB */}
+                                    {activeTab === 'ledger' && (
+                                        <TradeLedgerTab
+                                            filteredTrades={filteredTrades}
+                                            analyzingTradeId={analyzingTradeId}
+                                            handleAnalyzeIndividualTrade={handleAnalyzeIndividualTrade}
+                                        />
+                                    )}
+
+                                    {/* REPORT TAB */}
+                                    {activeTab === 'report' && (
+                                        <NarrativeReportTab dynamicReportMarkdown={dynamicReportMarkdown} />
+                                    )}
+                                </motion.div>
+                            </AnimatePresence>
                         </div>
 
-                        {/* TRADER SCORECARD VIEW */}
-                        {activeTab === 'scorecard' && (
-                            <TraderScorecard
-                                scorecardData={scorecardData}
-                                fileName={fileDetails.name}
-                                totalTrades={totalTradesCount}
-                                onDeleteStatement={() => { setAnalysisData(null); setFiles([]); }}
-                            />
-                        )}
-
-                        {/* OVERVIEW & ANALYTICS VIEW */}
-                        {activeTab === 'overview' && (
-                            <OverviewAnalyticsTab
-                                entryAnalysis={entryAnalysis}
-                                summary={summary}
-                                trades={trades}
-                                timeInsights={timeInsights}
-                                quickAnalysis={quickAnalysis}
+                        {/* RIGHT SIDEBAR COLUMN */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5, delay: 0.14 }}
+                        >
+                            <SidebarStatsColumn
+                                brokerMeta={brokerMeta}
+                                files={files}
+                                totalTradesCount={totalTradesCount}
                                 winRateVal={winRateVal}
                                 netProfitVal={netProfitVal}
+                                payoffRatio={payoffRatio}
+                                largestWin={largestWin}
+                                largestLoss={largestLoss}
+                                profitFactor={profitFactor}
+                                avgHoldingTime={avgHoldingTime}
+                                reqBreakevenWinRate={reqBreakevenWinRate}
+                                avgProfitPerTrade={avgProfitPerTrade}
                                 avgWinningTrade={avgWinningTrade}
                                 avgLosingTrade={avgLosingTrade}
-                                handleAnalyzeIndividualTrade={handleAnalyzeIndividualTrade}
-                                setFilterSide={setFilterSide}
-                                setActiveTab={setActiveTab}
+                                actualLosingTrades={actualLosingTrades}
+                                maxConsecutiveWins={maxConsecutiveWins}
+                                maxConsecutiveLosses={maxConsecutiveLosses}
                             />
-                        )}
-
-                        {/* LEDGER TAB */}
-                        {activeTab === 'ledger' && (
-                            <TradeLedgerTab
-                                filteredTrades={filteredTrades}
-                                analyzingTradeId={analyzingTradeId}
-                                handleAnalyzeIndividualTrade={handleAnalyzeIndividualTrade}
-                            />
-                        )}
-
-                        {/* REPORT TAB */}
-                        {activeTab === 'report' && (
-                            <NarrativeReportTab dynamicReportMarkdown={dynamicReportMarkdown} />
-                        )}
-                    </div>
-
-                    {/* RIGHT SIDEBAR COLUMN */}
-                    <SidebarStatsColumn
-                        brokerMeta={brokerMeta}
-                        files={files}
-                        totalTradesCount={totalTradesCount}
-                        winRateVal={winRateVal}
-                        netProfitVal={netProfitVal}
-                        payoffRatio={payoffRatio}
-                        largestWin={largestWin}
-                        largestLoss={largestLoss}
-                        profitFactor={profitFactor}
-                        avgHoldingTime={avgHoldingTime}
-                        reqBreakevenWinRate={reqBreakevenWinRate}
-                        avgProfitPerTrade={avgProfitPerTrade}
-                        avgWinningTrade={avgWinningTrade}
-                        avgLosingTrade={avgLosingTrade}
-                        actualLosingTrades={actualLosingTrades}
-                        maxConsecutiveWins={maxConsecutiveWins}
-                        maxConsecutiveLosses={maxConsecutiveLosses}
-                    />
-                </div>
-            )}
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* 4. HISTORY POPUP MODAL */}
             <AnalysisHistoryModal

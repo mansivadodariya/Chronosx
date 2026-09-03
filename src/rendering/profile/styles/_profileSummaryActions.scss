@@ -1,9 +1,11 @@
 /* 3. Right Column: Account Summary & Quick Actions */
+.rightSidebar,
 .rightSummaryColumn {
     background: 
         radial-gradient(ellipse 70% 80% at 100% 0%, rgba(24, 201, 139, 0.18) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 80%),
         radial-gradient(ellipse 70% 80% at 0% 100%, rgba(0, 242, 254, 0.1) 0%, transparent 75%),
         #121514;
+    border: 1px solid rgba(24, 201, 139, 0.22);
     border-radius: 18px;
     padding: 20px;
     display: flex;
@@ -12,19 +14,19 @@
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
     .rightCard {
-        background: transparent !important;
-        border: none !important;
-        border-radius: 0 !important;
-        padding: 0 0 18px 0 !important;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        padding: 0 0 18px 0;
         display: flex;
         flex-direction: column;
         gap: 14px;
-        box-shadow: none !important;
-        border-bottom: 1px solid rgba(24, 201, 139, 0.14) !important;
+        box-shadow: none;
+        border-bottom: 1px solid rgba(24, 201, 139, 0.14);
 
         &:last-child {
-            border-bottom: none !important;
-            padding-bottom: 0 !important;
+            border-bottom: none;
+            padding-bottom: 0;
         }
 
         .rightCardTitle {
@@ -68,11 +70,12 @@
         /* Credits Box */
         .creditsCardBox {
             background: rgba(13, 14, 19, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 12px;
             padding: 14px 16px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
 
             .creditsHead {
                 display: flex;
@@ -129,7 +132,7 @@
         .verificationList {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
 
             .verifItem {
                 display: flex;
@@ -137,6 +140,7 @@
                 justify-content: space-between;
                 font-size: 13px;
                 background: rgba(13, 14, 19, 0.55);
+                border: 1px solid rgba(255, 255, 255, 0.05);
                 border-radius: 10px;
                 padding: 10px 14px;
 
@@ -144,7 +148,7 @@
                     display: flex;
                     align-items: center;
                     gap: 8px;
-                    color: rgba(255, 255, 255, 0.8);
+                    color: rgba(255, 255, 255, 0.85);
                 }
 
                 .verifStatusGreen {
@@ -152,50 +156,27 @@
                     font-weight: 700;
                     font-size: 12px;
                 }
-
-                .verifStatusGold {
-                    color: #18C98B;
-                    font-weight: 700;
-                    font-size: 12px;
-                }
-
-                .verifActionBtn {
-                    background: rgba(24, 201, 139, 0.1);
-                    border: 1px solid rgba(24, 201, 139, 0.3);
-                    color: #18C98B;
-                    border-radius: 6px;
-                    padding: 3px 8px;
-                    font-size: 11px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: all 0.15s ease;
-
-                    &:hover {
-                        background: rgba(24, 201, 139, 0.2);
-                        color: #FFFFFF;
-                    }
-                }
             }
         }
 
         /* Quick Actions Grid */
         .quickActionsGrid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 8px;
 
             .actionGridBtn {
-            background: #0d0e136d;
-            border: none;
-            border-radius: 10px;
-                padding: 12px 4px;
+                background: rgba(13, 14, 19, 0.6);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 10px;
+                padding: 12px 6px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 gap: 6px;
                 color: rgba(255, 255, 255, 0.85);
-                font-size: 10.5px;
+                font-size: 11px;
                 font-weight: 600;
                 cursor: pointer;
                 transition: all 0.2s ease;
@@ -207,13 +188,32 @@
                     color: #18C98B;
                     transform: translateY(-2px);
                 }
+            }
+        }
 
-                &.actionDanger {
-                    &:hover {
-                        border-color: rgba(239, 68, 68, 0.6);
-                        background: rgba(239, 68, 68, 0.12);
-                        color: #F87171;
-                    }
+        .logoutActionWrap {
+            margin-top: 6px;
+
+            .logoutBtn {
+                width: 100%;
+                background: rgba(239, 68, 68, 0.08);
+                border: 1px solid rgba(239, 68, 68, 0.25);
+                border-radius: 10px;
+                padding: 10px 14px;
+                color: #EF4444;
+                font-size: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    background: rgba(239, 68, 68, 0.18);
+                    border-color: #EF4444;
+                    color: #FFFFFF;
                 }
             }
         }
@@ -223,11 +223,11 @@
 /* Security Priority Banner */
 .securityPriorityCard {
     background: rgba(13, 14, 19, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 14px;
     padding: 14px 16px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 12px;
 
     .securityPriorityLeft {
@@ -260,22 +260,6 @@
                 font-size: 11px;
                 margin: 0;
             }
-        }
-    }
-
-    .secShieldImgWrap {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        overflow: hidden;
-        border: 1px solid rgba(24, 201, 139, 0.4);
-        box-shadow: 0 0 10px rgba(24, 201, 139, 0.2);
-        flex-shrink: 0;
-
-        .shieldImg {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
     }
 }

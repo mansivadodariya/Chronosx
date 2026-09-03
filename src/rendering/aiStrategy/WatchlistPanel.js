@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, memo } from 'react';
 import styles from './aiStrategy.module.scss';
 import { SearchIcon } from '@/icons/aiStrategyIcons';
 import { useLanguage } from '@/context/LanguageContext';
+import { unifiedSocket, cleanPairSymbol } from '@/lib/unifiedSocket';
 
 const PAIRS = [
     "XAU/USD",
@@ -101,8 +102,6 @@ const WatchlistItem = memo(({ pair, isActive, globalTimeframe, addLog, onClick, 
     const [wsStatus, setWsStatus] = useState('disconnected');
     const [tickClass, setTickClass] = useState('normal');
 
-    const wsRef = useRef(null);
-    const reconnectTimerRef = useRef(null);
     const lastWsTickTime = useRef(0);
     const prevPriceRef = useRef(0);
 
@@ -111,83 +110,46 @@ const WatchlistItem = memo(({ pair, isActive, globalTimeframe, addLog, onClick, 
         setLiveData(getMockInitialData(pair));
     }, [pair]);
 
-    // WebSocket connection matching LiveCard logic
+    // Unified WebSocket Subscription
     useEffect(() => {
-        let active = true;
+        const pairClean = cleanPairSymbol(pair);
 
-        const connect = () => {
-            if (!active) return;
-            const pairClean = pair.replace("/", "").replace(" ", "").toUpperCase();
+        if (isActive) {
+            unifiedSocket.switchSubscription({ symbol: pairClean, timeframe: globalTimeframe });
+        }
 
-            let base = process.env.NEXT_PUBLIC_WS_LIVE_URL;
-            if (!base || base.includes('localhost') || base.includes('127.0.0.1')) {
-                const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-                if (backendUrl) {
-                    const protocol = backendUrl.startsWith('https://') ? 'wss://' : 'ws://';
-                    const host = backendUrl.replace(/^(https?:\/\/)/, '');
-                    base = `${protocol}${host}/api/v1/ws/live`;
-                } else {
-                    base = 'wss://thirsty-spoiler-cartel.ngrok-free.dev/api/v1/ws/live';
-                }
+        const unsubStatus = unifiedSocket.subscribeStatus((status) => {
+            setWsStatus(status);
+        });
+
+        const unsubPrice = unifiedSocket.subscribePrice((priceObj) => {
+            if (!priceObj) return;
+            lastWsTickTime.current = Date.now();
+            const newPrice = parseFloat(priceObj.price);
+            if (!isNaN(newPrice)) {
+                setLiveData((prev) => {
+                    const durations = ["5m", "15m", "1h", "1d"];
+                    const next = { ...(prev || getMockInitialData(pair)) };
+                    durations.forEach((tf) => {
+                        const oldC = next[tf] || { open: newPrice, high: newPrice, low: newPrice, close: newPrice, tick_volume: 0 };
+                        next[tf] = {
+                            ...oldC,
+                            close: newPrice,
+                            high: Math.max(oldC.high || newPrice, newPrice),
+                            low: Math.min(oldC.low || newPrice, newPrice),
+                            tick_volume: (oldC.tick_volume || 0) + 1
+                        };
+                    });
+                    return next;
+                });
             }
-            const wsUrl = `${base}?symbol=${pairClean}`;
-
-            setWsStatus('connecting');
-            const ws = new WebSocket(wsUrl);
-            wsRef.current = ws;
-
-            ws.onopen = () => {
-                if (!active) return;
-                setWsStatus('connected');
-            };
-
-            ws.onmessage = (event) => {
-                if (!active) return;
-                try {
-                    const payload = JSON.parse(event.data);
-                    if (payload.type === 'initial_state' || payload.type === 'candle_update') {
-                        lastWsTickTime.current = Date.now();
-                        const parsedData = {};
-                        if (payload.data) {
-                            for (const tf in payload.data) {
-                                const c = payload.data[tf];
-                                if (c) {
-                                    parsedData[tf] = {
-                                        ...c,
-                                        time: Number(c.time),
-                                        open: Number(c.open),
-                                        high: Number(c.high),
-                                        low: Number(c.low),
-                                        close: Number(c.close),
-                                        tick_volume: Number(c.tick_volume || 0)
-                                    };
-                                }
-                            }
-                        }
-                        setLiveData(parsedData);
-                    }
-                } catch (err) {
-                    console.error(`WS error for ${pair}:`, err);
-                }
-            };
-
-            ws.onerror = () => { };
-
-            ws.onclose = () => {
-                if (!active) return;
-                setWsStatus('disconnected');
-                reconnectTimerRef.current = setTimeout(connect, 3000);
-            };
-        };
-
-        connect();
+        }, pairClean);
 
         return () => {
-            active = false;
-            if (wsRef.current) wsRef.current.close();
-            if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
+            unsubPrice();
+            unsubStatus();
         };
-    }, [pair]);
+    }, [pair, isActive, globalTimeframe]);
 
     // Local price simulator fallback
     useEffect(() => {
@@ -292,6 +254,12 @@ const WatchlistItem = memo(({ pair, isActive, globalTimeframe, addLog, onClick, 
         ? styles.pctDown 
         : styles.pctUp;
 
+    const priceClass = isNifty
+        ? styles.priceRef
+        : isNegative
+        ? styles.priceDown
+        : styles.priceUp;
+
     const rowToneClass = isNifty
         ? styles.rowNeutral
         : isNegative
@@ -305,14 +273,13 @@ const WatchlistItem = memo(({ pair, isActive, globalTimeframe, addLog, onClick, 
         >
             <div className={styles.quoteItemLeft}>
                 <span className={styles.quoteSymbolName}>{pair}</span>
-                <span className={`${styles.quoteChangePct} ${pctClass}`}>
-                    {isNifty ? 'REF' : `${isPositive ? '+' : ''}${changePct.toFixed(2)}%`}
-                </span>
             </div>
 
             <div className={styles.quoteItemRight}>
-                <span className={styles.quoteBidPrice}>{bid}</span>
-                <span className={styles.quoteAskPrice}>{ask}</span>
+                <span className={`${styles.quotePrice} ${priceClass}`}>{bid}</span>
+                <span className={`${styles.quoteChangePct} ${pctClass}`}>
+                    {isNifty ? 'REF' : `${isPositive ? '+' : ''}${changePct.toFixed(2)}%`}
+                </span>
             </div>
         </div>
     );
@@ -333,7 +300,6 @@ export default function WatchlistPanel({ selectedSymbol, onSelectSymbol, globalT
             {/* Watchlist Header */}
             <div className={styles.watchlistHeader}>
                 <h3>{t('aiStrategy.watchlistTitle', 'Watchlist')}</h3>
-                <span className={styles.watchlistCount}>{PAIRS.length} pairs</span>
             </div>
 
             {/* Search Box */}
@@ -357,8 +323,7 @@ export default function WatchlistPanel({ selectedSymbol, onSelectSymbol, globalT
                     <span>{t('aiStrategy.colSymbol', 'Symbol')}</span>
                 </div>
                 <div className={styles.colHeaderRight}>
-                    <span className={styles.colHeaderBid}>{t('aiStrategy.colBid', 'Bid')}</span>
-                    <span className={styles.colHeaderAsk}>{t('aiStrategy.colAsk', 'Ask')}</span>
+                    <span className={styles.colHeaderPrice}>{t('aiStrategy.colPrice', 'Price')}</span>
                 </div>
             </div>
 

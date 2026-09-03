@@ -21,6 +21,7 @@ import { clearAuthSession, getStoredUser, getStoredUserId, hydrateUserFromProfil
 import { useLanguage } from '@/context/LanguageContext';
 import { getBidiProps } from '@/lib/bidi';
 import { supabase } from '@/lib/supabaseClient';
+import QuickJump from '@/components/QuickJump';
 
 const BrandTextLogo = "/assets/logo/logo.png";
 const SmallLogo = "/assets/logo/smallLogo.png";
@@ -490,6 +491,11 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
           )}
         </div>
 
+        {/* Quick Jump Search Button & Command Palette */}
+        <div className={styles.quickJumpWrapper}>
+          <QuickJump isCollapsed={isCollapsed} />
+        </div>
+
         {/* Navigation Menu List */}
         <div className={styles.sidebarmenu}>
           {tabsLoading && !visibleTabNames ? (
@@ -509,15 +515,13 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
 
         {/* Bottom Section: Upgrade Card & Profile Card */}
         <div className={styles.bottomSection}>
-          {/* Upgrade to Pro Card - only shown if subscription plans tab is permitted */}
+          {/* Upgrade to Pro Card - links to subscription plans */}
           {hasPlansPermission && (
             !isCollapsed ? (
-              <div
+              <Link
+                href="/subscription-plans"
                 className={styles.upgradeCard}
-                onClick={() => {
-                  handleNavigate();
-                  router.push('/subscription-plans');
-                }}
+                onClick={handleNavigate}
               >
                 <div className={styles.upgradeIcon}>
                   <CrownIcon />
@@ -526,31 +530,28 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
                   <span className={styles.upgradeSub}>{t('sidebar.upgradeTo', 'Upgrade to')}</span>
                   <span className={styles.upgradeMain}>{t('sidebar.proAccount', 'Pro Account')}</span>
                 </div>
-                <button
-                  type="button"
+                <div
                   className={styles.upgradeArrowBtn}
-                  aria-label="Upgrade"
+                  aria-hidden="true"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#040300" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
-                </button>
-              </div>
+                </div>
+              </Link>
             ) : (
               <div className={styles.compactUpgradeBox}>
-                <button
-                  type="button"
+                <Link
+                  href="/subscription-plans"
                   className={styles.compactUpgradeBtn}
-                  onClick={() => {
-                    handleNavigate();
-                    router.push('/subscription-plans');
-                  }}
+                  onClick={handleNavigate}
+                  aria-label={t('sidebar.upgradeToPro', 'Upgrade to Pro')}
                 >
                   <CrownIcon />
                   <span className={styles.tooltip}>
                     {t('sidebar.upgradeToPro', 'Upgrade to Pro')}
                   </span>
-                </button>
+                </Link>
               </div>
             )
           )}

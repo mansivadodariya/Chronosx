@@ -9,14 +9,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import LanguageToggle from '@/components/languageToggle';
 import ThemeToggle from '@/components/themeToggle';
 import { supabase } from '@/lib/supabaseClient';
-
-const CoinDocIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" />
-    <rect x="9" y="7" width="6" height="10" rx="1" />
-    <path d="M11 10h2M11 13h2" />
-  </svg>
-);
+import { CreditCardIcon } from '@/icons/creditIcon';
 
 const ROUTE_TITLE_MAP = {
   '/dashboard': 'nav.dashboard|Dashboard',
@@ -179,7 +172,7 @@ const Topbar = ({ onMenuClick }) => {
           tabIndex={0}
           title={hasPlansPermission ? t('topbar.clickToUpgrade', 'View subscription plans') : ''}
         >
-          <CoinDocIcon />
+          <CreditCardIcon />
           <span>{credits ?? 0} {t('topbar.credits', 'credits')}</span>
         </div>
       </div>

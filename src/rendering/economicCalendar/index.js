@@ -1,5 +1,7 @@
 "use client";
+
 import React, { useEffect, useRef } from "react";
+import CommonSectionHeader from '@/components/CommonSectionHeader';
 import styles from "./economicCalendar.module.scss";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
@@ -38,14 +40,20 @@ export default function EconomicCalendar() {
 
   return (
     <section className={styles.economicCalendar}>
-      <div className={styles.header}>
-        <div className={styles.titleArea}>
-          <h1>{t('nav.economicCalendar', 'Economic Calendar')}</h1>
-          <p>
-            {t('economicCalendar.subtitle', 'Track global market-moving events in real time and plan your trades around key macro releases.')}
-          </p>
-        </div>
-      </div>
+      <CommonSectionHeader
+        badge="MACROECONOMIC EVENT RADAR"
+        badgeIcon={
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+        }
+        title={t('nav.economicCalendar', 'Economic Calendar')}
+        subtitle={t('economicCalendar.subtitle', 'Track global market-moving events in real time and plan your trades around key macro releases.')}
+        isCard={true}
+      />
 
       <div className={styles.widgetCard}>
         <div className="tradingview-widget-container" ref={widgetContainerRef}>

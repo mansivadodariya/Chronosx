@@ -1,9 +1,9 @@
 .aiStrategyWrapper {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    height: calc(100dvh - 110px);
-    min-height: 0;
+    gap: 4px;
+    min-height: calc(100dvh - 110px);
+    height: auto;
 }
 
 /* Header & Active Strategy Dropdown */
@@ -155,7 +155,48 @@
     flex-direction: column;
 }
 
-/* 3-Panel Layout */
+/* Live Analysis Layout (Top: Watchlist + Chart, Bottom: Full-Width Analysis) */
+.liveAnalysisLayout {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+    padding-bottom: 30px;
+}
+
+.topPanelsRow {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 4px;
+    height: 620px;
+    min-height: 540px;
+
+    @include respond-to('lg') {
+        grid-template-columns: 280px 1fr;
+        gap: 12px;
+        height: 570px;
+    }
+
+    @include respond-to('md') {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        min-height: auto;
+    }
+}
+
+.bottomAnalysisRow {
+    width: 100%;
+
+    .analysisPanel {
+        height: auto;
+        min-height: 380px;
+        max-height: none;
+        overflow: visible;
+    }
+}
+
+/* 3-Panel Layout (Backwards Compatibility) */
 .threePanelLayout {
     flex: 1;
     min-height: 0;
@@ -164,7 +205,7 @@
     display: grid;
     grid-template-columns: 280px 1fr 350px;
     grid-template-rows: minmax(0, 1fr);
-    gap: 16px;
+    gap: 4px;
     overflow: hidden;
 
     @include respond-to('lg') {

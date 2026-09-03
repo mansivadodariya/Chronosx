@@ -1,5 +1,6 @@
 'use client';
 
+import CommonSectionHeader from '@/components/CommonSectionHeader';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './tradeSnap.module.scss';
 import HistoryButton from '@/components/historyButton';
@@ -301,20 +302,28 @@ export default function TradeSnap() {
         <div className={styles.tradeSnap}>
             <canvas ref={canvasRef} className={styles.hiddenCanvas} aria-hidden="true" />
 
-            <div className={styles.tabSwitcherRow}>
-                <div className={styles.headerInfo}>
-                    <h2 className={styles.featureTitle}>
-                        {t('tradeSnap.scannerTitle', 'AI Live Chart Scanner')}
-                    </h2>
-                    <p className={styles.featureDesc}>
-                        {t('tradeSnap.scannerDesc', 'Share your live chart screen or capture snapshots to get real-time AI technical analysis, key levels, and trade setups.')}
-                    </p>
-                </div>
-                <HistoryButton
-                    text={t('tradeSnap.history', 'History')}
-                    onClick={openHistory}
-                />
-            </div>
+            <CommonSectionHeader
+                badge="VISION NEURAL OCR APERTURE"
+                badgeIcon={
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="9" />
+                        <line x1="12" y1="3" x2="12" y2="7" />
+                        <line x1="12" y1="17" x2="12" y2="21" />
+                        <line x1="3" y1="12" x2="7" y2="12" />
+                        <line x1="17" y1="12" x2="21" y2="12" />
+                        <circle cx="12" cy="12" r="3" fill="#18C98B" />
+                    </svg>
+                }
+                title={t('tradeSnap.scannerTitle', 'AI Live Chart Scanner')}
+                subtitle={t('tradeSnap.scannerDesc', 'Share your live chart screen or capture snapshots to get real-time AI technical analysis, key levels, and trade setups.')}
+                isCard={true}
+                rightAction={
+                    <HistoryButton
+                        text={t('tradeSnap.history', 'History')}
+                        onClick={openHistory}
+                    />
+                }
+            />
 
             <div className={styles.workspace}>
                 <div className={styles.mainColumn}>

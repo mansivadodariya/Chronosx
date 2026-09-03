@@ -59,7 +59,9 @@ export default function useSubPaneCharts({
                     layout: { background: { color: subBg }, textColor: subTxt, fontFamily: 'Inter, sans-serif' },
                     grid: { vertLines: { color: subGridVert }, horzLines: { color: subGridHorz } },
                     timeScale: { visible: true, borderColor: subBorder },
-                    rightPriceScale: { borderColor: subBorder }
+                    rightPriceScale: { borderColor: subBorder },
+                    handleScroll: { mouseWheel: false, pressedMouseMove: true, horzTouchDrag: true, vertTouchDrag: true },
+                    handleScale: { mouseWheel: true, pinch: true, axisPressedMouseMove: true },
                 });
                 const rSeries = rChart.addSeries(LineSeries, { color: cfg.color, lineWidth: cfg.lineWidth, visible: isVis });
                 const line70 = rChart.addSeries(LineSeries, { color: 'rgba(239, 83, 80, 0.6)', lineWidth: 1, lineStyle: 2, visible: isVis });
@@ -101,7 +103,9 @@ export default function useSubPaneCharts({
                     layout: { background: { color: subBg }, textColor: subTxt, fontFamily: 'Inter, sans-serif' },
                     grid: { vertLines: { color: subGridVert }, horzLines: { color: subGridHorz } },
                     timeScale: { visible: true, borderColor: subBorder },
-                    rightPriceScale: { borderColor: subBorder }
+                    rightPriceScale: { borderColor: subBorder },
+                    handleScroll: { mouseWheel: false, pressedMouseMove: true, horzTouchDrag: true, vertTouchDrag: true },
+                    handleScale: { mouseWheel: true, pinch: true, axisPressedMouseMove: true },
                 });
                 const histSeries = mChart.addSeries(HistogramSeries, { priceScaleId: 'right', visible: isVis });
                 const macdSeries = mChart.addSeries(LineSeries, { color: cfg.macdColor, lineWidth: cfg.lineWidth, visible: isVis });
@@ -139,7 +143,9 @@ export default function useSubPaneCharts({
                     layout: { background: { color: subBg }, textColor: subTxt, fontFamily: 'Inter, sans-serif' },
                     grid: { vertLines: { color: subGridVert }, horzLines: { color: subGridHorz } },
                     timeScale: { visible: true, borderColor: subBorder },
-                    rightPriceScale: { borderColor: subBorder }
+                    rightPriceScale: { borderColor: subBorder },
+                    handleScroll: { mouseWheel: false, pressedMouseMove: true, horzTouchDrag: true, vertTouchDrag: true },
+                    handleScale: { mouseWheel: true, pinch: true, axisPressedMouseMove: true },
                 });
                 const kSeries = sChart.addSeries(LineSeries, { color: cfg.kColor, lineWidth: cfg.lineWidth, visible: isVis });
                 const dSeries = sChart.addSeries(LineSeries, { color: cfg.dColor, lineWidth: cfg.lineWidth, visible: isVis });

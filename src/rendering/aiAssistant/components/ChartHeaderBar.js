@@ -33,7 +33,10 @@ export default function ChartHeaderBar({
                 </button>
 
                 {/* Top-left real-time price badge */}
-                <div className={`${styles.headerLivePriceBadge} ${isUp ? styles.badgeUp : styles.badgeDown}`}>
+                <div 
+                    className={`${styles.headerLivePriceBadge} ${isUp ? styles.badgeUp : styles.badgeDown}`}
+                    style={{ background: 'transparent', backgroundColor: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}
+                >
                     <span className={styles.badgeSymbol}>{activeSymbol}</span>
                     <span className={styles.badgePrice}>{priceText}</span>
                     <span className={styles.badgeDirection}>{isUp ? '▲' : '▼'}</span>

@@ -11,6 +11,7 @@ export * from './bellIcon';
 export * from './brokerIcon';
 export * from './chartControlIcons';
 export * from './clarificationIcons';
+export * from './creditIcon';
 export * from './dashboardIcon';
 export * from './downIcon';
 export * from './fileIcon';

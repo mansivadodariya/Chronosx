@@ -1,4 +1,5 @@
 'use client';
+import CommonSectionHeader from '@/components/CommonSectionHeader';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './creditHistory.module.scss';
@@ -94,18 +95,18 @@ export default function CreditHistory({ embedMode = false }) {
     return (
         <div className={styles.container}>
             {!embedMode && (
-                <div className={styles.header}>
-                    <div className={styles.headerIconCircle}>
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <rect x="2" y="5" width="20" height="14" rx="2" />
-                            <line x1="2" y1="10" x2="22" y2="10" />
+                <CommonSectionHeader
+                    badge="CREDIT VAULT & AUDIT LOG"
+                    badgeIcon={
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M12 6v12M15 9.5a3 3 0 0 0-3-2.5h-1a2.5 2.5 0 0 0 0 5h2a2.5 2.5 0 0 1 0 5h-1a3 3 0 0 1-3-2.5" />
                         </svg>
-                    </div>
-                    <div className={styles.headerTitleMeta}>
-                        <h1>{t('creditHistory.title', 'Credit History')}</h1>
-                        <p>{t('creditHistory.subtitle', 'Track your credit usage, deposits, and rewards')}</p>
-                    </div>
-                </div>
+                    }
+                    title={t('creditHistory.title', 'Credit History')}
+                    subtitle={t('creditHistory.subtitle', 'Track your credit usage, deposits, and rewards')}
+                    isCard={true}
+                />
             )}
 
             {/* Top Summary Stats */}

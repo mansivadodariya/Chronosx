@@ -1,15 +1,15 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
+import { unifiedSocket, cleanPairSymbol } from '@/lib/unifiedSocket';
 
 /**
  * CopilotHeaderPrice
- * Connects the top live price badge and dispatches `livePriceUpdate` custom browser event
- * for TradingView / Lightweight Charts to update real-time candle close price.
- * WebSocket Endpoint: /api/v1/websocket/live-price?symbol={symbol}
+ * Connects the top live price badge powered by the Unified MT5 Live WebSocket.
+ * Endpoint: /api/v1/ws/live
  */
 export const CopilotHeaderPrice = ({ symbol = 'XAUUSD', className = '' }) => {
-    const cleanSymbol = (symbol || 'XAUUSD').replace(/[^A-Z0-9]/gi, '').toUpperCase();
+    const cleanSymbol = cleanPairSymbol(symbol);
 
     const [data, setData] = useState({
         symbol: cleanSymbol,
@@ -20,87 +20,34 @@ export const CopilotHeaderPrice = ({ symbol = 'XAUUSD', className = '' }) => {
         timestamp: null,
     });
     const [isLive, setIsLive] = useState(false);
-    const reconnectTimeoutRef = useRef(null);
 
     useEffect(() => {
         let isMounted = true;
-        let ws = null;
 
-        // Construct WebSocket URL dynamically
-        const protocol = typeof window !== 'undefined' && window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL;
-        let host = 'localhost:8000';
-
-        if (backendUrl) {
-            host = backendUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '');
-        } else if (typeof window !== 'undefined' && window.location.host) {
-            host = window.location.host;
-        }
-
-        const wsUrl = `${protocol}//${host}/api/v1/websocket/live-price?symbol=${cleanSymbol}`;
-
-        const connect = () => {
-            try {
-                ws = new WebSocket(wsUrl);
-
-                ws.onopen = () => {
-                    if (isMounted) setIsLive(true);
-                };
-
-                ws.onmessage = (event) => {
-                    try {
-                        const payload = JSON.parse(event.data);
-                        if (payload.type === 'price_update' || payload.price !== undefined) {
-                            const formattedPayload = {
-                                symbol: payload.symbol || cleanSymbol,
-                                price: payload.price !== undefined ? parseFloat(payload.price) : null,
-                                bid: payload.bid !== undefined ? parseFloat(payload.bid) : null,
-                                ask: payload.ask !== undefined ? parseFloat(payload.ask) : null,
-                                change_percent: payload.change_percent !== undefined
-                                    ? parseFloat(payload.change_percent)
-                                    : (payload.changePercent !== undefined ? parseFloat(payload.changePercent) : 0),
-                                timestamp: payload.timestamp || new Date().toISOString(),
-                            };
-
-                            if (isMounted) {
-                                setData(formattedPayload);
-                            }
-
-                            // Dispatch custom browser event for TradingView / Lightweight Charts to update last candle
-                            if (typeof window !== 'undefined') {
-                                window.dispatchEvent(new CustomEvent('livePriceUpdate', { detail: formattedPayload }));
-                            }
-                        }
-                    } catch (err) {
-                        console.error('Error parsing live price JSON:', err);
-                    }
-                };
-
-                ws.onerror = () => {
-                    if (isMounted) setIsLive(false);
-                };
-
-                ws.onclose = () => {
-                    if (isMounted) {
-                        setIsLive(false);
-                        reconnectTimeoutRef.current = setTimeout(connect, 3000);
-                    }
-                };
-            } catch (e) {
-                if (isMounted) setIsLive(false);
+        const unsubscribeStatus = unifiedSocket.subscribeStatus((status) => {
+            if (isMounted) {
+                setIsLive(status === 'connected');
             }
-        };
+        });
 
-        connect();
+        const unsubscribePrice = unifiedSocket.subscribePrice((payload) => {
+            if (!isMounted) return;
+            setData({
+                symbol: payload.symbol || cleanSymbol,
+                price: payload.price !== undefined ? parseFloat(payload.price) : null,
+                bid: payload.bid !== undefined ? parseFloat(payload.bid) : null,
+                ask: payload.ask !== undefined ? parseFloat(payload.ask) : null,
+                change_percent: payload.change_percent !== undefined
+                    ? parseFloat(payload.change_percent)
+                    : 0,
+                timestamp: payload.timestamp || new Date().toISOString(),
+            });
+        }, cleanSymbol);
 
         return () => {
             isMounted = false;
-            if (reconnectTimeoutRef.current) {
-                clearTimeout(reconnectTimeoutRef.current);
-            }
-            if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
-                ws.close();
-            }
+            unsubscribeStatus();
+            unsubscribePrice();
         };
     }, [cleanSymbol]);
 

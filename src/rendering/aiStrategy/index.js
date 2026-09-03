@@ -1,5 +1,6 @@
 'use client';
 
+import CommonSectionHeader from '@/components/CommonSectionHeader';
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './aiStrategy.module.scss';
@@ -10,6 +11,7 @@ import dynamic from 'next/dynamic';
 import StrategyDropdown from './StrategyDropdown';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
+import { unifiedSocket, cleanPairSymbol, normalizeTimeframe } from '@/lib/unifiedSocket';
 import {
     pairs,
     formatPairCurrency,
@@ -130,206 +132,124 @@ export default function AiStrategy({ initialTab = 'live' }) {
     // Active Strategy signal (strategy tab)
     const [strategySignal, setStrategySignal] = useState(MOCK_STRATEGY_SIGNAL);
 
-    // Refs for Socket connection (strategy tab)
-    const wsRef = useRef(null);
-    const reconnectTimerRef = useRef(null);
-
     // Logger Helper for strategy tab
     const addStrategyLog = (message, isSystem = false) => {
         console.log(`[WebSocket Strategy] ${isSystem ? 'SYSTEM: ' : ''}${message}`);
     };
 
-    // WebSocket URL generator
-    const getWsUrl = (type, currentSymbol) => {
-        let base = type === 'live' 
-            ? process.env.NEXT_PUBLIC_WS_LIVE_URL 
-            : process.env.NEXT_PUBLIC_WS_STRATEGY_URL;
-            
-        if (!base) {
-            const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-            if (backendUrl) {
-                const protocol = backendUrl.startsWith('https://') ? 'wss://' : 'ws://';
-                const host = backendUrl.replace(/^(https?:\/\/)/, '');
-                base = `${protocol}${host}/api/v1/ws/${type}`;
-            } else if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-                base = `ws://localhost:8000/api/v1/ws/${type}`;
-            } else {
-                base = `wss://thirsty-spoiler-cartel.ngrok-free.dev/api/v1/ws/${type}`;
-            }
-        }
-        
-        if (currentSymbol) {
-            return `${base}?symbol=${currentSymbol}`;
-        }
-        return base;
-    };
-
-    // WebSocket Connection Management (runs only on Strategy tab)
-    const connectWS = (type, currentSymbol) => {
-        if (wsRef.current) {
-            wsRef.current.close();
-        }
-
-        const wsUrl = getWsUrl(type, currentSymbol);
-        addStrategyLog(`Connecting to WebSocket Relay: ${wsUrl}`, true);
-        setWsStatus('connecting');
-
-        try {
-            const socket = new WebSocket(wsUrl);
-            wsRef.current = socket;
-
-            socket.onopen = () => {
-                addStrategyLog(`Connected successfully to MT5 ${type === 'live' ? 'Live Bridge' : 'Strategy Feed'}!`, true);
-                setWsStatus('connected');
-            };
-
-            socket.onmessage = (event) => {
-                try {
-                    const payload = JSON.parse(event.data);
-                    if (type === 'live') {
-                        if (payload.type === 'initial_state' || payload.type === 'candle_update') {
-                            addStrategyLog(`Received update for ${currentSymbol}`);
-                            setLiveData(payload.data);
-                            
-                            const nextStartTimes = {};
-                            for (const tf in payload.data) {
-                                nextStartTimes[tf] = payload.data[tf].time;
-                            }
-                            setCandleStartTimes(nextStartTimes);
-
-                            const candle = payload.data[timeframe];
-                            if (candle) {
-                                const prevPrice = lastPrices[timeframe];
-                                const currentPrice = candle.close;
-                                if (prevPrice > 0 && currentPrice !== prevPrice) {
-                                    setPriceTickColor(currentPrice > prevPrice ? 'up' : 'down');
-                                }
-                                setLastPrices((prev) => ({ ...prev, [timeframe]: currentPrice }));
-                            }
-
-                            if (payload.strategy_signal) {
-                                setStrategySignal(payload.strategy_signal);
-                            }
-                        }
-                    } else {
-                        // Strategy feed
-                        if (payload.type === 'initial_strategy_state' && Array.isArray(payload.active_setups)) {
-                            addStrategyLog(`Received initial strategy state with ${payload.active_setups.length} setups`);
-                            const newSigs = {};
-                            payload.active_setups.forEach(setup => {
-                                if (setup.symbol) {
-                                    const sName = setup.symbol.replace("/", "").toUpperCase();
-                                    newSigs[sName] = setup;
-                                }
-                            });
-                            setActiveSignals(newSigs);
-                            
-                            const keys = Object.keys(newSigs);
-                            if (keys.length > 0) {
-                                if (newSigs["XAUUSD"]) {
-                                    setSelectedStrategySymbol("XAUUSD");
-                                } else {
-                                    setSelectedStrategySymbol(keys[0]);
-                                }
-                            }
-                        } else if (payload.symbol && payload.signal) {
-                            const sName = payload.symbol.replace("/", "").toUpperCase();
-                            addStrategyLog(`Received strategy update for ${sName}`);
-                            setActiveSignals(prev => ({
-                                ...prev,
-                                [sName]: {
-                                    ...prev[sName],
-                                    ...payload
-                                }
-                            }));
-                        } else if (payload.strategy_signal) {
-                            const sig = payload.strategy_signal;
-                            const sName = (sig.symbol || payload.symbol || currentSymbol || '').replace("/", "").toUpperCase();
-                            if (sName) {
-                                addStrategyLog(`Received strategy alert for ${sName}`);
-                                setActiveSignals(prev => ({
-                                    ...prev,
-                                    [sName]: {
-                                        ...prev[sName],
-                                        symbol: sig.symbol || payload.symbol || currentSymbol,
-                                        signal: { ...sig }
-                                    }
-                                }));
-                            }
-                        } else if (payload.type === 'initial_state' || payload.type === 'strategy_update') {
-                            addStrategyLog(`Received strategy status update`);
-                            const data = payload.data || {};
-                            if (data.symbol && data.signal) {
-                                const sName = data.symbol.replace("/", "").toUpperCase();
-                                setActiveSignals(prev => ({
-                                    ...prev,
-                                    [sName]: {
-                                        ...prev[sName],
-                                        ...data
-                                    }
-                                }));
-                            } else if (data.strategy_signal) {
-                                const sig = data.strategy_signal;
-                                const sName = (sig.symbol || data.symbol || currentSymbol || '').replace("/", "").toUpperCase();
-                                if (sName) {
-                                    setActiveSignals(prev => ({
-                                        ...prev,
-                                        [sName]: {
-                                            ...prev[sName],
-                                            symbol: sig.symbol || data.symbol || currentSymbol,
-                                            signal: { ...sig }
-                                        }
-                                    }));
-                                }
-                            } else if (Array.isArray(data)) {
-                                const newSigs = {};
-                                data.forEach(item => {
-                                    const sig = item.strategy_signal || item;
-                                    if (sig && sig.symbol) {
-                                        const sName = sig.symbol.replace("/", "").toUpperCase();
-                                        newSigs[sName] = {
-                                            symbol: sig.symbol,
-                                            signal: { ...sig }
-                                        };
-                                    } else if (item.symbol && item.signal) {
-                                        const sName = item.symbol.replace("/", "").toUpperCase();
-                                        newSigs[sName] = item;
-                                    }
-                                });
-                                setActiveSignals(prev => ({ ...prev, ...newSigs }));
-                            }
-                        }
-                    }
-                } catch (e) {
-                    console.error("Error processing websocket payload:", e);
-                }
-            };
-
-            socket.onerror = () => {
-                addStrategyLog("WebSocket encountered an error.", true);
-            };
-
-            socket.onclose = () => {
-                addStrategyLog("Connection lost. Reconnecting in 3 seconds...", true);
-                setWsStatus('disconnected');
-                reconnectTimerRef.current = setTimeout(() => connectWS(type, currentSymbol), 3000);
-            };
-        } catch (err) {
-            addStrategyLog(`Failed to connect: ${err.message}`, true);
-            setWsStatus('disconnected');
-        }
-    };
-
-    // Handle WebSocket setup for strategy tab (uses Global Scan by connecting with empty symbol)
+    // Connection & Message Management for Strategy Tab (Unified MT5 Live WebSocket)
     useEffect(() => {
-        if (activeTab === 'strategy') {
-            connectWS('strategy', '');
-        }
+        if (activeTab !== 'strategy') return;
+
+        const currentSym = cleanPairSymbol(selectedStrategySymbol || selectedSymbol || 'XAUUSD');
+
+        // 1. Connection Status Tracking
+        const unsubStatus = unifiedSocket.subscribeStatus((status) => {
+            setWsStatus(status);
+            if (status === 'connected') {
+                addStrategyLog('Connected successfully to Unified MT5 Live WebSocket!', true);
+            } else if (status === 'connecting') {
+                addStrategyLog('Connecting to Unified MT5 Live WebSocket...', true);
+            } else {
+                addStrategyLog('Connection lost. Reconnecting in 3 seconds...', true);
+            }
+        });
+
+        // 2. Candle & Dynamic Indicator Stream
+        const unsubCandles = unifiedSocket.subscribeCandles((candleData, fullPayload) => {
+            if (!candleData) return;
+            const currentTf = normalizeTimeframe(globalTimeframe || 'H1');
+            const currentPrice = parseFloat(candleData.close);
+
+            if (!isNaN(currentPrice)) {
+                setLastPrices((prev) => {
+                    const prevPrice = prev[currentTf] || 0;
+                    if (prevPrice > 0 && currentPrice !== prevPrice) {
+                        setPriceTickColor(currentPrice > prevPrice ? 'up' : 'down');
+                    }
+                    return { ...prev, [currentTf]: currentPrice };
+                });
+            }
+
+            if (fullPayload?.strategy) {
+                setStrategySignal((prev) => ({ ...prev, ...fullPayload.strategy }));
+            }
+            if (fullPayload?.strategy_signal) {
+                setStrategySignal(fullPayload.strategy_signal);
+            }
+        }, currentSym, globalTimeframe);
+
+        // 3. Price Tick Stream
+        const unsubPrice = unifiedSocket.subscribePrice((priceObj) => {
+            if (!priceObj) return;
+            const currentTf = normalizeTimeframe(globalTimeframe || 'H1');
+            const p = parseFloat(priceObj.price);
+            if (!isNaN(p)) {
+                setLastPrices((prev) => {
+                    const prevPrice = prev[currentTf] || 0;
+                    if (prevPrice > 0 && p !== prevPrice) {
+                        setPriceTickColor(p > prevPrice ? 'up' : 'down');
+                    }
+                    return { ...prev, [currentTf]: p };
+                });
+            }
+        }, currentSym);
+
+        // 4. Strategy Setups and Signals
+        const unsubStrategy = unifiedSocket.subscribeStrategy((payload) => {
+            try {
+                if (payload.type === 'initial_strategy_state' && Array.isArray(payload.active_setups)) {
+                    addStrategyLog(`Received initial strategy state with ${payload.active_setups.length} setups`);
+                    const newSigs = {};
+                    payload.active_setups.forEach((setup) => {
+                        if (setup.symbol) {
+                            const sName = setup.symbol.replace("/", "").toUpperCase();
+                            newSigs[sName] = setup;
+                        }
+                    });
+                    setActiveSignals(newSigs);
+
+                    const keys = Object.keys(newSigs);
+                    if (keys.length > 0 && !newSigs["XAUUSD"]) {
+                        setSelectedStrategySymbol(keys[0]);
+                    }
+                } else if (payload.symbol && payload.signal) {
+                    const sName = payload.symbol.replace("/", "").toUpperCase();
+                    addStrategyLog(`Received strategy update for ${sName}`);
+                    setActiveSignals((prev) => ({
+                        ...prev,
+                        [sName]: {
+                            ...prev[sName],
+                            ...payload,
+                        },
+                    }));
+                } else if (payload.strategy_signal) {
+                    const sig = payload.strategy_signal;
+                    const sName = (sig.symbol || payload.symbol || currentSym || '').replace("/", "").toUpperCase();
+                    if (sName) {
+                        addStrategyLog(`Received strategy alert for ${sName}`);
+                        setActiveSignals((prev) => ({
+                            ...prev,
+                            [sName]: {
+                                ...prev[sName],
+                                symbol: sig.symbol || payload.symbol || currentSym,
+                                signal: { ...sig },
+                            },
+                        }));
+                    }
+                }
+            } catch (e) {
+                console.error("Error processing websocket payload:", e);
+            }
+        }, currentSym, selectedStrategyId);
+
         return () => {
-            if (wsRef.current) wsRef.current.close();
-            if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
+            unsubStatus();
+            unsubCandles();
+            unsubPrice();
+            unsubStrategy();
         };
-    }, [activeTab]);
+    }, [activeTab, selectedStrategySymbol, selectedSymbol, globalTimeframe, selectedStrategyId]);
 
     // REST Polling for Scanner Metrics (runs only on Strategy tab)
     const fetchScannerData = async (targetSymbol, targetTf) => {
@@ -627,28 +547,29 @@ export default function AiStrategy({ initialTab = 'live' }) {
     return (
         <div className={styles.aiStrategyWrapper}>
             {/* Page Title */}
-            <div className={styles.header}>
-                <div className={styles.titleArea}>
-                    <h2>
-                        {activeTab === 'live'
-                            ? t('aiStrategy.liveAnalysisFeedTitle', 'Live Analysis Feed')
-                            : t('aiStrategy.title', 'AI Strategy')}
-                    </h2>
-                    <p>
-                        {activeTab === 'live' 
-                            ? t('aiStrategy.liveAnalysisFeedSubtitle', 'Real-Time FX Live Grid providing instant market feeds and strategy indicators.')
-                            : t('aiStrategy.subtitle', 'Real-time technical metrics, scanner signals, and AI Expert Advisor strategies streamed from MetaTrader 5.')
-                        }
-                    </p>
-                </div>
-                {activeTab === 'live' && (
-                    <div className={styles.headerDropdownCorner}>
-                        <StrategyDropdown onSelect={setSelectedStrategyId} />
-                    </div>
-                )}
-            </div>
+            <CommonSectionHeader
+                badge={activeTab === 'live' ? 'CHRONOSX LIVE ANALYSIS FEED' : 'CHRONOSX ALGORITHMIC SUITE'}
+                badgeIcon={
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                    </svg>
+                }
+                title={activeTab === 'live' ? t('aiStrategy.liveAnalysisFeedTitle', 'Live Analysis Feed') : t('aiStrategy.title', 'AI Strategy')}
+                subtitle={
+                    activeTab === 'live' 
+                        ? t('aiStrategy.liveAnalysisFeedSubtitle', 'Real-Time FX Live Grid providing instant market feeds and strategy indicators.')
+                        : t('aiStrategy.subtitle', 'Real-time technical metrics, scanner signals, and AI Expert Advisor strategies streamed from MetaTrader 5.')
+                }
+                isCard={true}
+                rightAction={
+                    activeTab === 'live' ? (
+                        <div className={styles.headerDropdownCorner}>
+                            <StrategyDropdown onSelect={setSelectedStrategyId} />
+                        </div>
+                    ) : null
+                }
+            />
 
-            {/* Main Content Area */}
             <div className={styles.contentBody}>
                 <AnimatePresence mode="wait">
                     {activeTab === 'live' ? (
@@ -683,12 +604,7 @@ export default function AiStrategy({ initialTab = 'live' }) {
                             transition={{ duration: 0.2 }}
                             className={styles.tabContent}
                         >
-                            <StrategyExecutionView
-                                activeSignals={activeSignals}
-                                showPairSelector={showPairSelector}
-                                setShowPairSelector={setShowPairSelector}
-                                wsStatus={wsStatus}
-                            />
+                            <StrategyExecutionView />
                         </motion.div>
                     )}
                 </AnimatePresence>

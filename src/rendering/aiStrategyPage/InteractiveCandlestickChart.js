@@ -145,6 +145,18 @@ export default function InteractiveCandlestickChart() {
                 vertLine: { color: '#0047FF', width: 1, style: 3 },
                 horzLine: { color: '#0047FF', width: 1, style: 3 },
             },
+            handleScroll: {
+                mouseWheel: false,
+                pressedMouseMove: true,
+                horzTouchDrag: true,
+                vertTouchDrag: true,
+            },
+            handleScale: {
+                axisPressedMouseMove: true,
+                axisDoubleClickReset: true,
+                mouseWheel: true,
+                pinch: true,
+            },
             timeScale: {
                 borderColor: '#E2E8F0',
                 timeVisible: true,

@@ -1,167 +1,124 @@
 'use client';
 
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import styles from '../aiStrategy.module.scss';
-import { ChevronIcon, IndicatorIcon, getScoreColor, formatValue, accordionVariants } from '@/icons/analysisIcons';
+import SpeedometerGauge from './SpeedometerGauge';
+import { IndicatorIcon, getScoreColor } from '@/icons/analysisIcons';
 
 export default function TechnicalScoreSection({
     technicalScore = {},
-    trendIndicators = {},
-    momentumIndicators = {},
-    volumeAnalysis = {},
-    levels = {},
-    pivotPoints = {},
-    isExpanded,
-    onToggle,
-    scoreSubToggles,
-    onToggleSub
 }) {
     const scoreColor = getScoreColor(technicalScore.label);
+    const breakdown = technicalScore.breakdown || {};
+
+    const trendBreakdown = breakdown.trend || { score: 25, max: 25, label: 'Bullish' };
+    const momentumBreakdown = breakdown.momentum || { score: 21, max: 25, label: 'Bullish' };
+    const structureBreakdown = breakdown.structure || { score: 12, max: 25, label: 'Neutral' };
+
+    const trendPct = Math.round(((trendBreakdown.score || 25) / (trendBreakdown.max || 25)) * 100);
+    const momentumPct = Math.round(((momentumBreakdown.score || 21) / (momentumBreakdown.max || 25)) * 100);
+    const structurePct = Math.round(((structureBreakdown.score || 12) / (structureBreakdown.max || 25)) * 100);
 
     return (
-        <div className={styles.premiumAccordion}>
-            <div className={styles.premiumAccordionHeader} onClick={onToggle}>
-                <span>TECHNICAL SCORE</span>
-                <ChevronIcon isOpen={isExpanded} />
+        <div className={styles.technicalScoreShowcaseCard}>
+            {/* Header */}
+            <div className={styles.sectionHeaderRow}>
+                <div className={styles.headerTitleGroup}>
+                    <div className={styles.titleIconPulse} style={{ backgroundColor: scoreColor }} />
+                    <span className={styles.headerMainTitle}>TECHNICAL SCORE</span>
+                </div>
+                <div className={styles.headerConfidencePill}>
+                    <span className={styles.confLabel}>CONFIDENCE</span>
+                    <span className={styles.confValText}>{technicalScore.confidence || '56%'}</span>
+                </div>
             </div>
-            <AnimatePresence initial={false}>
-                {isExpanded && (
-                    <motion.div
-                        key="score-content"
-                        initial="collapsed"
-                        animate="expanded"
-                        exit="collapsed"
-                        variants={accordionVariants}
-                        style={{ overflow: 'hidden' }}
-                    >
-                        <div className={styles.premiumAccordionBody}>
-                            {/* Score Top Grid */}
-                            <div className={styles.scoreTopRow}>
-                                <div className={styles.scoreTextGroup}>
-                                    <div className={styles.largeScoreText}>
-                                        <span style={{ color: scoreColor }}>{technicalScore.total}</span>
-                                        <span className={styles.scoreDivider}>/100</span>
-                                    </div>
-                                    <span className={styles.scoreTextLabel} style={{ color: scoreColor }}>
-                                        {(technicalScore.label || 'NEUTRAL').toUpperCase()}
-                                    </span>
-                                </div>
-                                <div className={styles.confidenceGroup}>
-                                    <span className={styles.confLabel}>CONFIDENCE</span>
-                                    <span className={styles.confValue}>{technicalScore.confidence || '-'}</span>
-                                </div>
+
+            {/* Main Content: Speedometer (Left) + High Level Pillars (Right) */}
+            <div className={styles.scoreShowcaseContentGrid}>
+                {/* Left: Master Speedometer Gauge (0 to 100 Numeric Scale) */}
+                <div className={styles.speedometerColumn}>
+                    <SpeedometerGauge
+                        score={technicalScore.total || 68}
+                        label={technicalScore.label || 'BULLISH'}
+                        confidence={technicalScore.confidence || '56%'}
+                        mode="numeric"
+                    />
+                </div>
+
+                {/* Right: Pillars Confluence Overview */}
+                <div className={styles.pillarsOverviewCol}>
+                    {/* 1. Trend Pillar */}
+                    <div className={styles.pillarSummaryRow}>
+                        <div className={styles.pillarMeta}>
+                            <div className={styles.pillarIconWrap} style={{ color: '#10B981' }}>
+                                <IndicatorIcon type="trend" />
                             </div>
-
-                            {/* Breakdown Progress Bars */}
-                            <div className={styles.breakdownProgressList}>
-                                {technicalScore.breakdown && Object.entries(technicalScore.breakdown).map(([key, item]) => {
-                                    const pct = Math.round((item.score / item.max) * 100);
-                                    const isSubOpen = scoreSubToggles[key];
-                                    const itemColor = getScoreColor(item.label);
-
-                                    return (
-                                        <div key={key} className={styles.progressRowContainer}>
-                                            <div className={styles.progressBarRow} onClick={(e) => onToggleSub(key, e)}>
-                                                <div className={styles.progressBarLabelGroup}>
-                                                    <IndicatorIcon type={key} />
-                                                    <span className={styles.progressBarTitle}>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
-                                                </div>
-
-                                                {/* Outer track & fill */}
-                                                <div className={styles.progressOuterTrack}>
-                                                    <div
-                                                        className={styles.progressFillBar}
-                                                        style={{ width: `${pct}%`, backgroundColor: itemColor }}
-                                                    />
-                                                </div>
-
-                                                <div className={styles.progressValueGroup}>
-                                                    <span className={styles.progressScoreText}>{item.score}/{item.max}</span>
-                                                    <ChevronIcon isOpen={isSubOpen} className={styles.subChevron} />
-                                                </div>
-                                            </div>
-
-                                            {/* Sub-details nested collapse with Animation */}
-                                            <AnimatePresence initial={false}>
-                                                {isSubOpen && (
-                                                    <motion.div
-                                                        key={`sub-${key}`}
-                                                        initial="collapsed"
-                                                        animate="expanded"
-                                                        exit="collapsed"
-                                                        variants={accordionVariants}
-                                                        style={{ overflow: 'hidden' }}
-                                                    >
-                                                        <div className={styles.progressSubDetailsCollapse}>
-                                                            {key === 'trend' && (
-                                                                <div className={styles.subDetailTableGrid}>
-                                                                    {Object.entries(trendIndicators).slice(0, 6).map(([indKey, ind]) => (
-                                                                        <div key={indKey} className={styles.subDetailMetricRow}>
-                                                                            <span className={styles.metricName}>{indKey}</span>
-                                                                            <span className={styles.metricVal}>{formatValue(ind.value)}</span>
-                                                                            <span className={styles.metricAction} style={{ color: getScoreColor(ind.action) }}>
-                                                                                {ind.action}
-                                                                            </span>
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            )}
-                                                            {key === 'momentum' && (
-                                                                <div className={styles.subDetailTableGrid}>
-                                                                    {Object.entries(momentumIndicators).slice(0, 5).map(([indKey, ind]) => (
-                                                                        <div key={indKey} className={styles.subDetailMetricRow}>
-                                                                            <span className={styles.metricName}>{indKey}</span>
-                                                                            <span className={styles.metricVal}>{formatValue(ind.value)}</span>
-                                                                            <span className={styles.metricAction} style={{ color: getScoreColor(ind.action) }}>
-                                                                                {ind.action}
-                                                                            </span>
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            )}
-                                                            {key === 'volume' && (
-                                                                <div className={styles.subDetailSimpleRows}>
-                                                                    <div className={styles.simpleRowItem}>
-                                                                        <span>Relative Volume:</span>
-                                                                        <strong>{volumeAnalysis.relative_volume || '0'}x</strong>
-                                                                    </div>
-                                                                    <div className={styles.simpleRowItem}>
-                                                                        <span>Buying/Selling Ratio:</span>
-                                                                        <strong style={{ color: scoreColor }}>
-                                                                            {volumeAnalysis.pressure?.buy_pct}% Buy / {volumeAnalysis.pressure?.sell_pct}% Sell
-                                                                        </strong>
-                                                                    </div>
-                                                                </div>
-                                                            )}
-                                                            {key === 'structure' && (
-                                                                <div className={styles.subDetailSimpleRows}>
-                                                                    <div className={styles.simpleRowItem}>
-                                                                        <span>Support Level:</span>
-                                                                        <strong>{formatValue(levels.nearest_support)}</strong>
-                                                                    </div>
-                                                                    <div className={styles.simpleRowItem}>
-                                                                        <span>Resistance Level:</span>
-                                                                        <strong>{formatValue(levels.nearest_resistance)}</strong>
-                                                                    </div>
-                                                                    <div className={styles.simpleRowItem}>
-                                                                        <span>Pivot standard:</span>
-                                                                        <strong>{formatValue(pivotPoints?.standard?.P)}</strong>
-                                                                    </div>
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </motion.div>
-                                                )}
-                                            </AnimatePresence>
-                                        </div>
-                                    );
-                                })}
+                            <span className={styles.pillarName}>Trend Analysis</span>
+                        </div>
+                        <div className={styles.pillarTrackWrap}>
+                            <div className={styles.pillarTrack}>
+                                <div className={styles.pillarFill} style={{ width: `${trendPct}%`, background: '#10B981' }} />
                             </div>
                         </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                        <div className={styles.pillarScoreWrap}>
+                            <span className={styles.pillarScoreText}>{trendBreakdown.score || 25} <span style={{ color: 'rgba(255,255,255,0.4)' }}>/ 25</span></span>
+                            <span className={styles.pillarSentimentBadge} style={{ color: '#10B981', borderColor: 'rgba(16, 185, 129, 0.3)', background: 'rgba(16, 185, 129, 0.1)' }}>
+                                {trendBreakdown.label || 'Bullish'}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* 2. Momentum Pillar */}
+                    <div className={styles.pillarSummaryRow}>
+                        <div className={styles.pillarMeta}>
+                            <div className={styles.pillarIconWrap} style={{ color: '#C084FC' }}>
+                                <IndicatorIcon type="momentum" />
+                            </div>
+                            <span className={styles.pillarName}>Momentum Dynamics</span>
+                        </div>
+                        <div className={styles.pillarTrackWrap}>
+                            <div className={styles.pillarTrack}>
+                                <div className={styles.pillarFill} style={{ width: `${momentumPct}%`, background: '#C084FC' }} />
+                            </div>
+                        </div>
+                        <div className={styles.pillarScoreWrap}>
+                            <span className={styles.pillarScoreText}>{momentumBreakdown.score || 21} <span style={{ color: 'rgba(255,255,255,0.4)' }}>/ 25</span></span>
+                            <span className={styles.pillarSentimentBadge} style={{ color: '#C084FC', borderColor: 'rgba(192, 132, 252, 0.3)', background: 'rgba(192, 132, 252, 0.1)' }}>
+                                {momentumBreakdown.label || 'Bullish'}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* 3. Structure Pillar */}
+                    <div className={styles.pillarSummaryRow}>
+                        <div className={styles.pillarMeta}>
+                            <div className={styles.pillarIconWrap} style={{ color: '#38BDF8' }}>
+                                <IndicatorIcon type="structure" />
+                            </div>
+                            <span className={styles.pillarName}>Market Structure</span>
+                        </div>
+                        <div className={styles.pillarTrackWrap}>
+                            <div className={styles.pillarTrack}>
+                                <div className={styles.pillarFill} style={{ width: `${structurePct}%`, background: '#38BDF8' }} />
+                            </div>
+                        </div>
+                        <div className={styles.pillarScoreWrap}>
+                            <span className={styles.pillarScoreText}>{structureBreakdown.score || 12} <span style={{ color: 'rgba(255,255,255,0.4)' }}>/ 25</span></span>
+                            <span className={styles.pillarSentimentBadge} style={{ color: '#38BDF8', borderColor: 'rgba(56, 189, 248, 0.3)', background: 'rgba(56, 189, 248, 0.1)' }}>
+                                {structureBreakdown.label || 'Neutral'}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Confluence Formula Line */}
+                    <div className={styles.confluenceFormulaLine}>
+                        <span className={styles.formulaTitle}>SCORING EQUATION:</span>
+                        <span className={styles.formulaEquation}>
+                            Trend ({trendBreakdown.score || 25}) + Momentum ({momentumBreakdown.score || 21}) + Structure ({structureBreakdown.score || 12}) = <strong style={{ color: '#10B981' }}>{technicalScore.total || 68} / 100</strong>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

@@ -1,68 +1,81 @@
 'use client';
 
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import styles from '../aiStrategy.module.scss';
 import { getBidiProps } from '@/lib/bidi';
-import { ChevronIcon, BrainRobotIcon, accordionVariants } from '@/icons/analysisIcons';
+import { BrainRobotIcon } from '@/icons/analysisIcons';
 
 export default function AiIntelligenceSummarySection({
     aiSummary = {},
-    isExpanded,
-    onToggle,
     t
 }) {
-    return (
-        <div className={styles.premiumAccordion}>
-            <div className={styles.premiumAccordionHeader} onClick={onToggle}>
-                <span>{t('aiStrategy.intelligenceSummary', 'AI INTELLIGENCE SUMMARY')}</span>
-                <ChevronIcon isOpen={isExpanded} />
-            </div>
-            <AnimatePresence initial={false}>
-                {isExpanded && (
-                    <motion.div
-                        key="ai-content"
-                        initial="collapsed"
-                        animate="expanded"
-                        exit="collapsed"
-                        variants={accordionVariants}
-                        style={{ overflow: 'hidden' }}
-                    >
-                        <div className={styles.premiumAccordionBody}>
-                            <div className={styles.purpleAiSummaryCard}>
-                                <div className={styles.purpleAiHeader}>
-                                    <BrainRobotIcon />
-                                    <h5>AI ANALYSIS</h5>
-                                </div>
-                                <h4 {...getBidiProps(aiSummary.headline, styles.purpleAiHeadline)}>
-                                    {aiSummary.headline}
-                                </h4>
+    if (!aiSummary || (!aiSummary.headline && !aiSummary.trend && !aiSummary.momentum)) {
+        return null;
+    }
 
-                                <div className={styles.purpleAiBulletsList}>
-                                    {aiSummary.trend && (
-                                        <div className={styles.aiBulletSection}>
-                                            <span className={styles.sectionLabel} style={{ color: '#18C98B' }}>TREND</span>
-                                            <p {...getBidiProps(aiSummary.trend)}>{aiSummary.trend}</p>
-                                        </div>
-                                    )}
-                                    {aiSummary.momentum && (
-                                        <div className={styles.aiBulletSection}>
-                                            <span className={styles.sectionLabel} style={{ color: '#C084FC' }}>MOMENTUM</span>
-                                            <p {...getBidiProps(aiSummary.momentum)}>{aiSummary.momentum}</p>
-                                        </div>
-                                    )}
-                                    {aiSummary.volume && (
-                                        <div className={styles.aiBulletSection}>
-                                            <span className={styles.sectionLabel} style={{ color: '#38BDF8' }}>VOLUME</span>
-                                            <p {...getBidiProps(aiSummary.volume)}>{aiSummary.volume}</p>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
+    return (
+        <div className={`${styles.unifiedDomainCard} ${styles.aiIntelligenceShowcaseCard}`}>
+            {/* Header matching other sections */}
+            <div className={styles.domainHeaderRow}>
+                <div className={styles.domainTitleGroup}>
+                    <div className={styles.domainIconWrap} style={{ color: '#18C98B', background: 'rgba(24, 201, 139, 0.1)', borderColor: 'rgba(24, 201, 139, 0.25)' }}>
+                        <BrainRobotIcon />
+                    </div>
+                    <div>
+                        <h4 className={styles.domainMainTitle}>
+                            {t('aiStrategy.intelligenceSummary', 'AI INTELLIGENCE SUMMARY')}
+                        </h4>
+                        <span className={styles.domainSubtitle}>Neural confluence synthesis & automated strategy reasoning</span>
+                    </div>
+                </div>
+                <div
+                    className={styles.domainSentimentBadge}
+                    style={{
+                        color: '#18C98B',
+                        borderColor: 'rgba(24, 201, 139, 0.35)',
+                        background: 'rgba(24, 201, 139, 0.1)'
+                    }}
+                >
+                    CHRONOSX NEURAL MODEL
+                </div>
+            </div>
+
+            {/* Headline Quote Banner */}
+            {aiSummary.headline && (
+                <div className={styles.aiHeadlineBanner}>
+                    <div className={styles.aiQuoteAccent} style={{ background: '#18C98B' }} />
+                    <h4 {...getBidiProps(aiSummary.headline, styles.greenAiHeadline)}>
+                        &ldquo;{aiSummary.headline}&rdquo;
+                    </h4>
+                </div>
+            )}
+
+            {/* AI Insights Multi-column Grid */}
+            <div className={styles.aiInsightsGrid}>
+                {aiSummary.trend && (
+                    <div className={styles.aiInsightCard}>
+                        <div className={styles.aiInsightHeader}>
+                            <span className={styles.insightDot} style={{ backgroundColor: '#18C98B' }} />
+                            <span className={styles.insightCategoryTitle}>TREND DYNAMICS</span>
                         </div>
-                    </motion.div>
+                        <p {...getBidiProps(aiSummary.trend)} className={styles.insightParagraph}>
+                            {aiSummary.trend}
+                        </p>
+                    </div>
                 )}
-            </AnimatePresence>
+
+                {aiSummary.momentum && (
+                    <div className={styles.aiInsightCard}>
+                        <div className={styles.aiInsightHeader}>
+                            <span className={styles.insightDot} style={{ backgroundColor: '#18C98B' }} />
+                            <span className={styles.insightCategoryTitle}>MOMENTUM CONVERGENCE</span>
+                        </div>
+                        <p {...getBidiProps(aiSummary.momentum)} className={styles.insightParagraph}>
+                            {aiSummary.momentum}
+                        </p>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

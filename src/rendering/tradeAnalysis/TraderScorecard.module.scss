@@ -115,23 +115,6 @@
     }
 }
 
-/* 2. Statement Info Row */
-.statementRow {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 12px 20px;
-    background: rgba(10, 18, 14, 0.7);
-    border: 1px solid rgba(24, 201, 139, 0.16);
-    border-radius: 12px;
-
-    @media (max-width: 640px) {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
-
 .statementLeft {
     display: flex;
     align-items: center;
@@ -168,18 +151,6 @@
     }
 }
 
-/* 3. Period Selection */
-.periodRow {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    .periodLabel {
-        font-size: 13px;
-        font-weight: 700;
-        color: #94A3B8;
-    }
-}
 
 .periodButtons {
     display: flex;

@@ -60,15 +60,22 @@ export default function useChartDataLoader({
         let isMounted = true;
 
         async function loadChartData() {
+            setLoading(true);
+            setLatestCandle(null);
+            candlesDataRef.current = [];
+            if (seriesRef.current) {
+                try { seriesRef.current.setData([]); } catch {}
+            }
+            if (volumeSeriesRef.current) {
+                try { volumeSeriesRef.current.setData([]); } catch {}
+            }
+
             if (!chartRef.current) {
                 await new Promise((r) => setTimeout(r, 60));
                 if (!chartRef.current || !isMounted) {
                     if (isMounted) setLoading(false);
                     return;
                 }
-            }
-            if (!candlesDataRef.current || candlesDataRef.current.length === 0) {
-                setLoading(true);
             }
 
             if (wsRef.current) {
@@ -189,6 +196,9 @@ export default function useChartDataLoader({
                 });
 
                 seriesRef.current.setData(formattedCandles);
+                try {
+                    chartRef.current.timeScale().fitContent();
+                } catch {}
                 if (isMounted) setLoading(false);
 
                 if (volumeSeriesRef.current) {
