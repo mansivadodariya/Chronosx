@@ -565,6 +565,20 @@ export default function VisionAnalysisAccordions({ chartSections, textSummary, i
         }
     };
 
+    const hasAnyAccordionSection = ACCORDION_SECTIONS.some(({ key }) => Boolean(sections[key]));
+    if (!cleanSummary && !sections.overall_summary && !hasAnyAccordionSection) {
+        const rawFallback = textSummary || (typeof rawData === 'string' ? rawData : (rawData?.response || rawData?.content || rawData?.message || ''));
+        if (rawFallback) {
+            return (
+                <div className={styles.chatMarkdown}>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={bidiMarkdownComponents}>
+                        {rawFallback}
+                    </ReactMarkdown>
+                </div>
+            );
+        }
+    }
+
     return (
         <div className={styles.visionAnalysisContainer}>
             {/* OPTIONAL DISCLAIMER HEADER */}

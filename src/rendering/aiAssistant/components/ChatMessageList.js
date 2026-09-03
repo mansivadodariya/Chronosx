@@ -78,9 +78,28 @@ export default function ChatMessageList({
                                     const sections = msg.chart_sections || (parsed.jsonData ? (parsed.jsonData.chart_sections || parsed.jsonData) : null);
                                     const disclaimerHeader = msg.disclaimer_header || parsed.disclaimerHeader;
                                     const disclaimerFooter = msg.disclaimer_footer || parsed.disclaimerFooter;
-                                    const contentText = parsed.fallbackText || (typeof msg.content === 'string' && !msg.content.includes('{') ? msg.content : '');
+                                    const contentText = parsed.fallbackText || (typeof msg.content === 'string' && !msg.content.trim().startsWith('{') ? msg.content : (msg.content || ''));
 
-                                    if (sections) {
+                                    const isVisionAnalysis = Boolean(
+                                        msg.response_format === 'vision_analysis' ||
+                                        msg.chat_type === 'With_Image' ||
+                                        (sections && typeof sections === 'object' && (
+                                            sections.overall_trend ||
+                                            sections.market_structure ||
+                                            sections.support_and_resistance ||
+                                            sections.supply_and_demand_zones ||
+                                            sections.trader_actionable_zones ||
+                                            sections.volatility_and_price_behavior ||
+                                            sections.session_behavior ||
+                                            sections.market_mood ||
+                                            sections.candlestick_behavior ||
+                                            sections.chart_patterns ||
+                                            sections.chart_sections ||
+                                            (sections.is_valid_chart !== undefined && sections.overall_summary)
+                                        ))
+                                    );
+
+                                    if (sections && isVisionAnalysis) {
                                         return (
                                             <VisionAnalysisAccordions
                                                 data={sections}

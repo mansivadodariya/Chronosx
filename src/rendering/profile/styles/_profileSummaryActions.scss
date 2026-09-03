@@ -6,7 +6,7 @@
         radial-gradient(ellipse 70% 80% at 0% 100%, rgba(0, 242, 254, 0.1) 0%, transparent 75%),
         #121514;
     border: 1px solid rgba(24, 201, 139, 0.22);
-    border-radius: 18px;
+    border-radius: 8px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -224,7 +224,7 @@
 .securityPriorityCard {
     background: rgba(13, 14, 19, 0.55);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 14px;
+    border-radius: 8px;
     padding: 14px 16px;
     display: flex;
     align-items: center;

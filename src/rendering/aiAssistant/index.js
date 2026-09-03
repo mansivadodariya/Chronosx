@@ -284,7 +284,7 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
     };
 
     const handleSelectChat = async (item) => {
-        const convId = item?.id || item?.conversation_id || item?.history_id;
+        const convId = item?.id || item?.conversation_id || item?.history_id || item?._id || item?.question_id || item?.uuid;
         setHistoryModalOpen(false);
         setSelectedChat(item);
         setCurrentConversationId(convId || null);
@@ -293,87 +293,122 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
             setTimeout(() => window.dispatchEvent(new Event('resize')), ms);
         });
 
+        const fallbackFromItem = () => {
+            const loaded = [];
+            let latestPair = item?.pair || item?.detected_pair || null;
+
+            if (Array.isArray(item?.chats) && item.chats.length > 0) {
+                item.chats.forEach((c) => {
+                    const q = c.question || c.message || c.input_data || c.prompt;
+                    const a = c.response || c.answer || c.output_data || c.output || c.result;
+                    const p = c.pair || c.detected_pair || latestPair;
+                    if (p) latestPair = p;
+                    if (q) loaded.push({ role: 'user', content: q, pair: p || null });
+                    if (a) {
+                        let res = a;
+                        if (typeof res === 'string') { try { res = JSON.parse(res); } catch {} }
+                        loaded.push(buildAssistantMessage(parseAssistantResponse(res)));
+                    }
+                });
+            } else if (Array.isArray(item?.messages) && item.messages.length > 0) {
+                item.messages.forEach((m) => {
+                    const q = m.question || m.message || (m.role === 'user' ? (m.content || m.text) : null);
+                    const a = m.answer || m.response || (m.role === 'assistant' ? (m.answer || m.content || m.text) : null);
+                    const p = m.pair || m.detected_pair || latestPair;
+                    if (p) latestPair = p;
+                    if (q) loaded.push({ role: 'user', content: q, pair: p || null });
+                    if (a) {
+                        let res = a;
+                        if (typeof res === 'string') { try { res = JSON.parse(res); } catch {} }
+                        loaded.push(buildAssistantMessage(parseAssistantResponse(res)));
+                    }
+                });
+            }
+
+            if (loaded.length === 0) {
+                const question = item.question || item.message || item.first_question || item.input_data || item.input || item.prompt || item.title || item.name || getQuestionText(item) || '';
+                const rawResponse = item.response || item.answer || item.output_data || item.output || item.result || item.full_report || item.ai_response || item.data || item.text || item.description || null;
+
+                if (question) {
+                    loaded.push({ role: 'user', content: question, pair: latestPair || null });
+                }
+                if (rawResponse) {
+                    let resolved = rawResponse;
+                    if (typeof resolved === 'string') {
+                        try { resolved = JSON.parse(resolved); } catch {}
+                    }
+                    loaded.push(buildAssistantMessage(parseAssistantResponse(resolved)));
+                } else if (question) {
+                    loaded.push({ role: 'assistant', content: 'Historical analysis data loaded.' });
+                }
+            }
+
+            if (loaded.length > 0) {
+                setChatMessages(loaded);
+            }
+            if (latestPair && ALL_PAIRS.includes(latestPair)) {
+                setSelectedPair(latestPair);
+            }
+        };
+
         if (convId) {
             setPendingRequest(true);
             try {
                 const res = await fxApi.getConversationHistory(convId);
                 const fullData = res?.data || res;
-                const rawMessages = fullData?.messages || (Array.isArray(fullData) ? fullData : []);
+                const rawMessages = fullData?.messages || fullData?.chats || fullData?.history || fullData?.conversation || fullData?.items || (Array.isArray(fullData?.data) ? fullData.data : (Array.isArray(fullData) ? fullData : []));
 
                 const loadedMessages = [];
-                let latestPair = item?.pair || null;
+                let latestPair = item?.pair || item?.detected_pair || null;
 
-                rawMessages.forEach((m) => {
-                    const userText = m.question || m.message || (m.role === 'user' ? m.content : null);
-                    const ans = m.answer || m.response || (m.role === 'assistant' ? (m.answer || m.content) : null);
-                    const p = m.pair || m.detected_pair;
-                    if (p) latestPair = p;
+                if (Array.isArray(rawMessages) && rawMessages.length > 0) {
+                    rawMessages.forEach((m) => {
+                        const userText = m.question || m.message || m.input_data || m.input || m.prompt || m.first_question || m.user_query || (m.role === 'user' ? (m.content || m.text) : null);
+                        const ans = m.answer || m.response || m.output_data || m.output || m.result || m.full_report || m.ai_response || (m.role === 'assistant' ? (m.answer || m.content || m.text || m.response) : null);
+                        const p = m.pair || m.detected_pair || latestPair;
+                        if (p) latestPair = p;
 
-                    if (userText) {
-                        loadedMessages.push({
-                            role: 'user',
-                            content: userText,
-                            pair: p || null,
-                            timeframe: m.timeframe || null
-                        });
-                    }
-
-                    if (ans) {
-                        let resolved = ans;
-                        if (typeof resolved === 'string') {
-                            try { resolved = JSON.parse(resolved); } catch {}
+                        if (userText) {
+                            loadedMessages.push({
+                                role: 'user',
+                                content: userText,
+                                pair: p || null,
+                                timeframe: m.timeframe || null
+                            });
                         }
-                        const parsed = parseAssistantResponse(resolved);
-                        loadedMessages.push(buildAssistantMessage(parsed));
-                    } else if (m.role === 'assistant' && m.content) {
-                        loadedMessages.push({
-                            role: 'assistant',
-                            content: m.content
-                        });
-                    }
-                });
+
+                        if (ans) {
+                            let resolved = ans;
+                            if (typeof resolved === 'string') {
+                                try { resolved = JSON.parse(resolved); } catch {}
+                            }
+                            const parsed = parseAssistantResponse(resolved);
+                            loadedMessages.push(buildAssistantMessage(parsed));
+                        } else if (m.role === 'assistant' && (m.content || m.text)) {
+                            loadedMessages.push({
+                                role: 'assistant',
+                                content: m.content || m.text
+                            });
+                        }
+                    });
+                }
 
                 if (loadedMessages.length > 0) {
                     setChatMessages(loadedMessages);
-                } else {
-                    const question = item.question || item.message || '';
-                    const rawResponse = item.response || item.answer;
-                    if (question || rawResponse) {
-                        let resolved = rawResponse;
-                        if (typeof resolved === 'string') {
-                            try { resolved = JSON.parse(resolved); } catch {}
-                        }
-                        const parsed = parseAssistantResponse(resolved);
-                        setChatMessages([
-                            { role: 'user', content: question, pair: latestPair || null },
-                            buildAssistantMessage(parsed)
-                        ]);
-                    } else {
-                        setChatMessages([]);
+                    if (latestPair && ALL_PAIRS.includes(latestPair)) {
+                        setSelectedPair(latestPair);
                     }
-                }
-
-                if (latestPair && ALL_PAIRS.includes(latestPair)) {
-                    setSelectedPair(latestPair);
+                } else {
+                    fallbackFromItem();
                 }
             } catch (err) {
                 console.error("Failed to load conversation history:", err);
-                const question = item.question || item.message || '';
-                const rawResponse = item.response || item.answer;
-                if (question || rawResponse) {
-                    let resolved = rawResponse;
-                    if (typeof resolved === 'string') {
-                        try { resolved = JSON.parse(resolved); } catch {}
-                    }
-                    const parsed = parseAssistantResponse(resolved);
-                    setChatMessages([
-                        { role: 'user', content: question, pair: item?.pair || null },
-                        buildAssistantMessage(parsed)
-                    ]);
-                }
+                fallbackFromItem();
             } finally {
                 setPendingRequest(false);
             }
+        } else {
+            fallbackFromItem();
         }
     };
 
