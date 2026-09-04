@@ -103,6 +103,7 @@
         0% {
             background-position: -200% 0;
         }
+
         100% {
             background-position: 200% 0;
         }
@@ -117,12 +118,10 @@
         box-sizing: border-box;
 
         .skeletonPulse {
-            background: linear-gradient(
-                90deg,
-                rgba(255, 255, 255, 0.03) 25%,
-                rgba(24, 201, 139, 0.09) 50%,
-                rgba(255, 255, 255, 0.03) 75%
-            );
+            background: linear-gradient(90deg,
+                    rgba(255, 255, 255, 0.03) 25%,
+                    rgba(24, 201, 139, 0.09) 50%,
+                    rgba(255, 255, 255, 0.03) 75%);
             background-size: 200% 100%;
             animation: analysisSkeletonShimmer 1.6s infinite ease-in-out;
             border-radius: 6px;
@@ -568,8 +567,8 @@
 
         .scoreShowcaseContentGrid {
             display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 32px;
+            grid-template-columns: 360px 1fr;
+            gap: 28px;
             align-items: center;
             margin-top: 16px;
 
@@ -735,7 +734,7 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
-        max-width: 290px;
+        max-width: 390px;
 
         .speedometerSvgWrapper {
             width: 100%;
@@ -744,7 +743,7 @@
 
             .speedometerSvg {
                 width: 100%;
-                max-width: 290px;
+                max-width: 390px;
                 height: auto;
                 overflow: visible;
             }
@@ -1059,10 +1058,13 @@
     }
 
     @keyframes pulseGlow {
-        0%, 100% {
+
+        0%,
+        100% {
             opacity: 1;
             transform: scale(1);
         }
+
         50% {
             opacity: 0.5;
             transform: scale(1.15);
@@ -1270,14 +1272,14 @@
         /* Unified 3-Column in ONE ROW Architecture with light divider lines */
         .threeColumnUnifiedRow {
             display: grid;
-            grid-template-columns: minmax(330px, 1.25fr) minmax(240px, 0.95fr) minmax(280px, 1.35fr);
+            grid-template-columns: minmax(350px, 1.35fr) minmax(230px, 0.9fr) minmax(270px, 1.35fr);
             gap: 24px;
             align-items: stretch;
             width: 100%;
             margin-top: 14px;
 
-            > div:nth-child(1),
-            > div:nth-child(2) {
+            >div:nth-child(1),
+            >div:nth-child(2) {
                 border-right: 1px solid rgba(255, 255, 255, 0.08);
                 padding-right: 24px;
             }
@@ -1285,23 +1287,27 @@
             @media (max-width: 1240px) {
                 grid-template-columns: minmax(300px, 1.2fr) minmax(220px, 1fr) minmax(260px, 1.2fr);
                 gap: 18px;
-                > div:nth-child(1),
-                > div:nth-child(2) {
+
+                >div:nth-child(1),
+                >div:nth-child(2) {
                     padding-right: 18px;
                 }
             }
 
             @media (max-width: 1040px) {
                 grid-template-columns: 1fr 1fr;
-                > div:nth-child(1) {
+
+                >div:nth-child(1) {
                     border-right: 1px solid rgba(255, 255, 255, 0.08);
                     padding-right: 20px;
                 }
-                > div:nth-child(2) {
+
+                >div:nth-child(2) {
                     border-right: none;
                     padding-right: 0;
                 }
-                > div:nth-child(3) {
+
+                >div:nth-child(3) {
                     grid-column: 1 / -1;
                     border-top: 1px solid rgba(255, 255, 255, 0.08);
                     padding-top: 18px;
@@ -1311,8 +1317,9 @@
             @media (max-width: 768px) {
                 grid-template-columns: 1fr;
                 gap: 20px;
-                > div:nth-child(1),
-                > div:nth-child(2) {
+
+                >div:nth-child(1),
+                >div:nth-child(2) {
                     border-right: none;
                     padding-right: 0;
                     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -1558,25 +1565,53 @@
             flex-direction: column;
             gap: 12px;
             width: 100%;
-            padding-top: 4px;
+            padding-top: 0;
 
             .evidenceHeaderTag {
                 display: flex;
                 align-items: center;
-                gap: 7px;
-                font-size: 11.5px;
-                font-weight: 700;
-                letter-spacing: 0.6px;
-                color: rgba(255, 255, 255, 0.85);
-                font-family: "Euclid-Bold", "Inter", sans-serif;
+                gap: 8px;
+                padding: 6px 12px;
+                border-radius: 6px;
+                margin-bottom: 4px;
+                width: 100%;
+                box-sizing: border-box;
+
+                .evidenceTitleWrap {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
 
                 .evidenceTagDot {
-                    width: 6px;
-                    height: 6px;
+                    width: 7px;
+                    height: 7px;
                     border-radius: 50%;
                     background: #18C98B !important;
-                    box-shadow: 0 0 8px #18C98B !important;
+                    box-shadow: 0 0 8px rgba(24, 201, 139, 0.8) !important;
                     flex-shrink: 0;
+                }
+
+                .evidenceTitleText {
+                    font-size: 12.5px;
+                    font-weight: 800;
+                    letter-spacing: 0.8px;
+                    color: #FFFFFF;
+                    font-family: "Euclid-Bold", "Inter", sans-serif;
+                    text-transform: uppercase;
+                }
+
+                .evidenceVerifiedBadge {
+                    font-size: 10px;
+                    font-weight: 700;
+                    color: #18C98B;
+                    background: rgba(24, 201, 139, 0.12);
+                    border: 1px solid rgba(24, 201, 139, 0.25);
+                    padding: 2px 7px;
+                    border-radius: 4px;
+                    letter-spacing: 0.5px;
+                    text-transform: uppercase;
+                    font-family: "Euclid-Bold", "Inter", sans-serif;
                 }
             }
 

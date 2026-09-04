@@ -13,6 +13,7 @@
   flex-direction: column;
   gap: 8px;
   backdrop-filter: blur(12px);
+  overscroll-behavior: contain;
 
   :global([dir="rtl"]) & {
     left: auto !important;
@@ -168,6 +169,7 @@
 .tickerListScrollArea {
   max-height: 260px;
   overflow-y: auto;
+  overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
   gap: 2px;

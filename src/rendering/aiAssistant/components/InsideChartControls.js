@@ -36,7 +36,10 @@ export default function InsideChartControls({
     openSettingsModal
 }) {
     return (
-        <div className={styles.insideChartControlPill}>
+        <div
+            className={styles.insideChartControlPill}
+            onWheel={(e) => e.stopPropagation()}
+        >
             {/* 1. Inside Chart Control Pill Symbol Dropdown */}
             <div className={styles.controlDropdownWrapper} ref={symbolDropdownRef}>
                 <button
@@ -81,7 +84,10 @@ export default function InsideChartControls({
                 </button>
 
                 {timeframeDropdownOpen && (
-                    <div className={`${styles.dropdownMenuFloating} ${styles.timeframeDropdownMenu}`}>
+                    <div
+                        className={`${styles.dropdownMenuFloating} ${styles.timeframeDropdownMenu}`}
+                        onWheel={(e) => e.stopPropagation()}
+                    >
                         {TIMEFRAMES.map((tf) => {
                             const isActive = currentTimeframe === tf.value;
                             return (
@@ -120,7 +126,10 @@ export default function InsideChartControls({
                 </button>
 
                 {chartTypeDropdownOpen && (
-                    <div className={`${styles.dropdownMenuFloating} ${styles.chartTypeDropdownMenu}`}>
+                    <div
+                        className={`${styles.dropdownMenuFloating} ${styles.chartTypeDropdownMenu}`}
+                        onWheel={(e) => e.stopPropagation()}
+                    >
                         {CHART_TYPES.map((ct) => {
                             const isActive = chartType === ct.value;
                             const translatedLabel = ct.value === 'candlestick'

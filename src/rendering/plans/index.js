@@ -100,7 +100,8 @@ const faqs = [
 export default function SubscriptionPlansView() {
     const router = useRouter();
     const pathname = usePathname();
-    const isOutside = pathname === '/plans' || pathname?.includes('/(static)/') || !pathname?.includes('subscription-plans');
+    const isDashboard = Boolean(pathname?.includes('subscription-plans'));
+    const isOutside = !isDashboard;
     const { t, language } = useLanguage();
     const [plans, setPlans] = useState(defaultSubscriptionPlans);
     const [loading, setLoading] = useState(true);
@@ -239,7 +240,7 @@ export default function SubscriptionPlansView() {
     };
 
     return (
-        <div className={`${styles.plansPage} ${isOutside ? styles.outsidePage : ''} ${styles[`lang_${language}`] || ''}`}>
+        <div className={`${styles.plansPage} ${isDashboard ? styles.dashboardPlansPage : styles.outsidePage} ${styles[`lang_${language}`] || ''}`}>
             {/* Ambient Background Aura Lights */}
             <div className={styles.ambientGoldTop} aria-hidden="true" />
             <div className={styles.ambientGlowCenter} aria-hidden="true" />
@@ -247,19 +248,27 @@ export default function SubscriptionPlansView() {
 
             <div className="container">
                 {/* 1. Header Section */}
-                <CommonSectionHeader
-                    badge="CHRONOSX PRICING TIERS"
-                    badgeIcon={
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5">
-                            <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z" fill="#18C98B" fillOpacity="0.25" />
-                            <circle cx="12" cy="19" r="1.5" fill="#18C98B" />
-                        </svg>
-                    }
-                    title="Institutional AI Power,"
-                    highlightText="Tailored For Your Edge"
-                    subtitle={t('plans.subtitle', 'Unlock sub-second AI pattern recognition, live multi-timeframe scans, and automated quant strategy backtesting.')}
-                    isCard={true}
-                />
+                {isDashboard ? (
+                    <div className={styles.dashboardTitleBlock}>
+                        <h1 className={styles.dashboardTitleText}>
+                            {t('nav.plans', 'Subscription Plans')}
+                        </h1>
+                    </div>
+                ) : (
+                    <CommonSectionHeader
+                        badge="CHRONOSX PRICING TIERS"
+                        badgeIcon={
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5">
+                                <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z" fill="#18C98B" fillOpacity="0.25" />
+                                <circle cx="12" cy="19" r="1.5" fill="#18C98B" />
+                            </svg>
+                        }
+                        title="Institutional AI Power,"
+                        highlightText="Tailored For Your Edge"
+                        subtitle={t('plans.subtitle', 'Unlock sub-second AI pattern recognition, live multi-timeframe scans, and automated quant strategy backtesting.')}
+                        isCard={true}
+                    />
+                )}
 
                 {/* 2. Pricing Plans Grid */}
                 {loading ? (
@@ -517,24 +526,28 @@ export default function SubscriptionPlansView() {
                     </div>
                 </div>
 
-                {/* 5. Bottom Conversion CTA */}
-                <CommonCta
-                    badge="UNLIMITED INSTITUTIONAL POTENTIAL"
-                    title1="Upgrade Your Trading Desk with"
-                    title2="Next-Gen AI Intelligence"
-                    description="Get higher compute limits, custom MT5 indicators, real-time chart OCR scans, and dedicated quant support."
-                    primaryBtnText="CHOOSE YOUR PLAN"
-                    primaryBtnAction={() => {
-                        window.scrollTo({ top: 300, behavior: 'smooth' });
-                    }}
-                />
+                {/* 5. Bottom Conversion CTA & Disclaimer (Only on public /plans marketing site, NOT in dashboard) */}
+                {isOutside && (
+                    <>
+                        <CommonCta
+                            badge="UNLIMITED INSTITUTIONAL POTENTIAL"
+                            title1="Upgrade Your Trading Desk with"
+                            title2="Next-Gen AI Intelligence"
+                            description="Get higher compute limits, custom MT5 indicators, real-time chart OCR scans, and dedicated quant support."
+                            primaryBtnText="CHOOSE YOUR PLAN"
+                            primaryBtnAction={() => {
+                                window.scrollTo({ top: 300, behavior: 'smooth' });
+                            }}
+                        />
 
-                {/* 6. Footer Disclaimer Box */}
-                <div className={styles.disclaimerBox}>
-                    <p>
-                        ChronosX provides software, technical tools, and market intelligence algorithms for educational and research purposes only. Subscription fees cover cloud server infrastructure and AI compute processing. Past performance in backtests or simulations is not indicative of future market results.
-                    </p>
-                </div>
+                        {/* 6. Footer Disclaimer Box */}
+                        <div className={styles.disclaimerBox}>
+                            <p>
+                                ChronosX provides software, technical tools, and market intelligence algorithms for educational and research purposes only. Subscription fees cover cloud server infrastructure and AI compute processing. Past performance in backtests or simulations is not indicative of future market results.
+                            </p>
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     );

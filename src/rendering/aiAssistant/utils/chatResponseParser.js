@@ -16,18 +16,18 @@ export const parseAssistantResponse = (raw) => {
     const chatType = chatItem?.chat_type || envelope?.chat_type || null;
 
     let rawText = '';
-    let rawFullReport = envelope?.full_report || null;
+    let rawFullReport = chatItem?.full_report || envelope?.full_report || null;
 
     if (typeof payload === 'string') {
         rawText = payload;
     } else if (payload && typeof payload === 'object') {
-        rawText = payload.short_response || payload.shortResponse || payload.text || payload.response || '';
+        rawText = payload.response || payload.message || payload.answer || payload.output || payload.text || payload.full_report || payload.short_response || payload.shortResponse || '';
         rawFullReport = payload.full_report || payload.fullReport || rawFullReport;
     }
 
     const parsed = parseChatMessage(rawText, rawFullReport);
 
-    let shortContent = parsed.fallbackText || (typeof payload === 'string' ? '' : (payload?.short_response || payload?.shortResponse || payload?.text || payload?.response || ''));
+    let shortContent = parsed.fallbackText || rawText || (typeof payload === 'string' ? payload : (payload?.response || payload?.text || payload?.short_response || ''));
     let fullReport = rawFullReport;
 
     const visualData = (payload && typeof payload === 'object') ? (payload.visual_data || payload.visualData || envelope?.visual_data || null) : null;
@@ -62,12 +62,16 @@ export const parseAssistantResponse = (raw) => {
         response_format = 'vision_analysis';
     }
 
+    if (fullReport && !response_format) {
+        response_format = 'deep_analysis';
+    }
+
     if (!image_warning && is_valid_chart === false) {
         image_warning = 'Image not clear or valid chart header missing. Please upload a clear chart screenshot.';
     }
 
     return {
-        shortContent: shortContent || (typeof payload === 'string' ? parsed.fallbackText : JSON.stringify(payload)),
+        shortContent: shortContent || (typeof payload === 'string' ? payload : JSON.stringify(payload)),
         fullReport: fullReport,
         visualData,
         detected_pair,

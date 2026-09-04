@@ -451,7 +451,7 @@ $success: #10b981;
     .resultsPanel {
         border: 1px solid $border;
         border-radius: 12px;
-        background: #fff;
+        background: #0D0E13;
         display: flex;
         flex-direction: column;
         max-height: calc(100dvh - 180px);
@@ -462,7 +462,7 @@ $success: #10b981;
     .resultsHeader {
         padding: 16px 20px;
         border-bottom: 1px solid $border;
-        background: #F8FAFC;
+        background: rgba(24, 201, 139, 0.04);
 
         h3 {
             margin: 0;
@@ -474,8 +474,14 @@ $success: #10b981;
 
     .resultsBody {
         flex: 1;
+        min-height: 0;
         overflow-y: auto;
+        overflow-x: hidden;
         padding: 16px;
+        scroll-behavior: smooth;
+        overscroll-behavior-y: contain;
+        touch-action: pan-y;
+        -webkit-overflow-scrolling: touch;
 
         &::-webkit-scrollbar {
             width: 6px;
@@ -509,26 +515,29 @@ $success: #10b981;
     }
 
     .historyGroup {
-        margin-bottom: 20px;
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(24, 201, 139, 0.18);
-        border-radius: 14px;
-        padding: 16px;
-        transition: border-color 0.2s ease;
+        margin-bottom: 24px;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        padding: 0;
 
-        &:hover {
-            border-color: rgba(24, 201, 139, 0.4);
+        &:last-child {
+            margin-bottom: 0;
         }
     }
 
     .historyTime {
-        display: flex;
+        display: inline-flex;
         align-items: center;
         gap: 8px;
         font-size: 13px;
         font-weight: 600;
         color: #18C98B;
         margin-bottom: 12px;
+        padding: 4px 10px;
+        background: rgba(24, 201, 139, 0.08);
+        border: 1px solid rgba(24, 201, 139, 0.2);
+        border-radius: 6px;
     }
 
     .recentEmpty {

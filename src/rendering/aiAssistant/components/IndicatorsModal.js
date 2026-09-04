@@ -159,6 +159,7 @@ export default function IndicatorsModal({
             <div
                 className={`${styles.indicatorsModalCard} ${!isDark ? styles.lightModal : ''}`}
                 onClick={(e) => e.stopPropagation()}
+                onWheel={(e) => e.stopPropagation()}
             >
                 {/* Modal Top Header */}
                 <div className={styles.indicatorsModalHeader}>
@@ -223,7 +224,10 @@ export default function IndicatorsModal({
                 </div>
 
                 {/* Modal Main Body (Sidebar + Flat Text List) */}
-                <div className={styles.indicatorsModalBody}>
+                <div
+                    className={styles.indicatorsModalBody}
+                    onWheel={(e) => e.stopPropagation()}
+                >
                     {/* Left Sidebar Categories */}
                     <div className={styles.indicatorsSidebar}>
                         <button

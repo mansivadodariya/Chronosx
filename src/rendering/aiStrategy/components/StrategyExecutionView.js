@@ -7,6 +7,18 @@ import MiniCandlestickChart from './MiniCandlestickChart';
 import StrategyGridSkeleton from './StrategyGridSkeleton';
 import { useStrategyStream, formatDisplayValue } from '../hooks/useStrategyStream';
 
+// Helper to guarantee a dollar symbol prefix on all price levels
+const ensureDollarPrice = (val, shortPair = '') => {
+    if (val === undefined || val === null || val === '') return '-';
+    let s = String(val).trim();
+    if (s.startsWith('$')) return s;
+    const num = Number(s.replace(/[^0-9.-]/g, ''));
+    if (!isNaN(num)) {
+        return formatDisplayValue(num, shortPair);
+    }
+    return `$${s}`;
+};
+
 export default function StrategyExecutionView() {
     const router = useRouter();
     const { setupsList, wsStatus, loading } = useStrategyStream();
@@ -120,7 +132,7 @@ export default function StrategyExecutionView() {
                                     <div className={styles.levelRow}>
                                         <span className={styles.levelLabel}>Entry Target</span>
                                         <span className={`${styles.levelValue} ${styles.entryColor}`}>
-                                            {sig.entry_display || formatDisplayValue(sig.entry, meta.short)}
+                                            {ensureDollarPrice(sig.entry_display || sig.entry, meta.short)}
                                         </span>
                                     </div>
 
@@ -128,7 +140,7 @@ export default function StrategyExecutionView() {
                                     <div className={styles.levelRow}>
                                         <span className={styles.levelLabel}>Stop Loss</span>
                                         <span className={`${styles.levelValue} ${styles.slColor}`}>
-                                            {sig.sl_display || formatDisplayValue(sig.sl, meta.short)}
+                                            {ensureDollarPrice(sig.sl_display || sig.sl, meta.short)}
                                         </span>
                                     </div>
 
@@ -136,7 +148,7 @@ export default function StrategyExecutionView() {
                                     <div className={styles.levelRow}>
                                         <span className={styles.levelLabel}>Take Profit 1 ({rrLabel})</span>
                                         <span className={`${styles.levelValue} ${styles.tpColor}`}>
-                                            {sig.tp_display || formatDisplayValue(sig.tp, meta.short)}
+                                            {ensureDollarPrice(sig.tp_display || sig.tp, meta.short)}
                                         </span>
                                     </div>
 
@@ -158,6 +170,9 @@ export default function StrategyExecutionView() {
                                         <span className={styles.volumeBadgePill}>{volumeStrength}</span>
                                     </div>
                                 </div>
+
+                                {/* Vertical Separator between Trade Levels and Graph */}
+                                <div className={styles.verticalSeparator} />
 
                                 {/* Right Column: Mini Candlestick Graph with X and Y Axes */}
                                 <div className={styles.rightMiniChartColumn}>

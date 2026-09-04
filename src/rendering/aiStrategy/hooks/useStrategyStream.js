@@ -58,14 +58,14 @@ export const formatShortPair = (sym = '') => {
 // Format currency price with proper decimals and optional prefix
 export const formatDisplayValue = (val, shortPair = '') => {
     if (val === undefined || val === null || val === '') return '-';
-    const str = String(val).trim();
+    let str = String(val).trim();
     if (str.startsWith('$')) return str;
     const num = Number(str.replace(/[^0-9.-]/g, ''));
-    if (isNaN(num)) return str;
+    if (isNaN(num)) return `$${str}`;
 
     const s = String(shortPair).toUpperCase();
     if (s.includes('JPY')) {
-        return num.toFixed(3);
+        return `$${num.toFixed(3)}`;
     }
     if (s.includes('XAU') || s.includes('GOLD')) {
         return `$${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -123,11 +123,11 @@ export const DEFAULT_SETUPS_LIST = [
             direction: 'SELL',
             direction_display: '↓ SELL',
             entry: 1.16049,
-            entry_display: '1.16049',
+            entry_display: '$1.16049',
             sl: 1.16144,
-            sl_display: '1.16144',
+            sl_display: '$1.16144',
             tp: 1.15353,
-            tp_display: '1.15353',
+            tp_display: '$1.15353',
             time_ago: '1h ago',
             status_label: 'RECENT SETUP (1h ago)',
             risk_reward: '1:2.0',
@@ -181,11 +181,11 @@ export const DEFAULT_SETUPS_LIST = [
             direction: 'BUY',
             direction_display: '↑ BUY',
             entry: 1.31200,
-            entry_display: '1.31200',
+            entry_display: '$1.31200',
             sl: 1.30800,
-            sl_display: '1.30800',
+            sl_display: '$1.30800',
             tp: 1.32400,
-            tp_display: '1.32400',
+            tp_display: '$1.32400',
             time_ago: '1h ago',
             status_label: 'RECENT SETUP (1h ago)',
             risk_reward: '1:3.0',
@@ -210,11 +210,11 @@ export const DEFAULT_SETUPS_LIST = [
             direction: 'SELL',
             direction_display: '↓ SELL',
             entry: 1.34900,
-            entry_display: '1.34900',
+            entry_display: '$1.34900',
             sl: 1.35250,
-            sl_display: '1.35250',
+            sl_display: '$1.35250',
             tp: 1.33850,
-            tp_display: '1.33850',
+            tp_display: '$1.33850',
             time_ago: '2h ago',
             status_label: 'RECENT SETUP (2h ago)',
             risk_reward: '1:3.0',
@@ -239,11 +239,11 @@ export const DEFAULT_SETUPS_LIST = [
             direction: 'SELL',
             direction_display: '↓ SELL',
             entry: 211.520,
-            entry_display: '211.520',
+            entry_display: '$211.520',
             sl: 212.578,
-            sl_display: '212.578',
+            sl_display: '$212.578',
             tp: 209.405,
-            tp_display: '209.405',
+            tp_display: '$209.405',
             time_ago: '1h ago',
             status_label: 'RECENT SETUP (1h ago)',
             risk_reward: '1:2.0',
@@ -268,11 +268,11 @@ export const DEFAULT_SETUPS_LIST = [
             direction: 'SELL',
             direction_display: '↓ SELL',
             entry: 181.933,
-            entry_display: '181.933',
+            entry_display: '$181.933',
             sl: 182.843,
-            sl_display: '182.843',
+            sl_display: '$182.843',
             tp: 180.114,
-            tp_display: '180.114',
+            tp_display: '$180.114',
             time_ago: '1h ago',
             status_label: 'RECENT SETUP (1h ago)',
             risk_reward: '1:2.0',
@@ -300,9 +300,9 @@ export const normalizeSetupItem = (item) => {
     const sl = sig.stop_loss ?? sig.sl ?? 0;
     const tp = sig.take_profit ?? sig.take_profit_1 ?? sig.tp_1 ?? sig.tp ?? 0;
 
-    const entryDisplay = sig.entry_display || (entry ? formatDisplayValue(entry, meta.short) : '-');
-    const slDisplay = sig.sl_display || (sl ? formatDisplayValue(sl, meta.short) : '-');
-    const tpDisplay = sig.tp_display || (tp ? formatDisplayValue(tp, meta.short) : '-');
+    const entryDisplay = formatDisplayValue(sig.entry_display || entry, meta.short);
+    const slDisplay = formatDisplayValue(sig.sl_display || sl, meta.short);
+    const tpDisplay = formatDisplayValue(sig.tp_display || tp, meta.short);
 
     const timeAgo = sig.time_ago || sig.status_label || (sig.timestamp ? `${Math.max(1, Math.round((Date.now()/1000 - sig.timestamp)/60))}m ago` : '1h ago');
     const riskReward = sig.risk_reward || sig.rr || sig.confluence?.risk_reward || '1:2.0';

@@ -116,8 +116,11 @@ export default function StructureSection({
                 {/* Column 3: Structure Evidence List */}
                 <div className={styles.seamlessEvidenceColumn}>
                     <div className={styles.evidenceHeaderTag}>
-                        <span className={styles.evidenceTagDot} />
-                        <span>STRUCTURE EVIDENCE</span>
+                        <div className={styles.evidenceTitleWrap}>
+                            <span className={styles.evidenceTagDot} />
+                            <span className={styles.evidenceTitleText}>STRUCTURE EVIDENCE</span>
+                        </div>
+                        <span className={styles.evidenceVerifiedBadge}>KEY LEVELS</span>
                     </div>
                     <ul className={styles.domainEvidenceList}>
                         {evidenceList.map((item, idx) => (

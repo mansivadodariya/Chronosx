@@ -183,8 +183,11 @@ export default function MomentumSection({
                 {/* Column 3: Momentum Evidence List */}
                 <div className={styles.seamlessEvidenceColumn}>
                     <div className={styles.evidenceHeaderTag}>
-                        <span className={styles.evidenceTagDot} />
-                        <span>MOMENTUM EVIDENCE</span>
+                        <div className={styles.evidenceTitleWrap}>
+                            <span className={styles.evidenceTagDot} />
+                            <span className={styles.evidenceTitleText}>MOMENTUM EVIDENCE</span>
+                        </div>
+                        <span className={styles.evidenceVerifiedBadge}>DYNAMICS</span>
                     </div>
                     <ul className={styles.domainEvidenceList}>
                         {evidenceList.map((item, idx) => (

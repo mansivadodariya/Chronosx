@@ -78,21 +78,43 @@ export function getTimeframeInterval(tf) {
     }
 }
 
+// Get default realistic base price for symbols if API returns empty
+export function getDefaultSymbolBasePrice(symbolStr = 'XAUUSD', fallbackPrice = null) {
+    if (fallbackPrice && !isNaN(fallbackPrice) && Number(fallbackPrice) > 0) {
+        return Number(fallbackPrice);
+    }
+    const s = (symbolStr || '').replace('/', '').toUpperCase();
+    if (s.includes('XAU') || s.includes('GOLD')) return 4457.58;
+    if (s.includes('BTC')) return 88500.00;
+    if (s.includes('ETH')) return 2650.00;
+    if (s.includes('JPY')) return 154.500;
+    if (s.includes('GBP')) return 1.29500;
+    if (s.includes('EUR')) return 1.08500;
+    if (s.includes('AUD')) return 0.65500;
+    if (s.includes('CAD')) return 1.38500;
+    if (s.includes('CHF')) return 0.88500;
+    if (s.includes('NZD')) return 0.58500;
+    return 100.00;
+}
+
 // Generate fallback candles if backend REST API endpoint is offline or returning empty
-export function generateMockCandles(count = 600, basePrice = 2700, tf = '15m', symbolStr = 'XAUUSD') {
+export function generateMockCandles(count = 600, basePrice = null, tf = '15m', symbolStr = 'XAUUSD') {
+    const finalBasePrice = (basePrice && !isNaN(basePrice) && Number(basePrice) > 0)
+        ? Number(basePrice)
+        : getDefaultSymbolBasePrice(symbolStr);
     const candles = [];
-    let currentPrice = basePrice;
+    let currentPrice = finalBasePrice;
     const now = Math.floor(Date.now() / 1000);
     const interval = getTimeframeInterval(tf);
     const { precision } = getSymbolPrecision(symbolStr);
 
     for (let i = count; i >= 0; i--) {
         const time = now - i * interval;
-        const change = (Math.random() - 0.49) * (basePrice * 0.003);
+        const change = (Math.random() - 0.49) * (finalBasePrice * 0.003);
         const open = currentPrice;
         const close = open + change;
-        const high = Math.max(open, close) + Math.random() * (basePrice * 0.0015);
-        const low = Math.min(open, close) - Math.random() * (basePrice * 0.0015);
+        const high = Math.max(open, close) + Math.random() * (finalBasePrice * 0.0015);
+        const low = Math.min(open, close) - Math.random() * (finalBasePrice * 0.0015);
         currentPrice = close;
 
         candles.push({

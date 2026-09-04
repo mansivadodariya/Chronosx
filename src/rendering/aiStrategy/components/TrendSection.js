@@ -119,8 +119,11 @@ export default function TrendSection({
                 {/* Column 3: Seamless Transparent Evidence List */}
                 <div className={styles.seamlessEvidenceColumn}>
                     <div className={styles.evidenceHeaderTag}>
-                        <span className={styles.evidenceTagDot} />
-                        <span>TREND EVIDENCE</span>
+                        <div className={styles.evidenceTitleWrap}>
+                            <span className={styles.evidenceTagDot} />
+                            <span className={styles.evidenceTitleText}>TREND EVIDENCE</span>
+                        </div>
+                        <span className={styles.evidenceVerifiedBadge}>CONFLUENCE</span>
                     </div>
                     <ul className={styles.domainEvidenceList}>
                         {evidenceList.map((item, idx) => (

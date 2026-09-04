@@ -55,20 +55,20 @@
     max-width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    background: var(--wrapper-bg);
+    gap: 16px;
+    background: transparent;
     color: var(--text-primary);
-    padding: 20px;
+    padding: 0;
     border-radius: 0 !important;
-    border: 1px solid var(--wrapper-border);
+    border: none;
     box-sizing: border-box;
     container-type: inline-size;
     container-name: dashboard;
     overflow-x: hidden;
 
     @media (max-width: 768px) {
-        padding: 12px;
-        gap: 16px;
+        padding: 0;
+        gap: 14px;
     }
 }
 
@@ -77,18 +77,19 @@
 // Top Split Layout (Section D Summary + Section A Technical Score Gauge)
 .topSplitRow {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
-    gap: 20px;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 16px;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    align-items: stretch;
 
-    @media (max-width: 1024px) {
+    @media (max-width: 680px) {
         grid-template-columns: minmax(0, 1fr);
     }
 }
 
-@container dashboard (max-width: 780px) {
+@container dashboard (max-width: 580px) {
     .topSplitRow {
         grid-template-columns: minmax(0, 1fr) !important;
     }
@@ -100,11 +101,13 @@
     border: 1px solid var(--card-border);
     box-shadow: var(--card-shadow);
     border-radius: 0 !important;
-    padding: 20px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 16px;
+    gap: 14px;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .symbolBadgeWrap {
@@ -272,9 +275,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
     position: relative;
     width: 100%;
     max-width: 100%;
+    height: 100%;
     box-sizing: border-box;
     overflow: hidden;
 }

@@ -291,6 +291,7 @@ export default function TradeSnap() {
 
     const openDetailModal = (analysis) => {
         setSelectedAnalysis(analysis);
+        setHistoryOpen(false);
         setIsDetailModalOpen(true);
     };
 
