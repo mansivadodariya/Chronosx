@@ -581,7 +581,7 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
     const getQuestionText = (item) => item.title || item.name || item.first_question || item.question || item.message || item.input_data || 'Untitled Conversation';
 
     return (
-        <div className={styles.aiAssistant}>
+        <div className={`${styles.aiAssistant} ${isDark ? styles.isDark : styles.isLight}`}>
             <div
                 ref={gridRef}
                 className={`${styles.splitLayoutGrid} ${isDragging ? styles.isDraggingGrid : ''}`}

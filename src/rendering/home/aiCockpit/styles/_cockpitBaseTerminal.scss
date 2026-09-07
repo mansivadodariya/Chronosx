@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   padding: 90px 0 100px 0;
-  overflow: visible;
+  overflow: hidden;
   background: radial-gradient(ellipse at 50% 0%, #050e0d 0%, #020605 50%, #000403 100%);
 
   :global(html.light) & {

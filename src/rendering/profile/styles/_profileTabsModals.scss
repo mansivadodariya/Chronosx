@@ -1,11 +1,28 @@
-/* Other Tabs: Security, Preferences, API, Activity */
+/* ============================================================
+   PROFILE: TABS, TIMELINES, MODALS & LIGHT THEME
+   ============================================================ */
+
+/* Tab Content Panels (Security, Activity, Credit History) */
+.tabContentPanel,
 .tabCardContainer {
     background: #040605;
     border: 1px solid $border;
     border-radius: 8px;
     padding: 22px 24px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    width: 100%;
+    box-sizing: border-box;
 
+    @include respond-to('md') {
+        padding: 18px 20px;
+    }
+
+    @include respond-to('sm') {
+        padding: 16px 14px;
+        border-radius: 14px;
+    }
+
+    .panelHeaderRow,
     .cardHeaderBox {
         margin-bottom: 18px;
 
@@ -15,12 +32,20 @@
             font-weight: 700;
             font-family: "Euclid-Bold", sans-serif;
             margin: 0 0 4px;
+
+            @include respond-to('sm') {
+                font-size: 15px;
+            }
         }
 
         p {
             color: rgba(255, 255, 255, 0.55);
             font-size: 13px;
             margin: 0;
+
+            @include respond-to('sm') {
+                font-size: 11.5px;
+            }
         }
     }
 }
@@ -285,151 +310,178 @@
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    transition: all 0.2s ease;
 
-    &:hover {
-        border-color: rgba(24, 201, 139, 0.35);
-        background: rgba(18, 19, 26, 0.95);
+    @include respond-to('sm') {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px 14px;
+        gap: 14px;
+
+        .bannerActionBtn {
+            width: 100%;
+        }
     }
 
-    &.activeActivityRow {
-        border-color: rgba(24, 201, 139, 0.3);
-        background: rgba(18, 17, 13, 0.6);
-    }
-
-    .activityItemLeft {
+    .securityBannerLeft {
         display: flex;
         align-items: center;
         gap: 14px;
-        min-width: 0;
-        flex: 1;
 
-        .activityIconBox {
-            width: 38px;
-            height: 38px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
+        .shieldIconWrap {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(24, 201, 139, 0.12);
+            border: 1px solid rgba(24, 201, 139, 0.35);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-
-            &.activeActivityIconBox {
-                background: rgba(24, 201, 139, 0.12);
-                border-color: rgba(24, 201, 139, 0.35);
-                color: #18C98B;
-            }
         }
 
-        .activityMeta {
+        .bannerTexts {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
+
+            h4 {
+                color: #FFFFFF;
+                font-size: 15px;
+                font-weight: 700;
+                font-family: "Euclid-Bold", sans-serif;
+                margin: 0;
+            }
+
+            p {
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 12.5px;
+                margin: 0;
+                line-height: 1.4;
+            }
+        }
+    }
+
+    .bannerActionBtn {
+        background: rgba(24, 201, 139, 0.15);
+        border: 1px solid rgba(24, 201, 139, 0.4);
+        color: #18C98B;
+        border-radius: 8px;
+        padding: 9px 20px;
+        font-size: 13px;
+        font-weight: 700;
+        font-family: "Euclid-Bold", sans-serif;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+
+        &:hover {
+            background: #18C98B;
+            color: #040605;
+            box-shadow: 0 0 16px rgba(24, 201, 139, 0.35);
+            transform: translateY(-1px);
+        }
+    }
+}
+
+/* Activity Log Timeline */
+.activityTimeline {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .timelineItem {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        background: rgba(13, 14, 19, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        padding: 14px 16px;
+        transition: all 0.2s ease;
+
+        &:hover {
+            border-color: rgba(24, 201, 139, 0.35);
+            background: rgba(18, 19, 26, 0.95);
+        }
+
+        .timelineDot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #18C98B;
+            box-shadow: 0 0 8px #18C98B;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .timelineContent {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
             min-width: 0;
 
-            .activityDateRow {
+            .timelineHeader {
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
                 gap: 8px;
                 flex-wrap: wrap;
 
-                .activityDateText {
+                .timelineTitle {
                     color: #FFFFFF;
                     font-size: 14px;
-                    font-weight: 600;
+                    font-weight: 700;
                     font-family: "Euclid-SemiBold", sans-serif;
                 }
 
-                .activityTimeText {
+                .timelineTime {
                     color: rgba(255, 255, 255, 0.5);
-                    font-size: 12.5px;
-                    font-weight: 500;
+                    font-size: 12px;
                 }
             }
 
-            .activityDescText {
-                color: rgba(255, 255, 255, 0.55);
-                font-size: 12px;
-                font-family: "Euclid-Regular", sans-serif;
+            .timelineDetails {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 12.5px;
+                flex-wrap: wrap;
+
+                .ipBadge {
+                    background: rgba(24, 201, 139, 0.12);
+                    border: 1px solid rgba(24, 201, 139, 0.25);
+                    color: #18C98B;
+                    padding: 1px 7px;
+                    border-radius: 4px;
+                    font-size: 11px;
+                    font-weight: 600;
+                    font-family: monospace;
+                }
             }
         }
     }
-
-    .activityItemRight {
-        flex-shrink: 0;
-
-        .activeSessionBadge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            background: rgba(52, 211, 153, 0.12);
-            border: 1px solid rgba(52, 211, 153, 0.3);
-            border-radius: 99px;
-            color: #34D399;
-            font-size: 11.5px;
-            font-weight: 700;
-            white-space: nowrap;
-
-            .activePulseDot {
-                width: 6px;
-                height: 6px;
-                border-radius: 50%;
-                background: #34D399;
-                box-shadow: 0 0 8px #34D399;
-                animation: pulseActive 2s infinite ease-in-out;
-            }
-        }
-
-        .pastSessionBadge {
-            display: inline-flex;
-            align-items: center;
-            padding: 4px 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 99px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 11.5px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-    }
 }
 
-@keyframes pulseActive {
-    0%, 100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.4;
-        transform: scale(0.85);
-    }
+.emptyActivityState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 36px 16px;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 13.5px;
+    text-align: center;
 }
 
-.secActionButton {
-    background: rgba(24, 201, 139, 0.14);
-    border: 1px solid rgba(24, 201, 139, 0.4);
-    color: #18C98B;
-    border-radius: 8px;
-    padding: 6px 14px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-
-    &:hover {
-        background: rgba(24, 201, 139, 0.25);
-    }
-}
-
-/* Modal Styling */
+/* Modal Dialogs */
 .modalOverlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(6px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -444,10 +496,16 @@
     padding: 24px;
     width: 100%;
     max-width: 440px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.9);
     display: flex;
     flex-direction: column;
     gap: 16px;
+    box-sizing: border-box;
+
+    @include respond-to('sm') {
+        padding: 20px 16px;
+        border-radius: 14px;
+    }
 
     .modalHeader {
         display: flex;
@@ -458,6 +516,7 @@
             color: #FFFFFF;
             font-size: 17px;
             font-weight: 700;
+            font-family: "Euclid-Bold", sans-serif;
             margin: 0;
         }
 
@@ -467,6 +526,8 @@
             color: rgba(255, 255, 255, 0.6);
             font-size: 16px;
             cursor: pointer;
+            padding: 4px;
+            transition: color 0.2s ease;
 
             &:hover {
                 color: #FFFFFF;
@@ -485,73 +546,470 @@
         align-items: center;
         justify-content: flex-end;
         gap: 12px;
-        margin-top: 8px;
+        margin-top: 10px;
+
+        .cancelFormBtn {
+            background: rgba(255, 255, 255, 0.07) !important;
+            border: 1px solid rgba(255, 255, 255, 0.18) !important;
+            color: #FFFFFF !important;
+            height: 44px;
+            padding: 0 24px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 9999px !important;
+            cursor: pointer;
+            outline: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+            box-sizing: border-box;
+
+            &:hover:not(:disabled) {
+                background: rgba(255, 255, 255, 0.14) !important;
+                border-color: rgba(255, 255, 255, 0.35) !important;
+                color: #FFFFFF !important;
+                transform: translateY(-1px);
+            }
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+        }
+
+        .submitModalBtn {
+            background: #18C98B !important;
+            border: 1px solid #18C98B !important;
+            color: #040605 !important;
+            height: 44px;
+            padding: 0 26px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            border-radius: 9999px !important;
+            cursor: pointer;
+            outline: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(24, 201, 139, 0.35) !important;
+            transition: all 0.25s ease;
+            box-sizing: border-box;
+
+            &:hover:not(:disabled) {
+                background: #15B77E !important;
+                border-color: #15B77E !important;
+                transform: translateY(-1px);
+                box-shadow: 0 6px 22px rgba(24, 201, 139, 0.5) !important;
+            }
+
+            &:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+                transform: none;
+                box-shadow: none !important;
+            }
+        }
+
+        .confirmLogoutBtn {
+            background: #EF4444 !important;
+            border: 1px solid #EF4444 !important;
+            color: #FFFFFF !important;
+            height: 44px;
+            padding: 0 26px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            border-radius: 9999px !important;
+            cursor: pointer;
+            outline: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35) !important;
+            transition: all 0.25s ease;
+            box-sizing: border-box;
+
+            &:hover:not(:disabled) {
+                background: #DC2626 !important;
+                border-color: #DC2626 !important;
+                transform: translateY(-1px);
+                box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5) !important;
+            }
+        }
+
+        @include respond-to('sm') {
+            flex-direction: column-reverse;
+            width: 100%;
+
+            button {
+                width: 100%;
+            }
+        }
     }
 }
 
+/* ============================================================
+   COMPLETE LIGHT THEME (html.light) FOR PROFILE
+   ============================================================ */
 :global(html.light) .profile {
-    color: #0F172A;
+    color: #0F172A !important;
 
     .pageHeader {
         .headerTitleMeta {
             h1 {
-                color: #0F172A;
+                color: #0F172A !important;
             }
             p {
-                color: #475569;
+                color: #475569 !important;
             }
         }
     }
 
-    .userCard,
-    .proAccountCard,
-    .activityCard,
-    .securityCard,
-    .historyCard,
+    /* Left Navigation */
+    .leftSidebar {
+        .navMenuCard {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(15, 23, 42, 0.09) !important;
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+        }
+    }
+
+    .navMenuItem {
+        color: #475569 !important;
+
+        .navItemIcon {
+            color: #64748B !important;
+        }
+
+        &:hover {
+            background: #F1F5F9 !important;
+            color: #0F172A !important;
+
+            .navItemIcon {
+                color: #047857 !important;
+            }
+        }
+    }
+
+    .navMenuItemActive {
+        background: rgba(24, 201, 139, 0.12) !important;
+        border-color: rgba(24, 201, 139, 0.35) !important;
+        color: #047857 !important;
+        box-shadow: 0 2px 8px rgba(24, 201, 139, 0.15) !important;
+
+        .navItemIcon {
+            color: #047857 !important;
+            filter: none !important;
+        }
+    }
+
+    /* Hero Profile Card */
+    .heroProfileCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.09) !important;
+        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+
+        .heroCardHeader {
+            border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+
+            .cardHeaderIcon {
+                background: rgba(24, 201, 139, 0.12) !important;
+                border-color: rgba(24, 201, 139, 0.3) !important;
+                color: #047857 !important;
+            }
+
+            .cardHeaderTexts {
+                h3 { color: #0F172A !important; }
+                p { color: #64748B !important; }
+            }
+
+            .editProfileBtn {
+                background: #F8FAFC !important;
+                border-color: rgba(24, 201, 139, 0.4) !important;
+                color: #047857 !important;
+
+                &:hover {
+                    background: #18C98B !important;
+                    color: #040605 !important;
+                }
+            }
+        }
+
+        .avatarCircle {
+            background: #F8FAFC !important;
+            border-color: #18C98B !important;
+            box-shadow: 0 4px 16px rgba(24, 201, 139, 0.2) !important;
+
+            .avatarInitialsText {
+                color: #047857 !important;
+            }
+        }
+
+        .userMetaDetails {
+            .userNameRow h2 {
+                color: #0F172A !important;
+            }
+
+            .userEmailRow .emailText {
+                color: #475569 !important;
+            }
+
+            .uidRow {
+                color: #64748B !important;
+            }
+
+            .joinedRow {
+                color: #64748B !important;
+            }
+        }
+    }
+
+    /* Personal Details Card */
+    .personalDetailsCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.09) !important;
+        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+
+        .detailsCardHeader {
+            h3 { color: #0F172A !important; }
+            .cardHeaderIcon {
+                background: rgba(24, 201, 139, 0.12) !important;
+                border-color: rgba(24, 201, 139, 0.3) !important;
+                color: #047857 !important;
+            }
+        }
+
+        .detailFieldItem,
+        .detailPillBox {
+            background: #F8FAFC !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            &:hover {
+                background: #F1F5F9 !important;
+                border-color: rgba(24, 201, 139, 0.4) !important;
+            }
+
+            .fieldLabel,
+            .pillLabel {
+                color: #64748B !important;
+            }
+
+            .fieldValue,
+            .pillValue {
+                color: #0F172A !important;
+            }
+        }
+    }
+
+    /* Right Column */
+    .rightSummaryColumn,
+    .rightSidebar {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.09) !important;
+        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+
+        .rightCard {
+            border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+
+            .rightCardTitle {
+                color: #0F172A !important;
+            }
+
+            .summaryMetaRows .summaryRow {
+                .summaryLabel {
+                    color: #64748B !important;
+                }
+            }
+
+            .creditsCardBox {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+                .creditsHead {
+                    .creditsLabel { color: #64748B !important; }
+                    .viewPlansBtn { color: #047857 !important; }
+                }
+
+                .creditsNumbers .creditsAmount {
+                    color: #0F172A !important;
+                    span { color: #047857 !important; }
+                }
+            }
+
+            .verificationList .verifItem {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+                .verifLeft { color: #0F172A !important; }
+                .verifActionBtn {
+                    background: rgba(24, 201, 139, 0.12) !important;
+                    color: #047857 !important;
+                }
+            }
+
+            .quickActionsGrid .actionGridBtn {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+                color: #0F172A !important;
+
+                &:hover {
+                    background: #F1F5F9 !important;
+                    border-color: rgba(24, 201, 139, 0.4) !important;
+                    color: #047857 !important;
+                }
+
+                &.actionDanger:hover {
+                    background: #FEE2E2 !important;
+                    border-color: #EF4444 !important;
+                    color: #DC2626 !important;
+                }
+            }
+
+            .logoutActionWrap .logoutBtn {
+                background: #FEF2F2 !important;
+                border-color: rgba(239, 68, 68, 0.25) !important;
+                color: #DC2626 !important;
+
+                &:hover {
+                    background: #EF4444 !important;
+                    color: #FFFFFF !important;
+                }
+            }
+        }
+    }
+
+    /* Tab Content Panels (Security, Activity) */
+    .tabContentPanel,
+    .tabCardContainer {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.09) !important;
+        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+
+        .panelHeaderRow h3,
+        .cardHeaderBox h3 {
+            color: #0F172A !important;
+        }
+
+        .cardHeaderBox p {
+            color: #64748B !important;
+        }
+
+        .securityBannerCard {
+            background: #F8FAFC !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            .securityBannerLeft {
+                .shieldIconWrap {
+                    background: rgba(24, 201, 139, 0.12) !important;
+                    border-color: rgba(24, 201, 139, 0.3) !important;
+                    color: #047857 !important;
+                }
+
+                .bannerTexts {
+                    h4 { color: #0F172A !important; }
+                    p { color: #64748B !important; }
+                }
+            }
+
+            .bannerActionBtn {
+                background: #FFFFFF !important;
+                border-color: rgba(24, 201, 139, 0.4) !important;
+                color: #047857 !important;
+
+                &:hover {
+                    background: #18C98B !important;
+                    color: #040605 !important;
+                }
+            }
+        }
+
+        .activityTimeline .timelineItem {
+            background: #F8FAFC !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            &:hover {
+                background: #F1F5F9 !important;
+                border-color: rgba(24, 201, 139, 0.35) !important;
+            }
+
+            .timelineContent {
+                .timelineHeader {
+                    .timelineTitle { color: #0F172A !important; }
+                    .timelineTime { color: #64748B !important; }
+                }
+
+                .timelineDetails {
+                    color: #475569 !important;
+
+                    .ipBadge {
+                        background: rgba(24, 201, 139, 0.12) !important;
+                        border-color: rgba(24, 201, 139, 0.25) !important;
+                        color: #047857 !important;
+                    }
+                }
+            }
+        }
+
+        .emptyActivityState {
+            color: #64748B !important;
+        }
+    }
+
+    /* Modals */
     .modalContent {
-        background: #FFFFFF;
-        border-color: rgba(24, 201, 139, 0.28);
-        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.1) !important;
+        box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.15) !important;
+        color: #0F172A !important;
 
-        h2, h3 {
-            color: #0F172A;
+        .modalHeader {
+            h3 { color: #0F172A !important; }
+            .closeBtn { color: #64748B !important; &:hover { color: #0F172A !important; } }
         }
 
-        p {
-            color: #475569;
-        }
-    }
+        p { color: #475569 !important; }
 
-    .detailItem {
-        background: #F8FAFC;
-        border-color: rgba(24, 201, 139, 0.2);
+        .modalFooter {
+            .cancelFormBtn {
+                background: #F1F5F9 !important;
+                border: 1px solid #CBD5E1 !important;
+                color: #334155 !important;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
 
-        .detailVal {
-            color: #0F172A;
-        }
+                &:hover:not(:disabled) {
+                    background: #E2E8F0 !important;
+                    border-color: #94A3B8 !important;
+                    color: #0F172A !important;
+                }
+            }
 
-        .detailLabel {
-            color: #64748B;
-        }
-    }
+            .submitModalBtn {
+                background: #18C98B !important;
+                border-color: #18C98B !important;
+                color: #040605 !important;
+                box-shadow: 0 2px 8px rgba(24, 201, 139, 0.25) !important;
 
-    .inputGroup {
-        label {
-            color: #1E293B;
-        }
+                &:hover:not(:disabled) {
+                    background: #15B77E !important;
+                    border-color: #15B77E !important;
+                    box-shadow: 0 4px 14px rgba(24, 201, 139, 0.35) !important;
+                }
+            }
 
-        input {
-            background: #F8FAFC;
-            border-color: rgba(24, 201, 139, 0.25);
-            color: #0F172A;
+            .confirmLogoutBtn {
+                background: #EF4444 !important;
+                border-color: #EF4444 !important;
+                color: #FFFFFF !important;
+                box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25) !important;
 
-            &::placeholder {
-                color: #94A3B8;
+                &:hover:not(:disabled) {
+                    background: #DC2626 !important;
+                    border-color: #DC2626 !important;
+                }
             }
         }
     }
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
 }

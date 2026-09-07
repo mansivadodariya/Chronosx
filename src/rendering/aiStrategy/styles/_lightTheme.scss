@@ -50,13 +50,13 @@
     .watchlistPanel,
     .chartPanel,
     .analysisPanel {
-        background: #FFFFFF;
-        border-color: rgba(24, 201, 139, 0.25);
-        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+        background: #FFFFFF !important;
+        border-color: rgba(24, 201, 139, 0.25) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
 
         .watchlistHeader h3,
         .analysisHeader h3 {
-            color: #0F172A;
+            color: #0F172A !important;
         }
 
         .watchlistControls {
@@ -93,6 +93,164 @@
             }
         }
 
+        .watchlistHeader {
+            h3 {
+                color: #0F172A !important;
+            }
+
+            .watchlistCount {
+                background: #ECFDF5 !important;
+                border: 1px solid rgba(16, 185, 129, 0.3) !important;
+                color: #059669 !important;
+            }
+        }
+
+        .watchlistSearchContainer {
+            background: #F8FAFC !important;
+            border: 1px solid #E2E8F0 !important;
+
+            &:focus-within {
+                border-color: #10B981 !important;
+                background: #FFFFFF !important;
+                box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15) !important;
+            }
+
+            .searchIcon {
+                color: #64748B !important;
+            }
+
+            .watchlistSearchInput {
+                background: transparent !important;
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                outline: none !important;
+                color: #0F172A !important;
+
+                &::placeholder {
+                    color: #94A3B8 !important;
+                    background: transparent !important;
+                    background-color: transparent !important;
+                }
+            }
+
+            .searchClearBtn {
+                color: #94A3B8 !important;
+
+                &:hover {
+                    color: #0F172A !important;
+                }
+            }
+        }
+
+        .quoteColumnHeader {
+            border-bottom: 1px solid #F1F5F9 !important;
+
+            .colHeaderLeft span,
+            .colHeaderRight span,
+            .colHeaderBid,
+            .colHeaderAsk {
+                color: #64748B !important;
+            }
+        }
+
+        .watchlistItemsList {
+            &::-webkit-scrollbar-thumb {
+                background: rgba(16, 185, 129, 0.25) !important;
+            }
+        }
+
+        .quoteWatchlistItem {
+            background: #F8FAFC;
+            border: 1px solid #F1F5F9;
+            border-left: 3px solid transparent;
+
+            &.rowBullish {
+                background: #F0FDF4 !important;
+                border-color: #DCFCE7 !important;
+
+                &:hover {
+                    background: #DCFCE7 !important;
+                }
+
+                &.quoteActiveItem {
+                    background: #DCFCE7 !important;
+                    border-left: 3px solid #10B981 !important;
+                    border-color: #86EFAC !important;
+                }
+            }
+
+            &.rowBearish {
+                background: #FEF2F2 !important;
+                border-color: #FEE2E2 !important;
+
+                &:hover {
+                    background: #FEE2E2 !important;
+                }
+
+                &.quoteActiveItem {
+                    background: #FEE2E2 !important;
+                    border-left: 3px solid #EF4444 !important;
+                    border-color: #FCA5A5 !important;
+                }
+            }
+
+            &.rowNeutral {
+                background: #F8FAFC !important;
+                border-color: #E2E8F0 !important;
+
+                &:hover {
+                    background: #F1F5F9 !important;
+                }
+
+                &.quoteActiveItem {
+                    background: #ECFDF5 !important;
+                    border-left: 3px solid #10B981 !important;
+                    border-color: #A7F3D0 !important;
+                }
+            }
+
+            .quoteItemLeft {
+                .quoteSymbolName {
+                    color: #0F172A !important;
+                }
+
+                .quoteChangePct {
+                    &.pctUp {
+                        color: #059669 !important;
+                    }
+
+                    &.pctDown {
+                        color: #DC2626 !important;
+                    }
+
+                    &.pctRef {
+                        color: #64748B !important;
+                    }
+                }
+            }
+
+            .quoteItemRight {
+                .quoteBidPrice {
+                    color: #DC2626 !important;
+                }
+
+                .quoteAskPrice {
+                    color: #059669 !important;
+                }
+            }
+
+            &.quoteActiveItem {
+                .quoteItemLeft .quoteSymbolName {
+                    color: #059669 !important;
+                }
+            }
+        }
+
+        .noPairsFound {
+            color: #94A3B8 !important;
+        }
+
         .timeframeRow {
             .tfBtn {
                 background: #F1F5F9;
@@ -111,47 +269,326 @@
             }
         }
 
+        .chartPanelHeader {
+            background: #FFFFFF !important;
+            border-bottom: 1px solid #E2E8F0 !important;
+
+            .symbolTitle h3 {
+                color: #0F172A !important;
+            }
+
+            .badgeTf {
+                background: #ECFDF5 !important;
+                border: 1px solid rgba(16, 185, 129, 0.3) !important;
+                color: #059669 !important;
+            }
+
+            .ohlcItem {
+                .ohlcLabel {
+                    color: #64748B !important;
+                }
+
+                .ohlcValue {
+                    color: #0F172A !important;
+                }
+            }
+        }
+
+        .chartCanvasContainer {
+            background: #FFFFFF !important;
+        }
+
+        .chartLegendContainer {
+            background: #F8FAFC !important;
+            border-top: 1px solid #E2E8F0 !important;
+
+            .chartLegend {
+                .legendItem {
+                    color: #475569 !important;
+                    font-weight: 600 !important;
+                }
+            }
+        }
+
+        /* 3. Right Analysis Panel & Technical Score */
+        .premiumAccordion,
+        .premiumAccordionCard {
+            background: #FFFFFF !important;
+            border: 1px solid #E2E8F0 !important;
+            border-radius: 12px !important;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+            margin-bottom: 10px !important;
+            overflow: hidden !important;
+
+            .premiumAccordionHeader {
+                background: #F8FAFC !important;
+                border-bottom: 1px solid #E2E8F0 !important;
+
+                span {
+                    color: #0F172A !important;
+                    font-weight: 700 !important;
+                }
+
+                svg {
+                    color: #059669 !important;
+                }
+
+                &:hover {
+                    background: #F1F5F9 !important;
+                }
+            }
+
+            .premiumAccordionBody {
+                background: #FFFFFF !important;
+                color: #0F172A !important;
+            }
+        }
+
+        .scoreTopRow {
+            border-bottom: 1px solid #E2E8F0 !important;
+
+            .scoreTextGroup {
+                .largeScoreText {
+                    color: #059669 !important;
+
+                    .scoreDivider {
+                        color: #94A3B8 !important;
+                    }
+                }
+
+                .scoreTextLabel {
+                    color: #059669 !important;
+                }
+            }
+
+            .confidenceGroup {
+                .confLabel {
+                    color: #64748B !important;
+                }
+
+                .confValue {
+                    color: #0F172A !important;
+                }
+            }
+        }
+
+        .progressBarRow {
+            &:hover {
+                background: #F8FAFC !important;
+            }
+
+            .progressBarLabelGroup {
+                color: #334155 !important;
+
+                svg {
+                    color: #059669 !important;
+                }
+            }
+
+            .progressOuterTrack {
+                background: #E2E8F0 !important;
+            }
+
+            .progressValueGroup {
+                .progressScoreText {
+                    color: #0F172A !important;
+                }
+
+                .subChevron {
+                    color: #64748B !important;
+                }
+            }
+        }
+
+        .progressSubDetailsCollapse {
+            background: #F8FAFC !important;
+            border: 1px solid #E2E8F0 !important;
+
+            .subDetailTableGrid {
+                .subDetailMetricRow {
+                    border-bottom: 1px solid #F1F5F9 !important;
+
+                    .metricName {
+                        color: #64748B !important;
+                    }
+
+                    .metricVal {
+                        color: #0F172A !important;
+                    }
+                }
+            }
+
+            .subDetailSimpleRows {
+                .simpleRowItem {
+                    color: #64748B !important;
+
+                    strong {
+                        color: #0F172A !important;
+                    }
+                }
+            }
+        }
+
+        .evidenceOutlinedGroup {
+            background: #F8FAFC !important;
+            border: 1px solid #E2E8F0 !important;
+
+            .evidenceGroupClickableHeader {
+                .evidenceTitleGroup {
+                    .groupTypeTitle {
+                        color: #0F172A !important;
+                    }
+                }
+
+                .subChevron {
+                    color: #64748B !important;
+                }
+            }
+
+            .evidenceCollapsedBulletArea {
+                border-top: 1px solid #F1F5F9 !important;
+
+                .evidenceBulletItem {
+                    color: #334155 !important;
+                }
+            }
+        }
+
+        .trendRowHeader {
+            background: #F8FAFC !important;
+            border: 1px solid #E2E8F0 !important;
+
+            .trendHeaderText {
+                h4 {
+                    color: #0F172A !important;
+                }
+
+                p {
+                    color: #64748B !important;
+                }
+            }
+        }
+
+        .confluenceSummaryCard,
+        .levelsSummaryTable,
+        .strategyExecutionCard,
+        .strategyOrderCard {
+            background: #F8FAFC !important;
+            border: 1px solid #E2E8F0 !important;
+            color: #0F172A !important;
+
+            h4, h5, strong {
+                color: #0F172A !important;
+            }
+
+            p, span {
+                color: #334155 !important;
+            }
+        }
+
+        .confluenceGridItem,
+        .levelRow,
+        .executionMetricBox {
+            background: #FFFFFF !important;
+            border: 1px solid #E2E8F0 !important;
+            color: #0F172A !important;
+        }
+
+        .momentumSliderContainer,
+        .macdMetricsContainer,
+        .stochasticSubProgressList,
+        .relativeVolumeContainer,
+        .volumePressureContainer,
+        .levelsSummaryGrid,
+        .pivotPointsTable,
+        .fibonacciTable,
+        .aiSummaryCard {
+            background: #F8FAFC !important;
+            border: 1px solid #E2E8F0 !important;
+            color: #0F172A !important;
+
+            .sliderName,
+            .macdTitle,
+            .stochLabel,
+            .volHeaderRow,
+            .pressureHeaderRow {
+                color: #334155 !important;
+            }
+
+            .sliderValTxt,
+            .stochValText,
+            .volCompareValue,
+            strong {
+                color: #0F172A !important;
+            }
+
+            .macdSubDetailsRow,
+            .axisMarker,
+            .volMarker {
+                color: #64748B !important;
+            }
+
+            .gradientTrackBg,
+            .macdHistogramTrack,
+            .stochTrackBg,
+            .relativeVolumeTrack {
+                background: #E2E8F0 !important;
+            }
+        }
+
+        .volCompareCard {
+            background: #F8FAFC !important;
+            border: 1px solid #E2E8F0 !important;
+
+            .volCompareLabel {
+                color: #64748B !important;
+            }
+
+            .volCompareValue {
+                color: #0F172A !important;
+            }
+        }
+
         .metricBox,
         .levelsCard,
         .trendConfidenceContainer,
-        .momentumSliderContainer,
         .confluenceBox,
         .strategyReasoning,
         .volMetricBox,
         .indicatorRow,
         .quickPosBox {
-            background: #F8FAFC;
-            border-color: rgba(24, 201, 139, 0.2);
-            color: #0F172A;
+            background: #F8FAFC !important;
+            border-color: rgba(24, 201, 139, 0.2) !important;
+            color: #0F172A !important;
 
             .sectionTitle,
             .confKicker,
             .reasoningLabel {
-                color: #047857;
+                color: #047857 !important;
             }
 
             p {
-                color: #334155;
+                color: #334155 !important;
             }
 
             strong {
-                color: #0F172A;
+                color: #0F172A !important;
             }
 
             .indicatorName,
             .sliderName,
             .metricName {
-                color: #475569;
+                color: #475569 !important;
             }
 
             .sliderValTxt,
             .metricValTxt,
             .confidenceTexts strong {
-                color: #0F172A;
+                color: #0F172A !important;
             }
 
             .confidenceTrack {
-                background: #E2E8F0;
+                background: #E2E8F0 !important;
             }
         }
 

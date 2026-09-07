@@ -17,10 +17,10 @@
 
         .sidebar-wrapper {
             position: fixed;
-            left: -300px;
+            left: -260px;
             top: 0;
             height: 100dvh;
-            width: 270px;
+            width: 230px;
             z-index: 100;
             transition: left 0.3s ease;
 
@@ -29,7 +29,7 @@
             }
 
             &.collapsed {
-                width: 270px;
+                width: 230px;
             }
         }
 

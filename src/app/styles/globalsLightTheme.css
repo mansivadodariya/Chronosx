@@ -1,12 +1,12 @@
 /* Light Theme Section & Card Depth Overrides */
 html.light [class*="sectionCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
-html.light [class*="cardWrapper"],
+html.light [class*="cardWrapper"]:not([class*="Icon"]):not([class*="icon"]):not([class*="Text"]):not([class*="text"]):not([class*="Content"]):not([class*="content"]),
 html.light [class*="featureCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Badge"]):not([class*="badge"]),
 html.light [class*="bentoCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
 html.light [class*="assetCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
 html.light [class*="cockpitCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
 html.light [class*="comparisonCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
-html.light [class*="chatCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
+html.light [class*="chatCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Content"]):not([class*="content"]),
 html.light [class*="marketCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
 html.light [class*="stepCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
 html.light [class*="testimonialCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
@@ -25,7 +25,14 @@ html.light [class*="featureTitle"],
 html.light [class*="featureDesc"],
 html.light [class*="statLabel"],
 html.light [class*="statVal"],
-html.light [class*="statValue"] {
+html.light [class*="statValue"],
+html.light [class*="cardIconWrapper"],
+html.light [class*="cardTextContent"],
+html.light [class*="cardMainTitle"],
+html.light [class*="cardSubTitle"],
+html.light [class*="cardArrow"],
+html.light [class*="cardArrowBtn"],
+html.light [class*="watchlistSearchInput"] {
   background: transparent !important;
   background-color: transparent !important;
   border: none !important;
@@ -74,17 +81,27 @@ html.light [class*="megaMenu"] {
 }
 
 /* Sidebar & Topbar */
-html.light [class*="sidebar"],
-html.light .sidebar-wrapper,
+html.light .sidebar,
 html.light [class*="sidebarContainer"] {
   background-color: #FFFFFF !important;
   border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
 }
 
+html.light .sidebar-wrapper {
+  background-color: transparent !important;
+  border-right: none !important;
+}
+
+html.light [class*="sidebarmenu"],
+html.light [class*="logoHeader"],
+html.light [class*="bottomSection"] {
+  border-right: none !important;
+}
+
 html.light [class*="topbar"],
 html.light [class*="topbarWrapper"] {
   background-color: rgba(255, 255, 255, 0.9) !important;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+  border-bottom: none !important;
   color: #0F172A !important;
 }
 
@@ -593,18 +610,12 @@ html.light [class*="socialBtn"]:hover [class*="socialIcon"] {
   background-color: #047857 !important;
 }
 
-/* Sidebar & Topbar */
-html.light [class*="sidebar"],
-html.light .sidebar-wrapper,
-html.light [class*="sidebarContainer"] {
-  background-color: #FFFFFF !important;
-  border-right: 1px solid #E2E8F0 !important;
-}
+
 
 html.light [class*="topbar"],
 html.light [class*="topbarWrapper"] {
   background-color: #FFFFFF !important;
-  border-bottom: 1px solid #E2E8F0 !important;
+  border-bottom: none !important;
   color: #0F172A !important;
 }
 

@@ -202,6 +202,11 @@
     margin-bottom: 12px;
     flex-wrap: wrap;
 
+    @include respond-to("sm") {
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
     .promptChip {
       background: rgba(24, 201, 139, 0.1);
       border: 1px solid rgba(24, 201, 139, 0.28);
@@ -212,6 +217,11 @@
       @include font-medium;
       cursor: pointer;
       transition: all 0.25s ease;
+
+      @include respond-to("sm") {
+        padding: 4px 10px;
+        font-size: 10.5px;
+      }
 
       &:hover {
         background: rgba(24, 201, 139, 0.25);

@@ -1,4 +1,6 @@
 .cockpitSection {
+  overflow: hidden;
+
   .partTwoCockpit {
     background: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.04) 0%, transparent 70%), #06080E;
     border: 1px solid rgba(24, 201, 139, 0.14);

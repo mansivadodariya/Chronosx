@@ -621,3 +621,287 @@
         transform: scale(0.85);
     }
 }
+
+/* ============================================================
+   LIGHT THEME OVERRIDES FOR QUICK JUMP
+   ============================================================ */
+:global(html.light) .triggerBtn {
+    background: #F8FAFC !important;
+    border: 1px solid rgba(15, 23, 42, 0.1) !important;
+    color: #334155 !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+
+    .triggerIcon {
+        color: #64748B !important;
+    }
+
+    .triggerText {
+        color: #64748B !important;
+        font-weight: 500 !important;
+    }
+
+    .shortcutBadge {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.12) !important;
+        color: #64748B !important;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+    }
+
+    &:hover {
+        background: #F1F5F9 !important;
+        border-color: rgba(24, 201, 139, 0.45) !important;
+        color: #0F172A !important;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06) !important;
+
+        .triggerIcon {
+            color: #047857 !important;
+        }
+
+        .triggerText {
+            color: #0F172A !important;
+        }
+
+        .shortcutBadge {
+            background: rgba(24, 201, 139, 0.12) !important;
+            border-color: rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+    }
+
+    &:focus-visible {
+        border-color: #18C98B !important;
+        box-shadow: 0 0 0 2px rgba(24, 201, 139, 0.25) !important;
+    }
+}
+
+:global(html.light) .collapsedTriggerBtn {
+    background: #F8FAFC !important;
+    border: 1px solid rgba(15, 23, 42, 0.1) !important;
+    color: #64748B !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+
+    .triggerIcon {
+        color: #64748B !important;
+    }
+
+    &:hover {
+        background: #F1F5F9 !important;
+        border-color: rgba(24, 201, 139, 0.45) !important;
+        color: #047857 !important;
+
+        .triggerIcon {
+            color: #047857 !important;
+        }
+    }
+
+    .tooltip {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.12) !important;
+        color: #0F172A !important;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1) !important;
+    }
+}
+
+:global(html.light) .modalBackdrop {
+    background: rgba(15, 23, 42, 0.45) !important;
+}
+
+:global(html.light) .modalCard {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(15, 23, 42, 0.12) !important;
+    box-shadow: 0 24px 60px -12px rgba(15, 23, 42, 0.18),
+                0 0 0 1px rgba(15, 23, 42, 0.06),
+                0 0 35px -10px rgba(24, 201, 139, 0.15) !important;
+
+    &::before {
+        background: linear-gradient(90deg, transparent 0%, rgba(24, 201, 139, 0.6) 50%, transparent 100%) !important;
+    }
+
+    .searchHeaderArea {
+        background: #FAFAFA !important;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+        .searchIconWrap {
+            background: rgba(24, 201, 139, 0.1) !important;
+            border: 1px solid rgba(24, 201, 139, 0.25) !important;
+            color: #047857 !important;
+        }
+
+        .searchInput {
+            color: #0F172A !important;
+
+            &::placeholder {
+                color: #94A3B8 !important;
+            }
+        }
+
+        .clearBtn,
+        .closeBtn {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(15, 23, 42, 0.1) !important;
+            color: #64748B !important;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+
+            &:hover {
+                background: #F1F5F9 !important;
+                border-color: rgba(15, 23, 42, 0.18) !important;
+                color: #0F172A !important;
+            }
+        }
+    }
+
+    .filterBar {
+        background: #F8FAFC !important;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.06) !important;
+    }
+
+    .filterChip {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.1) !important;
+        color: #64748B !important;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03) !important;
+
+        &:hover {
+            color: #0F172A !important;
+            background: #F1F5F9 !important;
+            border-color: rgba(15, 23, 42, 0.16) !important;
+        }
+
+        &.filterChipActive {
+            background: rgba(24, 201, 139, 0.14) !important;
+            border-color: rgba(24, 201, 139, 0.45) !important;
+            color: #047857 !important;
+            box-shadow: 0 0 10px rgba(24, 201, 139, 0.15) !important;
+        }
+    }
+
+    .resultsList {
+        background: #FFFFFF !important;
+        scrollbar-color: rgba(24, 201, 139, 0.35) rgba(15, 23, 42, 0.04) !important;
+
+        &::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.03) !important;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: rgba(24, 201, 139, 0.25) !important;
+            &:hover {
+                background: rgba(24, 201, 139, 0.45) !important;
+            }
+        }
+    }
+
+    .categoryHeader {
+        color: #64748B !important;
+
+        &::after {
+            background: rgba(15, 23, 42, 0.08) !important;
+        }
+    }
+
+    .itemRow {
+        &:hover,
+        &.itemActive {
+            background: #F8FAFC !important;
+            border-color: rgba(24, 201, 139, 0.35) !important;
+
+            .itemIconWrap {
+                background: rgba(24, 201, 139, 0.14) !important;
+                border-color: rgba(24, 201, 139, 0.4) !important;
+                color: #047857 !important;
+                box-shadow: 0 2px 8px rgba(24, 201, 139, 0.15) !important;
+            }
+
+            .itemTitle {
+                color: #0F172A !important;
+            }
+
+            .itemSubtitle {
+                color: #475569 !important;
+            }
+
+            .actionBadge {
+                opacity: 1 !important;
+            }
+        }
+
+        &.itemActive {
+            background: rgba(24, 201, 139, 0.08) !important;
+            border-color: rgba(24, 201, 139, 0.35) !important;
+        }
+    }
+
+    .itemIconWrap {
+        background: #F1F5F9 !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        color: #047857 !important;
+    }
+
+    .itemTitle {
+        color: #1E293B !important;
+    }
+
+    .itemSubtitle {
+        color: #64748B !important;
+    }
+
+    .categoryTag {
+        background: #F1F5F9 !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        color: #64748B !important;
+    }
+
+    .actionBadge {
+        background: rgba(24, 201, 139, 0.14) !important;
+        border: 1px solid rgba(24, 201, 139, 0.4) !important;
+        color: #047857 !important;
+        box-shadow: 0 0 10px rgba(24, 201, 139, 0.15) !important;
+    }
+
+    .emptyState {
+        color: #64748B !important;
+
+        svg {
+            color: #94A3B8 !important;
+        }
+
+        p {
+            color: #334155 !important;
+        }
+
+        span {
+            color: #64748B !important;
+        }
+    }
+
+    .modalFooter {
+        background: #F8FAFC !important;
+        border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+    }
+
+    .footerHints {
+        color: #64748B !important;
+
+        .hintItem {
+            kbd {
+                background: #FFFFFF !important;
+                border: 1px solid rgba(15, 23, 42, 0.14) !important;
+                color: #475569 !important;
+                box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06) !important;
+            }
+        }
+    }
+
+    .resultsCount {
+        color: #64748B !important;
+    }
+
+    .chronosXTag {
+        color: #047857 !important;
+
+        .pulsingDot {
+            background: #047857 !important;
+            box-shadow: 0 0 8px #047857 !important;
+        }
+    }
+}
+

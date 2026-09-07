@@ -141,6 +141,11 @@
         font-size: 34px;
         letter-spacing: -0.8px;
       }
+
+      @include respond-to("sm") {
+        font-size: 28px;
+        line-height: 1.18;
+      }
     }
 
     .titleDivider {
@@ -263,6 +268,11 @@
       justify-content: space-between;
       text-align: left;
       box-shadow: inset 0 0 20px rgba(24, 201, 139, 0.08), 0 10px 30px rgba(0, 0, 0, 0.6);
+
+      @include respond-to("sm") {
+        padding: 14px 16px;
+        gap: 12px;
+      }
 
       .bannerInfo {
         display: flex;

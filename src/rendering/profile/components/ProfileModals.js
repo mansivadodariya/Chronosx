@@ -128,12 +128,14 @@ export default function ProfileModals({
                                 >
                                     {t('common.cancel', 'Cancel')}
                                 </button>
-                                <Button
-                                    text={passwordUpdating ? "Updating..." : "Update Password"}
+                                <button
                                     type="button"
+                                    className={styles.submitModalBtn}
                                     disabled={passwordUpdating}
                                     onClick={handleUpdatePassword}
-                                />
+                                >
+                                    {passwordUpdating ? "Updating..." : "Update Password"}
+                                </button>
                             </div>
                         </motion.div>
                     </div>
@@ -164,14 +166,16 @@ export default function ProfileModals({
                                 <button type="button" className={styles.cancelFormBtn} onClick={() => setShowLogoutConfirm(false)}>
                                     {t('common.cancel', 'Cancel')}
                                 </button>
-                                <Button
-                                    text={t('sidebar.logout', 'Log Out')}
+                                <button
                                     type="button"
+                                    className={styles.confirmLogoutBtn}
                                     onClick={() => {
                                         clearAuthSession();
                                         router.push('/login');
                                     }}
-                                />
+                                >
+                                    {t('sidebar.logout', 'Log Out')}
+                                </button>
                             </div>
                         </motion.div>
                     </div>

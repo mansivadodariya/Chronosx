@@ -2,7 +2,6 @@
 @use '../../../scss/breakpoints/breakpoints.scss' as *;
 @use '../../../scss/font/font.scss' as *;
 
-/* Main Content Grid */
 .mainGrid {
     width: 100%;
     display: grid;
@@ -305,6 +304,10 @@
             object-fit: contain;
             display: block;
             border-radius: 16px;
+
+            @include respond-to("xl") {
+                max-height: 380px;
+            }
         }
     }
 }

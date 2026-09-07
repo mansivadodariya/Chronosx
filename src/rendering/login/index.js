@@ -48,7 +48,6 @@ const Login = () => {
     const [phoneError, setPhoneError] = useState('');
     const [savingPhone, setSavingPhone] = useState(false);
     const [showOtpModal, setShowOtpModal] = useState(false);
-
     useEffect(() => {
         console.log('Login mount/update: pendingPhoneUserId =', pendingPhoneUserId);
     }, [pendingPhoneUserId]);

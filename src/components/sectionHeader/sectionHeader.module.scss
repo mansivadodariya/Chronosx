@@ -93,6 +93,12 @@
       letter-spacing: -0.5px;
     }
 
+    @media (max-width: 420px) {
+      font-size: 24px;
+      line-height: 1.22;
+      letter-spacing: -0.4px;
+    }
+
     .title1 {
       color: #FFFFFF !important;
       -webkit-text-fill-color: #FFFFFF !important;

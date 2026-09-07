@@ -9,9 +9,9 @@
         background: #040D09;
         color: #18C98B !important;
         border: 1px solid rgba(24, 201, 139, 0.4);
-        padding: 6px 12px;
+        padding: 5px 10px;
         border-radius: 6px;
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 500;
         white-space: nowrap;
         pointer-events: none;
@@ -80,9 +80,9 @@
         background: #040D09;
         border: 1px solid rgba(24, 201, 139, 0.4);
         border-radius: 10px;
-        padding: 8px;
+        padding: 6px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(24, 201, 139, 0.15);
-        min-width: 180px;
+        min-width: 170px;
         z-index: 1050;
         opacity: 0;
         visibility: hidden;
@@ -98,100 +98,61 @@
         &::after {
             content: '';
             position: absolute;
-            right: 100%;
             top: 0;
-            width: 10px;
-            height: 100%;
+            bottom: 0;
+            left: -12px;
+            width: 14px;
+            background: transparent;
         }
 
-        :global([dir="rtl"]) & {
-            left: auto;
-            right: calc(100% + 12px);
-
-            &::before {
-                right: auto;
-                left: 100%;
-                border-color: transparent transparent transparent #040D09;
-            }
-
-            /* RTL transparent bridge on the opposite side */
-            &::after {
-                right: auto;
-                left: 100%;
-            }
-        }
-
-        &::before {
-            content: '';
-            position: absolute;
-            right: 100%;
-            top: 18px;
-            border-width: 6px;
-            border-style: solid;
-            border-color: transparent #040D09 transparent transparent;
-        }
-
-        .flyoutHeader {
-            font-size: 11px;
+        .flyoutTitle {
+            padding: 5px 8px 3px;
+            font-size: 10.5px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #18C98B;
-            padding: 6px 10px;
-            border-bottom: 1px solid rgba(24, 201, 139, 0.2);
-            margin-bottom: 6px;
+            letter-spacing: 0.6px;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: "Euclid-Bold", sans-serif;
+            background: transparent !important;
+            border: none !important;
         }
 
-        .flyoutList {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .flyoutLink {
+        .flyoutItem {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 10px;
+            gap: 8px;
+            padding: 7px 8px;
             border-radius: 6px;
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            color: rgba(255, 255, 255, 0.8) !important;
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 500;
             transition: all 0.15s ease;
+            font-family: "Euclid-Medium", sans-serif;
+            border: none !important;
 
-            span {
-                color: rgba(255, 255, 255, 0.8) !important;
-                font-size: 13px !important;
-                font-weight: 500 !important;
-                white-space: nowrap !important;
-                display: inline-block !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-            }
-
-            .subMenuIcon {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #18C98B !important;
+            svg {
+                width: 15px !important;
+                height: 15px !important;
                 flex-shrink: 0;
             }
 
             &:hover {
                 background: rgba(24, 201, 139, 0.12);
+                color: #18C98B;
 
-                span {
-                    color: #FFFFFF !important;
+                svg {
+                    color: #18C98B;
                 }
             }
 
             &[data-active='true'] {
-                background: rgba(6, 24, 18, 0.95) !important;
-                border: 1px solid rgba(24, 201, 139, 0.4);
+                background: rgba(24, 201, 139, 0.2);
+                color: #6EE7B7;
+                font-weight: 600;
 
-                span {
-                    color: #18C98B !important;
+                svg {
+                    color: #18C98B;
                 }
             }
         }
@@ -214,23 +175,23 @@
         background: #040D09;
         border: 1px solid rgba(24, 201, 139, 0.45);
         border-radius: 16px;
-        padding: 28px 24px;
-        max-width: 380px;
+        padding: 24px 22px;
+        max-width: 360px;
         width: 100%;
         box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(24, 201, 139, 0.2);
 
         h3 {
             color: #FFFFFF;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
-            margin: 0 0 8px 0;
+            margin: 0 0 6px 0;
             font-family: "Euclid-Bold", sans-serif;
         }
 
         p {
             color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-            margin: 0 0 20px 0;
+            font-size: 13.5px;
+            margin: 0 0 18px 0;
             line-height: 1.45;
             font-family: "Euclid-Regular", sans-serif;
         }
@@ -239,15 +200,15 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            gap: 12px;
+            gap: 10px;
 
             .cancelBtn {
-                padding: 10px 18px;
+                padding: 9px 16px;
                 border-radius: 8px;
                 background: rgba(255, 255, 255, 0.08);
                 border: 1px solid rgba(255, 255, 255, 0.15);
                 color: #FFFFFF;
-                font-size: 13.5px;
+                font-size: 13px;
                 font-weight: 500;
                 cursor: pointer;
                 transition: all 0.2s ease;
@@ -258,12 +219,12 @@
             }
 
             .confirmLogoutBtn {
-                padding: 10px 20px;
+                padding: 9px 18px;
                 border-radius: 8px;
                 background: #e53e3e;
                 border: none;
                 color: #FFFFFF;
-                font-size: 13.5px;
+                font-size: 13px;
                 font-weight: 600;
                 cursor: pointer;
                 transition: all 0.2s ease;
@@ -288,52 +249,398 @@
     }
 }
 
-/* Specific Light Mode Rules for Sidebar */
+/* ============================================================
+   COMPLETE & REFINED LIGHT MODE RULES FOR SIDEBAR
+   ============================================================ */
 :global(html.light) .sidebar {
     background: #FFFFFF !important;
-    border-right-color: rgba(15, 23, 42, 0.08) !important;
+    border: none !important;
 
-    .logoHeader {
-        border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+    .logoHeader {
+        background: #FFFFFF !important;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+        border-right: none !important;
+        border-left: none !important;
+        border-top: none !important;
+    }
+
+    .toggleBtn {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.12) !important;
+        color: #047857 !important;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
+
+        &:hover {
+            background: #F1F5F9 !important;
+            color: #047857 !important;
+            border-color: rgba(24, 201, 139, 0.5) !important;
+            box-shadow: 0 0 12px rgba(24, 201, 139, 0.2) !important;
+        }
+    }
+
+    .tooltip {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.12) !important;
+        color: #0F172A !important;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1) !important;
+
+        &::before {
+            border-color: transparent #FFFFFF transparent transparent !important;
+        }
+    }
+
+    .flyoutMenu {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.1) !important;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12) !important;
+
+        .flyoutTitle {
+            color: #64748B !important;
+            background: transparent !important;
+            border: none !important;
+        }
+
+        .flyoutItem {
+            color: #334155 !important;
+            background: transparent !important;
+            border: none !important;
+
+            svg {
+                color: #64748B !important;
+            }
+
+            &:hover {
+                background: #F1F5F9 !important;
+                color: #047857 !important;
+
+                svg {
+                    color: #047857 !important;
+                }
+            }
+
+            &[data-active='true'] {
+                background: rgba(24, 201, 139, 0.12) !important;
+                color: #047857 !important;
+
+                svg {
+                    color: #047857 !important;
+                }
+            }
+        }
     }
 
     .sidebarmenu {
-        .menu,
-        .subMenuLink {
+        background: transparent !important;
+        border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
+        border-left: none !important;
+        border-top: none !important;
+        border-bottom: none !important;
+
+        .menuGroup {
+            background: transparent !important;
+            border: none !important;
+        }
+
+        .menu {
+            background: transparent !important;
+            border: none !important;
+            outline: none !important;
             color: #475569 !important;
 
+            .icon {
+                color: #64748B !important;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+
+            span {
+                color: #475569 !important;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+
+            .chevron {
+                color: #94A3B8 !important;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+
             &:hover {
-                background: rgba(24, 201, 139, 0.1) !important;
-                color: #047857 !important;
+                background: #F1F5F9 !important;
+                border: none !important;
+                outline: none !important;
+                box-shadow: none !important;
+
+                .icon {
+                    color: #047857 !important;
+                }
+
+                span {
+                    color: #0F172A !important;
+                }
+
+                .chevron {
+                    color: #047857 !important;
+                }
             }
 
             &.active,
             &[class*="active"],
             &[data-active='true'] {
-                background: rgba(24, 201, 139, 0.14) !important;
-                color: #047857 !important;
-                border-color: rgba(24, 201, 139, 0.35) !important;
+                background: rgba(24, 201, 139, 0.12) !important;
+                border: none !important;
+                outline: none !important;
+                box-shadow: 0 2px 8px rgba(24, 201, 139, 0.08) !important;
+
+                .icon {
+                    color: #047857 !important;
+                    filter: none !important;
+                }
+
+                span {
+                    color: #047857 !important;
+                    font-weight: 600 !important;
+                }
+
+                .chevron {
+                    color: #047857 !important;
+                }
             }
         }
 
-        .menuGroupTitle {
-            color: #94A3B8 !important;
+        .subItemsList {
+            border-left-color: rgba(24, 201, 139, 0.3) !important;
+            background: transparent !important;
+            border-right: none !important;
+
+            .subMenuLink {
+                color: #64748B !important;
+                background: transparent !important;
+                border: none !important;
+                outline: none !important;
+
+                .subMenuIcon {
+                    color: #64748B !important;
+                    background: transparent !important;
+                    border: none !important;
+                }
+
+                span {
+                    color: #64748B !important;
+                    background: transparent !important;
+                    border: none !important;
+                }
+
+                &:hover {
+                    background: #F1F5F9 !important;
+                    border: none !important;
+                    outline: none !important;
+                    box-shadow: none !important;
+
+                    .subMenuIcon {
+                        color: #047857 !important;
+                    }
+
+                    span {
+                        color: #0F172A !important;
+                    }
+                }
+
+                &[data-active='true'] {
+                    background: rgba(24, 201, 139, 0.12) !important;
+                    color: #047857 !important;
+                    border: none !important;
+                    outline: none !important;
+                    box-shadow: none !important;
+
+                    .subMenuIcon {
+                        color: #047857 !important;
+                        filter: none !important;
+                    }
+
+                    span {
+                        color: #047857 !important;
+                        font-weight: 600 !important;
+                    }
+
+                    &::after {
+                        background: #18C98B !important;
+                        box-shadow: 0 0 6px rgba(24, 201, 139, 0.4) !important;
+                    }
+                }
+            }
         }
     }
 
     .bottomSection {
-        border-top-color: rgba(15, 23, 42, 0.08) !important;
+        border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+        border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
+        border-left: none !important;
+        border-bottom: none !important;
+        background: transparent !important;
 
-        .creditsBox {
+        .upgradeCard {
             background: #F8FAFC !important;
-            border-color: rgba(15, 23, 42, 0.08) !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+            box-shadow: none !important;
 
-            .creditsCount {
-                color: #0F172A !important;
+            &:hover {
+                background: #F1F5F9 !important;
+                border-color: rgba(24, 201, 139, 0.35) !important;
+                box-shadow: 0 4px 14px rgba(24, 201, 139, 0.1) !important;
             }
 
-            .creditsLabel {
-                color: #64748B !important;
+            .upgradeIcon {
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                color: #047857 !important;
+            }
+
+            .upgradeText {
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+
+                .upgradeSub {
+                    color: #64748B !important;
+                    background: transparent !important;
+                    border: none !important;
+                }
+                .upgradeMain {
+                    color: #047857 !important;
+                    background: transparent !important;
+                    border: none !important;
+                }
+            }
+        }
+
+        .compactUpgradeBox {
+            background: transparent !important;
+            border: none !important;
+
+            .compactUpgradeBtn {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+                &:hover {
+                    background: #F1F5F9 !important;
+                    border-color: rgba(24, 201, 139, 0.35) !important;
+                }
+            }
+        }
+
+        .profileWrapper {
+            background: transparent !important;
+            border: none !important;
+        }
+
+        .userProfileCard {
+            background: #F8FAFC !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+            box-shadow: none !important;
+
+            &:hover {
+                background: #F1F5F9 !important;
+                border-color: rgba(24, 201, 139, 0.35) !important;
+            }
+
+            .avatarBox {
+                background: rgba(24, 201, 139, 0.15) !important;
+                border: none !important;
+
+                .avatarInitials {
+                    color: #047857 !important;
+                    background: transparent !important;
+                }
+            }
+
+            .userInfo {
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+
+                .userName {
+                    color: #0F172A !important;
+                    background: transparent !important;
+                    border: none !important;
+                }
+                .userSubtitle {
+                    color: #64748B !important;
+                    background: transparent !important;
+                    border: none !important;
+                }
+            }
+
+            .chevronBox {
+                color: #047857 !important;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+        }
+
+        .profileMenuDropdown {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(15, 23, 42, 0.1) !important;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12) !important;
+
+            .dropdownHeader {
+                background: transparent !important;
+                border: none !important;
+
+                .dropdownName {
+                    color: #0F172A !important;
+                    background: transparent !important;
+                }
+                .dropdownEmail {
+                    color: #64748B !important;
+                    background: transparent !important;
+                }
+            }
+
+            .dropdownDivider {
+                background: rgba(15, 23, 42, 0.07) !important;
+                border: none !important;
+            }
+
+            .dropdownItem {
+                color: #334155 !important;
+                background: transparent !important;
+                border: none !important;
+
+                svg {
+                    stroke: #64748B !important;
+                }
+
+                &:hover {
+                    background: #F1F5F9 !important;
+                    color: #047857 !important;
+
+                    svg {
+                        stroke: #047857 !important;
+                    }
+                }
+
+                &.logoutOption {
+                    color: #DC2626 !important;
+
+                    svg {
+                        stroke: #DC2626 !important;
+                    }
+
+                    &:hover {
+                        background: #FEE2E2 !important;
+                        color: #B91C1C !important;
+
+                        svg {
+                            stroke: #B91C1C !important;
+                        }
+                    }
+                }
             }
         }
     }
@@ -361,4 +668,4 @@
             background: #E2E8F0 !important;
         }
     }
-}
+}

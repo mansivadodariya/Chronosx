@@ -13,10 +13,19 @@ $danger: #F87171;
 .modernDashboard {
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: 20px;
     width: 100%;
     max-width: 100%;
     padding-bottom: 40px;
+
+    @include respond-to('lg') {
+        gap: 18px;
+    }
+
+    @include respond-to('sm') {
+        gap: 16px;
+        padding-bottom: 24px;
+    }
 }
 
 /* ============================================================

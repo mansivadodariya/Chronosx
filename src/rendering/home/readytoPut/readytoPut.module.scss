@@ -149,6 +149,7 @@
             .btnWrapper {
                 display: flex;
                 justify-content: center;
+                width: 100%;
 
                 .ctaGoldBtn {
                     background: #18c98b;
@@ -165,6 +166,13 @@
                     gap: 12px;
                     box-shadow: 0 4px 18px rgba(24, 201, 139, 0.35);
                     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+                    @include respond-to("sm") {
+                        width: 100%;
+                        justify-content: center;
+                        padding: 13px 24px;
+                        font-size: 13px;
+                    }
 
                     :global(html.light) & {
                         background: #18C98B !important;

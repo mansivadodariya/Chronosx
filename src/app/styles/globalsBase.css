@@ -103,26 +103,54 @@ html.lenis body {
   margin: 0 auto;
 }
 
-.container-xs4 {
-  max-width: calc(1185px + 40px);
-  padding: 0 20px;
-  margin: 0 auto;
+.container,
+.container-xs,
+.container-xl,
+.container-xs2,
+.container-xs4,
+.container-xs3 {
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.container-xs3 {
-  max-width: calc(1588px + 40px);
-  padding: 0 20px;
-  margin: 0 auto;
+@media (max-width: 768px) {
+
+  .container,
+  .container-xs,
+  .container-xl,
+  .container-xs2,
+  .container-xs4,
+  .container-xs3 {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .container,
+  .container-xs,
+  .container-xl,
+  .container-xs2,
+  .container-xs4,
+  .container-xs3 {
+    padding: 0 14px;
+  }
 }
 
 /* User Dashboard Layout */
 .user-layout {
   display: flex;
   background-color: #040605;
+  min-height: 100vh;
+}
+
+html.light .user-layout,
+html.light .children-wrapper {
+  background-color: #F8FAFC !important;
 }
 
 .sidebar-wrapper {
-  width: 270px;
+  width: 230px;
   position: relative;
   z-index: 90;
   overflow: visible !important;
@@ -131,24 +159,39 @@ html.lenis body {
 }
 
 .sidebar-wrapper.collapsed {
-  width: 75px;
+  width: 68px;
 }
 
 .children-wrapper {
-  width: calc(100% - 270px);
+  width: calc(100% - 230px);
   position: relative;
   z-index: 1;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: #040605;
+  min-height: 100vh;
 }
 
 .sidebar-wrapper.collapsed~.children-wrapper,
 .user-layout.collapsed .children-wrapper {
-  width: calc(100% - 64px);
+  width: calc(100% - 68px);
 }
 
 .children-spacing {
   padding: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .children-spacing {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .children-spacing {
+    padding: 10px;
+  }
 }
 
 .nsm7Bb-HzV7m-LgbsSe {
@@ -629,11 +672,11 @@ html.light textarea,
 html.light select,
 html.light [class*="inputField"],
 html.light [class*="inputWrapper"] input,
-html.light [class*="searchInput"],
+html.light [class*="searchInput"]:not([class*="watchlistSearchInput"]):not([class*="tickerSearchInput"]):not([class*="indicatorsSearchInput"]),
 html.light [class*="customInput"],
 html.light [class*="formControl"],
 html.light [class*="phoneInput"] input {
-  background-color: #FFFFFF !important;
+  background-color: transparent !important;
   border-right-color: rgba(24, 201, 139, 0.2) !important;
   box-shadow: none !important;
 }

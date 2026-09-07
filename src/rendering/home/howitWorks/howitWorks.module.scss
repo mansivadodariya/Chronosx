@@ -211,6 +211,13 @@
         min-height: 440px;
         padding: 36px 28px;
       }
+
+      @include respond-to("sm") {
+        min-height: 360px;
+        padding: 20px 14px;
+        border-radius: 16px;
+        outline: none;
+      }
     }
   }
 

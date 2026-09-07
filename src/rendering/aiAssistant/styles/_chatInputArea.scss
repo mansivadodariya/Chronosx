@@ -25,8 +25,8 @@
 
             .chip {
                 white-space: nowrap;
-                background: #ebf2fc;
-                border: none;
+                background: rgba(24, 201, 139, 0.08);
+                border: 1px solid rgba(24, 201, 139, 0.2);
                 border-radius: 6px;
                 padding: 8px 14px;
                 color: #18C98B;
@@ -37,7 +37,8 @@
 
                 &:hover {
                     background: #18C98B;
-                    color: #FFF;
+                    color: #040605;
+                    border-color: #18C98B;
                     transform: translateY(-1px);
                 }
 
@@ -48,15 +49,21 @@
         }
 
         .inputArea {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 0;
+            background: #08090C;
+            border: 1px solid rgba(24, 201, 139, 0.25);
+            border-radius: 12px;
             padding: 12px 16px;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(24, 201, 139, 0.05);
             flex-shrink: 0;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+            &:focus-within {
+                border-color: rgba(24, 201, 139, 0.5);
+                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(24, 201, 139, 0.25);
+            }
 
             .compactAttachmentWrapper {
                 position: relative;
@@ -69,13 +76,13 @@
                 position: relative;
                 width: 68px;
                 height: 68px;
-                border-radius: 0;
+                border-radius: 8px;
                 background: #0f172a;
                 border: 1.5px solid rgba(148, 163, 184, 0.3);
                 overflow: hidden;
                 cursor: pointer;
                 transition: transform 0.2s ease, border-color 0.2s ease;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 
                 &:hover {
                     transform: scale(1.03);
@@ -97,7 +104,7 @@
             .previewHoverOverlay {
                 position: absolute;
                 inset: 0;
-                background: rgba(15, 23, 42, 0.5);
+                background: rgba(4, 6, 5, 0.65);
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -112,7 +119,7 @@
                 right: -8px;
                 width: 22px;
                 height: 22px;
-                border-radius: 0;
+                border-radius: 50%;
                 background: #16130e;
                 border: 1.5px solid rgba(255, 255, 255, 0.25);
                 color: #94a3b8;
@@ -120,7 +127,7 @@
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
                 transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
 
                 &:hover {
@@ -149,12 +156,12 @@
                 max-height: 120px;
                 font-size: 14px;
                 font-weight: 450;
-                color: #0f172a;
+                color: #ffffff;
                 background: transparent;
                 padding: 0;
 
                 &::placeholder {
-                    color: #94a3b8;
+                    color: #64748b;
                 }
             }
 
@@ -177,7 +184,7 @@
                         .attachPlusBtn {
                             background: transparent;
                             border: none;
-                            border-radius: 0;
+                            border-radius: 6px;
                             width: 28px;
                             height: 28px;
                             box-sizing: border-box;
@@ -185,8 +192,8 @@
                             align-items: center;
                             justify-content: center;
                             cursor: pointer;
-                            color: #64748b;
-                            transition: color 0.2s ease;
+                            color: #94a3b8;
+                            transition: color 0.2s ease, background 0.2s ease;
                             padding: 0;
 
                             .plusIconWrapper {
@@ -197,12 +204,12 @@
                             }
 
                             &:hover {
-                                background: transparent;
+                                background: rgba(24, 201, 139, 0.1);
                                 color: #18C98B;
                             }
 
                             &.attachPlusActive {
-                                background: transparent;
+                                background: rgba(24, 201, 139, 0.15);
                                 color: #18C98B;
                                 box-shadow: none;
 
@@ -217,10 +224,10 @@
                             position: absolute;
                             bottom: calc(100% + 10px);
                             left: 0;
-                            background: #ffffff;
-                            border: 1px solid #e2e8f0;
-                            border-radius: 0;
-                            box-shadow: 0 12px 32px -4px rgba(15, 23, 42, 0.15), 0 4px 12px rgba(15, 23, 42, 0.08);
+                            background: #08090c;
+                            border: 1px solid rgba(24, 201, 139, 0.25);
+                            border-radius: 10px;
+                            box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.8), 0 4px 12px rgba(0, 0, 0, 0.5);
                             padding: 6px;
                             min-width: 220px;
                             max-width: calc(100vw - 32px);
@@ -244,10 +251,10 @@
                                 padding: 9px 12px;
                                 border: none;
                                 background: transparent;
-                                color: #16130e;
+                                color: #e2e8f0;
                                 font-size: 13px;
                                 font-weight: 500;
-                                border-radius: 0;
+                                border-radius: 6px;
                                 cursor: pointer;
                                 transition: all 0.15s ease;
                                 text-align: left;
@@ -265,12 +272,18 @@
                                 }
 
                                 &:hover {
-                                    background: #16130e;
+                                    background: rgba(24, 201, 139, 0.12);
                                     color: #18C98B;
 
                                     svg {
                                         color: #18C98B;
                                     }
+                                }
+
+                                &.attachMenuItemActive {
+                                    background: rgba(24, 201, 139, 0.16);
+                                    color: #18C98B;
+                                    font-weight: 600;
                                 }
                             }
                         }
@@ -283,40 +296,57 @@
                     display: inline-block;
 
                     .dropdownTrigger {
-                        background: #f1f5f9;
-                        border: 1px solid #cbd5e1;
-                        border-radius: 0;
+                        background: rgba(24, 201, 139, 0.08);
+                        border: 1px solid rgba(24, 201, 139, 0.25);
+                        border-radius: 8px;
                         height: 32px;
                         box-sizing: border-box;
-                        padding: 0 12px;
+                        padding: 0 10px;
                         display: flex;
                         align-items: center;
-                        gap: 8px;
+                        gap: 6px;
                         cursor: pointer;
-                        font-size: 13px;
+                        font-size: 12.5px;
                         font-weight: 600;
-                        color: #16130e;
+                        color: #e2e8f0;
                         transition: all 0.2s ease;
 
-                        &:hover {
-                            border-color: #18C98B;
-                            background: #e2e8f0;
-                            color: #0f172a;
+                        span {
+                            color: #e2e8f0;
                         }
 
                         .chevron {
                             display: flex;
                             align-items: center;
                             justify-content: center;
+                            color: #94a3b8;
                             transition: transform 0.2s ease;
 
                             svg {
                                 width: 12px;
                                 height: 12px;
+                                color: #94a3b8;
                             }
 
                             &.rotated {
                                 transform: rotate(180deg);
+                            }
+                        }
+
+                        &:hover {
+                            border-color: #18C98B;
+                            background: rgba(24, 201, 139, 0.16);
+                            color: #18C98B;
+
+                            span {
+                                color: #18C98B;
+                            }
+
+                            .chevron {
+                                color: #18C98B;
+                                svg {
+                                    color: #18C98B;
+                                }
                             }
                         }
                     }
@@ -325,17 +355,11 @@
                         position: absolute;
                         bottom: 125%;
                         left: 0;
-                        background: #ffffff;
-
-                        :global([dir="rtl"]) &,
-                        :global(html[dir="rtl"]) & {
-                            left: auto !important;
-                            right: 0 !important;
-                        }
-                        border: 1px solid #e2e8f0;
-                        border-radius: 0;
-                        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-                        width: 160px;
+                        background: #08090c;
+                        border: 1px solid rgba(24, 201, 139, 0.25);
+                        border-radius: 10px;
+                        box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8);
+                        width: 170px;
                         max-height: 300px;
                         overflow-y: auto;
                         overflow-x: hidden;
@@ -344,23 +368,29 @@
                         flex-direction: column;
                         animation: slideUp 0.15s ease-out;
 
+                        :global([dir="rtl"]) &,
+                        :global(html[dir="rtl"]) & {
+                            left: auto !important;
+                            right: 0 !important;
+                        }
+
                         &::-webkit-scrollbar {
                             width: 4px;
                         }
 
                         &::-webkit-scrollbar-thumb {
-                            background: rgba(24, 201, 139, 0.2);
-                            border-radius: 0;
+                            background: rgba(24, 201, 139, 0.3);
+                            border-radius: 4px;
                         }
 
                         .dropdownHeader {
                             padding: 8px 12px;
                             font-size: 11px;
                             font-weight: 700;
-                            color: rgba(18, 18, 18, 0.4);
+                            color: #94a3b8;
                             text-transform: uppercase;
-                            border-bottom: 1px solid rgba(18, 18, 18, 0.05);
-                            background: #f8fafc;
+                            border-bottom: 1px solid rgba(24, 201, 139, 0.15);
+                            background: #040605;
                             position: sticky;
                             top: 0;
                             z-index: 1;
@@ -374,7 +404,7 @@
                             .dropdownItem {
                                 padding: 8px 12px;
                                 font-size: 13px;
-                                color: #334155;
+                                color: #cbd5e1;
                                 cursor: pointer;
                                 display: flex;
                                 align-items: center;
@@ -382,14 +412,14 @@
                                 transition: all 0.15s ease;
 
                                 &:hover {
-                                    background: #16130e;
+                                    background: rgba(24, 201, 139, 0.12);
                                     color: #18C98B;
                                 }
 
                                 &.activePair {
-                                    background: #16130e;
+                                    background: rgba(24, 201, 139, 0.2);
                                     color: #18C98B;
-                                    font-weight: 600;
+                                    font-weight: 700;
                                 }
 
                                 .checkmark {
@@ -399,7 +429,6 @@
                                 }
                             }
                         }
-
                     }
                 }
 
@@ -412,7 +441,7 @@
                     .toggleLabel {
                         font-size: 13px;
                         font-weight: 600;
-                        color: rgba(18, 18, 18, 0.7);
+                        color: rgba(255, 255, 255, 0.7);
                     }
 
                     .switch {
@@ -426,11 +455,11 @@
                             width: 0;
                             height: 0;
 
-                            &:checked+.slider {
+                            &:checked + .slider {
                                 background-color: #18C98B;
                             }
 
-                            &:checked+.slider:before {
+                            &:checked + .slider:before {
                                 transform: translateX(18px);
                             }
                         }
@@ -442,9 +471,9 @@
                             left: 0;
                             right: 0;
                             bottom: 0;
-                            background-color: rgba(18, 18, 18, 0.2);
+                            background-color: rgba(255, 255, 255, 0.15);
                             transition: 0.2s;
-                            border-radius: 0;
+                            border-radius: 10px;
 
                             &:before {
                                 position: absolute;
@@ -455,7 +484,7 @@
                                 bottom: 3px;
                                 background-color: white;
                                 transition: 0.2s;
-                                border-radius: 0;
+                                border-radius: 50%;
                             }
                         }
                     }
@@ -464,29 +493,31 @@
                 .sendBtn {
                     background: #18C98B;
                     border: none;
-                    color: #000000;
+                    color: #040605;
                     width: 34px;
                     height: 34px;
-                    border-radius: 0;
+                    border-radius: 8px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     cursor: pointer;
                     transition: all 0.2s ease;
+                    box-shadow: 0 2px 10px rgba(24, 201, 139, 0.3);
 
                     svg {
                         transform: rotate(45deg);
+                        stroke: #040605;
                     }
 
                     &:hover:not(:disabled) {
-                        background: #10B981;
+                        background: #10b981;
                         color: #ffffff;
                         transform: scale(1.06);
-                    }
+                        box-shadow: 0 4px 16px rgba(24, 201, 139, 0.5);
 
-                    &:disabled {
-                        opacity: 0.35;
-                        cursor: not-allowed;
+                        svg {
+                            stroke: #ffffff;
+                        }
                     }
 
                     &:active:not(:disabled) {
@@ -494,8 +525,15 @@
                     }
 
                     &:disabled {
-                        background: rgba(24, 201, 139, 0.4);
+                        background: rgba(24, 201, 139, 0.2);
+                        color: rgba(255, 255, 255, 0.3);
+                        opacity: 0.5;
                         cursor: not-allowed;
+                        box-shadow: none;
+
+                        svg {
+                            stroke: rgba(255, 255, 255, 0.4);
+                        }
                     }
                 }
             }

@@ -14,13 +14,13 @@
 
         .chatCard {
             flex: 1;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
+            background: #040605;
+            border: 1px solid rgba(24, 201, 139, 0.2);
             border-radius: 0;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 
             .chatHeader {
                 display: flex;
@@ -31,8 +31,9 @@
                 min-height: 46px;
                 max-height: 46px;
                 box-sizing: border-box;
-                border-bottom: 1px solid #f1f5f9;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
                 flex-shrink: 0;
+                background: #040605;
 
                 @include respond-to('md') {
                     padding: 0 12px;
@@ -72,7 +73,7 @@
                     min-width: 0;
 
                     h3 {
-                        color: #0f172a;
+                        color: #ffffff;
                         font-size: 14px;
                         font-weight: 600;
                         margin: 0;
@@ -82,7 +83,7 @@
                     }
 
                     span {
-                        color: #64748b;
+                        color: #94a3b8;
                         font-size: 11px;
                         font-weight: 500;
                         white-space: nowrap;
@@ -337,15 +338,13 @@
                                 align-items: center;
                                 justify-content: center;
                                 flex-shrink: 0;
-                                background: linear-gradient(145deg, rgba(32, 35, 45, 0.9) 0%, rgba(18, 20, 26, 0.95) 100%);
-                                border: 1px solid rgba(24, 201, 139, 0.35);
+                                background: transparent;
+                                border: none;
                                 color: #18C98B;
-                                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(24, 201, 139, 0.25);
                                 transition: all 0.25s ease;
 
                                 svg {
                                     color: #18C98B;
-                                    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
                                     transition: all 0.25s ease;
                                 }
                             }
@@ -388,7 +387,7 @@
                                 transition: all 0.2s ease;
                             }
 
-                            &:hover {
+                            :global(html.dark) &:hover {
                                 background: linear-gradient(145deg, rgba(24, 26, 36, 0.95) 0%, rgba(14, 15, 22, 0.98) 100%);
                                 border-color: rgba(24, 201, 139, 0.7);
                                 box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(24, 201, 139, 0.18), inset 0 1px 1px rgba(24, 201, 139, 0.2);

@@ -360,8 +360,17 @@
 }
 
 @keyframes pulseLive {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(1.4); }
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(1.4);
+  }
 }
 
 /* SVG Chart Stage */
@@ -378,7 +387,8 @@
   overflow: hidden;
   margin-bottom: 12px;
 
-  .svgElement, .canvasElement {
+  .svgElement,
+  .canvasElement {
     width: 100%;
     height: 100%;
     display: block;
@@ -430,9 +440,11 @@
     .legOb {
       color: #6EE7B7;
     }
+
     .legFvg {
       color: #6EE7B7;
     }
+
     .legLiq {
       color: #8B5CF6;
     }
@@ -471,12 +483,15 @@
     transform: translateX(10px);
     opacity: 0;
   }
+
   15% {
     opacity: 1;
   }
+
   85% {
     opacity: 1;
   }
+
   100% {
     transform: translateX(290px);
     opacity: 0;
@@ -489,9 +504,12 @@
 
 /* Oscillating Wave Glow Pulse */
 @keyframes waveGlowPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     filter: drop-shadow(0 0 4px rgba(24, 201, 139, 0.4));
   }
+
   50% {
     filter: drop-shadow(0 0 12px rgba(24, 201, 139, 0.9));
   }

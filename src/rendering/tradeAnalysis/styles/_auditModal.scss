@@ -654,36 +654,3 @@
     }
 }
 
-:global(html.light) .container {
-    background: #F8FAFC !important;
-    color: #0F172A !important;
-
-    .headerBar,
-    .reportSuccessBannerCard,
-    .historyModalCard,
-    [class*="Card"],
-    [class*="card"] {
-        background: #FFFFFF !important;
-        border-color: rgba(15, 23, 42, 0.09) !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
-        color: #0F172A !important;
-
-        h1, h2, h3, h4, h5 {
-            color: #0F172A !important;
-        }
-
-        p, span {
-            color: #475569;
-        }
-    }
-
-    .reportTakeawayBox {
-        background: #F1F5F9 !important;
-        border-color: #CBD5E1 !important;
-
-        p {
-            color: #1E293B !important;
-        }
-    }
-}
-

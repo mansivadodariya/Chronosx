@@ -3,16 +3,17 @@
    ============================================================ */
 .topHeroRowGrid {
     display: grid;
-    grid-template-columns: 1fr 620px;
+    grid-template-columns: 1fr 580px;
     gap: 16px;
     align-items: stretch;
 
     @include respond-to('xl') {
-        grid-template-columns: 1fr 540px;
+        grid-template-columns: 1fr 520px;
     }
 
     @include respond-to('lg') {
         grid-template-columns: 1fr;
+        gap: 16px;
     }
 }
 
@@ -26,10 +27,23 @@
     position: relative;
     overflow: hidden;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-    padding: 26px 30px;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     @include respond-to('md') {
-        padding: 18px 16px;
+        padding: 20px 18px;
+        border-radius: 18px;
+    }
+
+    @include respond-to('sm') {
+        padding: 16px 14px;
+        border-radius: 16px;
+    }
+
+    @media (max-width: 420px) {
+        padding: 14px 12px;
     }
 }
 
@@ -64,18 +78,18 @@
 .heroLeftCol {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 
     .heroTagPill {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         background: rgba(24, 201, 139, 0.14);
         border: 1px solid rgba(24, 201, 139, 0.35);
         color: #18C98B;
-        font-size: 11.5px;
+        font-size: 11px;
         font-weight: 700;
-        padding: 4px 12px;
+        padding: 3px 10px;
         border-radius: 99px;
         width: fit-content;
         letter-spacing: 0.5px;
@@ -83,14 +97,22 @@
 
     .heroHeadline {
         color: #FFFFFF;
-        font-size: 26px;
+        font-size: 24px;
         font-weight: 700;
         font-family: "Euclid-Bold", sans-serif;
         margin: 0;
         line-height: 1.25;
 
+        @include respond-to('md') {
+            font-size: 22px;
+        }
+
         @include respond-to('sm') {
-            font-size: 20px;
+            font-size: 19px;
+        }
+
+        @media (max-width: 420px) {
+            font-size: 17px;
         }
 
         .nameGradient {
@@ -100,7 +122,7 @@
         }
 
         .wave {
-            font-size: 22px;
+            font-size: 20px;
             display: inline-block;
             animation: waveHand 2s infinite ease-in-out;
             -webkit-text-fill-color: initial;
@@ -109,22 +131,32 @@
 
     .heroSubtext {
         color: rgba(255, 255, 255, 0.7);
-        font-size: 13.5px;
+        font-size: 13px;
         line-height: 1.5;
         margin: 0;
         max-width: 680px;
+
+        @include respond-to('sm') {
+            font-size: 12px;
+        }
     }
 }
 
 .heroChartSection {
-    margin-top: 18px;
+    margin-top: 16px;
     background: rgba(0, 0, 0, 0.35);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
-    padding: 18px 22px;
+    padding: 16px 18px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
+
+    @include respond-to('sm') {
+        padding: 12px 10px;
+        border-radius: 12px;
+        margin-top: 12px;
+    }
 
     .chartHeaderRow {
         display: flex;
@@ -252,8 +284,12 @@
 
         .splineSvg {
             width: 100%;
-            height: 140px;
+            height: 130px;
             overflow: visible;
+
+            @include respond-to('sm') {
+                height: 100px;
+            }
 
             .chartNodeGroup {
                 cursor: pointer;
@@ -275,7 +311,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 15px;
+            padding: 0 10px;
+
+            @include respond-to('sm') {
+                padding: 0 4px;
+            }
 
             .dayLabelItem {
                 display: flex;
@@ -285,15 +325,23 @@
 
                 .dayName {
                     color: rgba(255, 255, 255, 0.5);
-                    font-size: 11.5px;
+                    font-size: 11px;
                     font-family: "Euclid-Medium", sans-serif;
+
+                    @include respond-to('sm') {
+                        font-size: 9.5px;
+                    }
                 }
 
                 .dayVal {
                     color: #FFFFFF;
-                    font-size: 12px;
+                    font-size: 11.5px;
                     font-weight: 700;
                     font-family: "Euclid-Bold", sans-serif;
+
+                    @include respond-to('sm') {
+                        font-size: 10.5px;
+                    }
                 }
 
                 &.todayLabel {

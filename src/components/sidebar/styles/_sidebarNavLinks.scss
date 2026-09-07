@@ -1,9 +1,12 @@
+/* ============================================================
+   SIDEBAR NAVIGATION LINKS & LAYOUT
+   ============================================================ */
 
 .sidebar {
     height: 100dvh;
-    width: 270px;
+    width: 230px;
     background: #040605;
-    border-right: 1px solid rgba(24, 201, 139, 0.127);
+    border: none !important;
     position: sticky;
     top: 0;
     display: flex;
@@ -15,23 +18,23 @@
     box-sizing: border-box;
 
     &.collapsed {
-        width: 76px;
+        width: 68px;
 
         .sidebarmenu {
             overflow: visible !important;
-            padding: 12px 10px;
+            padding: 10px 8px;
 
             .menuGroup {
                 align-items: center;
             }
 
             .menu {
-                width: 44px;
-                height: 44px;
+                width: 40px;
+                height: 40px;
                 padding: 0;
-                margin: 0 auto 4px;
+                margin: 0 auto 3px;
                 justify-content: center;
-                border-radius: 10px;
+                border-radius: 9px;
 
                 .icon {
                     margin: 0;
@@ -42,6 +45,7 @@
         .bottomSection {
             overflow: visible !important;
             align-items: center;
+            padding: 10px 8px 14px;
         }
 
         .quickJumpWrapper {
@@ -53,7 +57,7 @@
         }
     }
 
-    /* Top Logo Header - Exact 64px height and border to match Topbar */
+    /* Top Logo Header - Exact 64px height and border to match Topbar - NO RIGHT BORDER */
     .logoHeader {
         position: relative;
         height: 64px;
@@ -62,11 +66,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0 16px;
+        padding: 0 14px;
         box-sizing: border-box;
         border-bottom: 1px solid rgba(24, 201, 139, 0.125);
+        border-right: none !important;
+        border-left: none !important;
+        border-top: none !important;
         overflow: visible !important;
         z-index: 95;
+        background: #040605;
     }
 
     .logo {
@@ -76,16 +84,20 @@
         cursor: pointer;
         width: 100%;
         height: 100%;
+        background: transparent !important;
+        border: none !important;
 
         img {
             display: block;
             cursor: pointer;
-            max-width: 145px;
-            max-height: 38px;
+            max-width: 125px;
+            max-height: 32px;
             width: auto;
             height: auto;
             object-fit: contain;
             filter: drop-shadow(0 2px 8px rgba(24, 201, 139, 0.25));
+            background: transparent !important;
+            border: none !important;
         }
     }
 
@@ -95,12 +107,16 @@
         justify-content: center;
         cursor: pointer;
         position: relative;
+        background: transparent !important;
+        border: none !important;
 
         .smallLogoImg {
-            max-width: 34px;
-            max-height: 34px;
+            max-width: 30px;
+            max-height: 30px;
             object-fit: contain;
             display: block;
+            background: transparent !important;
+            border: none !important;
         }
 
         &:hover .tooltip {
@@ -112,14 +128,14 @@
 
     .toggleBtn {
         position: absolute;
-        right: -13px;
+        right: -12px;
         top: 50%;
         transform: translateY(-50%);
         background: #17231c;
-        border: none;
+        border: 1px solid rgba(24, 201, 139, 0.35);
         cursor: pointer;
-        width: 26px;
-        height: 26px;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
         color: #18C98B;
         display: flex;
@@ -136,7 +152,7 @@
 
         :global([dir="rtl"]) & {
             right: auto;
-            left: -13px;
+            left: -12px;
         }
 
         &:hover {
@@ -174,10 +190,14 @@
         scrollbar-color: rgba(24, 201, 139, 0.3) transparent;
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 3px;
+        border-right: 1px solid rgba(24, 201, 139, 0.127);
+        border-left: none !important;
+        border-top: none !important;
+        border-bottom: none !important;
 
         &::-webkit-scrollbar {
-            width: 4px;
+            width: 3px;
         }
 
         &::-webkit-scrollbar-track {
@@ -198,6 +218,8 @@
             display: flex;
             flex-direction: column;
             margin: 0;
+            background: transparent !important;
+            border: none !important;
 
             .menu {
                 margin: 0;
@@ -205,48 +227,38 @@
         }
 
         .menu {
-            padding: 11px 14px;
+            padding: 8px 10px;
             display: flex;
             align-items: center;
-            gap: 14px;
-            border-radius: 10px;
+            gap: 10px;
+            border-radius: 9px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             position: relative;
             text-decoration: none;
-            border: 1px solid transparent;
+            border: none !important;
+            outline: none !important;
             background: transparent;
             overflow: hidden;
-
-            /* Right-side glowing mint theme indicator bar */
-            &::after {
-                content: '';
-                position: absolute;
-                right: 0;
-                top: 50%;
-                transform: translateY(-50%) scaleY(0);
-                width: 2px;
-                height: 65%;
-                border-radius: 4px 0 0 4px;
-                background: #18C98B;
-                box-shadow: 0 0 12px #18C98B, 0 0 20px #6EE7B7;
-                transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
-                opacity: 0;
-            }
+            width: 100%;
+            box-sizing: border-box;
 
             .icon {
-                width: 22px;
-                height: 22px;
+                width: 17px;
+                height: 17px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 transition: all 0.2s ease;
                 color: #FFFFFF;
                 flex-shrink: 0;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
 
                 svg {
-                    width: 100%;
-                    height: 100%;
+                    width: 17px !important;
+                    height: 17px !important;
                     display: block;
                 }
             }
@@ -254,13 +266,16 @@
             span {
                 display: block;
                 color: rgba(255, 255, 255, 0.85);
-                font-size: 14.5px;
+                font-size: 13px;
                 font-style: normal;
                 font-weight: 500;
                 line-height: 1.2;
                 transition: all 0.2s ease;
                 font-family: "Euclid-Medium", sans-serif;
                 white-space: nowrap;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
             }
 
             .chevron {
@@ -269,20 +284,27 @@
                 align-items: center;
                 transition: transform 0.2s ease-in-out;
                 color: rgba(255, 255, 255, 0.6);
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+
+                svg {
+                    width: 13px !important;
+                    height: 13px !important;
+                }
 
                 &.rotated {
                     transform: rotate(180deg);
                 }
             }
 
-            /* On Hover: Dark Grey background + mint theme glow & indicator bar hint */
+            /* On Hover */
             &:hover {
                 background: rgba(255, 255, 255, 0.08);
-                border-color: rgba(255, 255, 255, 0.08);
-                box-shadow: inset 0 0 20px rgba(24, 201, 139, 0.06);
+                box-shadow: inset 0 0 16px rgba(24, 201, 139, 0.05);
 
                 .icon {
-                    color: #FFFFFF;
+                    color: #18C98B;
                     transform: scale(1.05);
                 }
 
@@ -293,22 +315,17 @@
                 .chevron {
                     color: #18C98B;
                 }
-
-                &::after {
-                    transform: translateY(-50%) scaleY(0.6);
-                    opacity: 0.7;
-                }
             }
 
-            /* On Active: Dark Grey pill + glowing theme mint right indicator bar */
+            /* On Active */
             &[data-active='true'] {
-                background: rgba(255, 255, 255, 0.09);
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 0 25px rgba(24, 201, 139, 0.12);
+                background: rgba(255, 255, 255, 0.09) !important;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(24, 201, 139, 0.12);
 
                 .icon {
                     color: #18C98B;
                     transform: scale(1.05);
-                    filter: drop-shadow(0 0 8px rgba(24, 201, 139, 0.6));
+                    filter: drop-shadow(0 0 6px rgba(24, 201, 139, 0.6));
                 }
 
                 span {
@@ -321,8 +338,16 @@
                 }
 
                 &::after {
-                    transform: translateY(-50%) scaleY(1);
-                    opacity: 1;
+                    content: '';
+                    position: absolute;
+                    right: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 2.5px;
+                    height: 60%;
+                    border-radius: 4px 0 0 4px;
+                    background: #18C98B;
+                    box-shadow: 0 0 10px #18C98B, 0 0 16px #6EE7B7;
                 }
             }
         }
@@ -330,57 +355,48 @@
         .subItemsList {
             display: flex;
             flex-direction: column;
-            padding-left: 14px;
-            margin-top: 4px;
-            margin-bottom: 4px;
+            padding-left: 10px;
+            margin-top: 2px;
+            margin-bottom: 3px;
             border-left: 1.5px solid rgba(24, 201, 139, 0.25);
-            margin-left: 18px;
-            gap: 4px;
+            margin-left: 15px;
+            gap: 2px;
             animation: fadeInSubmenu 0.2s ease-out;
+            background: transparent !important;
+            border-right: none !important;
 
             .subMenuLink {
                 display: flex;
                 align-items: center;
-                gap: 12px;
-                padding: 10px 14px;
-                border-radius: 12px;
+                gap: 10px;
+                padding: 7px 10px;
+                border-radius: 8px;
                 cursor: pointer;
                 transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
                 position: relative;
                 text-decoration: none;
-                border: 1px solid transparent;
+                border: none !important;
+                outline: none !important;
                 background: transparent;
                 overflow: hidden;
-
-                /* Right-side glowing mint theme indicator bar */
-                &::after {
-                    content: '';
-                    position: absolute;
-                    right: 0;
-                    top: 50%;
-                    transform: translateY(-50%) scaleY(0);
-                    width: 2px;
-                    height: 65%;
-                    border-radius: 4px 0 0 4px;
-                    background: #18C98B;
-                    box-shadow: 0 0 12px #18C98B, 0 0 20px #6EE7B7;
-                    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
-                    opacity: 0;
-                }
+                box-sizing: border-box;
 
                 .subMenuIcon {
-                    width: 22px;
-                    height: 22px;
+                    width: 15px;
+                    height: 15px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     transition: all 0.2s ease;
                     color: #FFFFFF;
                     flex-shrink: 0;
+                    background: transparent !important;
+                    border: none !important;
+                    box-shadow: none !important;
 
                     svg {
-                        width: 100%;
-                        height: 100%;
+                        width: 15px !important;
+                        height: 15px !important;
                         display: block;
                     }
                 }
@@ -388,46 +404,42 @@
                 span {
                     display: block;
                     color: rgba(255, 255, 255, 0.85);
-                    font-size: 14.5px;
+                    font-size: 12.5px;
                     font-style: normal;
                     font-weight: 500;
                     line-height: 1.2;
                     transition: all 0.2s ease;
                     font-family: "Euclid-Medium", sans-serif;
                     white-space: nowrap;
+                    background: transparent !important;
+                    border: none !important;
+                    box-shadow: none !important;
                 }
 
-                /* On Hover: Dark Grey background + mint theme glow & indicator bar hint */
+                /* On Hover */
                 &:hover {
                     background: rgba(255, 255, 255, 0.08);
-                    border-color: rgba(255, 255, 255, 0.08);
-                    box-shadow: inset 0 0 20px rgba(24, 201, 139, 0.06);
+                    box-shadow: inset 0 0 16px rgba(24, 201, 139, 0.05);
 
                     .subMenuIcon {
-                        color: #FFFFFF;
+                        color: #18C98B;
                         transform: scale(1.05);
                     }
 
                     span {
                         color: #FFFFFF;
                     }
-
-                    &::after {
-                        transform: translateY(-50%) scaleY(0.6);
-                        opacity: 0.7;
-                    }
                 }
 
-                /* On Active: Dark Grey pill + glowing theme mint right indicator bar */
+                /* On Active - ONLY active has ::after indicator */
                 &[data-active='true'] {
-                    background: rgba(255, 255, 255, 0.09);
-                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 0 25px rgba(24, 201, 139, 0.12);
-                    border-color: transparent;
+                    background: rgba(255, 255, 255, 0.09) !important;
+                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(24, 201, 139, 0.12);
 
                     .subMenuIcon {
                         color: #18C98B;
                         transform: scale(1.05);
-                        filter: drop-shadow(0 0 8px rgba(24, 201, 139, 0.6));
+                        filter: drop-shadow(0 0 6px rgba(24, 201, 139, 0.6));
                     }
 
                     span {
@@ -436,8 +448,16 @@
                     }
 
                     &::after {
-                        transform: translateY(-50%) scaleY(1);
-                        opacity: 1;
+                        content: '';
+                        position: absolute;
+                        right: 0;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        width: 2.5px;
+                        height: 60%;
+                        border-radius: 4px 0 0 4px;
+                        background: #18C98B;
+                        box-shadow: 0 0 10px #18C98B, 0 0 16px #6EE7B7;
                     }
                 }
             }
@@ -446,11 +466,15 @@
 
     /* Bottom Section */
     .bottomSection {
-        padding: 12px 12px 16px;
+        padding: 10px 10px 14px;
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        background: transparent;
+        gap: 8px;
+        background: transparent !important;
+        border-right: 1px solid rgba(24, 201, 139, 0.127);
+        border-top: 1px solid rgba(24, 201, 139, 0.125);
+        border-left: none !important;
+        border-bottom: none !important;
         flex-shrink: 0;
 
         /* Upgrade to Pro Card */
@@ -458,8 +482,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 14px;
-            border-radius: 14px;
+            padding: 10px 12px;
+            border-radius: 12px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.06);
             cursor: pointer;
@@ -471,11 +495,11 @@
             &:hover {
                 background: rgba(255, 255, 255, 0.08);
                 border-color: rgba(24, 201, 139, 0.3);
-                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(24, 201, 139, 0.12);
+                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), 0 0 12px rgba(24, 201, 139, 0.12);
 
                 .upgradeArrowBtn {
                     transform: translateX(2px);
-                    box-shadow: 0 0 12px rgba(24, 201, 139, 0.5);
+                    box-shadow: 0 0 10px rgba(24, 201, 139, 0.5);
                 }
             }
 
@@ -484,34 +508,49 @@
                 align-items: center;
                 justify-content: center;
                 flex-shrink: 0;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+
+                svg {
+                    width: 18px !important;
+                    height: 18px !important;
+                }
             }
 
             .upgradeText {
                 flex: 1;
                 display: flex;
                 flex-direction: column;
-                margin-left: 12px;
+                margin-left: 10px;
                 line-height: 1.25;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
 
                 .upgradeSub {
-                    font-size: 11px;
+                    font-size: 10px;
                     color: rgba(255, 255, 255, 0.6);
                     font-family: "Euclid-Regular", sans-serif;
+                    background: transparent !important;
+                    border: none !important;
                 }
 
                 .upgradeMain {
-                    font-size: 13.5px;
+                    font-size: 12px;
                     font-weight: 700;
                     color: #18C98B;
                     font-family: "Euclid-Bold", sans-serif;
                     letter-spacing: 0.3px;
+                    background: transparent !important;
+                    border: none !important;
                 }
             }
 
             .upgradeArrowBtn {
-                width: 26px;
-                height: 26px;
-                border-radius: 7px;
+                width: 22px;
+                height: 22px;
+                border-radius: 6px;
                 background: linear-gradient(135deg, #6EE7B7 0%, #18C98B 50%, #10B981 100%);
                 border: none;
                 display: flex;
@@ -521,6 +560,11 @@
                 transition: all 0.2s ease;
                 flex-shrink: 0;
                 color: #040605;
+
+                svg {
+                    width: 11px !important;
+                    height: 11px !important;
+                }
             }
         }
 
@@ -528,11 +572,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            background: transparent !important;
+            border: none !important;
 
             .compactUpgradeBtn {
-                width: 44px;
-                height: 44px;
-                border-radius: 12px;
+                width: 38px;
+                height: 38px;
+                border-radius: 10px;
                 background: rgba(255, 255, 255, 0.05);
                 border: 1px solid rgba(255, 255, 255, 0.06);
                 display: flex;
@@ -548,7 +594,7 @@
                     border-color: rgba(24, 201, 139, 0.4);
                     background: rgba(255, 255, 255, 0.08);
                     transform: scale(1.05);
-                    box-shadow: 0 0 12px rgba(24, 201, 139, 0.2);
+                    box-shadow: 0 0 10px rgba(24, 201, 139, 0.2);
                 }
             }
         }
@@ -557,19 +603,23 @@
         .profileWrapper {
             position: relative;
             width: 100%;
+            background: transparent !important;
+            border: none !important;
         }
 
         .userProfileCard {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 14px;
-            border-radius: 14px;
+            padding: 8px 10px;
+            border-radius: 12px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.06);
             cursor: pointer;
             transition: all 0.22s ease;
             user-select: none;
+            width: 100%;
+            box-sizing: border-box;
 
             &:hover {
                 border-color: rgba(255, 255, 255, 0.12);
@@ -577,14 +627,14 @@
             }
 
             &.collapsedProfileCard {
-                padding: 8px;
+                padding: 6px;
                 justify-content: center;
             }
 
             .avatarBox {
-                width: 36px;
-                height: 36px;
-                border-radius: 10px;
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
                 border: none;
                 background: linear-gradient(135deg, rgba(24, 201, 139, 0.22) 0%, rgba(16, 185, 129, 0.1) 100%);
                 display: flex;
@@ -601,7 +651,7 @@
 
                 .avatarInitials {
                     color: #18C98B;
-                    font-size: 14px;
+                    font-size: 13px;
                     font-weight: 700;
                     font-family: "Euclid-Bold", sans-serif;
                 }
@@ -611,25 +661,32 @@
                 flex: 1;
                 display: flex;
                 flex-direction: column;
-                margin-left: 12px;
+                margin-left: 10px;
                 overflow: hidden;
                 line-height: 1.25;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
 
                 .userName {
                     color: #FFFFFF;
-                    font-size: 13.5px;
+                    font-size: 12.5px;
                     font-weight: 600;
                     font-family: "Euclid-SemiBold", sans-serif;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    background: transparent !important;
+                    border: none !important;
                 }
 
                 .userSubtitle {
                     color: rgba(255, 255, 255, 0.5);
-                    font-size: 11px;
+                    font-size: 10.5px;
                     font-family: "Euclid-Regular", sans-serif;
                     white-space: nowrap;
+                    background: transparent !important;
+                    border: none !important;
                 }
             }
 
@@ -638,71 +695,89 @@
                 align-items: center;
                 color: #18C98B;
                 flex-shrink: 0;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+
+                svg {
+                    width: 13px !important;
+                    height: 13px !important;
+                }
             }
         }
 
         /* Profile Dropdown */
         .profileMenuDropdown {
             position: absolute;
-            bottom: calc(100% + 10px);
+            bottom: calc(100% + 8px);
             left: 0;
             right: 0;
             background: #040D09;
             border: 1px solid rgba(24, 201, 139, 0.4);
-            border-radius: 14px;
-            padding: 10px;
+            border-radius: 12px;
+            padding: 8px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(24, 201, 139, 0.15);
             z-index: 1050;
 
             &.collapsedMenuDropdown {
-                left: calc(100% + 12px);
+                left: calc(100% + 10px);
                 bottom: 0;
                 right: auto;
-                min-width: 190px;
+                min-width: 180px;
             }
 
             .dropdownHeader {
-                padding: 6px 8px 10px;
+                padding: 4px 6px 8px;
+                background: transparent !important;
+                border: none !important;
 
                 .dropdownName {
                     color: #FFFFFF;
-                    font-size: 14px;
+                    font-size: 13px;
                     font-weight: 600;
                     margin: 0 0 2px 0;
                     font-family: "Euclid-SemiBold", sans-serif;
+                    background: transparent !important;
                 }
 
                 .dropdownEmail {
                     color: rgba(255, 255, 255, 0.5);
-                    font-size: 12px;
+                    font-size: 11.5px;
                     margin: 0;
                     overflow: hidden;
                     text-overflow: ellipsis;
                     font-family: "Euclid-Regular", sans-serif;
+                    background: transparent !important;
                 }
             }
 
             .dropdownDivider {
                 height: 1px;
                 background: rgba(24, 201, 139, 0.2);
-                margin: 4px 0 8px;
+                margin: 4px 0 6px;
+                border: none !important;
             }
 
             .dropdownItem {
                 display: flex;
                 align-items: center;
-                gap: 10px;
+                gap: 8px;
                 width: 100%;
-                padding: 9px 10px;
-                border-radius: 8px;
+                padding: 7px 8px;
+                border-radius: 7px;
                 background: none;
                 border: none;
                 color: rgba(255, 255, 255, 0.8);
-                font-size: 13.5px;
+                font-size: 12.5px;
                 font-weight: 500;
                 cursor: pointer;
                 transition: all 0.18s ease;
                 font-family: "Euclid-Medium", sans-serif;
+
+                svg {
+                    width: 14px !important;
+                    height: 14px !important;
+                }
 
                 &:hover {
                     background: rgba(24, 201, 139, 0.12);

@@ -1,3 +1,4 @@
+    :global(html.dark) & {
         .chipsRow {
             &::-webkit-scrollbar-thumb {
                 background: rgba(24, 201, 139, 0.3);
@@ -146,6 +147,7 @@
                 }
             }
         }
+    }
     
 
     .reportPanel,

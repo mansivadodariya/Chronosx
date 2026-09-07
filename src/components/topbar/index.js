@@ -46,7 +46,7 @@ const Topbar = ({ onMenuClick }) => {
   const currentEntry = Object.entries(ROUTE_TITLE_MAP).find(([route]) =>
     pathname === route || pathname?.startsWith(`${route}/`)
   );
-  
+
   const pageTitle = (() => {
     if (!currentEntry) return '';
     const [tKey, defaultVal] = currentEntry[1].split('|');
@@ -158,7 +158,7 @@ const Topbar = ({ onMenuClick }) => {
 
       <div className={styles.right}>
         {/* Light / Dark Theme Toggle */}
-        {/* <ThemeToggle /> */}
+        <ThemeToggle />
 
         {/* Credits Badge */}
         <div

@@ -21,8 +21,8 @@ export default function TradeHeroSection({ scrollToDemo }) {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.1 }}
                     >
-                        Upload Any Chart. Get Instant <br />
-                        <span className={styles.goldGradient}>Institutional AI Trade Signals.</span>
+                        Show Your Chart. <br />
+                        <span className={styles.goldGradient}>Get Instant AI Market Analysis.</span>
                     </motion.h1>
 
                     {/* Subtitle */}
@@ -32,7 +32,8 @@ export default function TradeHeroSection({ scrollToDemo }) {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                        Experience our Vision AI Chart Scanner. Simply snap or drag-and-drop a screenshot of any TradingView, MT4/MT5, or broker chart — our AI automatically detects the symbol, analyzes market structure, overlays live MT5 technical indicators, and delivers precise BUY / SELL / NO-TRADE setups in seconds.
+                        Stop spending hours analyzing charts manually. Upload your trading chart or share your screen, and ChronosX AI analyzes the market structure, trend, price action, support & resistance, and key technical
+                        signals to give you a clear, easy-to-understand market analysis in seconds.
                     </motion.p>
 
                     {/* Hero Action CTAs */}
@@ -52,7 +53,7 @@ export default function TradeHeroSection({ scrollToDemo }) {
                                 <polyline points="17 8 12 3 7 8" />
                                 <line x1="12" y1="3" x2="12" y2="15" />
                             </svg>
-                            <span>UPLOAD CHART &amp; ANALYZE</span>
+                            <span>ANALYZE MY CHART</span>
                         </button>
 
                         <button
@@ -60,7 +61,7 @@ export default function TradeHeroSection({ scrollToDemo }) {
                             onClick={scrollToDemo}
                             className={styles.heroSecondaryBtn}
                         >
-                            <span>TRY DEMO CHART</span>
+                            <span>TRY LIVE SCREEN ANALYSIS</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path d="M12 5v14M19 12l-7 7-7-7" />
                             </svg>

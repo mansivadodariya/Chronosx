@@ -1,0 +1,978 @@
+/* ============================================================
+   TRADE ANALYSIS COMPREHENSIVE LIGHT THEME SPECIFICATION
+   ============================================================ */
+
+/* 1. MAIN CONTAINER & IN-PAGE COMPONENTS */
+:global(html.light) .container {
+    background: #F8FAFC !important;
+    color: #0F172A !important;
+
+    .headerBar {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04) !important;
+
+        .headerLeft {
+            .headerBadge {
+                background: rgba(24, 201, 139, 0.1) !important;
+                border: 1px solid rgba(24, 201, 139, 0.3) !important;
+                color: #047857 !important;
+            }
+
+            h1 {
+                background: none !important;
+                -webkit-background-clip: initial !important;
+                -webkit-text-fill-color: initial !important;
+                color: #0F172A !important;
+            }
+
+            p {
+                color: #64748B !important;
+            }
+        }
+
+        .historyBtn {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(24, 201, 139, 0.4) !important;
+            color: #047857 !important;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+
+            &:hover {
+                background: #18C98B !important;
+                color: #FFFFFF !important;
+                border-color: #18C98B !important;
+            }
+        }
+    }
+
+    /* 2. UPLOAD SECTION & STEPPER */
+    .stepperCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04) !important;
+
+        .stepItem {
+            .stepCircle {
+                .stepNum {
+                    color: #94A3B8 !important;
+                }
+            }
+
+            .stepMeta {
+                .stepTitle {
+                    color: #334155 !important;
+                }
+                .stepSub {
+                    color: #64748B !important;
+                }
+            }
+
+            &.stepActive {
+                .stepCircle {
+                    .stepNum {
+                        color: #047857 !important;
+                    }
+                    .pulseHalo {
+                        border-color: rgba(24, 201, 139, 0.5) !important;
+                    }
+                }
+                .stepMeta {
+                    .stepTitle {
+                        color: #0F172A !important;
+                    }
+                    .stepSub {
+                        color: #047857 !important;
+                    }
+                }
+            }
+        }
+
+        .stepConnector {
+            .connectorLine {
+                background: linear-gradient(90deg, rgba(15, 23, 42, 0.06) 0%, rgba(24, 201, 139, 0.35) 50%, rgba(15, 23, 42, 0.06) 100%) !important;
+            }
+            .connectorDot {
+                background: #18C98B !important;
+                box-shadow: 0 0 6px rgba(24, 201, 139, 0.6) !important;
+            }
+        }
+    }
+
+    .uploadCard {
+        background: radial-gradient(ellipse 50% 75% at 50% 30%, rgba(24, 201, 139, 0.08) 0%, rgba(248, 250, 252, 0.7) 60%, #FFFFFF 100%), #FFFFFF !important;
+        border: 2px dashed rgba(24, 201, 139, 0.45) !important;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+
+        &:hover,
+        &.activeDrag {
+            background: #F0FDF4 !important;
+            border-color: #18C98B !important;
+            box-shadow: 0 12px 32px rgba(24, 201, 139, 0.15) !important;
+        }
+
+        .iconPedestal {
+            .pedestalGlow {
+                background: radial-gradient(circle, rgba(24, 201, 139, 0.2) 0%, transparent 70%) !important;
+            }
+            .pedestalIcon {
+                background: linear-gradient(135deg, rgba(24, 201, 139, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%) !important;
+                border: 1px solid rgba(24, 201, 139, 0.35) !important;
+                color: #047857 !important;
+                box-shadow: 0 4px 16px rgba(24, 201, 139, 0.15) !important;
+            }
+        }
+
+        .uploadHeadingGroup {
+            h2 {
+                color: #0F172A !important;
+            }
+            p {
+                color: #475569 !important;
+            }
+        }
+
+        .chooseFileBtn {
+            background: linear-gradient(135deg, #18C98B 0%, #10B981 100%) !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 4px 16px rgba(24, 201, 139, 0.35) !important;
+        }
+
+        .dragDropText {
+            color: #64748B !important;
+        }
+
+        .securityNotice {
+            background: #F1F5F9 !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+            color: #475569 !important;
+        }
+    }
+
+    .extractionCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04) !important;
+
+        .matrixHeader {
+            .matrixBadge {
+                background: rgba(24, 201, 139, 0.1) !important;
+                border: 1px solid rgba(24, 201, 139, 0.25) !important;
+                color: #047857 !important;
+            }
+            h4 {
+                color: #0F172A !important;
+            }
+            p {
+                color: #64748B !important;
+            }
+        }
+
+        .checklistGrid {
+            .checkItem {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.06) !important;
+                color: #1E293B !important;
+
+                .checkIconBox {
+                    background: rgba(24, 201, 139, 0.14) !important;
+                    color: #047857 !important;
+                }
+            }
+        }
+    }
+
+    .whatYouGetBox {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+
+        .sectionHeadingRow {
+            h3 {
+                color: #0F172A !important;
+            }
+            p {
+                color: #64748B !important;
+            }
+        }
+
+        .featureGrid {
+            .featureCard {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.06) !important;
+
+                &:hover {
+                    background: #F1F5F9 !important;
+                    border-color: rgba(24, 201, 139, 0.35) !important;
+                    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06) !important;
+                }
+
+                .featIconBox {
+                    background: rgba(24, 201, 139, 0.1) !important;
+                    border: 1px solid rgba(24, 201, 139, 0.25) !important;
+                    color: #047857 !important;
+                }
+
+                .featText {
+                    h5 {
+                        color: #0F172A !important;
+                    }
+                    p {
+                        color: #475569 !important;
+                    }
+                }
+            }
+        }
+    }
+
+    /* 3. REPORT SUCCESS BANNER */
+    .reportSuccessBannerCard {
+        background: radial-gradient(ellipse 60% 80% at 20% 50%, rgba(24, 201, 139, 0.08) 0%, #FFFFFF 70%), #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.35) !important;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05) !important;
+
+        .bannerContentLeft {
+            .fileMetaDetails {
+                span.fileName {
+                    color: #0F172A !important;
+                }
+                span.fileSub {
+                    color: #64748B !important;
+                }
+            }
+
+            .completePillBadge {
+                background: rgba(16, 185, 129, 0.12) !important;
+                border: 1px solid rgba(16, 185, 129, 0.35) !important;
+                color: #047857 !important;
+            }
+
+            .checkTitleGroup {
+                .checkCircle {
+                    background: rgba(24, 201, 139, 0.14) !important;
+                    border-color: rgba(24, 201, 139, 0.4) !important;
+                    color: #047857 !important;
+                }
+                h3 {
+                    color: #047857 !important;
+                }
+            }
+
+            p.bannerSubtext {
+                color: #475569 !important;
+            }
+
+            .viewTradesBtn {
+                background: #18C98B !important;
+                color: #FFFFFF !important;
+                box-shadow: 0 4px 16px rgba(24, 201, 139, 0.35) !important;
+            }
+
+            .reuploadBtn {
+                background: #F1F5F9 !important;
+                border: 1px solid #E2E8F0 !important;
+                color: #334155 !important;
+
+                &:hover {
+                    background: #E2E8F0 !important;
+                    color: #0F172A !important;
+                }
+            }
+        }
+
+        .bannerGraphicRight .brainImg {
+            filter: drop-shadow(0 8px 24px rgba(24, 201, 139, 0.25)) !important;
+        }
+    }
+
+    /* 4. RESULTS VIEW & DATA TABLES */
+    .statementHeaderBar {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+
+        .statementTitleRow .titleLeft {
+            h2 {
+                color: #0F172A !important;
+                span.platformName {
+                    color: #047857 !important;
+                }
+            }
+            .metaPills span {
+                color: #64748B !important;
+                strong {
+                    color: #0F172A !important;
+                }
+            }
+        }
+
+        .topMetricsRow {
+            border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            .topMetricItem {
+                span.metricLabel {
+                    color: #64748B !important;
+                }
+                .valBadgeRow {
+                    span.metricVal {
+                        color: #0F172A !important;
+                        &.green { color: #047857 !important; }
+                        &.red { color: #DC2626 !important; }
+                    }
+                    .pillBadge.green {
+                        background: rgba(16, 185, 129, 0.14) !important;
+                        color: #047857 !important;
+                    }
+                }
+            }
+        }
+    }
+
+    .dataTableCard,
+    .buySellTableCard,
+    .threeLayerBox {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+
+        .tableSectionHeader h3,
+        .sectionTitle h3 {
+            color: #0F172A !important;
+        }
+
+        .copyBtn {
+            background: #F1F5F9 !important;
+            border: 1px solid #E2E8F0 !important;
+            color: #047857 !important;
+
+            &:hover {
+                background: #E2E8F0 !important;
+            }
+        }
+
+        table {
+            thead tr {
+                border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+                th {
+                    color: #64748B !important;
+                }
+            }
+            tbody tr {
+                border-bottom: 1px solid rgba(15, 23, 42, 0.05) !important;
+                &:hover {
+                    background: #F8FAFC !important;
+                }
+                td {
+                    color: #334155 !important;
+                    &:first-child {
+                        color: #0F172A !important;
+                    }
+                    &:last-child {
+                        color: #0F172A !important;
+                    }
+                    &.greenText { color: #047857 !important; }
+                    &.redText { color: #DC2626 !important; }
+                }
+            }
+        }
+    }
+
+    .threeLayerBox .calloutStack .calloutCard {
+        &.fact {
+            background: #FEF2F2 !important;
+            border: 1px solid rgba(239, 68, 68, 0.25) !important;
+            color: #991B1B !important;
+            strong.prefix { color: #DC2626 !important; }
+        }
+        &.peak {
+            background: #F0F9FF !important;
+            border: 1px solid rgba(56, 189, 248, 0.3) !important;
+            color: #075985 !important;
+            strong.prefix { color: #0284C7 !important; }
+        }
+        &.recommendation {
+            background: #F0FDF4 !important;
+            border: 1px solid rgba(16, 185, 129, 0.3) !important;
+            color: #166534 !important;
+            strong.prefix { color: #059669 !important; }
+        }
+    }
+
+    .strengthsImprovementsGrid {
+        .columnBox {
+            background: #F8FAFC !important;
+            border: 1px solid rgba(15, 23, 42, 0.06) !important;
+
+            .colHeader h4 {
+                color: #0F172A !important;
+            }
+
+            .itemsStack {
+                .itemCard.good {
+                    background: #F0FDF4 !important;
+                    border: 1px solid rgba(16, 185, 129, 0.25) !important;
+                    color: #166534 !important;
+                }
+                .itemCard.bad {
+                    background: #FEF2F2 !important;
+                    border: 1px solid rgba(239, 68, 68, 0.25) !important;
+                    color: #991B1B !important;
+                }
+            }
+        }
+    }
+
+    .resultsTabRow .tabBtn {
+        color: #64748B !important;
+
+        &:hover {
+            color: #0F172A !important;
+            background: #F1F5F9 !important;
+        }
+
+        &.active {
+            background: rgba(24, 201, 139, 0.14) !important;
+            color: #047857 !important;
+            font-weight: 700 !important;
+        }
+    }
+
+    /* Narrative Markdown Report in Tab */
+    .markdownReportWrapper {
+        color: #334155 !important;
+
+        .reportH3 {
+            color: #047857 !important;
+            border-left-color: #047857 !important;
+        }
+        .reportH4 {
+            color: #0F172A !important;
+        }
+        .reportP {
+            color: #334155 !important;
+            strong {
+                color: #0F172A !important;
+            }
+        }
+        .reportUl .reportLi {
+            color: #334155 !important;
+            strong {
+                color: #047857 !important;
+            }
+        }
+        .tableWrapper {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            .reportTable {
+                thead {
+                    background: #F8FAFC !important;
+                    border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+                    th {
+                        color: #047857 !important;
+                    }
+                }
+                tbody tr {
+                    border-bottom: 1px solid rgba(15, 23, 42, 0.05) !important;
+                    &:hover {
+                        background: #F8FAFC !important;
+                    }
+                    td {
+                        color: #334155 !important;
+                        &:first-child {
+                            color: #0F172A !important;
+                        }
+                        &:last-child {
+                            color: #0F172A !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /* 5. AI ENTRY QUALITY ANALYSIS */
+    .entryAnalysisCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+
+        .entryCardHeader .entryHeaderLeft {
+            .entryIconBadge {
+                background: rgba(24, 201, 139, 0.12) !important;
+                border: 1px solid rgba(24, 201, 139, 0.3) !important;
+                color: #047857 !important;
+                svg {
+                    stroke: #047857 !important;
+                }
+            }
+            .titleWithBadge h3 {
+                color: #0F172A !important;
+            }
+            .entrySub {
+                color: #64748B !important;
+            }
+        }
+
+        .entryKpiGrid .entryKpiCard {
+            background: #F8FAFC !important;
+            border: 1px solid rgba(15, 23, 42, 0.06) !important;
+
+            &:hover {
+                background: #F1F5F9 !important;
+                border-color: rgba(24, 201, 139, 0.35) !important;
+            }
+
+            .kpiTop {
+                .kpiIconWrap {
+                    background: rgba(24, 201, 139, 0.12) !important;
+                    color: #047857 !important;
+                    svg {
+                        stroke: #047857 !important;
+                    }
+                }
+                .kpiLabel {
+                    color: #64748B !important;
+                }
+            }
+
+            .kpiValue {
+                color: #0F172A !important;
+                &.greenText { color: #047857 !important; }
+                &.amberText { color: #0284C7 !important; }
+                &.redText { color: #DC2626 !important; }
+            }
+
+            .kpiValueHighlight {
+                color: #047857 !important;
+            }
+
+            .kpiSub {
+                color: #64748B !important;
+            }
+        }
+
+        .entryContextRow {
+            .setupConditionBox,
+            .volatilityBox {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.06) !important;
+
+                .boxTag {
+                    background: rgba(24, 201, 139, 0.12) !important;
+                    border: 1px solid rgba(24, 201, 139, 0.3) !important;
+                    color: #047857 !important;
+                }
+
+                h4 {
+                    color: #0F172A !important;
+                }
+
+                p,
+                .volatilityText {
+                    color: #475569 !important;
+                }
+
+                .newsTagRow {
+                    background: #F1F5F9 !important;
+                    border: 1px solid #E2E8F0 !important;
+
+                    .newsLabel {
+                        color: #047857 !important;
+                    }
+                    .newsEvents {
+                        color: #1E293B !important;
+                    }
+                }
+            }
+        }
+
+        .entryStrengthsRisksGrid {
+            .entryColBox {
+                background: #F0FDF4 !important;
+                border: 1px solid rgba(16, 185, 129, 0.25) !important;
+
+                &.riskColBox {
+                    background: #F0F9FF !important;
+                    border: 1px solid rgba(56, 189, 248, 0.25) !important;
+                }
+
+                .entryColHeader h4 {
+                    color: #0F172A !important;
+                }
+
+                .entryItemsList {
+                    .strengthItem {
+                        color: #166534 !important;
+                    }
+                    .riskItem {
+                        color: #075985 !important;
+                    }
+                }
+            }
+        }
+    }
+
+    .tableAnalyzeBtn {
+        background: #F1F5F9 !important;
+        border: 1px solid #E2E8F0 !important;
+        color: #047857 !important;
+
+        &:hover {
+            background: #18C98B !important;
+            color: #FFFFFF !important;
+        }
+    }
+
+    .rowAnalyzeBtn {
+        background: #F1F5F9 !important;
+        border: 1px solid #E2E8F0 !important;
+        color: #0F172A !important;
+
+        svg {
+            color: #047857 !important;
+        }
+
+        &:hover:not(:disabled) {
+            background: rgba(24, 201, 139, 0.14) !important;
+            border-color: rgba(24, 201, 139, 0.4) !important;
+            color: #047857 !important;
+        }
+    }
+
+    /* 6. SIDEBAR STATS COLUMN */
+    .sidebarColumn {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+
+        .overviewCard {
+            .cardHeaderRow h3 {
+                color: #0F172A !important;
+            }
+
+            .overviewGrid .overviewStatItem {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.06) !important;
+
+                &:hover {
+                    background: #F1F5F9 !important;
+                    border-color: rgba(24, 201, 139, 0.35) !important;
+                }
+
+                span.statLabel {
+                    color: #64748B !important;
+                }
+                span.statVal {
+                    color: #0F172A !important;
+                    &.green { color: #047857 !important; }
+                    &.red { color: #DC2626 !important; }
+                    &.gold { color: #047857 !important; }
+                }
+            }
+        }
+
+        .basicStatsCard {
+            border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            .tableSectionHeader h3 {
+                color: #0F172A !important;
+            }
+
+            table {
+                thead tr th {
+                    color: #64748B !important;
+                    border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+                }
+                tbody tr {
+                    border-bottom: 1px solid rgba(15, 23, 42, 0.05) !important;
+                    &:hover {
+                        background: #F8FAFC !important;
+                    }
+                    td {
+                        color: #334155 !important;
+                        &:first-child {
+                            color: #0F172A !important;
+                        }
+                        &:last-child {
+                            color: #0F172A !important;
+                        }
+                        &.greenText { color: #047857 !important; }
+                        &.redText { color: #DC2626 !important; }
+                    }
+                }
+            }
+        }
+    }
+
+    .reportTakeawayBox {
+        background: #F0FDF4 !important;
+        border: 1px solid rgba(16, 185, 129, 0.3) !important;
+
+        strong {
+            color: #047857 !important;
+        }
+        p {
+            color: #166534 !important;
+        }
+    }
+}
+
+/* 7. LOADING OVERLAY (PORTAL & MODAL) */
+:global(html.light) .loadingOverlayBackdrop {
+    background: rgba(15, 23, 42, 0.45) !important;
+}
+
+:global(html.light) .loadingOverlayCard {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(15, 23, 42, 0.12) !important;
+    box-shadow: 0 25px 60px -10px rgba(15, 23, 42, 0.2), 0 0 35px rgba(24, 201, 139, 0.12) !important;
+
+    .loadingHeaderArea {
+        h3 {
+            color: #0F172A !important;
+        }
+        p {
+            color: #64748B !important;
+        }
+    }
+
+    .activeFilePill {
+        background: #F8FAFC !important;
+        border: 1px solid #E2E8F0 !important;
+
+        .fileName {
+            color: #0F172A !important;
+        }
+        .fileSize {
+            color: #047857 !important;
+        }
+    }
+
+    .progressBarWrapper {
+        .progressBarTrack {
+            background: #E2E8F0 !important;
+        }
+        .progressPercentText {
+            color: #047857 !important;
+        }
+    }
+
+    .stagesList {
+        background: #F8FAFC !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+        .stageRow {
+            .stageContent {
+                .stageTitle {
+                    color: #0F172A !important;
+                }
+                .stageSub {
+                    color: #64748B !important;
+                }
+            }
+            .stageIndicator .stagePendingDot {
+                background: #CBD5E1 !important;
+            }
+        }
+    }
+
+    .loadingSecurityNotice {
+        color: #64748B !important;
+    }
+}
+
+/* 8. AUDIT & HISTORY MODALS */
+:global(html.light) .modalBackdrop {
+    background: rgba(15, 23, 42, 0.5) !important;
+}
+
+:global(html.light) .tradeAuditModalContainer,
+:global(html.light) .historyModalContainer {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(15, 23, 42, 0.12) !important;
+    box-shadow: 0 24px 64px rgba(15, 23, 42, 0.18) !important;
+
+    .modalHeader {
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+        .modalHeaderTitleGroup {
+            .sparkleIconBox {
+                background: rgba(24, 201, 139, 0.12) !important;
+                border: 1px solid rgba(24, 201, 139, 0.3) !important;
+                color: #047857 !important;
+            }
+            h3 {
+                color: #0F172A !important;
+            }
+            .modalSub {
+                color: #64748B !important;
+            }
+        }
+
+        h3 {
+            color: #0F172A !important;
+        }
+
+        .closeBtn {
+            background: #F1F5F9 !important;
+            border: 1px solid #E2E8F0 !important;
+            color: #64748B !important;
+
+            &:hover {
+                background: #E2E8F0 !important;
+                color: #0F172A !important;
+            }
+        }
+    }
+
+    .tradeModalBody {
+        .tradeDetailsBanner {
+            background: #F8FAFC !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            .detailItem {
+                .detailLabel {
+                    color: #64748B !important;
+                }
+                .detailValue,
+                .detailValueBold {
+                    color: #0F172A !important;
+                }
+                .detailValueGreen {
+                    color: #047857 !important;
+                }
+                .detailValueRed {
+                    color: #DC2626 !important;
+                }
+            }
+        }
+
+        .modalTabRow {
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            .modalTabBtn {
+                color: #64748B !important;
+
+                &:hover {
+                    color: #0F172A !important;
+                    background: #F1F5F9 !important;
+                }
+
+                &.active {
+                    color: #047857 !important;
+                    background: rgba(24, 201, 139, 0.12) !important;
+                    border-color: rgba(24, 201, 139, 0.35) !important;
+                }
+            }
+        }
+
+        .auditResultContent {
+            .auditScoreCard {
+                background: linear-gradient(135deg, rgba(24, 201, 139, 0.1) 0%, rgba(16, 185, 129, 0.04) 100%) !important;
+                border: 1px solid rgba(24, 201, 139, 0.3) !important;
+
+                .scoreCircle {
+                    background: #FFFFFF !important;
+                    border-color: #18C98B !important;
+
+                    .scoreNum {
+                        color: #047857 !important;
+                    }
+                    .scoreMax {
+                        color: #64748B !important;
+                    }
+                }
+
+                .scoreText {
+                    .scoreTitleRow h4 {
+                        color: #0F172A !important;
+                    }
+                    .scoreTitleRow .auditApiBadge {
+                        color: #047857 !important;
+                        background: rgba(16, 185, 129, 0.12) !important;
+                        border-color: rgba(16, 185, 129, 0.3) !important;
+                    }
+                    p {
+                        color: #334155 !important;
+                    }
+                }
+            }
+
+            .subScoresMatrixGrid .subScoreCard {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+                .subScoreLabel {
+                    color: #64748B !important;
+                }
+                .subScoreValueBox {
+                    .scoreGreen { color: #047857 !important; }
+                    .scoreAmber { color: #0284C7 !important; }
+                    .scoreRed { color: #DC2626 !important; }
+                    .subScoreDenom { color: #94A3B8 !important; }
+                }
+            }
+
+            .macroContextCard,
+            .mistakesBox,
+            .recommendationsBox,
+            .suggestionsBox,
+            .diagnosticDetailsBox {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+                .boxTitleRow h4 {
+                    color: #0F172A !important;
+                }
+
+                .macroAssessmentText {
+                    color: #334155 !important;
+                }
+
+                .regimeRow {
+                    .regimeTag,
+                    .sentimentTag {
+                        background: #FFFFFF !important;
+                        border: 1px solid rgba(15, 23, 42, 0.1) !important;
+                        color: #334155 !important;
+                    }
+                }
+
+                .economicEventsStack .eventRowItem {
+                    background: #FFFFFF !important;
+                    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+                    .eventName {
+                        color: #0F172A !important;
+                    }
+                }
+
+                .auditList {
+                    .auditItemBad {
+                        color: #991B1B !important;
+                        span { color: #DC2626 !important; }
+                    }
+                    .auditItemGood {
+                        color: #166534 !important;
+                        span { color: #059669 !important; }
+                    }
+                    .auditItemSuggestion {
+                        color: #1E293B !important;
+                    }
+                }
+
+                .diagnosticGrid .diagCard {
+                    background: #FFFFFF !important;
+                    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+                    h5 {
+                        color: #047857 !important;
+                    }
+                    p {
+                        color: #334155 !important;
+                    }
+                }
+            }
+        }
+    }
+}
