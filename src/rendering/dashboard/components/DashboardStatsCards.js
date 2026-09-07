@@ -26,11 +26,11 @@ export default function DashboardStatsCards({
             </div>
 
             <div className={styles.dailyStatsRows}>
-                {/* Box 1: Chart Analyses */}
+                {/* Box 1: Chart Analysis */}
                 <div className={styles.statPillRow} onClick={() => router.push('/trade-snap')}>
                     <div className={styles.rowTopHeader}>
                         <div className={styles.rowTitleWrap}>
-                            <span className={styles.rowTitle}>Chart Analyses</span>
+                            <span className={styles.rowTitle}>Chart Analysis</span>
                             <span className={styles.rowDesc}>Automated pattern recognition & OCR scans</span>
                         </div>
                         <div className={`${styles.rowIconWrap} ${styles.greenIcon}`}>

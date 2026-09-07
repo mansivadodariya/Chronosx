@@ -51,21 +51,10 @@ function SparklineCurve({ isUp }) {
   );
 }
 
-// Row 1 Assets (Forex Majors & Gold) - Official TradingView Symbol Logos & Truth Details
+// Row 1 Assets (Forex Pairs 1-8) - Official TradingView Symbol Logos & Truth Details
 const row1Assets = [
   {
-    name: 'Gold',
-    symbol: 'XAUUSD',
-    price: '$2,748.50',
-    change: '+0.95%',
-    isUp: true,
-    signal: 'SAFE HAVEN',
-    logoUrl: 'https://s3-symbol-logo.tradingview.com/metal/gold.svg',
-    fallbackChar: 'Au',
-    color: '#18C98B'
-  },
-  {
-    name: 'Euro / USD',
+    name: 'EUR / USD',
     symbol: 'EURUSD',
     price: '1.0854',
     change: '+0.25%',
@@ -76,34 +65,34 @@ const row1Assets = [
     color: '#003399'
   },
   {
-    name: 'GBP / USD',
-    symbol: 'GBPUSD',
-    price: '1.2945',
-    change: '+0.42%',
-    isUp: true,
-    signal: 'BREAKOUT',
-    logoUrl: 'https://s3-symbol-logo.tradingview.com/country/GB.svg',
-    fallbackChar: '£',
-    color: '#C8102E'
-  },
-  {
     name: 'USD / JPY',
     symbol: 'USDJPY',
-    price: '152.840',
-    change: '+0.34%',
-    isUp: true,
-    signal: 'MOMENTUM',
+    price: '154.650',
+    change: '-0.34%',
+    isUp: false,
+    signal: 'BEARISH',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/JP.svg',
     fallbackChar: '¥',
     color: '#BC002D'
   },
   {
+    name: 'GBP / USD',
+    symbol: 'GBPUSD',
+    price: '1.2945',
+    change: '+0.42%',
+    isUp: true,
+    signal: 'BULLISH',
+    logoUrl: 'https://s3-symbol-logo.tradingview.com/country/GB.svg',
+    fallbackChar: '£',
+    color: '#C8102E'
+  },
+  {
     name: 'AUD / USD',
     symbol: 'AUDUSD',
     price: '0.6580',
-    change: '+0.38%',
+    change: '+0.15%',
     isUp: true,
-    signal: 'ACCUMULATE',
+    signal: 'STRONG BUY',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/AU.svg',
     fallbackChar: 'A$',
     color: '#00008B'
@@ -111,10 +100,10 @@ const row1Assets = [
   {
     name: 'USD / CAD',
     symbol: 'USDCAD',
-    price: '1.3850',
+    price: '1.3830',
     change: '-0.18%',
     isUp: false,
-    signal: 'CONFLUENCE',
+    signal: 'BEARISH',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/CA.svg',
     fallbackChar: 'C$',
     color: '#FF0000'
@@ -125,30 +114,41 @@ const row1Assets = [
     price: '0.8650',
     change: '+0.12%',
     isUp: true,
-    signal: 'STABLE',
+    signal: 'BULLISH',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/CH.svg',
     fallbackChar: 'Fr',
     color: '#D52B1E'
   },
   {
-    name: 'Silver',
-    symbol: 'XAGUSD',
-    price: '$33.80',
-    change: '+1.45%',
+    name: 'NZD / USD',
+    symbol: 'NZDUSD',
+    price: '0.5876',
+    change: '-0.02%',
+    isUp: false,
+    signal: 'CONFLUENCE',
+    logoUrl: 'https://s3-symbol-logo.tradingview.com/country/NZ.svg',
+    fallbackChar: 'NZ$',
+    color: '#00247D'
+  },
+  {
+    name: 'EUR / JPY',
+    symbol: 'EURJPY',
+    price: '167.850',
+    change: '+0.38%',
     isUp: true,
-    signal: 'SURGE',
-    logoUrl: 'https://s3-symbol-logo.tradingview.com/metal/silver.svg',
-    fallbackChar: 'Ag',
-    color: '#C0C0C0'
+    signal: 'MOMENTUM',
+    logoUrl: 'https://s3-symbol-logo.tradingview.com/country/EU.svg',
+    fallbackChar: '€',
+    color: '#003399'
   }
 ];
 
-// Row 2 Assets (Cross Currency Pairs & Global Benchmarks) - Official TradingView Symbol Logos & Truth Details
+// Row 2 Assets (Forex Pairs 9-15) - Official TradingView Symbol Logos & Truth Details
 const row2Assets = [
   {
     name: 'GBP / JPY',
     symbol: 'GBPJPY',
-    price: '197.800',
+    price: '198.400',
     change: '+0.65%',
     isUp: true,
     signal: 'BREAKOUT',
@@ -157,21 +157,32 @@ const row2Assets = [
     color: '#C8102E'
   },
   {
-    name: 'EUR / JPY',
-    symbol: 'EURJPY',
-    price: '165.750',
-    change: '+0.45%',
-    isUp: true,
-    signal: 'TREND',
+    name: 'EUR / GBP',
+    symbol: 'EURGBP',
+    price: '0.8385',
+    change: '-0.15%',
+    isUp: false,
+    signal: 'CONFLUENCE',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/EU.svg',
     fallbackChar: '€',
     color: '#003399'
   },
   {
-    name: 'EUR / GBP',
-    symbol: 'EURGBP',
-    price: '0.8385',
-    change: '-0.15%',
+    name: 'AUD / JPY',
+    symbol: 'AUDJPY',
+    price: '101.200',
+    change: '+0.48%',
+    isUp: true,
+    signal: 'BUY',
+    logoUrl: 'https://s3-symbol-logo.tradingview.com/country/AU.svg',
+    fallbackChar: 'A$',
+    color: '#00008B'
+  },
+  {
+    name: 'EUR / AUD',
+    symbol: 'EURAUD',
+    price: '1.6420',
+    change: '-0.22%',
     isUp: false,
     signal: 'RANGE',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/EU.svg',
@@ -179,59 +190,37 @@ const row2Assets = [
     color: '#003399'
   },
   {
-    name: 'NZD / USD',
-    symbol: 'NZDUSD',
-    price: '0.5975',
-    change: '+0.28%',
+    name: 'CAD / JPY',
+    symbol: 'CADJPY',
+    price: '111.850',
+    change: '+0.32%',
     isUp: true,
-    signal: 'SWING',
-    logoUrl: 'https://s3-symbol-logo.tradingview.com/country/NZ.svg',
-    fallbackChar: 'NZ$',
-    color: '#00247D'
+    signal: 'TREND',
+    logoUrl: 'https://s3-symbol-logo.tradingview.com/country/CA.svg',
+    fallbackChar: 'C$',
+    color: '#FF0000'
   },
   {
-    name: 'Crude Oil',
-    symbol: 'USOIL',
-    price: '$71.40',
-    change: '+1.15%',
+    name: 'GBP / AUD',
+    symbol: 'GBPAUD',
+    price: '1.9560',
+    change: '+0.45%',
     isUp: true,
-    signal: 'ENERGY',
-    logoUrl: 'https://s3-symbol-logo.tradingview.com/crude-oil.svg',
-    fallbackChar: '🛢',
-    color: '#E056FD'
+    signal: 'STRONG BUY',
+    logoUrl: 'https://s3-symbol-logo.tradingview.com/country/GB.svg',
+    fallbackChar: '£',
+    color: '#C8102E'
   },
   {
-    name: 'S&P 500',
-    symbol: 'SPX',
-    price: '5,864.20',
-    change: '+0.88%',
-    isUp: true,
-    signal: 'INDEX',
-    logoUrl: 'https://s3-symbol-logo.tradingview.com/indices/s-and-p-500.svg',
-    fallbackChar: 'S',
-    color: '#34D399'
-  },
-  {
-    name: 'Tesla',
-    symbol: 'TSLA',
-    price: '$242.80',
-    change: '+2.45%',
-    isUp: true,
-    signal: 'VOLATILE',
-    logoUrl: 'https://s3-symbol-logo.tradingview.com/tesla.svg',
-    fallbackChar: 'T',
-    color: '#E82127'
-  },
-  {
-    name: 'Apple',
-    symbol: 'AAPL',
-    price: '$228.40',
-    change: '+1.65%',
+    name: 'EUR / CHF',
+    symbol: 'EURCHF',
+    price: '0.9380',
+    change: '+0.08%',
     isUp: true,
     signal: 'STABLE',
-    logoUrl: 'https://s3-symbol-logo.tradingview.com/apple.svg',
-    fallbackChar: '',
-    color: '#A2AAAD'
+    logoUrl: 'https://s3-symbol-logo.tradingview.com/country/EU.svg',
+    fallbackChar: '€',
+    color: '#003399'
   }
 ];
 

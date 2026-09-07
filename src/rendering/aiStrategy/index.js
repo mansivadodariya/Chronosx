@@ -32,7 +32,7 @@ import {
 
 import LiveAnalysisView from './components/LiveAnalysisView';
 import StrategyExecutionView from './components/StrategyExecutionView';
-
+import { useAiStrategyStore } from '@/context/toolState';
 
 export default function AiStrategy({ initialTab = 'live' }) {
     const { t } = useLanguage();
@@ -42,55 +42,49 @@ export default function AiStrategy({ initialTab = 'live' }) {
     const [symbolInput, setSymbolInput] = useState('XAUUSD');
     const [timeframe, setTimeframe] = useState('1h'); // '5m', '15m', '1h', '1d'
 
-    // 3-panel layout state variables
-    const [selectedSymbol, setSelectedSymbol] = useState('XAU/USD');
-    const [selectedSymbolPriceInfo, setSelectedSymbolPriceInfo] = useState(null);
-    const [selectedStrategyId, setSelectedStrategyId] = useState('');
-    const [activeAnalysis, setActiveAnalysis] = useState(null);
-    const [refreshCounter, setRefreshCounter] = useState(0);
+    // Store state variables (persisted across route navigation)
+    const {
+        selectedSymbol,
+        setSelectedSymbol,
+        selectedSymbolPriceInfo,
+        setSelectedSymbolPriceInfo,
+        selectedStrategyId,
+        setSelectedStrategyId,
+        activeAnalysis,
+        setActiveAnalysis,
+        refreshCounter,
+        setRefreshCounter,
+        globalTimeframe,
+        setGlobalTimeframe,
+        selectedStrategySymbol,
+        setSelectedStrategySymbol,
+        activeSignals,
+        setActiveSignals,
+        strategyAnalysis,
+        setStrategyAnalysis,
+        analysisLoading,
+        setAnalysisLoading,
+        logs,
+        setLogs,
+        addLog,
+        clearLogs,
+        handleHourlyRefresh,
+        liveData,
+        setLiveData,
+        scannerData,
+        setScannerData,
+        scannerLoading,
+        setScannerLoading,
+        strategySignal,
+        setStrategySignal
+    } = useAiStrategyStore();
 
     const [wsStatus, setWsStatus] = useState('disconnected'); // 'connected' | 'connecting' | 'disconnected'
-    
-    // Strategy tab states
-    const [selectedStrategySymbol, setSelectedStrategySymbol] = useState('XAUUSD');
-    const [activeSignals, setActiveSignals] = useState({});
-    const [strategyAnalysis, setStrategyAnalysis] = useState(null);
-    const [analysisLoading, setAnalysisLoading] = useState(false);
     const [showPairSelector, setShowPairSelector] = useState(true);
-
-    // Global Timeframe (live tab)
-    const [globalTimeframe, setGlobalTimeframe] = useState('1h');
-
     const [mounted, setMounted] = useState(false);
-
-    // Live WebSockets console logs
-    const [logs, setLogs] = useState([]);
-
-    const addLog = useCallback((message, isSystem = false) => {
-        const timestamp = new Date().toLocaleTimeString();
-        setLogs((prev) => {
-            const nextLogs = [
-                ...prev,
-                { id: Math.random().toString(), time: timestamp, text: message, isSystem }
-            ]
-            if (nextLogs.length > 80) {
-                return nextLogs.slice(nextLogs.length - 80);
-            }
-            return nextLogs;
-        });
-    }, []);
-
-    const handleHourlyRefresh = useCallback(() => {
-        setRefreshCounter(prev => prev + 1);
-        addLog('Triggering automatic hourly refresh at HH:01:00...', true);
-    }, [addLog]);
 
     useEffect(() => {
         setMounted(true);
-        setLogs([
-            { id: 'init', time: new Date().toLocaleTimeString(), text: 'Terminal initialized. Booting streams for 6 pairs...', isSystem: true }
-        ]);
-
         if (typeof window !== 'undefined') {
             const savedSymbol = sessionStorage.getItem('selectedStrategySymbol');
             if (savedSymbol) {
@@ -98,15 +92,11 @@ export default function AiStrategy({ initialTab = 'live' }) {
                 sessionStorage.removeItem('selectedStrategySymbol');
             }
         }
-    }, []);
+    }, [setSelectedSymbol]);
 
     useEffect(() => {
         setSelectedSymbolPriceInfo(null);
-    }, [selectedSymbol]);
-
-    const clearLogs = () => {
-        setLogs([{ id: 'clear', time: new Date().toLocaleTimeString(), text: 'Log cleared.', isSystem: true }]);
-    };
+    }, [selectedSymbol, setSelectedSymbolPriceInfo]);
 
     const handleSetGlobalTimeframe = (tf) => {
         setGlobalTimeframe(tf);
@@ -114,7 +104,6 @@ export default function AiStrategy({ initialTab = 'live' }) {
     };
 
     // Live Candle Data (XAUUSD strategy tab)
-    const [liveData, setLiveData] = useState(MOCK_LIVE_DATA);
     const [candleStartTimes, setCandleStartTimes] = useState({
         "5m": MOCK_LIVE_DATA["5m"].time,
         "15m": MOCK_LIVE_DATA["15m"].time,
@@ -124,13 +113,6 @@ export default function AiStrategy({ initialTab = 'live' }) {
     const [countdownTexts, setCountdownTexts] = useState({ "5m": "-:-", "15m": "-:-", "1h": "-:-", "1d": "-:-" });
     const [priceTickColor, setPriceTickColor] = useState('normal'); // 'up' | 'down' | 'normal'
     const [lastPrices, setLastPrices] = useState({ "5m": 0, "15m": 0, "1h": 0, "1d": 0 });
-
-    // Scanner / Strength Data (REST Polled - strategy tab)
-    const [scannerData, setScannerData] = useState(MOCK_SCANNER_DATA);
-    const [scannerLoading, setScannerLoading] = useState(false);
-
-    // Active Strategy signal (strategy tab)
-    const [strategySignal, setStrategySignal] = useState(MOCK_STRATEGY_SIGNAL);
 
     // Logger Helper for strategy tab
     const addStrategyLog = (message, isSystem = false) => {

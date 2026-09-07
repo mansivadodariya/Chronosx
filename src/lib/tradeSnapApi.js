@@ -1,5 +1,5 @@
 import { extractAvailableCredits, notifyCreditsUpdated, refreshCreditsFromServer } from '@/lib/credits';
-import { tryRefreshToken, clearAuthAndRedirect } from '@/lib/api';
+import { tryRefreshToken, clearAuthAndRedirect, getActiveRefreshPromise } from '@/lib/api';
 
 function getAccessToken() {
     if (typeof window === 'undefined') return null;
@@ -335,7 +335,17 @@ const TRADE_SNAP_BASE = process.env.NEXT_PUBLIC_BACKEND_URL;
  * @param {string} [userId]
  */
 export async function analyzeTradeScreenshots(fileBlobs, userId, _isRetry = false) {
-    const token = getAccessToken();
+    const activeRefresh = getActiveRefreshPromise();
+    if (activeRefresh) {
+        try {
+            await activeRefresh;
+        } catch (_) {}
+    }
+
+    let token = getAccessToken();
+    if (!token) {
+        token = await tryRefreshToken();
+    }
     if (!token) throw new Error('Not authenticated. Please log in again.');
 
     const formData = new FormData();
@@ -366,6 +376,19 @@ export async function analyzeTradeScreenshots(fileBlobs, userId, _isRetry = fals
             },
             body: formData,
         });
+
+        // Fallback to /api/v1/analyze if /api/v1/ai-snap returns 404
+        if (res.status === 404) {
+            res = await fetch(`${TRADE_SNAP_BASE}/api/v1/analyze`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${token}`,
+                    'ngrok-skip-browser-warning': 'true',
+                },
+                body: formData,
+            });
+        }
     } catch {
         res = await fetch(`${TRADE_SNAP_BASE}/api/v1/analyze`, {
             method: 'POST',

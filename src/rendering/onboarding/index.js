@@ -14,6 +14,7 @@ import {
     setOnboardingCompletedInSession
 } from '@/lib/authSession';
 import { supabase } from '@/lib/supabaseClient';
+import PointerGlow from '@/components/pointerGlow';
 
 // SVG Icons for Header & Footer
 const SkipIcon = () => (
@@ -70,17 +71,26 @@ export default function Onboarding() {
         checkAlreadyCompleted();
     }, [router]);
 
-    // Persisted form state across steps
-    const [experience, setExperience] = useState('beginner');
-    const [tradingStyles, setTradingStyles] = useState(['day_trading', 'swing_trading']);
-    const [helpGoals, setHelpGoals] = useState(['analyze_trades', 'ask_ai']);
-    const [markets, setMarkets] = useState([
-        'eur_usd',
-        'gbp_usd',
-        'usd_jpy',
-        'xau_usd',
-        'crypto',
-    ]);
+    // Persisted form state across steps (NO default selections)
+    const [experience, setExperience] = useState('');
+    const [tradingStyles, setTradingStyles] = useState([]);
+    const [helpGoals, setHelpGoals] = useState([]);
+    const [markets, setMarkets] = useState([]);
+
+    const isCurrentStepValid = React.useMemo(() => {
+        switch (currentStep) {
+            case 1:
+                return Boolean(experience);
+            case 2:
+                return Array.isArray(tradingStyles) && tradingStyles.length > 0;
+            case 3:
+                return Array.isArray(helpGoals) && helpGoals.length > 0;
+            case 4:
+                return Array.isArray(markets) && markets.length > 0;
+            default:
+                return false;
+        }
+    }, [currentStep, experience, tradingStyles, helpGoals, markets]);
 
     const toggleTradingStyle = (id) => {
         setTradingStyles((prev) =>
@@ -144,6 +154,8 @@ export default function Onboarding() {
     };
 
     const handleNext = async () => {
+        if (!isCurrentStepValid) return;
+
         if (currentStep < 4) {
             setCurrentStep((prev) => prev + 1);
         } else {
@@ -182,6 +194,9 @@ export default function Onboarding() {
 
     return (
         <div className={styles.onboardingPage}>
+            {/* Interactive Mouse Move Emerald Glow Follower */}
+            <PointerGlow color="rgba(24, 201, 139, 0.35)" size={260} />
+
             {/* Background Glow Overlays */}
             <div className={styles.ambientGlowTop} aria-hidden="true" />
             <div className={styles.ambientGlowBottom} aria-hidden="true" />
@@ -328,7 +343,13 @@ export default function Onboarding() {
                     )}
                 </div>
 
-                <button type="button" className={styles.nextBtn} onClick={handleNext}>
+                <button
+                    type="button"
+                    className={classNames(styles.nextBtn, !isCurrentStepValid && styles.disabledBtn)}
+                    onClick={handleNext}
+                    disabled={!isCurrentStepValid}
+                    aria-disabled={!isCurrentStepValid}
+                >
                     <span>{currentStep === 4 ? 'Get Started' : 'Next'}</span>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                         <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="#0A0807" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />

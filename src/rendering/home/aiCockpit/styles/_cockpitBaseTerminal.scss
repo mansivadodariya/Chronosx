@@ -6,7 +6,19 @@
   background: radial-gradient(ellipse at 50% 0%, #050e0d 0%, #020605 50%, #000403 100%);
 
   :global(html.light) & {
-    background: #F8FAFC !important;
+    background: #FFFFFF !important;
+
+    .sectionHeader {
+      h2 {
+        color: #0F172A !important;
+        span {
+          color: #059669 !important;
+        }
+      }
+      p {
+        color: #475569 !important;
+      }
+    }
   }
 
   &.heroMode {
@@ -151,9 +163,12 @@
 
     :global(html.light) & {
       background: #FFFFFF !important;
-      border-color: rgba(24, 201, 139, 0.3) !important;
-      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08) !important;
+      border-color: rgba(24, 201, 139, 0.35) !important;
+      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08), 0 0 25px rgba(24, 201, 139, 0.06) !important;
 
+      /* Part 1 (Left Chart) & Part 2 (Right Cockpit) Cards */
+      .partOneChart,
+      .partTwoCockpit,
       [class*="partOneChart"],
       [class*="partTwoCockpit"] {
         background: #FFFFFF !important;
@@ -161,40 +176,329 @@
         box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
       }
 
+      /* Chart Header & Badges */
+      .partHeader,
       [class*="partHeader"] {
         background: #F8FAFC !important;
-        border-color: #E2E8F0 !important;
+        border-bottom: 1px solid #E2E8F0 !important;
       }
 
+      .goldAssetPill,
+      [class*="goldAssetPill"] {
+        background: #ECFDF5 !important;
+        border: 1px solid rgba(16, 185, 129, 0.4) !important;
+
+        .goldIconLetter,
+        [class*="goldIconLetter"] {
+          background: #059669 !important;
+          color: #FFFFFF !important;
+        }
+
+        .dropdownSymbol,
+        [class*="dropdownSymbol"] {
+          color: #065F46 !important;
+          font-weight: 800 !important;
+        }
+      }
+
+      .strategyBadge,
+      [class*="strategyBadge"] {
+        background: #ECFDF5 !important;
+        border: 1px solid rgba(16, 185, 129, 0.4) !important;
+        color: #047857 !important;
+        font-weight: 800 !important;
+
+        .beaconDot,
+        [class*="beaconDot"],
+        .pulseDot,
+        [class*="pulseDot"] {
+          background: #059669 !important;
+          box-shadow: 0 0 6px rgba(5, 150, 105, 0.6) !important;
+        }
+      }
+
+      .svgChartContainer,
       [class*="svgChartContainer"] {
         background: #FFFFFF !important;
       }
 
+      .visibleGridOverlay,
+      [class*="visibleGridOverlay"] {
+        .gridRow,
+        .gridCol,
+        [class*="gridRow"],
+        [class*="gridCol"] {
+          border-color: rgba(226, 232, 240, 0.8) !important;
+        }
+      }
+
+      .yAxisScaleGutter,
       [class*="yAxisScaleGutter"] {
-        background: #F1F5F9 !important;
-        border-color: #E2E8F0 !important;
-        span { color: #475569 !important; }
-      }
-
-      [class*="bigPriceVal"],
-      [class*="priceVal"],
-      [class*="assetTitle"],
-      [class*="symbolText"] {
-        color: #0F172A !important;
-      }
-
-      [class*="breadcrumbText"],
-      [class*="metaSub"],
-      [class*="subLabel"] {
-        color: #64748B !important;
-      }
-
-      [class*="metricCard"],
-      [class*="statBox"],
-      [class*="infoCard"] {
         background: #F8FAFC !important;
-        border-color: #E2E8F0 !important;
+        border-left: 1px solid #E2E8F0 !important;
+        span { 
+          color: #64748B !important; 
+          font-weight: 600 !important;
+        }
+      }
+
+      /* Part 2: Top Breadcrumbs & Watchlist */
+      .cockpitTopBreadcrumb,
+      [class*="cockpitTopBreadcrumb"] {
+        .breadcrumbTitle,
+        [class*="breadcrumbTitle"] {
+          .arrowLeft,
+          [class*="arrowLeft"] { color: #94A3B8 !important; }
+          .parentName,
+          [class*="parentName"] { color: #64748B !important; font-weight: 700 !important; }
+          .slash,
+          [class*="slash"] { color: #CBD5E1 !important; }
+          .activeAssetTicker,
+          [class*="activeAssetTicker"] { color: #047857 !important; font-weight: 800 !important; }
+        }
+
+        .watchlistTag,
+        [class*="watchlistTag"] {
+          background: #ECFDF5 !important;
+          border: 1px solid rgba(16, 185, 129, 0.35) !important;
+          padding: 4px 10px !important;
+          border-radius: 6px !important;
+          color: #047857 !important;
+          font-weight: 800 !important;
+
+          .starIcon,
+          [class*="starIcon"],
+          .starSvg,
+          [class*="starSvg"] {
+            color: #059669 !important;
+          }
+        }
+      }
+
+      /* Asset Header & Live Status */
+      .identityLeft,
+      [class*="identityLeft"] {
+        .logoGold,
+        [class*="logoGold"] {
+          background: #ECFDF5 !important;
+          border: 1px solid rgba(16, 185, 129, 0.35) !important;
+          box-shadow: 0 2px 8px rgba(16, 185, 129, 0.12) !important;
+          color: #059669 !important;
+
+          svg {
+            color: #059669 !important;
+            stroke: #059669 !important;
+          }
+        }
+
+        .assetTickerText,
+        [class*="assetTickerText"] {
+          color: #0F172A !important;
+          font-weight: 800 !important;
+        }
+
+        .liveStatusPill,
+        [class*="liveStatusPill"] {
+          background: #ECFDF5 !important;
+          border: 1px solid rgba(16, 185, 129, 0.4) !important;
+          color: #047857 !important;
+          font-weight: 800 !important;
+
+          .liveGreenBeacon,
+          [class*="liveGreenBeacon"] {
+            background: #059669 !important;
+            box-shadow: 0 0 6px rgba(5, 150, 105, 0.5) !important;
+          }
+        }
+
+        .assetSubDetails,
+        [class*="assetSubDetails"] {
+          color: #64748B !important;
+          font-weight: 500 !important;
+        }
+      }
+
+      /* Live Big Price Number */
+      .mainPriceNumber,
+      [class*="mainPriceNumber"] {
         color: #0F172A !important;
+        font-weight: 800 !important;
+      }
+
+      .priceChangeAndClock,
+      [class*="priceChangeAndClock"] {
+        .changePercentTag,
+        [class*="changePercentTag"] {
+          background: #ECFDF5 !important;
+          border: 1px solid rgba(16, 185, 129, 0.4) !important;
+          color: #047857 !important;
+          font-weight: 800 !important;
+
+          &.changeNegative,
+          [class*="changeNegative"] {
+            background: #FEF2F2 !important;
+            border-color: #FECACA !important;
+            color: #DC2626 !important;
+          }
+        }
+
+        .liveClockET,
+        [class*="liveClockET"] {
+          color: #64748B !important;
+        }
+      }
+
+      /* Sub-Tabs */
+      .tabLink,
+      [class*="tabLink"] {
+        background: #F1F5F9 !important;
+        border: 1px solid #E2E8F0 !important;
+
+        span { color: #334155 !important; font-weight: 600 !important; }
+        svg { color: #64748B !important; }
+
+        &:hover {
+          background: #E2E8F0 !important;
+          border-color: rgba(16, 185, 129, 0.4) !important;
+          span { color: #047857 !important; }
+          svg { color: #047857 !important; }
+        }
+
+        &.tabLinkActive,
+        [class*="tabLinkActive"] {
+          background: #ECFDF5 !important;
+          border-color: rgba(16, 185, 129, 0.45) !important;
+          span { color: #047857 !important; font-weight: 800 !important; }
+          svg { color: #047857 !important; }
+        }
+      }
+
+      /* The Two Intel Cards (AI Score & Universe Rank) */
+      .intelCard,
+      [class*="intelCard"] {
+        background: #F8FAFC !important;
+        border: 1px solid #E2E8F0 !important;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04) !important;
+
+        &.cardActiveScore,
+        &.cardActiveRank,
+        [class*="cardActiveScore"],
+        [class*="cardActiveRank"] {
+          background: #FFFFFF !important;
+          border-color: rgba(16, 185, 129, 0.45) !important;
+          box-shadow: 0 8px 26px rgba(16, 185, 129, 0.12) !important;
+        }
+
+        .cardTitle,
+        [class*="cardTitle"] {
+          color: #0F172A !important;
+          font-weight: 800 !important;
+        }
+
+        .cardSub,
+        [class*="cardSub"] {
+          color: #64748B !important;
+          font-weight: 500 !important;
+        }
+
+        .radarIconBox,
+        [class*="radarIconBox"] {
+          background: #ECFDF5 !important;
+          border: 1px solid rgba(16, 185, 129, 0.35) !important;
+          color: #059669 !important;
+
+          svg {
+            color: #059669 !important;
+          }
+        }
+
+        .trophyIconBox,
+        [class*="trophyIconBox"] {
+          background: #ECFDF5 !important;
+          border: 1px solid rgba(16, 185, 129, 0.35) !important;
+          color: #059669 !important;
+
+          svg {
+            color: #059669 !important;
+          }
+        }
+
+        .deltaPillGreen,
+        [class*="deltaPillGreen"] {
+          background: #ECFDF5 !important;
+          border: 1px solid rgba(16, 185, 129, 0.4) !important;
+          color: #047857 !important;
+          font-weight: 800 !important;
+        }
+
+        /* AI Score Card Internals */
+        .scoreDigits,
+        [class*="scoreDigits"] {
+          color: #0F172A !important;
+          font-weight: 800 !important;
+        }
+
+        .scoreCurrentBadge,
+        [class*="scoreCurrentBadge"] {
+          background: #ECFDF5 !important;
+          border: 1px solid rgba(16, 185, 129, 0.4) !important;
+          color: #047857 !important;
+          font-weight: 800 !important;
+        }
+
+        .verdictText,
+        [class*="verdictText"] {
+          color: #059669 !important;
+          font-weight: 800 !important;
+        }
+
+        .confidenceBadge,
+        [class*="confidenceBadge"] {
+          color: #64748B !important;
+          font-weight: 700 !important;
+        }
+
+        .sliderRangeHeader,
+        [class*="sliderRangeHeader"] {
+          span {
+            color: #64748B !important;
+            font-weight: 600 !important;
+          }
+        }
+
+        .sliderTrack,
+        [class*="sliderTrack"] {
+          background: #E2E8F0 !important;
+        }
+
+        /* Universe Rank Internals */
+        .rankGoldDigit,
+        [class*="rankGoldDigit"] {
+          color: #047857 !important;
+          font-weight: 800 !important;
+        }
+
+        .rankOutOf,
+        [class*="rankOutOf"] {
+          color: #64748B !important;
+          font-weight: 700 !important;
+        }
+
+        .topPerformerBadge,
+        [class*="topPerformerBadge"] {
+          background: #ECFDF5 !important;
+          border: 1px solid rgba(16, 185, 129, 0.4) !important;
+          color: #047857 !important;
+          font-weight: 800 !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          gap: 4px !important;
+
+          svg {
+            color: #059669 !important;
+            fill: #059669 !important;
+          }
+        }
       }
 
       /* Light Grey Styling for Bottom 3-Column Meta Matrix Cards */
@@ -227,24 +531,15 @@
         }
 
         .metaBadgeGold,
-        [class*="metaBadgeGold"] {
-          background: rgba(16, 185, 129, 0.12) !important;
-          color: #047857 !important;
-          border: 1px solid rgba(16, 185, 129, 0.35) !important;
-        }
-
         .metaBadgeGreen,
-        [class*="metaBadgeGreen"] {
-          background: rgba(16, 185, 129, 0.12) !important;
+        .metaBadgeLive,
+        [class*="metaBadgeGold"],
+        [class*="metaBadgeGreen"],
+        [class*="metaBadgeLive"] {
+          background: #ECFDF5 !important;
           color: #047857 !important;
           border: 1px solid rgba(16, 185, 129, 0.35) !important;
-        }
-
-        .metaBadgeLive,
-        [class*="metaBadgeLive"] {
-          background: rgba(2, 132, 199, 0.12) !important;
-          color: #0284C7 !important;
-          border: 1px solid rgba(2, 132, 199, 0.35) !important;
+          font-weight: 800 !important;
         }
 
         .signalBadgeGreen,
@@ -270,6 +565,7 @@
         [class*="footerLeft"] {
           span {
             color: #475569 !important;
+            font-weight: 700 !important;
           }
 
           .liveGreenDotSmall,
@@ -281,33 +577,17 @@
 
         .footerRight,
         [class*="footerRight"] {
+          background: #ECFDF5 !important;
+          border: 1px solid rgba(16, 185, 129, 0.35) !important;
+          padding: 3px 8px !important;
+          border-radius: 6px !important;
+
           span {
-            color: #64748B !important;
+            color: #047857 !important;
+            font-weight: 800 !important;
+            font-family: monospace, sans-serif !important;
           }
         }
-      }
-
-      .tabLink,
-      [class*="tabLink"] {
-        background: #F1F5F9 !important;
-        border-color: #E2E8F0 !important;
-
-        span { color: #334155 !important; }
-        svg { color: #64748B !important; }
-
-        &:hover {
-          background: #E2E8F0 !important;
-          border-color: rgba(16, 185, 129, 0.4) !important;
-          span { color: #047857 !important; }
-          svg { color: #047857 !important; }
-        }
-      }
-
-      .intelCard,
-      [class*="intelCard"] {
-        background: #F8FAFC !important;
-        border: 1px solid #E2E8F0 !important;
-        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04) !important;
       }
     }
 

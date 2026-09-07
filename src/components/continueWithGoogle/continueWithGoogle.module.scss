@@ -89,10 +89,25 @@
             height: 20px;
             flex-shrink: 0;
             display: block;
+
+            &.userAvatar {
+                width: 22px;
+                height: 22px;
+                border-radius: 50%;
+                border: 1px solid rgba(24, 201, 139, 0.6);
+                object-fit: cover;
+            }
         }
 
         span {
             letter-spacing: 0.3px;
+        }
+
+        .btnLabelText {
+            max-width: 260px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 

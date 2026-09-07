@@ -14,9 +14,9 @@ const steps = [
   },
   {
     step: '02',
-    label: 'Linking Newera broker',
+    label: 'Linking Top Brokers',
     icon: '02',
-    title: 'Link Newera',
+    title: 'Link Top Brokers',
   },
   {
     step: '03',
@@ -62,15 +62,11 @@ export default function HowitWorks() {
           <div className={styles.left}>
             <SectionHeader
               align="left"
-              badge="CHRONOSX · THE ENGINE"
-              title1="Trade Smart."
-              title2="Earn Credits. Repeat Forever."
-              description="ChronosX is the AI behind your institutional edge — every market, every session, every tool."
+              badge="MT5 BROKER INTEGRATION"
+              title1="Trade Your Edge."
+              title2="Earn Credits. Never Pay for AI."
+              description="Connect your MT5 account to unlock perpetual AI intelligence. Every trade you execute automatically refills your AI analysis credits—giving you unlimited access to institutional market scans, signals, and strategy playbooks for free."
             />
-
-            <p className={styles.sub}>
-              Connect your Newera account to unlock perpetual AI intelligence. Every completed trade cycle automatically refills your credits for unlimited free analysis.
-            </p>
 
             <Link href="/signup" className={styles.cta}>
               Get Started Free <span>&rarr;</span>
@@ -151,14 +147,14 @@ export default function HowitWorks() {
                       <div className={styles.sim}>
                         <div className={styles.simHead}>
                           <span className={styles.numTag}>02</span>
-                          <span className={styles.simTitle}>Link Newera MT5 Account</span>
+                          <span className={styles.simTitle}>Link MT5 Broker Account</span>
                           <span className={styles.statusGreen}>● BRIDGE SYNCED</span>
                         </div>
                         <div className={styles.brokerRow}>
-                          <div className={styles.brokerLogo}>N</div>
+                          <div className={styles.brokerLogo}>TB</div>
                           <div>
-                            <h4>NEWERA MARKETS</h4>
-                            <p>Server: NeweraMarkets-Live01</p>
+                            <h4>TOP BROKERS</h4>
+                            <p>Server: MT5-LiveBridge01</p>
                           </div>
                         </div>
                         <div className={styles.mt5Row}>
@@ -169,8 +165,8 @@ export default function HowitWorks() {
                         <div className={styles.reward}>
                           <span className={styles.star}>✦</span>
                           <div>
-                            <strong>+50 TRADING CREDITS UNLOCKED</strong>
-                            <p>Direct broker bridge &middot; 0.0 Raw Spreads</p>
+                            <strong>+50 AI CREDITS UNLOCKED</strong>
+                            <p>Direct MT5 Bridge Sync &middot; Auto-Refill on Completed Trades</p>
                           </div>
                         </div>
                       </div>
@@ -181,7 +177,7 @@ export default function HowitWorks() {
                       <div className={styles.sim}>
                         <div className={styles.simHead}>
                           <span className={styles.numTag}>03</span>
-                          <span className={styles.simTitle}>TradeSnap AI &middot; BTC/USDT</span>
+                          <span className={styles.simTitle}>TradeSnap AI &middot; XAU/USD</span>
                           <span className={styles.signal}>▲ BUY SIGNAL</span>
                         </div>
                         <div className={styles.chart}>
@@ -201,8 +197,8 @@ export default function HowitWorks() {
                             ))}
                           </div>
                           <div className={styles.callouts}>
-                            <span className={styles.tp}>TP: $98,450 (+4.8%)</span>
-                            <span className={styles.sl}>SL: $94,120 (-0.8%)</span>
+                            <span className={styles.tp}>TP: $2,764.50 (+1.8%)</span>
+                            <span className={styles.sl}>SL: $2,741.00 (-0.8%)</span>
                           </div>
                         </div>
                       </div>
@@ -228,7 +224,7 @@ export default function HowitWorks() {
                         <div className={styles.meta}>
                           <div className={styles.metaRow}>
                             <span>Trade Execution:</span>
-                            <strong className={styles.green}>Verified on Newera MT5</strong>
+                            <strong className={styles.green}>Verified on Top Brokers MT5</strong>
                           </div>
                           <div className={styles.metaRow}>
                             <span>Credit Top-Up:</span>

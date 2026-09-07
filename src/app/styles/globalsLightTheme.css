@@ -303,13 +303,14 @@ html.light [class*="messageBubble"] p {
 
 html.light [class*="userMessage"],
 html.light [class*="userBubble"] {
-  background: #18C98B !important;
-  color: #040605 !important;
+  background: #F1F5F9 !important;
+  color: #0F172A !important;
+  border: 1px solid rgba(24, 201, 139, 0.25) !important;
 }
 
 html.light [class*="userMessage"] p,
 html.light [class*="userBubble"] p {
-  color: #040605 !important;
+  color: #0F172A !important;
 }
 
 /* ============================================================
@@ -319,7 +320,6 @@ button,
 input[type="button"],
 input[type="submit"],
 input[type="reset"],
-[role="button"]:not([class*="switch"]):not([class*="checkbox"]):not([class*="indicatorListItemRow"]),
 .button button,
 [class*="btnPrimary"],
 [class*="BtnPrimary"],

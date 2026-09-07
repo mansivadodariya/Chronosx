@@ -337,9 +337,9 @@ export default function MarketIntelligence() {
         {/* Section Header */}
         <SectionHeader
           badge="CHRONOSX CORE ENGINE"
-          title1="Three layers of market"
-          title2="intelligence"
-          description="ChronosX stacks institutional multi-timeframe validation, smart money order flow, and AI signal filtering into one unified trading suite."
+          title1="Three Layers of Market"
+          title2="Intelligence."
+          description="ChronosX stacks multi-timeframe trend alignment, smart money liquidity flow, and AI execution filters into one synchronized institutional engine."
         />
 
         {/* 3-Column Interactive Moving Cards with Hover Flip */}
@@ -368,7 +368,7 @@ export default function MarketIntelligence() {
                 </div>
 
                 <div className={styles.terminalFooter}>
-                  <span className={styles.footLeft}>4H · 1H · 15m</span>
+                  <span className={styles.footLeft}>4H • 1H • 15M</span>
                   <span className={styles.footRight}>
                     ▲ ALIGNED BULLISH
                   </span>
@@ -384,13 +384,13 @@ export default function MarketIntelligence() {
 
                 <h3 className={styles.backTitle}>Multi-Timeframe Trend Cascade</h3>
                 <p className={styles.backDesc}>
-                  Simultaneously analyzes 15m, 1H, 4H, and 1D market cycles in real time. Validates macro trend alignment before triggering entry confirmation.
+                  Simultaneously cross-examines 15m, 1H, 4H, and Daily market cycles in real time. Eliminates counter-trend fakeouts by requiring macro trend alignment before confirming any setup.
                 </p>
 
                 <div className={styles.specList}>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
-                    <span>5-Timeframe Cascade Structure Sync</span>
+                    <span>4-Timeframe Cascade Structure Sync (15M / 1H / 4H / 1D)</span>
                   </div>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
@@ -403,8 +403,8 @@ export default function MarketIntelligence() {
                 </div>
 
                 <div className={styles.backFooter}>
-                  <span className={styles.metricTitle}>Confluence Win Rate</span>
-                  <span className={styles.metricValue}>94.8% ACCURACY</span>
+                  <span className={styles.metricTitle}>Confluence Rating</span>
+                  <span className={styles.metricValue}>94.8% ALIGNMENT RATING</span>
                 </div>
               </div>
 
@@ -435,7 +435,7 @@ export default function MarketIntelligence() {
                 </div>
 
                 <div className={styles.terminalFooter}>
-                  <span className={styles.footLeft}>BTC/USDT · 4H</span>
+                  <span className={styles.footLeft}>XAU/USD · 4H</span>
                   <div className={styles.legendGroup}>
                     <span className={styles.legOb}>■ OB</span>
                     <span className={styles.legFvg}>■ FVG</span>
@@ -453,13 +453,13 @@ export default function MarketIntelligence() {
 
                 <h3 className={styles.backTitle}>Institutional Order Flow & Liquidity</h3>
                 <p className={styles.backDesc}>
-                  Scans institutional accumulation, manipulation sweeps, and algorithmic imbalances. Highlights high-probability Order Blocks and FVGs.
+                  Tracks institutional accumulation, liquidity stop-runs, and algorithmic price imbalances. Identifies high-conviction Order Blocks (OB) and Fair Value Gaps (FVG) where institutions step in.
                 </p>
 
                 <div className={styles.specList}>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
-                    <span>Graded Order Block (OB) Validation</span>
+                    <span>Graded Institutional Order Block (OB) Validation</span>
                   </div>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
@@ -473,7 +473,7 @@ export default function MarketIntelligence() {
 
                 <div className={styles.backFooter}>
                   <span className={styles.metricTitle}>OB Reversal Strength</span>
-                  <span className={styles.metricValue}>AAA (94.2%)</span>
+                  <span className={styles.metricValue}>GRADE AAA (94.2%)</span>
                 </div>
               </div>
 
@@ -518,15 +518,15 @@ export default function MarketIntelligence() {
                   <span className={styles.flipHint}>Hover to preview</span>
                 </div>
 
-                <h3 className={styles.backTitle}>WaveTrend & Volumetric Squeeze</h3>
+                <h3 className={styles.backTitle}>Momentum & Volumetric Squeeze</h3>
                 <p className={styles.backDesc}>
-                  Gauges market momentum exhaustion, volatility expansion, and institutional volume shifts to pinpoint sniper entries with optimal risk-to-reward.
+                  Monitors momentum exhaustion, volatility expansion bands, and real-time volume pulses to pinpoint optimal entry timing with asymmetric risk-to-reward.
                 </p>
 
                 <div className={styles.specList}>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
-                    <span>Dynamic Volatility Squeeze Bands</span>
+                    <span>Dynamic Volatility Squeeze Bands (Expansion / Compression)</span>
                   </div>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
@@ -534,13 +534,13 @@ export default function MarketIntelligence() {
                   </div>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
-                    <span>Automated Take-Profit & SL Mapping (1:2.8+ R:R)</span>
+                    <span>Automated TP/SL Mapping with Minimum 1:2.5+ R:R Filter</span>
                   </div>
                 </div>
 
                 <div className={styles.backFooter}>
                   <span className={styles.metricTitle}>Target Risk-to-Reward</span>
-                  <span className={styles.metricValue}>2.85 : 1 WIN RATIO</span>
+                  <span className={styles.metricValue}>2.85 : 1 AVG R:R</span>
                 </div>
               </div>
 

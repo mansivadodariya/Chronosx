@@ -13,15 +13,16 @@ import { CreditCardIcon } from '@/icons/creditIcon';
 
 const ROUTE_TITLE_MAP = {
   '/dashboard': 'nav.dashboard|Dashboard',
-  '/trade-snap': 'nav.aiTrade|AI Trade',
-  '/tradesnap': 'nav.aiTrade|AI Trade',
+  '/trade-snap': 'nav.marketSnapshot|Market Snapshot & Scanner',
+  '/tradesnap': 'nav.marketSnapshot|Market Snapshot & Scanner',
+  '/ai-trade': 'nav.marketSnapshot|Market Snapshot & Scanner',
   '/trade-analysis': 'nav.aiTradeAnalysis|AI Trade analysis',
   '/ai-trade-analysis': 'nav.aiTradeAnalysis|AI Trade analysis',
-  '/ai-assistant': 'nav.aiChat|AI Chat',
-  '/ai-chat': 'nav.aiChat|AI Chat',
-  '/ai-strategy': 'nav.aiStrategy|AI Strategy',
-  '/ai-strategy/live': 'nav.liveAnalysis|Live Analysis',
-  '/ai-strategy/strategy': 'nav.aiStrategy|AI Strategy',
+  '/ai-assistant': 'nav.aiTradingAdvisor|AI Trading Advisor',
+  '/ai-chat': 'nav.aiTradingAdvisor|AI Trading Advisor',
+  '/ai-strategy': 'nav.aiStrategyHub|AI Strategy Hub',
+  '/ai-strategy/live': 'nav.liveMarketAnalysis|Live Market Analysis',
+  '/ai-strategy/strategy': 'nav.strategyEnginePlaybooks|Strategy Engine & Playbooks',
   '/tools': 'nav.tools|Tools',
   '/calendar': 'nav.economicCalendar|Economic Calendar',
   '/economic-calendar': 'nav.economicCalendar|Economic Calendar',
@@ -29,6 +30,7 @@ const ROUTE_TITLE_MAP = {
   '/news': 'nav.marketNews|Market News',
   '/credit-history': 'nav.creditHistory|Credit History',
   '/plans': 'nav.plans|Subscription Plans',
+  '/subscription-plans': 'nav.plans|Subscription Plans',
   '/broker': 'nav.broker|Broker',
   '/brokers': 'nav.broker|Broker',
   '/profile': 'nav.profile|Profile',
@@ -158,7 +160,7 @@ const Topbar = ({ onMenuClick }) => {
 
       <div className={styles.right}>
         {/* Light / Dark Theme Toggle */}
-        <ThemeToggle />
+        {/* <ThemeToggle /> */}
 
         {/* Credits Badge */}
         <div

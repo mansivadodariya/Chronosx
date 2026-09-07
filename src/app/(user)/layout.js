@@ -5,6 +5,7 @@ import AuthGuard from '@/components/authGuard';
 import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { ThemeProvider } from '@/context/ThemeContext';
+import { ToolStateProvider } from '@/context/toolState';
 import NeweraCreditsModal from '@/components/neweraCreditsModal';
 import { extractAvailableCredits, CREDITS_UPDATED_EVENT, notifyCreditsUpdated, refreshCreditsFromServer } from '@/lib/credits';
 import { captureUtmParameters } from '@/lib/utm';
@@ -15,20 +16,24 @@ import './layout.scss';
 
 const ROUTE_TAB_MAP = {
     '/dashboard': 'Dashboard',
-    '/trade-snap': 'AI Trade',
+    '/trade-snap': 'Market Snapshot & Scanner',
+    '/tradesnap': 'Market Snapshot & Scanner',
+    '/ai-trade': 'Market Snapshot & Scanner',
     '/trade-analysis': 'AI Trade analysis',
     '/ai-trade-analysis': 'AI Trade analysis',
-    '/ai-assistant': 'AI Chat',
-    '/ai-strategy': 'AI Strategy',
-    '/ai-strategy/live': 'AI Strategy',
-    '/ai-strategy/strategy': 'AI Strategy',
+    '/ai-assistant': 'AI Trading Advisor',
+    '/ai-chat': 'AI Trading Advisor',
+    '/ai-strategy': 'AI Strategy Hub',
+    '/ai-strategy/live': 'Live Market Analysis',
+    '/ai-strategy/strategy': 'Strategy Engine & Playbooks',
     '/tools': 'Tools',
     '/calendar': 'Economic Calendar',
     '/economic-calendar': 'Economic Calendar',
-    '/calculator': 'Tools',
-    '/news': 'Tools',
+    '/calculator': 'Forex Calculator',
+    '/news': 'Market News',
     '/credit-history': 'Credit History',
     '/plans': 'Subscription Plans',
+    '/subscription-plans': 'Subscription Plans',
     '/broker': 'Broker',
     '/brokers': 'Broker',
     '/profile': 'Profile',
@@ -187,7 +192,18 @@ const layout = ({ children }) => {
                 const { data: visibleTabs, error } = await supabase.rpc('get_visible_dashboard_tabs');
                 if (!error && Array.isArray(visibleTabs)) {
                     const isVisible = visibleTabs.some(
-                        (tab) => tab.name.toLowerCase() === currentTabName.toLowerCase() && tab.is_visible === true
+                        (tab) => {
+                            const name = (tab.name || '').toLowerCase();
+                            const cur = currentTabName.toLowerCase();
+                            return (
+                                name === cur ||
+                                (cur === 'market snapshot & scanner' && (name === 'ai trade' || name === 'trade-snap')) ||
+                                (cur === 'ai trading advisor' && (name === 'ai chat' || name === 'ai-assistant')) ||
+                                (cur === 'ai strategy hub' && (name === 'ai strategy' || name === 'strategy')) ||
+                                (cur === 'live market analysis' && (name === 'live analysis' || name === 'ai strategy')) ||
+                                (cur === 'strategy engine & playbooks' && (name === 'ai strategy' || name === 'strategy'))
+                            ) && tab.is_visible === true;
+                        }
                     );
                     setIsTabAllowed(isVisible);
                 } else {
@@ -223,39 +239,41 @@ const layout = ({ children }) => {
     return (
         <AuthGuard>
             <ThemeProvider>
-                <div className={`user-layout ${effectiveCollapsed ? 'collapsed' : ''}`}>
-                    <div className={`sidebar-wrapper ${effectiveCollapsed ? 'collapsed' : ''} ${isSidebarOpen ? 'open' : ''}`}>
-                        <Sidebar
-                            onClose={() => setIsSidebarOpen(false)}
-                            isCollapsed={effectiveCollapsed}
-                            onToggleCollapse={toggleCollapse}
-                        />
-                    </div>
-                    {isSidebarOpen && (
-                        <div className='sidebar-overlay' onClick={() => setIsSidebarOpen(false)} />
-                    )}
-                    <div className='children-wrapper'>
-                        <Topbar onMenuClick={handleMenuClick} />
-                        <div className='children-spacing'>
-                            {children}
+                <ToolStateProvider>
+                    <div className={`user-layout ${effectiveCollapsed ? 'collapsed' : ''}`}>
+                        <div className={`sidebar-wrapper ${effectiveCollapsed ? 'collapsed' : ''} ${isSidebarOpen ? 'open' : ''}`}>
+                            <Sidebar
+                                onClose={() => setIsSidebarOpen(false)}
+                                isCollapsed={effectiveCollapsed}
+                                onToggleCollapse={toggleCollapse}
+                            />
+                        </div>
+                        {isSidebarOpen && (
+                            <div className='sidebar-overlay' onClick={() => setIsSidebarOpen(false)} />
+                        )}
+                        <div className='children-wrapper'>
+                            <Topbar onMenuClick={handleMenuClick} />
+                            <div className='children-spacing'>
+                                {children}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {/* {showCreditsModal && (
-                    <NeweraCreditsModal
-                        userId={userId}
-                        onClose={() => setShowCreditsModal(false)}
-                        onSuccess={(creditsVal) => {
-                            setShowCreditsModal(false);
-                            if (creditsVal !== undefined && creditsVal !== null) {
-                                notifyCreditsUpdated(creditsVal);
-                            } else {
-                                refreshCreditsFromServer();
-                            }
-                        }}
-                    />
-                )} */}
+                    {/* {showCreditsModal && (
+                        <NeweraCreditsModal
+                            userId={userId}
+                            onClose={() => setShowCreditsModal(false)}
+                            onSuccess={(creditsVal) => {
+                                setShowCreditsModal(false);
+                                if (creditsVal !== undefined && creditsVal !== null) {
+                                    notifyCreditsUpdated(creditsVal);
+                                } else {
+                                    refreshCreditsFromServer();
+                                }
+                            }}
+                        />
+                    )} */}
+                </ToolStateProvider>
             </ThemeProvider>
         </AuthGuard>
     );

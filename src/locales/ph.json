@@ -1,11 +1,17 @@
 {
   "nav": {
     "home": "Tahanan",
-    "aiTrade": "AI Trade",
-    "aiChat": "AI Chat",
-    "aiStrategy": "AI Diskarte",
+    "marketSnapshot": "Market Snapshot & Scanner",
+    "aiTrade": "Market Snapshot & Scanner",
+    "aiTradingAdvisor": "AI Trading Advisor",
+    "aiChat": "AI Trading Advisor",
+    "aiStrategy": "AI Strategy Hub",
+    "aiStrategyHub": "AI Strategy Hub",
     "aiStrategyDesc": "Bumuo, subukan at i-optimize ang mga diskarte sa pag-trade na pinapagana ng AI.",
-    "liveAnalysis": "Live na Pagsusuri",
+    "liveAnalysis": "Live Market Analysis",
+    "liveMarketAnalysis": "Live Market Analysis",
+    "strategyEnginePlaybooks": "Strategy Engine & Playbooks",
+    "aiTradeAnalysis": "AI Trade analysis",
     "economicCalendar": "Kalendaryong Pang-ekonomiya",
     "creditHistory": "Kasaysayan ng Kredito",
     "plans": "Mga Plano sa Subscription",
@@ -295,8 +301,10 @@
     "disclaimer": "Ang mga volume ng serbisyo na ipinapakita ay batay sa buong balanse sa iisang serbisyo, sa 15 kredito bawat AI Chat query at 10 bawat Auto Chart analysis."
   },
   "sidebar": {
-    "upgradeTitle": "Mag-upgrade sa Pro",
-    "upgradeDesc": "I-unlock ang advanced analytics, higit pang AI insights & walang limitasyong pag-save.",
+    "workspace": "WORKSPACE",
+    "more": "MORE",
+    "upgradeTitle": "Mag-upgrade sa pro",
+    "upgradeDesc": "I-unlock ang advanced analytics mas maraming AI insights & walang limitasyong pag-save.",
     "upgradeBtn": "Mag-upgrade Ngayon"
   },
   "profile": {

@@ -157,7 +157,7 @@ export default function BeforeAfterComparison() {
         
         {/* Standardized Header */}
         <SectionHeader
-          badge="BEFORE vs AFTER ALGORITHM"
+          badge="ALGORITHM COMPARISON"
           title1="See the Difference."
           title2="Raw Chart vs ChronosX Algo."
           description="Transform noisy raw market price action into institutional trade execution setups. Drag the slider to reveal high-impact AI Buy/Sell signals, liquidity sweeps, and multi-timeframe backtest confluence."

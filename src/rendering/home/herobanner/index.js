@@ -147,7 +147,7 @@ export default function Herobanner() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            Real-time institutional-grade AI signals, multi-timeframe pattern recognition, and sniper trade setups engineered for elite Forex  traders.
+            Real-time institutional-grade AI signals, multi-timeframe pattern recognition, and precision trade setups engineered for professional Forex traders.
           </motion.p>
 
           {/* 4. Action Buttons */}

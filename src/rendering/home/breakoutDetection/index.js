@@ -7,26 +7,26 @@ import SectionHeader from '@/components/sectionHeader';
 const stepsData = [
   {
     step: '01',
-    title: 'Watch the level.',
-    desc: 'ChronosX tracks every ticker against its 20-day range. The line below shows PLTR approaching $86.20 — its 20-day resistance.',
-    ticker: 'PLTR · 1m +5.12%',
-    status: 'Approaching $86.20',
+    title: 'Track the Key Level.',
+    desc: 'ChronosX continuously maps key multi-day resistance and liquidity pools. Real-time telemetry detects when price approaches major decision zones (e.g. PLTR approaching $86.20).',
+    ticker: 'PLTR · 1M +5.12%',
+    status: 'APPROACHING RESISTANCE $86.20',
     stage: 1
   },
   {
     step: '02',
-    title: 'The break.',
-    desc: 'When PLTR closes above $86.20 with above-average volume, the level lights up. The AI score has already moved to 91 on bullish sentiment confirmation.',
-    ticker: 'PLTR · 1m +6.72%',
-    status: 'Resistance broken',
+    title: 'Institutional Volume Break.',
+    desc: 'When price breaks $86.20 backed by a +2.8x institutional volume surge, the AI confirms order-flow strength and elevates the conviction score to 91% Bullish.',
+    ticker: 'PLTR · 1M +6.72%',
+    status: 'BREAKOUT CONFIRMED · CONVICTION 91%',
     stage: 2
   },
   {
     step: '03',
-    title: 'The toast.',
-    desc: 'The alert hits your phone the second the candle closes. By the time the rest of the room sees it on the news, you’re already in.',
-    ticker: 'PLTR · 1m +6.72%',
-    status: 'Breakout alert',
+    title: 'Instant Signal Dispatch.',
+    desc: 'A verified signal trigger hits your terminal and phone the exact millisecond the candle closes. By the time the rest of the market notices the news, you’re already in position.',
+    ticker: 'PLTR · 1M +6.72%',
+    status: 'BREAKOUT CONFIRMED · CONVICTION 91%',
     stage: 3
   }
 ];
@@ -98,7 +98,7 @@ export default function BreakoutDetection() {
                 badge="REAL-TIME BREAKOUT DETECTION"
                 title1="Catch the Move the"
                 title2="Second it Happens."
-                description="Scroll through one trade idea: from approach to confirmation to alert. The chart pins; the narrative scrolls past it."
+                description="Follow an institutional setup from early approach to volume validation and instant signal dispatch in real time."
               />
 
               {/* Pinned Interactive Chart Card */}
@@ -149,7 +149,7 @@ export default function BreakoutDetection() {
                     <line x1="20" y1="240" x2="560" y2="240" stroke="rgba(24, 201, 139, 0.08)" strokeWidth="1" />
                     <line x1="20" y1="125" x2="560" y2="125" stroke="rgba(24, 201, 139, 0.08)" strokeWidth="1" />
 
-                    {/* Dashed Resistance Line (R · $86.20) */}
+                    {/* Dashed Resistance Line (R • $86.20 / SUPPORT FLIP • $86.20) */}
                     <g className={styles.resistanceLineGroup}>
                       <line 
                         x1="20" 
@@ -159,7 +159,7 @@ export default function BreakoutDetection() {
                         className={`${styles.resistanceLine} ${activeStep >= 1 ? styles.resistanceBroken : ''}`}
                       />
                       <text x="555" y="183" textAnchor="end" className={styles.resistanceLabel}>
-                        R · $86.20
+                        {activeStep >= 1 ? 'SUPPORT FLIP • $86.20' : 'R • $86.20'}
                       </text>
                     </g>
 

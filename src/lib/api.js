@@ -51,8 +51,66 @@ export async function tryRefreshToken() {
     return refreshPromise;
 }
 
+export function getActiveRefreshPromise() {
+    return refreshPromise;
+}
+
+// In-flight deduplication cache for concurrent identical GET requests
+const inFlightGetRequests = new Map();
+
 async function request(path, options = {}, _isRetry = false) {
-    const { headers = {}, body, ...restOptions } = options;
+    const isAuthEndpoint = path.startsWith('/auth/');
+    const method = (options.method || 'GET').toUpperCase();
+
+    // 1. If a token refresh is currently in progress, wait for it so we don't send expired tokens
+    if (refreshPromise && !isAuthEndpoint) {
+        try {
+            const freshToken = await refreshPromise;
+            if (freshToken) {
+                options = {
+                    ...options,
+                    headers: {
+                        ...options.headers,
+                        Authorization: `Bearer ${freshToken}`,
+                    },
+                };
+            }
+        } catch (_) {}
+    }
+
+    // 2. Deduplicate concurrent GET requests to the same path
+    if (method === 'GET' && !_isRetry && !isAuthEndpoint) {
+        const authHeader = options.headers?.Authorization || (typeof window !== 'undefined' ? (localStorage.getItem('access_token') || '') : '');
+        const dedupKey = `GET:${path}:${authHeader}`;
+
+        if (inFlightGetRequests.has(dedupKey)) {
+            return inFlightGetRequests.get(dedupKey);
+        }
+
+        const promise = executeRequest(path, options, _isRetry)
+            .finally(() => {
+                inFlightGetRequests.delete(dedupKey);
+            });
+
+        inFlightGetRequests.set(dedupKey, promise);
+        return promise;
+    }
+
+    return executeRequest(path, options, _isRetry);
+}
+
+async function executeRequest(path, options = {}, _isRetry = false) {
+    const isAuthEndpoint = path.startsWith('/auth/');
+    let { headers = {}, body, ...restOptions } = options;
+
+    // Ensure headers always have the latest valid token if Authorization wasn't explicitly passed
+    if (!isAuthEndpoint && !headers.Authorization && typeof window !== 'undefined') {
+        const token = localStorage.getItem('access_token');
+        if (token) {
+            headers = { ...headers, Authorization: `Bearer ${token}` };
+        }
+    }
+
     const isFormData = typeof FormData !== 'undefined' && body instanceof FormData;
     const defaultHeaders = {
         accept: 'application/json',
@@ -66,8 +124,6 @@ async function request(path, options = {}, _isRetry = false) {
         ...restOptions,
     });
 
-    const isAuthEndpoint = path.startsWith('/auth/');
-
     if (res.status === 401 && !_isRetry && !isAuthEndpoint) {
         // Try to refresh and retry once
         const newToken = await tryRefreshToken();
@@ -80,7 +136,7 @@ async function request(path, options = {}, _isRetry = false) {
                     Authorization: `Bearer ${newToken}`,
                 },
             };
-            return request(path, retryOptions, true);
+            return executeRequest(path, retryOptions, true);
         }
         // Refresh failed — log out
         clearAuthAndRedirect();
@@ -123,8 +179,6 @@ async function request(path, options = {}, _isRetry = false) {
         err.status = res.status;
         throw err;
     }
-
-
 
     const credits = extractAvailableCredits(data);
     if (credits !== null) notifyCreditsUpdated(credits);

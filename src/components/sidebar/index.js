@@ -90,32 +90,42 @@ const LogoutIcon = () => (
   </svg>
 );
 
-const getMainNav = (t) => [
-  { label: t('nav.dashboard', 'Dashboard'), href: "/dashboard", icon: DashboardGridIcon },
-  { label: t('nav.aiTrade', 'AI Trade'), href: "/trade-snap", icon: AiTradeSparkIcon },
-  { label: t('nav.aiTradeAnalysis', 'AI Trade analysis'), href: "/trade-analysis", icon: AiTradeAnalysisIcon },
-  { label: t('nav.aiChat', 'AI Chat'), href: "/ai-assistant", icon: AiChatBotIcon },
+const getNavSections = (t) => [
   {
-    label: t('nav.aiStrategy', 'AI Strategy'),
-    href: "/ai-strategy",
-    icon: AiStrategyIcon,
-    subItems: [
-      { label: t('nav.liveAnalysis', 'Live Analysis'), href: "/ai-strategy/live", icon: LiveAnalysisIcon },
-      { label: t('nav.aiStrategy', 'AI Strategy'), href: "/ai-strategy/strategy", icon: StrategyIcon },
+    title: t('sidebar.workspace', 'WORKSPACE'),
+    items: [
+      { label: t('nav.dashboard', 'Dashboard'), href: "/dashboard", icon: DashboardGridIcon },
+      { label: t('nav.marketSnapshot', 'Market Snapshot & Scanner'), href: "/trade-snap", icon: AiTradeSparkIcon },
+      { label: t('nav.aiTradeAnalysis', 'AI Trade analysis'), href: "/trade-analysis", icon: AiTradeAnalysisIcon },
+      { label: t('nav.aiTradingAdvisor', 'AI Trading Advisor'), href: "/ai-assistant", icon: AiChatBotIcon },
+      {
+        label: t('nav.aiStrategyHub', 'AI Strategy Hub'),
+        href: "/ai-strategy",
+        icon: AiStrategyIcon,
+        subItems: [
+          { label: t('nav.liveMarketAnalysis', 'Live Market Analysis'), href: "/ai-strategy/live", icon: LiveAnalysisIcon },
+          { label: t('nav.strategyEnginePlaybooks', 'Strategy Engine & Playbooks'), href: "/ai-strategy/strategy", icon: StrategyIcon },
+        ]
+      },
     ]
   },
   {
-    label: t('nav.tools', 'Tools'),
-    href: "/tools",
-    icon: ToolsIcon,
-    subItems: [
-      { label: t('nav.economicCalendar', 'Economic Calendar'), href: "/calendar", icon: SubCalendarIcon },
-      { label: t('nav.forexCalculator', 'Forex Calculator'), href: "/calculator", icon: SubCalculatorIcon },
+    title: t('sidebar.more', 'MORE'),
+    items: [
+      {
+        label: t('nav.tools', 'Tools'),
+        href: "/tools",
+        icon: ToolsIcon,
+        subItems: [
+          { label: t('nav.economicCalendar', 'Economic Calendar'), href: "/calendar", icon: SubCalendarIcon },
+          { label: t('nav.forexCalculator', 'Forex Calculator'), href: "/calculator", icon: SubCalculatorIcon },
+        ]
+      },
+      { label: t('nav.plans', 'Subscription Plans'), href: "/subscription-plans", icon: CrownIcon },
+      { label: t('nav.broker', 'Broker'), href: "/broker", icon: BrokerBankIcon },
+      { label: t('nav.profile', 'Settings'), href: "/profile", icon: ProfileUserIcon },
     ]
-  },
-  { label: t('nav.plans', 'Subscription Plans'), href: "/subscription-plans", icon: CrownIcon },
-  { label: t('nav.broker', 'Broker'), href: "/broker", icon: BrokerBankIcon },
-  { label: t('nav.profile', 'Settings'), href: "/profile", icon: ProfileUserIcon },
+  }
 ];
 
 /** Match current route to nav item (handles trailing slashes and nested paths). */
@@ -402,13 +412,16 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
 
   const ROUTE_TAB_MAP = {
     '/dashboard': 'Dashboard',
-    '/trade-snap': 'AI Trade',
+    '/trade-snap': 'Market Snapshot & Scanner',
+    '/tradesnap': 'Market Snapshot & Scanner',
+    '/ai-trade': 'Market Snapshot & Scanner',
     '/trade-analysis': 'AI Trade analysis',
     '/ai-trade-analysis': 'AI Trade analysis',
-    '/ai-assistant': 'AI Chat',
-    '/ai-strategy': 'AI Strategy',
-    '/ai-strategy/live': 'AI Strategy',
-    '/ai-strategy/strategy': 'AI Strategy',
+    '/ai-assistant': 'AI Trading Advisor',
+    '/ai-chat': 'AI Trading Advisor',
+    '/ai-strategy': 'AI Strategy Hub',
+    '/ai-strategy/live': 'Live Market Analysis',
+    '/ai-strategy/strategy': 'Strategy Engine & Playbooks',
     '/tools': 'Tools',
     '/calendar': 'Economic Calendar',
     '/economic-calendar': 'Economic Calendar',
@@ -422,33 +435,51 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
     '/settings': 'Profile',
   };
 
-  const rawNav = getMainNav(t);
-  const mainNav = useMemo(() => {
-    if (!visibleTabNames || visibleTabNames.size === 0) return rawNav;
+  const rawSections = getNavSections(t);
+  const navSections = useMemo(() => {
+    if (!visibleTabNames || visibleTabNames.size === 0) return rawSections;
 
-    return rawNav.map(item => {
-      const parentTabName = (ROUTE_TAB_MAP[item.href] || item.label || '').toLowerCase();
+    const checkTabVisible = (tabLabel, routeHref) => {
+      const lowerLabel = (tabLabel || '').toLowerCase();
+      const mapped = (ROUTE_TAB_MAP[routeHref] || '').toLowerCase();
+      return (
+        visibleTabNames.has(lowerLabel) ||
+        visibleTabNames.has(mapped) ||
+        (lowerLabel.includes('market snapshot') && (visibleTabNames.has('ai trade') || visibleTabNames.has('trade-snap'))) ||
+        (lowerLabel.includes('ai trading advisor') && (visibleTabNames.has('ai chat') || visibleTabNames.has('ai-assistant'))) ||
+        (lowerLabel.includes('ai strategy') && (visibleTabNames.has('ai strategy') || visibleTabNames.has('strategy'))) ||
+        (lowerLabel.includes('live market analysis') && (visibleTabNames.has('live analysis') || visibleTabNames.has('ai strategy'))) ||
+        (lowerLabel.includes('strategy engine') && (visibleTabNames.has('ai strategy') || visibleTabNames.has('strategy')))
+      );
+    };
 
-      // If item has sub-items (Tools, AI Strategy), filter sub-items based on Supabase permissions
-      if (item.subItems && item.subItems.length > 0) {
-        const filteredSubItems = item.subItems.filter(sub => {
-          const subTabName = (ROUTE_TAB_MAP[sub.href] || sub.label || '').toLowerCase();
-          return visibleTabNames.has(subTabName) || visibleTabNames.has(parentTabName);
-        });
+    return rawSections.map(section => {
+      const filteredItems = section.items.map(item => {
+        const parentTabName = (ROUTE_TAB_MAP[item.href] || item.label || '').toLowerCase();
 
-        if (filteredSubItems.length > 0) {
-          return { ...item, subItems: filteredSubItems };
+        // If item has sub-items (Tools, AI Strategy), filter sub-items based on Supabase permissions
+        if (item.subItems && item.subItems.length > 0) {
+          const filteredSubItems = item.subItems.filter(sub => checkTabVisible(sub.label, sub.href) || checkTabVisible(item.label, item.href));
+
+          if (filteredSubItems.length > 0) {
+            return { ...item, subItems: filteredSubItems };
+          }
+          return checkTabVisible(item.label, item.href) ? item : null;
         }
-        return visibleTabNames.has(parentTabName) ? item : null;
-      }
 
-      // Settings/Profile is always accessible
-      if (parentTabName === 'profile' || parentTabName === 'settings') return item;
+        // Settings/Profile is always accessible
+        if (parentTabName === 'profile' || parentTabName === 'settings') return item;
 
-      // Single menu item check
-      return visibleTabNames.has(parentTabName) ? item : null;
-    }).filter(Boolean);
-  }, [rawNav, visibleTabNames]);
+        // Single menu item check
+        return checkTabVisible(item.label, item.href) ? item : null;
+      }).filter(Boolean);
+
+      return {
+        ...section,
+        items: filteredItems
+      };
+    }).filter(section => section.items.length > 0);
+  }, [rawSections, visibleTabNames]);
 
   const hasPlansPermission = visibleTabNames && visibleTabNames.size > 0
     ? visibleTabNames.has('subscription plans')
@@ -501,14 +532,25 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
           {tabsLoading && !visibleTabNames ? (
             <NavSkeleton count={8} isCollapsed={isCollapsed} />
           ) : (
-            mainNav.map((item) => (
-              <NavItem
-                key={item.href}
-                item={item}
-                pathname={pathname}
-                onNavigate={handleNavigate}
-                isCollapsed={isCollapsed}
-              />
+            navSections.map((section, sIndex) => (
+              <div key={section.title || sIndex} className={styles.navSectionBlock}>
+                {!isCollapsed ? (
+                  <div className={styles.navSectionHeader}>
+                    {section.title}
+                  </div>
+                ) : (
+                  sIndex > 0 && <div className={styles.collapsedDivider} />
+                )}
+                {section.items.map((item) => (
+                  <NavItem
+                    key={item.href}
+                    item={item}
+                    pathname={pathname}
+                    onNavigate={handleNavigate}
+                    isCollapsed={isCollapsed}
+                  />
+                ))}
+              </div>
             ))
           )}
         </div>

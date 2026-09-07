@@ -36,8 +36,8 @@ export default function TradeAuditModal({
     const suggestions = res.improvement_suggestions || res.actionable_recommendations || [];
     const markdownReport = res.markdown_report || res.narrative_report || '';
 
-    const rawScore = scores.overall_score !== undefined 
-        ? scores.overall_score 
+    const rawScore = scores.overall_score !== undefined
+        ? scores.overall_score
         : (res.score !== undefined ? (res.score > 10 ? res.score / 10 : res.score) : (Number(tDetails.pnl) >= 0 ? 8.5 : 4.5));
     const scoreOutOf10 = Number(rawScore).toFixed(1);
     const ratingLabel = scores.rating_label || res.quality || res.quality_rating || (Number(tDetails.pnl) >= 0 ? 'High Quality Momentum Entry' : 'Early Noise / Breakout Risk');
@@ -61,7 +61,7 @@ export default function TradeAuditModal({
                         </div>
                         <div>
                             <h3>Trade AI Analysis</h3>
-                            <span className={styles.modalSub}>Deep neural trade audit & execution evaluation (/api/v1/trade-analyze/trade/analyze)</span>
+                            <span className={styles.modalSub}>Deep neural trade audit & execution evaluation</span>
                         </div>
                     </div>
                     <button type="button" className={styles.closeBtn} onClick={onClose}>

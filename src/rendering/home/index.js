@@ -34,8 +34,8 @@ export default function HomePage() {
                 <HowitWorks />
                 <BreakoutDetection />
                 <TeamUp />
-                <Testimonials />
                 <GlobalNetworkMap />
+                <Testimonials />
                 <ReadytoPut />
             </div>
         </div>
