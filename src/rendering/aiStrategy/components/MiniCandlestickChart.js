@@ -168,7 +168,7 @@ export default function MiniCandlestickChart({
         // Price Formatter for Y-Axis
         const formatPrice = (val) => {
             const s = (symbol || '').toUpperCase();
-            if (s.includes('JPY')) return val.toFixed(2);
+            if (s.includes('JPY')) return `$${val.toFixed(2)}`;
             if (s.includes('XAU') || s.includes('GOLD') || val > 500) return `$${val.toFixed(1)}`;
             return `$${val.toFixed(4)}`;
         };
@@ -187,7 +187,7 @@ export default function MiniCandlestickChart({
         const badgeY = Math.min(mainChartBottom - 9, Math.max(mainChartTop + 9,
             mainChartBottom - ((lastClose - adjustedMin) / range) * mainH
         ));
-        const badgeText = lastClose > 100 ? `${lastClose.toFixed(2)}` : `${lastClose.toFixed(4)}`;
+        const badgeText = lastClose > 100 ? `$${lastClose.toFixed(2)}` : `$${lastClose.toFixed(4)}`;
 
         // Indicator wave curves (Dual oscillator: Green fast line & Orange slow line)
         const indMidY = (indTop + indBottom) / 2;

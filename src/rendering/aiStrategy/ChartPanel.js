@@ -307,17 +307,17 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
                 }
             }
 
-            // Set default initial zoom to ~75 visible bars (matching focused view)
+            // Set default initial zoom to zoomed out view with right offset space (matching Image 2)
             const totalBars = candleData.length;
             if (totalBars > 0) {
-                const visibleBars = Math.min(totalBars, 75);
+                const visibleBars = Math.min(totalBars, 110);
                 chart.timeScale().applyOptions({
-                    barSpacing: 14,
-                    rightOffset: 8,
+                    barSpacing: 6.5,
+                    rightOffset: 20,
                 });
                 chart.timeScale().setVisibleLogicalRange({
                     from: totalBars - visibleBars,
-                    to: totalBars + 4,
+                    to: totalBars + 20,
                 });
             } else {
                 chart.timeScale().fitContent();
@@ -380,14 +380,14 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
                 borderColor: isLight ? '#cbd5e1' : 'rgba(255, 255, 255, 0.12)',
                 timeVisible: true,
                 secondsVisible: false,
-                rightOffset: 8,
-                barSpacing: 14,
+                rightOffset: 20,
+                barSpacing: 6.5,
                 minBarSpacing: 2,
                 rightBarStaysOnScroll: true,
             },
             rightPriceScale: {
                 borderColor: isLight ? '#cbd5e1' : 'rgba(255, 255, 255, 0.12)',
-                scaleMargins: { top: 0.05, bottom: 0.04 },
+                scaleMargins: { top: 0.08, bottom: 0.12 },
             },
         });
 
@@ -533,6 +533,28 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
 
         const containerEl = containerRef.current;
         const handleWheelZoom = (e) => {
+            const targetEl = e.target;
+            if (
+                targetEl &&
+                (targetEl.closest('[class*="dropdown"]') ||
+                    targetEl.closest('[class*="Dropdown"]') ||
+                    targetEl.closest('[class*="tickerSearch"]') ||
+                    targetEl.closest('[class*="tickerList"]') ||
+                    targetEl.closest('[class*="modal"]') ||
+                    targetEl.closest('[class*="Modal"]') ||
+                    targetEl.closest('[class*="menu"]') ||
+                    targetEl.closest('[class*="Menu"]') ||
+                    targetEl.closest('[class*="popup"]') ||
+                    targetEl.closest('[class*="settings"]') ||
+                    targetEl.closest('[class*="control"]') ||
+                    targetEl.closest('[class*="pill"]') ||
+                    targetEl.closest('[class*="Pill"]') ||
+                    targetEl.closest('input, select, textarea, button'))
+            ) {
+                // Allow natural scrolling inside dropdown menus, search results, and popups
+                return;
+            }
+
             if (e.cancelable) {
                 e.preventDefault();
             }
@@ -540,7 +562,7 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
 
             if (!chartRef.current?.chart) return;
             const timeScale = chartRef.current.chart.timeScale();
-            const currentSpacing = timeScale.options().barSpacing || 14;
+            const currentSpacing = timeScale.options().barSpacing || 6.5;
 
             // Wheel UP (e.deltaY < 0) -> Zoom IN (increase candle width)
             // Wheel DOWN (e.deltaY > 0) -> Zoom OUT (decrease candle width)

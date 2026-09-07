@@ -72,7 +72,7 @@ export function parseChatMessage(rawText, fullReport) {
     }
   }
 
-  // 4. Extract Fallback Prose Text (Stripping all JSON, code fences, and truncated JSON blocks)
+  // 4. Extract Fallback Prose Text (Only strip JSON blocks if structured JSON was detected)
   let cleanText = sourceText;
   if (headerMatch && headerMatch[1]) {
     cleanText = cleanText.replace(headerMatch[1], '');
@@ -81,23 +81,21 @@ export function parseChatMessage(rawText, fullReport) {
     cleanText = cleanText.replace(footerMatch[1], '');
   }
 
-  // Remove code fences ```json ... ```
-  cleanText = cleanText.replace(/```(?:json)?[\s\S]*?```/gi, '');
+  if (result.jsonData) {
+    // Remove code fences ```json ... ```
+    cleanText = cleanText.replace(/```(?:json)?[\s\S]*?```/gi, '');
 
-  // Remove any complete { ... } JSON block
-  cleanText = cleanText.replace(/\{[\s\S]*\}/g, '');
-
-  // Remove any unclosed/truncated { "is_valid_chart"... or { "detected_pair"...
-  cleanText = cleanText.replace(/\{[\s\S]*/g, '');
+    // Only strip pure JSON object if the message was predominantly a JSON envelope
+    if (/^\s*\{[\s\S]*\"(?:overall_trend|market_structure|chart_sections|is_valid_chart)\"[\s\S]*\}\s*$/i.test(cleanText.trim())) {
+      cleanText = '';
+    }
+  }
 
   cleanText = cleanText.trim();
 
-  // If cleanText starts with JSON fragment or consists of JSON characters, discard it
-  if (
-    /^\s*\{/i.test(cleanText) ||
-    /\"is_valid_chart\"|\"detected_pair\"|\"overall_trend\"|\"market_structure\"/i.test(cleanText)
-  ) {
-    cleanText = '';
+  // If cleanText was completely wiped but sourceText had content (and not raw JSON envelope)
+  if (!cleanText && sourceText && !/^\s*\{[\s\S]*\}\s*$/.test(sourceText.trim())) {
+    cleanText = sourceText.trim();
   }
 
   result.fallbackText = cleanText;

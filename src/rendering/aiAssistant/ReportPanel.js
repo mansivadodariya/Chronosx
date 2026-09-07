@@ -9,6 +9,7 @@ import styles from './aiAssistant.module.scss';
 import { ATR } from 'technicalindicators';
 import { useTheme } from '@/context/ThemeContext';
 import { getBidiProps, bidiMarkdownComponents } from '@/lib/bidi';
+import RenderMarkdownWithWidgets from './components/MarkdownWidgetRenderer';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -310,7 +311,7 @@ const Gauge = ({ value, title, theme = 'dark' }) => {
     );
 };
 
-const ReportPanel = ({ fullReport, visualData, isLoading, scrollToTopSignal, onDownload, inline = true }) => {
+const ReportPanel = ({ fullReport, visualData, symbol, isLoading, scrollToTopSignal, onDownload, inline = true }) => {
     const scrollRef = useRef(null);
     const reportRef = useRef(null);
     const { theme } = useTheme();
@@ -319,42 +320,15 @@ const ReportPanel = ({ fullReport, visualData, isLoading, scrollToTopSignal, onD
         if (scrollRef.current) scrollRef.current.scrollTop = 0;
     }, [scrollToTopSignal, fullReport]);
 
-    const renderWidget = (type, symbol, key) => {
-        const assetData = getAssetData(visualData, symbol);
-        if (!assetData) {
-            return <div key={key} className={styles.reportWidgetMissing}>Visualization data for {symbol} is currently unavailable.</div>;
-        }
-        switch (type) {
-            case 'CANDLESTICK':
-                return <PriceChart key={key} data={assetData} symbol={symbol} theme={theme} />;
-            case 'SENTIMENT_RADAR':
-                return (
-                    <div key={key} className={styles.reportWidget}>
-                        <h4 className={styles.reportWidgetTitle}>Market Sentiment: {symbol}</h4>
-                        <SentimentRadar indicators={assetData.indicators} theme={theme} />
-                    </div>
-                );
-            case 'RSI_GAUGE':
-                return <Gauge key={key} value={assetData.indicators?.momentum_indicators?.RSI?.value || assetData.indicators?.['1H']?.momentum_indicators?.RSI?.value || 50} title={`${symbol} RSI`} theme={theme} />;
-            case 'ADX_GAUGE':
-                return <Gauge key={key} value={assetData.indicators?.trend_indicators?.ADX?.value || assetData.indicators?.['1H']?.trend_indicators?.ADX?.value || 25} title={`${symbol} Trend Strength`} theme={theme} />;
-            default:
-                return null;
-        }
-    };
-
     const renderContent = () => {
         if (!fullReport) return null;
-        return fullReport.split(WIDGET_REGEX).map((part, pIdx) => {
-            const widgetMatch = part.match(/\[WIDGET:([A-Z_]+):([A-Z0-9/]+)\]/);
-            if (widgetMatch) return renderWidget(widgetMatch[1], widgetMatch[2], pIdx);
-            if (!part.trim()) return null;
-            return (
-                <div key={pIdx} {...getBidiProps(part, styles.reportMarkdown)}>
-                    <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={bidiMarkdownComponents}>{part}</ReactMarkdown>
-                </div>
-            );
-        });
+        return (
+            <RenderMarkdownWithWidgets
+                content={fullReport}
+                visualData={visualData}
+                defaultSymbol={symbol || 'XAUUSD'}
+            />
+        );
     };
 
     if (inline) {

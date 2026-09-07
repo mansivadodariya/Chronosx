@@ -33,6 +33,9 @@ export default function StrategyGridSkeleton({ count = 4 }) {
                             ))}
                         </div>
 
+                        {/* Vertical Separator Divider */}
+                        <div className={styles.verticalSeparator} />
+
                         {/* Right Column: Chart Shimmer Canvas */}
                         <div className={styles.rightGraphColumn}>
                             <div className={`${styles.skeletonPulse} ${styles.stratSkelChart}`} />

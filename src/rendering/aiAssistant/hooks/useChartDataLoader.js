@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { CandlestickSeries, LineSeries, AreaSeries, HistogramSeries } from 'lightweight-charts';
 import { fetchChartCandlesOnce, subscribeLiveCandles } from '@/lib/chartStore';
-import { generateMockCandles, getSymbolPrecision } from '../utils/indicatorCalculations';
+import { generateMockCandles, getSymbolPrecision, getDefaultSymbolBasePrice } from '../utils/indicatorCalculations';
 
 export default function useChartDataLoader({
     chartRef,
@@ -16,6 +16,7 @@ export default function useChartDataLoader({
     currentChartTypeRef,
     bullishColor,
     bearishColor,
+    livePrice,
     setLoading,
     setLatestCandle,
     updateIndicators
@@ -61,14 +62,7 @@ export default function useChartDataLoader({
 
         async function loadChartData() {
             setLoading(true);
-            setLatestCandle(null);
-            candlesDataRef.current = [];
-            if (seriesRef.current) {
-                try { seriesRef.current.setData([]); } catch {}
-            }
-            if (volumeSeriesRef.current) {
-                try { volumeSeriesRef.current.setData([]); } catch {}
-            }
+            // Do NOT wipe past candles or call setData([]) so past chart remains rendered under backdrop blur!
 
             if (!chartRef.current) {
                 await new Promise((r) => setTimeout(r, 60));
@@ -93,11 +87,9 @@ export default function useChartDataLoader({
                 }
 
                 if (!Array.isArray(rawCandles) || rawCandles.length === 0) {
-                    const baseVal = activeSymbolClean.includes('XAU')
-                        ? 2720
-                        : activeSymbolClean.includes('BTC')
-                        ? 92000
-                        : 1.085;
+                    const baseVal = (livePrice && !isNaN(livePrice) && Number(livePrice) > 0)
+                        ? Number(livePrice)
+                        : getDefaultSymbolBasePrice(activeSymbolClean);
                     rawCandles = generateMockCandles(600, baseVal, currentTimeframe, activeSymbolClean);
                 }
 
@@ -225,8 +217,9 @@ export default function useChartDataLoader({
                 if (last) setLatestCandle(last);
                 try {
                     chartRef.current.timeScale().applyOptions({
-                        barSpacing: 9,
-                        rightOffset: 8,
+                        barSpacing: 5.5,
+                        rightOffset: 16,
+                        rightBarStaysOnScroll: true,
                     });
                     chartRef.current.timeScale().scrollToRealtime();
                 } catch (e) {}
@@ -269,6 +262,28 @@ export default function useChartDataLoader({
                         close: closePrice,
                         value: closePrice,
                     };
+
+                    // Prevent cross-symbol price distortion or sudden giant spikes
+                    if (candlesDataRef.current && candlesDataRef.current.length > 0) {
+                        const lastClose = candlesDataRef.current[candlesDataRef.current.length - 1].close;
+                        const ratio = closePrice / lastClose;
+                        if (ratio > 1.15 || ratio < 0.85) {
+                            const shiftFactor = closePrice / lastClose;
+                            const { precision } = getSymbolPrecision(activeSymbolClean);
+                            const realigned = candlesDataRef.current.map(c => ({
+                                ...c,
+                                open: Number((c.open * shiftFactor).toFixed(precision)),
+                                high: Number((c.high * shiftFactor).toFixed(precision)),
+                                low: Number((c.low * shiftFactor).toFixed(precision)),
+                                close: Number((c.close * shiftFactor).toFixed(precision)),
+                                value: Number((c.close * shiftFactor).toFixed(precision)),
+                            }));
+                            candlesDataRef.current = realigned;
+                            if (seriesRef.current) {
+                                try { seriesRef.current.setData(realigned); } catch {}
+                            }
+                        }
+                    }
 
                     if (seriesRef.current) {
                         seriesRef.current.update(updatedBar);

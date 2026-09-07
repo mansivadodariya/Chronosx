@@ -52,14 +52,17 @@ export async function tryRefreshToken() {
 }
 
 async function request(path, options = {}, _isRetry = false) {
-    const { headers, ...restOptions } = options;
+    const { headers = {}, body, ...restOptions } = options;
+    const isFormData = typeof FormData !== 'undefined' && body instanceof FormData;
+    const defaultHeaders = {
+        accept: 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+        ...(!isFormData ? { 'Content-Type': 'application/json' } : {}),
+        ...headers,
+    };
     const res = await fetch(`${BASE_URL}${path}`, {
-        headers: {
-            'Content-Type': 'application/json',
-            accept: 'application/json',
-            'ngrok-skip-browser-warning': 'true',
-            ...headers,
-        },
+        headers: defaultHeaders,
+        body,
         ...restOptions,
     });
 
@@ -217,7 +220,8 @@ export const fxApi = {
                 timeframe: arg1.timeframe || '15m',
                 image_base64: arg1.image_base64 || null,
                 stream: arg1.stream ?? false,
-                ...(arg1.user_id ? { user_id: arg1.user_id } : {})
+                ...(arg1.user_id ? { user_id: arg1.user_id } : {}),
+                ...(arg1.conversation_id ? { conversation_id: arg1.conversation_id } : {})
             };
         } else {
             payload = {
@@ -234,6 +238,17 @@ export const fxApi = {
             headers: getAuthHeaders(),
             body: JSON.stringify(payload),
         });
+    },
+
+    askQuestion: (payload) => {
+        if (typeof FormData !== 'undefined' && payload instanceof FormData) {
+            return request('/chat', {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: payload,
+            });
+        }
+        return fxApi.chat(payload);
     },
 
     generateBlog: (input_data, is_content) =>
@@ -262,10 +277,13 @@ export const fxApi = {
     },
 
     getConversationHistory: (conversation_id) => {
-        return request(`/conversation-history/${conversation_id}`, {
+        return request(`/users/conversation-history/${conversation_id}`, {
             headers: getAuthHeaders(),
         });
     },
+
+    deleteQuestionHistory: (history_id, user_id) =>
+        fxApi.deleteQuestionHistoryItem(user_id, history_id),
 
     deleteQuestionHistoryItem: (user_id, history_id) =>
         request(`/question-history/${history_id}`, {

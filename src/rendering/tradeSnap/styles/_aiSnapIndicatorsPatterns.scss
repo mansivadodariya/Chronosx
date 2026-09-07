@@ -407,6 +407,7 @@
     &.tabNavActive {
         color: var(--pill-color);
         border-bottom-color: #18C98B;
+        border-radius: 0 !important;
     }
 }
 
@@ -480,4 +481,4 @@
     font-weight: 800;
     padding: 2px 6px;
 }
-
+

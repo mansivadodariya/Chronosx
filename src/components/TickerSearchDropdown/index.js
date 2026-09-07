@@ -41,6 +41,7 @@ export default function TickerSearchDropdown({
     <div
       className={`${styles.tickerSearchDropdownMenu} ${position === 'top' ? styles.positionTop : styles.positionBottom} ${!isDark ? styles.lightTheme : ''}`}
       onClick={(e) => e.stopPropagation()}
+      onWheel={(e) => e.stopPropagation()}
     >
       {/* Search Input Box */}
       <div className={styles.searchBoxArea}>
@@ -81,7 +82,10 @@ export default function TickerSearchDropdown({
       </div>
 
       {/* Ticker Item List */}
-      <div className={styles.tickerListScrollArea}>
+      <div
+        className={styles.tickerListScrollArea}
+        onWheel={(e) => e.stopPropagation()}
+      >
         {filteredSymbols.length === 0 ? (
           <div className={styles.noSymbolsFound}>{t('aiAssistant.noTickersFound', 'No tickers matching')} "{tickerSearch}"</div>
         ) : (

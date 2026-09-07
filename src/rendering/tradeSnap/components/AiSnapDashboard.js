@@ -33,67 +33,61 @@ export default function AiSnapDashboard({ analysisData, rawData }) {
         }
     }, [rawPayload, analysis]);
 
-    const symbol = analysis.symbol || analysis.Symbol || analysis.data?.pair || 'USDCHF';
-    const timeframe = selectedTimeframe;
-    const currentPrice = analysis.current_price ?? analysis.Current_price ?? analysis.analysis_results?.price ?? '0.8010';
-    const volume = analysis.analysis_results?.volume || '—';
-    const change = analysis.analysis_results?.change || '-0.04%';
-    const isChartValid = analysis.data?.is_valid_chart ?? true;
+    const symbol = analysis.symbol || analysis.Symbol || rawPayload.symbol || analysis.data?.pair || 'XAUUSD';
+    const timeframe = selectedTimeframe || rawPayload.timeframe || 'M15';
+    const currentPrice = analysis.current_price ?? analysis.Current_price ?? analysis.analysis_results?.price ?? rawPayload.current_price ?? rawPayload.Current_price ?? '—';
+    const volume = analysis.analysis_results?.volume || rawPayload.volume || '—';
+    const change = analysis.analysis_results?.change || rawPayload.change || '0.00%';
+    const isChartValid = analysis.data?.is_valid_chart ?? rawPayload.is_valid_chart ?? true;
 
     const technicalScore = analysis.technical_score || {
-        total: parseInt(analysis.confidence || 84, 10),
+        total: parseInt(analysis.confidence || rawPayload.confidence || 75, 10),
         max: 100,
-        label: (analysis.trade_call || 'BUY').includes('BUY') ? 'STRONG BULLISH' : 'STRONG BEARISH',
-        confidence: analysis.confidence || '88%'
+        label: (analysis.trade_call || rawPayload.trade_call || 'BUY').toUpperCase().includes('BUY') ? 'STRONG BULLISH' : 'STRONG BEARISH',
+        confidence: analysis.confidence || rawPayload.confidence || '75%'
     };
 
     const marketAssessment = analysis.market_assessment || {
-        verdict: (analysis.trade_call || 'BUY').includes('BUY') ? 'Bullish' : 'Bearish',
-        confidence: analysis.confidence || '88%',
-        momentum: 'Up',
-        strength: 'Strong'
+        verdict: (analysis.trade_call || rawPayload.trade_call || 'BUY').toUpperCase().includes('BUY') ? 'Bullish' : 'Bearish',
+        confidence: analysis.confidence || rawPayload.confidence || '75%',
+        momentum: 'Neutral',
+        strength: 'Moderate'
     };
 
     const tradeDecision = analysis.trade_decision || {
-        action: analysis.trade_call || 'BUY',
-        signal_type: 'STRONG_BUY',
-        conviction: analysis.confidence || '88%',
+        action: analysis.trade_call || rawPayload.trade_call || 'BUY',
+        signal_type: analysis.trade_call || rawPayload.trade_call || 'BUY',
+        conviction: analysis.confidence || rawPayload.confidence || '75%',
         entry_zone: {
-            entry_price: analysis.entry || analysis.entry_price || '0.8010 - 0.8015',
-            execution_type: 'Market Order / Retracement'
+            entry_price: analysis.entry || rawPayload.entry || '—',
+            execution_type: 'Vision AI & Technical Confluence'
         },
         stop_loss: {
-            price: analysis.stop_loss || '0.7985',
-            invalidation_reason: 'Below S1 support pivot'
+            price: analysis.stop_loss || rawPayload.stop_loss || '—',
+            invalidation_reason: 'Structure protection level'
         },
-        take_profit_targets: analysis.targets || analysis.take_profit_targets || {
-            tp1: '0.8049',
-            tp2: '0.8129',
-            tp3: '0.8196'
+        take_profit_targets: analysis.targets || rawPayload.targets || {
+            tp1: '—',
+            tp2: '—',
+            tp3: '—'
         },
-        risk_reward_ratio: analysis.risk_reward || '1:2.2',
-        rationale: analysis.rationale || 'High probability momentum setup aligned with higher timeframe structural support.'
+        risk_reward_ratio: analysis.risk_reward || rawPayload.risk_reward || '1:2',
+        rationale: analysis.rationale || rawPayload.rationale || ''
     };
 
-    const liveIndicators = analysis.live_indicators;
+    const liveIndicators = analysis.live_indicators || rawPayload.live_indicators;
     const patternsDetected = analysis.patterns_detected || {
-        support_levels: analysis.Support_price ? [analysis.Support_price] : ['0.798535'],
-        resistance_levels: analysis.Resistance_price ? [analysis.Resistance_price] : ['0.804922', '0.812987', '0.819655'],
-        chart_patterns: [
-            { name: "V-shaped recovery after sharp selloff", confidence: 66 },
-            { name: "Ascending channel sequence", confidence: 60 }
-        ]
+        support_levels: (analysis.Support_price || rawPayload.Support_price) ? [analysis.Support_price || rawPayload.Support_price] : [],
+        resistance_levels: (analysis.Resistance_price || rawPayload.Resistance_price) ? [analysis.Resistance_price || rawPayload.Resistance_price] : [],
+        chart_patterns: []
     };
 
-    const riskFlags = analysis.risk_flags || [
-        { level: "danger", message: "Bearish bias divergence warning — watch key momentum shifts" },
-        { level: "warning", message: "Price within 0.5% of major structural support zone" }
-    ];
+    const riskFlags = analysis.risk_flags || [];
 
-    const trendIndicators = analysis.trend_indicators;
-    const momentumIndicators = analysis.momentum_indicators;
-    const volatilityIndicators = analysis.volatility_indicators;
-    const pivotPoints = analysis.pivot_points;
+    const trendIndicators = analysis.trend_indicators || rawPayload.trend_indicators;
+    const momentumIndicators = analysis.momentum_indicators || rawPayload.momentum_indicators;
+    const volatilityIndicators = analysis.volatility_indicators || rawPayload.volatility_indicators;
+    const pivotPoints = analysis.pivot_points || rawPayload.pivot_points;
 
     return (
         <div className={styles.dashboardWrapper}>

@@ -419,25 +419,42 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
 
         if (!text && !activeAttachment && !currentMode) return;
 
+        const isNoPair = !selectedPair || selectedPair === 'No Pair' || selectedPair === 'NO_PAIR' || String(selectedPair).toLowerCase().includes('no pair') || String(selectedPair).toLowerCase() === 'none';
+        const cleanPair = isNoPair ? null : (normalizeSymbol(selectedPair) || null);
+        const sym = cleanPair || 'the market';
+
         let userMsgText = text;
         if (!userMsgText) {
             if (currentMode === 'deep') {
-                userMsgText = `Deep Market Analysis & Setup for ${selectedPair}`;
+                userMsgText = `Perform a Deep Pro Analysis for ${sym} including multi-timeframe market structure, pivot points, key indicators, macro drivers, and complete risk-reward trade setup`;
             } else if (currentMode === 'news') {
-                userMsgText = `Macro News & Catalysts Analysis for ${selectedPair}`;
+                userMsgText = `Show latest financial news, market sentiment, and central bank stance for ${sym}`;
             } else if (currentMode === 'image') {
-                userMsgText = `Technical chart diagnosis for ${selectedPair}`;
+                userMsgText = `Analyze this chart screenshot and identify technical patterns, key levels & breakouts for ${sym}`;
             } else {
-                userMsgText = `Analyze chart setup for ${selectedPair}`;
+                userMsgText = `Analyze chart setup and market outlook for ${sym}`;
+            }
+        } else {
+            if (currentMode === 'deep' && !userMsgText.toLowerCase().includes('deep')) {
+                userMsgText = `[Deep Market Analysis for ${sym}] ${userMsgText}`;
+            } else if (currentMode === 'news' && !userMsgText.toLowerCase().includes('news') && !userMsgText.toLowerCase().includes('macro')) {
+                userMsgText = `[Macro News & Events for ${sym}] ${userMsgText}`;
             }
         }
 
         const newUserMsg = {
             role: 'user',
             content: userMsgText,
-            pair: selectedPair,
+            pair: cleanPair,
             attachment: activeAttachment ? { ...activeAttachment } : null
         };
+
+        if (chatWidthPercent < 55) {
+            setChatWidthPercent(55);
+            [100, 200, 300, 400].forEach((ms) => {
+                setTimeout(() => window.dispatchEvent(new Event('resize')), ms);
+            });
+        }
 
         setChatMessages(prev => [...prev, newUserMsg]);
         setChatInput('');
@@ -449,24 +466,16 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
         activeRequestIdRef.current = requestId;
 
         try {
-            const formData = new FormData();
-            formData.append('question', userMsgText);
-            formData.append('pair', selectedPair);
-            if (currentConversationId) {
-                formData.append('conversation_id', currentConversationId);
-            }
+            const chatPayload = {
+                message: userMsgText,
+                ...(cleanPair ? { pair: cleanPair, timeframe: '15m' } : {}),
+                image_base64: activeAttachment?.url || null,
+                stream: false,
+                ...(userId ? { user_id: userId } : {}),
+                ...(currentConversationId ? { conversation_id: currentConversationId } : {})
+            };
 
-            if (activeAttachment?.url) {
-                if (activeAttachment.url.startsWith('data:')) {
-                    const resBlob = await fetch(activeAttachment.url);
-                    const blob = await resBlob.blob();
-                    formData.append('image', blob, activeAttachment.name || 'chart.png');
-                } else {
-                    formData.append('image_url', activeAttachment.url);
-                }
-            }
-
-            const rawResp = await fxApi.askQuestion(formData);
+            const rawResp = await fxApi.chat(chatPayload);
             if (activeRequestIdRef.current !== requestId) return;
 
             const parsed = parseAssistantResponse(rawResp);
@@ -475,17 +484,17 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
             if (userId) {
                 syncCreditsAfterAction(userId);
                 notifyCreditsUpdated();
+                fetchChatHistory(userId);
             }
             if (rawResp?.conversation_id) {
                 setCurrentConversationId(rawResp.conversation_id);
             }
-            if (userId) {
-                fetchChatHistory(userId);
-            }
         } catch (err) {
             if (activeRequestIdRef.current !== requestId) return;
             console.error("AI Assistant request error:", err);
-            toast.error(err?.message || 'Failed to process analysis request');
+            const errorMessage = err?.message || "I apologize, but the AI Assistant is temporarily unavailable. Please try again.";
+            setChatMessages(prev => [...prev, { role: 'assistant', content: errorMessage }]);
+            toast.error(errorMessage);
         } finally {
             if (activeRequestIdRef.current === requestId) {
                 setPendingRequest(false);
@@ -517,8 +526,12 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
 
         if (id) {
             try {
-                historyDeletes.add(id);
-                await fxApi.deleteQuestionHistory(id);
+                if (historyDeletes?.deleteQuestionHistoryItem) {
+                    await historyDeletes.deleteQuestionHistoryItem({ userId, id }).catch(() => null);
+                }
+                if (fxApi?.deleteQuestionHistory) {
+                    await fxApi.deleteQuestionHistory(id, userId).catch(() => null);
+                }
                 setChatHistory(prev => prev.filter(h => (h.id || h.conversation_id || h.history_id) !== id));
                 if (currentConversationId === id) {
                     handleCreateNew();
@@ -531,8 +544,8 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
         }
     };
 
-    const handleDownloadFullReport = (reportContent, visualData) => {
-        setExportData({ fullReport: reportContent, visualData });
+    const handleDownloadFullReport = (reportContent, visualData, symbol) => {
+        setExportData({ fullReport: reportContent, visualData, symbol: symbol || selectedPair });
     };
 
     useEffect(() => {
@@ -540,19 +553,24 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
 
         const generatePdf = async () => {
             try {
-                toast('Preparing PDF download...');
+                toast('Preparing PDF download with market charts...');
                 const html2pdf = (await import('html2pdf.js')).default;
-                await new Promise((resolve) => setTimeout(resolve, 500));
+                await new Promise((resolve) => setTimeout(resolve, 1000));
 
                 const element = exportRef.current;
                 if (!element) throw new Error("Export element not found");
 
+                const cleanPair = (exportData.symbol && exportData.symbol !== 'No Pair')
+                    ? exportData.symbol.replace(/[^A-Z0-9]/g, '').toUpperCase()
+                    : 'MARKET';
+
                 const opt = {
-                    margin: 15,
-                    filename: 'market-analysis-report.pdf',
+                    margin: [10, 10, 10, 10],
+                    filename: `${cleanPair}_Trade_Analysis_Report.pdf`,
                     image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true, allowTaint: true, backgroundColor: '#ffffff', windowWidth: 800, width: 800 },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                    html2canvas: { scale: 2, useCORS: true, allowTaint: true, backgroundColor: '#0b0f17', windowWidth: 800, width: 800 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
                 };
 
                 await html2pdf().set(opt).from(element).save();
@@ -721,7 +739,7 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
                         left: '-9999px',
                         top: '-9999px',
                         width: '800px',
-                        background: '#ffffff',
+                        background: '#0b0f17',
                         zIndex: -1000
                     }}
                 >
@@ -730,6 +748,7 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
                             inline
                             fullReport={exportData.fullReport}
                             visualData={exportData.visualData}
+                            symbol={exportData.symbol}
                             isLoading={false}
                         />
                     </div>

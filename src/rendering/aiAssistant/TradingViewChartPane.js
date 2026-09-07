@@ -79,12 +79,14 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
     const [latestCandle, setLatestCandle] = useState(null);
     const [activeIndicators, setActiveIndicators] = useState(DEFAULT_ACTIVE_INDICATORS);
 
-    // Safety Watchdog: Never let chart loader stay stuck for more than 2.5s
+    // Safety Watchdog: Never let chart loader stay stuck indefinitely
     useEffect(() => {
         if (loading) {
             const safetyTimer = setTimeout(() => {
-                setLoading(false);
-            }, 2500);
+                if (candlesDataRef.current && candlesDataRef.current.length > 0) {
+                    setLoading(false);
+                }
+            }, 4000);
             return () => clearTimeout(safetyTimer);
         }
     }, [loading]);
@@ -156,8 +158,9 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
 
         setLatestCandle((prev) => {
             if (!prev) return prev;
-            // Prevent cross-symbol price distortion (e.g. 4300 vs 0.65)
-            if (prev.close && (newPrice > prev.close * 3 || newPrice < prev.close / 3)) {
+            // Prevent cross-symbol price distortion or sudden giant spike (e.g. 4471 vs 2720)
+            const ratio = newPrice / prev.close;
+            if (ratio > 1.15 || ratio < 0.85) {
                 return prev;
             }
             const updated = {
@@ -361,6 +364,7 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
         currentChartTypeRef,
         bullishColor,
         bearishColor,
+        livePrice: priceData?.price,
         setLoading,
         setLatestCandle,
         updateIndicators
@@ -469,7 +473,7 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
                     time: true,
                     price: true,
                 },
-                mouseWheel: true,
+                mouseWheel: false,
                 pinch: true,
             },
             timeScale: {
@@ -477,10 +481,12 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
                 timeVisible: true,
                 secondsVisible: false,
                 rightBarStaysOnScroll: true,
+                barSpacing: 5.5,
+                rightOffset: 16,
             },
             rightPriceScale: {
                 borderColor: initialBorder,
-                scaleMargins: { top: 0.08, bottom: 0.22 },
+                scaleMargins: { top: 0.14, bottom: 0.20 },
             },
         });
 
@@ -497,6 +503,29 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
 
         const containerEl = containerRef.current;
         const handleWheelZoom = (e) => {
+            const targetEl = e.target;
+            if (
+                targetEl &&
+                (targetEl.closest(`.${styles.insideChartControlPill}`) ||
+                 targetEl.closest('[class*="dropdown"]') ||
+                 targetEl.closest('[class*="Dropdown"]') ||
+                 targetEl.closest('[class*="tickerSearch"]') ||
+                 targetEl.closest('[class*="tickerList"]') ||
+                 targetEl.closest('[class*="modal"]') ||
+                 targetEl.closest('[class*="Modal"]') ||
+                 targetEl.closest('[class*="menu"]') ||
+                 targetEl.closest('[class*="Menu"]') ||
+                 targetEl.closest('[class*="popup"]') ||
+                 targetEl.closest('[class*="settings"]') ||
+                 targetEl.closest('[class*="control"]') ||
+                 targetEl.closest('[class*="pill"]') ||
+                 targetEl.closest('[class*="Pill"]') ||
+                 targetEl.closest('input, select, textarea, button'))
+            ) {
+                // Allow natural scrolling inside dropdown menus, search results, and popups
+                return;
+            }
+
             if (e.cancelable) {
                 e.preventDefault();
             }
@@ -504,7 +533,7 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
 
             if (!chartRef.current) return;
             const timeScale = chartRef.current.timeScale();
-            const currentSpacing = timeScale.options().barSpacing || 9;
+            const currentSpacing = timeScale.options().barSpacing || 5.5;
 
             const zoomIn = e.deltaY < 0;
             const zoomMultiplier = zoomIn ? 1.15 : 0.87;
@@ -696,15 +725,26 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
     const currentPrice = priceData?.price ?? latestCandle?.close ?? 0;
     const openPrice = latestCandle?.open || currentPrice;
     const priceDiff = currentPrice - openPrice;
-    const changePercent = priceData?.changePercent !== undefined
-        ? priceData.changePercent
-        : (openPrice ? parseFloat(((priceDiff / openPrice) * 100).toFixed(2)) : 0);
-    const isUp = changePercent >= 0;
+    const candleChangePct = (openPrice && openPrice > 0)
+        ? parseFloat(((priceDiff / openPrice) * 100).toFixed(2))
+        : 0;
+
+    // Use current candle direction when available so header color matches the chart candle & price scale badge exactly
+    const isUp = latestCandle
+        ? currentPrice >= openPrice
+        : (priceData?.changePercent !== undefined ? priceData.changePercent >= 0 : true);
+
+    const changePercent = latestCandle
+        ? candleChangePct
+        : (priceData?.changePercent !== undefined ? priceData.changePercent : candleChangePct);
+
     const flashClass = tickDirection === 'up' ? styles.flashUp : (tickDirection === 'down' ? styles.flashDown : '');
 
     const bgUpper = (backgroundColor || '').toUpperCase();
     const isBgLight = bgUpper === '#FFFFFF' || bgUpper === '#FFF' || bgUpper === 'WHITE' || bgUpper === '#F8F9FD' || bgUpper === '#F0F3FA';
     const isChartLight = !isDark || isBgLight;
+
+    const isChartLoading = loading || !candlesDataRef.current || candlesDataRef.current.length === 0;
 
     return (
         <div className={`${styles.chartPaneContainer} ${isChartLight ? styles.lightThemePane : ''}`}>
@@ -726,17 +766,14 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
 
             {/* Live Chart Container */}
             <div className={styles.chartCanvasArea}>
-                {loading && (
-                    <ChartLoaderOverlay
-                        activeSymbol={activeSymbolClean}
-                        currentTimeframe={currentTimeframe}
-                    />
+                {isChartLoading && (
+                    <ChartLoaderOverlay isDark={!isChartLight} />
                 )}
 
                 {/* Main Candlestick / Price Chart Container */}
                 <div
                     ref={containerRef}
-                    className={`${styles.mainChartContainer} ${hasSubPanes ? styles.hasSubPanes : ''} ${loading ? styles.isChartLoading : ''}`}
+                    className={`${styles.mainChartContainer} ${hasSubPanes ? styles.hasSubPanes : ''} ${isChartLoading ? styles.isChartLoading : ''}`}
                     style={{ cursor: 'crosshair' }}
                 >
                     {/* Inside Chart Floating Control Bar (Top Left) */}

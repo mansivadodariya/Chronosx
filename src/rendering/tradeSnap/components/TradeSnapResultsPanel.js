@@ -12,11 +12,11 @@ export default function TradeSnapResultsPanel({
 }) {
     return (
         <div className={styles.resultsColumn}>
-            <div className={styles.resultsPanel}>
+            <div className={styles.resultsPanel} data-lenis-prevent="true">
                 <div className={styles.resultsHeader}>
                     <h3>Analysis Results</h3>
                 </div>
-                <div className={styles.resultsBody}>
+                <div className={styles.resultsBody} data-lenis-prevent="true">
                     {isAnalyzing && (
                         <div className={styles.spinnerWrap}>
                             <Loader centered />

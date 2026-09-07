@@ -53,13 +53,18 @@ export default function TradeSnapModals({
                 ) : (
                     <div className={styles.historyList}>
                         {historyItems.map((item, index) => {
-                            const payload = item.analysis_data || item;
+                            const tradeObj = (Array.isArray(item?.data) && item.data.length > 0)
+                                ? item.data[0]
+                                : (item?.analysis_data || item);
                             return (
                                 <AnalysisResultItem
                                     key={item.id || index}
-                                    trade={payload}
-                                    onViewDetails={() => openDetailModal(payload)}
-                                    onDelete={item.id ? () => handleDeleteHistoryItem(item.id) : null}
+                                    trade={tradeObj}
+                                    onViewDetails={() => {
+                                        setHistoryOpen(false);
+                                        openDetailModal(tradeObj);
+                                    }}
+                                    onDelete={item.id || item.deleteId ? () => handleDeleteHistoryItem(item) : null}
                                 />
                             );
                         })}

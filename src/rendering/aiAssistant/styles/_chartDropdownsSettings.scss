@@ -185,6 +185,7 @@
         z-index: 9999;
         display: flex;
         flex-direction: column;
+        overscroll-behavior: contain;
 
         &.rightAligned {
             right: 0;
@@ -472,9 +473,10 @@
             }
 
             &.isChartLoading {
-                filter: blur(6px);
-                opacity: 0.75;
+                filter: blur(5px);
+                opacity: 0.85;
                 pointer-events: none;
+                user-select: none;
             }
         }
     }
@@ -483,9 +485,9 @@
     .chartOverlayLoader {
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+        background: rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -493,12 +495,17 @@
         gap: 12px;
         z-index: 50;
         color: #f1f5f9;
-        font-size: 13px;
+        font-size: 13.5px;
         font-weight: 500;
         letter-spacing: 0.3px;
         font-family: var(--font-plus-jakarta), var(--font-roboto), sans-serif;
         pointer-events: none;
         animation: fadeInOverlay 0.15s ease-out;
+
+        &.lightLoaderOverlay {
+            background: rgba(255, 255, 255, 0.45);
+            color: #0f172a;
+        }
     }
 
     .chartSpinnerWrapper {
@@ -506,16 +513,28 @@
         flex-direction: column;
         align-items: center;
         gap: 12px;
+
+        span {
+            font-size: 13.5px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 0.3px;
+        }
+
+        :global(html.light) & span,
+        .lightLoaderOverlay & span {
+            color: #0f172a;
+        }
     }
 
     .chartSpinner {
-        width: 32px;
-        height: 32px;
+        width: 34px;
+        height: 34px;
         border: 3px solid rgba(24, 201, 139, 0.2);
         border-top-color: #18C98B;
         border-radius: 50%;
         animation: spinChart 0.8s linear infinite;
-        box-shadow: 0 0 12px rgba(24, 201, 139, 0.3);
+        box-shadow: 0 0 14px rgba(24, 201, 139, 0.35);
     }
 
     @keyframes spinChart {

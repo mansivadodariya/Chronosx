@@ -161,7 +161,7 @@ export default function ChatMessageList({
                                                         <div className={styles.downloadReportRow}>
                                                             <button
                                                                 type="button"
-                                                                onClick={() => handleDownloadFullReport(msg.fullReport, msg.detected_pair || selectedPair)}
+                                                                onClick={() => handleDownloadFullReport(msg.fullReport, msg.visualData, msg.detected_pair || selectedPair)}
                                                                 className={styles.downloadFullReportBtn}
                                                             >
                                                                 <DownloadIcon size={15} />

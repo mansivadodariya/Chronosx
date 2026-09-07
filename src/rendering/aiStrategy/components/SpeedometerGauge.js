@@ -121,11 +121,11 @@ export default function SpeedometerGauge({
     // Needle Angle: -90deg at 0 score, 0deg at 50, +90deg at 100 score
     const needleAngle = (animatedScore / 100) * 180 - 90;
 
-    // SVG arc dimensions
-    const cx = 145;
-    const cy = 116;
-    const r = 66;
-    const arcCircumference = Math.PI * r; // ~207.3
+    // SVG arc dimensions - Sized and spaced for clear, non-overlapping labels
+    const cx = 195;
+    const cy = 126;
+    const r = 78;
+    const arcCircumference = Math.PI * r; // ~245.0
     const filledLength = (animatedScore / 100) * arcCircumference;
 
     const displayScore = customMax === 100 ? animatedScore : Math.round((animatedScore / 100) * customMax);
@@ -134,7 +134,7 @@ export default function SpeedometerGauge({
         <div className={styles.speedometerContainer}>
             <div className={styles.speedometerSvgWrapper}>
                 <svg
-                    viewBox="0 0 290 185"
+                    viewBox="0 0 390 215"
                     className={styles.speedometerSvg}
                 >
                     <defs>
@@ -151,34 +151,36 @@ export default function SpeedometerGauge({
                     {showLabels && (
                         mode === 'numeric' ? (
                             <>
-                                {/* TECHNICAL SCORE: 0 to 100 Numeric Scale Markers (No Bull/Bear Strings) */}
-                                <text x="56" y="120" textAnchor="middle" fontSize="11" fontWeight="700" fill={animatedScore <= 10 ? '#EF4444' : '#94A3B8'} fontFamily="monospace">0</text>
-                                <text x="75" y="66" textAnchor="middle" fontSize="11" fontWeight="700" fill={animatedScore > 10 && animatedScore <= 30 ? '#F97316' : '#94A3B8'} fontFamily="monospace">20</text>
-                                <text x="118" y="34" textAnchor="middle" fontSize="11" fontWeight="700" fill={animatedScore > 30 && animatedScore <= 50 ? '#EAB308' : '#94A3B8'} fontFamily="monospace">40</text>
-                                <text x="172" y="34" textAnchor="middle" fontSize="11" fontWeight="700" fill={animatedScore > 50 && animatedScore <= 70 ? '#84CC16' : '#94A3B8'} fontFamily="monospace">60</text>
-                                <text x="215" y="66" textAnchor="middle" fontSize="11" fontWeight="700" fill={animatedScore > 70 && animatedScore <= 90 ? '#10B981' : '#94A3B8'} fontFamily="monospace">80</text>
-                                <text x="234" y="120" textAnchor="middle" fontSize="11" fontWeight="700" fill={animatedScore > 90 ? '#18C98B' : '#94A3B8'} fontFamily="monospace">100</text>
+                                {/* TECHNICAL SCORE: 0 to 100 Numeric Scale Markers */}
+                                <text x={cx - r - 16} y={cy} textAnchor="end" dominantBaseline="central" fontSize="13" fontWeight="700" fill={animatedScore <= 10 ? '#EF4444' : '#94A3B8'} fontFamily="monospace">0</text>
+                                <text x="120" y="66" textAnchor="middle" fontSize="13" fontWeight="700" fill={animatedScore > 10 && animatedScore <= 30 ? '#F97316' : '#94A3B8'} fontFamily="monospace">20</text>
+                                <text x="160" y="35" textAnchor="middle" fontSize="13" fontWeight="700" fill={animatedScore > 30 && animatedScore <= 50 ? '#EAB308' : '#94A3B8'} fontFamily="monospace">40</text>
+                                <text x="230" y="35" textAnchor="middle" fontSize="13" fontWeight="700" fill={animatedScore > 50 && animatedScore <= 70 ? '#84CC16' : '#94A3B8'} fontFamily="monospace">60</text>
+                                <text x="270" y="66" textAnchor="middle" fontSize="13" fontWeight="700" fill={animatedScore > 70 && animatedScore <= 90 ? '#10B981' : '#94A3B8'} fontFamily="monospace">80</text>
+                                <text x={cx + r + 16} y={cy} textAnchor="start" dominantBaseline="central" fontSize="13" fontWeight="700" fill={animatedScore > 90 ? '#18C98B' : '#94A3B8'} fontFamily="monospace">100</text>
                             </>
                         ) : (
                             <>
-                                {/* TREND SPEEDOMETER: Strictly Bullish / Bearish / Neutral Strings (No 0 to 100 numbers) */}
+                                {/* TREND SPEEDOMETER: Sentiment Zone Labels with ample clearance */}
                                 <text
-                                    x="36"
-                                    y="116"
-                                    textAnchor="middle"
-                                    fontSize="10.5"
-                                    fontWeight={activeZone === 'strong_bearish' ? '800' : '600'}
+                                    x={cx - r - 18}
+                                    y={cy}
+                                    textAnchor="end"
+                                    dominantBaseline="central"
+                                    fontSize="11.5"
+                                    fontWeight={activeZone === 'strong_bearish' ? '800' : '700'}
                                     fill={activeZone === 'strong_bearish' ? '#EF4444' : '#94A3B8'}
+                                    letterSpacing="0.2px"
                                 >
                                     Strong Bearish
                                 </text>
 
                                 <text
-                                    x="78"
-                                    y="44"
+                                    x="120"
+                                    y="51"
                                     textAnchor="middle"
-                                    fontSize="11"
-                                    fontWeight={activeZone === 'bearish' ? '800' : '600'}
+                                    fontSize="12.5"
+                                    fontWeight={activeZone === 'bearish' ? '800' : '700'}
                                     fill={activeZone === 'bearish' ? '#EF4444' : '#94A3B8'}
                                 >
                                     Bearish
@@ -186,33 +188,35 @@ export default function SpeedometerGauge({
 
                                 <text
                                     x={cx}
-                                    y="26"
+                                    y="25"
                                     textAnchor="middle"
-                                    fontSize="11.5"
-                                    fontWeight={activeZone === 'neutral' ? '800' : '600'}
+                                    fontSize="13"
+                                    fontWeight={activeZone === 'neutral' ? '800' : '700'}
                                     fill={activeZone === 'neutral' ? '#EAB308' : '#94A3B8'}
                                 >
                                     Neutral
                                 </text>
 
                                 <text
-                                    x="212"
-                                    y="44"
+                                    x="270"
+                                    y="51"
                                     textAnchor="middle"
-                                    fontSize="11"
-                                    fontWeight={activeZone === 'bullish' ? '800' : '600'}
+                                    fontSize="12.5"
+                                    fontWeight={activeZone === 'bullish' ? '800' : '700'}
                                     fill={activeZone === 'bullish' ? '#18C98B' : '#94A3B8'}
                                 >
                                     Bullish
                                 </text>
 
                                 <text
-                                    x="254"
-                                    y="116"
-                                    textAnchor="middle"
-                                    fontSize="10.5"
-                                    fontWeight={activeZone === 'strong_bullish' ? '800' : '600'}
+                                    x={cx + r + 18}
+                                    y={cy}
+                                    textAnchor="start"
+                                    dominantBaseline="central"
+                                    fontSize="11.5"
+                                    fontWeight={activeZone === 'strong_bullish' ? '800' : '700'}
                                     fill={activeZone === 'strong_bullish' ? '#18C98B' : '#94A3B8'}
+                                    letterSpacing="0.2px"
                                 >
                                     Strong Bullish
                                 </text>
@@ -225,7 +229,7 @@ export default function SpeedometerGauge({
                         d={`M ${cx - r},${cy} A ${r},${r} 0 0,1 ${cx + r},${cy}`}
                         fill="none"
                         stroke="#1F242C"
-                        strokeWidth="7.5"
+                        strokeWidth="9.5"
                         strokeLinecap="round"
                     />
 
@@ -234,49 +238,49 @@ export default function SpeedometerGauge({
                         d={`M ${cx - r},${cy} A ${r},${r} 0 0,1 ${cx + r},${cy}`}
                         fill="none"
                         stroke={`url(#${gradientId})`}
-                        strokeWidth="7.5"
+                        strokeWidth="9.5"
                         strokeLinecap="round"
                         strokeDasharray={`${filledLength} ${arcCircumference}`}
                         style={{
                             transition: 'stroke-dasharray 0.85s cubic-bezier(0.16, 1, 0.3, 1)',
-                            filter: `drop-shadow(0 0 6px ${activeColor}55)`
+                            filter: `drop-shadow(0 0 8px ${activeColor}66)`
                         }}
                     />
 
-                    {/* Rotating Indicator Needle with Center Pin (Always points upwards into arc) */}
+                    {/* Rotating Indicator Needle with Center Pin */}
                     <g
                         transform={`translate(${cx}, ${cy}) rotate(${needleAngle})`}
                         style={{ transition: 'transform 0.85s cubic-bezier(0.16, 1, 0.3, 1)' }}
                     >
-                        {/* Needle Body pointing straight UP at 0 degrees */}
+                        {/* Needle Body */}
                         <line
                             x1="0"
                             y1="0"
                             x2="0"
-                            y2={-(r - 12)}
+                            y2={-(r - 14)}
                             stroke="#FFFFFF"
-                            strokeWidth="2.8"
+                            strokeWidth="3.4"
                             strokeLinecap="round"
-                            style={{ filter: 'drop-shadow(0 0 4px rgba(0,0,0,0.8))' }}
+                            style={{ filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.85))' }}
                         />
                         {/* Needle Accent Tip */}
                         <circle
                             cx="0"
-                            cy={-(r - 12)}
-                            r="2.5"
+                            cy={-(r - 14)}
+                            r="3.2"
                             fill={activeColor}
                         />
                         {/* Center Pivot Disc */}
                         <circle
                             cx="0"
                             cy="0"
-                            r="5.5"
+                            r="7"
                             fill="#FFFFFF"
                         />
                         <circle
                             cx="0"
                             cy="0"
-                            r="2.5"
+                            r="3.2"
                             fill="#0D0E13"
                         />
                     </g>
@@ -284,12 +288,12 @@ export default function SpeedometerGauge({
                     {/* Status Label below needle pivot (e.g. BULLISH) */}
                     <text
                         x={cx}
-                        y={cy + 25}
+                        y={cy + 30}
                         textAnchor="middle"
-                        fontSize="14.5"
+                        fontSize="17.5"
                         fontWeight="800"
                         fill={activeColor}
-                        letterSpacing="0.6px"
+                        letterSpacing="0.8px"
                         fontFamily="'Euclid-Bold', 'Inter', sans-serif"
                     >
                         {activeName}
@@ -298,23 +302,23 @@ export default function SpeedometerGauge({
                     {/* Numeric Score readout (e.g. 75/100) */}
                     <text
                         x={cx}
-                        y={cy + 43}
+                        y={cy + 52}
                         textAnchor="middle"
                         fontFamily="monospace"
                     >
-                        <tspan fontSize="15" fontWeight="800" fill="#FFFFFF">{displayScore}</tspan>
-                        <tspan fontSize="12" fontWeight="600" fill="#94A3B8">/{customMax}</tspan>
+                        <tspan fontSize="20" fontWeight="800" fill="#FFFFFF">{displayScore}</tspan>
+                        <tspan fontSize="14" fontWeight="600" fill="#94A3B8">/{customMax}</tspan>
                     </text>
 
                     {/* Confidence Footer (e.g. CONFIDENCE: 50%) */}
                     {confidence && confidence !== '-' && (
                         <text
                             x={cx}
-                            y={cy + 58}
+                            y={cy + 70}
                             textAnchor="middle"
-                            fontSize="9.5"
+                            fontSize="11.5"
                             fontWeight="700"
-                            letterSpacing="0.4px"
+                            letterSpacing="0.5px"
                             fontFamily="'Euclid-Bold', 'Inter', sans-serif"
                         >
                             <tspan fill="#94A3B8">CONFIDENCE: </tspan>

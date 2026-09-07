@@ -308,7 +308,7 @@
                             width: 100%;
                             background: linear-gradient(145deg, rgba(16, 18, 24, 0.92) 0%, rgba(8, 9, 12, 0.98) 100%);
                             border: 1px solid rgba(24, 201, 139, 0.28);
-                            border-radius: 14px;
+                            border-radius: 6px !important;
                             padding: 12px 16px;
                             cursor: pointer;
                             text-align: left;
@@ -333,7 +333,7 @@
                             .cardIconWrapper {
                                 width: 44px;
                                 height: 44px;
-                                border-radius: 12px;
+                                border-radius: 6px;
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
@@ -376,7 +376,7 @@
                             .cardArrow {
                                 width: 28px;
                                 height: 28px;
-                                border-radius: 50%;
+                                border-radius: 6px;
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
