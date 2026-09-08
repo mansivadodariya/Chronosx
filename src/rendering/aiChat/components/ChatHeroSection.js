@@ -21,6 +21,9 @@ export default function ChatHeroSection({ scrollToDemo }) {
                         transition={{ duration: 0.5 }}
                     >
                         <div className={styles.statusPill}>
+                            <span className={styles.pulseDot}>
+                                <span className={styles.pulseRing} />
+                            </span>
                             <span className={styles.pillText}>Institutional AI Trading Desk</span>
                             <span className={styles.pillBadge}>0-DELAY TICK STREAM</span>
                         </div>

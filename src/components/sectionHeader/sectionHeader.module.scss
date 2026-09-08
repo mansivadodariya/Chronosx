@@ -57,13 +57,13 @@
     }
 
     :global(html.light) & {
-      color: #047857 !important;
-      background: rgba(16, 185, 129, 0.12) !important;
-      border: 1px solid rgba(5, 150, 105, 0.38) !important;
+      color: #059669 !important;
+      background: rgba(5, 150, 105, 0.1) !important;
+      border: 1px solid rgba(5, 150, 105, 0.35) !important;
       box-shadow: none !important;
 
       .badgeText {
-        color: #047857 !important;
+        color: #059669 !important;
         font-weight: 800 !important;
       }
     }
@@ -73,13 +73,16 @@
      TITLE STYLING
      ---------------------------------------------------- */
   .title {
-    font-family: var(--font-syne), "Syne", sans-serif;
+    font-family: "Euclid-Bold", "Euclid Circular A", var(--font-plus-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-size: 46px;
-    font-weight: 800;
-    line-height: 1.12;
-    letter-spacing: -1.2px;
+    font-weight: 900;
+    line-height: 1.14;
+    letter-spacing: -1.3px;
     color: #FFFFFF;
     margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
     transition: color 0.3s ease;
 
     @include respond-to("md") {
@@ -101,6 +104,7 @@
 
     .title1 {
       color: #FFFFFF !important;
+      font-weight: 900 !important;
       -webkit-text-fill-color: #FFFFFF !important;
       background: none !important;
       -webkit-background-clip: initial !important;
@@ -111,6 +115,7 @@
 
     .title2 {
       color: #18C98B !important;
+      font-weight: 900 !important;
       background: none !important;
       -webkit-background-clip: unset !important;
       -webkit-text-fill-color: initial !important;
@@ -120,9 +125,11 @@
 
     :global(html.light) & {
       color: #0F172A !important;
+      font-weight: 900 !important;
 
       .title1 {
         color: #0F172A !important;
+        font-weight: 900 !important;
         -webkit-text-fill-color: #0F172A !important;
         background: none !important;
         -webkit-background-clip: initial !important;
@@ -130,10 +137,11 @@
       }
 
       .title2 {
-        color: #18C98B !important;
+        color: #059669 !important;
+        font-weight: 900 !important;
         background: none !important;
         -webkit-background-clip: unset !important;
-        -webkit-text-fill-color: initial !important;
+        -webkit-text-fill-color: #059669 !important;
         background-clip: unset !important;
       }
     }
@@ -158,7 +166,8 @@
     }
 
     :global(html.light) & {
-      color: #475569 !important;
+      color: #334155 !important;
+      font-weight: 500 !important;
     }
   }
 

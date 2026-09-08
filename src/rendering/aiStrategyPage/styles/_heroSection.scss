@@ -158,14 +158,27 @@
     border-radius: 9999px;
     background: #18C98B;
     color: #040605;
-    font-size: 14px;
+    font-family: var(--font-plus-jakarta), "Euclid Circular A", "Euclid-Bold", sans-serif;
+    font-size: 14.5px;
     font-weight: 800;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.4px;
     text-transform: uppercase;
     border: 1px solid #18C98B;
     cursor: pointer;
     box-shadow: 0 4px 18px rgba(24, 201, 139, 0.35);
     transition: all 0.25s cubic-bezier(0.2, 0, 0.38, 0.9);
+
+    span {
+        font-family: var(--font-plus-jakarta), "Euclid Circular A", "Euclid-Bold", sans-serif;
+        font-size: 14.5px;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+        color: #040605;
+    }
+
+    svg {
+        flex-shrink: 0;
+    }
 
     &:hover {
         background: #15b77e;
@@ -191,12 +204,22 @@
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(24, 201, 139, 0.3);
     color: #18C98B;
-    font-size: 13.5px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
+    font-family: var(--font-plus-jakarta), "Euclid Circular A", "Euclid-Bold", sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
     cursor: pointer;
     backdrop-filter: blur(8px);
     transition: all 0.3s ease;
+
+    span {
+        font-family: var(--font-plus-jakarta), "Euclid Circular A", "Euclid-Bold", sans-serif;
+        font-size: 14px;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+        color: #18C98B;
+    }
 
     &:hover {
         background: rgba(24, 201, 139, 0.12);

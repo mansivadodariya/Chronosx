@@ -33,17 +33,20 @@
   }
 
   .title {
-    font-family: var(--font-syne), "Syne", sans-serif;
+    font-family: "Euclid-Bold", "Euclid Circular A", var(--font-plus-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-size: 46px;
-    font-weight: 800;
-    line-height: 1.12;
-    letter-spacing: -1.2px;
+    font-weight: 900;
+    line-height: 1.14;
+    letter-spacing: -1.3px;
     color: #FFFFFF;
     text-align: center;
     margin: 0 0 16px 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 
     :global(html.light) & {
       color: #0F172A !important;
+      font-weight: 900 !important;
     }
 
     span {
@@ -51,11 +54,12 @@
       background: none;
       -webkit-text-fill-color: initial;
       display: inline;
+      font-weight: 900;
 
       :global(html.light) & {
-        color: #18C98B !important;
-        background: none !important;
-        -webkit-text-fill-color: initial !important;
+        color: #059669 !important;
+        -webkit-text-fill-color: #059669 !important;
+        font-weight: 900 !important;
       }
     }
 

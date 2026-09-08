@@ -46,18 +46,18 @@ export default function HudPentagonRays() {
         const path = `M ${x1} ${y1} L ${x2} ${y2}`;
         return (
           <g key={id}>
-            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={`url(#${id})`} strokeWidth="1.2" strokeDasharray="3 4" strokeOpacity="0.4" />
-            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#22f7ab" strokeWidth="1.8" strokeDasharray="10 26" className={styles.flowingBeam} />
-            <circle r="3.5" fill="#22f7ab" filter="url(#hudNeonGlow)">
+            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={`url(#${id})`} strokeWidth="1.5" strokeDasharray="3 4" strokeOpacity="0.6" className={styles.baseRayLine} />
+            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#22f7ab" strokeWidth="2" strokeDasharray="10 26" className={styles.flowingBeam} />
+            <circle r="3.5" fill="#22f7ab" filter="url(#hudNeonGlow)" className={styles.movingParticle}>
               <animateMotion dur={dur} repeatCount="indefinite" path={path} calcMode="linear" />
-              <animate attributeName="opacity" values="0.2;1;1;0.2" dur={dur} repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.3;1;1;0.3" dur={dur} repeatCount="indefinite" />
             </circle>
-            <circle r="2" fill="#a7f3d0" opacity="0.9">
+            <circle r="2" fill="#a7f3d0" opacity="0.9" className={styles.movingParticleSmall}>
               <animateMotion dur={dur} begin={begin} repeatCount="indefinite" path={path} calcMode="linear" />
-              <animate attributeName="opacity" values="0.1;0.9;0.9;0.1" dur={dur} begin={begin} repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.2;0.9;0.9;0.2" dur={dur} begin={begin} repeatCount="indefinite" />
             </circle>
             <circle cx={x2} cy={y2} r="4.5" fill="#18c98b" filter="url(#hudNeonGlow)" className={styles.centerTargetDot} />
-            <circle cx={x2} cy={y2} r="4" fill="none" stroke="#22f7ab" strokeWidth="1">
+            <circle cx={x2} cy={y2} r="4" fill="none" stroke="#22f7ab" strokeWidth="1.5" className={styles.targetPulseRing}>
               <animate attributeName="r" values="4;13" dur={dur} repeatCount="indefinite" />
               <animate attributeName="opacity" values="0.8;0" dur={dur} repeatCount="indefinite" />
             </circle>

@@ -154,7 +154,7 @@
     /* 4. Live Technical Score Feed Cockpit */
     .feedCockpit {
         background: #FFFFFF !important;
-        border: 1px solid rgba(24, 201, 139, 0.28) !important;
+        border: 1px solid rgba(5, 150, 105, 0.25) !important;
         box-shadow: 0 15px 45px rgba(15, 23, 42, 0.08) !important;
 
         .cockpitNavHeader {
@@ -163,12 +163,12 @@
 
             .brandTitle {
                 color: #0F172A !important;
-                font-weight: 700 !important;
+                font-weight: 800 !important;
             }
 
             .stratLabel {
                 color: #475569 !important;
-                font-weight: 700 !important;
+                font-weight: 800 !important;
             }
 
             .stratBtn {
@@ -177,58 +177,34 @@
                 color: #475569 !important;
 
                 &:hover {
-                    color: #047857 !important;
-                    border-color: #18C98B !important;
+                    color: #059669 !important;
+                    border-color: #059669 !important;
+                    background: #F0FDF4 !important;
                 }
 
                 &.stratBtnActive {
-                    background: rgba(24, 201, 139, 0.15) !important;
-                    color: #047857 !important;
-                    border-color: #18C98B !important;
+                    background: rgba(5, 150, 105, 0.12) !important;
+                    color: #059669 !important;
+                    border-color: #059669 !important;
                     font-weight: 800 !important;
                     box-shadow: none !important;
                 }
             }
 
-            .telemetryStatus {
-                color: #047857 !important;
+            .liveTelemetryTag {
+                color: #059669 !important;
+                font-weight: 800 !important;
+
+                .pulsingDot {
+                    background: #059669 !important;
+                    box-shadow: 0 0 8px rgba(5, 150, 105, 0.6) !important;
+                }
             }
         }
 
-        /* Top Pair Selector Horizontal Strip (Screenshot Fix) */
-        .pairsTabsBar {
+        /* Left Column: 6-Pair Interactive Watchlist */
+        .watchlistPane {
             background: #F8FAFC !important;
-            border-bottom: 1px solid #E2E8F0 !important;
-
-            .pairTabBtn {
-                background: #FFFFFF !important;
-                border-right: 1px solid #F1F5F9 !important;
-                border-bottom: 1px solid #F1F5F9 !important;
-
-                &:hover {
-                    background: #F8FAFC !important;
-                }
-
-                &.pairTabBtnActive {
-                    background: #F0FDF4 !important;
-                    border-bottom: 2px solid #18C98B !important;
-                }
-
-                .pairSym {
-                    color: #0F172A !important;
-                    font-weight: 800 !important;
-                }
-
-                .pairPrice {
-                    color: #475569 !important;
-                    font-weight: 600 !important;
-                }
-            }
-        }
-
-        /* Left Column: 100-Point Score Dial Card */
-        .scoreDialCol {
-            background: #FAFAFA !important;
             border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
 
             @include respond-to('md') {
@@ -236,164 +212,242 @@
                 border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
             }
 
-            .dialCard {
+            .paneHeader {
+                color: #64748B !important;
+                border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+            }
+
+            .paneCount {
+                color: #059669 !important;
+                background: rgba(5, 150, 105, 0.1) !important;
+                border-color: rgba(5, 150, 105, 0.25) !important;
+            }
+
+            .pairItemBtn {
                 background: #FFFFFF !important;
-                border: 1px solid rgba(24, 201, 139, 0.28) !important;
-                box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
 
-                .dialHeader {
-                    border-bottom: 1px solid #F1F5F9 !important;
-
-                    .dialSub {
-                        color: #047857 !important;
-                    }
-
-                    .dialPairTitle {
-                        color: #0F172A !important;
-                    }
-
-                    .dialPairName {
-                        color: #64748B !important;
-                    }
-
-                    .priceLabel {
-                        color: #64748B !important;
-                        font-weight: 700 !important;
-                    }
-
-                    .priceValue {
-                        color: #047857 !important;
-                        font-weight: 900 !important;
-                    }
+                &:hover {
+                    background: #F1F5F9 !important;
+                    border-color: rgba(5, 150, 105, 0.3) !important;
                 }
 
-                .meterContainer {
-                    .dialSvg circle:first-child {
-                        stroke: rgba(15, 23, 42, 0.08) !important;
-                    }
-
-                    .dialScoreNum {
-                        color: #0F172A !important;
-                        font-weight: 900 !important;
-                    }
-
-                    .dialScoreMax {
-                        color: #64748B !important;
-                    }
-
-                    .confidenceRow {
-                        color: #64748B !important;
-
-                        strong {
-                            color: #047857 !important;
-                        }
-                    }
+                &.pairItemActive {
+                    background: #F0FDF4 !important;
+                    border-color: #059669 !important;
+                    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.12) !important;
                 }
 
-                .indicatorsRow {
-                    border-top: 1px solid #F1F5F9 !important;
+                .pairSymbol {
+                    color: #0F172A !important;
+                }
 
-                    .indPill {
-                        background: #F8FAFC !important;
-                        border: 1px solid #E2E8F0 !important;
+                .pairName {
+                    color: #64748B !important;
+                }
 
-                        .indName {
-                            color: #64748B !important;
-                        }
+                .pairPrice {
+                    color: #0F172A !important;
+                }
+
+                .scoreTag {
+                    &.bullish,
+                    &.strong_bullish {
+                        background: #F0FDF4 !important;
+                        color: #059669 !important;
+                        border-color: rgba(5, 150, 105, 0.3) !important;
                     }
+
+                    &.bearish,
+                    &.strong_bearish {
+                        background: #FEF2F2 !important;
+                        color: #DC2626 !important;
+                        border-color: rgba(220, 38, 38, 0.3) !important;
+                    }
+
+                    &.neutral {
+                        background: #F0F9FF !important;
+                        color: #0284C7 !important;
+                        border-color: rgba(2, 132, 199, 0.3) !important;
+                    }
+                }
+            }
+
+            .deskHintBanner {
+                background: #FFFFFF !important;
+                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+                color: #64748B !important;
+
+                svg {
+                    color: #059669 !important;
                 }
             }
         }
 
-        /* Right Column: 4-Pillar Score Breakdown */
-        .pillarsCol {
+        /* Right Column: Detailed Quantitative Audit Scorecard */
+        .scorecardPane {
             background: #FFFFFF !important;
 
-            .pillarsHeaderRow {
+            .scorecardHeroBar {
                 border-bottom: 1px solid #F1F5F9 !important;
 
-                .pillarIconBox {
-                    background: #F0FDF4 !important;
-                    border-color: rgba(24, 201, 139, 0.35) !important;
-                    color: #047857 !important;
+                .assetSymbolRow {
+                    h3 {
+                        color: #0F172A !important;
+                    }
                 }
 
-                .pillarHeaderTag {
-                    color: #047857 !important;
+                .biasBadge {
+                    &.bullish,
+                    &.strong_bullish {
+                        background: #F0FDF4 !important;
+                        color: #059669 !important;
+                        border-color: rgba(5, 150, 105, 0.35) !important;
+                    }
+
+                    &.bearish,
+                    &.strong_bearish {
+                        background: #FEF2F2 !important;
+                        color: #DC2626 !important;
+                        border-color: rgba(220, 38, 38, 0.35) !important;
+                    }
+
+                    &.neutral {
+                        background: #F0F9FF !important;
+                        color: #0284C7 !important;
+                        border-color: rgba(2, 132, 199, 0.35) !important;
+                    }
                 }
 
-                .pillarMainTitle {
+                .assetSubTitle {
+                    color: #64748B !important;
+
+                    strong {
+                        color: #059669 !important;
+                    }
+                }
+
+                .scoreNumber {
                     color: #0F172A !important;
                 }
 
-                .copyBtn {
-                    background: #F1F5F9 !important;
-                    border: 1px solid #E2E8F0 !important;
-                    color: #475569 !important;
+                .scoreDenominator {
+                    color: #64748B !important;
+                }
 
-                    &:hover {
-                        background: #18C98B !important;
-                        color: #040605 !important;
-                        border-color: #18C98B !important;
-                    }
+                .confidenceLabel {
+                    color: #059669 !important;
                 }
             }
 
-            /* 4 Pillar Cards (Screenshot Fix) */
-            .pillarsList {
-                .pillarItem {
+            .pillarsGrid {
+                .pillarCard {
                     background: #F8FAFC !important;
-                    border: 1px solid rgba(15, 23, 42, 0.09) !important;
-                    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03) !important;
+                    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+                    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02) !important;
 
-                    .pillarItemTop {
-                        .pillarName {
-                            color: #0F172A !important;
+                    &:hover {
+                        background: #FFFFFF !important;
+                        border-color: rgba(5, 150, 105, 0.3) !important;
+                        box-shadow: 0 4px 14px rgba(5, 150, 105, 0.08) !important;
+                    }
 
-                            strong {
-                                color: #0F172A !important;
-                                font-weight: 800 !important;
-                            }
-                        }
+                    .pillarHeader {
+                        color: #0F172A !important;
+                    }
 
-                        .pillarScoreNum {
-                            color: #047857 !important;
-                            font-weight: 800 !important;
-                        }
+                    .pillarScore {
+                        color: #059669 !important;
                     }
 
                     .pillarProgressBar {
                         background: #E2E8F0 !important;
                     }
 
+                    .pillarProgressFill {
+                        background: linear-gradient(90deg, #059669 0%, #10B981 100%) !important;
+                    }
+
                     .pillarNote {
                         color: #475569 !important;
-                        font-weight: 500 !important;
                     }
                 }
             }
 
-            /* AI Confluence Summary Card */
-            .summaryCard {
-                background: #F8FAFC !important;
-                border: 1px solid #E2E8F0 !important;
+            .activeIndicatorsRow {
+                border-top: 1px solid #F1F5F9 !important;
 
-                .summaryTitle {
-                    color: #047857 !important;
-                    font-weight: 800 !important;
+                .indicatorsTitle {
+                    color: #64748B !important;
                 }
 
-                p {
-                    color: #334155 !important;
-                    line-height: 1.6 !important;
+                .indicatorTag {
+                    background: #F8FAFC !important;
+                    border: 1px solid #E2E8F0 !important;
+
+                    .indName {
+                        color: #64748B !important;
+                    }
+
+                    .indVal {
+                        color: #0F172A !important;
+                    }
+
+                    &.bullish,
+                    &.strong_bullish {
+                        border-color: rgba(5, 150, 105, 0.3) !important;
+                        .indVal {
+                            color: #059669 !important;
+                        }
+                    }
+
+                    &.bearish,
+                    &.strong_bearish {
+                        border-color: rgba(220, 38, 38, 0.3) !important;
+                        .indVal {
+                            color: #DC2626 !important;
+                        }
+                    }
+
+                    &.neutral {
+                        border-color: rgba(2, 132, 199, 0.3) !important;
+                        .indVal {
+                            color: #0284C7 !important;
+                        }
+                    }
                 }
             }
 
-            /* Launch Button */
-            .launchDeskActionBtn {
-                background: #18C98B !important;
-                color: #040605 !important;
-                font-weight: 700 !important;
+            .cockpitFooter {
+                border-top: 1px solid #F1F5F9 !important;
+
+                .evidenceSummary {
+                    background: #F8FAFC !important;
+                    border: 1px solid #E2E8F0 !important;
+
+                    .evidenceTitle {
+                        color: #059669 !important;
+
+                        svg {
+                            color: #059669 !important;
+                        }
+                    }
+
+                    p {
+                        color: #334155 !important;
+                    }
+                }
+
+                .launchDeskActionBtn {
+                    background: #18C98B !important;
+                    color: #040605 !important;
+                    font-weight: 800 !important;
+
+                    &:hover {
+                        background: #15b77e !important;
+                    }
+                }
             }
         }
     }

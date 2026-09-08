@@ -103,6 +103,12 @@ html.lenis body {
   margin: 0 auto;
 }
 
+.container-xs4 {
+  max-width: calc(960px + 40px);
+  padding: 0 20px;
+  margin: 0 auto;
+}
+
 .container,
 .container-xs,
 .container-xl,

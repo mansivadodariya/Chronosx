@@ -412,12 +412,304 @@ $success: #10b981;
         }
     }
 
+    .snapshotWrapper {
+        position: relative;
+    }
+
+    .snapshotImageContainer {
+        position: relative;
+        overflow: hidden;
+        background: #060608;
+    }
+
     .snapshotImg {
         width: 100%;
         display: block;
         object-fit: contain;
-        max-height: 320px;
-        background: #f8fafc;
+        max-height: 340px;
+        background: #060608;
+    }
+
+    .scannerOverlay {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at center, rgba(24, 201, 139, 0.16) 0%, rgba(6, 12, 10, 0.78) 85%);
+        pointer-events: none;
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(2px);
+    }
+
+    .scannerOverlayContent {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: calc(100% - 36px);
+        max-width: 440px;
+        padding: 16px 20px;
+        margin: auto;
+        background: rgba(6, 12, 10, 0.88);
+        border: 1px solid rgba(24, 201, 139, 0.35);
+        border-radius: 14px;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 24px rgba(24, 201, 139, 0.12);
+        pointer-events: auto;
+        gap: 10px;
+
+        .scannerCenterCore {
+            position: relative;
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+
+            .scannerRingGlow {
+                position: absolute;
+                inset: 0;
+                margin: auto;
+                width: 68px;
+                height: 68px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(24, 201, 139, 0.35) 0%, transparent 70%);
+                filter: blur(8px);
+                pointer-events: none;
+            }
+
+            .radarSvgRingOuter {
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                margin: auto !important;
+                width: 76px !important;
+                height: 76px !important;
+                pointer-events: none;
+            }
+
+            .radarSvgRingInner {
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                margin: auto !important;
+                width: 58px !important;
+                height: 58px !important;
+                pointer-events: none;
+            }
+
+            .scannerCenterIcon {
+                position: relative;
+                z-index: 2;
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+                background: rgba(6, 12, 10, 0.95);
+                border: 1.5px solid rgba(24, 201, 139, 0.6);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 0 16px rgba(24, 201, 139, 0.45);
+            }
+        }
+
+        .rotatingMessageBlock {
+            text-align: center;
+            width: 100%;
+            min-height: 44px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .messageContentWrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            width: 100%;
+        }
+
+        .rotatingMainMessage {
+            margin: 0;
+            font-size: 15.5px;
+            font-weight: 700;
+            color: #FFFFFF;
+            font-family: "Euclid-Bold", sans-serif;
+            letter-spacing: 0.3px;
+            text-shadow: 0 0 10px rgba(24, 201, 139, 0.4);
+        }
+
+        .rotatingSubMessage {
+            margin: 0;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.75);
+            font-family: "Euclid-Regular", sans-serif;
+            max-width: 360px;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .analyzingProgressSection {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .analyzingProgressBarTrack {
+            width: 100%;
+            height: 6px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.12);
+            overflow: hidden;
+        }
+
+        .analyzingProgressBarFill {
+            height: 100%;
+            background: linear-gradient(90deg, #18C98B 0%, #38BDF8 50%, #18C98B 100%);
+            background-size: 200% 100%;
+            animation: shimmerProgressSweep 2s linear infinite;
+            border-radius: 9999px;
+            box-shadow: 0 0 10px rgba(24, 201, 139, 0.7);
+        }
+
+        .analyzingMetaFooter {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.65);
+            font-family: "Euclid-Medium", monospace;
+        }
+
+        .analyzingPercentNumber {
+            font-weight: 800;
+            color: #18C98B;
+            font-size: 12px;
+            font-family: monospace;
+        }
+    }
+
+    .scannerGridMesh {
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(24, 201, 139, 0.12) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(24, 201, 139, 0.12) 1px, transparent 1px);
+        background-size: 24px 24px;
+        opacity: 0.7;
+    }
+
+    .scannerLaserLine {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, transparent 0%, #18C98B 20%, #38BDF8 50%, #18C98B 80%, transparent 100%);
+        box-shadow: 0 0 16px #18C98B, 0 0 32px rgba(56, 189, 248, 0.85);
+        animation: laserScanSweep 2.2s ease-in-out infinite alternate;
+        z-index: 6;
+    }
+
+    @keyframes laserScanSweep {
+        0% {
+            top: 4%;
+            opacity: 0.75;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            top: 94%;
+            opacity: 0.75;
+        }
+    }
+
+    .cornerBracketTL,
+    .cornerBracketTR,
+    .cornerBracketBL,
+    .cornerBracketBR {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-color: #18C98B;
+        border-style: solid;
+        z-index: 7;
+        filter: drop-shadow(0 0 6px rgba(24, 201, 139, 0.6));
+    }
+
+    .cornerBracketTL {
+        top: 10px;
+        left: 10px;
+        border-width: 2.5px 0 0 2.5px;
+    }
+
+    .cornerBracketTR {
+        top: 10px;
+        right: 10px;
+        border-width: 2.5px 2.5px 0 0;
+    }
+
+    .cornerBracketBL {
+        bottom: 10px;
+        left: 10px;
+        border-width: 0 0 2.5px 2.5px;
+    }
+
+    .cornerBracketBR {
+        bottom: 10px;
+        right: 10px;
+        border-width: 0 2.5px 2.5px 0;
+    }
+
+    .snapshotRetryBar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 16px;
+        background: rgba(239, 68, 68, 0.09);
+        border-top: 1px solid rgba(239, 68, 68, 0.28);
+
+        .retryInfo {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: #EF4444;
+            font-size: 12.5px;
+            font-weight: 600;
+            font-family: "Euclid-Medium", sans-serif;
+        }
+
+        .retryActionBtn {
+            padding: 5px 14px;
+            border-radius: 6px;
+            background: #EF4444;
+            color: #FFFFFF;
+            font-size: 12px;
+            font-weight: 700;
+            font-family: "Euclid-Bold", sans-serif;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            &:hover {
+                background: #DC2626;
+                box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+            }
+        }
     }
 
     .snapshotEmpty {
@@ -429,7 +721,7 @@ $success: #10b981;
         font-size: 14px;
         padding: 20px;
         text-align: center;
-        background: #f8fafc;
+        background: #060608;
     }
 
     .dualSnapshot {
@@ -444,7 +736,7 @@ $success: #10b981;
             object-fit: contain;
             border: 1px solid $border;
             border-radius: 8px;
-            background: #f8fafc;
+            background: #060608;
         }
     }
 
@@ -456,7 +748,7 @@ $success: #10b981;
         flex-direction: column;
         max-height: calc(100dvh - 180px);
         overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
 
     .resultsHeader {
@@ -464,12 +756,36 @@ $success: #10b981;
         border-bottom: 1px solid $border;
         background: rgba(24, 201, 139, 0.04);
 
+        .resultsHeaderRow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
         h3 {
             margin: 0;
             font-size: 18px;
             font-weight: 600;
             color: $text;
+            font-family: "Euclid-SemiBold", sans-serif;
         }
+    }
+
+    .liveEngineBadge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 9999px;
+        background: rgba(24, 201, 139, 0.12);
+        border: 1px solid rgba(24, 201, 139, 0.35);
+        color: #18C98B;
+        font-size: 10.5px;
+        font-weight: 800;
+        font-family: "Euclid-Bold", monospace;
+        letter-spacing: 0.8px;
     }
 
     .resultsBody {
@@ -493,131 +809,120 @@ $success: #10b981;
         }
     }
 
-    .analyzingProgressCard {
-        background: linear-gradient(135deg, rgba(24, 201, 139, 0.08) 0%, rgba(6, 12, 10, 0.95) 100%);
-        border: 1px solid rgba(24, 201, 139, 0.35);
+    .analysisErrorCard {
+        border: 1px solid rgba(239, 68, 68, 0.35);
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.09) 0%, rgba(18, 10, 10, 0.95) 100%);
         border-radius: 12px;
-        padding: 16px 18px;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(24, 201, 139, 0.1);
+        padding: 22px 20px;
         display: flex;
         flex-direction: column;
+        align-items: center;
+        text-align: center;
         gap: 12px;
-        animation: pulseAnalyzingGlow 2.5s infinite alternate ease-in-out;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
 
-    @keyframes pulseAnalyzingGlow {
-        0% {
-            border-color: rgba(24, 201, 139, 0.3);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 10px rgba(24, 201, 139, 0.08);
-        }
-        100% {
-            border-color: rgba(24, 201, 139, 0.6);
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), 0 0 22px rgba(24, 201, 139, 0.22);
-        }
-    }
-
-    .analyzingTopRow {
+    .errorIconWrap {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.35);
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
     }
 
-    .analyzingPulseBadge {
+    .errorDetails {
+        h4 {
+            margin: 0 0 4px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #FFFFFF;
+            font-family: "Euclid-Bold", sans-serif;
+        }
+
+        p {
+            margin: 0;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 380px;
+            line-height: 1.45;
+            font-family: "Euclid-Regular", sans-serif;
+        }
+    }
+
+    .retryPrimaryBtn {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 3px 8px;
-        border-radius: 6px;
-        background: rgba(24, 201, 139, 0.15);
-        border: 1px solid rgba(24, 201, 139, 0.35);
-        color: #18C98B;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 0.6px;
-    }
-
-    .pulseDot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: #18C98B;
-        box-shadow: 0 0 8px #18C98B;
-        animation: activeCandleGlow 1.2s infinite alternate ease-in-out;
-    }
-
-    .analyzingPercent {
-        font-size: 12px;
-        font-weight: 700;
-        color: #18C98B;
-        font-family: monospace;
-    }
-
-    .analyzingMessageRow {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .scannerIconWrap {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        background: rgba(24, 201, 139, 0.12);
-        border: 1px solid rgba(24, 201, 139, 0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-
-        .scannerIcon {
-            animation: pulseAnalyzingGlow 1.8s infinite alternate ease-in-out;
-        }
-    }
-
-    .analyzingText {
-        margin: 0;
-        font-size: 13.5px;
-        font-weight: 500;
+        gap: 8px;
+        padding: 10px 24px;
+        border-radius: 9999px;
+        background: #EF4444;
         color: #FFFFFF;
-        line-height: 1.4;
+        font-size: 13.5px;
+        font-weight: 700;
+        font-family: "Euclid-Bold", sans-serif;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
 
-        .typewriterCursor {
-            display: inline-block;
-            color: #18C98B;
-            font-size: 12px;
-            margin-left: 3px;
-            vertical-align: baseline;
-            animation: blinkTypewriter 0.65s infinite ease-in-out;
-            text-shadow: 0 0 6px #18C98B;
+        &:hover {
+            background: #DC2626;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(239, 68, 68, 0.45);
         }
     }
 
-    @keyframes blinkTypewriter {
-        0%, 100% { opacity: 1; transform: scaleY(1); }
-        50% { opacity: 0.15; transform: scaleY(0.75); }
-    }
-
-    .analyzingProgressBarTrack {
-        width: 100%;
-        height: 4px;
-        border-radius: 2px;
-        background: rgba(255, 255, 255, 0.08);
-        overflow: hidden;
-    }
-
-    .analyzingProgressBarFill {
-        height: 100%;
-        background: linear-gradient(90deg, #18C98B 0%, #34D399 100%);
-        border-radius: 2px;
-        transition: width 0.4s ease-out;
-        box-shadow: 0 0 10px rgba(24, 201, 139, 0.8);
-    }
-
-    .spinnerWrap {
+    .analysesListContainer {
         display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .resultsEmptyState {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
-        padding: 24px;
+        text-align: center;
+        padding: 48px 24px;
+        color: rgba(255, 255, 255, 0.55);
+
+        .emptyIconBox {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: rgba(24, 201, 139, 0.06);
+            border: 1px solid rgba(24, 201, 139, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            margin: 0 0 6px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #FFFFFF;
+            font-family: "Euclid-Bold", sans-serif;
+        }
+
+        p {
+            margin: 0;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 320px;
+            line-height: 1.5;
+            font-family: "Euclid-Regular", sans-serif;
+
+            strong {
+                color: #18C98B;
+            }
+        }
     }
 
     .historyGroup {
@@ -657,4 +962,150 @@ $success: #10b981;
         font-family: "Euclid-Regular", sans-serif;
     }
 
+    .pulseDot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #18C98B;
+        box-shadow: 0 0 8px #18C98B;
+        animation: activeCandleGlow 1.2s infinite alternate ease-in-out;
+    }
+
+    @keyframes activeCandleGlow {
+        0% {
+            transform: scale(0.9);
+            opacity: 0.7;
+        }
+        100% {
+            transform: scale(1.15);
+            opacity: 1;
+        }
+    }
+}
+
+:global(html[data-theme='light']) {
+    .tradeSnap {
+        .panel,
+        .resultsPanel {
+            background: #FFFFFF;
+            border-color: rgba(5, 150, 105, 0.25);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 0 20px rgba(5, 150, 105, 0.05);
+        }
+
+        .panelHeader,
+        .resultsHeader {
+            background: #F8FAFC;
+            border-bottom-color: rgba(5, 150, 105, 0.15);
+
+            h3 {
+                color: #0F172A;
+            }
+        }
+
+        .panelActions {
+            background: #F8FAFC;
+        }
+
+        .videoFrame,
+        .snapshotImageContainer,
+        .snapshotImg,
+        .snapshotEmpty,
+        .dualSnapshot img {
+            background: #F1F5F9;
+        }
+
+        .videoPlaceholder {
+            color: #0F172A;
+            background: radial-gradient(circle at center, rgba(5, 150, 105, 0.08) 0%, #F1F5F9 70%);
+
+            h3 {
+                color: #0F172A;
+            }
+
+            p {
+                color: #64748B;
+            }
+        }
+
+        .scannerOverlay {
+            background: radial-gradient(circle at center, rgba(5, 150, 105, 0.16) 0%, rgba(248, 250, 252, 0.88) 85%);
+        }
+
+        .scannerOverlayContent {
+            .rotatingMainMessage {
+                color: #0F172A;
+                text-shadow: none;
+            }
+
+            .rotatingSubMessage {
+                color: #475569;
+            }
+
+            .analyzingProgressBarTrack {
+                background: rgba(0, 0, 0, 0.1);
+            }
+
+            .analyzingMetaFooter {
+                color: #64748B;
+            }
+
+            .analyzingPercentNumber {
+                color: #059669;
+            }
+
+            .scannerCenterIcon {
+                background: #FFFFFF;
+                border-color: #059669;
+                box-shadow: 0 0 14px rgba(5, 150, 105, 0.25);
+
+                svg {
+                    stroke: #059669;
+                }
+            }
+        }
+
+        .scannerGridMesh {
+            background-image:
+                linear-gradient(rgba(5, 150, 105, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(5, 150, 105, 0.15) 1px, transparent 1px);
+        }
+
+        .liveEngineBadge {
+            background: rgba(5, 150, 105, 0.1);
+            border-color: rgba(5, 150, 105, 0.3);
+            color: #059669;
+        }
+
+        .analysisErrorCard {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.06) 0%, #FFFFFF 100%);
+            border-color: rgba(239, 68, 68, 0.25);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+            .errorDetails {
+                h4 {
+                    color: #0F172A;
+                }
+
+                p {
+                    color: #64748B;
+                }
+            }
+        }
+
+        .resultsEmptyState {
+            color: #64748B;
+
+            h4 {
+                color: #0F172A;
+            }
+
+            p {
+                color: #64748B;
+
+                strong {
+                    color: #059669;
+                }
+            }
+        }
+    }
 }

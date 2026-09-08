@@ -97,35 +97,54 @@
     /* 3. 3-Step Process Cards */
     .stepCard {
         background: #FFFFFF !important;
-        border: 1px solid rgba(24, 201, 139, 0.22) !important;
-        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+        border: 1px solid rgba(5, 150, 105, 0.25) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+
+        &:hover {
+            border-color: #059669 !important;
+            box-shadow: 0 8px 28px rgba(5, 150, 105, 0.15) !important;
+        }
 
         .stepNumBadge {
-            background: #F0FDF4 !important;
-            border: 1px solid rgba(24, 201, 139, 0.35) !important;
-            color: #047857 !important;
+            background: #ECFDF5 !important;
+            border: 1px solid rgba(5, 150, 105, 0.35) !important;
+            color: #059669 !important;
+            font-weight: 900 !important;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.1) !important;
         }
 
         .stepTag {
-            background: transparent !important;
-            background-color: transparent !important;
-            color: #64748B !important;
-            border: none !important;
+            background: rgba(5, 150, 105, 0.1) !important;
+            border: 1px solid rgba(5, 150, 105, 0.35) !important;
+            color: #059669 !important;
+            font-weight: 800 !important;
+            font-size: 10px !important;
+            padding: 3px 9px !important;
+            border-radius: 999px !important;
+            display: inline-flex !important;
             box-shadow: none !important;
+            outline: none !important;
+            text-decoration: none !important;
         }
 
         .stepIconWrap {
-            background: #F0FDF4 !important;
-            border-color: rgba(24, 201, 139, 0.35) !important;
-            color: #047857 !important;
+            background: #ECFDF5 !important;
+            border: 1px solid rgba(5, 150, 105, 0.35) !important;
+            color: #059669 !important;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.08) !important;
         }
 
         .stepTitle {
             color: #0F172A !important;
+            font-weight: 800 !important;
+            font-family: "Euclid-Bold", "Euclid Circular A", var(--font-plus-jakarta), sans-serif !important;
         }
 
         .stepDesc {
             color: #475569 !important;
+            font-weight: 500 !important;
+            font-size: 13.5px !important;
+            line-height: 1.6 !important;
         }
     }
 

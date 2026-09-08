@@ -1,253 +1,283 @@
-.tradeSnap {
-    .resultCard {
-        border: 1px solid $border;
-        border-radius: 12px;
-        background: #fff;
-        margin-bottom: 12px;
-        overflow: hidden;
-        transition: box-shadow 0.2s ease;
+.resultCard {
+    border: 1px solid rgba(24, 201, 139, 0.25);
+    border-radius: 14px;
+    background: rgba(13, 20, 16, 0.95);
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 
-        &:hover {
-            box-shadow: 0 6px 20px rgba(24, 201, 139, 0.08);
-        }
+    &:hover {
+        border-color: rgba(24, 201, 139, 0.45);
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6), 0 0 16px rgba(24, 201, 139, 0.12);
     }
+}
 
-    .resultHeader {
-        display: flex;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 16px 20px;
-    }
+.resultHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
 
-    .resultTitleRow {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 10px;
+.resultTitleRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
 
-        h3 {
-            margin: 0;
-            font-size: 18px;
-            font-weight: 700;
-            color: $text;
-        }
-    }
-
-    .tradeTypeBadge {
-        padding: 2px 8px;
-        border-radius: 100px;
-        background: #040605;
-        color: $primary;
-        font-size: 11px;
-        font-weight: 600;
-    }
-
-    .timeframeBadge {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 12px;
-        color: $muted;
-    }
-
-    .signalPill {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 16px;
-        border-radius: 8px;
-        font-size: 20px;
-        font-weight: 600;
-        text-transform: capitalize;
-
-        .miniSignalImg {
-            width: 24px;
-            height: 24px;
-            object-fit: contain;
-            vertical-align: middle;
-        }
-    }
-
-    .signalBuy {
-        background: #E0F9EA;
-        color: #047857;
-    }
-
-    .signalSell {
-        background: #FEE2E2;
-        color: #b91c1c;
-    }
-
-    .signalNeutral {
-        background: #f3f4f6;
-        color: $text;
-    }
-
-    .confidenceWrap {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        flex-shrink: 0;
-    }
-
-    .confidenceRing {
-        position: relative;
-        width: 80px;
-        height: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-
-        svg {
-            position: absolute;
-            inset: 0;
-        }
-
-        span {
-            position: relative;
-            z-index: 1;
-            font-size: 18px;
-            font-weight: 800;
-        }
-
-        &.confidenceHigh {
-            color: $success;
-            background: linear-gradient(135deg, #ecfdf5, #f0fdf4);
-        }
-
-        &.confidenceMid {
-            color: #0284C7;
-            background: linear-gradient(135deg, #e0f2fe, #f0fdf4);
-        }
-
-        &.confidenceLow {
-            color: #dc2626;
-            background: linear-gradient(135deg, #fef2f2, #fee2e2);
-        }
-    }
-
-    .confidenceLabel {
-        margin-top: 4px;
-        font-size: 11px;
-        font-weight: 600;
-        padding: 2px 8px;
-        border-radius: 100px;
-
-        &.confidenceHigh {
-            background: #E0F9EA;
-            color: #047857;
-        }
-
-        &.confidenceMid {
-            background: #e0f2fe;
-            color: #0369a1;
-        }
-
-        &.confidenceLow {
-            background: #fee2e2;
-            color: #b91c1c;
-        }
-    }
-
-    .resultBody {
-        padding: 0 20px 12px;
-    }
-
-    .detailGrid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 10px;
-    }
-
-    .detailBox {
-        padding: 12px;
-        background: #F8FAFC;
-        border-radius: 8px;
-
-        span {
-            display: block;
-            font-size: 11px;
-            font-weight: 600;
-            color: $muted;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-        }
-
-        strong {
-            font-size: 14px;
-            color: $text;
-        }
-    }
-
-    .lossText {
-        color: #dc2626 !important;
-    }
-
-    .profitText {
-        color: $success !important;
-    }
-
-    .targetsGrid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-    }
-
-    .targetsBox {
-        padding: 12px;
-        background: rgba(24, 201, 139, 0.06);
-        border-radius: 8px;
-        border: 1px solid rgba(24, 201, 139, 0.1);
-    }
-
-    .targetsLabel {
-        font-size: 11px;
+    h3 {
+        margin: 0;
+        font-size: 17px;
         font-weight: 700;
-        color: $primary;
-        letter-spacing: 0.04em;
+        color: #FFFFFF;
+        font-family: var(--font-syne), "Euclid-Bold", sans-serif;
+    }
+}
+
+.tradeTypeBadge {
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(24, 201, 139, 0.12);
+    border: 1px solid rgba(24, 201, 139, 0.3);
+    color: #18C98B;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.timeframeBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: monospace, sans-serif;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.signalPill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: capitalize;
+
+    .miniSignalImg {
+        width: 16px;
+        height: 16px;
+        object-fit: contain;
+        vertical-align: middle;
     }
 
-    .targetsList {
-        margin-top: 8px;
+    &.signalBuy {
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(16, 185, 129, 0.35);
+        color: #10B981;
     }
 
-    .targetRow {
-        display: flex;
-        justify-content: space-between;
-        font-size: 13px;
-        margin-bottom: 4px;
-
-        span {
-            color: $muted;
-        }
+    &.signalSell {
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.35);
+        color: #EF4444;
     }
 
-    .srColumn {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+    &.signalNeutral {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #D1D5DB;
+    }
+}
+
+.confidenceWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.confidenceRing {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.4);
+
+    svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
     }
 
-    .viewDetailsBtn {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        margin: 0 20px 16px;
-        padding: 0;
-        border: none;
-        background: none;
-        color: $primary;
-        font-size: 14px;
+    span {
+        position: relative;
+        z-index: 1;
+        font-size: 15px;
+        font-weight: 800;
+        font-family: monospace, sans-serif;
+    }
+
+    &.confidenceHigh {
+        color: #34D399;
+    }
+
+    &.confidenceMid {
+        color: #38BDF8;
+    }
+
+    &.confidenceLow {
+        color: #F87171;
+    }
+}
+
+.confidenceLabel {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+
+    &.confidenceHigh {
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(16, 185, 129, 0.35);
+        color: #34D399;
+    }
+
+    &.confidenceMid {
+        background: rgba(14, 165, 233, 0.15);
+        border: 1px solid rgba(14, 165, 233, 0.35);
+        color: #38BDF8;
+    }
+
+    &.confidenceLow {
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.35);
+        color: #F87171;
+    }
+}
+
+.resultBody {
+    padding: 16px 20px;
+}
+
+.detailGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.detailBox {
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+
+    span {
+        display: block;
+        font-size: 11px;
         font-weight: 600;
-        cursor: pointer;
-
-        &:hover {
-            text-decoration: underline;
-        }
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 4px;
+        text-transform: uppercase;
     }
+
+    strong {
+        font-size: 13.5px;
+        color: #FFFFFF;
+        font-family: monospace, sans-serif;
+    }
+}
+
+.lossText {
+    color: #F87171 !important;
+}
+
+.profitText {
+    color: #34D399 !important;
+}
+
+.targetsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.targetsBox {
+    padding: 10px 14px;
+    background: rgba(24, 201, 139, 0.04);
+    border-radius: 8px;
+    border: 1px solid rgba(24, 201, 139, 0.15);
+}
+
+.targetsLabel {
+    font-size: 11px;
+    font-weight: 700;
+    color: #18C98B;
+    letter-spacing: 0.04em;
+}
+
+.targetsList {
+    margin-top: 6px;
+}
+
+.targetRow {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    margin-bottom: 4px;
+
+    span {
+        color: rgba(255, 255, 255, 0.55);
+    }
+}
+
+.srColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.viewDetailsBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 20px 16px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #18C98B;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: #6EE7B7;
+        text-decoration: underline;
+    }
+}
+
+.historyList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+}
 
 
     .riskReward {
@@ -351,4 +381,4 @@
             color: $primary;
         }
     }
-}
+

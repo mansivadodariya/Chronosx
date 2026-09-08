@@ -108,6 +108,8 @@ export default function TradeSnap() {
         }
     }, [error]);
 
+    const [analysisError, setAnalysisError] = useState(null);
+
     const stopScreenShare = useCallback(() => {
         if (stream) {
             stream.getTracks().forEach((t) => t.stop());
@@ -121,6 +123,7 @@ export default function TradeSnap() {
         setShowSnapshot(false);
         setAutoCaptureInterval(null);
         setNextScreenshotEndTime(null);
+        setAnalysisError(null);
     }, [stream, setStream, setIsSharing, setCapturedImage, setAllAnalyses, setShowAnalysis, setShowSnapshot, setAutoCaptureInterval, setNextScreenshotEndTime]);
 
     const startScreenShare = useCallback(async () => {
@@ -129,6 +132,7 @@ export default function TradeSnap() {
             setShowSnapshot(false);
             setAutoCaptureInterval(null);
             setNextScreenshotEndTime(null);
+            setAnalysisError(null);
 
             if (!isScreenShareSupported || !navigator.mediaDevices?.getDisplayMedia) {
                 toast.dismiss();
@@ -196,6 +200,7 @@ export default function TradeSnap() {
         }
         setCapturedImage(image);
         setShowSnapshot(true);
+        setAnalysisError(null);
     }, [captureFromVideo, setCapturedImage, setShowSnapshot]);
 
     const pushAnalysis = useCallback((analysisData) => {
@@ -213,12 +218,16 @@ export default function TradeSnap() {
     const applyAnalyzeResult = useCallback((result, { onInvalidChart } = {}) => {
         const trades = extractTradesFromPayload(result);
         if (trades[0]?.error) {
-            setError(trades[0].raw || 'No valid chart found in the image');
+            const errText = trades[0].raw || 'No valid chart found in the image';
+            setError(errText);
+            setAnalysisError(errText);
             onInvalidChart?.();
             return false;
         }
         if (!trades.length) {
-            setError('No analysis data in response');
+            const errText = 'No analysis data in response';
+            setError(errText);
+            setAnalysisError(errText);
             onInvalidChart?.();
             return false;
         }
@@ -232,21 +241,26 @@ export default function TradeSnap() {
             return;
         }
         setIsAnalyzing(true);
+        setAnalysisError(null);
+        setShowAnalysis(true);
         try {
             const blob = await dataUrlToBlob(capturedImage);
             const result = await analyzeTradeScreenshots([blob], getUserId());
             if (applyAnalyzeResult(result, { onInvalidChart: () => setShowSnapshot(true) })) {
                 setShowSnapshot(false);
+                setAnalysisError(null);
             }
         } catch (err) {
-            setError(err?.message || 'Failed to analyze image');
+            const errMsg = err?.message || 'Failed to analyze image';
+            setAnalysisError(errMsg);
+            setError(errMsg);
             if (err?.detail?.error_code === 'INSUFFICIENT_CREDITS' || err?.message?.toLowerCase().includes('insufficient credits')) {
                 notifyCreditsUpdated(0);
             }
         } finally {
             setIsAnalyzing(false);
         }
-    }, [capturedImage, applyAnalyzeResult, setShowSnapshot, setIsAnalyzing]);
+    }, [capturedImage, applyAnalyzeResult, setShowSnapshot, setIsAnalyzing, setShowAnalysis]);
 
     const handleScreenshot = () => {
         captureScreenshot();
@@ -363,13 +377,17 @@ export default function TradeSnap() {
                         capturedImage={capturedImage}
                         isAnalyzing={isAnalyzing}
                         analyzeImage={analyzeImage}
+                        error={analysisError}
+                        retryAnalysis={analyzeImage}
                     />
                 )}
 
-                {(showAnalysis || allAnalyses.length > 0) && (
+                {allAnalyses.length > 0 && (
                     <TradeSnapResultsPanel
                         isAnalyzing={isAnalyzing}
                         allAnalyses={allAnalyses}
+                        error={analysisError}
+                        retryAnalysis={analyzeImage}
                     />
                 )}
             </div>

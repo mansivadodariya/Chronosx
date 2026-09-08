@@ -57,7 +57,6 @@ export default function TeamUp() {
             />
           </motion.div>
 
-
           {/* Right Column: 2x2 Bento Pillar Grid & Trust Banner */}
           <motion.div
             className={styles.rightContent}
@@ -101,7 +100,32 @@ export default function TeamUp() {
                 <p><strong>You maintain 100% custody of your trading capital.</strong> ChronosX operates purely as an analytical AI layer and bridge. We never hold, manage, or custody user funds—your capital remains securely deposited with your regulated MT5 broker.</p>
               </div>
               <div className={styles.shieldVisual}>
-                <img src="/assets/images/shield-network.svg?v=2" alt="Security Shield" />
+                <svg width="100" height="90" viewBox="0 0 100 90" fill="none" className={styles.shieldSvg} aria-hidden="true">
+                  <g className={styles.constellationLines} stroke="currentColor" strokeOpacity="0.45" strokeWidth="1.2">
+                    <line x1="20" y1="30" x2="35" y2="45"/>
+                    <line x1="35" y1="45" x2="25" y2="65"/>
+                    <line x1="80" y1="25" x2="65" y2="45"/>
+                    <line x1="65" y1="45" x2="75" y2="68"/>
+                    <line x1="50" y1="10" x2="35" y2="25"/>
+                    <line x1="50" y1="10" x2="65" y2="25"/>
+                    <line x1="30" y1="75" x2="50" y2="85"/>
+                    <line x1="70" y1="75" x2="50" y2="85"/>
+                  </g>
+                  <g className={styles.constellationDots}>
+                    <circle cx="20" cy="30" r="2.5"/>
+                    <circle cx="35" cy="45" r="2"/>
+                    <circle cx="25" cy="65" r="2"/>
+                    <circle cx="80" cy="25" r="2.5"/>
+                    <circle cx="65" cy="45" r="2"/>
+                    <circle cx="75" cy="68" r="2"/>
+                    <circle cx="50" cy="10" r="2.5"/>
+                    <circle cx="50" cy="85" r="2.5"/>
+                  </g>
+                  <g className={styles.shieldGlowGroup}>
+                    <path className={styles.shieldBody} d="M50 20L34 26V45C34 56 41 65 50 68C59 65 66 56 66 45V26L50 20Z" strokeWidth="2.5" strokeLinejoin="round"/>
+                    <path className={styles.shieldCheck} d="M43 44L48 49L58 39" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                  </g>
+                </svg>
               </div>
             </motion.div>
 

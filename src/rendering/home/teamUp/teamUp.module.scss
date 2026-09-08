@@ -14,55 +14,98 @@
 
     .bentoCard {
       background: #FFFFFF !important;
-      border: 1px solid rgba(24, 201, 139, 0.22) !important;
-      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+      border: 1px solid rgba(24, 201, 139, 0.28) !important;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
 
       &:hover {
         background: #FFFFFF !important;
         border-color: #18C98B !important;
-        box-shadow: 0 8px 25px rgba(24, 201, 139, 0.15) !important;
+        box-shadow: 0 8px 25px rgba(24, 201, 139, 0.16) !important;
       }
 
       .iconBox {
-        background: #F0FDF4 !important;
-        border: 1px solid #DCFCE7 !important;
-        box-shadow: 0 1px 3px rgba(16, 185, 129, 0.06) !important;
+        background: #ECFDF5 !important;
+        border: 1px solid rgba(24, 201, 139, 0.35) !important;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08) !important;
       }
 
       .bentoTitle {
         color: #0F172A !important;
+        font-weight: 800 !important;
+        font-family: "Euclid-Bold", "Euclid Circular A", var(--font-plus-jakarta), sans-serif !important;
       }
 
       .bentoDesc {
-        color: #64748B !important;
+        color: #475569 !important;
+        font-weight: 500 !important;
+        font-size: 13px !important;
       }
 
       .statPill {
-        background: rgba(16, 185, 129, 0.12) !important;
+        background: rgba(5, 150, 105, 0.1) !important;
         border: 1px solid rgba(5, 150, 105, 0.35) !important;
-        color: #047857 !important;
+        color: #059669 !important;
+        font-weight: 800 !important;
+        padding: 3px 8px !important;
+        border-radius: 6px !important;
       }
     }
 
     .trustBanner {
-      background: #F8FAFC !important;
-      border: 1px solid #E2E8F0 !important;
-      box-shadow: none !important;
+      background: #FFFFFF !important;
+      border: 1px solid rgba(24, 201, 139, 0.3) !important;
+      box-shadow: 0 4px 24px rgba(15, 23, 42, 0.05) !important;
 
       .verifiedTag {
-        color: #047857 !important;
+        color: #059669 !important;
+        background: rgba(5, 150, 105, 0.1) !important;
+        border: 1px solid rgba(5, 150, 105, 0.35) !important;
+        border-radius: 999px !important;
+        padding: 3px 10px !important;
+        display: inline-block !important;
+        width: fit-content !important;
+        font-weight: 800 !important;
       }
 
       h4 {
         color: #0F172A !important;
+        font-weight: 800 !important;
+        font-family: "Euclid-Bold", "Euclid Circular A", var(--font-plus-jakarta), sans-serif !important;
       }
 
       p {
-        color: #64748B !important;
+        color: #475569 !important;
+        font-weight: 500 !important;
+        line-height: 1.55 !important;
+
+        strong {
+          color: #0F172A !important;
+          font-weight: 700 !important;
+        }
       }
 
-      .shieldVisual img {
-        filter: none !important;
+      .shieldVisual {
+        .constellationLines {
+          stroke: #059669 !important;
+          stroke-opacity: 0.45 !important;
+        }
+
+        .constellationDots circle {
+          fill: #10B981 !important;
+        }
+
+        .shieldBody {
+          fill: #ECFDF5 !important;
+          stroke: #059669 !important;
+        }
+
+        .shieldCheck {
+          stroke: #047857 !important;
+        }
+
+        .shieldGlowGroup {
+          filter: drop-shadow(0 2px 8px rgba(16, 185, 129, 0.25)) !important;
+        }
       }
     }
   }
@@ -174,7 +217,7 @@
   .rightContent {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
 
     .bentoGrid {
       display: grid;
@@ -314,12 +357,31 @@
         align-items: center;
         justify-content: center;
 
-        img {
+        .shieldSvg {
           width: 100%;
           height: 100%;
-          object-fit: contain;
           display: block;
-          filter: drop-shadow(0 0 12px rgba(24, 201, 139, 0.45));
+
+          .constellationLines {
+            stroke: #18c98b;
+          }
+
+          .constellationDots circle {
+            fill: #6EE7B7;
+          }
+
+          .shieldBody {
+            fill: #040b08;
+            stroke: #6EE7B7;
+          }
+
+          .shieldCheck {
+            stroke: #6EE7B7;
+          }
+
+          .shieldGlowGroup {
+            filter: drop-shadow(0 0 10px rgba(110, 231, 183, 0.55));
+          }
         }
       }
     }
