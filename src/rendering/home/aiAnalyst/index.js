@@ -75,7 +75,8 @@ function MiniTrendGraph({ symbol = "PLTR", entry = "85.80", target = "94.20", rr
 const conversationFlow = [
   {
     user: "Top 3 names with breakouts this hour?",
-    showGraph: false,
+    showGraph: true,
+    graphData: { symbol: "PLTR", entry: "85.80", target: "94.20", rr: "1:3.4" },
     bot: [
       "Here are the top 3 breakout leaders with >2.4x volume surge:",
       "1. PLTR ($88.41) — Broke 20-day resistance at $86.20 with +6.72% candle close.",
@@ -188,7 +189,15 @@ function TypewriterBotMessage({ lines, showGraph, graphData, onComplete }) {
 }
 
 export default function AiAnalyst() {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { role: 'user', text: conversationFlow[0].user },
+    { 
+      role: 'bot', 
+      lines: conversationFlow[0].bot,
+      showGraph: conversationFlow[0].showGraph,
+      graphData: conversationFlow[0].graphData
+    }
+  ]);
   const [isThinking, setIsThinking] = useState(false);
   const [flowIndex, setFlowIndex] = useState(0);
   const [userInput, setUserInput] = useState('');
@@ -209,7 +218,7 @@ export default function AiAnalyst() {
     let timer;
     const currentConv = conversationFlow[flowIndex];
 
-    // Reset messages when loop cycles
+    // Transition when messages array is empty
     if (messages.length === 0) {
       timer = setTimeout(() => {
         // Step 1: User asks question
@@ -228,8 +237,8 @@ export default function AiAnalyst() {
               graphData: currentConv.graphData
             }
           ]);
-        }, 1400);
-      }, 1000);
+        }, 1200);
+      }, 800);
     }
 
     return () => clearTimeout(timer);
@@ -241,7 +250,7 @@ export default function AiAnalyst() {
     setTimeout(() => {
       setMessages([]);
       setFlowIndex((prev) => (prev + 1) % conversationFlow.length);
-    }, 6000);
+    }, 7000);
   };
 
   // Handle manual user submission
@@ -258,8 +267,8 @@ export default function AiAnalyst() {
     setTimeout(() => {
       setIsThinking(false);
       const responses = [
-        `Analyzing institutional order flow and pattern structure for ${query.toUpperCase()}...`,
-        "Bullish setup validated with +6.4% target projection. Key support level holding with high volume.",
+        `Analyzing institutional order flow and key levels for ${query.toUpperCase()}...`,
+        "Bullish setup validated with +6.4% target projection. Key support level holding with high volume surge.",
         "Risk/Reward ratio optimal at 1:3.4 with trailing stop protection active."
       ];
       setMessages((prev) => [
@@ -268,22 +277,63 @@ export default function AiAnalyst() {
           role: 'bot', 
           lines: responses,
           showGraph: true,
-          graphData: { symbol: query.toUpperCase().slice(0, 5), entry: "86.50", target: "95.00", rr: "1:3.4" }
+          graphData: { symbol: query.toUpperCase().slice(0, 6), entry: "86.50", target: "95.00", rr: "1:3.4" }
         }
       ]);
 
-      // Resume auto loop after 10s
       setTimeout(() => {
         setIsUserInteracting(false);
       }, 10000);
-    }, 1400);
+    }, 1200);
   };
 
   const handleQuickPrompt = (promptText) => {
-    setUserInput(promptText);
+    setIsUserInteracting(true);
+    setUserInput('');
+    setMessages((prev) => [...prev, { role: 'user', text: promptText }]);
+    setIsThinking(true);
+
     setTimeout(() => {
-      handleSendMessage();
-    }, 100);
+      setIsThinking(false);
+      let botLines = [];
+      let graphInfo = null;
+
+      if (promptText.toLowerCase().includes('btc') || promptText.toLowerCase().includes('support')) {
+        botLines = [
+          "RSI bullish divergence detected at $64,200 support zone.",
+          "Selling pressure dropped 42% over last 3 candles while price holds firmly above 50 EMA."
+        ];
+        graphInfo = { symbol: "BTC/USD", entry: "64,200", target: "68,900", rr: "1:3.8" };
+      } else if (promptText.toLowerCase().includes('pltr') || promptText.toLowerCase().includes('r:r')) {
+        botLines = [
+          "Stop loss recommended at $85.80 (below previous resistance turned support).",
+          "Current Risk/Reward ratio is 1:3.4 with initial target at $94.20 on institutional volume confirmation."
+        ];
+        graphInfo = { symbol: "PLTR", entry: "85.80", target: "94.20", rr: "1:3.4" };
+      } else {
+        botLines = [
+          "Here are the top 3 breakout leaders with >2.4x volume surge:",
+          "1. PLTR ($88.41) — Broke 20-day resistance at $86.20 with +6.72% candle close.",
+          "2. NVDA ($138.20) — Bullish flag breakout confirmed on 15m timeframe.",
+          "3. AMD ($164.50) — MACD golden cross with institutional block buying."
+        ];
+        graphInfo = { symbol: "PLTR", entry: "85.80", target: "94.20", rr: "1:3.4" };
+      }
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'bot',
+          lines: botLines,
+          showGraph: true,
+          graphData: graphInfo
+        }
+      ]);
+
+      setTimeout(() => {
+        setIsUserInteracting(false);
+      }, 10000);
+    }, 1200);
   };
 
   return (
@@ -393,6 +443,13 @@ export default function AiAnalyst() {
                   className={styles.promptChip}
                 >
                   PLTR R:R
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => handleQuickPrompt("MACD golden cross signals")}
+                  className={styles.promptChip}
+                >
+                  MACD Signals
                 </button>
               </div>
 

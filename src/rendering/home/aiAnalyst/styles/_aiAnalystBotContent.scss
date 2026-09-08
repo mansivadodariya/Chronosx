@@ -1,4 +1,4 @@
-.analystSection {
+.aiAnalystSection {
   .botBubble {
     max-width: 96%;
     display: flex;
@@ -16,23 +16,25 @@
         font-size: 9.5px;
         letter-spacing: 0.8px;
         color: #6EE7B7;
+        text-transform: uppercase;
       }
 
       .botBadge {
-        @include font-semibold;
+        @include font-bold;
         font-size: 8.5px;
         color: #10B981;
         background: rgba(16, 185, 129, 0.15);
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        border: 1px solid rgba(16, 185, 129, 0.35);
         padding: 1px 6px;
         border-radius: 4px;
+        letter-spacing: 0.5px;
       }
     }
 
     .botContent {
       background: linear-gradient(135deg, rgba(4, 14, 10, 0.95) 0%, rgba(2, 8, 6, 0.95) 100%);
       border: 1px solid rgba(24, 201, 139, 0.28);
-      border-radius: 16px 16px 16px 3px;
+      border-radius: 16px 16px 16px 4px;
       padding: 14px 18px;
       box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
       display: flex;
@@ -129,7 +131,7 @@
       align-items: center;
       justify-content: space-between;
       @include font-medium;
-      font-size: 10px;
+      font-size: 10.5px;
       color: #94A3B8;
 
       .slText {
@@ -161,6 +163,7 @@
       font-size: 9.5px;
       letter-spacing: 0.8px;
       color: #6EE7B7;
+      text-transform: uppercase;
     }
 
     .thinkingPill {
@@ -208,10 +211,10 @@
     }
 
     .promptChip {
-      background: rgba(24, 201, 139, 0.1);
-      border: 1px solid rgba(24, 201, 139, 0.28);
+      background: rgba(24, 201, 139, 0.08);
+      border: 1px solid rgba(24, 201, 139, 0.26);
       border-radius: 20px;
-      padding: 5px 13px;
+      padding: 6px 14px;
       color: #E2E8F0;
       font-size: 11.5px;
       @include font-medium;
@@ -224,10 +227,10 @@
       }
 
       &:hover {
-        background: rgba(24, 201, 139, 0.25);
-        border-color: #6EE7B7;
+        background: rgba(24, 201, 139, 0.22);
+        border-color: #18C98B;
         color: #FFFFFF;
-        box-shadow: 0 0 12px rgba(24, 201, 139, 0.3);
+        box-shadow: 0 0 12px rgba(24, 201, 139, 0.35);
         transform: translateY(-1.5px);
       }
     }
@@ -245,7 +248,7 @@
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
 
     &:focus-within {
-      border-color: #6EE7B7;
+      border-color: #18C98B;
       box-shadow: 0 0 18px rgba(24, 201, 139, 0.25);
     }
 
@@ -268,19 +271,27 @@
       width: 36px;
       height: 36px;
       border-radius: 10px;
-      background: rgba(24, 201, 139, 0.2);
-      border: 1px solid rgba(24, 201, 139, 0.4);
-      color: #6EE7B7;
+      background: #18c98b;
+      border: none;
+      color: #040605;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: all 0.25s ease;
 
+      svg {
+        display: block;
+      }
+
       &:hover {
-        background: #18c98b;
-        color: #040605;
-        box-shadow: 0 0 14px rgba(110, 231, 183, 0.6);
+        background: #15B77E;
+        transform: scale(1.05);
+        box-shadow: 0 0 14px rgba(24, 201, 139, 0.6);
+      }
+
+      &:active {
+        transform: scale(0.95);
       }
     }
   }
@@ -290,104 +301,48 @@
     flex: 1 1 50%;
     display: flex;
     flex-direction: column;
-    gap: 36px;
-  }
-
-  .header {
-    .badgeWrapper {
-      display: flex;
-      margin-bottom: 20px;
-    }
-
-    h2 {
-      font-family: var(--font-syne), "Syne", sans-serif;
-      font-size: 46px;
-      font-weight: 800;
-      line-height: 1.12;
-      letter-spacing: -1.2px;
-      color: #FFFFFF;
-      margin: 0 0 18px 0;
-
-      span {
-        color: #18c98b;
-        background: none;
-        -webkit-text-fill-color: initial;
-        display: inline;
-      }
-
-      @include respond-to("tab") {
-        font-size: 34px;
-        letter-spacing: -0.8px;
-      }
-
-      @include respond-to("sm") {
-        font-size: 28px;
-      }
-    }
-
-    .leadDesc {
-      color: #9CA3AF;
-      font-size: 16px;
-      line-height: 1.65;
-      margin: 0;
-      @include font-normal;
-
-      @include respond-to("tab") {
-        font-size: 14.5px;
-      }
-    }
+    gap: 32px;
   }
 
   .featureList {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
   }
 
   .featureItem {
     display: flex;
-    align-items: flex-start;
     align-items: center;
-    gap: 18px;
+    gap: 16px;
 
     .numBadge {
       @include font-bold;
-      font-size: 26px;
-      color: #6EE7B7;
-      border-radius: 8px;
+      font-size: 24px;
+      color: #18c98b;
       flex-shrink: 0;
-      margin-top: 2px;
+      line-height: 1;
     }
 
     .featureContent {
       h3 {
-        font-size: 18px;
-        color: #ffffffd5;
+        font-size: 17px;
+        font-weight: 700;
+        color: #FFFFFF;
         letter-spacing: -0.2px;
+        margin: 0;
       }
 
       p {
-        font-size: 14.5px;
+        font-size: 14px;
         line-height: 1.6;
-        color: #9CA3AF;
-        margin: 0;
+        color: #94A3B8;
+        margin: 4px 0 0 0;
         @include font-normal;
       }
     }
   }
 
   /* Keyframe Animations */
-  @keyframes pulseCoreAnim {
-    0%, 100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-    50% {
-      transform: scale(1.25);
-      opacity: 0.7;
-    }
-  }
-
   @keyframes pulseGreen {
     0%, 100% {
       opacity: 1;
@@ -407,6 +362,210 @@
     40% {
       transform: scale(1.2);
       opacity: 1;
+    }
+  }
+
+  /* ============================================================
+     LIGHT MODE COMPREHENSIVE STYLING
+     ============================================================ */
+  :global(html.light) & {
+    background: transparent !important;
+
+    .chatCard {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(15, 23, 42, 0.08) !important;
+      border-radius: 22px !important;
+      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    .chatHeader {
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+      .headerLeftCluster .aiProfile .avatarLogoBox .headerLogoImg {
+        filter: drop-shadow(0 0 6px rgba(24, 201, 139, 0.25)) !important;
+      }
+
+      .liveBadge {
+        background: rgba(24, 201, 139, 0.12) !important;
+        border: 1px solid rgba(24, 201, 139, 0.3) !important;
+        color: #047857 !important;
+
+        .greenDot {
+          background: #10B981 !important;
+          box-shadow: 0 0 6px #10B981 !important;
+        }
+      }
+    }
+
+    .chatBody {
+      scrollbar-color: #CBD5E1 transparent;
+
+      &::-webkit-scrollbar-thumb {
+        background: #CBD5E1 !important;
+      }
+    }
+
+    .userMsgRow .userBubble {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+
+      .userSenderLabel {
+        color: #64748B !important;
+      }
+
+      .userText {
+        background: #F1F5F9 !important;
+        border: 1px solid rgba(15, 23, 42, 0.06) !important;
+        color: #0F172A !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03) !important;
+      }
+    }
+
+    .botMsgRow .botBubble {
+      .botHeaderLabelRow {
+        .botSenderLabel {
+          color: #047857 !important;
+        }
+
+        .botBadge {
+          background: rgba(24, 201, 139, 0.12) !important;
+          border-color: rgba(24, 201, 139, 0.35) !important;
+          color: #047857 !important;
+        }
+      }
+
+      .botContent {
+        background: #F8FAFC !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02) !important;
+      }
+
+      .botLine {
+        color: #334155 !important;
+
+        &:first-child {
+          color: #047857 !important;
+        }
+
+        .typeCursor {
+          color: #047857 !important;
+        }
+      }
+    }
+
+    .miniGraphCard {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(15, 23, 42, 0.08) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+
+      .miniGraphHeader {
+        .miniTickerGroup {
+          .tickerTag {
+            background: #F1F5F9 !important;
+            color: #0F172A !important;
+          }
+
+          .trendStatus {
+            color: #047857 !important;
+          }
+        }
+
+        .rrPill {
+          background: rgba(24, 201, 139, 0.12) !important;
+          border-color: rgba(24, 201, 139, 0.3) !important;
+          color: #047857 !important;
+        }
+      }
+
+      .miniGraphFooter {
+        color: #64748B !important;
+
+        .slText {
+          color: #EF4444 !important;
+        }
+
+        .tpText {
+          color: #047857 !important;
+        }
+      }
+    }
+
+    .thinkingWrapper {
+      .botSenderLabel {
+        color: #047857 !important;
+      }
+
+      .thinkingPill {
+        background: #F0FDF4 !important;
+        border: 1px solid rgba(24, 201, 139, 0.3) !important;
+
+        span[class^="dot"] {
+          background: #047857 !important;
+        }
+
+        .thinkingText {
+          color: #047857 !important;
+        }
+      }
+    }
+
+    .quickPrompts .promptChip {
+      background: #F1F5F9 !important;
+      border: 1px solid rgba(15, 23, 42, 0.08) !important;
+      color: #334155 !important;
+
+      &:hover {
+        background: rgba(24, 201, 139, 0.12) !important;
+        border-color: rgba(24, 201, 139, 0.4) !important;
+        color: #047857 !important;
+        box-shadow: 0 2px 8px rgba(24, 201, 139, 0.15) !important;
+      }
+    }
+
+    .chatInputForm {
+      background: #F8FAFC !important;
+      border: 1px solid rgba(15, 23, 42, 0.12) !important;
+      box-shadow: none !important;
+
+      &:focus-within {
+        border-color: #18C98B !important;
+        box-shadow: 0 0 0 3px rgba(24, 201, 139, 0.15) !important;
+      }
+
+      .chatInput {
+        color: #0F172A !important;
+
+        &::placeholder {
+          color: #94A3B8 !important;
+        }
+      }
+
+      .sendButton {
+        background: #18C98B !important;
+        color: #040605 !important;
+
+        &:hover {
+          background: #15B77E !important;
+          box-shadow: 0 0 10px rgba(24, 201, 139, 0.4) !important;
+        }
+      }
+    }
+
+    .featureItem {
+      .numBadge {
+        color: #047857 !important;
+      }
+
+      .featureContent {
+        h3 {
+          color: #0F172A !important;
+        }
+
+        p {
+          color: #475569 !important;
+        }
+      }
     }
   }
 }

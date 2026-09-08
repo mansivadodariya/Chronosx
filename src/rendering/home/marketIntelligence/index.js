@@ -40,7 +40,13 @@ export default function MarketIntelligence() {
       ctx.scale(dpr, dpr);
       ctx.clearRect(0, 0, W, H);
 
-      const tfs = [
+      const isLight = typeof document !== 'undefined' && document.documentElement.classList.contains('light');
+
+      const tfs = isLight ? [
+        { c: "rgba(4, 120, 87, 0.95)", a: H * 0.28, f: 0.015, lw: 2.5, l: "4H" },
+        { c: "rgba(16, 185, 129, 0.85)", a: H * 0.18, f: 0.035, lw: 1.8, l: "1H" },
+        { c: "rgba(5, 150, 105, 0.65)", a: H * 0.1, f: 0.07, lw: 1.2, l: "15m" }
+      ] : [
         { c: "rgba(24,201,139,0.9)", a: H * 0.28, f: 0.015, lw: 2.5, l: "4H" },
         { c: "rgba(110,231,183,0.75)", a: H * 0.18, f: 0.035, lw: 1.8, l: "1H" },
         { c: "rgba(24,201,139,0.5)", a: H * 0.1, f: 0.07, lw: 1.2, l: "15m" }
@@ -58,9 +64,9 @@ export default function MarketIntelligence() {
       });
 
       const azX = W * 0.62 + Math.sin(t * 0.001) * 20;
-      ctx.fillStyle = "rgba(24,201,139,0.08)";
+      ctx.fillStyle = isLight ? "rgba(24,201,139,0.12)" : "rgba(24,201,139,0.08)";
       ctx.fillRect(azX - 20, 0, 40, H);
-      ctx.strokeStyle = "rgba(24,201,139,0.25)";
+      ctx.strokeStyle = isLight ? "rgba(4, 120, 87, 0.35)" : "rgba(24,201,139,0.25)";
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
       ctx.moveTo(azX, 0);
@@ -68,17 +74,17 @@ export default function MarketIntelligence() {
       ctx.stroke();
       ctx.setLineDash([]);
 
-      ctx.fillStyle = "rgba(110,231,183,0.85)";
+      ctx.fillStyle = isLight ? "rgba(4, 120, 87, 0.9)" : "rgba(110,231,183,0.85)";
       ctx.beginPath();
       ctx.moveTo(azX, MY - 30);
       ctx.lineTo(azX - 8, MY - 15);
       ctx.lineTo(azX + 8, MY - 15);
       ctx.fill();
 
-      ctx.font = '600 8px system-ui, -apple-system, sans-serif';
+      ctx.font = '700 9px system-ui, -apple-system, sans-serif';
       tfs.forEach((tf, i) => {
         ctx.fillStyle = tf.c;
-        ctx.fillText(tf.l, 6, 18 + i * 14);
+        ctx.fillText(tf.l, 8, 18 + i * 14);
       });
 
       ctx.restore();
@@ -142,9 +148,16 @@ export default function MarketIntelligence() {
       ctx.scale(dpr, dpr);
       ctx.clearRect(0, 0, W, H);
 
+      const isLight = typeof document !== 'undefined' && document.documentElement.classList.contains('light');
       const cw = (W - 10) / N;
 
-      zones.forEach((z) => {
+      const dynamicZones = isLight ? [
+        { y: baseH * 0.25, h: 18, col: "rgba(16,185,129,0.12)", bor: "rgba(16,185,129,0.35)", x1: 3, x2: 18 },
+        { y: baseH * 0.58, h: 14, col: "rgba(16,185,129,0.08)", bor: "rgba(16,185,129,0.25)", x1: 12, x2: 30 },
+        { y: baseH * 0.72, h: 20, col: "rgba(16,185,129,0.1)", bor: "rgba(16,185,129,0.3)", x1: 25, x2: 45 }
+      ] : zones;
+
+      dynamicZones.forEach((z) => {
         const x1 = z.x1 * cw + 5;
         const x2 = z.x2 * cw + 5;
         ctx.fillStyle = z.col;
@@ -154,7 +167,7 @@ export default function MarketIntelligence() {
         ctx.strokeRect(x1, z.y, x2 - x1, z.h);
       });
 
-      ctx.strokeStyle = "rgba(255,77,106,0.25)";
+      ctx.strokeStyle = isLight ? "rgba(225,29,72,0.35)" : "rgba(255,77,106,0.25)";
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(0, H * 0.15);
@@ -164,7 +177,9 @@ export default function MarketIntelligence() {
 
       candles.forEach((c, i) => {
         const x = i * cw + 5 + cw / 2;
-        const color = c.bull ? "rgba(0,214,143,0.8)" : "rgba(255,77,106,0.8)";
+        const color = isLight
+          ? (c.bull ? "rgba(5,150,105,0.9)" : "rgba(225,29,72,0.85)")
+          : (c.bull ? "rgba(0,214,143,0.8)" : "rgba(255,77,106,0.8)");
         ctx.strokeStyle = color;
         ctx.lineWidth = 0.8;
         ctx.beginPath();
@@ -183,8 +198,12 @@ export default function MarketIntelligence() {
         if (!c) return;
         const x = si * cw + 5 + cw / 2;
         const y = c.bull ? c.l - 8 : c.h + 8;
-        const col = c.bull ? "rgba(24,201,139,0.95)" : "rgba(255,77,106,0.9)";
-        const glow = c.bull ? "rgba(24,201,139,0.3)" : "rgba(255,77,106,0.3)";
+        const col = isLight
+          ? (c.bull ? "rgba(4,120,87,1)" : "rgba(24,201,139,0.95)")
+          : (c.bull ? "rgba(24,201,139,0.95)" : "rgba(255,77,106,0.9)");
+        const glow = isLight
+          ? (c.bull ? "rgba(16,185,129,0.25)" : "rgba(225,29,72,0.25)")
+          : (c.bull ? "rgba(24,201,139,0.3)" : "rgba(255,77,106,0.3)");
         ctx.beginPath();
         ctx.arc(x, y, 3 + Math.sin(t * 0.003 + idx), 0, Math.PI * 2);
         ctx.fillStyle = col;
@@ -232,26 +251,28 @@ export default function MarketIntelligence() {
       ctx.scale(dpr, dpr);
       ctx.clearRect(0, 0, W, H);
 
-      ctx.fillStyle = "rgba(255,77,106,0.04)";
+      const isLight = typeof document !== 'undefined' && document.documentElement.classList.contains('light');
+
+      ctx.fillStyle = isLight ? "rgba(225,29,72,0.06)" : "rgba(255,77,106,0.04)";
       ctx.fillRect(0, 0, W, H * 0.2);
-      ctx.fillStyle = "rgba(24,201,139,0.05)";
+      ctx.fillStyle = isLight ? "rgba(16,185,129,0.08)" : "rgba(24,201,139,0.05)";
       ctx.fillRect(0, H * 0.8, W, H * 0.2);
 
-      ctx.strokeStyle = "rgba(255,77,106,0.15)";
+      ctx.strokeStyle = isLight ? "rgba(225,29,72,0.25)" : "rgba(255,77,106,0.15)";
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(0, H * 0.2);
       ctx.lineTo(W, H * 0.2);
       ctx.stroke();
 
-      ctx.strokeStyle = "rgba(24,201,139,0.2)";
+      ctx.strokeStyle = isLight ? "rgba(16,185,129,0.3)" : "rgba(24,201,139,0.2)";
       ctx.beginPath();
       ctx.moveTo(0, H * 0.8);
       ctx.lineTo(W, H * 0.8);
       ctx.stroke();
 
       ctx.setLineDash([]);
-      ctx.strokeStyle = "rgba(255,255,255,0.05)";
+      ctx.strokeStyle = isLight ? "rgba(15,23,42,0.1)" : "rgba(255,255,255,0.05)";
       ctx.beginPath();
       ctx.moveTo(0, MY);
       ctx.lineTo(W, MY);
@@ -259,7 +280,7 @@ export default function MarketIntelligence() {
 
       // Fast Wave (Green)
       ctx.beginPath();
-      ctx.strokeStyle = "rgba(24,201,139,0.9)";
+      ctx.strokeStyle = isLight ? "rgba(4,120,87,0.95)" : "rgba(24,201,139,0.9)";
       ctx.lineWidth = 2;
       for (let x = 0; x < W; x++) {
         const y = MY + Math.sin(x * 0.025 + t * 0.001) * H * 0.35 + Math.sin(x * 0.06 - t * 5e-4) * H * 0.1;
@@ -267,9 +288,9 @@ export default function MarketIntelligence() {
       }
       ctx.stroke();
 
-      // Slow Wave (Light Mint)
+      // Slow Wave (Mint)
       ctx.beginPath();
-      ctx.strokeStyle = "rgba(110, 231, 183, 0.75)";
+      ctx.strokeStyle = isLight ? "rgba(16,185,129,0.85)" : "rgba(110, 231, 183, 0.75)";
       ctx.lineWidth = 1.5;
       for (let x = 0; x < W; x++) {
         const y = MY + Math.sin((x - 8) * 0.025 + t * 0.001) * H * 0.35 + Math.sin((x - 8) * 0.06 - t * 5e-4) * H * 0.1;
@@ -280,7 +301,9 @@ export default function MarketIntelligence() {
       // Synchronized Volume Squeeze Histogram Bars
       for (let x = 0; x < W; x += 3) {
         const val = Math.sin(x * 0.025 + t * 0.001) * H * 0.35 + Math.sin(x * 0.06 - t * 5e-4) * H * 0.1;
-        ctx.fillStyle = val > 0 ? "rgba(255,77,106,0.25)" : "rgba(24,201,139,0.28)";
+        ctx.fillStyle = isLight
+          ? (val > 0 ? "rgba(225,29,72,0.3)" : "rgba(16,185,129,0.35)")
+          : (val > 0 ? "rgba(255,77,106,0.25)" : "rgba(24,201,139,0.28)");
         ctx.fillRect(x, MY, 2, val * 0.3);
       }
 
@@ -294,30 +317,30 @@ export default function MarketIntelligence() {
         if (pm <= ps && m > s && MY + m > MY + H * 0.2) {
           ctx.beginPath();
           ctx.arc(x, MY + m, 4 + Math.sin(t * 0.004), 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(255,77,106,0.9)";
+          ctx.fillStyle = isLight ? "rgba(225,29,72,1)" : "rgba(255,77,106,0.9)";
           ctx.fill();
           ctx.beginPath();
           ctx.arc(x, MY + m, 8, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(255,77,106,0.3)";
+          ctx.fillStyle = isLight ? "rgba(225,29,72,0.25)" : "rgba(255,77,106,0.3)";
           ctx.fill();
         }
         if (pm >= ps && m < s && MY + m < MY - H * 0.2) {
           ctx.beginPath();
           ctx.arc(x, MY + m, 4 + Math.sin(t * 0.004), 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(24,201,139,0.95)";
+          ctx.fillStyle = isLight ? "rgba(4,120,87,1)" : "rgba(24,201,139,0.95)";
           ctx.fill();
           ctx.beginPath();
           ctx.arc(x, MY + m, 8, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(24,201,139,0.3)";
+          ctx.fillStyle = isLight ? "rgba(16,185,129,0.25)" : "rgba(24,201,139,0.3)";
           ctx.fill();
         }
       }
 
-      ctx.font = '600 7px system-ui, -apple-system, sans-serif';
-      ctx.fillStyle = "rgba(255,77,106,0.35)";
-      ctx.fillText("OVERBOUGHT", 6, H * 0.2 - 4);
-      ctx.fillStyle = "rgba(24,201,139,0.4)";
-      ctx.fillText("OVERSOLD", 6, H * 0.8 + 12);
+      ctx.font = '700 8px system-ui, -apple-system, sans-serif';
+      ctx.fillStyle = isLight ? "rgba(225,29,72,0.7)" : "rgba(255,77,106,0.35)";
+      ctx.fillText("OVERBOUGHT", 8, H * 0.2 - 4);
+      ctx.fillStyle = isLight ? "rgba(4,120,87,0.75)" : "rgba(24,201,139,0.4)";
+      ctx.fillText("OVERSOLD", 8, H * 0.8 + 12);
 
       ctx.restore();
 

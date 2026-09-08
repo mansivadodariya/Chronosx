@@ -1,181 +1,8 @@
 .aiAnalystSection {
   position: relative;
   width: 100%;
-  padding: 120px 0;
+  padding: 100px 0;
   overflow: hidden;
-
-  :global(html.light) & {
-    background: #FFFFFF !important;
-    border-bottom: 1px solid rgba(24, 201, 139, 0.15) !important;
-
-    .chatCard {
-      background: #FFFFFF !important;
-      border: 1px solid rgba(24, 201, 139, 0.22) !important;
-      box-shadow: 0 10px 40px rgba(15, 23, 42, 0.06) !important;
-    }
-
-    .chatBody {
-      scrollbar-width: thin;
-      scrollbar-color: #CBD5E1 transparent;
-
-      &::-webkit-scrollbar {
-        width: 4px;
-        background: transparent !important;
-      }
-      &::-webkit-scrollbar-track {
-        background: transparent !important;
-      }
-      &::-webkit-scrollbar-thumb {
-        background: #CBD5E1 !important;
-        border-radius: 4px;
-      }
-    }
-
-    .chatHeader {
-      border-bottom-color: #E2E8F0 !important;
-    }
-
-    .botBubble {
-      box-shadow: none !important;
-
-      .botSenderLabel {
-        color: #047857 !important;
-      }
-      .botBadge {
-        background: rgba(16, 185, 129, 0.12) !important;
-        border-color: rgba(5, 150, 105, 0.3) !important;
-        color: #047857 !important;
-      }
-      .botContent {
-        background: #F8FAFC !important;
-        border: 1px solid #E2E8F0 !important;
-        box-shadow: none !important;
-      }
-      .botLine {
-        color: #0F172A !important;
-      }
-    }
-
-    .userBubble {
-      box-shadow: none !important;
-      .userSenderLabel {
-        color: #64748B !important;
-      }
-      .userText {
-        background: #F1F5F9 !important;
-        border: 1px solid #E2E8F0 !important;
-        color: #0F172A !important;
-        box-shadow: none !important;
-      }
-    }
-
-    .miniGraphCard {
-      background: #FFFFFF !important;
-      border: 1px solid #E2E8F0 !important;
-      box-shadow: none !important;
-      .tickerTag { color: #0F172A !important; }
-      .trendStatus { color: #047857 !important; }
-      .rrPill {
-        background: rgba(16, 185, 129, 0.12) !important;
-        color: #047857 !important;
-      }
-      .miniGraphFooter {
-        border-top-color: #E2E8F0 !important;
-        .metaGroup span { color: #64748B !important; }
-        .metaGroup strong { color: #0F172A !important; }
-      }
-    }
-
-    .promptChip {
-      background: #F1F5F9 !important;
-      border: 1px solid #E2E8F0 !important;
-      color: #475569 !important;
-      &:hover {
-        background: rgba(16, 185, 129, 0.12) !important;
-        border-color: rgba(5, 150, 105, 0.35) !important;
-        color: #047857 !important;
-      }
-    }
-
-    .chatInputForm {
-      background: #F8FAFC !important;
-      border: 1px solid #E2E8F0 !important;
-      box-shadow: none !important;
-      .chatInput {
-        color: #0F172A !important;
-        &::placeholder {
-          color: #94A3B8 !important;
-        }
-      }
-      .sendButton {
-        background: #047857 !important;
-        color: #FFFFFF !important;
-      }
-    }
-
-    .featureList {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .featureItem {
-      background: #FFFFFF !important;
-      border: 1px solid rgba(24, 201, 139, 0.22) !important;
-      border-radius: 14px !important;
-      padding: 14px 18px !important;
-      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03) !important;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      transition: all 0.25s ease !important;
-
-      &:hover {
-        background: #F0FDF4 !important;
-        border-color: rgba(24, 201, 139, 0.45) !important;
-        box-shadow: 0 4px 16px rgba(24, 201, 139, 0.08) !important;
-        transform: translateX(4px);
-      }
-
-      .numBadge {
-        color: #047857 !important;
-        background: #F0FDF4 !important;
-        border: 1px solid rgba(24, 201, 139, 0.3) !important;
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 15px;
-        font-weight: 800;
-        flex-shrink: 0;
-        margin-top: 0;
-      }
-
-      .featureContent {
-        h3 {
-          color: #0F172A !important;
-          font-size: 16px;
-          font-weight: 700;
-          margin: 0;
-          background: transparent !important;
-          border: none !important;
-          box-shadow: none !important;
-        }
-
-        p {
-          color: #475569 !important;
-          font-size: 13.5px;
-          line-height: 1.55;
-          margin-top: 4px;
-          background: transparent !important;
-          border: none !important;
-          box-shadow: none !important;
-        }
-      }
-    }
-  }
 
   @include respond-to("tab") {
     padding: 70px 0;
@@ -208,11 +35,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 70px;
+    gap: 60px;
 
     @include respond-to("md") {
       flex-direction: column;
-      gap: 50px;
+      gap: 48px;
     }
   }
 
@@ -230,24 +57,24 @@
   .chatCard {
     position: relative;
     width: 100%;
-    min-height: 570px;
+    min-height: 560px;
     display: flex;
     flex-direction: column;
     background: 
-      radial-gradient(ellipse 25% 85% at 0% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
-      radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.12) 0%, rgba(110, 231, 183, 0.05) 50%, transparent 70%),
-      radial-gradient(ellipse 25% 85% at 100% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
-      #121514;
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(24, 201, 139, 0.35);
-    border-radius: 24px;
-    box-shadow: 0 28px 75px rgba(0, 0, 0, 0.95), 0 0 40px rgba(24, 201, 139, 0.12), inset 0 0 0 1px rgba(24, 201, 139, 0.12);
+      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(24, 201, 139, 0.12) 0%, rgba(4, 8, 6, 0.98) 100%),
+      #080D0B;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(24, 201, 139, 0.32);
+    border-radius: 22px;
+    box-shadow: 0 24px 65px rgba(0, 0, 0, 0.85), 0 0 30px rgba(24, 201, 139, 0.1), inset 0 1px 0 rgba(24, 201, 139, 0.25);
     overflow: hidden;
     padding: 22px 24px;
+    transition: all 0.3s ease;
 
     @include respond-to("sm") {
       padding: 16px;
       min-height: 500px;
+      border-radius: 18px;
     }
   }
 
@@ -263,35 +90,7 @@
     .headerLeftCluster {
       display: flex;
       align-items: center;
-      gap: 14px;
-
-      .windowDots {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-
-        span {
-          width: 8.5px;
-          height: 8.5px;
-          border-radius: 50%;
-          display: inline-block;
-        }
-
-        .dotRed {
-          background: #EF4444;
-          opacity: 0.8;
-        }
-
-        .dotYellow {
-          background: #38BDF8;
-          opacity: 0.8;
-        }
-
-        .dotGreen {
-          background: #10B981;
-          opacity: 0.8;
-        }
-      }
+      gap: 12px;
 
       .aiProfile {
         display: flex;
@@ -305,27 +104,10 @@
           justify-content: center;
 
           .headerLogoImg {
-            height: 28px;
+            height: 26px;
             width: auto;
             object-fit: contain;
-            filter: drop-shadow(0 0 10px rgba(24, 201, 139, 0.4));
-          }
-        }
-
-        .aiMeta {
-          h4 {
-            @include font-bold;
-            font-size: 14.5px;
-            color: #FFFFFF;
-            margin: 0 0 1px 0;
-            letter-spacing: -0.2px;
-          }
-
-          span {
-            @include font-semibold;
-            font-size: 9.5px;
-            color: #18c98b;
-            letter-spacing: 0.8px;
+            filter: drop-shadow(0 0 8px rgba(24, 201, 139, 0.4));
           }
         }
       }
@@ -345,11 +127,11 @@
       letter-spacing: 0.5px;
 
       .greenDot {
-        width: 5.5px;
-        height: 5.5px;
+        width: 6px;
+        height: 6px;
         border-radius: 50%;
         background: #34D399;
-        box-shadow: 0 0 6px #34D399;
+        box-shadow: 0 0 8px #34D399;
         animation: pulseGreen 2s infinite;
       }
     }
@@ -360,11 +142,14 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
     overflow-y: auto;
     padding-right: 4px;
     margin-bottom: 14px;
-    max-height: 350px;
+    min-height: 340px;
+    max-height: 360px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(24, 201, 139, 0.3) transparent;
 
     &::-webkit-scrollbar {
       width: 4px;
@@ -395,21 +180,22 @@
 
     .userSenderLabel {
       @include font-semibold;
-      font-size: 9px;
+      font-size: 9.5px;
       letter-spacing: 0.8px;
-      color: #9CA3AF;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
     }
 
     .userText {
-      @include font-normal;
-      background: linear-gradient(135deg, rgba(24, 201, 139, 0.24) 0%, rgba(30, 22, 10, 0.9) 100%);
+      @include font-medium;
+      background: linear-gradient(135deg, rgba(24, 201, 139, 0.2) 0%, rgba(10, 24, 18, 0.92) 100%);
       border: 1px solid rgba(24, 201, 139, 0.38);
-      border-radius: 16px 16px 3px 16px;
+      border-radius: 16px 16px 4px 16px;
       padding: 10px 16px;
       color: #FFFFFF;
       font-size: 13.5px;
       line-height: 1.5;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
     }
   }
 
@@ -418,5 +204,4 @@
     justify-content: flex-start;
     width: 100%;
   }
-
 }
