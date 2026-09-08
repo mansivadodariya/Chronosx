@@ -407,7 +407,7 @@ export default function Header() {
 
                     {/* Right Desktop CTA */}
                     <div className={styles.desktopAction}>
-                        {/* <ThemeToggle /> */}
+                        <ThemeToggle />
                         <Button
                             text={isLoggedIn ? t('nav.dashboard', 'Dashboard') : t('nav.getStarted', 'Get Started')}
                             icon={isLoggedIn ? DashboardGridIcon : RightIcon}

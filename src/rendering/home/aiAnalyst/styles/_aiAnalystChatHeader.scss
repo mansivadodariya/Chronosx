@@ -1,7 +1,7 @@
 .aiAnalystSection {
   position: relative;
   width: 100%;
-  padding: 120px 0;
+  padding: 100px 0;
   overflow: hidden;
 
   @include respond-to("tab") {
@@ -39,7 +39,7 @@
 
     @include respond-to("md") {
       flex-direction: column;
-      gap: 50px;
+      gap: 48px;
     }
   }
 

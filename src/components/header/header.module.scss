@@ -778,28 +778,139 @@
 }
 
 :global(html.light) .mobileDrawer {
-    background: #FFFFFF !important;
-    border-color: rgba(15, 23, 42, 0.1) !important;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1) !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 
-    .itemTitle,
-    .drawerLink,
-    .subTitle {
+    .drawerCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.3) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 16px 40px -4px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+        backdrop-filter: blur(20px);
+    }
+
+    .drawerNavList {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .drawerLink {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
         color: #0F172A !important;
-    }
 
-    .itemDesc,
-    .subDesc,
-    .dropdownHeaderTag {
-        color: #475569 !important;
-    }
-
-    .drawerSubItem {
-        background: #F8FAFC !important;
-        border-color: rgba(15, 23, 42, 0.08) !important;
-
-        &:hover {
-            background: #F1F5F9 !important;
+        span {
+            color: #0F172A !important;
         }
+
+        .mobileChevron {
+            color: #64748B !important;
+
+            &.mobileChevronOpen {
+                color: #047857 !important;
+            }
+        }
+
+        &:hover,
+        &.drawerLinkActive {
+            background: rgba(24, 201, 139, 0.08) !important;
+            color: #047857 !important;
+
+            span {
+                color: #047857 !important;
+            }
+
+            .mobileChevron {
+                color: #047857 !important;
+            }
+        }
+
+        .activeDot {
+            background: #18C98B !important;
+            box-shadow: 0 0 8px rgba(24, 201, 139, 0.4) !important;
+        }
+    }
+
+    .mobileDropdownItem {
+        background: transparent !important;
+        border: none !important;
+    }
+
+    .mobileSubList {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+
+        .mobileSubLink {
+            background: #F8FAFC !important;
+            border: 1px solid rgba(15, 23, 42, 0.06) !important;
+            box-shadow: none !important;
+
+            &:hover {
+                background: #F1F5F9 !important;
+                border-color: rgba(24, 201, 139, 0.35) !important;
+
+                .subIconWrap {
+                    background: #18C98B !important;
+                    color: #040605 !important;
+                    border-color: #18C98B !important;
+                }
+
+                .subTitle {
+                    color: #047857 !important;
+                }
+            }
+
+            .subIconWrap {
+                background: #FFFFFF !important;
+                border: 1px solid rgba(24, 201, 139, 0.25) !important;
+                color: #047857 !important;
+                transition: all 0.2s ease;
+            }
+
+            .subContent {
+                .subTitleRow {
+                    .subTitle {
+                        color: #0F172A !important;
+                    }
+
+                    .subBadge {
+                        background: rgba(24, 201, 139, 0.12) !important;
+                        border: 1px solid rgba(24, 201, 139, 0.3) !important;
+                        color: #047857 !important;
+
+                        &.comingSoonBadge {
+                            background: rgba(24, 201, 139, 0.1) !important;
+                            border-color: rgba(24, 201, 139, 0.25) !important;
+                            color: #047857 !important;
+                            box-shadow: none !important;
+                        }
+                    }
+                }
+
+                .subDesc {
+                    color: #64748B !important;
+                }
+            }
+        }
+    }
+
+    .drawerDivider {
+        background: rgba(15, 23, 42, 0.08) !important;
+        border: none !important;
+        height: 1px !important;
+        margin: 14px 0 !important;
+    }
+
+    .drawerCta {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
     }
 }

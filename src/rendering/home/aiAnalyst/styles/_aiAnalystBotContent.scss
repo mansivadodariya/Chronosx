@@ -641,6 +641,10 @@
       transition: all 0.25s ease;
       box-shadow: 0 0 12px rgba(24, 201, 139, 0.5);
 
+      svg {
+        display: block;
+      }
+
       &:hover {
         background: #34D399;
         transform: scale(1.08);
