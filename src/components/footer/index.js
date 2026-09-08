@@ -2,7 +2,8 @@
 import React, { useState, useRef } from 'react';
 import styles from './footer.module.scss';
 import Link from 'next/link';
-import { getAuthHref, getFeatureHref } from '@/lib/authRedirect';
+import { getAuthHref } from '@/lib/authRedirect';
+import { useLanguage } from '@/context/LanguageContext';
 
 const Logo = '/assets/logo/logo.png';
 
@@ -15,6 +16,7 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const { t } = useLanguage();
   const containerRef = useRef(null);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -30,7 +32,7 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div className='container'>
-        {/* Giant Interactive Brand Signature (Web: Cursor Hover Reveal | Mobile: Auto Infinite Sweep) */}
+        {/* Giant Interactive Brand Signature */}
         <div
           ref={containerRef}
           className={styles.brandSignatureSection}
@@ -38,12 +40,10 @@ export default function Footer() {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          {/* Base Layer: Clean, Shadowless Light Tone Text */}
           <h2 className={`${styles.signatureTypography} ${styles.baseLayer}`} aria-hidden="true">
             ChronosX
           </h2>
 
-          {/* Top Layer: 24K Luxury Gold Reveal (Web: Cursor tracking | Mobile: Auto Infinite Shimmer) */}
           <h2
             className={`${styles.signatureTypography} ${styles.spotlightLayer}`}
             style={{
@@ -66,84 +66,72 @@ export default function Footer() {
               </Link>
             </div>
             <p className={styles.brandDesc}>
-              Institutional-grade AI trading intelligence, neural chart pattern detection,
-              and quantitative execution models built for modern traders.
+              {t('footer.brandDesc', 'Institutional-grade AI trading intelligence, neural chart pattern detection, and quantitative execution models built for modern traders.')}
             </p>
             <div className={styles.statusBadge}>
               <span className={styles.statusDot} />
-              <span>AI Trading Desk Online</span>
+              <span>{t('footer.statusOnline', 'AI Trading Desk Online')}</span>
             </div>
           </div>
 
           {/* 1. Products Column */}
           <div className={styles.navCol}>
-            <h4>PRODUCTS</h4>
+            <h4>{t('footer.productsTitle', 'PRODUCTS')}</h4>
             <ul>
-              <li><Link href="/trade-snap">Market Snapshot & Scanner</Link></li>
-              <li><Link href="/ai-assistant">AI Trading Advisor</Link></li>
-              <li><Link href="/ai-strategy/live">AI Strategy Hub</Link></li>
+              <li><Link href="/ai-chart-scanner">{t('header.products.chartScanner.title', 'AI Chart Scanner')}</Link></li>
+              <li><Link href="/ai-market-assistant">{t('header.products.marketAssistant.title', 'AI Market Assistant')}</Link></li>
+              <li><Link href="/live-market-scanner">{t('header.products.liveScanner.title', 'Live Market Scanner')}</Link></li>
+              <li><Link href="/ai-strategy-hub">{t('header.products.strategyHub.title', 'Strategy Hub')}</Link></li>
             </ul>
           </div>
 
           {/* 2. Trading Tools Column */}
           <div className={styles.navCol}>
-            <h4>TRADING TOOLS</h4>
+            <h4>{t('footer.tradingToolsTitle', 'TRADING TOOLS')}</h4>
             <ul>
-              <li><Link href="/trade-analysis">AI Performance Analyzer</Link></li>
-              <li><Link href={getAuthHref('/ai-strategy/live')}>Strategy Builder</Link></li>
-              <li><Link href={getAuthHref('/ai-strategy/live')}>Quant Backtesting</Link></li>
-              <li><Link href={getAuthHref('/dashboard')}>Paper Trading Desk</Link></li>
+              <li><Link href="/ai-trade-audit">{t('header.tradingTools.tradeAudit.title', 'AI Trade Audit')}</Link></li>
+              <li><Link href={getAuthHref('/strategy-hub')}>{t('footer.strategyBuilder', 'Strategy Builder')}</Link></li>
+              <li><Link href={getAuthHref('/strategy-hub')}>{t('footer.quantBacktesting', 'Quant Backtesting')}</Link></li>
+              <li><Link href={getAuthHref('/dashboard')}>{t('footer.paperTradingDesk', 'Paper Trading Desk')}</Link></li>
             </ul>
           </div>
 
           {/* 3. Company & Resources Column */}
           <div className={styles.navCol}>
-            <h4>COMPANY</h4>
+            <h4>{t('footer.companyTitle', 'COMPANY')}</h4>
             <ul>
-              <li><Link href="/about-us">About Us</Link></li>
-              <li><Link href="/plans">Pricing Plans</Link></li>
-              <li><Link href="/blogs">Research & Blogs</Link></li>
-              <li><Link href="/market-news">Market News</Link></li>
-              <li><Link href="/forex-calculator">Forex Calculator</Link></li>
-              <li><Link href="/economic-calendar">Economic Calendar</Link></li>
-              <li><Link href="/contact-us">Contact Us</Link></li>
+              <li><Link href="/about-us">{t('header.company.aboutUs.title', 'About Us')}</Link></li>
+              <li><Link href="/plans">{t('footer.pricingPlans', 'Pricing Plans')}</Link></li>
+              <li><Link href="/blogs">{t('footer.researchBlogs', 'Research & Blogs')}</Link></li>
+              <li><Link href="/market-news">{t('header.company.news.title', 'Market News')}</Link></li>
+              <li><Link href="/forex-calculator">{t('header.company.forexCalculator.title', 'Forex Calculator')}</Link></li>
+              <li><Link href="/economic-calendar">{t('header.company.economicCalendar.title', 'Economic Calendar')}</Link></li>
+              <li><Link href="/contact-us">{t('footer.contactUs', 'Contact Us')}</Link></li>
             </ul>
           </div>
 
           {/* 4. Legal Column */}
           <div className={styles.navCol}>
-            <h4>LEGAL</h4>
+            <h4>{t('footer.legalTitle', 'LEGAL')}</h4>
             <ul>
-              <li><Link href="/privacy-policy">Privacy Policy</Link></li>
-              <li><Link href="/terms-and-conditions">Terms & Conditions</Link></li>
-              <li><Link href="/risk-disclosure">Risk Disclosure</Link></li>
+              <li><Link href="/privacy-policy">{t('footer.privacyPolicy', 'Privacy Policy')}</Link></li>
+              <li><Link href="/terms-and-conditions">{t('footer.termsAndConditions', 'Terms & Conditions')}</Link></li>
+              <li><Link href="/risk-disclosure">{t('footer.riskDisclosure', 'Risk Disclosure')}</Link></li>
             </ul>
           </div>
         </div>
 
         <div className={styles.disclaimerSection}>
-          <p>
-            Trading and investing in leveraged financial markets—including Foreign Exchange (Forex), commodities, and global indices—involves substantial risk and can result in the loss of your invested capital. Leveraged trading magnifies both potential gains and potential losses. All automated chart evaluations, AI-generated technical scores, pattern detection models, market commentary, and analytical toolsets provided across ChronosX are engineered strictly for informational and educational research purposes. Nothing on this platform constitutes or should be interpreted as financial, investment, legal, or trading advice. You are solely responsible for evaluating your risk tolerance and financial condition, and we strongly recommend consulting a certified, independent financial advisor before executing any trades. Past performance does not guarantee or predict future results.
-          </p>
-
-          <p>
-            Hypothetical, backtested, and simulated algorithmic outputs have inherent limitations. Unlike real-world trading records, simulated outcomes do not represent live market transactions or actual account executions. Because simulated trades are not executed in live order books, results may not account for real-time market dynamics such as liquidity gaps, spread expansion, execution slippage, or sudden macroeconomic volatility. All historical backtests, neural pattern overlays, and quantitative metrics are modeled with historical datasets and should never be viewed as a promise or guarantee that any account will achieve comparable gains or avoid losses.
-          </p>
-
-          <p>
-            Any user testimonials, case studies, or feedback presented on this platform depict individual experiences. Individual trading results vary widely based on risk parameters, personal discipline, market conditions, and experience. Past user experiences do not constitute a guarantee of future success or profitability.
-          </p>
-
-          <p>
-            ChronosX operates exclusively as an artificial intelligence technology and market research platform. ChronosX is not a registered broker-dealer, financial custodian, exchange, or investment advisor. We do not hold client deposits, manage user capital, or execute orders on financial exchanges. We do not access individual user brokerage accounts, and we make no claims or representations regarding the comparative profitability or performance of users utilizing our platform features.
-          </p>
-
-          <p>
-            All interactive candlestick charts, multi-timeframe pattern recognition overlays, and technical indicator engines accessible on the platform are powered by ChronosX’s proprietary visual analytics architecture. Market telemetry and price data across currencies, digital assets, and commodities are sourced from institutional data feeds for analytical screening. Data is delivered on an &quot;as-is&quot; basis for technical research and should be independently validated prior to making trading decisions.
-          </p>
+          <p>{t('footer.disclaimerP1')}</p>
+          <p>{t('footer.disclaimerP2')}</p>
+          <p>{t('footer.disclaimerP3')}</p>
+          <p>{t('footer.disclaimerP4')}</p>
+          <p>{t('footer.disclaimerP5')}</p>
 
           <p className={styles.fullDisclaimerLink}>
-            This statement serves as a summary notice and does not replace our complete legal framework. For exhaustive details on our operating terms and risk warnings, please review our full <Link href="/risk-disclosure">Risk Disclosure</Link> and <Link href="/terms-and-conditions">Terms & Conditions</Link>.
+            {t('footer.disclaimerNotice')}{' '}
+            <Link href="/risk-disclosure">{t('footer.riskDisclosure', 'Risk Disclosure')}</Link> {t('common.and', 'and')}{' '}
+            <Link href="/terms-and-conditions">{t('footer.termsAndConditions', 'Terms & Conditions')}</Link>.
           </p>
         </div>
 
@@ -151,7 +139,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className={styles.bottomSection}>
-          <p>© 2026 ChronosX. All rights reserved.</p>
+          <p>{t('footer.copyright', '© 2026 ChronosX. All rights reserved.')}</p>
 
           <div className={styles.socialList}>
             {socialLinks.map((item, index) => (

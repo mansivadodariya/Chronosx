@@ -1,17 +1,23 @@
 {
   "nav": {
     "home": "Home",
-    "marketSnapshot": "Market Snapshot & Scanner",
-    "aiTrade": "Market Snapshot & Scanner",
-    "aiTradingAdvisor": "AI Trading Advisor",
-    "aiChat": "AI Trading Advisor",
-    "aiStrategy": "AI Strategy Hub",
-    "aiStrategyHub": "AI Strategy Hub",
+    "chartScanner": "AI Chart Scanner",
+    "tradeAudit": "AI Trade Audit",
+    "marketAssistant": "AI Market Assistant",
+    "liveMarketScanner": "Live Market Scanner",
+    "strategyHub": "Strategy Hub",
+    "strategyPlaybooks": "Strategy Playbooks",
+    "marketSnapshot": "AI Chart Scanner",
+    "aiTrade": "AI Chart Scanner",
+    "aiTradingAdvisor": "AI Market Assistant",
+    "aiChat": "AI Market Assistant",
+    "aiStrategy": "Strategy Hub",
+    "aiStrategyHub": "Strategy Hub",
     "aiStrategyDesc": "Build, test and optimize AI-powered trading strategies.",
-    "liveAnalysis": "Live Market Analysis",
-    "liveMarketAnalysis": "Live Market Analysis",
-    "strategyEnginePlaybooks": "Strategy Engine & Playbooks",
-    "aiTradeAnalysis": "AI Trade analysis",
+    "liveAnalysis": "Live Market Scanner",
+    "liveMarketAnalysis": "Live Market Scanner",
+    "strategyEnginePlaybooks": "Strategy Playbooks",
+    "aiTradeAnalysis": "AI Trade Audit",
     "tools": "Tools",
     "economicCalendar": "Economic Calendar",
     "forexCalculator": "Forex Calculator",
@@ -32,7 +38,8 @@
     "credits": "credits",
     "logoutConfirmTitle": "Log out?",
     "logoutConfirmMessage": "Are you sure you want to log out?",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "clickToUpgrade": "View subscription plans"
   },
   "footer": {
     "description": "AI-powered Forex intelligence for serious traders. Chart reading, trade analysis, and strategy generation — built around MT5 and the Newera brokerage stack.",
@@ -46,7 +53,29 @@
     "newsletterPlaceholder": "Your@gmail.com",
     "subscribedSuccess": "Successfully subscribed to the newsletter!",
     "alreadySubscribed": "This email is already subscribed.",
-    "invalidEmail": "Please enter a valid email address."
+    "invalidEmail": "Please enter a valid email address.",
+    "brandDesc": "Institutional-grade AI trading intelligence, neural chart pattern detection, and quantitative execution models built for modern traders.",
+    "statusOnline": "AI Trading Desk Online",
+    "productsTitle": "PRODUCTS",
+    "tradingToolsTitle": "TRADING TOOLS",
+    "companyTitle": "COMPANY",
+    "legalTitle": "LEGAL",
+    "strategyBuilder": "Strategy Builder",
+    "quantBacktesting": "Quant Backtesting",
+    "paperTradingDesk": "Paper Trading Desk",
+    "pricingPlans": "Pricing Plans",
+    "researchBlogs": "Research & Blogs",
+    "forexCalculator": "Forex Calculator",
+    "economicCalendar": "Economic Calendar",
+    "contactUs": "Contact Us",
+    "riskDisclosure": "Risk Disclosure",
+    "copyright": "© 2026 ChronosX. All rights reserved.",
+    "disclaimerP1": "Trading and investing in leveraged financial markets—including Foreign Exchange (Forex), commodities, and global indices—involves substantial risk and can result in the loss of your invested capital. Leveraged trading magnifies both potential gains and potential losses. All automated chart evaluations, AI-generated technical scores, pattern detection models, market commentary, and analytical toolsets provided across ChronosX are engineered strictly for informational and educational research purposes. Nothing on this platform constitutes or should be interpreted as financial, investment, legal, or trading advice. You are solely responsible for evaluating your risk tolerance and financial condition, and we strongly recommend consulting a certified, independent financial advisor before executing any trades. Past performance does not guarantee or predict future results.",
+    "disclaimerP2": "Hypothetical, backtested, and simulated algorithmic outputs have inherent limitations. Unlike real-world trading records, simulated outcomes do not represent live market transactions or actual account executions. Because simulated trades are not executed in live order books, results may not account for real-time market dynamics such as liquidity gaps, spread expansion, execution slippage, or sudden macroeconomic volatility. All historical backtests, neural pattern overlays, and quantitative metrics are modeled with historical datasets and should never be viewed as a promise or guarantee that any account will achieve comparable gains or avoid losses.",
+    "disclaimerP3": "Any user testimonials, case studies, or feedback presented on this platform depict individual experiences. Individual trading results vary widely based on risk parameters, personal discipline, market conditions, and experience. Past user experiences do not constitute a guarantee of future success or profitability.",
+    "disclaimerP4": "ChronosX operates exclusively as an artificial intelligence technology and market research platform. ChronosX is not a registered broker-dealer, financial custodian, exchange, or investment advisor. We do not hold client deposits, manage user capital, or execute orders on financial exchanges. We do not access individual user brokerage accounts, and we make no claims or representations regarding the comparative profitability or performance of users utilizing our platform features.",
+    "disclaimerP5": "All interactive candlestick charts, multi-timeframe pattern recognition overlays, and technical indicator engines accessible on the platform are powered by ChronosX’s proprietary visual analytics architecture. Market telemetry and price data across currencies, digital assets, and commodities are sourced from institutional data feeds for analytical screening. Data is delivered on an \"as-is\" basis for technical research and should be independently validated prior to making trading decisions.",
+    "disclaimerNotice": "This statement serves as a summary notice and does not replace our complete legal framework. For exhaustive details on our operating terms and risk warnings, please review our full"
   },
   "common": {
     "language": "Language",
@@ -64,7 +93,14 @@
     "exploreNow": "Explore Now",
     "copy": "Copy",
     "copied": "Copied!",
-    "close": "Close"
+    "close": "Close",
+    "live": "LIVE",
+    "active": "ACTIVE",
+    "running": "RUNNING",
+    "online": "ONLINE",
+    "offline": "OFFLINE",
+    "pending": "PENDING",
+    "synced": "SYNCED"
   },
   "home": {
     "lineText": "AI For MT5 Traders",
@@ -310,7 +346,13 @@
     "more": "MORE",
     "upgradeTitle": "Upgrade to pro",
     "upgradeDesc": "Unlock advanced analytics more AI insights & unlimited saves.",
-    "upgradeBtn": "Upgrade Now"
+    "upgradeBtn": "Upgrade Now",
+    "upgradeTo": "Upgrade to",
+    "proAccount": "Pro Account",
+    "upgradeToPro": "Upgrade to Pro",
+    "viewManage": "View & Manage",
+    "expand": "Expand sidebar",
+    "collapse": "Collapse sidebar"
   },
   "profile": {
     "profileTab": "Profile",
@@ -404,5 +446,253 @@
     "earnByTradingDesc": "You've used all your available credits. Continue trading with your Newera account and earn {credits} credits for every lot traded.",
     "syncingVolume": "Syncing trading volume...",
     "loadingDetails": "Loading account details..."
+  },
+  "header": {
+    "productsTab": "Products",
+    "tradingToolsTab": "Trading Tools",
+    "companyTab": "Company",
+    "pricingTab": "Pricing",
+    "contactUsTab": "Contact Us",
+    "aiTradingEcosystem": "AI TRADING ECOSYSTEM",
+    "aiTradingEcosystemDesc": "Powered by ChronosX Real-Time Neural Engines",
+    "quantExecutionSuite": "QUANTITATIVE EXECUTION SUITE",
+    "quantExecutionSuiteDesc": "Multi-Broker Execution & Zero-Latency Routing",
+    "companyResources": "COMPANY & RESOURCES",
+    "companyResourcesDesc": "ChronosX Global Financial Intelligence Network",
+    "products": {
+      "chartScanner": {
+        "title": "AI Chart Scanner",
+        "desc": "Multi-timeframe technical pattern detection & neural OCR chart vision",
+        "badge": "POPULAR"
+      },
+      "marketAssistant": {
+        "title": "AI Market Assistant",
+        "desc": "Real-time conversational market intelligence & instant insights",
+        "badge": "LIVE AI"
+      },
+      "liveScanner": {
+        "title": "Live Market Scanner",
+        "desc": "Algorithmic breakout signals, live momentum radar & market alerts",
+        "badge": "LIVE"
+      },
+      "strategyHub": {
+        "title": "Strategy Hub",
+        "desc": "Algorithmic backtesting, quantitative playbooks & strategy signals",
+        "badge": "QUANT"
+      }
+    },
+    "tradingTools": {
+      "tradeAudit": {
+        "title": "AI Trade Audit",
+        "desc": "Review historical trading data to evaluate performance, pinpoint mistakes, and track win rates.",
+        "badge": "AI AUDIT"
+      },
+      "strategyCreate": {
+        "title": "Strategy (Create New)",
+        "desc": "Custom algorithmic trading logic, parameter tuning & rule engines",
+        "badge": "COMING SOON"
+      },
+      "backtesting": {
+        "title": "Backtesting",
+        "desc": "High-speed historical simulation, win-rate metrics & Sharpe ratio",
+        "badge": "COMING SOON"
+      },
+      "paperTrading": {
+        "title": "Paper Trading",
+        "desc": "Risk-free simulated trading environment with live real-time feeds",
+        "badge": "COMING SOON"
+      }
+    },
+    "company": {
+      "aboutUs": {
+        "title": "About Us",
+        "desc": "Our mission, institutional AI infrastructure & executive leadership",
+        "badge": "VISION"
+      },
+      "economicCalendar": {
+        "title": "Economic Calendar",
+        "desc": "Real-time global macro events, central bank rates & high-impact releases",
+        "badge": "LIVE CALENDAR"
+      },
+      "news": {
+        "title": "News",
+        "desc": "Curated financial headlines, market updates & breaking economic catalysts",
+        "badge": "DAILY"
+      },
+      "forexCalculator": {
+        "title": "Forex Calculator",
+        "desc": "Precision pip value, position sizing, lot size & risk calculator",
+        "badge": "UTILITY"
+      },
+      "blog": {
+        "title": "Blog",
+        "desc": "In-depth quant trading strategies, technical breakdowns & research",
+        "badge": "INSIGHTS"
+      }
+    }
+  },
+  "notFound": {
+    "signalDisconnected": "SIGNAL DISCONNECTED • ERROR 404",
+    "headingPrefix": "Lost in the",
+    "headingHighlight": "Market Telemetry?",
+    "description": "The coordinates you requested do not exist in our neural routing engine. The page may have been moved, archived, or recalibrated.",
+    "returnHome": "RETURN TO HOME",
+    "viewDashboard": "ACCESS DASHBOARD"
+  },
+  "quickJump": {
+    "trigger": "Quick jump...",
+    "triggerShortcut": "Quick jump (⌘K)",
+    "inputPlaceholder": "Type a page name, bot, or setting...",
+    "clear": "Clear",
+    "close": "Close (Esc)",
+    "noResultsPrefix": "No matching locations found for",
+    "searchHint": "Try searching for 'Trading', 'Dashboard', 'Strategy', or 'Calendar'",
+    "jump": "Jump",
+    "navigateHint": "Navigate",
+    "openHint": "Open",
+    "closeHint": "Close",
+    "item": "item",
+    "items": "items",
+    "categories": {
+      "all": "All",
+      "general": "General",
+      "trading": "Trading",
+      "tools": "Tools",
+      "company": "Company",
+      "legal": "Legal"
+    }
+  },
+  "homeSections": {
+    "hero": {
+      "badge": "Next-Gen AI Algorithmic Trading Terminal",
+      "titleLine1": "TRADE SMARTER",
+      "titleLine2": "WITH AI THAT",
+      "titleLine3": "NEVER SLEEP",
+      "titlePrefix": "Trade Smarter With",
+      "titleHighlight": "AI That Never Sleeps",
+      "description": "Get real-time AI trading signals, market insights, and trade recommendations across Forex, Crypto, Stocks, and Global Markets.",
+      "getStarted": "GET STARTED",
+      "badges": {
+        "chartScannerDesc": "Pattern & OCR Detection",
+        "strategyHubDesc": "Algorithmic Playbooks",
+        "liveScannerDesc": "Real-Time Market Feeds",
+        "tradeAuditDesc": "Automated Risk Analytics",
+        "marketAssistantDesc": "24/7 Neural Copilot"
+      },
+      "features": {
+        "signalsLine1": "Real-Time",
+        "signalsLine2": "Market Signals",
+        "aiLine1": "AI-Powered",
+        "aiLine2": "Analysis",
+        "coverageLine1": "Multi-Asset",
+        "coverageLine2": "Coverage",
+        "globalLine1": "Global Markets",
+        "globalLine2": "24/7"
+      },
+      "metrics": {
+        "pairsLabel": "Global Market Pairs",
+        "pairsSub": "Forex, Indices & Metals",
+        "speedLabel": "AI Processing Speed",
+        "speedSub": "Sub-second neural pattern analysis",
+        "tfLabel": "Multi-TF Confluence",
+        "tfSub": "From 1-minute scalping to daily swings",
+        "uptimeLabel": "Platform Availability",
+        "uptimeSub": "24/7 continuous market telemetry"
+      }
+    },
+    "metrics": {
+      "badge": "PLATFORM METRICS",
+      "title1": "Numbers That Prove",
+      "title2": "the Edge.",
+      "description": "High-frequency neural pattern recognition operating across global markets with ultra-low latency.",
+      "tile1Label": "Market Pairs Scanned",
+      "tile1Desc": "Live Forex, Indices & Metals telemetry",
+      "tile2Label": "AI Processing Speed",
+      "tile2Desc": "Sub-second neural pattern analysis",
+      "tile3Label": "Timeframes Multi-TF Confluence",
+      "tile3Desc": "From 1-minute scalping to daily swings",
+      "tile4Label": "Platform Availability",
+      "tile4Desc": "24/7 continuous market telemetry"
+    },
+    "capabilities": {
+      "badge": "PLATFORM CAPABILITIES",
+      "title1": "Four Tools.",
+      "title2": "One Intelligent Cockpit.",
+      "description": "Four integrated AI modules. One unified workflow. Scan high-conviction setups, consult your real-time AI advisor, deploy verified strategies, and simulate performance before putting capital at risk.",
+      "card1Title": "AI CHART SCANNER",
+      "card1Desc": "Instant market screening, technical pattern detection, and high-conviction chart vision.",
+      "card2Title": "AI MARKET ASSISTANT",
+      "card2Desc": "Natural language market intelligence, multi-pair commentary, and macro news context.",
+      "card3Title": "LIVE MARKET SCANNER",
+      "card3Desc": "Real-time algorithmic breakout detection, live momentum radar, and multi-symbol confluence.",
+      "card4Title": "STRATEGY HUB",
+      "card4Desc": "Algorithmic backtesting, quantitative playbooks, and custom trade execution rules."
+    },
+    "howItWorks": {
+      "badge": "MT5 BROKER INTEGRATION",
+      "title1": "Trade Your Edge.",
+      "title2": "Earn Credits. Never Pay for AI.",
+      "description": "Connect your MT5 account to unlock perpetual AI intelligence. Every trade you execute automatically refills your AI analysis credits—giving you unlimited access to institutional market scans, signals, and strategy playbooks for free.",
+      "ctaBtn": "Get Started Free",
+      "steps": {
+        "step1": "Create Account",
+        "step1Sub": "Creating account",
+        "step2": "Link Top Brokers",
+        "step2Sub": "Linking Top Brokers",
+        "step3": "Ask the AI",
+        "step3Sub": "Scanning market structure",
+        "step4": "Trade & Replenish",
+        "step4Sub": "Replenishing credits"
+      }
+    },
+    "network": {
+      "badge": "GLOBAL INFRASTRUCTURE",
+      "title1": "Ultra Low-Latency",
+      "title2": "AI Execution Mesh",
+      "description": "Connected directly to tier-1 liquidity providers and major financial exchanges worldwide for institutional-grade signal speed."
+    },
+    "testimonials": {
+      "badge": "VERIFIED TRADER REVIEWS",
+      "title1": "What Serious Traders",
+      "title2": "Say About ChronosX",
+      "description": "From proprietary firm traders to independent Forex scalpers, hear how our AI models power real daily trading routines."
+    },
+    "readyToPut": {
+      "badge": "INSTANT INSTITUTIONAL ACCESS",
+      "title1": "Ready to Bring AI to",
+      "title2": "Your Trading Desk?",
+      "description": "Experience institutional-grade AI chart intelligence, pattern detection, and quantitative strategies in just a few minutes.",
+      "primaryBtnText": "GET STARTED NOW"
+    },
+    "teamUp": {
+      "badge": "PARTNERS & ECOSYSTEM",
+      "title1": "Institutional Speed.",
+      "title2": "Connected to Your Preferred Broker.",
+      "description": "ChronosX operates seamlessly alongside globally regulated brokerages, institutional liquidity gateways, and MT5 bridges—ensuring zero conflict of interest and lightning-fast execution."
+    },
+    "favoriteCoins": {
+      "badge": "CROSS-ASSET COVERAGE",
+      "title1": "Trade What Moves.",
+      "title2": "AI Analysis on Every Chart.",
+      "description": "From major currency pairs to gold and global indices, ChronosX scans and analyzes price action across your entire watchlist."
+    },
+    "breakoutDetection": {
+      "badge": "REAL-TIME RADAR",
+      "title1": "Catch High-Momentum",
+      "title2": "Breakouts Early.",
+      "description": "Neural pattern scanners detect liquidity sweeps, order block shifts, and algorithmic breakout triggers before the retail market reacts."
+    },
+    "beforeAfter": {
+      "badge": "NEURAL PATTERN VISION",
+      "title1": "Raw Price Action vs.",
+      "title2": "AI-Augmented Clarity.",
+      "description": "See how ChronosX transforms noisy candlestick charts into institutional-grade setups with entry zones, target levels, and dynamic risk boundaries."
+    },
+    "marketIntelligence": {
+      "badge": "CONVERSATIONAL COPILOT",
+      "title1": "An Institutional Analyst",
+      "title2": "In Your Corner.",
+      "description": "Ask questions, explore macro context, and stress-test trade hypotheses with an AI copilot trained exclusively on quantitative Forex logic."
+    }
   }
 }

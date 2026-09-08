@@ -293,7 +293,7 @@ export default function LiveChatDemoSection({
                             />
                             <button
                                 type="button"
-                                onClick={() => authNavigate(router, '/ai-assistant')}
+                                onClick={() => authNavigate(router, '/market-assistant')}
                                 className={styles.launchFullDeskBtn}
                             >
                                 <span>Open in Live AI Desk</span>

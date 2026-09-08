@@ -1,17 +1,23 @@
 {
   "nav": {
     "home": "Tahanan",
-    "marketSnapshot": "Market Snapshot & Scanner",
-    "aiTrade": "Market Snapshot & Scanner",
-    "aiTradingAdvisor": "AI Trading Advisor",
-    "aiChat": "AI Trading Advisor",
-    "aiStrategy": "AI Strategy Hub",
-    "aiStrategyHub": "AI Strategy Hub",
+    "chartScanner": "AI Chart Scanner",
+    "tradeAudit": "AI Trade Audit",
+    "marketAssistant": "AI Market Assistant",
+    "liveMarketScanner": "Live Market Scanner",
+    "strategyHub": "Strategy Hub",
+    "strategyPlaybooks": "Strategy Playbooks",
+    "marketSnapshot": "AI Chart Scanner",
+    "aiTrade": "AI Chart Scanner",
+    "aiTradingAdvisor": "AI Market Assistant",
+    "aiChat": "AI Market Assistant",
+    "aiStrategy": "Strategy Hub",
+    "aiStrategyHub": "Strategy Hub",
     "aiStrategyDesc": "Bumuo, subukan at i-optimize ang mga diskarte sa pag-trade na pinapagana ng AI.",
-    "liveAnalysis": "Live Market Analysis",
-    "liveMarketAnalysis": "Live Market Analysis",
-    "strategyEnginePlaybooks": "Strategy Engine & Playbooks",
-    "aiTradeAnalysis": "AI Trade analysis",
+    "liveAnalysis": "Live Market Scanner",
+    "liveMarketAnalysis": "Live Market Scanner",
+    "strategyEnginePlaybooks": "Strategy Playbooks",
+    "aiTradeAnalysis": "AI Trade Audit",
     "economicCalendar": "Kalendaryong Pang-ekonomiya",
     "creditHistory": "Kasaysayan ng Kredito",
     "plans": "Mga Plano sa Subscription",
@@ -27,21 +33,44 @@
     "credits": "mga kredito",
     "logoutConfirmTitle": "Mag-log out?",
     "logoutConfirmMessage": "Sigurado ka bang gusto mong mag-log out?",
-    "cancel": "Kanselahin"
+    "cancel": "Kanselahin",
+    "clickToUpgrade": "Tingnan ang mga plano sa subscription"
   },
   "footer": {
     "description": "Intelihensya sa Forex na pinapagana ng AI para sa mga seryosong mangangalakal. Pagbasa ng tsart, pagsusuri ng trade, at pagbuo ng diskarte — binuo sa paligid ng MT5 at Newera brokerage stack.",
     "product": "Produkto",
     "company": "Kumpanya",
     "legal": "Legal",
-    "privacyPolicy": "Kebijakan sa Pagkapribado",
+    "privacyPolicy": "Patakaran sa Pagkapribado",
     "termsAndConditions": "Mga Tuntunin at Kundisyon",
     "allRightsReserved": "Lahat ng karapatan ay nakalaan.",
     "riskWarning": "Babala sa panganib: Ang pag-trade sa Forex ay may malaking peligro. Ang ChronosX ay nagbibigay ng mga tool sa pagsusuri at hindi humahawak ng mga deposito o pag-withdraw. Ang lahat ng pondo ay pinamamahalaan ng Newera.",
     "newsletterPlaceholder": "AngIyongEmail@gmail.com",
     "subscribedSuccess": "Matagumpay na nakasuskribi sa newsletter!",
     "alreadySubscribed": "Ang email na ito ay nakasuskribi na.",
-    "invalidEmail": "Mangyaring maglagay ng wastong email address."
+    "invalidEmail": "Mangyaring maglagay ng wastong email address.",
+    "brandDesc": "Katalinuhan sa trading na pinapagana ng AI sa antas ng institusyon, pagtuklas ng neural chart pattern, at mga modelo ng quantitative execution para sa mga modernong mangangalakal.",
+    "statusOnline": "AI Trading Desk Online",
+    "productsTitle": "MGA PRODUKTO",
+    "tradingToolsTitle": "MGA TOOL SA PAG-TRADE",
+    "companyTitle": "KUMPANYA",
+    "legalTitle": "LEGAL",
+    "strategyBuilder": "Tagabuo ng Diskarte",
+    "quantBacktesting": "Quant Backtesting",
+    "paperTradingDesk": "Paper Trading Desk",
+    "pricingPlans": "Mga Plano sa Presyo",
+    "researchBlogs": "Pananaliksik at Mga Blog",
+    "forexCalculator": "Kalkulator ng Forex",
+    "economicCalendar": "Kalendaryong Pang-ekonomiya",
+    "contactUs": "Makipag-ugnayan",
+    "riskDisclosure": "Pagsisiwalat ng Peligro",
+    "copyright": "© 2026 ChronosX. Lahat ng karapatan ay nakalaan.",
+    "disclaimerP1": "Ang pangangalakal at pamumuhunan sa mga pamilihang pinansyal na may leverage ay may malaking peligro at maaaring magresulta sa pagkawala ng iyong namuhunang kapital.",
+    "disclaimerP2": "Ang mga hypothetical, backtested, at simulated na algorithmic output ay may likas na mga limitasyon.",
+    "disclaimerP3": "Ang anumang mga testimonial ng user o case study ay naglalarawan ng mga indibidwal na karanasan.",
+    "disclaimerP4": "Eksklusibong nagpapatakbo ang ChronosX bilang isang platform ng teknolohiya ng artipisyal na katalinuhan at pananaliksik sa merkado.",
+    "disclaimerP5": "Ang lahat ng interactive na candlestick chart at pattern recognition overlay ay pinapagana ng visual analytics architecture ng ChronosX.",
+    "disclaimerNotice": "Ang pahayag na ito ay nagsisilbing paunawa at hindi pumapalit sa aming buong legal na balangkas. Para sa kumpletong mga detalye, mangyaring suriin ang aming buong"
   },
   "common": {
     "language": "Wika",
@@ -60,7 +89,14 @@
     "exploreNow": "Galugarin Ngayon",
     "copy": "Kopyahin",
     "copied": "Nakopya!",
-    "close": "Isara"
+    "close": "Isara",
+    "live": "LIVE",
+    "active": "AKTIBO",
+    "running": "TUMATAKBO",
+    "online": "ONLINE",
+    "offline": "OFFLINE",
+    "pending": "PENDING",
+    "synced": "NAKA-SYNC"
   },
   "home": {
     "lineText": "AI Para sa mga Mangangalakal ng MT5",
@@ -302,10 +338,16 @@
   },
   "sidebar": {
     "workspace": "WORKSPACE",
-    "more": "MORE",
-    "upgradeTitle": "Mag-upgrade sa pro",
-    "upgradeDesc": "I-unlock ang advanced analytics mas maraming AI insights & walang limitasyong pag-save.",
-    "upgradeBtn": "Mag-upgrade Ngayon"
+    "more": "KARAGDAGAN",
+    "upgradeTitle": "Mag-upgrade sa Pro",
+    "upgradeDesc": "I-unlock ang mga advanced na analytics at higit pang mga insight.",
+    "upgradeBtn": "Mag-upgrade Ngayon",
+    "upgradeTo": "Mag-upgrade sa",
+    "proAccount": "Pro Account",
+    "upgradeToPro": "Mag-upgrade sa Pro",
+    "viewManage": "Tingnan at Pamahalaan",
+    "expand": "Palawakin ang sidebar",
+    "collapse": "I-collapse ang sidebar"
   },
   "profile": {
     "profileTab": "Profile",
@@ -399,5 +441,233 @@
     "earnByTradingDesc": "Nagamit mo na ang lahat ng available na kredito. Magpatuloy sa pag-trade gamit ang iyong Newera account at kumita ng {credits} kredito sa bawat lot na na-trade.",
     "syncingVolume": "Nagsi-sync ng volume sa pag-trade...",
     "loadingDetails": "Naglo-load ng mga detalye ng account..."
+  },
+  "header": {
+    "productsTab": "Mga Produkto",
+    "tradingToolsTab": "Mga Tool sa Pag-trade",
+    "companyTab": "Kumpanya",
+    "pricingTab": "Presyo",
+    "contactUsTab": "Makipag-ugnayan",
+    "aiTradingEcosystem": "AI TRADING ECOSYSTEM",
+    "aiTradingEcosystemDesc": "Pinapagana ng ChronosX Real-Time Neural Engines",
+    "quantExecutionSuite": "QUANTITATIVE EXECUTION SUITE",
+    "quantExecutionSuiteDesc": "Multi-Broker Execution at Zero-Latency Routing",
+    "companyResources": "KUMPANYA AT MGA MAPAGKUKUNAN",
+    "companyResourcesDesc": "ChronosX Global Financial Intelligence Network",
+    "products": {
+      "chartScanner": {
+        "title": "AI Chart Scanner",
+        "desc": "Pagtuklas ng pattern ng multi-timeframe at neural OCR chart vision",
+        "badge": "POPULAR"
+      },
+      "marketAssistant": {
+        "title": "AI Market Assistant",
+        "desc": "Real-time na pakikipag-usap sa katalinuhan sa merkado at agarang pananaw",
+        "badge": "LIVE AI"
+      },
+      "liveScanner": {
+        "title": "Live Market Scanner",
+        "desc": "Mga signal ng algorithmic breakout, live momentum radar at mga alerto",
+        "badge": "LIVE"
+      },
+      "strategyHub": {
+        "title": "Strategy Hub",
+        "desc": "Algorithmic backtesting, quantitative playbooks at mga signal ng diskarte",
+        "badge": "QUANT"
+      }
+    },
+    "tradingTools": {
+      "tradeAudit": {
+        "title": "AI Trade Audit",
+        "desc": "Suriin ang data ng kalakalan sa kasaysayan upang suriin ang pagganap at mga rate ng panalo.",
+        "badge": "AI AUDIT"
+      },
+      "strategyCreate": {
+        "title": "Diskarte (Lumikha ng Bago)",
+        "desc": "Pasadyang lohika ng algorithmic trading, parameter tuning at mga engine ng panuntunan",
+        "badge": "MALAPIT NA"
+      },
+      "backtesting": {
+        "title": "Backtesting",
+        "desc": "Mabilis na simulation sa kasaysayan, mga sukatan ng win-rate at Sharpe ratio",
+        "badge": "MALAPIT NA"
+      },
+      "paperTrading": {
+        "title": "Paper Trading",
+        "desc": "Makatotohanang kapaligiran sa pangangalakal na walang panganib na may mga live feed",
+        "badge": "MALAPIT NA"
+      }
+    },
+    "company": {
+      "aboutUs": {
+        "title": "Tungkol sa Amin",
+        "desc": "Ang aming misyon, institutional AI infrastructure at pamumuno",
+        "badge": "PANANAW"
+      },
+      "economicCalendar": {
+        "title": "Kalendaryong Pang-ekonomiya",
+        "desc": "Mga kaganapan sa pandaigdigang macro, rate ng bangko sentral at mga release",
+        "badge": "LIVE CALENDAR"
+      },
+      "news": {
+        "title": "Balita",
+        "desc": "Mga piniling ulat sa pananalapi, mga update sa merkado at mga katalista",
+        "badge": "ARAW-ARAW"
+      },
+      "forexCalculator": {
+        "title": "Kalkulator ng Forex",
+        "desc": "Tumpak na halaga ng pip, laki ng posisyon, laki ng lote at kalkulator ng peligro",
+        "badge": "UTILITY"
+      },
+      "blog": {
+        "title": "Blog",
+        "desc": "Malalimang mga diskarte sa quant trading, teknikal na breakdown at pananaliksik",
+        "badge": "PANANAW"
+      }
+    }
+  },
+  "notFound": {
+    "signalDisconnected": "SIGNAL DISCONNECTED • ERROR 404",
+    "headingPrefix": "Nawala sa",
+    "headingHighlight": "Market Telemetry?",
+    "description": "Ang mga coordinate na hiniling mo ay wala sa aming neural routing engine.",
+    "returnHome": "BUMALIK SA TAHANAN",
+    "viewDashboard": "PUMUNTA SA DASHBOARD"
+  },
+  "quickJump": {
+    "trigger": "Mabilis na jump...",
+    "triggerShortcut": "Mabilis na jump (⌘K)",
+    "inputPlaceholder": "Mag-type ng pangalan ng pahina, bot, o setting...",
+    "clear": "I-clear",
+    "close": "Isara (Esc)",
+    "noResultsPrefix": "Walang nahanap na tugmang lokasyon para sa",
+    "searchHint": "Subukang maghanap ng 'Trading', 'Dashboard', 'Strategy', o 'Calendar'",
+    "jump": "Pumunta",
+    "navigateHint": "Mag-navigate",
+    "openHint": "Buksan",
+    "closeHint": "Isara",
+    "item": "item",
+    "items": "mga item",
+    "categories": {
+      "all": "Lahat",
+      "general": "Pangkalahatan",
+      "trading": "Pag-trade",
+      "tools": "Mga Tool",
+      "company": "Kumpanya",
+      "legal": "Legal"
+    }
+  },
+  "homeSections": {
+    "hero": {
+      "badge": "Next-Gen AI Algorithmic Trading Terminal",
+      "titlePrefix": "Mag-trade nang Mas Matalino sa",
+      "titleHighlight": "AI na Hindi Natutulog",
+      "description": "Mga real-time na signal ng AI sa antas ng institusyon, pagkilala sa pattern ng multi-timeframe, at mga setup ng trade para sa mga propesyonal na mangangalakal ng Forex.",
+      "getStarted": "MAGSIMULA NA",
+      "metrics": {
+        "pairsLabel": "Mga Pares sa Pandaigdigang Merkado",
+        "pairsSub": "Forex, Indices at Metals",
+        "speedLabel": "Bilis ng Pagproseso ng AI",
+        "speedSub": "Sub-segundong pagsusuri ng pattern ng neural",
+        "tfLabel": "Multi-TF Confluence",
+        "tfSub": "Mula sa 1 minutong scalping hanggang sa mga swing",
+        "uptimeLabel": "Availability ng Platform",
+        "uptimeSub": "24/7 tuluy-tuloy na telemetry ng merkado"
+      }
+    },
+    "metrics": {
+      "badge": "MGA METRICS NG PLATFORM",
+      "title1": "Mga Numero na Nagpapatunay",
+      "title2": "ng Kalamangan.",
+      "description": "Mabilis na pagkilala sa pattern ng neural na tumatakbo sa mga pandaigdigang merkado na may napakababang latency.",
+      "tile1Label": "Mga Na-scan na Pares",
+      "tile1Desc": "Live Forex, Indices at Metals telemetry",
+      "tile2Label": "Bilis ng Pagproseso ng AI",
+      "tile2Desc": "Sub-segundong pagsusuri ng pattern",
+      "tile3Label": "Mga Timeframe Multi-TF Confluence",
+      "tile3Desc": "Mula 1-minutong scalping hanggang sa mga swing",
+      "tile4Label": "Availability ng Platform",
+      "tile4Desc": "24/7 tuluy-tuloy na telemetry ng merkado"
+    },
+    "capabilities": {
+      "badge": "MGA KAKAYAHAN NG PLATFORM",
+      "title1": "Apat na Tool.",
+      "title2": "Isang Matalinong Cockpit.",
+      "description": "Apat na pinagsamang module ng AI. Isang pinag-isang daloy ng trabaho. Mag-scan ng mga de-kalidad na setup, kumunsulta sa AI advisor, at subukan ang pagganap.",
+      "card1Title": "AI CHART SCANNER",
+      "card1Desc": "Mabilis na pag-screen sa merkado, pagtuklas ng pattern, at chart vision.",
+      "card2Title": "AI MARKET ASSISTANT",
+      "card2Desc": "Natural na wika ng katalinuhan sa merkado at konteksto ng balita.",
+      "card3Title": "LIVE MARKET SCANNER",
+      "card3Desc": "Real-time na pagtuklas ng breakout at live momentum radar.",
+      "card4Title": "STRATEGY HUB",
+      "card4Desc": "Algorithmic backtesting, quantitative playbooks, at custom na mga panuntunan."
+    },
+    "howItWorks": {
+      "badge": "MT5 BROKER INTEGRATION",
+      "title1": "I-trade ang Iyong Edge.",
+      "title2": "Kumita ng Kredito. Huwag Magbayad para sa AI.",
+      "description": "Ikonekta ang iyong MT5 account upang i-unlock ang AI. Ang bawat trade ay awtomatikong nagre-refill ng iyong mga kredito sa pagsusuri ng AI.",
+      "ctaBtn": "Magsimula nang Libre",
+      "steps": {
+        "step1": "Gumawa ng Account",
+        "step1Sub": "Paggawa ng account",
+        "step2": "I-link ang mga Nangungunang Broker",
+        "step2Sub": "Pag-link sa mga Broker",
+        "step3": "Tanungin ang AI",
+        "step3Sub": "Pag-scan sa istraktura ng merkado",
+        "step4": "Mag-trade at Mag-replenish",
+        "step4Sub": "Pag-replenish ng mga kredito"
+      }
+    },
+    "network": {
+      "badge": "PANDAIGDIGANG IMPRASTRAKTURA",
+      "title1": "Ultra Low-Latency",
+      "title2": "AI Execution Mesh",
+      "description": "Direktang konektado sa mga tier-1 liquidity provider at mga pangunahing financial exchange sa buong mundo para sa bilis ng signal."
+    },
+    "testimonials": {
+      "badge": "MGA BERIPIKADONG REVIEW",
+      "title1": "Ano ang Sinasabi ng mga",
+      "title2": "Seryosong Trader tungkol sa ChronosX",
+      "description": "Mula sa mga prop firm trader hanggang sa mga independent na scalper, pakinggan kung paano pinapagana ng aming AI ang kanilang mga trade."
+    },
+    "readyToPut": {
+      "badge": "INSTANT INSTITUTIONAL ACCESS",
+      "title1": "Handa Ka Bang Dalhin ang AI sa",
+      "title2": "Iyong Trading Desk?",
+      "description": "Maranasan ang katalinuhan ng AI chart at mga quantitative na diskarte sa loob ng ilang minuto.",
+      "primaryBtnText": "MAGSIMULA NA NGAYON"
+    },
+    "teamUp": {
+      "badge": "MGA PARTNER AT ECOSYSTEM",
+      "title1": "Bilis ng Institusyon.",
+      "title2": "Konektado sa Iyong Ginustong Broker.",
+      "description": "Ang ChronosX ay gumagana nang walang putol kasama ang mga regulated brokerage at MT5 bridges."
+    },
+    "favoriteCoins": {
+      "badge": "CROSS-ASSET COVERAGE",
+      "title1": "Mag-trade ng Gumagalaw.",
+      "title2": "Pagsusuri ng AI sa Bawat Tsart.",
+      "description": "Mula sa mga pangunahing pares ng pera hanggang sa ginto at mga indeks, sinusuri ng ChronosX ang presyo sa iyong buong watchlist."
+    },
+    "breakoutDetection": {
+      "badge": "REAL-TIME RADAR",
+      "title1": "Saluhin ang High-Momentum",
+      "title2": "Breakouts nang Maaga.",
+      "description": "Natutukoy ng mga scanner ng pattern ang mga pagbabago sa liquidity bago mag-react ang retail market."
+    },
+    "beforeAfter": {
+      "badge": "NEURAL PATTERN VISION",
+      "title1": "Raw Price Action vs.",
+      "title2": "Kalinawan na May AI.",
+      "description": "Tingnan kung paano binabago ng ChronosX ang mga candlestick chart tungo sa mga setup sa antas ng institusyon."
+    },
+    "marketIntelligence": {
+      "badge": "CONVERSATIONAL COPILOT",
+      "title1": "Isang Institutional Analyst",
+      "title2": "sa Iyong Tabi.",
+      "description": "Magtanong, galugarin ang konteksto ng macro, at subukan ang mga teorya ng trade sa isang AI copilot."
+    }
   }
 }

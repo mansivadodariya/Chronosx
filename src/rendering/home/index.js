@@ -6,7 +6,6 @@ import MetricsSection from './metricsSection'
 import CardList from './cardList'
 import Platform from './platform'
 import Capabilities from './capabilities'
-import FavoriteCoins from './favoriteCoins'
 import AiAssistant from './aiAssistant'
 import HowitWorks from './howitWorks'
 import ChartAnalysis from './chartAnalysis'
@@ -24,10 +23,9 @@ export default function HomePage() {
         <div className={styles.homeWrapper}>
             <Herobanner />
             <div className={styles.contentSections}>
+                <Capabilities />
                 <MetricsSection />
                 <AiCockpit isHero={false} showHeader={true} />
-                <Capabilities />
-                <FavoriteCoins />
                 <BeforeAfterComparison />
                 <AiAnalyst />
                 <MarketIntelligence />

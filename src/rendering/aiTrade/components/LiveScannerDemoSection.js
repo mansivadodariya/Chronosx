@@ -296,7 +296,7 @@ export default function LiveScannerDemoSection({
                             <div className={styles.deskActionRow}>
                                 <button
                                     type="button"
-                                    onClick={() => authNavigate(router, '/trade-snap')}
+                                    onClick={() => authNavigate(router, '/chart-scanner')}
                                     className={styles.openLiveDeskBtn}
                                 >
                                     <span>Open in Full Scanner Desk</span>

@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { navigateFeature } from '@/lib/authRedirect';
@@ -7,6 +8,7 @@ import styles from './capabilities.module.scss';
 import SectionHeader from '@/components/sectionHeader';
 
 export default function Capabilities() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
@@ -26,17 +28,17 @@ export default function Capabilities() {
         {/* Connected Cockpit Grid Container */}
         <div className={styles.cockpitContainer}>
 
-          {/* Card 1: Heat List Algorithm (Trade Snap) */}
+          {/* Card 1: Heat List Algorithm (AI Chart Scanner) */}
           <div
             className={`${styles.cockpitCard} ${hoveredIndex === 0 ? styles.cardActive : ''} ${hoveredIndex !== null && hoveredIndex !== 0 ? styles.cardDimmed : ''}`}
             onMouseEnter={() => setHoveredIndex(0)}
             onMouseLeave={() => setHoveredIndex(null)}
-            onClick={() => router.push('/trade-snap')}
+            onClick={() => router.push('/ai-chart-scanner')}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                router.push('/trade-snap');
+                router.push('/ai-chart-scanner');
               }
             }}
           >
@@ -49,12 +51,12 @@ export default function Capabilities() {
                       <span className={styles.watermarkNum}>01</span>
                     </div>
                   </div>
-                  <h3>TRADE SNAP</h3>
+                  <h3>{t('homeSections.capabilities.card1Title', 'AI CHART SCANNER')}</h3>
                 </div>
 
                 <div className={styles.cardFooter}>
                   <p className={styles.cardDesc}>
-                    Instant market screening, volume heatmaps, and high-conviction multi-asset signals.
+                    {t('homeSections.capabilities.card1Desc', 'Instant market screening, technical pattern detection, and high-conviction chart vision.')}
                   </p>
                 </div>
 
@@ -212,17 +214,17 @@ export default function Capabilities() {
             </div>
           </div>
 
-          {/* Card 2: Heat List Algorithm (AI Trading Advisor) */}
+          {/* Card 2: Heat List Algorithm (AI Market Assistant) */}
           <div
             className={`${styles.cockpitCard} ${hoveredIndex === 1 ? styles.cardActive : ''} ${hoveredIndex !== null && hoveredIndex !== 1 ? styles.cardDimmed : ''}`}
             onMouseEnter={() => setHoveredIndex(1)}
             onMouseLeave={() => setHoveredIndex(null)}
-            onClick={() => router.push('/ai-assistant')}
+            onClick={() => router.push('/ai-market-assistant')}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                router.push('/ai-assistant');
+                router.push('/ai-market-assistant');
               }
             }}
           >
@@ -235,7 +237,7 @@ export default function Capabilities() {
                       <span className={styles.watermarkNum}>02</span>
                     </div>
                   </div>
-                  <h3>AI TRADING ADVISOR</h3>
+                  <h3>{t('homeSections.capabilities.card2Title', 'AI MARKET ASSISTANT')}</h3>
                 </div>
 
                 <div className={styles.cardFooter}>
@@ -290,17 +292,17 @@ export default function Capabilities() {
             </div>
           </div>
 
-          {/* Card 3: AI STRATEGY HUB (AI Strategy Hub) */}
+          {/* Card 3: STRATEGY HUB */}
           <div
             className={`${styles.cockpitCard} ${hoveredIndex === 2 ? styles.cardActive : ''} ${hoveredIndex !== null && hoveredIndex !== 2 ? styles.cardDimmed : ''}`}
             onMouseEnter={() => setHoveredIndex(2)}
             onMouseLeave={() => setHoveredIndex(null)}
-            onClick={() => router.push('/ai-strategy')}
+            onClick={() => router.push('/ai-strategy-hub')}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                router.push('/ai-strategy');
+                router.push('/ai-strategy-hub');
               }
             }}
           >
@@ -313,7 +315,7 @@ export default function Capabilities() {
                       <span className={styles.watermarkNum}>03</span>
                     </div>
                   </div>
-                  <h3>AI STRATEGY HUB</h3>
+                  <h3>{t('homeSections.capabilities.card4Title', 'STRATEGY HUB')}</h3>
                 </div>
 
                 <div className={styles.cardFooter}>
@@ -430,17 +432,17 @@ export default function Capabilities() {
             </div>
           </div>
 
-          {/* Card 4: AI TRADE ANALYSIS (AI Past Trade Analyzer) */}
+          {/* Card 4: AI TRADE AUDIT */}
           <div
             className={`${styles.cockpitCard} ${hoveredIndex === 3 ? styles.cardActive : ''} ${hoveredIndex !== null && hoveredIndex !== 3 ? styles.cardDimmed : ''}`}
             onMouseEnter={() => setHoveredIndex(3)}
             onMouseLeave={() => setHoveredIndex(null)}
-            onClick={() => router.push('/ai-past-trade-analyzer')}
+            onClick={() => router.push('/ai-trade-audit')}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                router.push('/ai-past-trade-analyzer');
+                router.push('/ai-trade-audit');
               }
             }}
           >
@@ -453,7 +455,7 @@ export default function Capabilities() {
                       <span className={styles.watermarkNum}>04</span>
                     </div>
                   </div>
-                  <h3>AI TRADE ANALYSIS</h3>
+                  <h3>AI TRADE AUDIT</h3>
                 </div>
 
                 <div className={styles.cardFooter}>

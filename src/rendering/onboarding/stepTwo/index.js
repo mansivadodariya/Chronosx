@@ -58,21 +58,21 @@ const MarketScannerIcon = () => (
 const HELP_OPTIONS = [
     {
         id: 'analyze_trades',
-        title: 'Trade Snap & Chart Analysis',
+        title: 'AI Chart Scanner',
         desc: 'Upload chart screenshots for instant institutional level detection, order block analysis, and conviction scoring.',
         icon: AnalyzeIcon,
         tag: 'Vision OCR & ML Model',
     },
     {
         id: 'ask_ai',
-        title: 'AI Trading Advisor',
+        title: 'AI Market Assistant',
         desc: 'Conversational strategy validation grounded in live market feeds, scanner telemetry, and zero false confidence.',
         icon: AskAiIcon,
         tag: 'Grounded Live Telemetry',
     },
     {
         id: 'build_strategies',
-        title: 'Strategy Engine & Alerts',
+        title: 'Strategy Hub',
         desc: 'Design, configure, and automate rule-based confluence triggers across multi-timeframe cascades.',
         icon: BrainIcon,
         tag: 'Algorithmic Rules',
@@ -86,14 +86,14 @@ const HELP_OPTIONS = [
     },
     {
         id: 'leak_detection',
-        title: 'Audit & Leak Detection',
+        title: 'AI Trade Audit',
         desc: 'Analyze closed trading journals to pinpoint psychological leaks, revenge trading, and expectancy drag.',
         icon: ShieldLeakIcon,
         tag: 'Behavioral Diagnostics',
     },
     {
         id: 'realtime_scanner',
-        title: 'Live Institutional Scanner',
+        title: 'Live Market Scanner',
         desc: 'Filter 1,000+ instruments for high-probability liquidity grabs, fair value gaps, and momentum breakouts.',
         icon: MarketScannerIcon,
         tag: 'Zero-Lag Feeds',

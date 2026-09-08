@@ -92,19 +92,19 @@ const LogoutIcon = () => (
 
 const getNavSections = (t) => [
   {
-    title: t('sidebar.workspace', 'WORKSPACE'),
+    title: null,
     items: [
       { label: t('nav.dashboard', 'Dashboard'), href: "/dashboard", icon: DashboardGridIcon },
-      { label: t('nav.marketSnapshot', 'Market Snapshot & Scanner'), href: "/trade-snap", icon: AiTradeSparkIcon },
-      { label: t('nav.aiTradeAnalysis', 'AI Trade analysis'), href: "/trade-analysis", icon: AiTradeAnalysisIcon },
-      { label: t('nav.aiTradingAdvisor', 'AI Trading Advisor'), href: "/ai-assistant", icon: AiChatBotIcon },
+      { label: t('nav.chartScanner', 'AI Chart Scanner'), href: "/chart-scanner", icon: AiTradeSparkIcon },
+      { label: t('nav.tradeAudit', 'AI Trade Audit'), href: "/trade-audit", icon: AiTradeAnalysisIcon },
+      { label: t('nav.marketAssistant', 'AI Market Assistant'), href: "/market-assistant", icon: AiChatBotIcon },
       {
-        label: t('nav.aiStrategyHub', 'AI Strategy Hub'),
-        href: "/ai-strategy",
+        label: t('nav.strategyHub', 'Strategy Hub'),
+        href: "/strategy-hub",
         icon: AiStrategyIcon,
         subItems: [
-          { label: t('nav.liveMarketAnalysis', 'Live Market Analysis'), href: "/ai-strategy/live", icon: LiveAnalysisIcon },
-          { label: t('nav.strategyEnginePlaybooks', 'Strategy Engine & Playbooks'), href: "/ai-strategy/strategy", icon: StrategyIcon },
+          { label: t('nav.liveMarketScanner', 'Live Market Scanner'), href: "/live-scanner", icon: LiveAnalysisIcon },
+          { label: t('nav.strategyPlaybooks', 'Strategy Playbooks'), href: "/strategy-hub/strategy", icon: StrategyIcon },
         ]
       },
     ]
@@ -412,20 +412,25 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
 
   const ROUTE_TAB_MAP = {
     '/dashboard': 'Dashboard',
-    '/trade-snap': 'Market Snapshot & Scanner',
-    '/tradesnap': 'Market Snapshot & Scanner',
-    '/ai-trade': 'Market Snapshot & Scanner',
-    '/trade-analysis': 'AI Trade analysis',
-    '/ai-trade-analysis': 'AI Trade analysis',
-    '/ai-assistant': 'AI Trading Advisor',
-    '/ai-chat': 'AI Trading Advisor',
-    '/ai-strategy': 'AI Strategy Hub',
-    '/ai-strategy/live': 'Live Market Analysis',
-    '/ai-strategy/strategy': 'Strategy Engine & Playbooks',
+    '/chart-scanner': 'AI Chart Scanner',
+    '/ai-chart-scanner': 'AI Chart Scanner',
+    '/trade-audit': 'AI Trade Audit',
+    '/ai-trade-audit': 'AI Trade Audit',
+    '/market-assistant': 'AI Market Assistant',
+    '/ai-market-assistant': 'AI Market Assistant',
+    '/strategy-hub': 'Strategy Hub',
+    '/ai-strategy-hub': 'Strategy Hub',
+    '/strategy-hub/live': 'Live Market Scanner',
+    '/strategy-hub/strategy': 'Strategy Playbooks',
+    '/live-scanner': 'Live Market Scanner',
+    '/live-market-scanner': 'Live Market Scanner',
     '/tools': 'Tools',
     '/calendar': 'Economic Calendar',
     '/economic-calendar': 'Economic Calendar',
     '/calculator': 'Forex Calculator',
+    '/forex-calculator': 'Forex Calculator',
+    '/news': 'Market News',
+    '/market-news': 'Market News',
     '/credit-history': 'Credit History',
     '/plans': 'Subscription Plans',
     '/subscription-plans': 'Subscription Plans',
@@ -445,11 +450,18 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
       return (
         visibleTabNames.has(lowerLabel) ||
         visibleTabNames.has(mapped) ||
-        (lowerLabel.includes('market snapshot') && (visibleTabNames.has('ai trade') || visibleTabNames.has('trade-snap'))) ||
-        (lowerLabel.includes('ai trading advisor') && (visibleTabNames.has('ai chat') || visibleTabNames.has('ai-assistant'))) ||
-        (lowerLabel.includes('ai strategy') && (visibleTabNames.has('ai strategy') || visibleTabNames.has('strategy'))) ||
-        (lowerLabel.includes('live market analysis') && (visibleTabNames.has('live analysis') || visibleTabNames.has('ai strategy'))) ||
-        (lowerLabel.includes('strategy engine') && (visibleTabNames.has('ai strategy') || visibleTabNames.has('strategy')))
+        ((lowerLabel.includes('chart scanner') || lowerLabel.includes('market snapshot') || mapped.includes('chart scanner')) &&
+          (visibleTabNames.has('ai chart scanner') || visibleTabNames.has('chart-scanner') || visibleTabNames.has('ai trade') || visibleTabNames.has('ai-trade') || visibleTabNames.has('trade-snap') || visibleTabNames.has('trade snap'))) ||
+        ((lowerLabel.includes('trade audit') || lowerLabel.includes('trade analysis') || mapped.includes('trade audit')) &&
+          (visibleTabNames.has('ai trade audit') || visibleTabNames.has('trade-audit') || visibleTabNames.has('ai trade analysis') || visibleTabNames.has('trade-analysis') || visibleTabNames.has('trade analysis') || visibleTabNames.has('ai-trade-analysis') || visibleTabNames.has('ai-past-trade-analyzer') || visibleTabNames.has('ai trade'))) ||
+        ((lowerLabel.includes('market assistant') || lowerLabel.includes('trading advisor') || mapped.includes('market assistant')) &&
+          (visibleTabNames.has('ai market assistant') || visibleTabNames.has('market-assistant') || visibleTabNames.has('ai chat') || visibleTabNames.has('ai-chat') || visibleTabNames.has('ai assistant') || visibleTabNames.has('ai-assistant'))) ||
+        ((lowerLabel.includes('strategy') || mapped.includes('strategy')) &&
+          (visibleTabNames.has('strategy hub') || visibleTabNames.has('strategy-hub') || visibleTabNames.has('ai strategy') || visibleTabNames.has('ai-strategy') || visibleTabNames.has('strategy'))) ||
+        ((lowerLabel.includes('live') || mapped.includes('live')) &&
+          (visibleTabNames.has('live market scanner') || visibleTabNames.has('live-scanner') || visibleTabNames.has('live analysis') || visibleTabNames.has('ai strategy') || visibleTabNames.has('strategy hub'))) ||
+        ((lowerLabel.includes('tool') || mapped.includes('tool') || lowerLabel.includes('calendar') || lowerLabel.includes('calculator') || lowerLabel.includes('news')) &&
+          (visibleTabNames.has('tools') || visibleTabNames.has('economic calendar') || visibleTabNames.has('forex calculator') || visibleTabNames.has('market news') || visibleTabNames.has('calendar') || visibleTabNames.has('calculator') || visibleTabNames.has('news')))
       );
     };
 
@@ -534,12 +546,12 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
           ) : (
             navSections.map((section, sIndex) => (
               <div key={section.title || sIndex} className={styles.navSectionBlock}>
-                {!isCollapsed ? (
+                {!isCollapsed && section.title ? (
                   <div className={styles.navSectionHeader}>
                     {section.title}
                   </div>
                 ) : (
-                  sIndex > 0 && <div className={styles.collapsedDivider} />
+                  sIndex > 0 && isCollapsed && <div className={styles.collapsedDivider} />
                 )}
                 {section.items.map((item) => (
                   <NavItem

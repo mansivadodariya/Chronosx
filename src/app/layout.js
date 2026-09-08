@@ -38,10 +38,10 @@ export const viewport = {
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://chronosx.com'),
   title: {
-    default: "ChronosX — Institutional AI Forex & MT5 Trading Terminal",
+    default: "ChronosX — Next-Gen AI Trading Platform & Intelligence Desk",
     template: "%s | ChronosX"
   },
-  description: "Institutional-grade AI-powered Forex and MT5 trading platform. Instant neural chart pattern recognition, real-time live trading signals, algorithmic multi-timeframe analysis, and conversational market copilot.",
+  description: "Next-gen AI trading platform providing real-time AI trading signals, instant neural chart pattern recognition, and multi-market insights across Forex, Crypto, Stocks, and Commodities.",
   keywords: [
     "AI Forex Trading",
     "MT5 Trading Bot",
@@ -77,7 +77,7 @@ export const metadata = {
     type: "website",
     locale: "en_US",
     url: "https://chronosx.com",
-    title: "ChronosX — Institutional AI Forex & MT5 Trading Terminal",
+    title: "ChronosX — Next-Gen AI Trading Platform & Intelligence Desk",
     description: "Trade smarter with AI that never sleeps. Real-time AI trading signals, instant neural chart insights, and algorithmic market analysis.",
     siteName: "ChronosX",
     images: [
@@ -91,7 +91,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ChronosX — Institutional AI Forex & MT5 Trading Terminal",
+    title: "ChronosX — Next-Gen AI Trading Platform & Intelligence Desk",
     description: "Trade smarter with AI that never sleeps. Real-time AI trading signals, instant neural chart insights, and algorithmic market analysis.",
     images: ["/assets/logo/logo.png"],
     creator: "@ChronosX",

@@ -40,7 +40,7 @@ export default function DashboardHeroSection({
                             <span className={styles.chartPulseDot} />
                             <div className={styles.titleTextCol}>
                                 <span className={styles.chartTitle}>Daily AI Credit Consumption</span>
-                                <span className={styles.chartSubtitle}>Track credit usage per day across TradeSnap & AI Copilot</span>
+                                <span className={styles.chartSubtitle}>Track credit usage per day across AI Chart Scanner & AI Market Assistant</span>
                             </div>
                         </div>
 

@@ -382,7 +382,7 @@ export default function AiStrategy({ initialTab = 'live' }) {
         if (typeof window !== 'undefined') {
             sessionStorage.setItem('selectedStrategySymbol', sym);
         }
-        router.push('/ai-strategy/live');
+        router.push('/live-scanner');
     };
 
     // Parse strength and details from REST scanner output

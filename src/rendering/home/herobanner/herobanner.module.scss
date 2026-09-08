@@ -7,9 +7,9 @@
     z-index: 1;
     width: 100%;
     min-height: 100vh;
-    padding: 140px 0 90px 0;
+    padding: 160px 0 90px 0;
     overflow: hidden;
-    background: #040605;
+    background: radial-gradient(130% 100% at 50% 25%, #081c14 0%, #05140e 45%, #030a07 100%);
     display: flex;
     align-items: center;
 
@@ -22,7 +22,7 @@
                 linear-gradient(to bottom, rgba(15, 23, 42, 0.08) 1px, transparent 1px) !important;
             mask-image: radial-gradient(ellipse at 50% 35%, #000 70%, transparent 95%) !important;
             -webkit-mask-image: radial-gradient(ellipse at 50% 35%, #000 70%, transparent 95%) !important;
-            opacity: 0.08 !important;
+            opacity: 0.001 !important;
         }
 
         .greenSpotlightGrid {
@@ -32,6 +32,8 @@
 
         .ambientGlowTop,
         .ambientGlowCenter,
+        .ambientGlowLeft,
+        .ambientGlowRight,
         .ambientGlowBottom {
             opacity: 0.1 !important;
             filter: blur(120px) !important;
@@ -141,14 +143,15 @@
     // Dynamic Ambient Atmosphere Glows (Main #18c98b Green Aura)
     .ambientGlowTop {
         position: absolute;
-        top: -160px;
+        top: -140px;
         left: 50%;
         transform: translateX(-50%);
-        width: 900px;
-        height: 520px;
+        width: 100%;
+        max-width: 1500px;
+        height: 600px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(24, 201, 139, 0.32) 0%, rgba(24, 201, 139, 0.12) 45%, rgba(4, 6, 5, 0) 75%);
-        filter: blur(80px);
+        background: radial-gradient(ellipse at 50% 30%, rgba(24, 201, 139, 0.38) 0%, rgba(24, 201, 139, 0.16) 48%, transparent 80%);
+        filter: blur(85px);
         pointer-events: none;
         z-index: 1;
         transition: all 0.5s ease;
@@ -159,25 +162,52 @@
         top: 45%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 1050px;
-        height: 650px;
+        width: 100%;
+        max-width: 1600px;
+        height: 800px;
         border-radius: 50%;
-        background: radial-gradient(ellipse, rgba(24, 201, 139, 0.22) 0%, rgba(24, 201, 139, 0.08) 50%, rgba(4, 6, 5, 0) 80%);
-        filter: blur(90px);
+        background: radial-gradient(ellipse, rgba(24, 201, 139, 0.28) 0%, rgba(24, 201, 139, 0.12) 55%, transparent 85%);
+        filter: blur(95px);
         pointer-events: none;
         z-index: 1;
         transition: all 0.5s ease;
+    }
+
+    .ambientGlowLeft {
+        position: absolute;
+        top: 25%;
+        left: -120px;
+        width: 800px;
+        height: 800px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(24, 201, 139, 0.24) 0%, rgba(24, 201, 139, 0.08) 50%, transparent 75%);
+        filter: blur(100px);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .ambientGlowRight {
+        position: absolute;
+        top: 25%;
+        right: -120px;
+        width: 800px;
+        height: 800px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(24, 201, 139, 0.24) 0%, rgba(24, 201, 139, 0.08) 50%, transparent 75%);
+        filter: blur(100px);
+        pointer-events: none;
+        z-index: 1;
     }
 
     .ambientGlowBottom {
         position: absolute;
         bottom: -220px;
         right: 15%;
-        width: 650px;
-        height: 450px;
+        width: 900px;
+        height: 550px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(24, 201, 139, 0.2) 0%, rgba(24, 201, 139, 0.05) 40%, rgba(4, 6, 5, 0) 70%);
-        filter: blur(85px);
+        background: radial-gradient(circle, rgba(24, 201, 139, 0.22) 0%, rgba(24, 201, 139, 0.08) 45%, transparent 75%);
+        filter: blur(90px);
         pointer-events: none;
         z-index: 1;
     }
@@ -185,29 +215,28 @@
     // Interactive Cursor Spotlight Glow (Small, subtle localized glow)
     .interactiveSpotlight {
         position: absolute;
-        width: 240px;
-        height: 240px;
+        width: 300px;
+        height: 300px;
         transform: translate(-50%, -50%);
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(24, 201, 139, 0.2) 0%, rgba(24, 201, 139, 0.04) 50%, rgba(4, 6, 5, 0) 75%);
+        background: radial-gradient(circle, rgba(24, 201, 139, 0.26) 0%, rgba(24, 201, 139, 0.06) 50%, transparent 75%);
         filter: blur(35px);
         pointer-events: none;
         z-index: 2;
         transition: opacity 0.35s ease;
     }
 
-    // Base Grid Overlay (Soft & Subtle White/Grey Grid)
+    // Base Grid Overlay (Edge-to-Edge visible cyber grid)
     .gridOverlay {
         position: absolute;
         inset: 0;
         background-image:
-            linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+            linear-gradient(to right, rgba(255, 255, 255, 0.065) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.065) 1px, transparent 1px);
         background-size: 64px 64px;
-        mask-image: radial-gradient(ellipse at 50% 35%, #000 60%, transparent 90%);
-        -webkit-mask-image: radial-gradient(ellipse at 50% 35%, #000 60%, transparent 90%);
         pointer-events: none;
         z-index: 1;
+        opacity: 0.9;
     }
 
     // Localized Green Spotlight Grid (Only the area around pointer gets greener!)
@@ -215,26 +244,15 @@
         position: absolute;
         inset: 0;
         background-image:
-            linear-gradient(to right, rgba(24, 201, 139, 0.45) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(24, 201, 139, 0.45) 1px, transparent 1px);
+            linear-gradient(to right, rgba(24, 201, 139, 0.5) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(24, 201, 139, 0.5) 1px, transparent 1px);
         background-size: 64px 64px;
-        filter: drop-shadow(0 0 6px rgba(24, 201, 139, 0.6));
         pointer-events: none;
         z-index: 2;
         transition: opacity 0.3s ease;
     }
 
-    .radialVignette {
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at 50% 50%, transparent 60%, #040605 100%);
-        pointer-events: none;
-        z-index: 2;
 
-        :global(html.light) & {
-            display: none !important;
-        }
-    }
 
     // SideRays wrapper: strictly visible on desktop/laptop, hidden on mobile
     .sideRaysWrapper {
@@ -341,28 +359,326 @@
         position: relative;
         z-index: 4;
         width: 100%;
-        max-width: 1260px;
+        max-width: 1280px;
         margin: 0 auto;
-        padding: 0 20px;
+        padding: 0 24px;
+
+        @include respond-to("sm") {
+            padding: 0 16px;
+        }
     }
 
-    .heroWrapper {
+    // 2-Column Row Layout
+    .heroGridRow {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        text-align: center;
+        justify-content: space-between;
+        gap: 36px;
         width: 100%;
         margin: 0 auto;
+
+        @include respond-to("tab") {
+            flex-direction: column;
+            text-align: center;
+            gap: 40px;
+        }
+
+        @include respond-to("sm") {
+            gap: 32px;
+        }
+    }
+
+    // Left Column: Text & Actions
+    .heroLeftCol {
+        flex: 1 1 50%;
+        max-width: 650px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        padding-top: 10px;
+
+        @include respond-to("tab") {
+            flex: 1 1 100%;
+            max-width: 100%;
+            align-items: center;
+            text-align: center;
+            padding-top: 0;
+        }
+    }
+
+    // Right Column: Showcase HUD Orb & Holographic Badges
+    .heroRightCol {
+        flex: 1 1 50%;
+        max-width: 620px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+        @include respond-to("tab") {
+            flex: 1 1 100%;
+            max-width: 540px;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        @include respond-to("sm") {
+            max-width: 100%;
+        }
+    }
+
+    // Interactive HUD Orb Container
+    .hudOrbContainer {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+
+        @include respond-to("sm") {
+            max-width: 380px;
+        }
+    }
+
+    // Ambient Blurry Emerald Center Glow behind video
+    .orbBlurryGlow {
+        position: absolute;
+        width: 82%;
+        height: 82%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(24, 201, 139, 0.52) 0%, rgba(20, 180, 120, 0.24) 42%, rgba(10, 80, 50, 0.08) 65%, transparent 75%);
+        filter: blur(55px);
+        pointer-events: none;
+        z-index: 0;
+        animation: orbGlowBreathe 4.5s ease-in-out infinite alternate;
+    }
+
+    // Video Container
+    .videoContainer {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+        background: transparent;
+        transform: scale(1.06);
+    }
+
+    .heroVideo {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        background: transparent;
+        mix-blend-mode: screen;
+        pointer-events: none;
+    }
+
+    // Holographic HUD Badges Base
+    .hudBadge {
+        position: absolute;
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: auto;
+    }
+
+    .badgeContent {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 14px 7px 10px;
+        border-radius: 12px;
+        background: rgba(6, 15, 12, 0.88);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(24, 201, 139, 0.32);
+        box-shadow: 0 4px 22px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        white-space: nowrap;
+        font-family: var(--font-inter, sans-serif);
+        color: #f1fdf7;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+        &:hover {
+            border-color: rgba(24, 201, 139, 0.7);
+            background: rgba(8, 20, 16, 0.95);
+            box-shadow: 0 0 20px rgba(24, 201, 139, 0.3), 0 8px 28px rgba(0, 0, 0, 0.8);
+            transform: scale(1.03);
+
+            .badgeIconWrap {
+                background: rgba(24, 201, 139, 0.22);
+                border-color: rgba(24, 201, 139, 0.55);
+            }
+        }
+
+        @include respond-to("sm") {
+            padding: 5px 10px 5px 8px;
+            gap: 7px;
+            border-radius: 10px;
+        }
+    }
+
+    .badgeIconWrap {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: rgba(24, 201, 139, 0.12);
+        border: 1px solid rgba(24, 201, 139, 0.28);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.25s ease;
+
+        @include respond-to("sm") {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+        }
+    }
+
+    .badgeIcon {
+        color: #18c98b;
+        flex-shrink: 0;
+        filter: drop-shadow(0 0 5px rgba(24, 201, 139, 0.6));
+    }
+
+    .badgeTextCol {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        gap: 1px;
+    }
+
+    .badgeName {
+        font-weight: 700;
+        font-size: 11.5px;
+        letter-spacing: 0.02em;
+        color: #f3fdf9;
+        line-height: 1.25;
+
+        @include respond-to("sm") {
+            font-size: 10px;
+        }
+    }
+
+    .badgeDesc {
+        font-weight: 500;
+        font-size: 9.5px;
+        letter-spacing: 0.01em;
+        color: rgba(255, 255, 255, 0.55);
+        line-height: 1.2;
+
+        @include respond-to("sm") {
+            font-size: 8.5px;
+        }
+    }
+
+    // SVG Pentagon Laser Rays Connecting Inside Center Video
+    .pentagonRaysSvg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        pointer-events: none;
+        overflow: visible;
+    }
+
+    .flowingBeam {
+        animation: rayBeamFlow 1.6s linear infinite;
+        filter: drop-shadow(0 0 5px rgba(24, 201, 139, 0.75));
+    }
+
+    .centerTargetDot {
+        animation: targetDotPulse 2s ease-in-out infinite alternate;
+    }
+
+    // 5-Point Pentagon HUD Badge Positions Around Video Sphere
+    // 1. TOP VERTEX (AI Chart Scanner)
+    .pentagonTop {
+        top: 1%;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: hudFloatTop 4s ease-in-out infinite alternate;
+    }
+
+    // 2. TOP-RIGHT VERTEX (Strategy Hub)
+    .pentagonTopRight {
+        top: 22%;
+        right: -6%;
+        transform: translateY(-50%);
+        animation: hudFloatRight 4.2s ease-in-out infinite alternate 0.4s;
+
+        @include respond-to("sm") {
+            right: -2%;
+            top: 20%;
+        }
+    }
+
+    // 3. BOTTOM-RIGHT VERTEX (Live Market Scanner)
+    .pentagonBottomRight {
+        bottom: 5%;
+        right: 0%;
+        animation: hudFloatBottomRight 4.4s ease-in-out infinite alternate 0.8s;
+
+        @include respond-to("sm") {
+            bottom: 4%;
+            right: 0%;
+        }
+    }
+
+    // 4. BOTTOM-LEFT VERTEX (AI Trade Audit)
+    .pentagonBottomLeft {
+        bottom: 5%;
+        left: 0%;
+        animation: hudFloatBottomLeft 4.4s ease-in-out infinite alternate 1.2s;
+
+        @include respond-to("sm") {
+            bottom: 4%;
+            left: 0%;
+        }
+    }
+
+    // 5. TOP-LEFT VERTEX (AI Market Assistant)
+    .pentagonTopLeft {
+        top: 22%;
+        left: -6%;
+        transform: translateY(-50%);
+        animation: hudFloatLeft 4.2s ease-in-out infinite alternate 1.6s;
+
+        @include respond-to("sm") {
+            left: -2%;
+            top: 20%;
+        }
     }
 
     // 1. Futuristic Pill Badge
     .topBadgeRow {
-        margin-bottom: 22px;
+        margin-bottom: 30px;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
+
+        @include respond-to("tab") {
+            justify-content: center;
+            margin-bottom: 22px;
+        }
 
         @include respond-to("sm") {
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         .badge {
@@ -410,62 +726,136 @@
         }
     }
 
-    // 2. High Impact Headline
+    // 2. High Impact Headline (3-Line High Impact Layout)
     .heroTitle {
-        font-family: var(--font-syne), "Syne", sans-serif;
-        font-size: 72px;
-        line-height: 1.08;
-        font-weight: 800;
-        letter-spacing: -2.4px;
+        font-family: "Euclid-Bold", "Euclid Circular A", var(--font-plus-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: clamp(38px, 4vw, 56px);
+        line-height: 1.1;
+        font-weight: 900;
+        letter-spacing: -1.4px;
         color: #FFFFFF;
-        margin: 0 0 20px 0;
-        max-width: 1000px;
+        margin: 0 0 32px 0;
+        text-align: left;
+        // text-transform: uppercase;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
 
-        .greenGradient,
-        .goldGradient {
-            color: #18c98b;
-            background: none;
-            -webkit-text-fill-color: initial;
+        .titleLine1 {
             display: inline-block;
+            white-space: nowrap;
+        }
+
+        .titleLine2 {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .titleLine3 {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+            gap: 12px;
+        }
+
+        .greenGradient {
+            background: #fff !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            color: transparent !important;
+            display: inline-block;
+            filter: drop-shadow(0 0 16px rgba(12, 17, 15, 0.5));
+        }
+
+        .candleIconBox {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+
+        .titleCandleIcon {
+            width: 48px;
+            height: 48px;
+            display: block;
+            filter: drop-shadow(0 0 12px rgba(83, 230, 180, 0.65));
         }
 
         @include respond-to("lg") {
-            font-size: 58px;
-            letter-spacing: -1.8px;
+            font-size: 48px;
+            letter-spacing: -1.4px;
+
+            .titleCandleIcon {
+                width: 42px;
+                height: 42px;
+            }
         }
 
         @include respond-to("tab") {
-            font-size: 44px;
-            letter-spacing: -1.2px;
+            text-align: center;
+            font-size: 40px;
+            letter-spacing: -1px;
             line-height: 1.15;
+            margin-bottom: 26px;
+
+            .titleLine1,
+            .titleLine2 {
+                white-space: normal;
+            }
+
+            .titleLine3 {
+                justify-content: center;
+                white-space: normal;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .titleCandleIcon {
+                width: 36px;
+                height: 36px;
+            }
         }
 
         @include respond-to("sm") {
-            font-size: 32px;
-            letter-spacing: -0.8px;
-            margin-bottom: 14px;
+            font-size: 30px;
+            letter-spacing: -0.6px;
+            margin-bottom: 20px;
+            line-height: 1.18;
+
+            .titleLine3 {
+                gap: 6px;
+            }
+
+            .titleCandleIcon {
+                width: 28px;
+                height: 28px;
+            }
         }
     }
 
     // 3. Hero Description
     .heroDesc {
-        color: rgba(255, 255, 255, 0.78);
+        color: rgba(255, 255, 255, 0.75);
         font-family: "Euclid-Regular", sans-serif;
-        font-size: 18.5px;
+        font-size: 16.5px;
         line-height: 1.6;
-        margin: 0 0 34px 0;
-        max-width: 760px;
+        margin: 0 0 40px 0;
+        max-width: 580px;
+        text-align: left;
 
         @include respond-to("tab") {
-            font-size: 16px;
-            margin-bottom: 28px;
+            text-align: center;
+            font-size: 15px;
+            margin-bottom: 32px;
             max-width: 90%;
         }
 
         @include respond-to("sm") {
-            font-size: 14px;
+            font-size: 13.5px;
             line-height: 1.5;
-            margin-bottom: 22px;
+            margin-bottom: 24px;
         }
     }
 
@@ -473,17 +863,331 @@
     .actionsGroup {
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 18px;
-        margin-bottom: 24px;
+        justify-content: flex-start;
+        gap: 20px;
+        margin-bottom: 0;
+        flex-wrap: wrap;
+
+        @include respond-to("tab") {
+            justify-content: center;
+            margin-bottom: 10px;
+        }
 
         @include respond-to("sm") {
-            margin-bottom: 18px;
             width: 100%;
+            flex-direction: column;
+            gap: 16px;
         }
     }
 
-    // 5. Main Animated Network Circuit Showcase Row
+    // Bracketed Cyber Trust Badge
+    .trustBadge {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 20px;
+        height: 52px;
+        background: rgba(8, 16, 12, 0.45);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+
+        .cornerTL,
+        .cornerTR,
+        .cornerBL,
+        .cornerBR {
+            position: absolute;
+            width: 9px;
+            height: 9px;
+            pointer-events: none;
+        }
+
+        .cornerTL {
+            top: 0;
+            left: 0;
+            border-top: 1.5px solid rgba(255, 255, 255, 0.65);
+            border-left: 1.5px solid rgba(255, 255, 255, 0.65);
+        }
+
+        .cornerTR {
+            top: 0;
+            right: 0;
+            border-top: 1.5px solid rgba(255, 255, 255, 0.65);
+            border-right: 1.5px solid rgba(255, 255, 255, 0.65);
+        }
+
+        .cornerBL {
+            bottom: 0;
+            left: 0;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.65);
+            border-left: 1.5px solid rgba(255, 255, 255, 0.65);
+        }
+
+        .cornerBR {
+            bottom: 0;
+            right: 0;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.65);
+            border-right: 1.5px solid rgba(255, 255, 255, 0.65);
+        }
+
+        .avatarsGroup {
+            display: flex;
+            align-items: center;
+
+            .avatarItem {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                border: 2px solid #08110D;
+                margin-left: -7px;
+                object-fit: cover;
+                display: block;
+
+                &:first-child {
+                    margin-left: 0;
+                }
+            }
+        }
+
+        .trustText {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            line-height: 1.25;
+
+            .trustHighlight {
+                color: #FFFFFF;
+                font-family: var(--font-inter, sans-serif);
+                font-size: 13px;
+                font-weight: 500;
+                letter-spacing: -0.1px;
+                white-space: nowrap;
+            }
+
+            .trustSub {
+                color: rgba(255, 255, 255, 0.68);
+                font-family: var(--font-inter, sans-serif);
+                font-size: 12px;
+                font-weight: 400;
+                white-space: nowrap;
+            }
+        }
+
+        @include respond-to("sm") {
+            height: auto;
+            padding: 8px 14px;
+            gap: 10px;
+
+            .avatarsGroup {
+                .avatarItem {
+                    width: 28px;
+                    height: 28px;
+                }
+            }
+
+            .trustText {
+                .trustHighlight {
+                    font-size: 12px;
+                }
+                .trustSub {
+                    font-size: 11px;
+                }
+            }
+        }
+    }
+
+    // 5. Hero Bottom Live Asset Ticker Marquee Strip
+    .heroMarqueeWrapper {
+        margin-top: 68px;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        padding: 14px 0;
+        z-index: 5;
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+
+        @include respond-to("tab") {
+            margin-top: 50px;
+            padding: 12px 0;
+        }
+
+        @include respond-to("sm") {
+            margin-top: 36px;
+            padding: 10px 0;
+        }
+    }
+
+    .marqueeTrackWrapper {
+        width: 100%;
+        overflow: hidden;
+        padding: 10px 0;
+    }
+
+    .heroMarqueeTrack {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: max-content;
+        will-change: transform;
+        animation: heroMarqueeScroll 38s linear infinite;
+
+        &:hover {
+            animation-play-state: paused;
+        }
+    }
+
+    .heroTickerCard {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: linear-gradient(135deg, rgba(8, 24, 18, 0.98) 0%, rgba(4, 14, 10, 0.98) 100%);
+        border: 1px solid rgba(24, 201, 139, 0.25);
+        border-radius: 12px;
+        padding: 8px 12px;
+        min-width: 200px;
+        cursor: pointer;
+        overflow: visible;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+        &:hover {
+            background: linear-gradient(135deg, rgba(12, 34, 25, 0.98) 0%, rgba(6, 20, 14, 0.98) 100%);
+            border-color: #6EE7B7;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 18px rgba(24, 201, 139, 0.25);
+        }
+    }
+
+    .tickerLogoCircle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        overflow: hidden;
+
+        .tickerLogoImg {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .tickerFallbackChar {
+            font-family: var(--font-syne), sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            color: #6EE7B7;
+        }
+    }
+
+    .tickerCardContent {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        flex: 1;
+    }
+
+    .tickerCardTop {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .tickerCardName {
+            font-family: var(--font-syne), "Syne", sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: -0.2px;
+            white-space: nowrap;
+        }
+
+        .tickerCardSymbol {
+            font-family: monospace, sans-serif;
+            font-size: 9px;
+            font-weight: 700;
+            color: #9CA3AF;
+            text-transform: uppercase;
+        }
+
+        .tickerSignalPill {
+            font-family: monospace, sans-serif;
+            font-size: 8px;
+            font-weight: 800;
+            color: #6EE7B7;
+            background: rgba(24, 201, 139, 0.15);
+            border: 1px solid rgba(24, 201, 139, 0.35);
+            padding: 1px 5px;
+            border-radius: 4px;
+            letter-spacing: 0.3px;
+            margin-left: auto;
+        }
+    }
+
+    .tickerCardBottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+
+        .tickerPrice {
+            font-family: monospace, sans-serif;
+            font-size: 12.5px;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: -0.3px;
+        }
+
+        .tickerChange {
+            font-family: monospace, sans-serif;
+            font-size: 9.5px;
+            font-weight: 800;
+            padding: 1px 5px;
+            border-radius: 4px;
+
+            &.green {
+                color: #34D399;
+                background: rgba(52, 211, 153, 0.15);
+                border: 1px solid rgba(52, 211, 153, 0.32);
+            }
+
+            &.red {
+                color: #F87171;
+                background: rgba(248, 113, 113, 0.15);
+                border: 1px solid rgba(248, 113, 113, 0.32);
+            }
+        }
+
+        .sparklineWrap {
+            width: 38px;
+            height: 16px;
+            flex-shrink: 0;
+
+            svg {
+                width: 100%;
+                height: 100%;
+                display: block;
+                overflow: visible;
+            }
+        }
+    }
+
+    @keyframes heroMarqueeScroll {
+        0% {
+            transform: translate3d(0, 0, 0);
+        }
+        100% {
+            transform: translate3d(-33.333%, 0, 0);
+        }
+    }
+
+    // 5. Commented Network Circuit Showcase Row (fallback / reference)
     .circuitShowcaseRow {
         width: 100%;
         max-width: 1360px;
@@ -737,5 +1441,112 @@
     }
     100% {
         background-position: 200% center;
+    }
+}
+
+@keyframes orbGlowBreathe {
+    0% {
+        transform: translate(-50%, -50%) scale(0.92);
+        opacity: 0.65;
+        filter: blur(48px);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.08);
+        opacity: 0.95;
+        filter: blur(62px);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(0.92);
+        opacity: 0.65;
+        filter: blur(48px);
+    }
+}
+
+@keyframes hudFloatTop {
+    0% {
+        transform: translate(-50%, 0);
+    }
+    100% {
+        transform: translate(-50%, -8px);
+    }
+}
+
+@keyframes hudFloatBottom {
+    0% {
+        transform: translate(-50%, 0);
+    }
+    100% {
+        transform: translate(-50%, 8px);
+    }
+}
+
+@keyframes hudFloatLeft {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-6px);
+    }
+}
+
+@keyframes hudFloatRight {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(6px);
+    }
+}
+
+@keyframes hudFloatBottomRight {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(4px, 6px);
+    }
+}
+
+@keyframes hudFloatBottomLeft {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(-4px, 6px);
+    }
+}
+
+@keyframes liveDotBlink {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+        box-shadow: 0 0 8px #18c98b;
+    }
+    50% {
+        opacity: 0.4;
+        transform: scale(0.75);
+        box-shadow: 0 0 2px #18c98b;
+    }
+}
+
+@keyframes rayBeamFlow {
+    0% {
+        stroke-dashoffset: 36;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes targetDotPulse {
+    0% {
+        r: 3.5;
+        opacity: 0.6;
+        fill: #14b87e;
+    }
+    100% {
+        r: 5.5;
+        opacity: 1;
+        fill: #22f7ab;
     }
 }

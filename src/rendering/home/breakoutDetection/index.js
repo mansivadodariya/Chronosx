@@ -1,4 +1,5 @@
 "use client";
+import { useLanguage } from '@/context/LanguageContext';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './breakoutDetection.module.scss';
@@ -32,6 +33,7 @@ const stepsData = [
 ];
 
 export default function BreakoutDetection() {
+  const { t } = useLanguage();
   const [activeStep, setActiveStep] = useState(0);
   const containerRef = useRef(null);
   const stepRefs = useRef([]);

@@ -30,7 +30,7 @@ export default function StrategyExecutionView() {
             if (item.pair_id) sessionStorage.setItem('selectedStrategyPairId', item.pair_id);
             if (item.strategy_id) sessionStorage.setItem('selectedStrategyId', item.strategy_id);
         }
-        router.push('/ai-strategy/live');
+        router.push('/live-scanner');
     };
 
     return (

@@ -138,7 +138,7 @@ Trade Rationale: ${selectedPreset.rationale}
                 title2="Actionable Trade Plans"
                 description="Upload screenshots from TradingView, MT4/5, or any mobile broker app. Get high-conviction trade signals with exact Entry, SL, and multi-TP setups."
                 primaryBtnText="START SCANNING NOW"
-                primaryBtnAction="/trade-snap"
+                primaryBtnAction="/chart-scanner"
                 primaryBtnIcon={
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                         <line x1="5" y1="12" x2="19" y2="12" />

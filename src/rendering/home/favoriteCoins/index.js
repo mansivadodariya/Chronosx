@@ -1,4 +1,5 @@
 "use client";
+import { useLanguage } from '@/context/LanguageContext';
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
@@ -225,6 +226,7 @@ const row2Assets = [
 ];
 
 export default function FavoriteCoins() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [livePrices, setLivePrices] = useState({});
 
@@ -286,7 +288,7 @@ export default function FavoriteCoins() {
           {marqueeRow1.map((item, idx) => {
             const data = getAssetData(item);
             return (
-              <div key={`row1-${idx}`} className={styles.assetCard} onClick={() => navigateFeature(router, '/ai-trade', '/trade-snap')}>
+              <div key={`row1-${idx}`} className={styles.assetCard} onClick={() => navigateFeature(router, '/ai-chart-scanner', '/chart-scanner')}>
                 <TradingViewLogo
                   logoUrl={item.logoUrl}
                   name={item.name}
@@ -321,7 +323,7 @@ export default function FavoriteCoins() {
           {marqueeRow2.map((item, idx) => {
             const data = getAssetData(item);
             return (
-              <div key={`row2-${idx}`} className={styles.assetCard} onClick={() => navigateFeature(router, '/ai-trade', '/trade-snap')}>
+              <div key={`row2-${idx}`} className={styles.assetCard} onClick={() => navigateFeature(router, '/ai-chart-scanner', '/chart-scanner')}>
                 <TradingViewLogo
                   logoUrl={item.logoUrl}
                   name={item.name}
@@ -364,7 +366,7 @@ export default function FavoriteCoins() {
           <button 
             type="button" 
             className={styles.ctaBtn}
-            onClick={() => authNavigate(router, '/trade-snap')}
+            onClick={() => authNavigate(router, '/chart-scanner')}
           >
             <span>SIGN UP &amp; START SCANNING</span>
             <ArrowRightIcon />

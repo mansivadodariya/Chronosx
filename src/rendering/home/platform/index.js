@@ -14,10 +14,10 @@ const platformData = [
     {
         topIcon: '/assets/icons/chart-square.svg',
         image: AiTrade,
-        title: 'AI TRADE',
-        publicPath: '/ai-trade',
-        dashboardPath: '/trade-snap',
-        desc: 'AI-powered market analysis\nand trading signals.',
+        title: 'AI CHART SCANNER',
+        publicPath: '/ai-chart-scanner',
+        dashboardPath: '/chart-scanner',
+        desc: 'Multi-timeframe technical pattern\ndetection & chart vision.',
         features: [
             { icon: '/assets/icons/market-analysis.svg', text: 'Market\nAnalysis' },
             { icon: '/assets/icons/smart-signals.svg', text: 'Smart Trade\nSignals' },
@@ -27,9 +27,9 @@ const platformData = [
     {
         topIcon: '/assets/icons/chat-square.svg',
         image: AiChat,
-        title: 'AI CHAT',
-        publicPath: '/ai-chat',
-        dashboardPath: '/ai-assistant',
+        title: 'AI MARKET ASSISTANT',
+        publicPath: '/ai-market-assistant',
+        dashboardPath: '/market-assistant',
         desc: 'Ask AI about markets, strategies,\nsignals, and trading decisions.',
         features: [
             { icon: '/assets/icons/ai-conv.svg', text: 'AI-Powered\nConversations' },
@@ -40,9 +40,9 @@ const platformData = [
     {
         topIcon: '/assets/icons/shield-square.svg',
         image: AiStrategy,
-        title: 'AI STRATEGY',
-        publicPath: '/strategy',
-        dashboardPath: '/ai-strategy/live',
+        title: 'STRATEGY HUB',
+        publicPath: '/ai-strategy-hub',
+        dashboardPath: '/strategy-hub',
         desc: 'Build and analyze smarter trading\nstrategies with AI.',
         features: [
             { icon: '/assets/icons/strategy-builder.svg', text: 'Strategy\nBuilder' },

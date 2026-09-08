@@ -95,17 +95,14 @@ export default function AnimatedAreaChart({
           <div className={styles.tooltipDivider} />
           <div className={styles.tooltipItem}>
             <span className={styles.label}>AI ACCURACY</span>
-            <span className={styles.val}>98.4%</span>
           </div>
           <div className={styles.tooltipDivider} />
           <div className={styles.tooltipItem}>
             <span className={styles.label}>CURRENT PRICE</span>
-            <span className={styles.val}>${activePoint.val}</span>
           </div>
           <div className={styles.tooltipDivider} />
           <div className={styles.tooltipItem}>
             <span className={styles.label}>TIMEFRAME</span>
-            <span className={styles.val}><span>{activePoint.label}</span></span>
           </div>
         </div>
       )}

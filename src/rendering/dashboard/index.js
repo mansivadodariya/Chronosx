@@ -122,7 +122,7 @@ export default function Dashboard() {
         const params = new URLSearchParams();
         params.set('tab', item.type);
         params.set('open', String(item.id));
-        router.push(`/ai-assistant?${params.toString()}`);
+        router.push(`/market-assistant?${params.toString()}`);
     };
 
     const dailyCreditChartData = useMemo(() => {

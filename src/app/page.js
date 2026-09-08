@@ -4,8 +4,8 @@ import Footer from "@/components/footer";
 import HomePage from "@/rendering/home";
 
 export const metadata = {
-  title: "ChronosX — Institutional AI Forex & MT5 Trading Terminal",
-  description: "Trade smarter with AI that never sleeps. Real-time AI trading signals, instant neural chart pattern recognition, and institutional risk management.",
+  title: "ChronosX — Trade Smarter With AI Signals That Never Sleep",
+  description: "Get real-time AI trading signals, market insights, and trade recommendations across Forex, Crypto, Stocks, and Global Markets.",
   alternates: {
     canonical: 'https://chronosx.com',
   },

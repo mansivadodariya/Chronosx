@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './howitWorks.module.scss';
 import Link from 'next/link';
@@ -33,6 +34,7 @@ const steps = [
 ];
 
 export default function HowitWorks() {
+  const { t } = useLanguage();
   const [activeStep, setActiveStep] = useState(0);
   const [isIntro, setIsIntro] = useState(true);
 

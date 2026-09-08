@@ -36,14 +36,14 @@ export default function DashboardRecentActivities({
                         className={`${styles.filterTab} ${activityFilter === 'blog' ? styles.filterTabActive : ''}`}
                         onClick={() => setActivityFilter('blog')}
                     >
-                        TradeSnap
+                        AI Chart Scanner
                     </button>
                     <button
                         type="button"
                         className={`${styles.filterTab} ${activityFilter === 'chat' ? styles.filterTabActive : ''}`}
                         onClick={() => setActivityFilter('chat')}
                     >
-                        AI Chat
+                        AI Market Assistant
                     </button>
                 </div>
             </div>
@@ -63,7 +63,7 @@ export default function DashboardRecentActivities({
                             </svg>
                         </div>
                         <p>No recent activity recorded yet.</p>
-                        <Link href="/trade-snap" className={styles.firstScanBtn}>
+                        <Link href="/chart-scanner" className={styles.firstScanBtn}>
                             Upload Your First Chart →
                         </Link>
                     </div>
@@ -95,7 +95,7 @@ export default function DashboardRecentActivities({
                                     <div className={styles.actTitles}>
                                         <div className={styles.actTitleHeader}>
                                             <strong className={styles.actMainTitle}>{item.title}</strong>
-                                            <span className={styles.actTypeTag}>{item.type === 'blog' ? 'TradeSnap' : 'AI Chat'}</span>
+                                            <span className={styles.actTypeTag}>{item.type === 'blog' ? 'AI Chart Scanner' : 'AI Market Assistant'}</span>
                                         </div>
                                         <span className={styles.actTime}>{timeAgo(item.created_at)}</span>
                                     </div>

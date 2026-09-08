@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -73,12 +73,12 @@ export default function Header() {
         setOpenMobileDropdown(prev => (prev === label ? null : label));
     };
 
-    const productDropdownItems = [
+    const productDropdownItems = useMemo(() => [
         {
-            label: 'Market Snapshot & Scanner',
-            desc: 'Automated multi-timeframe pattern detection & key price levels',
-            href: '/ai-trade',
-            badge: 'POPULAR',
+            label: t('header.products.chartScanner.title', 'AI Chart Scanner'),
+            desc: t('header.products.chartScanner.desc', 'Multi-timeframe technical pattern detection & neural OCR chart vision'),
+            href: '/ai-chart-scanner',
+            badge: t('header.products.chartScanner.badge', 'POPULAR'),
             icon: (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 3v18h18" />
@@ -91,10 +91,10 @@ export default function Header() {
             )
         },
         {
-            label: 'AI Trading Advisor',
-            desc: 'Real-time conversational market intelligence & instant insights',
-            href: '/ai-chat',
-            badge: 'LIVE AI',
+            label: t('header.products.marketAssistant.title', 'AI Market Assistant'),
+            desc: t('header.products.marketAssistant.desc', 'Real-time conversational market intelligence & instant insights'),
+            href: '/ai-market-assistant',
+            badge: t('header.products.marketAssistant.badge', 'LIVE AI'),
             icon: (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
@@ -105,10 +105,21 @@ export default function Header() {
             )
         },
         {
-            label: 'AI Strategy Hub',
-            desc: 'Algorithmic backtesting, momentum breakout & strategy signals',
-            href:  '/strategy',
-            badge: 'QUANT',
+            label: t('header.products.liveScanner.title', 'Live Market Scanner'),
+            desc: t('header.products.liveScanner.desc', 'Algorithmic breakout signals, live momentum radar & market alerts'),
+            href: '/live-market-scanner',
+            badge: t('header.products.liveScanner.badge', 'LIVE'),
+            icon: (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                </svg>
+            )
+        },
+        {
+            label: t('header.products.strategyHub.title', 'Strategy Hub'),
+            desc: t('header.products.strategyHub.desc', 'Algorithmic backtesting, quantitative playbooks & strategy signals'),
+            href: '/ai-strategy-hub',
+            badge: t('header.products.strategyHub.badge', 'QUANT'),
             icon: (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 12h3l3-7 4 14 3-8 2 4h4" />
@@ -117,14 +128,14 @@ export default function Header() {
                 </svg>
             )
         }
-    ];
+    ], [t]);
 
-    const tradingToolsDropdownItems = [
+    const tradingToolsDropdownItems = useMemo(() => [
         {
-            label: 'AI Performance Analyzer',
-            desc: 'Review your historical trading data to evaluate performance, pinpoint mistakes, and track win rates.',
-            href:'/trade-analysis',
-            badge: 'AI AUDIT',
+            label: t('header.tradingTools.tradeAudit.title', 'AI Trade Audit'),
+            desc: t('header.tradingTools.tradeAudit.desc', 'Review historical trading data to evaluate performance, pinpoint mistakes, and track win rates.'),
+            href: '/ai-trade-audit',
+            badge: t('header.tradingTools.tradeAudit.badge', 'AI AUDIT'),
             icon: (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
@@ -132,10 +143,10 @@ export default function Header() {
             )
         },
         {
-            label: 'Strategy (Create New)',
-            desc: 'Custom algorithmic trading logic, parameter tuning & rule engines',
+            label: t('header.tradingTools.strategyCreate.title', 'Strategy (Create New)'),
+            desc: t('header.tradingTools.strategyCreate.desc', 'Custom algorithmic trading logic, parameter tuning & rule engines'),
             href: getAuthHref('/'),
-            badge: 'COMING SOON',
+            badge: t('header.tradingTools.strategyCreate.badge', 'COMING SOON'),
             icon: (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6" />
@@ -143,10 +154,10 @@ export default function Header() {
             )
         },
         {
-            label: 'Backtesting',
-            desc: 'High-speed historical simulation, win-rate metrics & Sharpe ratio',
+            label: t('header.tradingTools.backtesting.title', 'Backtesting'),
+            desc: t('header.tradingTools.backtesting.desc', 'High-speed historical simulation, win-rate metrics & Sharpe ratio'),
             href: getAuthHref('/'),
-            badge: 'COMING SOON',
+            badge: t('header.tradingTools.backtesting.badge', 'COMING SOON'),
             icon: (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
@@ -156,10 +167,10 @@ export default function Header() {
             )
         },
         {
-            label: 'Paper Trading',
-            desc: 'Risk-free simulated trading environment with live real-time feeds',
+            label: t('header.tradingTools.paperTrading.title', 'Paper Trading'),
+            desc: t('header.tradingTools.paperTrading.desc', 'Risk-free simulated trading environment with live real-time feeds'),
             href: getAuthHref('/'),
-            badge: 'COMING SOON',
+            badge: t('header.tradingTools.paperTrading.badge', 'COMING SOON'),
             icon: (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -169,14 +180,14 @@ export default function Header() {
                 </svg>
             )
         }
-    ];
+    ], [t]);
 
-    const companyDropdownItems = [
+    const companyDropdownItems = useMemo(() => [
         {
-            label: 'About Us',
-            desc: 'Our mission, institutional AI infrastructure & executive leadership',
+            label: t('header.company.aboutUs.title', 'About Us'),
+            desc: t('header.company.aboutUs.desc', 'Our mission, institutional AI infrastructure & executive leadership'),
             href: '/about-us',
-            badge: 'VISION',
+            badge: t('header.company.aboutUs.badge', 'VISION'),
             icon: (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -187,10 +198,10 @@ export default function Header() {
             )
         },
         {
-            label: 'Economic Calendar',
-            desc: 'Real-time global macro events, central bank rates & high-impact releases',
+            label: t('header.company.economicCalendar.title', 'Economic Calendar'),
+            desc: t('header.company.economicCalendar.desc', 'Real-time global macro events, central bank rates & high-impact releases'),
             href: '/economic-calendar',
-            badge: 'LIVE CALENDAR',
+            badge: t('header.company.economicCalendar.badge', 'LIVE CALENDAR'),
             icon: (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -201,10 +212,10 @@ export default function Header() {
             )
         },
         {
-            label: 'News',
-            desc: 'Curated financial headlines, market updates & breaking economic catalysts',
+            label: t('header.company.news.title', 'News'),
+            desc: t('header.company.news.desc', 'Curated financial headlines, market updates & breaking economic catalysts'),
             href: '/market-news',
-            badge: 'DAILY',
+            badge: t('header.company.news.badge', 'DAILY'),
             icon: (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
@@ -215,10 +226,10 @@ export default function Header() {
             )
         },
         {
-            label: 'Forex Calculator',
-            desc: 'Precision pip value, position sizing, lot size & risk calculator',
+            label: t('header.company.forexCalculator.title', 'Forex Calculator'),
+            desc: t('header.company.forexCalculator.desc', 'Precision pip value, position sizing, lot size & risk calculator'),
             href: '/forex-calculator',
-            badge: 'UTILITY',
+            badge: t('header.company.forexCalculator.badge', 'UTILITY'),
             icon: (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="4" y="2" width="16" height="20" rx="2" />
@@ -229,10 +240,10 @@ export default function Header() {
             )
         },
         {
-            label: 'Blog',
-            desc: 'In-depth quant trading strategies, technical breakdowns & research',
+            label: t('header.company.blog.title', 'Blog'),
+            desc: t('header.company.blog.desc', 'In-depth quant trading strategies, technical breakdowns & research'),
             href: '/blogs',
-            badge: 'INSIGHTS',
+            badge: t('header.company.blog.badge', 'INSIGHTS'),
             icon: (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
@@ -240,38 +251,36 @@ export default function Header() {
                 </svg>
             )
         },
+    ], [t]);
 
-    ];
-
-    const navItems = [
+    const navItems = useMemo(() => [
         {
-            label: 'Products',
+            label: t('header.productsTab', 'Products'),
             href: getAuthHref('/'),
             hasDropdown: true,
-            dropdownTag: 'AI TRADING ECOSYSTEM',
-            dropdownFooter: 'Powered by ChronosX Real-Time Neural Engines',
+            dropdownTag: t('header.aiTradingEcosystem', 'AI TRADING ECOSYSTEM'),
+            dropdownFooter: t('header.aiTradingEcosystemDesc', 'Powered by ChronosX Real-Time Neural Engines'),
             dropdownItems: productDropdownItems
         },
         {
-            label: 'Trading Tools',
+            label: t('header.tradingToolsTab', 'Trading Tools'),
             href: getAuthHref('/'),
             hasDropdown: true,
-            dropdownTag: 'QUANTITATIVE EXECUTION SUITE',
-            dropdownFooter: 'Multi-Broker Execution & Zero-Latency Routing',
+            dropdownTag: t('header.quantExecutionSuite', 'QUANTITATIVE EXECUTION SUITE'),
+            dropdownFooter: t('header.quantExecutionSuiteDesc', 'Multi-Broker Execution & Zero-Latency Routing'),
             dropdownItems: tradingToolsDropdownItems
         },
         {
-            label: 'Company',
+            label: t('header.companyTab', 'Company'),
             href: '/about-us',
             hasDropdown: true,
-            dropdownTag: 'COMPANY & RESOURCES',
-            dropdownFooter: 'ChronosX Global Financial Intelligence Network',
+            dropdownTag: t('header.companyResources', 'COMPANY & RESOURCES'),
+            dropdownFooter: t('header.companyResourcesDesc', 'ChronosX Global Financial Intelligence Network'),
             dropdownItems: companyDropdownItems
         },
-        { label: 'Pricing', href: '/plans' },
-
-        { label: 'Contact Us', href: '/contact-us' },
-    ];
+        { label: t('header.pricingTab', 'Pricing'), href: '/plans' },
+        { label: t('header.contactUsTab', 'Contact Us'), href: '/contact-us' },
+    ], [t, productDropdownItems, tradingToolsDropdownItems, companyDropdownItems]);
 
     const isLinkActive = (item) => {
         if (!pathname) return false;
@@ -489,7 +498,7 @@ export default function Header() {
                                                                             <div className={styles.subTitleRow}>
                                                                                 <span className={styles.subTitle}>{sub.label}</span>
                                                                                 {sub.badge && (
-                                                                                    <span className={`${styles.subBadge} ${sub.badge === 'COMING SOON' ? styles.comingSoonBadge : ''}`}>
+                                                                                    <span className={`${styles.subBadge} ${sub.badge === 'COMING SOON' || sub.badge === 'قريباً' || sub.badge === 'MALAPIT NA' ? styles.comingSoonBadge : ''}`}>
                                                                                         {sub.badge}
                                                                                     </span>
                                                                                 )}

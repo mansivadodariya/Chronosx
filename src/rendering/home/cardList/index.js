@@ -9,31 +9,38 @@ import RightIcon from '@/icons/rightIcon';
 const gridData = [
     {
         icon: '/assets/icons/signals.svg',
-        title: 'AI TRADE',
-        desc: 'AI-powered market analysis and trading signals.',
-        publicPath: '/ai-trade',
-        dashboardPath: '/trade-snap'
+        title: 'AI CHART SCANNER',
+        desc: 'Multi-timeframe technical pattern detection & neural OCR chart vision.',
+        publicPath: '/ai-chart-scanner',
+        dashboardPath: '/chart-scanner'
     },
     {
         icon: '/assets/icons/chat-square.svg',
-        title: 'AI CHAT',
+        title: 'AI MARKET ASSISTANT',
         desc: 'Ask AI about markets, strategies, signals, and trading decisions.',
-        publicPath: '/ai-chat',
-        dashboardPath: '/ai-assistant'
+        publicPath: '/ai-market-assistant',
+        dashboardPath: '/market-assistant'
     },
     {
         icon: '/assets/icons/strategy-builder.svg',
-        title: 'AI STRATEGY',
-        desc: 'Build and analyze smarter trading strategies with AI.',
-        publicPath: '/strategy',
-        dashboardPath: '/ai-strategy/live'
+        title: 'LIVE MARKET SCANNER',
+        desc: 'Real-time breakout scanner, momentum radar & algorithmic signals.',
+        publicPath: '/live-market-scanner',
+        dashboardPath: '/live-scanner'
+    },
+    {
+        icon: '/assets/icons/strategy-builder.svg',
+        title: 'STRATEGY HUB',
+        desc: 'Build, backtest, and deploy algorithmic trading playbooks with AI.',
+        publicPath: '/ai-strategy-hub',
+        dashboardPath: '/strategy-hub'
     },
     {
         icon: '/assets/icons/analysis.svg',
-        title: 'AI TRADE ANALYSIS',
-        desc: 'Deep algorithmic trade breakdown, liquidity tracking, and risk metrics.',
-        publicPath: '/ai-past-trade-analyzer',
-        dashboardPath: '/trade-analysis'
+        title: 'AI TRADE AUDIT',
+        desc: 'Deep algorithmic trade audit, performance review, and leak elimination.',
+        publicPath: '/ai-trade-audit',
+        dashboardPath: '/trade-audit'
     }
 ];
 

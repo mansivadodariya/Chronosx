@@ -245,7 +245,7 @@ export default function StrategySimulatorSection({
                                 {/* Open Desk Button */}
                                 <button
                                     type="button"
-                                    onClick={() => authNavigate(router, '/ai-strategy/live')}
+                                    onClick={() => authNavigate(router, '/live-scanner')}
                                     className={styles.launchDeskActionBtn}
                                 >
                                     <span>Open in Live Strategy Desk</span>

@@ -1,9 +1,11 @@
 "use client";
+import { useLanguage } from '@/context/LanguageContext';
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './marketIntelligence.module.scss';
 import SectionHeader from '@/components/sectionHeader';
 
 export default function MarketIntelligence() {
+  const { t } = useLanguage();
   const [flippedCards, setFlippedCards] = useState({ 0: false, 1: false, 2: false });
   
   const canvas1Ref = useRef(null);

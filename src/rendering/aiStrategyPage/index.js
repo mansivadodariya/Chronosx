@@ -125,7 +125,7 @@ TOTAL AGGREGATE SCORE: ${selectedPair.score} / 100 [${selectedPair.bias}]
                 title2="in Real Time"
                 description="Stop trading blind. Access 100-point scoring, multi-pillar analytics, and instant strategy setups now."
                 primaryBtnText="LAUNCH LIVE ANALYSIS FEED"
-                primaryBtnAction="/ai-strategy/live"
+                primaryBtnAction="/live-scanner"
                 primaryBtnIcon={
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />

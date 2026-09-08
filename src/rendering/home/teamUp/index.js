@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import { motion } from 'framer-motion';
 import styles from './teamUp.module.scss';
 import SectionHeader from '@/components/sectionHeader';
@@ -32,6 +33,7 @@ const pillars = [
 ];
 
 export default function TeamUp() {
+  const { t } = useLanguage();
   return (
     <section className={styles.teamUp} aria-label="Supported Brokers and Platforms">
 

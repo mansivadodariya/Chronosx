@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './quickJump.module.scss';
 
 // --- Quick Jump Navigation Items Registry ---
@@ -58,11 +59,11 @@ const QUICK_JUMP_SECTIONS = [
         category: 'Trading',
         items: [
             {
-                id: 'live-trading',
-                title: 'Live Market Analysis',
-                subtitle: 'Live MT5 streaming, watchlist & order execution',
-                href: '/ai-strategy/live',
-                keywords: ['live', 'trading', 'chart', 'watchlist', 'mt5', 'stream', 'order', 'forex', 'market', 'analysis'],
+                id: 'live-scanner',
+                title: 'Live Market Scanner',
+                subtitle: 'Live algorithmic market scanner, momentum radar & alerts',
+                href: '/live-scanner',
+                keywords: ['live', 'scanner', 'trading', 'chart', 'watchlist', 'mt5', 'stream', 'order', 'forex', 'market', 'analysis'],
                 icon: (
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="18" y1="20" x2="18" y2="10" />
@@ -74,11 +75,11 @@ const QUICK_JUMP_SECTIONS = [
                 ),
             },
             {
-                id: 'ai-signals',
-                title: 'Strategy Engine & Playbooks',
+                id: 'strategy-hub',
+                title: 'Strategy Hub',
                 subtitle: 'Automated strategy signals & quantitative algorithms',
-                href: '/ai-strategy/strategy',
-                keywords: ['signals', 'strategy', 'bot', 'algo', 'supertrend', 'ema', 'automated', 'engine', 'playbooks'],
+                href: '/strategy-hub',
+                keywords: ['signals', 'strategy', 'bot', 'algo', 'supertrend', 'ema', 'automated', 'engine', 'playbooks', 'hub'],
                 icon: (
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
@@ -86,11 +87,11 @@ const QUICK_JUMP_SECTIONS = [
                 ),
             },
             {
-                id: 'trade-snap',
-                title: 'Market Snapshot & Scanner',
+                id: 'chart-scanner',
+                title: 'AI Chart Scanner',
                 subtitle: 'Instant vision AI chart screenshot analysis & scanner',
-                href: '/trade-snap',
-                keywords: ['snap', 'vision', 'camera', 'scan', 'screenshot', 'pattern', 'confluence', 'market', 'snapshot', 'scanner'],
+                href: '/chart-scanner',
+                keywords: ['chart', 'scanner', 'snap', 'vision', 'camera', 'scan', 'screenshot', 'pattern', 'confluence'],
                 icon: (
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
@@ -99,11 +100,11 @@ const QUICK_JUMP_SECTIONS = [
                 ),
             },
             {
-                id: 'trade-analysis',
-                title: 'AI Past Trade Analysis',
-                subtitle: 'Statement audit, behavioral flaws & trade ledger',
-                href: '/trade-analysis',
-                keywords: ['past', 'history', 'statement', 'audit', 'fomo', 'report', 'ledger', 'csv'],
+                id: 'trade-audit',
+                title: 'AI Trade Audit',
+                subtitle: 'Statement audit, behavioral flaws & trade ledger review',
+                href: '/trade-audit',
+                keywords: ['audit', 'past', 'history', 'statement', 'analysis', 'fomo', 'report', 'ledger', 'csv'],
                 icon: (
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="18" y1="20" x2="18" y2="10" />
@@ -118,11 +119,11 @@ const QUICK_JUMP_SECTIONS = [
         category: 'Copilot & AI',
         items: [
             {
-                id: 'ai-chat',
-                title: 'AI Trading Advisor',
-                subtitle: 'Interactive multi-turn trading copilot & analysis advisor',
-                href: '/ai-assistant',
-                keywords: ['chat', 'assistant', 'copilot', 'bot', 'ask', 'prompt', 'talk', 'gpt', 'trading', 'advisor'],
+                id: 'market-assistant',
+                title: 'AI Market Assistant',
+                subtitle: 'Interactive multi-turn trading copilot & market assistant',
+                href: '/market-assistant',
+                keywords: ['chat', 'assistant', 'copilot', 'bot', 'ask', 'prompt', 'talk', 'gpt', 'trading', 'market'],
                 icon: (
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="3" y="11" width="18" height="10" rx="2" />
@@ -230,6 +231,7 @@ const QUICK_JUMP_SECTIONS = [
 const CATEGORIES = ['All', 'Trading', 'General', 'Copilot & AI', 'Tools & Insights', 'Account & Broker'];
 
 export default function QuickJump({ isCollapsed = false }) {
+    const { t } = useLanguage();
     const router = useRouter();
     const [mounted, setMounted] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
@@ -408,7 +410,7 @@ export default function QuickJump({ isCollapsed = false }) {
                                 ref={inputRef}
                                 type="text"
                                 className={styles.searchInput}
-                                placeholder="Type a page name, bot, or setting..."
+                                placeholder={t('quickJump.inputPlaceholder', 'Type a page name, bot, or setting...')}
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
                                 onKeyDown={handleModalKeyDown}
@@ -419,16 +421,16 @@ export default function QuickJump({ isCollapsed = false }) {
                                         type="button"
                                         className={styles.clearBtn}
                                         onClick={() => setQuery('')}
-                                        title="Clear search"
+                                        title={t('quickJump.clear', 'Clear')}
                                     >
-                                        Clear
+                                        {t('quickJump.clear', 'Clear')}
                                     </button>
                                 )}
                                 <button
                                     type="button"
                                     className={styles.closeBtn}
                                     onClick={handleClose}
-                                    title="Close (Esc)"
+                                    title={t('quickJump.close', 'Close (Esc)')}
                                 >
                                     ✕
                                 </button>
@@ -463,8 +465,8 @@ export default function QuickJump({ isCollapsed = false }) {
                                         <circle cx="11" cy="11" r="8" />
                                         <line x1="21" y1="21" x2="16.65" y2="16.65" />
                                     </svg>
-                                    <p>No matching locations found for "{query}"</p>
-                                    <span>Try searching for 'Trading', 'Dashboard', 'Strategy', or 'Calendar'</span>
+                                    <p>{t('quickJump.noResultsPrefix', 'No matching locations found for')} "{query}"</p>
+                                    <span>{t('quickJump.searchHint', 'Try searching for "Trading", "Dashboard", "Strategy", or "Calendar"')}</span>
                                 </div>
                             ) : (
                                 (() => {
@@ -497,7 +499,7 @@ export default function QuickJump({ isCollapsed = false }) {
                                                         <div className={styles.itemRight}>
                                                             <span className={styles.categoryTag}>{section.category}</span>
                                                             <div className={styles.actionBadge}>
-                                                                <span>Jump</span>
+                                                                <span>{t('quickJump.jump', 'Jump')}</span>
                                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                                                     <path d="M5 12h14M12 5l7 7-7 7" />
                                                                 </svg>
@@ -516,18 +518,18 @@ export default function QuickJump({ isCollapsed = false }) {
                         <div className={styles.modalFooter}>
                             <div className={styles.footerHints}>
                                 <span className={styles.hintItem}>
-                                    <kbd>↑</kbd><kbd>↓</kbd> Navigate
+                                    <kbd>↑</kbd><kbd>↓</kbd> {t('quickJump.navigateHint', 'Navigate')}
                                 </span>
                                 <span className={styles.hintItem}>
-                                    <kbd>↵</kbd> Open
+                                    <kbd>↵</kbd> {t('quickJump.openHint', 'Open')}
                                 </span>
                                 <span className={styles.hintItem}>
-                                    <kbd>esc</kbd> Close
+                                    <kbd>esc</kbd> {t('quickJump.closeHint', 'Close')}
                                 </span>
                             </div>
                             <div className={styles.footerRight}>
                                 <span className={styles.resultsCount}>
-                                    {flatItems.length} {flatItems.length === 1 ? 'item' : 'items'}
+                                    {flatItems.length} {flatItems.length === 1 ? t('quickJump.item', 'item') : t('quickJump.items', 'items')}
                                 </span>
                                 <span className={styles.chronosXTag}>
                                     <span className={styles.pulsingDot}></span>
@@ -549,7 +551,7 @@ export default function QuickJump({ isCollapsed = false }) {
                     type="button"
                     className={styles.triggerBtn}
                     onClick={handleOpen}
-                    title="Quick jump (⌘K)"
+                    title={t('quickJump.triggerShortcut', 'Quick jump (⌘K)')}
                 >
                     <div className={styles.triggerLeft}>
                         <svg
@@ -564,7 +566,7 @@ export default function QuickJump({ isCollapsed = false }) {
                             <circle cx="11" cy="11" r="8" />
                             <line x1="21" y1="21" x2="16.65" y2="16.65" />
                         </svg>
-                        <span className={styles.triggerText}>Quick jump...</span>
+                        <span className={styles.triggerText}>{t('quickJump.trigger', 'Quick jump...')}</span>
                     </div>
                     <span className={styles.shortcutBadge}>⌘ K</span>
                 </button>
@@ -573,7 +575,7 @@ export default function QuickJump({ isCollapsed = false }) {
                     type="button"
                     className={styles.collapsedTriggerBtn}
                     onClick={handleOpen}
-                    aria-label="Quick jump (⌘K)"
+                    aria-label={t('quickJump.triggerShortcut', 'Quick jump (⌘K)')}
                 >
                     <svg
                         className={styles.triggerIcon}
@@ -587,7 +589,7 @@ export default function QuickJump({ isCollapsed = false }) {
                         <circle cx="11" cy="11" r="8" />
                         <line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg>
-                    <span className={styles.tooltip}>Quick jump (⌘K)</span>
+                    <span className={styles.tooltip}>{t('quickJump.triggerShortcut', 'Quick jump (⌘K)')}</span>
                 </button>
             )}
 

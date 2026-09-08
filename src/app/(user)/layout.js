@@ -16,21 +16,25 @@ import './layout.scss';
 
 const ROUTE_TAB_MAP = {
     '/dashboard': 'Dashboard',
-    '/trade-snap': 'Market Snapshot & Scanner',
-    '/tradesnap': 'Market Snapshot & Scanner',
-    '/ai-trade': 'Market Snapshot & Scanner',
-    '/trade-analysis': 'AI Trade analysis',
-    '/ai-trade-analysis': 'AI Trade analysis',
-    '/ai-assistant': 'AI Trading Advisor',
-    '/ai-chat': 'AI Trading Advisor',
-    '/ai-strategy': 'AI Strategy Hub',
-    '/ai-strategy/live': 'Live Market Analysis',
-    '/ai-strategy/strategy': 'Strategy Engine & Playbooks',
+    '/chart-scanner': 'AI Chart Scanner',
+    '/ai-chart-scanner': 'AI Chart Scanner',
+    '/trade-audit': 'AI Trade Audit',
+    '/ai-trade-audit': 'AI Trade Audit',
+    '/market-assistant': 'AI Market Assistant',
+    '/ai-market-assistant': 'AI Market Assistant',
+    '/live-scanner': 'Live Market Scanner',
+    '/live-market-scanner': 'Live Market Scanner',
+    '/strategy-hub': 'Strategy Hub',
+    '/ai-strategy-hub': 'Strategy Hub',
+    '/strategy-hub/live': 'Live Market Scanner',
+    '/strategy-hub/strategy': 'Strategy Playbooks',
     '/tools': 'Tools',
     '/calendar': 'Economic Calendar',
     '/economic-calendar': 'Economic Calendar',
     '/calculator': 'Forex Calculator',
+    '/forex-calculator': 'Forex Calculator',
     '/news': 'Market News',
+    '/market-news': 'Market News',
     '/credit-history': 'Credit History',
     '/plans': 'Subscription Plans',
     '/subscription-plans': 'Subscription Plans',
@@ -182,7 +186,8 @@ const layout = ({ children }) => {
                 currentTabName === 'Tools' ||
                 currentTabName === 'Economic Calendar' ||
                 currentTabName === 'Forex Calculator' ||
-                currentTabName.toLowerCase() === 'ai trade analysis'
+                currentTabName.toLowerCase() === 'ai trade analysis' ||
+                currentTabName.toLowerCase() === 'ai trade audit'
             ) {
                 setIsTabAllowed(true);
                 return;
@@ -197,11 +202,16 @@ const layout = ({ children }) => {
                             const cur = currentTabName.toLowerCase();
                             return (
                                 name === cur ||
-                                (cur === 'market snapshot & scanner' && (name === 'ai trade' || name === 'trade-snap')) ||
-                                (cur === 'ai trading advisor' && (name === 'ai chat' || name === 'ai-assistant')) ||
-                                (cur === 'ai strategy hub' && (name === 'ai strategy' || name === 'strategy')) ||
-                                (cur === 'live market analysis' && (name === 'live analysis' || name === 'ai strategy')) ||
-                                (cur === 'strategy engine & playbooks' && (name === 'ai strategy' || name === 'strategy'))
+                                ((cur.includes('chart scanner') || cur === 'market snapshot & scanner') &&
+                                    (name === 'ai chart scanner' || name === 'chart-scanner' || name === 'ai trade' || name === 'ai-trade' || name === 'trade-snap' || name === 'trade snap')) ||
+                                ((cur.includes('trade audit') || cur.includes('trade analysis')) &&
+                                    (name === 'ai trade audit' || name === 'trade-audit' || name === 'ai trade analysis' || name === 'trade-analysis' || name === 'trade analysis' || name === 'ai-trade-analysis' || name === 'ai-past-trade-analyzer' || name === 'ai trade')) ||
+                                ((cur.includes('market assistant') || cur.includes('trading advisor')) &&
+                                    (name === 'ai market assistant' || name === 'market-assistant' || name === 'ai chat' || name === 'ai-chat' || name === 'ai assistant' || name === 'ai-assistant')) ||
+                                ((cur.includes('strategy') || cur.includes('strategy hub')) &&
+                                    (name === 'strategy hub' || name === 'strategy-hub' || name === 'ai strategy' || name === 'ai-strategy' || name === 'strategy')) ||
+                                ((cur.includes('live') || cur.includes('live scanner')) &&
+                                    (name === 'live market scanner' || name === 'live-scanner' || name === 'live analysis' || name === 'ai strategy' || name === 'strategy hub'))
                             ) && tab.is_visible === true;
                         }
                     );

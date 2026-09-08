@@ -445,7 +445,7 @@ export default function ChartAnalysis() {
             <Button 
               text="START SCANNING WITH AI"
               icon="/assets/icons/right.svg"
-              onClick={() => authNavigate(router, '/trade-snap')}
+              onClick={() => authNavigate(router, '/chart-scanner')}
             />
           </motion.div>
         </div>

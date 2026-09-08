@@ -113,7 +113,7 @@ export default function BlogDetailView({ slug }) {
                         <div className={styles.ctaCard}>
                             <h4>Deploy on ChronosX AI Desk</h4>
                             <p>Test institutional smart money order blocks and chart vision scanning in real-time.</p>
-                            <Link href="/trade-snap" className={styles.ctaBtn}>
+                            <Link href="/ai-chart-scanner" className={styles.ctaBtn}>
                                 <span>Launch AI Trade Vision</span>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                     <path d="M5 12h14M12 5l7 7-7 7" />

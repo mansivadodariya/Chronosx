@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef } from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import { motion } from 'framer-motion';
 import CountUp from '@/components/countUp';
 import SectionHeader from '@/components/sectionHeader';
@@ -61,6 +62,7 @@ const emptyTileVariants = {
 };
 
 export default function MetricsSection() {
+  const { t } = useLanguage();
   const [mousePos, setMousePos] = useState({ x: -500, y: -500, isHovered: false });
   const containerRef = useRef(null);
 

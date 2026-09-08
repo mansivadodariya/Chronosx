@@ -1,4 +1,5 @@
 "use client";
+import { useLanguage } from '@/context/LanguageContext';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import styles from './beforeAfterComparison.module.scss';
@@ -69,6 +70,7 @@ const candlesData = [
 ];
 
 export default function BeforeAfterComparison() {
+  const { t } = useLanguage();
   const [sliderPos, setSliderPos] = useState(50); // percentage 0 - 100
   const isDraggingRef = useRef(false);
   const containerRef = useRef(null);

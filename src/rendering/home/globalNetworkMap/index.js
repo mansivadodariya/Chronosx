@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import { motion } from 'framer-motion';
 import styles from './globalNetworkMap.module.scss';
 import SectionHeader from '@/components/sectionHeader';
@@ -8,6 +9,7 @@ import { hubs, routes, buildCurveD } from './networkData';
 const GlobeMapImage = '/assets/images/globe-map.svg';
 
 export default function GlobalNetworkMap() {
+  const { t } = useLanguage();
   const [activeHubId, setActiveHubId] = useState(null);
 
   const handleMouseEnterHub = (hubId) => {

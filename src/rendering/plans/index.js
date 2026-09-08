@@ -170,7 +170,10 @@ export default function SubscriptionPlansView() {
             return;
         }
 
-        if (plan.price === 0 || plan.id === 'basic') {
+        const priceVal = Number(plan.price);
+        const isPlanFree = !isNaN(priceVal) ? priceVal === 0 : (String(plan.price || '').toLowerCase() === 'free');
+
+        if (isPlanFree) {
             toast.success(t('plans.freePlanActive', 'You already have full access to Starter AI!'));
             router.push('/dashboard');
             return;
@@ -313,7 +316,9 @@ export default function SubscriptionPlansView() {
 
                             const isFeatured = isBestValue || plan.id === 'standard';
                             const isPremium = plan.id === 'premium';
-                            const isBasic = plan.id === 'basic' || Number(plan.price) === 0 || (plan.name || '').toLowerCase().includes('free');
+                            const priceNum = Number(plan.price);
+                            const isFree = !isNaN(priceNum) ? priceNum === 0 : (String(plan.price || '').toLowerCase() === 'free');
+                            const isBasic = plan.id === 'basic' || (plan.name || '').toLowerCase().includes('basic') || (plan.name || '').toLowerCase().includes('starter');
                             const isSelected = selectedPlanId === plan.id;
 
                             const name = isFilipino
@@ -334,7 +339,7 @@ export default function SubscriptionPlansView() {
                                 ? (plan.validity_ar || defaultPlan.validity_ar || plan.validity)
                                 : (plan.validity || defaultPlan.validity);
 
-                            const ctaText = isBasic
+                            const ctaText = isFree
                                 ? t('plans.getStartedFree', 'Get Started Free')
                                 : t('plans.upgradePlan', isFilipino ? 'Mag-upgrade ng Plano' : isArabic ? 'ترقية الخطة' : 'Upgrade Plan');
 
@@ -366,7 +371,7 @@ export default function SubscriptionPlansView() {
                                             <div className={styles.tierCategoryGroup}>
                                                 <HexGiftBoxIcon />
                                                 <span className={styles.tierCategory}>
-                                                    {plan.tier_category || plan.category || plan.tier || (isBasic ? 'FREE TIER' : isFeatured ? 'QUANT TIER' : isPremium ? 'INSTITUTIONAL TIER' : `${(name || '').toUpperCase()} TIER`)}
+                                                    {plan.tier_category || plan.category || plan.tier || (isFree ? 'FREE TIER' : isFeatured ? 'QUANT TIER' : isPremium ? 'INSTITUTIONAL TIER' : isBasic ? 'STARTER TIER' : `${(name || '').toUpperCase()} TIER`)}
                                                 </span>
                                             </div>
                                             {(plan.credits || plan.credits_label) && (
@@ -387,7 +392,7 @@ export default function SubscriptionPlansView() {
                                                         {plan.currency || '$'}{plan.originalPrice}
                                                     </span>
                                                 ) : null}
-                                                {Number(plan.price) === 0 || plan.price === 0 || plan.price === '0' || String(plan.price).toLowerCase() === 'free' || isBasic ? (
+                                                {isFree ? (
                                                     <span className={styles.amount}>Free</span>
                                                 ) : (
                                                     <>
@@ -397,9 +402,9 @@ export default function SubscriptionPlansView() {
                                                 )}
                                                 <span className={styles.validityLabel}>/ {validity.replace(/^Free For /i, 'Valid ').replace(/^مجاناً لمدة /i, 'صالح لمدة ')}</span>
                                             </div>
-                                            {plan.originalPrice ? (
+                                            {plan.originalPrice && Number(plan.originalPrice) > Number(plan.price) ? (
                                                 <div className={styles.savingsBadge}>
-                                                    Save ${(plan.originalPrice - plan.price)} on this tier
+                                                    Save ${(Number(plan.originalPrice) - Number(plan.price))} on this tier
                                                 </div>
                                             ) : null}
                                         </div>
@@ -420,7 +425,7 @@ export default function SubscriptionPlansView() {
                                         </button>
 
                                         <p className={styles.subCtaNote}>
-                                            {plan.subCtaText || (isBasic ? 'No credit card required' : 'Instant activation • Cancel anytime')}
+                                            {plan.subCtaText || (isFree ? 'No credit card required' : 'Instant activation • Cancel anytime')}
                                         </p>
                                     </div>
 

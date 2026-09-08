@@ -1,10 +1,10 @@
 import AiStrategy from '@/rendering/aiStrategy';
 
 export const metadata = {
-    title: 'Live Market Analysis & Strategy Feeds | ChronosX',
+    title: 'Live Market Scanner | ChronosX',
     description: 'Real-time multi-indicator algorithmic analysis, live candlestick charts, pivot points, and technical conviction scores.',
 };
 
-export default function LiveAnalysisPage() {
+export default function LiveScannerPage() {
     return <AiStrategy initialTab="live" />;
 }

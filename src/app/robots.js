@@ -6,7 +6,7 @@ export default function robots() {
             {
                 userAgent: '*',
                 allow: ['/', '/privacy-policy', '/terms-and-conditions', '/risk-disclosure', '/plans', '/capabilities'],
-                disallow: ['/api/', '/dashboard', '/trade-snap', '/ai-assistant', '/ai-strategy', '/profile', '/credit-history'],
+                disallow: ['/api/', '/dashboard', '/chart-scanner', '/trade-audit', '/market-assistant', '/live-scanner', '/strategy-hub', '/profile', '/credit-history'],
             },
         ],
         sitemap: `${baseUrl}/sitemap.xml`,

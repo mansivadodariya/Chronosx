@@ -1,22 +1,65 @@
 @font-face {
     font-family: "Euclid-Bold";
-    src: url("/assets/font/Euclid\ Circular\ A\ Bold.ttf");
+    src: url("/assets/font/Euclid Circular A Bold.ttf") format("truetype");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
 }
 
+@font-face {
+    font-family: "Euclid Circular A";
+    src: url("/assets/font/Euclid Circular A Bold.ttf") format("truetype");
+    font-weight: 700 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Euclid Circular A";
+    src: url("/assets/font/Euclid Circular A SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Euclid Circular A";
+    src: url("/assets/font/Euclid Circular A Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Euclid Circular A";
+    src: url("/assets/font/Euclid Circular A Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
 
 @font-face {
     font-family: "Euclid-Medium";
-    src: url("/assets/font/Euclid\ Circular\ A\ Medium.ttf");
+    src: url("/assets/font/Euclid Circular A Medium.ttf") format("truetype");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
     font-family: "Euclid-Regular";
-    src: url("/assets/font/Euclid\ Circular\ A\ Regular.ttf");
+    src: url("/assets/font/Euclid Circular A Regular.ttf") format("truetype");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
     font-family: "Euclid-SemiBold";
-    src: url("/assets/font/Euclid\ Circular\ A\ SemiBold.ttf");
+    src: url("/assets/font/Euclid Circular A SemiBold.ttf") format("truetype");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
 }
 
 

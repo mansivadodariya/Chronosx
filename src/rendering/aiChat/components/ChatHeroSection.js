@@ -56,7 +56,7 @@ export default function ChatHeroSection({ scrollToDemo }) {
                     >
                         <button
                             type="button"
-                            onClick={() => authNavigate(router, '/ai-assistant')}
+                            onClick={() => authNavigate(router, '/market-assistant')}
                             className={styles.heroPrimaryBtn}
                         >
                             <span>LAUNCH AI CHAT NOW</span>

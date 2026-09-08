@@ -8,10 +8,9 @@
 export function isUserLoggedIn() {
     if (typeof window === 'undefined') return false;
     try {
+        const localToken = localStorage.getItem('access_token');
         const hasLocalToken = Boolean(
-            localStorage.getItem('access_token') ||
-            localStorage.getItem('user_id') ||
-            localStorage.getItem('user')
+            localToken && localToken.trim() && localToken !== 'undefined' && localToken !== 'null'
         );
 
         const hasCookieToken = Boolean(

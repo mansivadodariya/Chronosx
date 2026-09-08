@@ -113,8 +113,8 @@ export async function exportDashboardPdf({ name, stats }) {
         // Metrics Cards
         let y = 58;
         const items = [
-            { label: 'Chart Analysis Performed (TradeSnap)', value: String(stats?.total_analysis_history ?? 0), desc: 'Automated pattern recognition & OCR scans' },
-            { label: 'AI Chat Copilot Sessions', value: String(stats?.total_chat_history ?? 0), desc: '24/7 neural market & trade assistant' },
+            { label: 'AI Chart Scans Performed', value: String(stats?.total_analysis_history ?? 0), desc: 'Automated pattern recognition & OCR scans' },
+            { label: 'AI Market Assistant Sessions', value: String(stats?.total_chat_history ?? 0), desc: '24/7 neural market & trade assistant' },
             { label: 'Available AI Credits', value: String(stats?.available_credits ?? 0), desc: 'Ready for real-time AI strategy execution' },
             { label: 'Total Account Credits', value: String(stats?.total_credits ?? 100), desc: 'Total lifetime credits processed on platform' },
         ];

@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import { motion } from 'framer-motion';
 import styles from './testimonials.module.scss';
 import SectionHeader from '@/components/sectionHeader';
@@ -50,6 +51,7 @@ const testimonialsData = [
 ];
 
 export default function Testimonials() {
+  const { t } = useLanguage();
   // Triple array for perfectly seamless continuous scroll
   const marqueeItems = [...testimonialsData, ...testimonialsData, ...testimonialsData];
 

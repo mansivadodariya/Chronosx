@@ -83,8 +83,8 @@ export default function TradeSnapBanner() {
                                 </p>
                             </motion.div>
                             <motion.div className={styles.buttonAlignment} variants={itemVariants}>
-                                <Button text={t('tradeSnap.analyzeBtn', 'Upload Chart')} icon={UploadIcon} onClick={() => authNavigate(router, '/trade-snap')} />
-                                <Button outline text={t('common.learnMore', 'View Demo')} icon={PlayIcon} onClick={() => authNavigate(router, '/trade-snap')} />
+                                <Button text={t('tradeSnap.analyzeBtn', 'Upload Chart')} icon={UploadIcon} onClick={() => authNavigate(router, '/chart-scanner')} />
+                                <Button outline text={t('common.learnMore', 'View Demo')} icon={PlayIcon} onClick={() => authNavigate(router, '/chart-scanner')} />
                             </motion.div>
                             <motion.div className={styles.tagAlignment} variants={itemVariants}>
                                 <motion.button

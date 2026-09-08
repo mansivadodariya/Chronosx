@@ -26,11 +26,11 @@ export default function DashboardStatsCards({
             </div>
 
             <div className={styles.dailyStatsRows}>
-                {/* Box 1: Chart Analysis */}
-                <div className={styles.statPillRow} onClick={() => router.push('/trade-snap')}>
+                {/* Box 1: AI Chart Scanner */}
+                <div className={styles.statPillRow} onClick={() => router.push('/chart-scanner')}>
                     <div className={styles.rowTopHeader}>
                         <div className={styles.rowTitleWrap}>
-                            <span className={styles.rowTitle}>Chart Analysis</span>
+                            <span className={styles.rowTitle}>AI Chart Scanner</span>
                             <span className={styles.rowDesc}>Automated pattern recognition & OCR scans</span>
                         </div>
                         <div className={`${styles.rowIconWrap} ${styles.greenIcon}`}>
@@ -46,18 +46,18 @@ export default function DashboardStatsCards({
                     </div>
 
                     <div className={styles.rowCtaLink}>
-                        <span>Launch TradeSnap</span>
+                        <span>Launch Scanner</span>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
                     </div>
                 </div>
 
-                {/* Box 2: AI Chat Copilot */}
-                <div className={styles.statPillRow} onClick={() => router.push('/ai-assistant?tab=chat')}>
+                {/* Box 2: AI Market Assistant */}
+                <div className={styles.statPillRow} onClick={() => router.push('/market-assistant?tab=chat')}>
                     <div className={styles.rowTopHeader}>
                         <div className={styles.rowTitleWrap}>
-                            <span className={styles.rowTitle}>AI Chat Copilot</span>
+                            <span className={styles.rowTitle}>AI Market Assistant</span>
                             <span className={styles.rowDesc}>24/7 neural market & trade assistant</span>
                         </div>
                         <div className={`${styles.rowIconWrap} ${styles.greenIcon}`}>
@@ -76,7 +76,7 @@ export default function DashboardStatsCards({
                     </div>
 
                     <div className={styles.rowCtaLink}>
-                        <span>Open Copilot Chat</span>
+                        <span>Open Market Assistant</span>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
