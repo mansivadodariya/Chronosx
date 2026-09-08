@@ -33,6 +33,9 @@ const ContinueWithGoogle = ({ redirectTo = '/dashboard', onPendingPhone }) => {
         redirectRef.current = redirectTo;
     }, [redirectTo]);
 
+    // States for remembered Google/Chrome account
+    const [savedGoogleAccount, setSavedGoogleAccount] = useState(null);
+
     // States for phone number step (fallback if no onPendingPhone prop is passed)
     const [showPhoneModal, setShowPhoneModal] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -42,10 +45,71 @@ const ContinueWithGoogle = ({ redirectTo = '/dashboard', onPendingPhone }) => {
 
     const callbackRef = useRef(null);
 
+    // Check localStorage for previously remembered Google user
+    useEffect(() => {
+        try {
+            if (typeof window !== 'undefined') {
+                const saved = localStorage.getItem('last_google_user');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed?.name) {
+                        setSavedGoogleAccount(parsed);
+                        return;
+                    }
+                }
+                const storedUser = localStorage.getItem('user');
+                if (storedUser) {
+                    const parsed = JSON.parse(storedUser);
+                    const name = parsed.first_name || (parsed.name ? parsed.name.split(' ')[0] : '');
+                    if (name) {
+                        setSavedGoogleAccount({
+                            name,
+                            fullName: parsed.name || name,
+                            email: parsed.email || '',
+                            picture: parsed.profile_picture || parsed.picture || ''
+                        });
+                    }
+                }
+            }
+        } catch (e) {
+            console.warn('Error reading saved Google account:', e);
+        }
+    }, []);
+
     callbackRef.current = async (response) => {
         if (!response?.credential) {
             setError('Google sign-in was cancelled or failed.');
             return;
+        }
+
+        // Extract Google user name and avatar from JWT ID token payload
+        try {
+            const tokenParts = response.credential.split('.');
+            if (tokenParts.length > 1) {
+                const base64Url = tokenParts[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(
+                    atob(base64)
+                        .split('')
+                        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                        .join('')
+                );
+                const googlePayload = JSON.parse(jsonPayload);
+                const displayName = googlePayload.given_name || (googlePayload.name ? googlePayload.name.split(' ')[0] : 'User');
+                const accountData = {
+                    name: displayName,
+                    fullName: googlePayload.name || displayName,
+                    email: googlePayload.email || '',
+                    picture: googlePayload.picture || ''
+                };
+                setSavedGoogleAccount(accountData);
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem('last_google_user', JSON.stringify(accountData));
+                    localStorage.setItem('last_user_name', displayName);
+                }
+            }
+        } catch (jwtErr) {
+            console.warn('Google JWT parse notice:', jwtErr);
         }
 
         setError('');
@@ -211,6 +275,8 @@ const ContinueWithGoogle = ({ redirectTo = '/dashboard', onPendingPhone }) => {
                 callback: (response) => callbackRef.current(response),
                 auto_select: false,
                 context: 'signin',
+                itp_support: true,
+                use_fedcm_for_prompt: true,
             });
 
             container.innerHTML = '';
@@ -220,11 +286,22 @@ const ContinueWithGoogle = ({ redirectTo = '/dashboard', onPendingPhone }) => {
                 type: 'standard',
                 theme: 'outline',
                 size: 'large',
-                text: 'signin_with',
+                text: 'continue_with',
                 shape: 'rectangular',
                 logo_alignment: 'left',
                 width,
             });
+
+            // Prompt Chrome Google One Tap for instant direct login if supported
+            try {
+                window.google.accounts.id.prompt((notification) => {
+                    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                        // Optional fallback logging
+                    }
+                });
+            } catch (promptErr) {
+                console.warn('Google One Tap prompt notice:', promptErr);
+            }
         };
 
         if (window.google?.accounts?.id) {
@@ -250,6 +327,12 @@ const ContinueWithGoogle = ({ redirectTo = '/dashboard', onPendingPhone }) => {
         }
     }, []);
 
+    const buttonLabel = loading
+        ? 'Signing in...'
+        : savedGoogleAccount?.name
+        ? `Continue as ${savedGoogleAccount.name}`
+        : 'Continue with Google';
+
     return (
         <div className={styles.continueWithGoogle}>
             {error && <p className={styles.error} role="alert">{error}</p>}
@@ -266,14 +349,26 @@ const ContinueWithGoogle = ({ redirectTo = '/dashboard', onPendingPhone }) => {
             )}
             <div className={styles.googleBtnWrapper}>
                 <div className={styles.customGoogleBtn} aria-hidden="true">
-                    <img src={GoogleIcon} alt="" />
-                    <span>{loading ? 'Signing in...' : 'Sign in with Google'}</span>
+                    {savedGoogleAccount?.picture ? (
+                        <img
+                            src={savedGoogleAccount.picture}
+                            alt=""
+                            className={styles.userAvatar}
+                            onError={(e) => {
+                                e.currentTarget.onerror = null;
+                                e.currentTarget.src = GoogleIcon;
+                            }}
+                        />
+                    ) : (
+                        <img src={GoogleIcon} alt="" />
+                    )}
+                    <span className={styles.btnLabelText}>{buttonLabel}</span>
                 </div>
                 <div
                     ref={btnContainerRef}
                     id="google-signin-btn"
                     className={styles.googleNativeBtn}
-                    aria-label="Sign in with Google"
+                    aria-label={buttonLabel}
                     aria-busy={loading}
                 />
             </div>

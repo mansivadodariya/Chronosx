@@ -15,7 +15,7 @@ export default function DashboardToolsGrid() {
             </div>
 
             <div className={styles.toolsGrid3x2}>
-                {/* Tool 1: TradeSnap Vision */}
+                {/* Tool 1: Market Snapshot & Scanner */}
                 <Link href="/trade-snap" className={styles.hubFeatureCard}>
                     <div className={styles.hubIconCircleGold}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2B1A05" strokeWidth="2.2">
@@ -23,7 +23,7 @@ export default function DashboardToolsGrid() {
                             <circle cx="12" cy="13" r="4" />
                         </svg>
                     </div>
-                    <h4>TradeSnap Vision</h4>
+                    <h4>Market Snapshot & Scanner</h4>
                     <div className={styles.hubCta}>
                         <span>Launch Scanner</span>
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -32,7 +32,7 @@ export default function DashboardToolsGrid() {
                     </div>
                 </Link>
 
-                {/* Tool 2: AI Copilot Chat */}
+                {/* Tool 2: AI Trading Advisor */}
                 <Link href="/ai-assistant" className={styles.hubFeatureCard}>
                     <div className={styles.hubIconCircleGold}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2B1A05" strokeWidth="2.2">
@@ -43,7 +43,7 @@ export default function DashboardToolsGrid() {
                             <path d="M9 17h6" />
                         </svg>
                     </div>
-                    <h4>AI Copilot Chat</h4>
+                    <h4>AI Trading Advisor</h4>
                     <div className={styles.hubCta}>
                         <span>Start Chatting</span>
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -52,7 +52,7 @@ export default function DashboardToolsGrid() {
                     </div>
                 </Link>
 
-                {/* Tool 3: Live Strategy Terminal */}
+                {/* Tool 3: Live Market Analysis */}
                 <Link href="/ai-strategy/live" className={styles.hubFeatureCard}>
                     <div className={styles.hubIconCircleGold}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2B1A05" strokeWidth="2.2">
@@ -60,7 +60,7 @@ export default function DashboardToolsGrid() {
                             <polyline points="16 7 22 7 22 13" />
                         </svg>
                     </div>
-                    <h4>Live Strategy Desk</h4>
+                    <h4>Live Market Analysis</h4>
                     <div className={styles.hubCta}>
                         <span>Open Terminal</span>
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">

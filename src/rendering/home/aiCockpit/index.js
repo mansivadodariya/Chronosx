@@ -276,7 +276,11 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
 
                   {/* Fixed XAU/USD Gold Pill */}
                   <div className={styles.goldAssetPill}>
-                    <span className={styles.goldIconLetter}>G</span>
+                    <span className={styles.goldIconLetter}>
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 3h12l4 6-10 12L2 9l4-6z" />
+                      </svg>
+                    </span>
                     <span className={styles.dropdownSymbol}>XAU/USD</span>
                   </div>
 
@@ -438,7 +442,9 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
                 </div>
 
                 <div className={styles.watchlistTag}>
-                  <span className={styles.starIcon}>★</span>
+                  <svg className={styles.starSvg} width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
                   <span>IN WATCHLIST</span>
                 </div>
               </div>
@@ -447,8 +453,11 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
               <div className={styles.assetHeaderRow}>
                 <div className={styles.identityLeft}>
                   <div className={styles.logoGold}>
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="#A7F3D0">
-                      <path d="M12 2L3 8l9 6 9-6-9-6zm0 8.3L6.1 6.5 12 2.6l5.9 3.9L12 10.3zm0 3.7l-9-6v3.2l9 6 9-6v-3.2l-9 6zm0 5l-9-6v3.2l9 6 9-6v-3.2l-9 6z"/>
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="6 3 18 3 22 9 12 21 2 9 6 3" fill="currentColor" fillOpacity="0.15" />
+                      <line x1="2" y1="9" x2="22" y2="9" />
+                      <line x1="12" y1="21" x2="8" y2="9" />
+                      <line x1="12" y1="21" x2="16" y2="9" />
                     </svg>
                   </div>
                   
@@ -534,8 +543,12 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
                   <div className={styles.cardTopMeta}>
                     <div className={styles.cardHeaderWithIcon}>
                       <div className={styles.radarIconBox}>
-                        <span className={styles.radarDot} />
-                        <span className={styles.radarRing} />
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="9" opacity="0.35" />
+                          <path d="M12 3a9 9 0 0 1 9 9" />
+                          <circle cx="12" cy="12" r="3" fill="currentColor" />
+                          <path d="M12 12l5 -5" />
+                        </svg>
                       </div>
                       <div>
                         <h4 className={styles.cardTitle}>AI Score</h4>
@@ -598,7 +611,13 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
                   <div className={styles.cardTopMeta}>
                     <div className={styles.cardHeaderWithIcon}>
                       <div className={styles.trophyIconBox}>
-                        🏆
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                          <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                          <path d="M4 22h16" />
+                          <path d="M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1h8c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34" />
+                          <path d="M6 4h12a1 1 0 0 1 1 1v4a7 7 0 0 1-14 0V5a1 1 0 0 1 1-1Z" fill="currentColor" fillOpacity="0.2" />
+                        </svg>
                       </div>
                       <div>
                         <h4 className={styles.cardTitle}>Universe Rank</h4>
@@ -613,7 +632,12 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
                       <span className={`${styles.rankGoldDigit} ${hoveredIntelCard === 'rank' ? styles.rankActiveText : ''}`}>#1</span>
                       <span className={styles.rankOutOf}>/ 1,000</span>
                     </div>
-                    <span className={styles.topPerformerBadge}>★ TOP 0.1% PERFORMER</span>
+                    <span className={styles.topPerformerBadge}>
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                      </svg>
+                      TOP 0.1% PERFORMER
+                    </span>
                   </div>
 
                   <div className={styles.sparklineContainer}>

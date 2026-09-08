@@ -19,24 +19,24 @@ export default function Capabilities() {
           align="split"
           badge="PLATFORM CAPABILITIES"
           title1="Four Tools."
-          title2="One Cockpit."
-          description="Four powerful tools. One connected trading workflow. The Heat List finds where the action is. Indicators help you time the setup. Breakout alerts keep you ready when key levels give way."
+          title2="One Intelligent Cockpit."
+          description="Four integrated AI modules. One unified workflow. Scan high-conviction setups, consult your real-time AI advisor, deploy verified strategies, and simulate performance before putting capital at risk."
         />
 
         {/* Connected Cockpit Grid Container */}
         <div className={styles.cockpitContainer}>
 
-          {/* Card 1: Heat List Algorithm (AI Trade) */}
+          {/* Card 1: Heat List Algorithm (Trade Snap) */}
           <div
             className={`${styles.cockpitCard} ${hoveredIndex === 0 ? styles.cardActive : ''} ${hoveredIndex !== null && hoveredIndex !== 0 ? styles.cardDimmed : ''}`}
             onMouseEnter={() => setHoveredIndex(0)}
             onMouseLeave={() => setHoveredIndex(null)}
-            onClick={() => router.push('/ai-trade')}
+            onClick={() => router.push('/trade-snap')}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                router.push('/ai-trade');
+                router.push('/trade-snap');
               }
             }}
           >
@@ -49,98 +49,20 @@ export default function Capabilities() {
                       <span className={styles.watermarkNum}>01</span>
                     </div>
                   </div>
-                  <h3>AI TRADE</h3>
+                  <h3>TRADE SNAP</h3>
                 </div>
 
                 <div className={styles.cardFooter}>
                   <p className={styles.cardDesc}>
-                    AI-powered market analysis and trading signals.
+                    Instant market screening, volume heatmaps, and high-conviction multi-asset signals.
                   </p>
                 </div>
 
               </div>
 
-              {/* Right Side: Interactive Animation Box */}
+              {/* Right Side: Interactive Animation Box (Candlestick / Signal Box) */}
               <div className={styles.cardRightAnim}>
                 <div className={`${styles.widgetBox} ${hoveredIndex === 0 ? styles.widgetActive : ''}`}>
-                  <div className={styles.widgetTopRow}>
-                    <div className={styles.liveTag}>
-                      <span className={styles.goldBeacon}></span>
-                      LIVE CONVICTION
-                    </div>
-                    <span className={styles.subMeta}>1,080 FOREX PAIRS</span>
-                  </div>
-
-                  <div className={styles.convictionList}>
-                    {[
-                      { rank: '01', sym: 'XAU/USD', score: 96, width: '96%' },
-                      { rank: '02', sym: 'EUR/USD', score: 89, width: '89%' },
-                      { rank: '03', sym: 'GBP/USD', score: 78, width: '78%' },
-                      { rank: '04', sym: 'USD/JPY', score: 64, width: '64%' }
-                    ].map((item, i) => (
-                      <div key={i} className={styles.convRow}>
-                        <span className={styles.rankNum}>{item.rank}</span>
-                        <span className={styles.symText}>{item.sym}</span>
-                        <div className={styles.trackBar}>
-                          <motion.div
-                            className={styles.fillBar}
-                            animate={{
-                              width: hoveredIndex === 0 ? item.width : `${parseInt(item.width) - 10}%`,
-                              background: hoveredIndex === 0
-                                ? 'linear-gradient(90deg, #18c98b 0%, #6EE7B7 100%)'
-                                : 'rgba(255, 255, 255, 0.18)',
-                              boxShadow: hoveredIndex === 0 ? '0 0 14px rgba(24, 201, 139, 0.7)' : 'none'
-                            }}
-                            transition={{ duration: 0.45, ease: "easeOut" }}
-                          />
-                        </div>
-                        <span className={`${styles.scoreText} ${hoveredIndex === 0 ? styles.scoreActive : ''}`}>
-                          {item.score}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 2: TradingView Indicators (AI Chat) */}
-          <div
-            className={`${styles.cockpitCard} ${hoveredIndex === 1 ? styles.cardActive : ''} ${hoveredIndex !== null && hoveredIndex !== 1 ? styles.cardDimmed : ''}`}
-            onMouseEnter={() => setHoveredIndex(1)}
-            onMouseLeave={() => setHoveredIndex(null)}
-            onClick={() => router.push('/ai-chat')}
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                router.push('/ai-chat');
-              }
-            }}
-          >
-            <div className={styles.cardTwoPartSplit}>
-              {/* Left Side: Metadata & Description */}
-              <div className={styles.cardLeftData}>
-                <div className={styles.cardHeaderMeta}>
-                  <div className={styles.topRowHeader}>
-                    <div className={styles.capLabelRow}>
-                      <span className={styles.watermarkNum}>02</span>
-                    </div>
-                  </div>
-                  <h3>AI CHAT</h3>
-                </div>
-
-                <div className={styles.cardFooter}>
-                  <p className={styles.cardDesc}>
-                    Ask AI about markets, strategies, signals, and trading decisions.
-                  </p>
-                </div>
-              </div>
-
-              {/* Right Side: Interactive Animation Box */}
-              <div className={styles.cardRightAnim}>
-                <div className={`${styles.widgetBox} ${hoveredIndex === 1 ? styles.widgetActive : ''}`}>
                   <div className={styles.widgetTopRow}>
                     <span className={styles.tickerText}>XAU/USD · 1H</span>
                     <span className={styles.proTag}>BUY/SELL · PRO</span>
@@ -148,13 +70,13 @@ export default function Capabilities() {
 
                   <div className={styles.candlestickArea}>
                     {/* Floating BUY Badge */}
-                    <div className={`${styles.buyBadge} ${hoveredIndex === 1 ? styles.buyBadgeActive : ''}`}>
+                    <div className={`${styles.buyBadge} ${hoveredIndex === 0 ? styles.buyBadgeActive : ''}`}>
                       BUY · 0.94
                       <span className={styles.beaconDot}></span>
                     </div>
 
                     <svg viewBox="0 0 240 135" className={styles.candleSvg}>
-                      {hoveredIndex === 1 ? (
+                      {hoveredIndex === 0 ? (
                         <g>
                           <motion.path
                             d="M 28 104 Q 90 84 152 50 T 208 24"
@@ -290,17 +212,95 @@ export default function Capabilities() {
             </div>
           </div>
 
-          {/* Card 3: AI STRATEGY (AI Strategy) */}
+          {/* Card 2: Heat List Algorithm (AI Trading Advisor) */}
           <div
-            className={`${styles.cockpitCard} ${hoveredIndex === 2 ? styles.cardActive : ''} ${hoveredIndex !== null && hoveredIndex !== 2 ? styles.cardDimmed : ''}`}
-            onMouseEnter={() => setHoveredIndex(2)}
+            className={`${styles.cockpitCard} ${hoveredIndex === 1 ? styles.cardActive : ''} ${hoveredIndex !== null && hoveredIndex !== 1 ? styles.cardDimmed : ''}`}
+            onMouseEnter={() => setHoveredIndex(1)}
             onMouseLeave={() => setHoveredIndex(null)}
-            onClick={() => router.push('/strategy')}
+            onClick={() => router.push('/ai-assistant')}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                router.push('/strategy');
+                router.push('/ai-assistant');
+              }
+            }}
+          >
+            <div className={styles.cardTwoPartSplit}>
+              {/* Left Side: Metadata & Description */}
+              <div className={styles.cardLeftData}>
+                <div className={styles.cardHeaderMeta}>
+                  <div className={styles.topRowHeader}>
+                    <div className={styles.capLabelRow}>
+                      <span className={styles.watermarkNum}>02</span>
+                    </div>
+                  </div>
+                  <h3>AI TRADING ADVISOR</h3>
+                </div>
+
+                <div className={styles.cardFooter}>
+                  <p className={styles.cardDesc}>
+                    Ask questions, validate trade setups, and receive real-time institutional market insights.
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Side: Interactive Animation Box (Live Conviction Heat List) */}
+              <div className={styles.cardRightAnim}>
+                <div className={`${styles.widgetBox} ${hoveredIndex === 1 ? styles.widgetActive : ''}`}>
+                  <div className={styles.widgetTopRow}>
+                    <div className={styles.liveTag}>
+                      <span className={styles.goldBeacon}></span>
+                      LIVE CONVICTION
+                    </div>
+                    <span className={styles.subMeta}>1,000+ PAIRS SCANNED</span>
+                  </div>
+
+                  <div className={styles.convictionList}>
+                    {[
+                      { rank: '01', sym: 'XAU/USD', score: 96, width: '96%' },
+                      { rank: '02', sym: 'EUR/USD', score: 89, width: '89%' },
+                      { rank: '03', sym: 'GBP/USD', score: 78, width: '78%' },
+                      { rank: '04', sym: 'USD/JPY', score: 64, width: '64%' }
+                    ].map((item, i) => (
+                      <div key={i} className={styles.convRow}>
+                        <span className={styles.rankNum}>{item.rank}</span>
+                        <span className={styles.symText}>{item.sym}</span>
+                        <div className={styles.trackBar}>
+                          <motion.div
+                            className={styles.fillBar}
+                            animate={{
+                              width: hoveredIndex === 1 ? item.width : `${parseInt(item.width) - 10}%`,
+                              background: hoveredIndex === 1
+                                ? 'linear-gradient(90deg, #18c98b 0%, #6EE7B7 100%)'
+                                : 'rgba(255, 255, 255, 0.18)',
+                              boxShadow: hoveredIndex === 1 ? '0 0 14px rgba(24, 201, 139, 0.7)' : 'none'
+                            }}
+                            transition={{ duration: 0.45, ease: "easeOut" }}
+                          />
+                        </div>
+                        <span className={`${styles.scoreText} ${hoveredIndex === 1 ? styles.scoreActive : ''}`}>
+                          {item.score}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 3: AI STRATEGY HUB (AI Strategy Hub) */}
+          <div
+            className={`${styles.cockpitCard} ${hoveredIndex === 2 ? styles.cardActive : ''} ${hoveredIndex !== null && hoveredIndex !== 2 ? styles.cardDimmed : ''}`}
+            onMouseEnter={() => setHoveredIndex(2)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            onClick={() => router.push('/ai-strategy')}
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                router.push('/ai-strategy');
               }
             }}
           >
@@ -313,12 +313,12 @@ export default function Capabilities() {
                       <span className={styles.watermarkNum}>03</span>
                     </div>
                   </div>
-                  <h3>AI STRATEGY</h3>
+                  <h3>AI STRATEGY HUB</h3>
                 </div>
 
                 <div className={styles.cardFooter}>
                   <p className={styles.cardDesc}>
-                    Build and analyze smarter trading strategies with AI.
+                    Execute live market intelligence and automate proven strategy playbooks.
                   </p>
                 </div>
               </div>
@@ -430,7 +430,7 @@ export default function Capabilities() {
             </div>
           </div>
 
-          {/* Card 4: AI TRADE ANALYSIS (Economic Calendar) */}
+          {/* Card 4: AI TRADE ANALYSIS (AI Past Trade Analyzer) */}
           <div
             className={`${styles.cockpitCard} ${hoveredIndex === 3 ? styles.cardActive : ''} ${hoveredIndex !== null && hoveredIndex !== 3 ? styles.cardDimmed : ''}`}
             onMouseEnter={() => setHoveredIndex(3)}
@@ -451,7 +451,6 @@ export default function Capabilities() {
                   <div className={styles.topRowHeader}>
                     <div className={styles.capLabelRow}>
                       <span className={styles.watermarkNum}>04</span>
-                      <span className={styles.comingBadge}>COMING SOON</span>
                     </div>
                   </div>
                   <h3>AI TRADE ANALYSIS</h3>
@@ -459,7 +458,7 @@ export default function Capabilities() {
 
                 <div className={styles.cardFooter}>
                   <p className={styles.cardDesc}>
-                    Win rate, drawdown, equity curve — before risking capital.
+                    Audit win rates, profit factor, and max drawdown curves before putting capital at risk.
                   </p>
                 </div>
               </div>

@@ -13,8 +13,16 @@ import VisionAnalysisAccordions from './VisionAnalysisAccordions';
 import { WarningIcon, ChatIcon, AnalyticsIcon, DownloadIcon } from '@/icons/visionIcons';
 import styles from '../aiAssistant.module.scss';
 
+const ANALYZING_ASSISTANT_PHRASES = [
+    'Analyzing market structure & price action...',
+    'Evaluating technical indicators & key levels...',
+    'Scanning liquidity pools & order imbalances...',
+    'Synthesizing multi-timeframe trade outlook...',
+];
+
 export default function ChatMessageList({
     chatMessages,
+    isLoadingChat,
     pendingRequest,
     selectedPair,
     chatEndRef,
@@ -26,13 +34,28 @@ export default function ChatMessageList({
     handleDownloadFullReport,
     handleOptionClick
 }) {
+    const [phraseIndex, setPhraseIndex] = React.useState(0);
+
+    React.useEffect(() => {
+        if (!pendingRequest) {
+            setPhraseIndex(0);
+            return;
+        }
+
+        const interval = setInterval(() => {
+            setPhraseIndex((prev) => (prev + 1) % ANALYZING_ASSISTANT_PHRASES.length);
+        }, 1600);
+
+        return () => clearInterval(interval);
+    }, [pendingRequest]);
+
     return (
         <div 
             className={styles.chatBody}
             data-lenis-prevent="true"
             onWheel={(e) => e.stopPropagation()}
         >
-            {chatMessages.length === 0 ? (
+            {chatMessages.length === 0 && !isLoadingChat ? (
                 <WelcomeActionView
                     t={t}
                     handleDeepAnalysisClick={handleDeepAnalysisClick}
@@ -138,6 +161,7 @@ export default function ChatMessageList({
                                                                 content={contentText || msg.content}
                                                                 visualData={msg.visualData}
                                                                 defaultSymbol={msg.detected_pair || selectedPair}
+                                                                isStreaming={Boolean(msg.isNewlyGenerated)}
                                                             />
                                                         </div>
                                                     )}
@@ -155,6 +179,8 @@ export default function ChatMessageList({
                                                             content={msg.fullReport}
                                                             visualData={msg.visualData}
                                                             defaultSymbol={msg.detected_pair || selectedPair}
+                                                            isStreaming={Boolean(msg.isNewlyGenerated)}
+                                                            onComplete={() => { msg.isNewlyGenerated = false; }}
                                                         />
 
                                                         {/* DOWNLOAD REPORT BUTTON */}
@@ -175,6 +201,8 @@ export default function ChatMessageList({
                                                     content={contentText || msg.content}
                                                     visualData={msg.visualData}
                                                     defaultSymbol={msg.detected_pair || selectedPair}
+                                                    isStreaming={Boolean(msg.isNewlyGenerated)}
+                                                    onComplete={() => { msg.isNewlyGenerated = false; }}
                                                 />
                                             )}
 
@@ -200,13 +228,31 @@ export default function ChatMessageList({
                     );
                 })
             )}
-            {pendingRequest && (
+            {/* When loading historical chat session: ONLY show clean loader dots */}
+            {isLoadingChat && (
                 <div className={styles.messageRow}>
                     <div className={styles.assistantMessage}>
                         <div className={styles.loadingDots}>
                             <span></span>
                             <span></span>
                             <span></span>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {/* When live generating new analysis: show loader dots with contextual status text */}
+            {pendingRequest && (
+                <div className={styles.messageRow}>
+                    <div className={styles.assistantMessage}>
+                        <div className={styles.analyzingStateWrapper}>
+                            <div className={styles.loadingDots}>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <span className={styles.analyzingStatusText}>
+                                {ANALYZING_ASSISTANT_PHRASES[phraseIndex]}
+                            </span>
                         </div>
                     </div>
                 </div>

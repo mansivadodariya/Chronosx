@@ -1,15 +1,10 @@
 'use client';
 
 import CommonSectionHeader from '@/components/CommonSectionHeader';
-import React, { useState, useRef, useMemo, useEffect } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import styles from './tradeAnalysis.module.scss';
-import { toast } from '@/components/toast';
-import { analyzeTradesReport, analyzeIndividualTrade, validateStatementFiles } from '@/lib/tradeAnalyzeApi';
 import TraderScorecard from './TraderScorecard';
-
 import {
     HistoryIcon,
     formatCurrency
@@ -23,18 +18,32 @@ import SidebarStatsColumn from './components/SidebarStatsColumn';
 import AnalysisHistoryModal from './components/AnalysisHistoryModal';
 import TradeAuditModal from './components/TradeAuditModal';
 import AnalysisLoadingOverlay from './components/AnalysisLoadingOverlay';
+import { useTradeAnalysisStore } from '@/context/toolState';
 
 export default function TradeAnalysis() {
     const fileInputRef = useRef(null);
-    const [files, setFiles] = useState([]);
-    const [isDragging, setIsDragging] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [analysisData, setAnalysisData] = useState(null);
-    const [activeTab, setActiveTab] = useState('scorecard'); // 'scorecard' | 'overview' | 'ledger' | 'report' | 'entry'
-    const [showHistoryModal, setShowHistoryModal] = useState(false);
-    const [analyzingTradeId, setAnalyzingTradeId] = useState(null);
-    const [singleTradeModalData, setSingleTradeModalData] = useState(null);
-    const [singleTradeActiveTab, setSingleTradeActiveTab] = useState('summary'); // 'summary' | 'deepdive'
+    const {
+        files,
+        isDragging,
+        setIsDragging,
+        loading,
+        analysisData,
+        activeTab,
+        setActiveTab,
+        showHistoryModal,
+        setShowHistoryModal,
+        analyzingTradeId,
+        singleTradeModalData,
+        setSingleTradeModalData,
+        singleTradeActiveTab,
+        setSingleTradeActiveTab,
+        searchQuery,
+        filterSide,
+        setFilterSide,
+        handleFilesSelected,
+        handleAnalyzeIndividualTrade,
+        resetAnalysis
+    } = useTradeAnalysisStore();
 
     // Coordinate modal scroll with Lenis and document body
     useEffect(() => {
@@ -53,11 +62,7 @@ export default function TradeAnalysis() {
         }
     }, [singleTradeModalData, showHistoryModal]);
 
-    // Filter states for ledger
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filterSide, setFilterSide] = useState('ALL');
-
-    // Drag and drop
+    // Drag and drop handlers
     const handleDragOver = (e) => {
         e.preventDefault();
         setIsDragging(true);
@@ -72,81 +77,6 @@ export default function TradeAnalysis() {
         setIsDragging(false);
         if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
             handleFilesSelected(e.dataTransfer.files);
-        }
-    };
-
-    const handleFilesSelected = (selectedList) => {
-        const fileArr = Array.from(selectedList);
-        const validation = validateStatementFiles(fileArr);
-        if (!validation.valid) {
-            toast.error(validation.error);
-            return;
-        }
-        setFiles(fileArr);
-        toast.success(`Selected ${fileArr.length} statement file(s). Starting AI analysis...`);
-        runAnalysis(fileArr);
-    };
-
-
-    const runAnalysis = async (filesToAnalyze = files) => {
-        if (!filesToAnalyze || filesToAnalyze.length === 0) {
-            toast.error('Please select at least one trading statement file.');
-            return;
-        }
-
-        setLoading(true);
-        try {
-            const result = await analyzeTradesReport(filesToAnalyze);
-            setAnalysisData(result);
-            toast.success(result.message || 'Statement analysis complete!');
-        } catch (err) {
-            console.error('Analysis error:', err);
-            toast.error(err.message || 'Analysis failed. Please check your statement format.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // Handler for analyzing an individual trade via /api/v1/trade-analyze/trade/{trade_id}/analyze
-    // Handler for analyzing an individual trade via /api/v1/trade-analyze/trade/{trade_id}/analyze
-    const handleAnalyzeIndividualTrade = async (trade, index = 0) => {
-        const tradeId = trade.id || trade.trade_id || trade.ticket || trade.ticket_id || `trade_${index + 1}`;
-        setAnalyzingTradeId(tradeId);
-
-        try {
-            const response = await analyzeIndividualTrade(tradeId);
-            setSingleTradeModalData({
-                trade,
-                result: response,
-            });
-            toast.success(`Trade #${tradeId.length > 12 ? tradeId.slice(0, 8) + '...' : tradeId} analyzed successfully!`);
-        } catch (err) {
-            console.warn('API individual analyze error, displaying dynamic trade evaluation:', err);
-            // Fully dynamic trade data from normalized trade object in API response
-            const tradeScore = trade.trade_score ? (trade.trade_score <= 10 ? trade.trade_score * 10 : trade.trade_score) : (Number(trade.pnl) >= 0 ? 80 : 45);
-            const wellDoneList = Array.isArray(trade.what_you_did_well) && trade.what_you_did_well.length > 0 
-                ? trade.what_you_did_well 
-                : [`Executed trade with positive directional edge (${formatCurrency(trade.pnl)}).`];
-            const improvementList = Array.isArray(trade.areas_for_improvement) && trade.areas_for_improvement.length > 0 
-                ? trade.areas_for_improvement 
-                : (Number(trade.pnl) < 0 ? ['Maintain disciplined risk-to-reward and stop loss rules.'] : []);
-
-            setSingleTradeModalData({
-                trade,
-                result: {
-                    success: true,
-                    message: err.message,
-                    trade_id: tradeId,
-                    score: tradeScore,
-                    quality: trade.outcome || (Number(trade.pnl) >= 0 ? 'WIN' : 'LOSS'),
-                    assessment: `Trade on ${trade.symbol} (${trade.side}) was executed with ${trade.quantity ?? '0.1'} lots at entry ${trade.entry_price || '—'} and exit ${trade.exit_price || '—'}. Net PnL: ${formatCurrency(trade.pnl)}. Market Context: ${trade.market_context || 'Technical Market Structure'}. Macro Sentiment: ${trade.macro_sentiment || 'Neutral Session Momentum'}.`,
-                    mistakes: improvementList,
-                    recommendations: wellDoneList
-                }
-            });
-            toast.info(`Trade AI audit report ready.`);
-        } finally {
-            setAnalyzingTradeId(null);
         }
     };
 
@@ -370,8 +300,6 @@ export default function TradeAnalysis() {
         };
     }, [analysisData?.scorecard, summary?.scorecard, profitFactor, winRateVal, largestLoss, losingCount, entryAnalysis, avgWinningTrade, avgLosingTrade, avgProfitPerTrade, netProfitVal, totalTradesCount, payoffRatio, actualLosingTrades.length]);
 
-    const platformDisplayName = brokerMeta.platform || brokerMeta.broker_name || 'MEX Atlantic';
-
     return (
         <div className={styles.container}>
             {/* 1. TOP PAGE HEADER WITH HISTORY BUTTON */}
@@ -452,7 +380,7 @@ export default function TradeAnalysis() {
                                     fileDetails={fileDetails}
                                     totalTradesCount={totalTradesCount}
                                     onViewTrades={() => setActiveTab('ledger')}
-                                    onReupload={() => { setAnalysisData(null); setFiles([]); }}
+                                    onReupload={resetAnalysis}
                                 />
                             </motion.div>
 
@@ -508,7 +436,7 @@ export default function TradeAnalysis() {
                                             scorecardData={scorecardData}
                                             fileName={fileDetails.name}
                                             totalTrades={totalTradesCount}
-                                            onDeleteStatement={() => { setAnalysisData(null); setFiles([]); }}
+                                            onDeleteStatement={resetAnalysis}
                                         />
                                     )}
 

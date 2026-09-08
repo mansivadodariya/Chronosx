@@ -2,243 +2,223 @@
 @use '../../../scss/breakpoints/breakpoints.scss' as *;
 @use '../../../scss/font/font.scss' as *;
 
-/* Main Content Grid */
-.mainGrid {
+.stepContainer {
     width: 100%;
-    display: grid;
-    grid-template-columns: 1.25fr 1fr;
-    gap: 48px;
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0 20px;
+}
+
+.headerSection {
+    text-align: center;
+    max-width: 680px;
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
 
-    @include respond-to('lg') {
-        gap: 36px;
+    @include respond-to('md') {
+        margin-bottom: 24px;
     }
 
-    @include respond-to('md') {
-        grid-template-columns: 1fr;
-        gap: 32px;
+    .tagBadge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 10px;
+        border-radius: 4px;
+        background: rgba(24, 201, 139, 0.08);
+        border: 1px solid rgba(24, 201, 139, 0.25);
+        color: #18C98B;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+
+        .tagDot {
+            width: 6px;
+            height: 6px;
+            border-radius: 2px;
+            background: #18C98B;
+            box-shadow: 0 0 6px #18C98B;
+        }
+    }
+
+    .mainTitle {
+        font-size: 34px;
+        font-weight: 700;
+        color: #FFFFFF;
+        line-height: 1.15;
+        margin: 0 0 10px 0;
+        font-family: "Euclid-Bold", sans-serif;
+        letter-spacing: -0.5px;
+
+        @include respond-to('lg') {
+            font-size: 30px;
+        }
+
+        @include respond-to('sm') {
+            font-size: 24px;
+        }
+
+        .accentText {
+            background: linear-gradient(135deg, #18C98B 0%, #6EE7B7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    }
+
+    .subtitle {
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 14.5px;
+        line-height: 1.5;
+        margin: 0;
+        font-family: "Euclid-Regular", sans-serif;
+
+        @include respond-to('sm') {
+            font-size: 13px;
+        }
     }
 }
 
-/* Left Column */
-.leftColumn {
-    display: flex;
-    flex-direction: column;
+.optionsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
     width: 100%;
 
-    .titleBlock {
-        margin-bottom: 24px;
-
-        .mainTitle {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.15;
-            margin: 0 0 12px 0;
-            font-family: "Euclid-Bold", sans-serif;
-
-            .whiteTitle {
-                color: #FFFFFF;
-                font-size: 38px;
-                font-weight: 700;
-                letter-spacing: 0.6px;
-
-                @include respond-to('lg') {
-                    font-size: 32px;
-                }
-
-                @include respond-to('sm') {
-                    font-size: 26px;
-                }
-            }
-
-            .goldTitle {
-                @include heading-gold-gradient;
-                font-size: 38px;
-                font-weight: 700;
-                letter-spacing: 0.6px;
-
-                @include respond-to('lg') {
-                    font-size: 32px;
-                }
-
-                @include respond-to('sm') {
-                    font-size: 26px;
-                }
-            }
-        }
-
-        .subtitle {
-            color: rgba(255, 255, 255, 0.65);
-            font-size: 16px;
-            font-weight: 400;
-            margin: 0;
-            font-family: "Euclid-Regular", sans-serif;
-
-            @include respond-to('sm') {
-                font-size: 14px;
-            }
-        }
+    @include respond-to('lg') {
+        gap: 12px;
     }
 
-    .optionsGrid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
+    @include respond-to('md') {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
 
-        @include respond-to('sm') {
-            grid-template-columns: 1fr;
-            gap: 12px;
+    @include respond-to('sm') {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .optionCard {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 18px 18px;
+        border-radius: 8px !important;
+        background: linear-gradient(180deg, rgba(12, 17, 21, 0.9) 0%, rgba(6, 10, 12, 0.96) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        user-select: none;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+
+        &:hover {
+            border-color: rgba(24, 201, 139, 0.45);
+            background: linear-gradient(180deg, rgba(16, 23, 28, 0.95) 0%, rgba(8, 14, 17, 0.98) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 12px rgba(24, 201, 139, 0.08);
         }
 
-        .fullWidthCard {
-            grid-column: span 2;
-
-            @include respond-to('sm') {
-                grid-column: span 1;
-            }
+        &.selected {
+            border-color: #18C98B !important;
+            background: linear-gradient(180deg, rgba(24, 201, 139, 0.09) 0%, rgba(6, 12, 10, 0.96) 100%) !important;
+            box-shadow: 0 0 20px rgba(24, 201, 139, 0.18), inset 0 0 12px rgba(24, 201, 139, 0.03) !important;
         }
 
-        .optionCard {
+        .cardHeaderRow {
             display: flex;
             align-items: center;
-            gap: 16px;
-            padding: 14px 18px;
-            border-radius: 14px;
-            background: rgba(18, 18, 22, 0.75);
-            border: 1px solid rgba(24, 201, 139, 0.3);
-            cursor: pointer;
-            transition: all 0.22s ease;
-            user-select: none;
+            justify-content: space-between;
+            margin-bottom: 14px;
 
-            &:hover {
-                border-color: rgba(24, 201, 139, 0.65);
-                background: rgba(26, 26, 32, 0.9);
-                transform: translateY(-1px);
-                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-            }
-
-            &.selected {
-                border-color: #18C98B;
-                background: rgba(35, 30, 20, 0.85);
-                box-shadow: 0 0 16px rgba(24, 201, 139, 0.22), inset 0 0 12px rgba(24, 201, 139, 0.06);
-            }
-
-            @include respond-to('sm') {
-                padding: 12px 14px;
-                gap: 12px;
-            }
-
-            .optionBadgeIcon {
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                background: radial-gradient(circle, rgba(24, 201, 139, 0.14) 0%, rgba(10, 10, 12, 0.9) 100%);
-                border: 1.5px solid rgba(24, 201, 139, 0.55);
-                box-shadow: inset 0 0 10px rgba(24, 201, 139, 0.12), 0 0 12px rgba(0, 0, 0, 0.5);
+            .iconBox {
+                width: 36px;
+                height: 36px;
+                border-radius: 6px;
+                background: rgba(24, 201, 139, 0.1);
+                border: 1px solid rgba(24, 201, 139, 0.25);
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                flex-shrink: 0;
+                transition: all 0.2s ease;
 
                 svg {
-                    width: 24px;
-                    height: 24px;
-                    display: block;
-                }
-
-                @include respond-to('sm') {
-                    width: 44px;
-                    height: 44px;
-
-                    svg {
-                        width: 20px;
-                        height: 20px;
-                    }
-                }
-            }
-
-            .optionContent {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                gap: 3px;
-
-                .optionTitle {
-                    color: #FFFFFF;
-                    font-size: 16px;
-                    font-weight: 600;
-                    margin: 0;
-                    font-family: "Euclid-SemiBold", sans-serif;
-
-                    @include respond-to('sm') {
-                        font-size: 14.5px;
-                    }
-                }
-
-                .optionDesc {
-                    color: rgba(255, 255, 255, 0.6);
-                    font-size: 13px;
-                    font-weight: 400;
-                    margin: 0;
-                    line-height: 1.35;
-                    font-family: "Euclid-Regular", sans-serif;
-
-                    @include respond-to('sm') {
-                        font-size: 12px;
-                    }
-                }
-            }
-
-            .checkbox {
-                width: 22px;
-                height: 22px;
-                border-radius: 5px;
-                border: 1.5px solid rgba(24, 201, 139, 0.65);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-shrink: 0;
-                transition: all 0.2s ease;
-                background: transparent;
-
-                &.checked {
-                    background: #18C98B;
-                    border-color: #18C98B;
-                    box-shadow: 0 0 8px rgba(24, 201, 139, 0.4);
-                }
-
-                @include respond-to('sm') {
                     width: 20px;
                     height: 20px;
                 }
             }
+
+            .badgeAndCheckbox {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                .featureTag {
+                    font-size: 9.5px;
+                    font-weight: 700;
+                    color: rgba(255, 255, 255, 0.6);
+                    background: rgba(255, 255, 255, 0.05);
+                    padding: 2.5px 6px;
+                    border-radius: 4px;
+                    letter-spacing: 0.5px;
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                }
+
+                .checkbox {
+                    width: 18px;
+                    height: 18px;
+                    border-radius: 4px;
+                    border: 1.5px solid rgba(255, 255, 255, 0.25);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: transparent;
+                    transition: all 0.2s ease;
+
+                    &.checked {
+                        border-color: #18C98B;
+                        background: #18C98B;
+                        box-shadow: 0 0 8px rgba(24, 201, 139, 0.5);
+                    }
+                }
+            }
         }
-    }
-}
 
-/* Right Column */
-.rightColumn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
+        .cardBody {
+            .optionTitle {
+                color: #FFFFFF;
+                font-size: 16px;
+                font-weight: 700;
+                margin: 0 0 5px 0;
+                font-family: "Euclid-Bold", sans-serif;
+            }
 
-    .graphicWrapper {
-        width: 100%;
-        max-width: 620px;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+            .optionDesc {
+                color: rgba(255, 255, 255, 0.65);
+                font-size: 12.5px;
+                line-height: 1.45;
+                margin: 0;
+                font-family: "Euclid-Regular", sans-serif;
+            }
+        }
 
-        .graphicImage {
-            width: 100%;
-            height: auto;
-            max-height: 480px;
-            object-fit: contain;
-            display: block;
-            border-radius: 16px;
+        &.selected .cardHeaderRow .iconBox {
+            background: rgba(24, 201, 139, 0.2);
+            border-color: #18C98B;
+            box-shadow: 0 0 10px rgba(24, 201, 139, 0.25);
+        }
+
+        &.selected .cardHeaderRow .badgeAndCheckbox .featureTag {
+            color: #18C98B;
+            border-color: rgba(24, 201, 139, 0.3);
+            background: rgba(24, 201, 139, 0.1);
         }
     }
 }

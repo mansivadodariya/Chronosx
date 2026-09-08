@@ -84,9 +84,9 @@ export default function MetricsSection() {
       <div className="container">
         {/* Section Header */}
         <SectionHeader
-          badge="HAVE REGISTERED METRICS"
-          title1="Engineered for Elite Traders"
-          title2="& Institutions"
+          badge="PLATFORM METRICS"
+          title1="Numbers That Prove"
+          title2="the Edge."
           description="High-frequency neural pattern recognition operating across global markets with ultra-low latency."
         />
 
@@ -130,7 +130,7 @@ export default function MetricsSection() {
             </div>
           </div>
 
-          {/* ROW 1: Leading Empty Box -> 50+ Global Market Pairs -> <500ms AI Speed -> Trailing Empty Box */}
+          {/* ROW 1: Leading Empty Box -> 1,000+ Market Pairs Scanned -> <300ms AI Speed -> Trailing Empty Box */}
           <div className={`${styles.wallRow} ${styles.row1}`}>
             <motion.div variants={emptyTileVariants} className={`${styles.wallTile} ${styles.emptyTile}`} aria-hidden="true" />
 
@@ -140,11 +140,11 @@ export default function MetricsSection() {
             >
               <div className={styles.tileBody}>
                 <div className={styles.bigNumber}>
-                  <CountUp to={50} duration={2.0} />
+                  <CountUp to={1000} duration={2.0} />
                   <span className={styles.suffixGreen}>+</span>
                 </div>
-                <div className={styles.tileLabel}>Global Market Pairs</div>
-                <div className={styles.tileDesc}>Forex, Indices &amp; Metals telemetry</div>
+                <div className={styles.tileLabel}>Market Pairs Scanned</div>
+                <div className={styles.tileDesc}>Live Forex, Indices &amp; Metals telemetry</div>
               </div>
             </motion.div>
 

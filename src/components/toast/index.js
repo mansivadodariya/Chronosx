@@ -47,7 +47,7 @@ export function ToastProvider({ children }) {
         <>
             {children}
             <Toaster
-                position="bottom-center"
+                position="bottom-right"
                 reverseOrder={false}
                 gutter={10}
                 containerStyle={{

@@ -329,7 +329,15 @@ export default function NetworkCircuitChart({ isBackground = false }) {
             <circle cx="898.3" cy="308.0" r="2.5" fill="#6EE7B7" />
             <circle cx="898.3" cy="299.4" r="2.5" fill="#6EE7B7" />
             <circle cx="898.3" cy="290.8" r="2.5" fill="#6EE7B7" />
-            <text x="938" y="311" fill="#FFFFFF" fontSize="26" fontWeight="700" textAnchor="middle" fontFamily="sans-serif">€</text>
+            {/* Vector Chart / Activity Icon */}
+            <path
+              d="M924 314 L933 303 L941 309 L952 296 M952 296 H945 M952 296 V303"
+              fill="none"
+              stroke="#FFFFFF"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </g>
 
           {/* ==========================================================================

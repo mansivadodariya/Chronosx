@@ -219,7 +219,7 @@ export const InlineCandlestickWidget = ({ symbol = 'XAUUSD', visualData, isDark 
     return (
         <div className={styles.inlineWidgetCard}>
             <div className={styles.inlineWidgetHeader}>
-                <span className={styles.inlineWidgetTitle}>{symbol} Price Action & Key Levels</span>
+                <span className={styles.inlineWidgetTitle}>{symbol}</span>
                 <button
                     type="button"
                     className={`${styles.srToggleBtn} ${showSR ? styles.srToggleActive : ''}`}
@@ -307,13 +307,63 @@ export const InlineSentimentRadarWidget = ({ symbol = 'XAUUSD', visualData, isDa
 };
 
 // ─── 3. Main Widget-Aware Markdown Renderer ───────────────────────────────────
-export default function RenderMarkdownWithWidgets({ content = '', visualData = null, defaultSymbol = 'XAUUSD' }) {
+export default function RenderMarkdownWithWidgets({ 
+    content = '', 
+    visualData = null, 
+    defaultSymbol = 'XAUUSD',
+    isStreaming = false,
+    onComplete
+}) {
     const { theme } = useTheme();
     const isDark = theme !== 'light';
 
+    const words = React.useMemo(() => {
+        if (!content) return [];
+        return content.split(' ');
+    }, [content]);
+
+    const [revealedWordCount, setRevealedWordCount] = useState(isStreaming ? 0 : words.length);
+    const [isStreamingFinished, setIsStreamingFinished] = useState(!isStreaming);
+
+    useEffect(() => {
+        if (!isStreaming) {
+            setRevealedWordCount(words.length);
+            setIsStreamingFinished(true);
+            return;
+        }
+
+        if (words.length === 0) {
+            setIsStreamingFinished(true);
+            return;
+        }
+
+        setRevealedWordCount(0);
+        setIsStreamingFinished(false);
+
+        let currentIdx = 0;
+        const intervalId = setInterval(() => {
+            // Slower, smooth and deliberate word-by-word streaming
+            const step = words.length > 400 ? 2 : 1;
+            currentIdx = Math.min(words.length, currentIdx + step);
+            setRevealedWordCount(currentIdx);
+
+            if (currentIdx >= words.length) {
+                clearInterval(intervalId);
+                setIsStreamingFinished(true);
+                if (onComplete) onComplete();
+            }
+        }, 32);
+
+        return () => clearInterval(intervalId);
+    }, [content, isStreaming, words.length]);
+
     if (!content) return null;
 
-    const parts = content.split(WIDGET_REGEX);
+    const displayContent = isStreamingFinished 
+        ? content 
+        : words.slice(0, revealedWordCount).join(' ');
+
+    const parts = displayContent.split(WIDGET_REGEX);
 
     return (
         <div className={styles.chatMarkdown}>
@@ -344,6 +394,9 @@ export default function RenderMarkdownWithWidgets({ content = '', visualData = n
                     </ReactMarkdown>
                 );
             })}
+            {!isStreamingFinished && (
+                <span className={styles.typewriterCursor} aria-hidden="true">▌</span>
+            )}
         </div>
     );
 }

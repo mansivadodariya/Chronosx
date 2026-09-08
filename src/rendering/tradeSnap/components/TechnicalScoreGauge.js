@@ -164,33 +164,48 @@ export default function TechnicalScoreGauge({ technicalScore, marketAssessment }
                         Strong buy
                     </text>
 
-                    {/* Animated Silver / White Needle with attached pivot pin */}
-                    <motion.g
-                        style={{ transformOrigin: '140px 118px' }}
-                        initial={{ rotate: -90 }}
-                        animate={{ rotate: angle }}
-                        transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1] }}
+                    {/* Animated Needle with attached pivot pin - perfectly centered at (140, 118) */}
+                    <g
+                        transform={`translate(140, 118) rotate(${angle})`}
+                        style={{
+                            transition: 'transform 1.2s cubic-bezier(0.25, 1, 0.5, 1)',
+                            transformOrigin: '0px 0px'
+                        }}
                     >
+                        {/* Invisible symmetrical boundary to lock bounding box center to (0, 0) */}
+                        <circle cx="0" cy="0" r="70" fill="none" opacity="0" pointerEvents="none" />
+
                         {/* Needle stem pointer */}
                         <line
-                            x1="140"
-                            y1="118"
-                            x2="140"
-                            y2="52"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="-64"
                             stroke={needleColor}
-                            strokeWidth="2.5"
+                            strokeWidth="2.8"
                             strokeLinecap="round"
                             style={{ filter: isDark ? 'drop-shadow(0 0 5px rgba(255, 255, 255, 0.8))' : 'drop-shadow(0 0 3px rgba(0, 0, 0, 0.3))' }}
                         />
+                        {/* Sleek needle tip pointer */}
+                        <polygon
+                            points="-3,-10 3,-10 0,-65"
+                            fill={needleColor}
+                        />
                         {/* Attached Center Pivot Dot */}
                         <circle
-                            cx="140"
-                            cy="118"
-                            r="3.5"
-                            fill={needleColor}
-                            style={{ filter: isDark ? 'drop-shadow(0 0 5px rgba(255, 255, 255, 0.8))' : 'drop-shadow(0 0 3px rgba(0, 0, 0, 0.3))' }}
+                            cx="0"
+                            cy="0"
+                            r="6"
+                            fill={verdictColor}
+                            style={{ filter: isDark ? 'drop-shadow(0 0 6px rgba(24, 201, 139, 0.6))' : 'none' }}
                         />
-                    </motion.g>
+                        <circle
+                            cx="0"
+                            cy="0"
+                            r="2.5"
+                            fill={isDark ? '#FFFFFF' : '#0F172A'}
+                        />
+                    </g>
                 </svg>
 
                 {/* Prominent Verdict & Score Display */}

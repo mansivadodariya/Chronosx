@@ -2,312 +2,283 @@
 @use '../../../scss/breakpoints/breakpoints.scss' as *;
 @use '../../../scss/font/font.scss' as *;
 
-.mainGrid {
+.stepContainer {
     width: 100%;
-    display: grid;
-    grid-template-columns: 1.35fr 1fr;
-    gap: 48px;
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0 20px;
+}
+
+.headerSection {
+    text-align: center;
+    max-width: 680px;
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
 
+    @include respond-to('md') {
+        margin-bottom: 24px;
+    }
+
+    .tagBadge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 10px;
+        border-radius: 4px;
+        background: rgba(24, 201, 139, 0.08);
+        border: 1px solid rgba(24, 201, 139, 0.25);
+        color: #18C98B;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+
+        .tagDot {
+            width: 6px;
+            height: 6px;
+            border-radius: 2px;
+            background: #18C98B;
+            box-shadow: 0 0 6px #18C98B;
+        }
+    }
+
+    .mainTitle {
+        font-size: 34px;
+        font-weight: 700;
+        color: #FFFFFF;
+        line-height: 1.15;
+        margin: 0 0 10px 0;
+        font-family: "Euclid-Bold", sans-serif;
+        letter-spacing: -0.5px;
+
+        @include respond-to('lg') {
+            font-size: 30px;
+        }
+
+        @include respond-to('sm') {
+            font-size: 24px;
+        }
+
+        .accentText {
+            background: linear-gradient(135deg, #18C98B 0%, #6EE7B7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    }
+
+    .subtitle {
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 14.5px;
+        line-height: 1.5;
+        margin: 0;
+        font-family: "Euclid-Regular", sans-serif;
+
+        @include respond-to('sm') {
+            font-size: 13px;
+        }
+    }
+}
+
+.marketsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    width: 100%;
+
     @include respond-to('lg') {
-        gap: 32px;
-        grid-template-columns: 1.25fr 1fr;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
     }
 
     @include respond-to('md') {
-        grid-template-columns: 1fr;
-        gap: 28px;
-    }
-}
-
-/* Left Column */
-.leftColumn {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-
-    .titleBlock {
-        margin-bottom: 20px;
-
-        .mainTitle {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.15;
-            margin: 0 0 10px 0;
-            font-family: "Euclid-Bold", sans-serif;
-
-            .whiteTitle {
-                color: #FFFFFF;
-                font-size: 38px;
-                font-weight: 700;
-                letter-spacing: 0.6px;
-
-                @include respond-to('lg') {
-                    font-size: 32px;
-                }
-
-                @include respond-to('sm') {
-                    font-size: 26px;
-                }
-            }
-
-            .goldTitle {
-                @include heading-gold-gradient;
-                font-size: 38px;
-                font-weight: 700;
-                letter-spacing: 0.6px;
-
-                @include respond-to('lg') {
-                    font-size: 32px;
-                }
-
-                @include respond-to('sm') {
-                    font-size: 26px;
-                }
-            }
-        }
-
-        .subtitle {
-            color: rgba(255, 255, 255, 0.65);
-            font-size: 16px;
-            font-weight: 400;
-            margin: 0;
-            font-family: "Euclid-Regular", sans-serif;
-
-            @include respond-to('sm') {
-                font-size: 14px;
-            }
-        }
-    }
-
-    /* 8 Markets Grid (4 cols x 2 rows) */
-    .marketsGrid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 12px;
+    }
 
-        @include respond-to('lg') {
-            gap: 10px;
+    @include respond-to('sm') {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .marketCard {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 16px 14px;
+        border-radius: 8px !important;
+        background: linear-gradient(180deg, rgba(12, 17, 21, 0.9) 0%, rgba(6, 10, 12, 0.96) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        user-select: none;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+
+        &:hover {
+            border-color: rgba(24, 201, 139, 0.45);
+            background: linear-gradient(180deg, rgba(16, 23, 28, 0.95) 0%, rgba(8, 14, 17, 0.98) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 12px rgba(24, 201, 139, 0.08);
         }
 
-        @include respond-to('md') {
-            grid-template-columns: repeat(4, 1fr);
+        &.selected {
+            border-color: #18C98B !important;
+            background: linear-gradient(180deg, rgba(24, 201, 139, 0.09) 0%, rgba(6, 12, 10, 0.96) 100%) !important;
+            box-shadow: 0 0 20px rgba(24, 201, 139, 0.18), inset 0 0 12px rgba(24, 201, 139, 0.03) !important;
         }
 
-        @include respond-to('sm') {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        .marketCard {
-            position: relative;
+        .cardHeaderRow {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            padding: 16px 14px;
-            border-radius: 14px;
-            background: rgba(18, 18, 22, 0.75);
-            border: 1px solid rgba(24, 201, 139, 0.3);
-            cursor: pointer;
-            transition: all 0.22s ease;
-            user-select: none;
-            min-height: 120px;
+            align-items: center;
             justify-content: space-between;
+            margin-bottom: 12px;
 
-            &:hover {
-                border-color: rgba(24, 201, 139, 0.65);
-                background: rgba(26, 26, 32, 0.9);
-                transform: translateY(-2px);
-                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
-            }
-
-            &.selected {
-                border-color: #18C98B;
-                background: rgba(35, 30, 20, 0.85);
-                box-shadow: 0 0 16px rgba(24, 201, 139, 0.22), inset 0 0 12px rgba(24, 201, 139, 0.06);
-            }
-
-            @include respond-to('sm') {
-                padding: 14px 12px;
-                min-height: 105px;
-            }
-
-            .checkbox {
-                position: absolute;
-                top: 12px;
-                right: 12px;
-                width: 20px;
-                height: 20px;
-                border-radius: 4px;
-                border: 1.5px solid rgba(24, 201, 139, 0.65);
+            .iconBox {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                transition: all 0.2s ease;
-                background: transparent;
 
-                &.checked {
-                    background: #18C98B;
-                    border-color: #18C98B;
-                    box-shadow: 0 0 8px rgba(24, 201, 139, 0.4);
-                }
-
-                @include respond-to('sm') {
-                    width: 18px;
-                    height: 18px;
-                    top: 10px;
-                    right: 10px;
-                }
-            }
-
-            .marketIconBox {
-                margin-bottom: 12px;
-                height: 32px;
-                display: flex;
-                align-items: center;
-
-                .doubleCircleIcon {
+                .flagPairContainer {
                     display: flex;
                     align-items: center;
                     position: relative;
+                    height: 28px;
+                    width: 44px;
 
-                    .currCircle {
-                        width: 28px;
-                        height: 28px;
+                    .flagDisc {
+                        width: 24px;
+                        height: 24px;
                         border-radius: 50%;
-                        background: #101014;
-                        border: 1.5px solid #18C98B;
+                        overflow: hidden;
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        color: #18C98B;
-                        font-weight: 700;
-                        font-size: 13px;
-                        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+                        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        flex-shrink: 0;
 
-                        &.currCircleSub {
-                            margin-left: -8px;
-                            z-index: 1;
+                        svg {
+                            width: 100%;
+                            height: 100%;
+                            display: block;
                         }
 
-                        &.flagCircle {
-                            overflow: hidden;
-                            border: 1px solid rgba(255, 255, 255, 0.3);
-
-                            svg {
-                                width: 100%;
-                                height: 100%;
-                                object-fit: cover;
-                            }
+                        &.flagDiscOverlap {
+                            position: absolute;
+                            left: 14px;
+                            z-index: 2;
                         }
                     }
                 }
 
-                .goldBarsWrapper {
+                .goldBullionBadge,
+                .indicesBoxBadge,
+                .commoditiesBoxBadge {
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 6px;
+                    background: rgba(245, 158, 11, 0.1);
+                    border: 1px solid rgba(245, 158, 11, 0.25);
                     display: flex;
                     align-items: center;
+                    justify-content: center;
+
+                    svg {
+                        display: block;
+                    }
                 }
 
-                .digitalAssetsBadge {
-                    display: flex;
-                    align-items: center;
+                .indicesBoxBadge {
+                    background: rgba(16, 185, 129, 0.1);
+                    border-color: rgba(16, 185, 129, 0.25);
                 }
 
-                .indicesBadge {
-                    display: flex;
-                    align-items: center;
-                }
-
-                .otherBadge {
-                    display: flex;
-                    align-items: center;
+                .commoditiesBoxBadge {
+                    background: rgba(245, 158, 11, 0.1);
+                    border-color: rgba(245, 158, 11, 0.25);
                 }
             }
 
-            .marketInfo {
+            .badgeAndCheckbox {
                 display: flex;
-                flex-direction: column;
-                gap: 2px;
+                align-items: center;
+                gap: 8px;
 
-                .marketTitle {
-                    color: #FFFFFF;
-                    font-size: 15px;
+                .categoryBadge {
+                    font-size: 8.5px;
                     font-weight: 700;
-                    margin: 0;
-                    font-family: "Euclid-Bold", sans-serif;
-
-                    @include respond-to('sm') {
-                        font-size: 14px;
-                    }
+                    color: rgba(255, 255, 255, 0.55);
+                    background: rgba(255, 255, 255, 0.05);
+                    padding: 2px 5px;
+                    border-radius: 3px;
+                    letter-spacing: 0.4px;
+                    border: 1px solid rgba(255, 255, 255, 0.08);
                 }
 
-                .marketDesc {
-                    color: rgba(255, 255, 255, 0.6);
-                    font-size: 11.5px;
-                    font-weight: 400;
-                    margin: 0;
-                    line-height: 1.25;
-                    font-family: "Euclid-Regular", sans-serif;
-                    white-space: nowrap;
+                .checkbox {
+                    width: 18px;
+                    height: 18px;
+                    border-radius: 4px;
+                    border: 1.5px solid rgba(255, 255, 255, 0.25);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: transparent;
+                    transition: all 0.2s ease;
 
-                    @include respond-to('sm') {
-                        font-size: 11px;
-                        white-space: normal;
+                    &.checked {
+                        border-color: #18C98B;
+                        background: #18C98B;
+                        box-shadow: 0 0 8px rgba(24, 201, 139, 0.5);
                     }
                 }
             }
         }
-    }
 
-    /* Preferences Notice */
-    .preferenceNotice {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: rgba(24, 201, 139, 0.85);
-        font-size: 13.5px;
-        font-weight: 400;
-        margin-top: 18px;
-        font-family: "Euclid-Regular", sans-serif;
+        .cardBody {
+            .marketTitle {
+                color: #FFFFFF;
+                font-size: 15px;
+                font-weight: 700;
+                margin: 0 0 3px 0;
+                font-family: "Euclid-Bold", sans-serif;
+            }
 
-        svg {
-            flex-shrink: 0;
+            .marketDesc {
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 12px;
+                line-height: 1.4;
+                margin: 0;
+                font-family: "Euclid-Regular", sans-serif;
+            }
         }
 
-        @include respond-to('sm') {
-            font-size: 12.5px;
-            margin-top: 14px;
+        &.selected .cardHeaderRow .badgeAndCheckbox .categoryBadge {
+            color: #18C98B;
+            border-color: rgba(24, 201, 139, 0.3);
+            background: rgba(24, 201, 139, 0.1);
         }
     }
 }
 
-/* Right Column */
-.rightColumn {
+.preferenceNotice {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    width: 100%;
+    gap: 7px;
+    margin-top: 24px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12.5px;
+    font-family: "Euclid-Regular", sans-serif;
 
-    .graphicWrapper {
-        width: 100%;
-        max-width: 620px;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        .graphicImage {
-            width: 100%;
-            height: auto;
-            max-height: 480px;
-            object-fit: contain;
-            display: block;
-            border-radius: 16px;
-
-            @include respond-to("xl") {
-                max-height: 380px;
-            }
-        }
+    svg {
+        color: #18C98B;
+        flex-shrink: 0;
     }
 }

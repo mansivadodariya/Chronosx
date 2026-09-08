@@ -16,6 +16,7 @@ import TradeSnapSnapshotPanel from './components/TradeSnapSnapshotPanel';
 import TradeSnapResultsPanel from './components/TradeSnapResultsPanel';
 import TradeSnapModals from './components/TradeSnapModals';
 import useTradeSnapHistory from './hooks/useTradeSnapHistory';
+import { useTradeSnapStore } from '@/context/toolState';
 
 const AUTO_CAPTURE_OPTIONS = [
     { value: '', label: 'Off' },
@@ -35,20 +36,33 @@ export default function TradeSnap() {
     const { t } = useLanguage();
     const [error, setError] = useState(null);
 
-    // Single mode state
-    const [isSharing, setIsSharing] = useState(false);
-    const [stream, setStream] = useState(null);
-    const [capturedImage, setCapturedImage] = useState(null);
-    const [showSnapshot, setShowSnapshot] = useState(false);
-    const [isAnalyzing, setIsAnalyzing] = useState(false);
-    const [showAnalysis, setShowAnalysis] = useState(false);
-    const [allAnalyses, setAllAnalyses] = useState([]);
-    const [autoCaptureInterval, setAutoCaptureInterval] = useState(null);
-    const [nextScreenshotEndTime, setNextScreenshotEndTime] = useState(null);
-    const [shouldAutoAnalyze, setShouldAutoAnalyze] = useState(false);
+    const {
+        isSharing,
+        setIsSharing,
+        stream,
+        setStream,
+        capturedImage,
+        setCapturedImage,
+        showSnapshot,
+        setShowSnapshot,
+        isAnalyzing,
+        setIsAnalyzing,
+        showAnalysis,
+        setShowAnalysis,
+        allAnalyses,
+        setAllAnalyses,
+        autoCaptureInterval,
+        setAutoCaptureInterval,
+        nextScreenshotEndTime,
+        setNextScreenshotEndTime,
+        shouldAutoAnalyze,
+        setShouldAutoAnalyze,
+        selectedAnalysis,
+        setSelectedAnalysis,
+        isDetailModalOpen,
+        setIsDetailModalOpen
+    } = useTradeSnapStore();
 
-    const [selectedAnalysis, setSelectedAnalysis] = useState(null);
-    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
     const [isDesktop, setIsDesktop] = useState(true);
     const [isScreenShareSupported, setIsScreenShareSupported] = useState(true);
 
@@ -107,7 +121,7 @@ export default function TradeSnap() {
         setShowSnapshot(false);
         setAutoCaptureInterval(null);
         setNextScreenshotEndTime(null);
-    }, [stream]);
+    }, [stream, setStream, setIsSharing, setCapturedImage, setAllAnalyses, setShowAnalysis, setShowSnapshot, setAutoCaptureInterval, setNextScreenshotEndTime]);
 
     const startScreenShare = useCallback(async () => {
         try {
@@ -154,7 +168,7 @@ export default function TradeSnap() {
                 setError(err?.message || 'Failed to start screen sharing');
             }
         }
-    }, [stopScreenShare, isScreenShareSupported]);
+    }, [stopScreenShare, isScreenShareSupported, setCapturedImage, setShowSnapshot, setAutoCaptureInterval, setNextScreenshotEndTime, setStream, setIsSharing]);
 
     useEffect(() => {
         if (videoRef.current && stream) {
@@ -182,9 +196,9 @@ export default function TradeSnap() {
         }
         setCapturedImage(image);
         setShowSnapshot(true);
-    }, [captureFromVideo]);
+    }, [captureFromVideo, setCapturedImage, setShowSnapshot]);
 
-    const pushAnalysis = (analysisData) => {
+    const pushAnalysis = useCallback((analysisData) => {
         const trades = Array.isArray(analysisData)
             ? analysisData
             : extractTradesFromPayload({ ai_response: analysisData });
@@ -194,9 +208,9 @@ export default function TradeSnap() {
             { data: trades, timestamp: new Date().toISOString() },
         ]);
         setShowAnalysis(true);
-    };
+    }, [setAllAnalyses, setShowAnalysis]);
 
-    const applyAnalyzeResult = (result, { onInvalidChart } = {}) => {
+    const applyAnalyzeResult = useCallback((result, { onInvalidChart } = {}) => {
         const trades = extractTradesFromPayload(result);
         if (trades[0]?.error) {
             setError(trades[0].raw || 'No valid chart found in the image');
@@ -210,9 +224,9 @@ export default function TradeSnap() {
         }
         pushAnalysis(trades);
         return true;
-    };
+    }, [pushAnalysis]);
 
-    const analyzeImage = async () => {
+    const analyzeImage = useCallback(async () => {
         if (!capturedImage) {
             setError('No image captured');
             return;
@@ -232,7 +246,7 @@ export default function TradeSnap() {
         } finally {
             setIsAnalyzing(false);
         }
-    };
+    }, [capturedImage, applyAnalyzeResult, setShowSnapshot, setIsAnalyzing]);
 
     const handleScreenshot = () => {
         captureScreenshot();
@@ -254,7 +268,7 @@ export default function TradeSnap() {
             }
         }, 1000);
         return () => clearInterval(timer);
-    }, [autoCaptureInterval, isSharing, captureScreenshot]);
+    }, [autoCaptureInterval, isSharing, captureScreenshot, setNextScreenshotEndTime, setShouldAutoAnalyze]);
 
     useEffect(() => {
         if (autoCaptureInterval && isSharing) {
@@ -262,14 +276,14 @@ export default function TradeSnap() {
         } else {
             setNextScreenshotEndTime(null);
         }
-    }, [autoCaptureInterval, isSharing]);
+    }, [autoCaptureInterval, isSharing, setNextScreenshotEndTime]);
 
     useEffect(() => {
         if (shouldAutoAnalyze && capturedImage && !isAnalyzing) {
             analyzeImage();
             setShouldAutoAnalyze(false);
         }
-    }, [shouldAutoAnalyze, capturedImage, isAnalyzing]);
+    }, [shouldAutoAnalyze, capturedImage, isAnalyzing, analyzeImage, setShouldAutoAnalyze]);
 
     const renderVideoPlaceholder = (sharing, loadingText) => (
         <div className={styles.videoPlaceholder}>

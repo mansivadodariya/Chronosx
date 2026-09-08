@@ -1,11 +1,17 @@
 {
   "nav": {
     "home": "Home",
-    "aiTrade": "AI Trade",
-    "aiChat": "AI Chat",
-    "aiStrategy": "AI Strategy",
+    "marketSnapshot": "Market Snapshot & Scanner",
+    "aiTrade": "Market Snapshot & Scanner",
+    "aiTradingAdvisor": "AI Trading Advisor",
+    "aiChat": "AI Trading Advisor",
+    "aiStrategy": "AI Strategy Hub",
+    "aiStrategyHub": "AI Strategy Hub",
     "aiStrategyDesc": "Build, test and optimize AI-powered trading strategies.",
-    "liveAnalysis": "Live Analysis",
+    "liveAnalysis": "Live Market Analysis",
+    "liveMarketAnalysis": "Live Market Analysis",
+    "strategyEnginePlaybooks": "Strategy Engine & Playbooks",
+    "aiTradeAnalysis": "AI Trade analysis",
     "tools": "Tools",
     "economicCalendar": "Economic Calendar",
     "forexCalculator": "Forex Calculator",
@@ -300,6 +306,8 @@
     "disclaimer": "Service volumes shown assume the full balance is spent on a single service, at 15 credits per AI Chat query and 10 per Auto Chart analysis."
   },
   "sidebar": {
+    "workspace": "WORKSPACE",
+    "more": "MORE",
     "upgradeTitle": "Upgrade to pro",
     "upgradeDesc": "Unlock advanced analytics more AI insights & unlimited saves.",
     "upgradeBtn": "Upgrade Now"

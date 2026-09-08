@@ -43,10 +43,11 @@
     }
   }
 
-  /* Left Column: Live Interactive AI Chat Box */
-  .chatWrapper {
-    flex: 1 1 48%;
-    max-width: 540px;
+  /* Left Column: Outer Wrapper */
+  .chatWrapper,
+  .terminalColumn {
+    flex: 1 1 52%;
+    max-width: 620px;
     width: 100%;
 
     @include respond-to("md") {
@@ -54,154 +55,165 @@
     }
   }
 
-  .chatCard {
-    position: relative;
-    width: 100%;
-    min-height: 560px;
+  /* Right Column: Section Header & Feature Points */
+  .contentColumn {
+    flex: 1 1 48%;
     display: flex;
     flex-direction: column;
-    background: 
-      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(24, 201, 139, 0.12) 0%, rgba(4, 8, 6, 0.98) 100%),
-      #080D0B;
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(24, 201, 139, 0.32);
-    border-radius: 22px;
-    box-shadow: 0 24px 65px rgba(0, 0, 0, 0.85), 0 0 30px rgba(24, 201, 139, 0.1), inset 0 1px 0 rgba(24, 201, 139, 0.25);
-    overflow: hidden;
-    padding: 22px 24px;
-    transition: all 0.3s ease;
-
-    @include respond-to("sm") {
-      padding: 16px;
-      min-height: 500px;
-      border-radius: 18px;
-    }
+    gap: 24px;
   }
 
-  /* Sleek Terminal Chrome Header */
-  .chatHeader {
+  .featureList {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 16px;
-    border-bottom: 1px solid rgba(24, 201, 139, 0.16);
-    margin-bottom: 16px;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-    .headerLeftCluster {
+  .featureItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    border-radius: 14px;
+    backdrop-filter: blur(12px);
+    padding: 16px 16px;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+
+    &:hover {
+      background: linear-gradient(135deg, rgba(24, 201, 139, 0.06) 0%, rgba(20, 26, 23, 0.8) 100%);
+      border-color: rgba(24, 201, 139, 0.45);
+      transform: translateX(4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 16px rgba(24, 201, 139, 0.1);
+    }
+
+    .numBadge {
+      @include font-bold;
+      font-size: 25px;
+      color: #18c98b;
+
+      border-radius: 11px;
       display: flex;
       align-items: center;
-      gap: 12px;
-
-      .aiProfile {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-
-        .avatarLogoBox {
-          height: 32px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          .headerLogoImg {
-            height: 26px;
-            width: auto;
-            object-fit: contain;
-            filter: drop-shadow(0 0 8px rgba(24, 201, 139, 0.4));
-          }
-        }
-      }
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+      box-shadow: 0 0 12px rgba(24, 201, 139, 0.12);
     }
 
-    .liveBadge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      @include font-bold;
-      font-size: 10px;
-      color: #34D399;
-      background: rgba(52, 211, 153, 0.12);
-      border: 1px solid rgba(52, 211, 153, 0.3);
-      padding: 4px 10px;
-      border-radius: 20px;
-      letter-spacing: 0.5px;
+    .featureContent {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
 
-      .greenDot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: #34D399;
-        box-shadow: 0 0 8px #34D399;
-        animation: pulseGreen 2s infinite;
+      h3 {
+        @include font-bold;
+        font-size: 16px;
+        color: #FFFFFF;
+        letter-spacing: -0.2px;
+        margin: 0;
+      }
+
+      p {
+        @include font-normal;
+        font-size: 13.5px;
+        line-height: 1.55;
+        color: #9CA3AF;
+        margin: 0;
       }
     }
   }
 
-  /* Chat Body Viewport */
-  .chatBody {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    overflow-y: auto;
-    padding-right: 4px;
-    margin-bottom: 14px;
-    min-height: 340px;
-    max-height: 360px;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(24, 201, 139, 0.3) transparent;
+  /* Light Theme Overrides */
+  :global(html.light) & {
+    background: #FFFFFF !important;
+    border-bottom: 1px solid rgba(24, 201, 139, 0.15) !important;
 
-    &::-webkit-scrollbar {
-      width: 4px;
+    .terminalContainer {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(24, 201, 139, 0.3) !important;
+      box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08) !important;
     }
 
-    &::-webkit-scrollbar-track {
-      background: transparent;
+    .sidebarDock {
+      background: #F8FAFC !important;
+      border-right-color: #E2E8F0 !important;
     }
 
-    &::-webkit-scrollbar-thumb {
-      background: rgba(24, 201, 139, 0.25);
-      border-radius: 4px;
-    }
-  }
-
-  .userMsgRow {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-  }
-
-  .userBubble {
-    max-width: 88%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
-
-    .userSenderLabel {
-      @include font-semibold;
-      font-size: 9.5px;
-      letter-spacing: 0.8px;
-      color: rgba(255, 255, 255, 0.6);
-      text-transform: uppercase;
+    .dockIconBtn {
+      color: #64748B !important;
+      &:hover, &.activeDockBtn {
+        color: #047857 !important;
+      }
     }
 
-    .userText {
-      @include font-medium;
-      background: linear-gradient(135deg, rgba(24, 201, 139, 0.2) 0%, rgba(10, 24, 18, 0.92) 100%);
-      border: 1px solid rgba(24, 201, 139, 0.38);
-      border-radius: 16px 16px 4px 16px;
-      padding: 10px 16px;
-      color: #FFFFFF;
-      font-size: 13.5px;
-      line-height: 1.5;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    .terminalHeader {
+      border-bottom-color: #E2E8F0 !important;
+      .chronosLogoText { color: #0F172A !important; }
+      .headerSubtitle { color: #64748B !important; }
     }
-  }
 
-  .botMsgRow {
-    display: flex;
-    justify-content: flex-start;
-    width: 100%;
+    .tickersBar {
+      border-bottom-color: #E2E8F0 !important;
+      .tickerName { color: #64748B !important; }
+      .tickerPrice { color: #0F172A !important; }
+      .tickerDivider { background: #E2E8F0 !important; }
+    }
+
+    .userBubbleCard {
+      background: #F1F5F9 !important;
+      border-color: #E2E8F0 !important;
+      .userHeaderName { color: #0F172A !important; }
+      .userQueryText { color: #334155 !important; }
+      .userTimestampRow { color: #64748B !important; }
+    }
+
+    .aiResponseCard {
+      background: #FAFDFA !important;
+      border-color: rgba(16, 185, 129, 0.35) !important;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.08) !important;
+      .aiBotName { color: #0F172A !important; }
+      .aiCardTime { color: #64748B !important; }
+      .aiHeadlineIntro { color: #047857 !important; }
+      .breakoutNumber, .breakoutSymbol { color: #0F172A !important; }
+      .breakoutSubdesc { color: #475569 !important; }
+    }
+
+    .sourcesBtn, .filterPill {
+      background: #F1F5F9 !important;
+      border-color: #E2E8F0 !important;
+      color: #475569 !important;
+      &:hover, &.activeFilterPill {
+        background: rgba(16, 185, 129, 0.12) !important;
+        border-color: rgba(5, 150, 105, 0.4) !important;
+        color: #047857 !important;
+      }
+    }
+
+    .chatInputContainer {
+      background: #F8FAFC !important;
+      border-color: #E2E8F0 !important;
+      .terminalInput {
+        color: #0F172A !important;
+        &::placeholder { color: #94A3B8 !important; }
+      }
+      .attachmentBtn, .micBtn { color: #64748B !important; }
+    }
+
+    .featureItem {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(24, 201, 139, 0.22) !important;
+      &:hover {
+        background: #F0FDF4 !important;
+        border-color: rgba(24, 201, 139, 0.45) !important;
+      }
+      .numBadge {
+        color: #047857 !important;
+        background: #F0FDF4 !important;
+      }
+      .featureContent {
+        h3 { color: #0F172A !important; }
+        p { color: #475569 !important; }
+      }
+    }
   }
 }

@@ -150,7 +150,7 @@ html.light .children-wrapper {
 }
 
 .sidebar-wrapper {
-  width: 230px;
+  width: 250px;
   position: relative;
   z-index: 90;
   overflow: visible !important;
@@ -163,7 +163,7 @@ html.light .children-wrapper {
 }
 
 .children-wrapper {
-  width: calc(100% - 230px);
+  width: calc(100% - 250px);
   position: relative;
   z-index: 1;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -299,7 +299,6 @@ table th .bidi-rtl {
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 40px 0;
 }
 
 /* Custom Sleek Thin Mint Green Scrollbar */
@@ -696,4 +695,20 @@ html.light [class*="inputField"]:focus {
   border-color: #18C98B !important;
   outline: none !important;
   box-shadow: 0 0 0 3px rgba(24, 201, 139, 0.22) !important;
+}
+
+/* Custom Pointer / Futuristic Cursor Global Rules */
+@media (hover: hover) and (pointer: fine) {
+  html.custom-cursor-enabled,
+  html.custom-cursor-enabled body,
+  html.custom-cursor-enabled a,
+  html.custom-cursor-enabled button,
+  html.custom-cursor-enabled input,
+  html.custom-cursor-enabled select,
+  html.custom-cursor-enabled textarea,
+  html.custom-cursor-enabled label,
+  html.custom-cursor-enabled [role="button"],
+  html.custom-cursor-enabled [data-cursor] {
+    cursor: none !important;
+  }
 }

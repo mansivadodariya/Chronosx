@@ -7,27 +7,27 @@ import SectionHeader from '@/components/sectionHeader';
 const pillars = [
   {
     icon: '/assets/icons/hex-chart.svg?v=2',
-    title: 'Tier-1 Liquidity Pool',
-    stat: '< 0.1 PIP SPREADS',
-    desc: 'Access deep institutional order books from Tier-1 liquidity providers with zero spread markups.'
+    title: 'Tier-1 Liquidity Access',
+    stat: 'FROM 0.0 PIPS',
+    desc: 'Tap directly into deep institutional order books with raw spreads and zero hidden markups.'
   },
   {
     icon: '/assets/icons/hex-shield.svg?v=2',
-    title: 'Segregated Security',
+    title: 'Regulated Broker Partners',
     stat: 'FCA · ASIC · CySEC',
-    desc: 'Our connected partners are fully regulated with segregated client capital and global compliance.'
+    desc: 'Connect seamlessly to fully licensed brokerages featuring segregated client accounts and top-tier compliance.'
   },
   {
     icon: '/assets/icons/hex-speed.svg?v=2',
-    title: 'Ultra-Low Latency',
-    stat: '12MS EXECUTION',
-    desc: 'High-speed fiber infrastructure co-located with London (LD4) and New York (NY4) exchange servers.'
+    title: 'Ultra-Low Latency Routing',
+    stat: '< 12MS LATENCY',
+    desc: 'High-speed fiber cross-connects co-located at London (LD4) and New York (NY4) financial data centers.'
   },
   {
     icon: '/assets/icons/hex-users.svg?v=2',
-    title: 'Institutional Scale',
+    title: 'Institutional Scale & Uptime',
     stat: '$50B+ ROUTED',
-    desc: 'Built on institutional trust. Backed by world-class platforms trusted by active traders worldwide.'
+    desc: 'Enterprise-grade matching engine with 99.99% uptime, built to handle massive high-frequency trading volume.'
   }
 ];
 
@@ -48,10 +48,10 @@ export default function TeamUp() {
           >
             <SectionHeader
               align="left"
-              badge="WE TEAM UP"
+              badge="INSTITUTIONAL INFRASTRUCTURE"
               title1="Direct Market Access to"
-              title2="World-Class Liquidity"
-              description="Seamless connections to top institutional liquidity providers, futures exchanges, and charting platforms ensuring speed, security & execution reliability in every trade."
+              title2="World-Class Liquidity."
+              description="Direct connectivity to Tier-1 institutional liquidity providers, high-speed matching engines, and regulated broker bridges—ensuring unmatched speed, ultra-tight spreads, and zero-compromise execution."
             />
           </motion.div>
 
@@ -94,9 +94,9 @@ export default function TeamUp() {
               transition={{ duration: 0.3 }}
             >
               <div className={styles.bannerInfo}>
-                <span className={styles.verifiedTag}>INSTITUTIONAL SECURITY VAULT</span>
-                <h4>NON-CUSTODIAL & SEGREGATED</h4>
-                <p>You maintain 100% control of your trading funds. ChronosX never holds client capital.</p>
+                <span className={styles.verifiedTag}>ENTERPRISE SECURITY VAULT</span>
+                <h4>100% NON-CUSTODIAL & SEGREGATED</h4>
+                <p><strong>You maintain 100% custody of your trading capital.</strong> ChronosX operates purely as an analytical AI layer and bridge. We never hold, manage, or custody user funds—your capital remains securely deposited with your regulated MT5 broker.</p>
               </div>
               <div className={styles.shieldVisual}>
                 <img src="/assets/images/shield-network.svg?v=2" alt="Security Shield" />

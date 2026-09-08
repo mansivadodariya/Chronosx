@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import styles from './login.module.scss';
 import Input from '@/components/input';
-import Button from '@/components/button';
 import ContinueWithGoogle from '@/components/continueWithGoogle';
 import { authApi, profileApi } from '@/lib/api';
 import {
@@ -21,15 +20,12 @@ import { validateLogin } from '@/lib/validation';
 import { toast } from '@/components/toast';
 import PhoneInput from '@/components/phoneInput';
 import FirebasePhoneModal from '@/components/firebasePhoneModal';
+import PointerGlow from '@/components/pointerGlow';
 import { isValidPhoneNumber } from 'react-phone-number-input';
 import { supabase } from '@/lib/supabaseClient';
-
 import { useLanguage } from '@/context/LanguageContext';
-import LanguageToggle from '@/components/languageToggle';
 
 const Logo = '/assets/logo/logo.png';
-const ArrowIcon = '/assets/icons/arrow.svg';
-const EmailIcon = '/assets/icons/sms.svg';
 const UserIcon = '/assets/icons/user.svg';
 const Lock = '/assets/icons/lock.svg';
 
@@ -48,16 +44,22 @@ const Login = () => {
     const [phoneError, setPhoneError] = useState('');
     const [savingPhone, setSavingPhone] = useState(false);
     const [showOtpModal, setShowOtpModal] = useState(false);
+
+    // Auto-cycle active feature card on left panel
+    const [activeStepIndex, setActiveStepIndex] = useState(0);
+
     useEffect(() => {
-        console.log('Login mount/update: pendingPhoneUserId =', pendingPhoneUserId);
-    }, [pendingPhoneUserId]);
+        const interval = setInterval(() => {
+            setActiveStepIndex((prev) => (prev + 1) % 3);
+        }, 3000);
+        return () => clearInterval(interval);
+    }, []);
 
     useEffect(() => {
         const checkSession = async () => {
             const uid = getStoredUserId();
             const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
             const hasCookie = typeof document !== 'undefined' && document.cookie.split(';').some(c => c.trim().startsWith('auth_token='));
-            console.log('Login checkSession: uid =', uid, 'token =', token, 'hasCookie =', hasCookie);
             if (uid && token && hasCookie) {
                 try {
                     const user = getStoredUser();
@@ -111,10 +113,9 @@ const Login = () => {
             const uid = sessionUser?.id || getStoredUserId();
             const cleanEmail = form.email.trim().toLowerCase();
 
-            // Fetch authenticated user's onboarding status directly from Supabase (primary source of truth: users.onboarding_completed)
+            // Fetch authenticated user's onboarding status
             const status = await fetchUserOnboardingStatus(uid, cleanEmail);
 
-            // Sync user ID if Supabase returned a UUID and sessionUser had empty or non-UUID
             if (status.user?.id && sessionUser) {
                 sessionUser.id = status.user.id;
                 sessionUser.user_id = status.user.id;
@@ -240,103 +241,211 @@ const Login = () => {
 
     return (
         <div className={styles.loginpage}>
+            {/* Interactive Mouse Move Emerald Glow Follower */}
+            <PointerGlow color="rgba(24, 201, 139, 0.35)" size={250} />
+
             {/* Ambient Background Glows */}
             <div className={styles.ambientGlowTop} aria-hidden="true" />
             <div className={styles.ambientGlowBottom} aria-hidden="true" />
             <div className={styles.gridOverlay} aria-hidden="true" />
 
             <div className={styles.authContainer}>
-                <div className={styles.authCard}>
-                    {/* Redesigned Logo */}
-                    <div className={styles.logoWrapper}>
-                        <Link href="/" className={styles.logoLink} title="ChronosX Home">
-                            <img src={Logo} alt="ChronosX Logo" className={styles.logoImg} />
-                        </Link>
+                <div className={styles.splitAuthCard}>
+
+                    {/* ════════════ LEFT HERO PANEL WITH DETAIL CARDS (AS IN IMAGE) ════════════ */}
+                    <div className={styles.leftStepperPanel}>
+                        <div className={styles.auroraGlow} aria-hidden="true" />
+
+                        <div className={styles.leftContentWrapper}>
+                            {/* Top Aura Area */}
+                            <div className={styles.topAuraSpacer} aria-hidden="true" />
+
+                            {/* Center/Bottom Info Stack */}
+                            <div className={styles.leftMainBlock}>
+                                {/* Brand Logo */}
+                                <Link href="/" className={styles.brandHeaderLink} title="ChronosX Home">
+                                    <img src={Logo} alt="ChronosX" className={styles.leftLogoImg} />
+                                </Link>
+
+                                {/* Header & Subtitle */}
+                                <div className={styles.leftTextGroup}>
+                                    <h2 className={styles.leftTitle}>Welcome to ChronosX</h2>
+                                    <p className={styles.leftSubtitle}>
+                                        Access your institutional AI intelligence, market scanner, and MT5 execution cockpit.
+                                    </p>
+                                </div>
+
+                                {/* 3 Rounded Cards (Auto-Cycles Active State) */}
+                                <div className={styles.stepCardList}>
+                                    <div
+                                        className={`${styles.stepCard} ${activeStepIndex === 0 ? styles.stepCardActive : ''}`}
+                                        onClick={() => setActiveStepIndex(0)}
+                                        onMouseEnter={() => setActiveStepIndex(0)}
+                                    >
+                                        <div className={styles.stepBadge}>1</div>
+                                        <div className={styles.stepCardContent}>
+                                            <span className={styles.stepCardText}>AI Trading Intelligence</span>
+                                            <span className={styles.stepCardSubtext}>Real-time breakout &amp; patterns</span>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        className={`${styles.stepCard} ${activeStepIndex === 1 ? styles.stepCardActive : ''}`}
+                                        onClick={() => setActiveStepIndex(1)}
+                                        onMouseEnter={() => setActiveStepIndex(1)}
+                                    >
+                                        <div className={styles.stepBadge}>2</div>
+                                        <div className={styles.stepCardContent}>
+                                            <span className={styles.stepCardText}>Automated MT5 Execution</span>
+                                            <span className={styles.stepCardSubtext}>Sub-millisecond broker sync</span>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        className={`${styles.stepCard} ${activeStepIndex === 2 ? styles.stepCardActive : ''}`}
+                                        onClick={() => setActiveStepIndex(2)}
+                                        onMouseEnter={() => setActiveStepIndex(2)}
+                                    >
+                                        <div className={styles.stepBadge}>3</div>
+                                        <div className={styles.stepCardContent}>
+                                            <span className={styles.stepCardText}>Live Market Scanner</span>
+                                            <span className={styles.stepCardSubtext}>Institutional liquidity feeds</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Clean SVG Vector Shield Badge (NO EMOJIS) */}
+                            <div className={styles.leftFooterNotice}>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                </svg>
+                                <span>256-Bit Encrypted &amp; Non-Custodial</span>
+                            </div>
+                        </div>
                     </div>
 
-                    {pendingPhoneUserId ? (
-                        <>
-                            <div className={styles.text}>
-                                <h2>{t('auth.completeProfile', 'Complete Your Profile')}</h2>
-                                <p>{t('auth.enterPhoneDesc', 'Please enter your phone number to continue.')}</p>
+                    {/* ════════════ RIGHT FORM PANEL ════════════ */}
+                    <div className={styles.rightFormPanel}>
+                        <div className={styles.formInnerContainer}>
+                            {/* Mobile Brand Logo (Visible only on mobile/tablet) */}
+                            <div className={styles.mobileLogoWrapper}>
+                                <Link href="/" className={styles.mobileLogoLink} title="ChronosX Home">
+                                    <img src={Logo} alt="ChronosX" className={styles.mobileLogoImg} />
+                                </Link>
                             </div>
-                            <form onSubmit={handleSavePhoneNumber} noValidate>
-                                <div className={styles.spacingGrid}>
-                                    <PhoneInput
-                                        label={t('profile.phoneLabel', 'Phone Number')}
-                                        value={phoneNumber}
-                                        onChange={(val) => {
-                                            setPhoneNumber(val || '');
-                                            setPhoneError('');
-                                        }}
-                                        placeholder={t('profile.phoneLabel', 'Phone number')}
-                                        error={phoneError}
-                                        defaultCountry="AE"
-                                    />
-                                    <Button
-                                        text={savingPhone ? t('auth.saving', 'Saving...') : t('auth.continue', 'Continue')}
-                                        type="submit"
-                                        disabled={savingPhone}
-                                        icon={ArrowIcon}
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            clearAuthSession();
-                                            window.location.assign('/');
-                                        }}
-                                        className={styles.backBtn}
-                                    >
-                                        {t('auth.backToHome', 'Back to Home')}
-                                    </button>
-                                </div>
-                            </form>
-                        </>
-                    ) : (
-                        <>
-                            <div className={styles.text}>
-                                <h2>{t('auth.loginHeader', 'Log In')}</h2>
-                                <p>{t('auth.loginDesc', 'Log in to your account to access AI strategy tools and market analysis.')}</p>
-                            </div>
-                            <form onSubmit={handleSubmit} noValidate autoComplete="off">
-                                <div className={styles.spacingGrid}>
-                                    <Input
-                                        label={t('auth.emailOrUsername', 'EMAIL OR USERNAME')}
-                                        icon={UserIcon}
-                                        placeholder={t('auth.emailPlaceholder', 'Enter your email or username')}
-                                        type="email"
-                                        name="email"
-                                        value={form.email}
-                                        onChange={set('email')}
-                                        error={errors.email}
-                                        maxLength={100}
-                                        autoComplete="off"
-                                    />
-                                    <Input
-                                        label={t('auth.passwordLabel', 'PASSWORD')}
-                                        icon={Lock}
-                                        placeholder={t('auth.passwordPlaceholder', 'Enter your password')}
-                                        type="password"
-                                        name="password"
-                                        value={form.password}
-                                        onChange={set('password')}
-                                        error={errors.password}
-                                        maxLength={50}
-                                        autoComplete="new-password"
-                                    />
-                                    <div className={styles.forgotRow}>
-                                        <Link href="/forgot-password">{t('auth.forgotPasswordQuestion', 'Forgot password?')}</Link>
+
+                            {pendingPhoneUserId ? (
+                                <>
+                                    <div className={styles.formHeader}>
+                                        <h1 className={styles.formTitle}>{t('auth.completeProfile', 'Complete Your Profile')}</h1>
+                                        <p className={styles.formSubtitle}>{t('auth.enterPhoneDesc', 'Please enter your phone number to continue.')}</p>
                                     </div>
-                                    <Button text={loading ? t('auth.loggingInBtn', 'Logging in...') : t('auth.loginBtn', 'Log in')} icon={ArrowIcon} disabled={loading} type="submit" />
-                                </div>
-                            </form>
-                            <div className={styles.accountText}>
-                                <p>{t('auth.noAccount', "Don't have an account?")} <Link href="/signup">{t('auth.signupHeader', 'Sign up')}</Link></p>
-                            </div>
-                            <div className={styles.orText}><span>{t('auth.or', 'or')}</span></div>
-                            <ContinueWithGoogle redirectTo={redirectTo} onPendingPhone={setPendingPhoneUserId} />
-                        </>
-                    )}
+                                    <form onSubmit={handleSavePhoneNumber} noValidate>
+                                        <div className={styles.spacingGrid}>
+                                            <PhoneInput
+                                                label={t('profile.phoneLabel', 'Phone Number')}
+                                                value={phoneNumber}
+                                                onChange={(val) => {
+                                                    setPhoneNumber(val || '');
+                                                    setPhoneError('');
+                                                }}
+                                                placeholder={t('profile.phoneLabel', 'Phone number')}
+                                                error={phoneError}
+                                                defaultCountry="AE"
+                                            />
+                                            <button
+                                                type="submit"
+                                                className={styles.submitBtn}
+                                                disabled={savingPhone}
+                                            >
+                                                {savingPhone ? t('auth.saving', 'Saving...') : t('auth.continue', 'Continue')}
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    clearAuthSession();
+                                                    window.location.assign('/');
+                                                }}
+                                                className={styles.backBtn}
+                                            >
+                                                {t('auth.backToHome', 'Back to Home')}
+                                            </button>
+                                        </div>
+                                    </form>
+                                </>
+                            ) : (
+                                <>
+                                    <div className={styles.formHeader}>
+                                        <h1 className={styles.formTitle}>Log In Account</h1>
+                                        <p className={styles.formSubtitle}>Enter your credentials to access your account.</p>
+                                    </div>
+
+
+                                    <form onSubmit={handleSubmit} noValidate autoComplete="off">
+                                        <div className={styles.spacingGrid}>
+                                            <Input
+                                                label="Email or Username"
+                                                icon={UserIcon}
+                                                placeholder="eg. johndoe@gmail.com"
+                                                type="email"
+                                                name="email"
+                                                value={form.email}
+                                                onChange={set('email')}
+                                                error={errors.email}
+                                                maxLength={100}
+                                                autoComplete="off"
+                                            />
+
+                                            <div>
+                                                <Input
+                                                    label="Password"
+                                                    icon={Lock}
+                                                    placeholder="Enter your password"
+                                                    type="password"
+                                                    name="password"
+                                                    value={form.password}
+                                                    onChange={set('password')}
+                                                    error={errors.password}
+                                                    maxLength={50}
+                                                    autoComplete="current-password"
+                                                />
+                                                <div className={styles.forgotRow}>
+                                                    <Link href="/forgot-password">Forgot password?</Link>
+                                                </div>
+                                            </div>
+
+                                            <button
+                                                type="submit"
+                                                className={styles.submitBtn}
+                                                disabled={loading}
+                                            >
+                                                {loading ? 'Logging in...' : 'Log In'}
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                    <div className={styles.orDivider}>
+                                        <span>Or</span>
+                                    </div>
+
+                                    {/* Social Login Header Row */}
+                                    <div className={styles.socialRow}>
+                                        <div className={styles.googleButtonWrapper}>
+                                            <ContinueWithGoogle redirectTo={redirectTo} onPendingPhone={setPendingPhoneUserId} />
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.accountBottomLink}>
+                                        <p>
+                                            Don&apos;t have an account? <Link href="/signup">Sign Up</Link>
+                                        </p>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+
                 </div>
             </div>
 

@@ -4,33 +4,29 @@
 
 .phoneField {
     width: 100%;
+    position: relative;
 }
 
 .label {
     display: block;
     color: #FFFFFF;
     font-size: 14px;
-    font-weight: 600;
     line-height: 18px;
     padding: 0 0 8px;
-    text-transform: uppercase;
     font-family: "Euclid-SemiBold", sans-serif;
 }
 
 .wrapper {
     position: relative;
-    border: 1.5px solid rgba(24, 201, 139, 0.65);
-    background: #08080A;
+    background: #071a13;
     border-radius: 8px;
     height: 52px;
     display: flex;
     align-items: center;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    overflow: hidden;
 
     &:focus-within {
         border-color: #18C98B;
-        box-shadow: 0 0 14px rgba(24, 201, 139, 0.25);
     }
 
     &.hasError {
@@ -38,7 +34,6 @@
 
         &:focus-within {
             border-color: #EF5350;
-            box-shadow: 0 0 10px rgba(239, 83, 80, 0.25);
         }
     }
 
@@ -48,7 +43,7 @@
     }
 }
 
-// Override react-phone-number-input styles to match webapp Input
+// Override react-phone-number-input styles
 .phoneInput {
     display: flex !important;
     align-items: center !important;
@@ -61,46 +56,10 @@
     :global(.PhoneInputCountry) {
         display: flex !important;
         align-items: center !important;
-        gap: 6px !important;
-        padding: 0 10px 0 0 !important;
         margin: 0 !important;
-        border-right: 1px solid rgba(24, 201, 139, 0.3) !important;
-        flex-shrink: 0 !important;
-        height: 24px !important;
+        padding: 0 !important;
+        border: none !important;
         position: relative !important;
-    }
-
-    :global(.PhoneInputCountryIcon) {
-        width: 22px !important;
-        height: 16px !important;
-        border-radius: 3px !important;
-        overflow: hidden !important;
-        flex-shrink: 0 !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
-    }
-
-    :global(.PhoneInputCountrySelectArrow) {
-        width: 8px !important;
-        height: 8px !important;
-        border-color: #18C98B !important;
-        opacity: 1 !important;
-        margin-left: 2px !important;
-    }
-
-    :global(.PhoneInputCountrySelect) {
-        position: absolute !important;
-        inset: 0 !important;
-        opacity: 0 !important;
-        cursor: pointer !important;
-        width: 100% !important;
-        background-color: #08080A !important;
-        color: #FFFFFF !important;
-
-        option {
-            background-color: #08080A !important;
-            color: #FFFFFF !important;
-            padding: 8px 12px !important;
-        }
     }
 
     :global(.PhoneInputInput) {
@@ -109,7 +68,7 @@
         outline: none !important;
         background: transparent !important;
         padding: 0 0 0 12px !important;
-        font-size: 16px !important;
+        font-size: 15px !important;
         font-weight: 400 !important;
         color: #FFFFFF !important;
         line-height: 24px !important;
@@ -118,7 +77,7 @@
         &::placeholder {
             color: rgba(255, 255, 255, 0.35) !important;
             opacity: 1 !important;
-            font-size: 16px !important;
+            font-size: 15px !important;
             font-weight: 400 !important;
         }
 
@@ -126,8 +85,8 @@
         &:-webkit-autofill:hover,
         &:-webkit-autofill:focus,
         &:-webkit-autofill:active {
-            -webkit-box-shadow: 0 0 0 1000px #08080A inset !important;
-            box-shadow: 0 0 0 1000px #08080A inset !important;
+            -webkit-box-shadow: 0 0 0 1000px #071a13 inset !important;
+            box-shadow: 0 0 0 1000px #071a13 inset !important;
             -webkit-text-fill-color: #FFFFFF !important;
             caret-color: #FFFFFF !important;
             border-radius: 7px !important;
@@ -135,10 +94,250 @@
         }
 
         &:autofill {
-            background-color: #08080A !important;
+            background-color: #071a13 !important;
             color: #FFFFFF !important;
             -webkit-text-fill-color: #FFFFFF !important;
             border-radius: 7px !important;
+        }
+    }
+}
+
+// ════════════ CUSTOM COUNTRY PICKER DROPDOWN ════════════
+.customCountryPicker {
+    position: relative;
+    display: flex;
+    align-items: center;
+    z-index: 50;
+
+    .countryTrigger {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: transparent;
+        border: none;
+        padding: 0 10px 0 0;
+        margin: 0;
+        border-right: 1px solid rgba(24, 201, 139, 0.3);
+        border-radius: 0 !important;
+        height: 26px;
+        cursor: pointer;
+        outline: none;
+        transition: opacity 0.2s ease;
+
+        &:hover {
+            opacity: 0.9;
+        }
+
+        .triggerFlag {
+            width: 22px;
+            height: 16px;
+            border-radius: 3px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+
+            img, svg {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+        }
+
+        .chevron {
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+            &.chevronOpen {
+                transform: rotate(180deg);
+            }
+        }
+    }
+
+    // Floating sleek dropdown menu
+    .countryDropdownMenu {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: -14px;
+        width: 320px;
+        max-height: 340px;
+        background: #06150f;
+        border: 1.5px solid rgba(24, 201, 139, 0.35);
+        border-radius: 14px;
+        box-shadow:
+            0 18px 45px rgba(0, 0, 0, 0.92),
+            0 0 25px rgba(24, 201, 139, 0.18);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        animation: dropFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+        @include respond-to('sm') {
+            width: 280px;
+            left: -8px;
+        }
+
+        .searchBox {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.4);
+            border-bottom: 1px solid rgba(24, 201, 139, 0.15);
+
+            .searchInput {
+                flex: 1;
+                background: transparent;
+                border: none;
+                outline: none;
+                color: #FFFFFF;
+                font-size: 13.5px;
+                font-family: "Euclid-Regular", sans-serif;
+
+                &::placeholder {
+                    color: rgba(255, 255, 255, 0.4);
+                    font-size: 13px;
+                }
+            }
+
+            .clearSearchBtn {
+                background: transparent;
+                border: none;
+                color: rgba(255, 255, 255, 0.45);
+                font-size: 12px;
+                cursor: pointer;
+                padding: 2px 4px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &:hover {
+                    color: #FFFFFF;
+                }
+            }
+        }
+
+        .countryList {
+            height: 250px;
+            max-height: 250px;
+            overflow-y: scroll;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+            padding: 6px;
+            display: block;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(24, 201, 139, 0.65) rgba(0, 0, 0, 0.3);
+
+            &::-webkit-scrollbar {
+                width: 6px;
+                display: block;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: rgba(0, 0, 0, 0.3);
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: rgba(24, 201, 139, 0.6);
+                border-radius: 4px;
+
+                &:hover {
+                    background: #18C98B;
+                }
+            }
+
+            &::-webkit-scrollbar-button {
+                display: none;
+                width: 0;
+                height: 0;
+            }
+
+            .noResults {
+                padding: 18px 12px;
+                text-align: center;
+                color: rgba(255, 255, 255, 0.45);
+                font-size: 13px;
+                font-family: "Euclid-Regular", sans-serif;
+            }
+
+            .countryItem {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                width: 100%;
+                padding: 8px 10px;
+                border-radius: 8px;
+                border: 1px solid transparent;
+                background: transparent;
+                cursor: pointer;
+                transition: all 0.15s ease;
+                text-align: left;
+                margin-bottom: 2px;
+                box-sizing: border-box;
+
+                &:hover {
+                    background: rgba(24, 201, 139, 0.12);
+                    border-color: rgba(24, 201, 139, 0.2);
+                }
+
+                &.countryItemSelected {
+                    background: rgba(24, 201, 139, 0.18);
+                    border-color: rgba(24, 201, 139, 0.4);
+
+                    .countryName {
+                        color: #FFFFFF;
+                        font-family: "Euclid-SemiBold", sans-serif;
+                    }
+
+                    .callingCode {
+                        color: #18C98B;
+                        font-weight: 700;
+                    }
+                }
+
+                .itemFlag {
+                    width: 20px;
+                    height: 14px;
+                    border-radius: 2px;
+                    overflow: hidden;
+                    flex-shrink: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+
+                    img, svg {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        display: block;
+                    }
+                }
+
+                .countryName {
+                    flex: 1;
+                    color: rgba(255, 255, 255, 0.85);
+                    font-size: 13.5px;
+                    font-family: "Euclid-Regular", sans-serif;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .callingCode {
+                    color: rgba(24, 201, 139, 0.85);
+                    font-size: 13px;
+                    font-family: "Euclid-Medium", sans-serif;
+                    flex-shrink: 0;
+                }
+            }
         }
     }
 }
@@ -151,21 +350,120 @@
     line-height: 1.4;
 }
 
+@keyframes dropFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* RTL Support */
 :global([dir="rtl"]) {
     .phoneInput {
-        :global(.PhoneInputCountry) {
-            border-right: none !important;
-            border-left: 1px solid rgba(24, 201, 139, 0.3) !important;
-            padding: 0 0 0 10px !important;
-        }
+        .customCountryPicker {
+            .countryTrigger {
+                border-right: none !important;
+                border-left: 1px solid rgba(24, 201, 139, 0.3) !important;
+                padding: 0 0 0 10px !important;
+            }
 
-        :global(.PhoneInputCountrySelectArrow) {
-            margin-left: 0 !important;
-            margin-right: 2px !important;
+            .countryDropdownMenu {
+                left: auto !important;
+                right: -14px !important;
+
+                @include respond-to('sm') {
+                    right: -8px !important;
+                }
+            }
         }
 
         :global(.PhoneInputInput) {
             padding: 0 12px 0 0 !important;
+        }
+    }
+}
+
+/* Light Mode Overrides */
+:global(html.light) {
+    .wrapper {
+        background: #FFFFFF !important;
+        border-color: rgba(15, 23, 42, 0.15) !important;
+
+        &:focus-within {
+            border-color: #18C98B !important;
+            box-shadow: 0 0 10px rgba(24, 201, 139, 0.2) !important;
+        }
+    }
+
+    .label {
+        color: #0F172A !important;
+    }
+
+    .phoneInput {
+        :global(.PhoneInputInput) {
+            color: #0F172A !important;
+
+            &::placeholder {
+                color: #94A3B8 !important;
+            }
+
+            &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active {
+                -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset !important;
+                -webkit-text-fill-color: #0F172A !important;
+            }
+        }
+    }
+
+    .customCountryPicker {
+        .countryTrigger {
+            border-right-color: rgba(15, 23, 42, 0.15) !important;
+        }
+
+        .countryDropdownMenu {
+            background: #FFFFFF !important;
+            border-color: rgba(15, 23, 42, 0.12) !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12) !important;
+
+            .searchBox {
+                background: #F8FAFC !important;
+                border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+
+                .searchInput {
+                    color: #0F172A !important;
+
+                    &::placeholder {
+                        color: #94A3B8 !important;
+                    }
+                }
+            }
+
+            .countryList {
+                .countryItem {
+                    &:hover {
+                        background: #F1F5F9 !important;
+                    }
+
+                    &.countryItemSelected {
+                        background: #ECFDF5 !important;
+                        border-color: rgba(24, 201, 139, 0.3) !important;
+
+                        .countryName {
+                            color: #0F172A !important;
+                        }
+                    }
+
+                    .countryName {
+                        color: #334155 !important;
+                    }
+                }
+            }
         }
     }
 }

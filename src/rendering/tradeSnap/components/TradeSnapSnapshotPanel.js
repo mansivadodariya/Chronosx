@@ -23,7 +23,12 @@ export default function TradeSnapSnapshotPanel({
                         onClick={analyzeImage}
                         disabled={isAnalyzing || !capturedImage}
                     >
-                        {isAnalyzing ? 'Analyzing...' : 'Analyze'}
+                        {isAnalyzing ? (
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                                <span className={styles.pulseDot} style={{ width: '6px', height: '6px', background: '#18C98B', borderRadius: '50%', display: 'inline-block' }} />
+                                Scanning Chart...
+                            </span>
+                        ) : 'Analyze'}
                     </button>
                 </div>
                 {capturedImage ? (

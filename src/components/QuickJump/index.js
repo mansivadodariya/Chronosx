@@ -59,10 +59,10 @@ const QUICK_JUMP_SECTIONS = [
         items: [
             {
                 id: 'live-trading',
-                title: 'Live Trading',
+                title: 'Live Market Analysis',
                 subtitle: 'Live MT5 streaming, watchlist & order execution',
                 href: '/ai-strategy/live',
-                keywords: ['live', 'trading', 'chart', 'watchlist', 'mt5', 'stream', 'order', 'forex'],
+                keywords: ['live', 'trading', 'chart', 'watchlist', 'mt5', 'stream', 'order', 'forex', 'market', 'analysis'],
                 icon: (
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="18" y1="20" x2="18" y2="10" />
@@ -75,10 +75,10 @@ const QUICK_JUMP_SECTIONS = [
             },
             {
                 id: 'ai-signals',
-                title: 'AI Signals & Strategy',
+                title: 'Strategy Engine & Playbooks',
                 subtitle: 'Automated strategy signals & quantitative algorithms',
                 href: '/ai-strategy/strategy',
-                keywords: ['signals', 'strategy', 'bot', 'algo', 'supertrend', 'ema', 'automated'],
+                keywords: ['signals', 'strategy', 'bot', 'algo', 'supertrend', 'ema', 'automated', 'engine', 'playbooks'],
                 icon: (
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
@@ -87,10 +87,10 @@ const QUICK_JUMP_SECTIONS = [
             },
             {
                 id: 'trade-snap',
-                title: 'AI Trade (Vision Snap)',
-                subtitle: 'Instant vision AI chart screenshot analysis',
+                title: 'Market Snapshot & Scanner',
+                subtitle: 'Instant vision AI chart screenshot analysis & scanner',
                 href: '/trade-snap',
-                keywords: ['snap', 'vision', 'camera', 'scan', 'screenshot', 'pattern', 'confluence'],
+                keywords: ['snap', 'vision', 'camera', 'scan', 'screenshot', 'pattern', 'confluence', 'market', 'snapshot', 'scanner'],
                 icon: (
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
@@ -119,10 +119,10 @@ const QUICK_JUMP_SECTIONS = [
         items: [
             {
                 id: 'ai-chat',
-                title: 'AI Chat Copilot',
-                subtitle: 'Interactive multi-turn trading copilot & analysis assistant',
+                title: 'AI Trading Advisor',
+                subtitle: 'Interactive multi-turn trading copilot & analysis advisor',
                 href: '/ai-assistant',
-                keywords: ['chat', 'assistant', 'copilot', 'bot', 'ask', 'prompt', 'talk', 'gpt'],
+                keywords: ['chat', 'assistant', 'copilot', 'bot', 'ask', 'prompt', 'talk', 'gpt', 'trading', 'advisor'],
                 icon: (
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="3" y="11" width="18" height="10" rx="2" />

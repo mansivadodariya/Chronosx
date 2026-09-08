@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import styles from '../aiSnapDashboard.module.scss';
 import { TrendingUpIcon, TrendingDownIcon, CheckCircle2Icon, CopyIcon, InfoIcon } from '@/icons/aiSnapIcons';
 import { toast } from '@/components/toast';
+import StreamingText from '@/components/streamingText';
 
 function safeVal(val) {
     if (val === null || val === undefined) return '—';
@@ -149,7 +150,9 @@ export default function TradeSignalSetupCard({ tradeDecision }) {
             {/* Trade Rationale Box */}
             <div className={styles.rationaleBox}>
                 <div className={styles.rationaleTitle}>TRADE RATIONALE & INSIGHTS</div>
-                <p className={styles.rationaleText}>{rationale}</p>
+                <p className={styles.rationaleText}>
+                    <StreamingText text={rationale} speed={16} />
+                </p>
             </div>
         </div>
     );

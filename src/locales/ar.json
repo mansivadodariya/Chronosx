@@ -1,11 +1,17 @@
 {
   "nav": {
     "home": "الرئيسية",
-    "aiTrade": "التداول بالذكاء الاصطناعي",
-    "aiChat": "محادثة الذكاء الاصطناعي",
-    "aiStrategy": "استراتيجية الذكاء الاصطناعي",
+    "marketSnapshot": "Market Snapshot & Scanner",
+    "aiTrade": "Market Snapshot & Scanner",
+    "aiTradingAdvisor": "AI Trading Advisor",
+    "aiChat": "AI Trading Advisor",
+    "aiStrategy": "AI Strategy Hub",
+    "aiStrategyHub": "AI Strategy Hub",
     "aiStrategyDesc": "إنشاء واختبار وتحسين استراتيجيات التداول المؤتمتة بالذكاء الاصطناعي.",
-    "liveAnalysis": "التحليل المباشر",
+    "liveAnalysis": "Live Market Analysis",
+    "liveMarketAnalysis": "Live Market Analysis",
+    "strategyEnginePlaybooks": "Strategy Engine & Playbooks",
+    "aiTradeAnalysis": "AI Trade analysis",
     "tools": "الأدوات",
     "economicCalendar": "التقويم الاقتصادي",
     "forexCalculator": "حاسبة الفوركس",
@@ -300,9 +306,11 @@
     "disclaimer": "أحجام الخدمات المعروضة تفترض إنفاق الرصيد بالكامل على خدمة واحدة، بواقع 15 رصيداً لكل استفسار محادثة و10 لكل تحليل مخطط تلقائي."
   },
   "sidebar": {
-    "upgradeTitle": "الترقية إلى الاحترافي",
-    "upgradeDesc": "افتح التحليلات المتقدمة ورؤى الذكاء الاصطناعي الإضافية وحفظ غير محدود.",
-    "upgradeBtn": "ترقية الآن"
+    "workspace": "مساحة العمل",
+    "more": "المزيد",
+    "upgradeTitle": "الترقية إلى برو",
+    "upgradeDesc": "فتح التحليلات المتقدمة والمزيد من رؤى الذكاء الاصطناعي وحفظ غير محدود.",
+    "upgradeBtn": "الترقية الآن"
   },
   "profile": {
     "profileTab": "الملف الشخصي",

@@ -79,9 +79,9 @@ export default function Footer() {
           <div className={styles.navCol}>
             <h4>PRODUCTS</h4>
             <ul>
-              <li><Link href={getFeatureHref('/ai-trade', '/trade-snap')}>AI Trade Analysis</Link></li>
-              <li><Link href={getFeatureHref('/ai-chat', '/ai-assistant')}>AI Chat Analysis</Link></li>
-              <li><Link href={getFeatureHref('/strategy', '/ai-strategy/live')}>AI Strategies & Indicators</Link></li>
+              <li><Link href="/trade-snap">Market Snapshot & Scanner</Link></li>
+              <li><Link href="/ai-assistant">AI Trading Advisor</Link></li>
+              <li><Link href="/ai-strategy/live">AI Strategy Hub</Link></li>
             </ul>
           </div>
 
@@ -89,7 +89,7 @@ export default function Footer() {
           <div className={styles.navCol}>
             <h4>TRADING TOOLS</h4>
             <ul>
-              <li><Link href={getFeatureHref('/ai-past-trade-analyzer', '/trade-analysis')}>AI Past Trade Analyzer</Link></li>
+              <li><Link href="/trade-analysis">AI Performance Analyzer</Link></li>
               <li><Link href={getAuthHref('/ai-strategy/live')}>Strategy Builder</Link></li>
               <li><Link href={getAuthHref('/ai-strategy/live')}>Quant Backtesting</Link></li>
               <li><Link href={getAuthHref('/dashboard')}>Paper Trading Desk</Link></li>

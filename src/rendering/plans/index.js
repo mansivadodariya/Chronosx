@@ -1,5 +1,6 @@
 'use client';
 
+import SectionHeader from '@/components/sectionHeader';
 import CommonSectionHeader from '@/components/CommonSectionHeader';
 import React, { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
@@ -255,18 +256,13 @@ export default function SubscriptionPlansView() {
                         </h1>
                     </div>
                 ) : (
-                    <CommonSectionHeader
+                    <SectionHeader
                         badge="CHRONOSX PRICING TIERS"
-                        badgeIcon={
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5">
-                                <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z" fill="#18C98B" fillOpacity="0.25" />
-                                <circle cx="12" cy="19" r="1.5" fill="#18C98B" />
-                            </svg>
-                        }
-                        title="Institutional AI Power,"
-                        highlightText="Tailored For Your Edge"
-                        subtitle={t('plans.subtitle', 'Unlock sub-second AI pattern recognition, live multi-timeframe scans, and automated quant strategy backtesting.')}
-                        isCard={true}
+                        title1="Institutional AI Power,"
+                        title2="Tailored For Your Edge"
+                        breakLine={false}
+                        description={t('plans.subtitle', 'Unlock sub-second AI pattern recognition, live multi-timeframe scans, and automated quant strategy backtesting.')}
+                        align="center"
                     />
                 )}
 
