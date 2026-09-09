@@ -1,0 +1,326 @@
+
+$primary: #18C98B;
+$primaryDark: #10B981;
+$bgDark: #040605;
+$cardDark: #040D09;
+$border: rgba(24, 201, 139, 0.35);
+$borderSubtle: rgba(24, 201, 139, 0.18);
+$text: #FFFFFF;
+$textMuted: rgba(255, 255, 255, 0.65);
+$amber: #F59E0B;
+$danger: #F87171;
+
+
+.affiliatePage {
+    /* Tables */
+    .tableWrapperCard {
+        background: #040D09;
+        border: 1px solid $border;
+        border-radius: 18px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+
+        .tableToolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+
+            .tableTitleGroup {
+                h3 {
+                    color: #FFFFFF;
+                    font-size: 18px;
+                    font-weight: 700;
+                    margin: 0;
+                    font-family: "Euclid-Bold", sans-serif;
+                }
+                p {
+                    color: rgba(255, 255, 255, 0.6);
+                    font-size: 12.5px;
+                    margin: 0;
+                }
+            }
+
+            .searchBar {
+                input {
+                    background: #0D0E13;
+                    border: 1px solid $borderSubtle;
+                    border-radius: 9999px;
+                    padding: 8px 18px;
+                    color: #FFF;
+                    font-size: 13px;
+                    outline: none;
+                    width: 260px;
+
+                    &:focus {
+                        border-color: #18C98B;
+                    }
+                }
+            }
+
+            .secondaryWithdrawBtn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: rgba(24, 201, 139, 0.15);
+                border: 1px solid rgba(24, 201, 139, 0.45);
+                border-radius: 9999px;
+                padding: 8px 18px;
+                color: #18C98B;
+                font-size: 13px;
+                font-weight: 700;
+                cursor: pointer;
+
+                &:hover {
+                    background: #18C98B;
+                    color: #040300;
+                }
+            }
+        }
+
+        .tableScroll {
+            overflow-x: auto;
+            width: 100%;
+
+            .customTable {
+                width: 100%;
+                border-collapse: collapse;
+                text-align: left;
+
+                th {
+                    color: rgba(255, 255, 255, 0.6);
+                    font-size: 12px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    padding: 12px 16px;
+                    border-bottom: 1px solid rgba(24, 201, 139, 0.2);
+                }
+
+                td {
+                    color: rgba(255, 255, 255, 0.85);
+                    font-size: 13px;
+                    padding: 14px 16px;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+                    .timeSub {
+                        color: rgba(255, 255, 255, 0.45);
+                        font-size: 11.5px;
+                        margin-left: 4px;
+                    }
+
+                    .tierPill {
+                        background: rgba(24, 201, 139, 0.15);
+                        color: #18C98B;
+                        padding: 2px 8px;
+                        border-radius: 4px;
+                        font-weight: 700;
+                        font-size: 11.5px;
+                    }
+
+                    .commissionVal {
+                        color: #18C98B;
+                        font-weight: 700;
+                    }
+
+                    .withdrawAmountVal {
+                        color: #FFFFFF;
+                        font-weight: 700;
+                    }
+
+                    .monoId {
+                        font-family: monospace;
+                        color: rgba(255, 255, 255, 0.6);
+                    }
+
+                    .assetBadge {
+                        background: rgba(255, 255, 255, 0.08);
+                        padding: 2px 6px;
+                        border-radius: 4px;
+                        font-weight: 700;
+                        margin-right: 6px;
+                    }
+
+                    .networkSub {
+                        color: rgba(255, 255, 255, 0.5);
+                        font-size: 11.5px;
+                    }
+
+                    .addressBox {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        font-family: monospace;
+                        font-size: 12px;
+
+                        .miniCopyIconBtn {
+                            background: transparent;
+                            border: none;
+                            color: rgba(255, 255, 255, 0.5);
+                            cursor: pointer;
+                            padding: 0;
+
+                            &:hover {
+                                color: #18C98B;
+                            }
+                        }
+                    }
+
+                    .txLink {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 4px;
+                        color: #18C98B;
+                        text-decoration: none;
+                        font-size: 12px;
+                        font-family: monospace;
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+
+                    .pendingTxText {
+                        color: #F59E0B;
+                        font-size: 12px;
+                        font-style: italic;
+                    }
+                }
+
+                .statusBadge {
+                    display: inline-block;
+                    padding: 3px 9px;
+                    border-radius: 99px;
+                    font-size: 11px;
+                    font-weight: 700;
+
+                    &.statusCredited, &.statusApproved {
+                        background: rgba(24, 201, 139, 0.15);
+                        border: 1px solid rgba(24, 201, 139, 0.4);
+                        color: #18C98B;
+                    }
+
+                    &.statusPending {
+                        background: rgba(245, 158, 11, 0.15);
+                        border: 1px solid rgba(245, 158, 11, 0.4);
+                        color: #F59E0B;
+                    }
+
+                    &.statusRejected {
+                        background: rgba(248, 113, 113, 0.15);
+                        border: 1px solid rgba(248, 113, 113, 0.4);
+                        color: #F87171;
+                    }
+                }
+
+                .emptyTableRow {
+                    text-align: center;
+                    padding: 36px 16px;
+                    color: rgba(255, 255, 255, 0.45);
+                    font-style: italic;
+                }
+            }
+        }
+    }
+
+    /* Marketing Kit */
+    .marketingKitGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 16px;
+
+        .marketingPitchCard {
+            background: #040D09;
+            border: 1px solid $border;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+            .pitchHeader {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+
+                h4 {
+                    color: #FFFFFF;
+                    font-size: 15px;
+                    font-weight: 700;
+                    margin: 0;
+                    font-family: "Euclid-Bold", sans-serif;
+                }
+
+                .copyTemplateBtn {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    background: rgba(24, 201, 139, 0.15);
+                    border: 1px solid rgba(24, 201, 139, 0.35);
+                    color: #18C98B;
+                    padding: 4px 10px;
+                    border-radius: 6px;
+                    font-size: 11.5px;
+                    font-weight: 700;
+                    cursor: pointer;
+
+                    &:hover {
+                        background: #18C98B;
+                        color: #040300;
+                    }
+                }
+            }
+
+            .pitchBody {
+                background: rgba(0, 0, 0, 0.3);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 10px;
+                padding: 14px;
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 12.5px;
+                line-height: 1.6;
+                margin: 0;
+
+                .linkHighlight {
+                    color: #18C98B;
+                    word-break: break-all;
+                }
+            }
+
+            .featureBulletList {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+
+                li {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    color: rgba(255, 255, 255, 0.75);
+                    font-size: 12.5px;
+                    line-height: 1.5;
+
+                    .bulletIcon {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+                    }
+
+                    strong {
+                        color: #FFFFFF;
+                    }
+                }
+            }
+        }
+    }
+
+}

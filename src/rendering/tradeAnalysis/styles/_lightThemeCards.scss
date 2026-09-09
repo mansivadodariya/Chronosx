@@ -1,0 +1,492 @@
+/* ============================================================
+   TRADE ANALYSIS LIGHT THEME (CARDS, MODALS, OVERLAYS)
+   ============================================================ */
+
+:global(html.light) .container {
+    /* 5. AI ENTRY QUALITY ANALYSIS */
+    .entryAnalysisCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+
+        .entryCardHeader .entryHeaderLeft {
+            .entryIconBadge {
+                background: rgba(24, 201, 139, 0.12) !important;
+                border: 1px solid rgba(24, 201, 139, 0.3) !important;
+                color: #047857 !important;
+                svg {
+                    stroke: #047857 !important;
+                }
+            }
+            .titleWithBadge h3 {
+                color: #0F172A !important;
+            }
+            .entrySub {
+                color: #64748B !important;
+            }
+        }
+
+        .entryKpiGrid .entryKpiCard {
+            background: #F8FAFC !important;
+            border: 1px solid rgba(15, 23, 42, 0.06) !important;
+
+            &:hover {
+                background: #F1F5F9 !important;
+                border-color: rgba(24, 201, 139, 0.35) !important;
+            }
+
+            .kpiTop {
+                .kpiIconWrap {
+                    background: rgba(24, 201, 139, 0.12) !important;
+                    color: #047857 !important;
+                    svg {
+                        stroke: #047857 !important;
+                    }
+                }
+                .kpiLabel {
+                    color: #64748B !important;
+                }
+            }
+
+            .kpiValue {
+                color: #0F172A !important;
+                &.greenText { color: #047857 !important; }
+                &.amberText { color: #0284C7 !important; }
+                &.redText { color: #DC2626 !important; }
+            }
+
+            .kpiValueHighlight {
+                color: #047857 !important;
+            }
+
+            .kpiSub {
+                color: #64748B !important;
+            }
+        }
+
+        .entryContextRow {
+            .setupConditionBox,
+            .volatilityBox {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.06) !important;
+
+                .boxTag {
+                    background: rgba(24, 201, 139, 0.12) !important;
+                    border: 1px solid rgba(24, 201, 139, 0.3) !important;
+                    color: #047857 !important;
+                }
+
+                h4 {
+                    color: #0F172A !important;
+                }
+
+                p,
+                .volatilityText {
+                    color: #475569 !important;
+                }
+
+                .newsTagRow {
+                    background: #F1F5F9 !important;
+                    border: 1px solid #E2E8F0 !important;
+
+                    .newsLabel {
+                        color: #047857 !important;
+                    }
+                    .newsEvents {
+                        color: #1E293B !important;
+                    }
+                }
+            }
+        }
+
+        .entryStrengthsRisksGrid {
+            .entryColBox {
+                background: #F0FDF4 !important;
+                border: 1px solid rgba(16, 185, 129, 0.25) !important;
+
+                &.riskColBox {
+                    background: #F0F9FF !important;
+                    border: 1px solid rgba(56, 189, 248, 0.25) !important;
+                }
+
+                .entryColHeader h4 {
+                    color: #0F172A !important;
+                }
+
+                .entryItemsList {
+                    .strengthItem {
+                        color: #166534 !important;
+                    }
+                    .riskItem {
+                        color: #075985 !important;
+                    }
+                }
+            }
+        }
+    }
+
+    .tableAnalyzeBtn {
+        background: #F1F5F9 !important;
+        border: 1px solid #E2E8F0 !important;
+        color: #047857 !important;
+
+        &:hover {
+            background: #18C98B !important;
+            color: #FFFFFF !important;
+        }
+    }
+
+    .rowAnalyzeBtn {
+        background: #F1F5F9 !important;
+        border: 1px solid #E2E8F0 !important;
+        color: #0F172A !important;
+
+        svg {
+            color: #047857 !important;
+        }
+
+        &:hover:not(:disabled) {
+            background: rgba(24, 201, 139, 0.14) !important;
+            border-color: rgba(24, 201, 139, 0.4) !important;
+            color: #047857 !important;
+        }
+    }
+
+    /* 6. SIDEBAR STATS COLUMN */
+    .sidebarColumn {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+
+        .overviewCard {
+            .cardHeaderRow h3 {
+                color: #0F172A !important;
+            }
+
+            .overviewGrid .overviewStatItem {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.06) !important;
+
+                &:hover {
+                    background: #F1F5F9 !important;
+                    border-color: rgba(24, 201, 139, 0.35) !important;
+                }
+
+                span.statLabel {
+                    color: #64748B !important;
+                }
+                span.statVal {
+                    color: #0F172A !important;
+                    &.green { color: #047857 !important; }
+                    &.red { color: #DC2626 !important; }
+                    &.gold { color: #047857 !important; }
+                }
+            }
+        }
+
+        .basicStatsCard {
+            border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            .tableSectionHeader h3 {
+                color: #0F172A !important;
+            }
+
+            table {
+                thead tr th {
+                    color: #64748B !important;
+                    border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+                }
+                tbody tr {
+                    border-bottom: 1px solid rgba(15, 23, 42, 0.05) !important;
+                    &:hover {
+                        background: #F8FAFC !important;
+                    }
+                    td {
+                        color: #334155 !important;
+                        &:first-child {
+                            color: #0F172A !important;
+                        }
+                        &:last-child {
+                            color: #0F172A !important;
+                        }
+                        &.greenText { color: #047857 !important; }
+                        &.redText { color: #DC2626 !important; }
+                    }
+                }
+            }
+        }
+    }
+
+    .reportTakeawayBox {
+        background: #F0FDF4 !important;
+        border: 1px solid rgba(16, 185, 129, 0.3) !important;
+
+        strong {
+            color: #047857 !important;
+        }
+        p {
+            color: #166534 !important;
+        }
+    }
+}
+
+/* 7. LOADING OVERLAY (PORTAL & MODAL) */
+:global(html.light) .loadingOverlayBackdrop {
+    background: rgba(15, 23, 42, 0.45) !important;
+}
+
+:global(html.light) .loadingOverlayCard {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(15, 23, 42, 0.12) !important;
+    box-shadow: 0 25px 60px -10px rgba(15, 23, 42, 0.2), 0 0 35px rgba(24, 201, 139, 0.12) !important;
+
+    .loadingHeaderArea {
+        h3 {
+            color: #0F172A !important;
+        }
+        p {
+            color: #64748B !important;
+        }
+    }
+
+    .activeFilePill {
+        background: #F8FAFC !important;
+        border: 1px solid #E2E8F0 !important;
+
+        .fileName {
+            color: #0F172A !important;
+        }
+        .fileSize {
+            color: #047857 !important;
+        }
+    }
+
+    .progressBarWrapper {
+        .progressBarTrack {
+            background: #E2E8F0 !important;
+        }
+        .progressPercentText {
+            color: #047857 !important;
+        }
+    }
+
+    .stagesList {
+        background: #F8FAFC !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+        .stageRow {
+            .stageContent {
+                .stageTitle {
+                    color: #0F172A !important;
+                }
+                .stageSub {
+                    color: #64748B !important;
+                }
+            }
+            .stageIndicator .stagePendingDot {
+                background: #CBD5E1 !important;
+            }
+        }
+    }
+
+    .loadingSecurityNotice {
+        color: #64748B !important;
+    }
+}
+
+/* 8. AUDIT & HISTORY MODALS */
+:global(html.light) .modalBackdrop {
+    background: rgba(15, 23, 42, 0.5) !important;
+}
+
+:global(html.light) .tradeAuditModalContainer,
+:global(html.light) .historyModalContainer {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(15, 23, 42, 0.12) !important;
+    box-shadow: 0 24px 64px rgba(15, 23, 42, 0.18) !important;
+
+    .modalHeader {
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+        .modalHeaderTitleGroup {
+            .sparkleIconBox {
+                background: rgba(24, 201, 139, 0.12) !important;
+                border: 1px solid rgba(24, 201, 139, 0.3) !important;
+                color: #047857 !important;
+            }
+            h3 {
+                color: #0F172A !important;
+            }
+            .modalSub {
+                color: #64748B !important;
+            }
+        }
+
+        h3 {
+            color: #0F172A !important;
+        }
+
+        .closeBtn {
+            background: #F1F5F9 !important;
+            border: 1px solid #E2E8F0 !important;
+            color: #64748B !important;
+
+            &:hover {
+                background: #E2E8F0 !important;
+                color: #0F172A !important;
+            }
+        }
+    }
+
+    .tradeModalBody {
+        .tradeDetailsBanner {
+            background: #F8FAFC !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            .detailItem {
+                .detailLabel {
+                    color: #64748B !important;
+                }
+                .detailValue,
+                .detailValueBold {
+                    color: #0F172A !important;
+                }
+                .detailValueGreen {
+                    color: #047857 !important;
+                }
+                .detailValueRed {
+                    color: #DC2626 !important;
+                }
+            }
+        }
+
+        .modalTabRow {
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            .modalTabBtn {
+                color: #64748B !important;
+
+                &:hover {
+                    color: #0F172A !important;
+                    background: #F1F5F9 !important;
+                }
+
+                &.active {
+                    color: #047857 !important;
+                    background: rgba(24, 201, 139, 0.12) !important;
+                    border-color: rgba(24, 201, 139, 0.35) !important;
+                }
+            }
+        }
+
+        .auditResultContent {
+            .auditScoreCard {
+                background: linear-gradient(135deg, rgba(24, 201, 139, 0.1) 0%, rgba(16, 185, 129, 0.04) 100%) !important;
+                border: 1px solid rgba(24, 201, 139, 0.3) !important;
+
+                .scoreCircle {
+                    background: #FFFFFF !important;
+                    border-color: #18C98B !important;
+
+                    .scoreNum {
+                        color: #047857 !important;
+                    }
+                    .scoreMax {
+                        color: #64748B !important;
+                    }
+                }
+
+                .scoreText {
+                    .scoreTitleRow h4 {
+                        color: #0F172A !important;
+                    }
+                    .scoreTitleRow .auditApiBadge {
+                        color: #047857 !important;
+                        background: rgba(16, 185, 129, 0.12) !important;
+                        border-color: rgba(16, 185, 129, 0.3) !important;
+                    }
+                    p {
+                        color: #334155 !important;
+                    }
+                }
+            }
+
+            .subScoresMatrixGrid .subScoreCard {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+                .subScoreLabel {
+                    color: #64748B !important;
+                }
+                .subScoreValueBox {
+                    .scoreGreen { color: #047857 !important; }
+                    .scoreAmber { color: #0284C7 !important; }
+                    .scoreRed { color: #DC2626 !important; }
+                    .subScoreDenom { color: #94A3B8 !important; }
+                }
+            }
+
+            .macroContextCard,
+            .mistakesBox,
+            .recommendationsBox,
+            .suggestionsBox,
+            .diagnosticDetailsBox {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+                .boxTitleRow h4 {
+                    color: #0F172A !important;
+                }
+
+                .macroAssessmentText {
+                    color: #334155 !important;
+                }
+
+                .regimeRow {
+                    .regimeTag,
+                    .sentimentTag {
+                        background: #FFFFFF !important;
+                        border: 1px solid rgba(15, 23, 42, 0.1) !important;
+                        color: #334155 !important;
+                    }
+                }
+
+                .economicEventsStack .eventRowItem {
+                    background: #FFFFFF !important;
+                    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+                    .eventName {
+                        color: #0F172A !important;
+                    }
+                }
+
+                .auditList {
+                    .auditItemBad {
+                        color: #991B1B !important;
+                        span { color: #DC2626 !important; }
+                    }
+                    .auditItemGood {
+                        color: #166534 !important;
+                        span { color: #059669 !important; }
+                    }
+                    .auditItemSuggestion {
+                        color: #1E293B !important;
+                    }
+                }
+
+                .diagnosticGrid .diagCard {
+                    background: #FFFFFF !important;
+                    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+                    h5 {
+                        color: #047857 !important;
+                    }
+                    p {
+                        color: #334155 !important;
+                    }
+                }
+            }
+        }
+
+}
+}

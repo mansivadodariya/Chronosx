@@ -1,0 +1,363 @@
+/* ============================================================
+   COMPLETE LIGHT THEME (html.light) FOR PROFILE
+   ============================================================ */
+:global(html.light) .profile {
+    color: #0F172A !important;
+
+    .pageHeader {
+        .headerTitleMeta {
+            h1 {
+                color: #0F172A !important;
+            }
+            p {
+                color: #475569 !important;
+            }
+        }
+    }
+
+    /* Left Navigation */
+    .leftSidebar {
+        .navMenuCard {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(15, 23, 42, 0.09) !important;
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+        }
+    }
+
+    .navMenuItem {
+        color: #475569 !important;
+
+        .navItemIcon {
+            color: #64748B !important;
+        }
+
+        &:hover {
+            background: #F1F5F9 !important;
+            color: #0F172A !important;
+
+            .navItemIcon {
+                color: #047857 !important;
+            }
+        }
+    }
+
+    .navMenuItemActive {
+        background: rgba(24, 201, 139, 0.12) !important;
+        border-color: rgba(24, 201, 139, 0.35) !important;
+        color: #047857 !important;
+        box-shadow: 0 2px 8px rgba(24, 201, 139, 0.15) !important;
+
+        .navItemIcon {
+            color: #047857 !important;
+            filter: none !important;
+        }
+    }
+
+    /* Hero Profile Card */
+    .heroProfileCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.09) !important;
+        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+
+        .heroCardHeader {
+            border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+
+            .cardHeaderIcon {
+                background: rgba(24, 201, 139, 0.12) !important;
+                border-color: rgba(24, 201, 139, 0.3) !important;
+                color: #047857 !important;
+            }
+
+            .cardHeaderTexts {
+                h3 { color: #0F172A !important; }
+                p { color: #64748B !important; }
+            }
+
+            .editProfileBtn {
+                background: #F8FAFC !important;
+                border-color: rgba(24, 201, 139, 0.4) !important;
+                color: #047857 !important;
+
+                &:hover {
+                    background: #18C98B !important;
+                    color: #040605 !important;
+                }
+            }
+        }
+
+        .avatarCircle {
+            background: #F8FAFC !important;
+            border-color: #18C98B !important;
+            box-shadow: 0 4px 16px rgba(24, 201, 139, 0.2) !important;
+
+            .avatarInitialsText {
+                color: #047857 !important;
+            }
+        }
+
+        .userMetaDetails {
+            .userNameRow h2 {
+                color: #0F172A !important;
+            }
+
+            .userEmailRow .emailText {
+                color: #475569 !important;
+            }
+
+            .uidRow {
+                color: #64748B !important;
+            }
+
+            .joinedRow {
+                color: #64748B !important;
+            }
+        }
+    }
+
+    /* Personal Details Card */
+    .personalDetailsCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.09) !important;
+        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+
+        .detailsCardHeader {
+            h3 { color: #0F172A !important; }
+            .cardHeaderIcon {
+                background: rgba(24, 201, 139, 0.12) !important;
+                border-color: rgba(24, 201, 139, 0.3) !important;
+                color: #047857 !important;
+            }
+        }
+
+        .detailFieldItem,
+        .detailPillBox {
+            background: #F8FAFC !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            &:hover {
+                background: #F1F5F9 !important;
+                border-color: rgba(24, 201, 139, 0.4) !important;
+            }
+
+            .fieldLabel,
+            .pillLabel {
+                color: #64748B !important;
+            }
+
+            .fieldValue,
+            .pillValue {
+                color: #0F172A !important;
+            }
+        }
+    }
+
+    /* Right Column */
+    .rightSummaryColumn,
+    .rightSidebar {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.09) !important;
+        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+
+        .rightCard {
+            border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+
+            .rightCardTitle {
+                color: #0F172A !important;
+            }
+
+            .summaryMetaRows .summaryRow {
+                .summaryLabel {
+                    color: #64748B !important;
+                }
+            }
+
+            .creditsCardBox {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+                .creditsHead {
+                    .creditsLabel { color: #64748B !important; }
+                    .viewPlansBtn { color: #047857 !important; }
+                }
+
+                .creditsNumbers .creditsAmount {
+                    color: #0F172A !important;
+                    span { color: #047857 !important; }
+                }
+            }
+
+            .verificationList .verifItem {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+                .verifLeft { color: #0F172A !important; }
+                .verifActionBtn {
+                    background: rgba(24, 201, 139, 0.12) !important;
+                    color: #047857 !important;
+                }
+            }
+
+            .quickActionsGrid .actionGridBtn {
+                background: #F8FAFC !important;
+                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+                color: #0F172A !important;
+
+                &:hover {
+                    background: #F1F5F9 !important;
+                    border-color: rgba(24, 201, 139, 0.4) !important;
+                    color: #047857 !important;
+                }
+
+                &.actionDanger:hover {
+                    background: #FEE2E2 !important;
+                    border-color: #EF4444 !important;
+                    color: #DC2626 !important;
+                }
+            }
+
+            .logoutActionWrap .logoutBtn {
+                background: #FEF2F2 !important;
+                border-color: rgba(239, 68, 68, 0.25) !important;
+                color: #DC2626 !important;
+
+                &:hover {
+                    background: #EF4444 !important;
+                    color: #FFFFFF !important;
+                }
+            }
+        }
+    }
+
+    /* Tab Content Panels (Security, Activity) */
+    .tabContentPanel,
+    .tabCardContainer {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.09) !important;
+        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+
+        .panelHeaderRow h3,
+        .cardHeaderBox h3 {
+            color: #0F172A !important;
+        }
+
+        .cardHeaderBox p {
+            color: #64748B !important;
+        }
+
+        .securityBannerCard {
+            background: #F8FAFC !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            .securityBannerLeft {
+                .shieldIconWrap {
+                    background: rgba(24, 201, 139, 0.12) !important;
+                    border-color: rgba(24, 201, 139, 0.3) !important;
+                    color: #047857 !important;
+                }
+
+                .bannerTexts {
+                    h4 { color: #0F172A !important; }
+                    p { color: #64748B !important; }
+                }
+            }
+
+            .bannerActionBtn {
+                background: #FFFFFF !important;
+                border-color: rgba(24, 201, 139, 0.4) !important;
+                color: #047857 !important;
+
+                &:hover {
+                    background: #18C98B !important;
+                    color: #040605 !important;
+                }
+            }
+        }
+
+        .activityTimeline .timelineItem {
+            background: #F8FAFC !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            &:hover {
+                background: #F1F5F9 !important;
+                border-color: rgba(24, 201, 139, 0.35) !important;
+            }
+
+            .timelineContent {
+                .timelineHeader {
+                    .timelineTitle { color: #0F172A !important; }
+                    .timelineTime { color: #64748B !important; }
+                }
+
+                .timelineDetails {
+                    color: #475569 !important;
+
+                    .ipBadge {
+                        background: rgba(24, 201, 139, 0.12) !important;
+                        border-color: rgba(24, 201, 139, 0.25) !important;
+                        color: #047857 !important;
+                    }
+                }
+            }
+        }
+
+        .emptyActivityState {
+            color: #64748B !important;
+        }
+    }
+
+    /* Modals */
+    .modalContent {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.1) !important;
+        box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.15) !important;
+        color: #0F172A !important;
+
+        .modalHeader {
+            h3 { color: #0F172A !important; }
+            .closeBtn { color: #64748B !important; &:hover { color: #0F172A !important; } }
+        }
+
+        p { color: #475569 !important; }
+
+        .modalFooter {
+            .cancelFormBtn {
+                background: #F1F5F9 !important;
+                border: 1px solid #CBD5E1 !important;
+                color: #334155 !important;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+
+                &:hover:not(:disabled) {
+                    background: #E2E8F0 !important;
+                    border-color: #94A3B8 !important;
+                    color: #0F172A !important;
+                }
+            }
+
+            .submitModalBtn {
+                background: #18C98B !important;
+                border-color: #18C98B !important;
+                color: #040605 !important;
+                box-shadow: 0 2px 8px rgba(24, 201, 139, 0.25) !important;
+
+                &:hover:not(:disabled) {
+                    background: #15B77E !important;
+                    border-color: #15B77E !important;
+                    box-shadow: 0 4px 14px rgba(24, 201, 139, 0.35) !important;
+                }
+            }
+
+            .confirmLogoutBtn {
+                background: #EF4444 !important;
+                border-color: #EF4444 !important;
+                color: #FFFFFF !important;
+                box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25) !important;
+
+                &:hover:not(:disabled) {
+                    background: #DC2626 !important;
+                    border-color: #DC2626 !important;
+                }
+            }
+        }
+    }
+}
+

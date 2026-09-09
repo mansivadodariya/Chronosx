@@ -1,0 +1,632 @@
+
+
+.herobanner {
+    .heroGridRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 36px;
+        width: 100%;
+        margin: 0 auto;
+
+        @include respond-to("tab") {
+            flex-direction: column;
+            text-align: center;
+            gap: 40px;
+        }
+
+        @include respond-to("sm") {
+            gap: 32px;
+        }
+    }
+
+    // Left Column: Text & Actions
+    .heroLeftCol {
+        flex: 1 1 50%;
+        max-width: 650px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        padding-top: 10px;
+
+        @include respond-to("tab") {
+            flex: 1 1 100%;
+            max-width: 100%;
+            align-items: center;
+            text-align: center;
+            padding-top: 0;
+        }
+    }
+
+    // Right Column: Showcase HUD Orb & Holographic Badges
+    .heroRightCol {
+        flex: 1 1 50%;
+        max-width: 620px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+        @include respond-to("tab") {
+            flex: 1 1 100%;
+            max-width: 540px;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        @include respond-to("sm") {
+            max-width: 100%;
+        }
+    }
+
+    // Interactive HUD Orb Container
+    .hudOrbContainer {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+
+        @include respond-to("sm") {
+            max-width: 380px;
+        }
+    }
+
+    // Ambient Blurry Emerald Center Glow behind video
+    .orbBlurryGlow {
+        position: absolute;
+        width: 82%;
+        height: 82%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(24, 201, 139, 0.52) 0%, rgba(20, 180, 120, 0.24) 42%, rgba(10, 80, 50, 0.08) 65%, transparent 75%);
+        filter: blur(55px);
+        pointer-events: none;
+        z-index: 0;
+        animation: orbGlowBreathe 4.5s ease-in-out infinite alternate;
+    }
+
+    // Video Container
+    .videoContainer {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+        background: transparent;
+        transform: scale(1.06);
+    }
+
+    .heroVideo {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        background: transparent;
+        mix-blend-mode: screen;
+        pointer-events: none;
+    }
+
+    // Holographic HUD Badges Base
+    .hudBadge {
+        position: absolute;
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: auto;
+    }
+
+    .badgeContent {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 14px 7px 10px;
+        border-radius: 12px;
+        background: rgba(6, 15, 12, 0.88);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(24, 201, 139, 0.32);
+        box-shadow: 0 4px 22px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        white-space: nowrap;
+        font-family: var(--font-inter, sans-serif);
+        color: #f1fdf7;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+        &:hover {
+            border-color: rgba(24, 201, 139, 0.7);
+            background: rgba(8, 20, 16, 0.95);
+            box-shadow: 0 0 20px rgba(24, 201, 139, 0.3), 0 8px 28px rgba(0, 0, 0, 0.8);
+            transform: scale(1.03);
+
+            .badgeIconWrap {
+                background: rgba(24, 201, 139, 0.22);
+                border-color: rgba(24, 201, 139, 0.55);
+            }
+        }
+
+        @include respond-to("sm") {
+            padding: 5px 10px 5px 8px;
+            gap: 7px;
+            border-radius: 10px;
+        }
+    }
+
+    .badgeIconWrap {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: rgba(24, 201, 139, 0.12);
+        border: 1px solid rgba(24, 201, 139, 0.28);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.25s ease;
+
+        @include respond-to("sm") {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+        }
+    }
+
+    .badgeIcon {
+        color: #18c98b;
+        flex-shrink: 0;
+        filter: drop-shadow(0 0 5px rgba(24, 201, 139, 0.6));
+    }
+
+    .badgeTextCol {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        gap: 1px;
+    }
+
+    .badgeName {
+        font-weight: 700;
+        font-size: 11.5px;
+        letter-spacing: 0.02em;
+        color: #f3fdf9;
+        line-height: 1.25;
+
+        @include respond-to("sm") {
+            font-size: 10px;
+        }
+    }
+
+    .badgeDesc {
+        font-weight: 500;
+        font-size: 9.5px;
+        letter-spacing: 0.01em;
+        color: rgba(255, 255, 255, 0.55);
+        line-height: 1.2;
+
+        @include respond-to("sm") {
+            font-size: 8.5px;
+        }
+    }
+
+    // SVG Pentagon Laser Rays Connecting Inside Center Video
+    .pentagonRaysSvg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        pointer-events: none;
+        overflow: visible;
+    }
+
+    .flowingBeam {
+        animation: rayBeamFlow 1.6s linear infinite;
+        filter: drop-shadow(0 0 5px rgba(24, 201, 139, 0.75));
+    }
+
+    .centerTargetDot {
+        animation: targetDotPulse 2s ease-in-out infinite alternate;
+    }
+
+    // 5-Point Pentagon HUD Badge Positions Around Video Sphere
+    // 1. TOP VERTEX (AI Chart Scanner)
+    .pentagonTop {
+        top: 1%;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: hudFloatTop 4s ease-in-out infinite alternate;
+    }
+
+    // 2. TOP-RIGHT VERTEX (Strategy Hub)
+    .pentagonTopRight {
+        top: 22%;
+        right: -6%;
+        transform: translateY(-50%);
+        animation: hudFloatRight 4.2s ease-in-out infinite alternate 0.4s;
+
+        @include respond-to("sm") {
+            right: -2%;
+            top: 20%;
+        }
+    }
+
+    // 3. BOTTOM-RIGHT VERTEX (Live Market Scanner)
+    .pentagonBottomRight {
+        bottom: 5%;
+        right: 0%;
+        animation: hudFloatBottomRight 4.4s ease-in-out infinite alternate 0.8s;
+
+        @include respond-to("sm") {
+            bottom: 4%;
+            right: 0%;
+        }
+    }
+
+    // 4. BOTTOM-LEFT VERTEX (AI Trade Audit)
+    .pentagonBottomLeft {
+        bottom: 5%;
+        left: 0%;
+        animation: hudFloatBottomLeft 4.4s ease-in-out infinite alternate 1.2s;
+
+        @include respond-to("sm") {
+            bottom: 4%;
+            left: 0%;
+        }
+    }
+
+    // 5. TOP-LEFT VERTEX (AI Market Assistant)
+    .pentagonTopLeft {
+        top: 22%;
+        left: -6%;
+        transform: translateY(-50%);
+        animation: hudFloatLeft 4.2s ease-in-out infinite alternate 1.6s;
+
+        @include respond-to("sm") {
+            left: -2%;
+            top: 20%;
+        }
+    }
+
+    // 1. Futuristic Pill Badge
+    .topBadgeRow {
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: flex-start;
+
+        @include respond-to("tab") {
+            justify-content: center;
+            margin-bottom: 22px;
+        }
+
+        @include respond-to("sm") {
+            margin-bottom: 18px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 6px 18px;
+            border-radius: 999px;
+            background: rgba(24, 201, 139, 0.08);
+            border: 1px solid rgba(24, 201, 139, 0.22);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+            &:hover {
+                background: rgba(24, 201, 139, 0.16);
+                border-color: rgba(24, 201, 139, 0.45);
+                box-shadow: 0 0 20px rgba(24, 201, 139, 0.25);
+                transform: translateY(-1px);
+            }
+
+            .badgeText {
+                color: rgba(255, 255, 255, 0.9);
+                font-size: 13.5px;
+                font-family: var(--font-plus-jakarta), sans-serif;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                letter-spacing: 0.1px;
+
+                @include respond-to("sm") {
+                    font-size: 12px;
+                }
+            }
+
+            .badgeArrow {
+                color: #18C98B;
+                font-size: 13px;
+                transition: transform 0.2s ease;
+            }
+        }
+    }
+
+    // 2. High Impact Headline (3-Line High Impact Layout)
+    .heroTitle {
+        font-family: "Euclid-Bold", "Euclid Circular A", var(--font-plus-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: clamp(38px, 4vw, 56px);
+        line-height: 1.1;
+        font-weight: 900;
+        letter-spacing: -1.4px;
+        color: #FFFFFF;
+        margin: 0 0 32px 0;
+        text-align: left;
+        // text-transform: uppercase;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+
+        .titleLine1 {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .titleLine2 {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .titleLine3 {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+            gap: 12px;
+        }
+
+        .greenGradient {
+            background: #fff !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            color: transparent !important;
+            display: inline-block;
+            filter: drop-shadow(0 0 16px rgba(12, 17, 15, 0.5));
+        }
+
+        .candleIconBox {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+
+        .titleCandleIcon {
+            width: 48px;
+            height: 48px;
+            display: block;
+            filter: drop-shadow(0 0 12px rgba(83, 230, 180, 0.65));
+        }
+
+        @include respond-to("lg") {
+            font-size: 48px;
+            letter-spacing: -1.4px;
+
+            .titleCandleIcon {
+                width: 42px;
+                height: 42px;
+            }
+        }
+
+        @include respond-to("tab") {
+            text-align: center;
+            font-size: 40px;
+            letter-spacing: -1px;
+            line-height: 1.15;
+            margin-bottom: 26px;
+
+            .titleLine1,
+            .titleLine2 {
+                white-space: normal;
+            }
+
+            .titleLine3 {
+                justify-content: center;
+                white-space: normal;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .titleCandleIcon {
+                width: 36px;
+                height: 36px;
+            }
+        }
+
+        @include respond-to("sm") {
+            font-size: 30px;
+            letter-spacing: -0.6px;
+            margin-bottom: 20px;
+            line-height: 1.18;
+
+            .titleLine3 {
+                gap: 6px;
+            }
+
+            .titleCandleIcon {
+                width: 28px;
+                height: 28px;
+            }
+        }
+    }
+
+    // 3. Hero Description
+    .heroDesc {
+        color: rgba(255, 255, 255, 0.75);
+        font-family: "Euclid-Regular", sans-serif;
+        font-size: 16.5px;
+        line-height: 1.6;
+        margin: 0 0 40px 0;
+        max-width: 580px;
+        text-align: left;
+
+        @include respond-to("tab") {
+            text-align: center;
+            font-size: 15px;
+            margin-bottom: 32px;
+            max-width: 90%;
+        }
+
+        @include respond-to("sm") {
+            font-size: 13.5px;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+    }
+
+    // 4. Actions Group
+    .actionsGroup {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 20px;
+        margin-bottom: 0;
+        flex-wrap: wrap;
+
+        @include respond-to("tab") {
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        @include respond-to("sm") {
+            width: 100%;
+            flex-direction: column;
+            gap: 16px;
+        }
+    }
+
+    // Bracketed Cyber Trust Badge
+    .trustBadge {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 20px;
+        height: 52px;
+        background: rgba(8, 16, 12, 0.45);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+
+        .cornerTL,
+        .cornerTR,
+        .cornerBL,
+        .cornerBR {
+            position: absolute;
+            width: 9px;
+            height: 9px;
+            pointer-events: none;
+        }
+
+        .cornerTL {
+            top: 0;
+            left: 0;
+            border-top: 1.5px solid rgba(255, 255, 255, 0.65);
+            border-left: 1.5px solid rgba(255, 255, 255, 0.65);
+        }
+
+        .cornerTR {
+            top: 0;
+            right: 0;
+            border-top: 1.5px solid rgba(255, 255, 255, 0.65);
+            border-right: 1.5px solid rgba(255, 255, 255, 0.65);
+        }
+
+        .cornerBL {
+            bottom: 0;
+            left: 0;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.65);
+            border-left: 1.5px solid rgba(255, 255, 255, 0.65);
+        }
+
+        .cornerBR {
+            bottom: 0;
+            right: 0;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.65);
+            border-right: 1.5px solid rgba(255, 255, 255, 0.65);
+        }
+
+        .avatarsGroup {
+            display: flex;
+            align-items: center;
+
+            .avatarItem {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                border: 2px solid #08110D;
+                margin-left: -7px;
+                object-fit: cover;
+                display: block;
+
+                &:first-child {
+                    margin-left: 0;
+                }
+            }
+        }
+
+        .trustText {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            line-height: 1.25;
+
+            .trustHighlight {
+                color: #FFFFFF;
+                font-family: var(--font-inter, sans-serif);
+                font-size: 13px;
+                font-weight: 500;
+                letter-spacing: -0.1px;
+                white-space: nowrap;
+            }
+
+            .trustSub {
+                color: rgba(255, 255, 255, 0.68);
+                font-family: var(--font-inter, sans-serif);
+                font-size: 12px;
+                font-weight: 400;
+                white-space: nowrap;
+            }
+        }
+
+        @include respond-to("sm") {
+            height: auto;
+            padding: 8px 14px;
+            gap: 10px;
+
+            .avatarsGroup {
+                .avatarItem {
+                    width: 28px;
+                    height: 28px;
+                }
+            }
+
+            .trustText {
+                .trustHighlight {
+                    font-size: 12px;
+                }
+                .trustSub {
+                    font-size: 11px;
+                }
+            }
+        }
+    }
+
+    // 5. Hero Bottom Live Asset Ticker Marquee Strip
+}

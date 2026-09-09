@@ -389,7 +389,7 @@
 
 /* Light Mode Overrides */
 :global(html.light),
-:global(html:not(.dark)) {
+:global(html[data-theme='light']) {
     .wrapper {
         background: #F1F5F9 !important;
         border: none !important;

@@ -1,0 +1,220 @@
+.aiAnalystSection {
+  /* =========================================================
+     LIGHT THEME STYLING OVERRIDES (Pixel-Perfect Clean Theme)
+     ========================================================= */
+  :global(html.light) & {
+    background: #FFFFFF !important;
+    border-bottom: 1px solid rgba(24, 201, 139, 0.15) !important;
+
+    .terminalContainer {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(24, 201, 139, 0.35) !important;
+      box-shadow: 0 16px 45px rgba(15, 23, 42, 0.07), 0 0 25px rgba(24, 201, 139, 0.08) !important;
+    }
+
+    .sidebarDock {
+      background: #F8FAFC !important;
+      border-right: 1px solid rgba(24, 201, 139, 0.18) !important;
+
+      .dockIconBtn {
+        color: #64748B !important;
+
+        &:hover {
+          color: #047857 !important;
+          background: rgba(24, 201, 139, 0.1) !important;
+        }
+
+        &.activeDockBtn {
+          color: #047857 !important;
+          background: rgba(24, 201, 139, 0.14) !important;
+        }
+      }
+
+      .activeTabGlowPill {
+        background: #10B981 !important;
+        box-shadow: 0 0 8px #10B981 !important;
+      }
+    }
+
+    .terminalMain {
+      background: radial-gradient(ellipse 90% 80% at 50% -20%, rgba(24, 201, 139, 0.06) 0%, transparent 65%), #FFFFFF !important;
+    }
+
+    .terminalHeader {
+      border-bottom: 1px solid rgba(24, 201, 139, 0.16) !important;
+
+      .brandTitleRow {
+        .terminalLogoImg {
+          height: 22px;
+          width: auto;
+          object-fit: contain;
+          display: block;
+          filter: none !important;
+        }
+        .headerDivider { color: #CBD5E1 !important; }
+        .headerSubtitle { color: #64748B !important; }
+      }
+
+      .onlineStatusBadge {
+        .statusDotGreen { background: #059669 !important; box-shadow: 0 0 6px #059669 !important; }
+        .statusLabel { color: #047857 !important; }
+      }
+    }
+
+    .chatBody {
+      scrollbar-color: rgba(24, 201, 139, 0.4) transparent !important;
+    }
+
+    .userBubbleCard {
+      background: #F1F5F9 !important;
+      border: 1px solid rgba(24, 201, 139, 0.24) !important;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
+
+      .userAvatar {
+        background: #E2E8F0 !important;
+        border-color: #CBD5E1 !important;
+        color: #475569 !important;
+      }
+
+      .userBubbleBody {
+        .userHeaderName { color: #64748B !important; }
+        .userQueryText { color: #0F172A !important; }
+        .userTimestampRow {
+          color: #64748B !important;
+          .checkMarks { color: #059669 !important; }
+        }
+      }
+    }
+
+    .aiResponseCard {
+      background: #FFFFFF !important;
+      border: 1.5px solid rgba(16, 185, 129, 0.42) !important;
+      box-shadow: 0 6px 25px rgba(16, 185, 129, 0.1), inset 0 0 15px rgba(16, 185, 129, 0.02) !important;
+
+      &::before {
+        background: radial-gradient(circle, rgba(16, 185, 129, 0.22) 0%, rgba(6, 182, 212, 0.1) 45%, transparent 75%) !important;
+      }
+
+      .aiCardHeaderRow {
+        .aiProfileCluster {
+          .sparkleBadge {
+            background: rgba(16, 185, 129, 0.14) !important;
+            border-color: rgba(16, 185, 129, 0.45) !important;
+            color: #047857 !important;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.3) !important;
+          }
+          .aiBotName { color: #0F172A !important; }
+          .verifiedSignalBadge {
+            background: rgba(16, 185, 129, 0.12) !important;
+            border-color: rgba(16, 185, 129, 0.35) !important;
+            color: #047857 !important;
+          }
+        }
+        .aiCardTime { color: #64748B !important; }
+      }
+
+      .aiHeadlineIntro {
+        color: #047857 !important;
+      }
+
+      .analysisBulletsList {
+        .bulletItem {
+          .bulletPoint {
+            color: #059669 !important;
+            text-shadow: none !important;
+          }
+          .bulletText {
+            color: #334155 !important;
+          }
+        }
+      }
+
+      .miniCandleChartCard {
+        background: #F8FAFC !important;
+        border: 1px solid rgba(24, 201, 139, 0.28) !important;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+
+        .svgContainer {
+          background: #FFFFFF !important;
+          border: 1px solid #E2E8F0 !important;
+
+          /* Subtle light theme line & text visibility */
+          line[stroke="rgba(255,255,255,0.12)"],
+          line[stroke="rgba(255,255,255,0.2)"] {
+            stroke: rgba(15, 23, 42, 0.12) !important;
+          }
+
+          text[fill="#64748B"] {
+            fill: #64748B !important;
+          }
+        }
+      }
+
+      .sourcesPillRow {
+        .sourcesBtn {
+          background: #F1F5F9 !important;
+          border-color: #E2E8F0 !important;
+          color: #475569 !important;
+        }
+
+        .filterPill {
+          background: #F1F5F9 !important;
+          border-color: #E2E8F0 !important;
+          color: #475569 !important;
+
+          &:hover {
+            background: rgba(16, 185, 129, 0.12) !important;
+            border-color: rgba(16, 185, 129, 0.4) !important;
+            color: #047857 !important;
+          }
+
+          &.activeFilterPill {
+            background: rgba(16, 185, 129, 0.16) !important;
+            border-color: rgba(16, 185, 129, 0.45) !important;
+            color: #047857 !important;
+          }
+        }
+      }
+    }
+
+    .thinkingRow {
+      .sparkleBadgeSmall {
+        background: rgba(16, 185, 129, 0.15) !important;
+        border-color: rgba(16, 185, 129, 0.4) !important;
+        color: #047857 !important;
+      }
+      .thinkingText {
+        color: #047857 !important;
+      }
+    }
+
+    .chatInputContainer {
+      background: #F8FAFC !important;
+      border: 1px solid rgba(24, 201, 139, 0.3) !important;
+      box-shadow: none !important;
+
+      &:focus-within {
+        border-color: #10B981 !important;
+        box-shadow: 0 0 16px rgba(24, 201, 139, 0.18) !important;
+      }
+
+      .attachmentBtn, .micBtn {
+        color: #64748B !important;
+        &:hover { color: #047857 !important; }
+      }
+
+      .terminalInput {
+        color: #0F172A !important;
+        &::placeholder { color: #94A3B8 !important; }
+      }
+
+      .terminalSendBtn {
+        background: #10B981 !important;
+        color: #FFFFFF !important;
+        svg { stroke: #FFFFFF !important; }
+      }
+    }
+  }
+
+}
+

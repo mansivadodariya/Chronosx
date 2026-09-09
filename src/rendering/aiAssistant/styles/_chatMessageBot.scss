@@ -1,0 +1,626 @@
+.aiAssistant {
+    .chatSingleBody {
+        .messageRow {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+            max-width: 85%;
+            width: fit-content;
+            position: relative;
+
+            @include respond-to('sm') {
+                max-width: 95%;
+            }
+
+            &.reportRow {
+                max-width: 80%;
+                width: 100%;
+
+                @include respond-to('sm') {
+                    max-width: 100%;
+                }
+
+                .assistantMessage {
+                    width: 100%;
+                }
+            }
+
+            .pairBadge {
+                background: rgba(24, 201, 139, 0.1);
+                color: #18C98B;
+                font-size: 10px;
+                font-weight: 700;
+                padding: 2px 6px;
+                border-radius: 0;
+                align-self: flex-end;
+                margin-bottom: -2px;
+            }
+
+            .assistantMessage {
+                color: #E2E8F0 !important;
+                font-size: 14px;
+                line-height: 1.65;
+                font-weight: 450;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(24, 201, 139, 0.08);
+
+                p {
+                    margin: 0;
+                    color: #E2E8F0 !important;
+                }
+
+                .formattedList {
+                    margin: 0;
+                    padding-left: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 6px;
+
+                    li {
+                        font-weight: 450;
+                        color: #E2E8F0 !important;
+                        list-style-type: disc;
+                    }
+                }
+
+                .visionWarningCard {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 10px;
+                    padding: 12px 14px;
+                    border-radius: 10px;
+                    background: rgba(239, 68, 68, 0.08);
+                    border: 1px solid rgba(239, 68, 68, 0.25);
+                    color: #F87171;
+
+                    .visionWarningIcon {
+                        color: #EF4444;
+                        flex-shrink: 0;
+                        margin-top: 2px;
+                    }
+                }
+
+                .visionOverviewCard {
+                    padding: 10px 14px;
+                    border-radius: 8px;
+                    background: rgba(255, 255, 255, 0.03);
+                    border: 1px solid rgba(255, 255, 255, 0.06);
+                    color: rgba(255, 255, 255, 0.6);
+                }
+
+                .deepAnalysisCardWrapper {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 14px;
+                    width: 100%;
+
+                    .executiveSummaryCard {
+                        background: linear-gradient(145deg, rgba(18, 16, 11, 0.95) 0%, rgba(8, 8, 8, 0.98) 100%) !important;
+                        border: 1px solid rgba(24, 201, 139, 0.32) !important;
+                        border-radius: 14px !important;
+                        padding: 18px 22px !important;
+                        color: #E2E8F0 !important;
+                        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(24, 201, 139, 0.12) !important;
+
+                        p, span, li {
+                            color: #E2E8F0 !important;
+                        }
+
+                        strong, b {
+                            color: #FFFFFF !important;
+                        }
+
+                        ul, ol {
+                            padding-left: 18px;
+                            margin: 6px 0;
+                        }
+                    }
+
+                    .analysisCenterCard {
+                        background: #080808 !important;
+                        border: 1px solid rgba(24, 201, 139, 0.28) !important;
+                        border-radius: 14px !important;
+                        padding: 20px 24px !important;
+                        color: #E2E8F0 !important;
+                        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(24, 201, 139, 0.1) !important;
+
+                        .analysisCenterHeader {
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            padding-bottom: 12px;
+                            margin-bottom: 16px;
+                            border-bottom: 1px solid rgba(24, 201, 139, 0.2);
+
+                            .analysisCenterIcon {
+                                color: #18C98B;
+                                display: flex;
+                                align-items: center;
+                            }
+
+                            .analysisCenterTitle {
+                                font-family: var(--font-syne), "Syne", sans-serif;
+                                font-size: 15px;
+                                font-weight: 700;
+                                color: #18C98B;
+                                letter-spacing: 0.4px;
+                            }
+                        }
+
+                        p, span, li {
+                            color: #CBD5E1 !important;
+                        }
+
+                        h1, h2, h3, h4, h5, h6 {
+                            color: #18C98B !important;
+                            margin-top: 16px;
+                            margin-bottom: 8px;
+                            font-weight: 700;
+                        }
+
+                        strong, b {
+                            color: #FFFFFF !important;
+                        }
+
+                        hr {
+                            border: none;
+                            border-top: 1px solid rgba(24, 201, 139, 0.18);
+                            margin: 16px 0;
+                        }
+
+                        .downloadReportRow {
+                            margin-top: 18px;
+                            padding-top: 14px;
+                            border-top: 1px solid rgba(24, 201, 139, 0.18);
+                            display: flex;
+                            justify-content: flex-end;
+
+                            .downloadFullReportBtn {
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 8px;
+                                background: rgba(24, 201, 139, 0.12);
+                                border: 1px solid rgba(24, 201, 139, 0.35);
+                                color: #18C98B;
+                                padding: 8px 16px;
+                                border-radius: 8px;
+                                font-size: 12px;
+                                font-weight: 600;
+                                cursor: pointer;
+                                transition: all 0.2s ease;
+
+                                &:hover {
+                                    background: rgba(24, 201, 139, 0.25);
+                                    border-color: #18C98B;
+                                    color: #FFFFFF;
+                                    transform: translateY(-1px);
+                                    box-shadow: 0 4px 14px rgba(24, 201, 139, 0.2);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .chatMarkdown {
+                    color: #E2E8F0;
+                    font-size: 14px;
+                    line-height: 1.65;
+                    width: 100%;
+
+                    p {
+                        margin: 0 0 10px 0;
+                        color: #E2E8F0;
+                        &:last-child { margin-bottom: 0; }
+                    }
+
+                    h1, h2, h3, h4, h5, h6 {
+                        color: #18C98B;
+                        font-weight: 700;
+                        margin: 14px 0 8px 0;
+                        letter-spacing: -0.2px;
+                    }
+
+                    ul, ol {
+                        margin: 8px 0;
+                        padding-left: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 4px;
+
+                        li {
+                            color: #CBD5E1;
+                            line-height: 1.55;
+                        }
+                    }
+
+                    strong, b {
+                        color: #FFFFFF;
+                        font-weight: 700;
+                    }
+
+                    code {
+                        background: rgba(24, 201, 139, 0.12);
+                        border: 1px solid rgba(24, 201, 139, 0.25);
+                        color: #18C98B;
+                        font-family: monospace;
+                        font-size: 12.5px;
+                        padding: 2px 6px;
+                        border-radius: 4px;
+                    }
+
+                    pre {
+                        background: #040605;
+                        border: 1px solid rgba(24, 201, 139, 0.25);
+                        border-radius: 8px;
+                        padding: 12px 14px;
+                        overflow-x: auto;
+                        margin: 10px 0;
+
+                        code {
+                            background: transparent;
+                            border: none;
+                            padding: 0;
+                        }
+                    }
+
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin: 12px 0;
+                        border-radius: 8px;
+                        overflow: hidden;
+                        border: 1px solid rgba(24, 201, 139, 0.25);
+                        background: #050505;
+
+                        th {
+                            background: rgba(24, 201, 139, 0.16);
+                            color: #18C98B;
+                            font-weight: 700;
+                            padding: 8px 12px;
+                            text-align: left;
+                            font-size: 12.5px;
+                            border-bottom: 1px solid rgba(24, 201, 139, 0.3);
+                        }
+
+                        td {
+                            padding: 8px 12px;
+                            font-size: 13px;
+                            color: #E2E8F0;
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                        }
+
+                        tr:nth-child(even) {
+                            background: rgba(255, 255, 255, 0.02);
+                        }
+                    }
+
+                    blockquote {
+                        border-left: 3px solid #18C98B;
+                        background: rgba(24, 201, 139, 0.06);
+                        color: #E2E8F0;
+                        padding: 8px 14px;
+                        border-radius: 0 8px 8px 0;
+                        margin: 10px 0;
+                    }
+
+                    a {
+                        color: #18C98B;
+                        text-decoration: underline;
+                        transition: color 0.2s ease;
+                        &:hover { color: #FFFFFF; }
+                    }
+                }
+
+                .inlineWidgetCard {
+                    background: #050505;
+                    border: 1px solid rgba(24, 201, 139, 0.28);
+                    border-radius: 12px;
+                    padding: 14px 16px;
+                    margin: 12px 0;
+                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+
+                    .inlineWidgetHeader {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin-bottom: 10px;
+                        padding-bottom: 8px;
+                        border-bottom: 1px solid rgba(24, 201, 139, 0.18);
+
+                        .inlineWidgetTitle {
+                            font-family: var(--font-syne), "Syne", sans-serif;
+                            font-size: 13px;
+                            font-weight: 700;
+                            color: #18C98B;
+                        }
+                    }
+                }
+
+                // Vision Analysis Accordions
+                .visionAnalysisContainer {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                    width: 100%;
+
+                    .visionSummaryCard {
+                        background: linear-gradient(145deg, rgba(18, 16, 11, 0.95) 0%, rgba(8, 8, 8, 0.98) 100%);
+                        border: 1px solid rgba(24, 201, 139, 0.3);
+                        border-radius: 12px;
+                        padding: 14px 18px;
+                        color: #E2E8F0;
+                        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+                    }
+
+                    .visionAccordionList {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+                    }
+
+                    .visionAccordionCard {
+                        background: #080808;
+                        border: 1px solid rgba(24, 201, 139, 0.22);
+                        border-radius: 10px;
+                        overflow: hidden;
+                        transition: all 0.2s ease;
+
+                        &.visionAccordionOpen {
+                            border-color: rgba(24, 201, 139, 0.4);
+                            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+                        }
+
+                        .visionAccordionHeader {
+                            width: 100%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            padding: 12px 16px;
+                            background: transparent;
+                            border: none;
+                            cursor: pointer;
+                            color: #FFFFFF;
+                            text-align: left;
+
+                            &:hover {
+                                background: rgba(255, 255, 255, 0.02);
+                            }
+
+                            .visionHeaderLeft {
+                                display: flex;
+                                align-items: center;
+                                gap: 10px;
+                                flex-wrap: wrap;
+
+                                .visionSectionIcon {
+                                    color: #18C98B;
+                                    display: flex;
+                                    align-items: center;
+                                }
+
+                                .visionSectionTitle {
+                                    font-family: var(--font-syne), "Syne", sans-serif;
+                                    font-size: 13.5px;
+                                    font-weight: 700;
+                                    color: #18C98B;
+                                }
+
+                                .visionTrendBadges {
+                                    display: flex;
+                                    gap: 6px;
+                                }
+                            }
+
+                            .visionChevron {
+                                color: rgba(255, 255, 255, 0.5);
+                                transition: transform 0.25s ease;
+                                display: flex;
+                                align-items: center;
+
+                                &.visionChevronOpen {
+                                    transform: rotate(180deg);
+                                    color: #18C98B;
+                                }
+                            }
+                        }
+
+                        .visionAccordionCollapse {
+                            display: none;
+
+                            &.visionAccordionCollapseOpen {
+                                display: block;
+                            }
+
+                            .visionAccordionCollapseInner {
+                                padding: 0 16px 14px 16px;
+                                border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+                                .visionAccordionBody {
+                                    padding-top: 12px;
+                                    color: #CBD5E1;
+                                    font-size: 13px;
+                                    line-height: 1.6;
+
+                                    .visionSectionDetails {
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 10px;
+
+                                        .visionBadgesRow {
+                                            display: flex;
+                                            flex-wrap: wrap;
+                                            gap: 6px;
+                                        }
+
+                                        .visionObservationText,
+                                        .visionDescText,
+                                        .visionPatternText {
+                                            color: #CBD5E1;
+                                            font-size: 13px;
+                                            margin: 0;
+
+                                            strong {
+                                                color: #FFFFFF;
+                                            }
+                                        }
+
+                                        .visionSwingGrid {
+                                            display: grid;
+                                            grid-template-columns: repeat(2, 1fr);
+                                            gap: 8px;
+
+                                            .visionSwingBox {
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 6px;
+                                                background: rgba(0, 0, 0, 0.4);
+                                                padding: 6px 10px;
+                                                border-radius: 6px;
+                                                border: 1px solid rgba(255, 255, 255, 0.06);
+
+                                                .visionSwingLabel {
+                                                    color: rgba(255, 255, 255, 0.6);
+                                                    font-size: 12px;
+                                                }
+                                            }
+                                        }
+
+                                        .visionLevelsGroup {
+                                            display: flex;
+                                            flex-direction: column;
+                                            gap: 6px;
+
+                                            .visionGroupTitleGreen {
+                                                color: #10B981;
+                                                font-size: 12.5px;
+                                                font-weight: 700;
+                                                margin: 0 0 4px 0;
+                                            }
+
+                                            .visionGroupTitleRed {
+                                                color: #EF4444;
+                                                font-size: 12.5px;
+                                                font-weight: 700;
+                                                margin: 0 0 4px 0;
+                                            }
+
+                                            .visionCardsCol {
+                                                display: flex;
+                                                flex-direction: column;
+                                                gap: 6px;
+
+                                                .visionLevelCardGreen {
+                                                    background: rgba(16, 185, 129, 0.05);
+                                                    border: 1px solid rgba(16, 185, 129, 0.2);
+                                                    border-radius: 8px;
+                                                    padding: 8px 12px;
+
+                                                    .visionLevelInfo {
+                                                        color: #E2E8F0;
+                                                        font-size: 12px;
+                                                        margin: 4px 0 0 0;
+                                                    }
+                                                }
+
+                                                .visionLevelCardRed {
+                                                    background: rgba(239, 68, 68, 0.05);
+                                                    border: 1px solid rgba(239, 68, 68, 0.2);
+                                                    border-radius: 8px;
+                                                    padding: 8px 12px;
+
+                                                    .visionLevelInfo {
+                                                        color: #E2E8F0;
+                                                        font-size: 12px;
+                                                        margin: 4px 0 0 0;
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        .visionZoneCard {
+                                            background: rgba(24, 201, 139, 0.04);
+                                            border: 1px solid rgba(24, 201, 139, 0.2);
+                                            border-radius: 8px;
+                                            padding: 8px 12px;
+                                        }
+
+                                        .visionZonesGrid {
+                                            display: grid;
+                                            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                                            gap: 8px;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Interactive clarification buttons
+                .clarificationOptionsGrid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 10px;
+                    margin-top: 12px;
+                    width: 100%;
+
+                    .clarificationOptionBtn {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        background: linear-gradient(145deg, rgba(18, 16, 11, 0.9) 0%, rgba(8, 8, 8, 0.95) 100%);
+                        border: 1px solid rgba(24, 201, 139, 0.3);
+                        border-radius: 10px;
+                        padding: 10px 14px;
+                        color: #FFFFFF;
+                        cursor: pointer;
+                        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+                        text-align: left;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+
+                        &:hover {
+                            border-color: #18C98B;
+                            background: linear-gradient(145deg, rgba(28, 23, 14, 0.95) 0%, rgba(14, 12, 8, 0.98) 100%);
+                            transform: translateY(-2px);
+                            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7), 0 0 16px rgba(24, 201, 139, 0.15);
+                        }
+
+                        .clarificationOptionIcon {
+                            color: #18C98B;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 32px;
+                            height: 32px;
+                            border-radius: 8px;
+                            background: rgba(24, 201, 139, 0.12);
+                            border: 1px solid rgba(24, 201, 139, 0.25);
+                            flex-shrink: 0;
+                        }
+
+                        .clarificationOptionText {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 2px;
+
+                            .clarificationOptionLabel {
+                                font-family: "Euclid-SemiBold", sans-serif;
+                                font-size: 12.5px;
+                                font-weight: 600;
+                                color: #FFFFFF;
+                            }
+
+                            .clarificationOptionSub {
+                                font-size: 11px;
+                                color: rgba(255, 255, 255, 0.5);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

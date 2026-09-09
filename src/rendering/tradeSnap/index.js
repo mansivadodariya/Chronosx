@@ -15,6 +15,7 @@ import TradeSnapScannerPanel from './components/TradeSnapScannerPanel';
 import TradeSnapSnapshotPanel from './components/TradeSnapSnapshotPanel';
 import TradeSnapResultsPanel from './components/TradeSnapResultsPanel';
 import TradeSnapModals from './components/TradeSnapModals';
+import TradeSnapGuidePanel from './components/TradeSnapGuidePanel';
 import useTradeSnapHistory from './hooks/useTradeSnapHistory';
 import { useTradeSnapStore } from '@/context/toolState';
 
@@ -371,6 +372,10 @@ export default function TradeSnap() {
                         t={t}
                     />
                 </div>
+
+                {!isSharing && allAnalyses.length === 0 && (
+                    <TradeSnapGuidePanel onStartSharing={startScreenShare} t={t} />
+                )}
 
                 {isSharing && showSnapshot && (
                     <TradeSnapSnapshotPanel

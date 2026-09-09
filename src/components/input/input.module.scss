@@ -178,7 +178,7 @@
 
 /* Light Theme Overrides */
 :global(html.light) .input,
-:global(html:not(.dark)) .input {
+:global(html[data-theme='light']) .input {
     label {
         color: #0F172A !important;
     }

@@ -1,0 +1,262 @@
+/* Specific Light Mode Rules for Header (Pure Selectors) */
+:global(html.light) .headerAlignment {
+    background: rgba(255, 255, 255, 0.88) !important;
+    border-color: rgba(15, 23, 42, 0.08) !important;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06) !important;
+
+    &.alignmentScrolled {
+        background: rgba(255, 255, 255, 0.95) !important;
+        border-color: rgba(15, 23, 42, 0.12) !important;
+        box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    @include respond-to("tab") {
+        background: #FFFFFF !important;
+        border-bottom-color: rgba(15, 23, 42, 0.1) !important;
+
+        &.alignmentScrolled {
+            background: #FFFFFF !important;
+        }
+    }
+
+    /* Navbar items & hover */
+    .menu {
+        background: transparent !important;
+        background-color: transparent !important;
+
+        li {
+            background: transparent !important;
+            background-color: transparent !important;
+
+            a,
+            .dropdownTrigger {
+                background: transparent !important;
+                background-color: transparent !important;
+                color: #0F172A !important;
+
+                .chevron {
+                    color: #475569 !important;
+                }
+            }
+
+            &:hover,
+            &.active,
+            &.dropdownOpen {
+                background: transparent !important;
+                background-color: transparent !important;
+
+                a,
+                .dropdownTrigger {
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    color: #047857 !important;
+
+                    .chevron {
+                        color: #047857 !important;
+                    }
+                }
+
+                &::after {
+                    background: #18C98B !important;
+                    box-shadow: 0 0 8px rgba(24, 201, 139, 0.35) !important;
+                }
+            }
+        }
+    }
+}
+
+:global(html.light) .dropdownMenu {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 20px !important;
+}
+
+:global(html.light) .dropdownCard {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(15, 23, 42, 0.1) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12) !important;
+    overflow: hidden;
+
+    .dropdownHeaderTag {
+        color: #475569 !important;
+        border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+    }
+
+    .dropdownItem {
+        background: transparent !important;
+
+        &:hover {
+            background: rgba(24, 201, 139, 0.08) !important;
+
+            .itemIconBox {
+                background: #18C98B !important;
+                border-color: #18C98B !important;
+                color: #040605 !important;
+            }
+
+            .itemTitle {
+                color: #047857 !important;
+            }
+        }
+
+        .itemIconBox {
+            background: #F8FAFC !important;
+            border-color: rgba(24, 201, 139, 0.25) !important;
+            color: #18C98B !important;
+        }
+
+        .itemTitle {
+            color: #0F172A !important;
+        }
+
+        .itemDesc {
+            color: #64748B !important;
+        }
+
+        .itemBadge {
+            background: rgba(24, 201, 139, 0.12) !important;
+            border-color: rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+    }
+}
+
+:global(html.light) .mobileDrawer {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+
+    .drawerCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.3) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 16px 40px -4px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+        backdrop-filter: blur(20px);
+    }
+
+    .drawerNavList {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .drawerLink {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #0F172A !important;
+
+        span {
+            color: #0F172A !important;
+        }
+
+        .mobileChevron {
+            color: #64748B !important;
+
+            &.mobileChevronOpen {
+                color: #047857 !important;
+            }
+        }
+
+        &:hover,
+        &.drawerLinkActive {
+            background: rgba(24, 201, 139, 0.08) !important;
+            color: #047857 !important;
+
+            span {
+                color: #047857 !important;
+            }
+
+            .mobileChevron {
+                color: #047857 !important;
+            }
+        }
+
+        .activeDot {
+            background: #18C98B !important;
+            box-shadow: 0 0 8px rgba(24, 201, 139, 0.4) !important;
+        }
+    }
+
+    .mobileDropdownItem {
+        background: transparent !important;
+        border: none !important;
+    }
+
+    .mobileSubList {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+
+        .mobileSubLink {
+            background: #F8FAFC !important;
+            border: 1px solid rgba(15, 23, 42, 0.06) !important;
+            box-shadow: none !important;
+
+            &:hover {
+                background: #F1F5F9 !important;
+                border-color: rgba(24, 201, 139, 0.35) !important;
+
+                .subIconWrap {
+                    background: #18C98B !important;
+                    color: #040605 !important;
+                    border-color: #18C98B !important;
+                }
+
+                .subTitle {
+                    color: #047857 !important;
+                }
+            }
+
+            .subIconWrap {
+                background: #FFFFFF !important;
+                border: 1px solid rgba(24, 201, 139, 0.25) !important;
+                color: #047857 !important;
+                transition: all 0.2s ease;
+            }
+
+            .subContent {
+                .subTitleRow {
+                    .subTitle {
+                        color: #0F172A !important;
+                    }
+
+                    .subBadge {
+                        background: rgba(24, 201, 139, 0.12) !important;
+                        border: 1px solid rgba(24, 201, 139, 0.3) !important;
+                        color: #047857 !important;
+
+                        &.comingSoonBadge {
+                            background: rgba(24, 201, 139, 0.1) !important;
+                            border-color: rgba(24, 201, 139, 0.25) !important;
+                            color: #047857 !important;
+                            box-shadow: none !important;
+                        }
+                    }
+                }
+
+                .subDesc {
+                    color: #64748B !important;
+                }
+            }
+        }
+    }
+
+    .drawerDivider {
+        background: rgba(15, 23, 42, 0.08) !important;
+        border: none !important;
+        height: 1px !important;
+        margin: 14px 0 !important;
+    }
+
+    .drawerCta {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+}

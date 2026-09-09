@@ -1,0 +1,484 @@
+/* ==========================================================================
+   Comprehensive Light Theme Overrides for AI Assistant (Copilot & Chart) - Base
+   ========================================================================== */
+:global(html.light) .aiAssistant,
+.aiAssistant.isLight {
+    color: #0F172A !important;
+
+    /* Grid & Splitter */
+    .resizerSplitter {
+        .resizerLine {
+            background: #cbd5e1 !important;
+        }
+
+        &:hover,
+        &.resizerActive {
+            .resizerLine {
+                background: #10b981 !important;
+                box-shadow: 0 0 10px rgba(16, 185, 129, 0.4) !important;
+            }
+        }
+    }
+
+    /* Left Panel: Copilot Chat Card */
+    .chatSingleBody {
+        .chatCard {
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+
+            .chatHeader {
+                background: #ffffff !important;
+                border-bottom: 1px solid #f1f5f9 !important;
+
+                .avatar {
+                    background: rgba(16, 185, 129, 0.12) !important;
+                    border-color: rgba(16, 185, 129, 0.3) !important;
+                }
+
+                .headerInfo {
+                    h3 {
+                        color: #0f172a !important;
+                    }
+
+                    span {
+                        color: #64748b !important;
+                    }
+                }
+
+                .createNewBtn {
+                    background: #10b981 !important;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+
+                    &:hover {
+                        background: #059669 !important;
+                    }
+
+                    svg {
+                        stroke: #ffffff !important;
+                    }
+                }
+
+                .historyHeaderBtn {
+                    background: #f1f5f9 !important;
+                    color: #0f172a !important;
+                    border: 1px solid #cbd5e1 !important;
+
+                    &:hover {
+                        background: #e2e8f0 !important;
+                        color: #0f172a !important;
+                        border-color: #94a3b8 !important;
+                    }
+
+                    svg {
+                        color: #10b981 !important;
+                    }
+                }
+            }
+
+            .chatBody {
+                background: #f8fafc !important;
+
+                &::-webkit-scrollbar-thumb {
+                    background: rgba(16, 185, 129, 0.25) !important;
+                }
+            }
+        }
+    }
+
+    /* Welcome Action Cards in Light Mode */
+    .welcomeContainer {
+        .welcomeHeroBadge {
+            background: #ecfdf5 !important;
+            border: 1px solid rgba(16, 185, 129, 0.35) !important;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08) !important;
+
+            span {
+                color: #059669 !important;
+                font-weight: 700 !important;
+            }
+        }
+
+        .welcomeTitle {
+            color: #0f172a !important;
+
+            .titleGradient {
+                color: #059669 !important;
+            }
+        }
+
+        .welcomeSubtitle {
+            color: #64748b !important;
+        }
+
+        .welcomeActionCards {
+            .welcomeActionCard {
+                background: #ffffff !important;
+                border: 1px solid #e2e8f0 !important;
+                box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
+
+                &:hover {
+                    background: #f0fdf4 !important;
+                    border-color: #10b981 !important;
+                    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.12) !important;
+                    transform: translateY(-2px);
+
+                    .cardIconWrapper,
+                    .cardTextContent,
+                    .cardMainTitle,
+                    .cardSubTitle {
+                        background: transparent !important;
+                        background-color: transparent !important;
+                        border: none !important;
+                        box-shadow: none !important;
+                    }
+
+                    .cardIconWrapper {
+                        color: #059669 !important;
+                        filter: none !important;
+
+                        svg {
+                            color: #059669 !important;
+                            filter: none !important;
+                            box-shadow: none !important;
+                        }
+                    }
+
+                    .cardMainTitle {
+                        color: #059669 !important;
+                        text-shadow: none !important;
+                    }
+
+                    .cardSubTitle {
+                        text-shadow: none !important;
+                    }
+
+                    .cardArrow {
+                        color: #10b981 !important;
+                        transform: translateX(3px);
+                    }
+                }
+
+                .cardIconWrapper {
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    border: none !important;
+                    box-shadow: none !important;
+                    filter: none !important;
+                    color: #059669 !important;
+                    width: 36px !important;
+                    height: 36px !important;
+                    padding: 0 !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+
+                    svg {
+                        color: #059669 !important;
+                        filter: none !important;
+                        box-shadow: none !important;
+                    }
+                }
+
+                .cardTextContent {
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    border: none !important;
+                    box-shadow: none !important;
+
+                    .cardMainTitle {
+                        background: transparent !important;
+                        background-color: transparent !important;
+                        color: #0f172a !important;
+                    }
+
+                    .cardSubTitle {
+                        background: transparent !important;
+                        background-color: transparent !important;
+                        color: #64748b !important;
+                    }
+                }
+
+                .cardArrowBtn {
+                    background: #f8fafc !important;
+                    border: 1px solid #e2e8f0 !important;
+                    color: #64748b !important;
+                }
+            }
+        }
+    }
+
+    /* Messages & Chat Rows */
+    .messageRow {
+        .pairBadge {
+            background: #ecfdf5 !important;
+            color: #059669 !important;
+            border: 1px solid rgba(16, 185, 129, 0.3) !important;
+        }
+
+        .assistantMessage {
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            color: #1e293b !important;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
+
+            p, li, span {
+                color: #1e293b !important;
+            }
+
+            .formattedList li {
+                color: #1e293b !important;
+            }
+
+            .visionWarningCard {
+                background: #fef2f2 !important;
+                border-color: rgba(239, 68, 68, 0.3) !important;
+                color: #dc2626 !important;
+            }
+
+            .visionOverviewCard {
+                background: #f8fafc !important;
+                border-color: #e2e8f0 !important;
+                color: #475569 !important;
+            }
+        }
+    }
+
+    .userRow {
+        .userMessage {
+            background: #10b981 !important;
+            border: 1px solid #059669 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25) !important;
+
+            p, span {
+                color: #ffffff !important;
+            }
+        }
+    }
+
+    /* Markdown Formatted Reports & Content */
+    .chatMarkdown {
+        color: #1e293b !important;
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #0f172a !important;
+            font-weight: 700 !important;
+        }
+
+        p, li {
+            color: #1e293b !important;
+
+            &::marker {
+                color: #059669 !important;
+            }
+        }
+
+        strong, b {
+            color: #0f172a !important;
+            font-weight: 700 !important;
+        }
+
+        ul, ol {
+            li {
+                color: #1e293b !important;
+            }
+        }
+
+        table {
+            border: 1px solid #e2e8f0 !important;
+
+            th, td {
+                border-color: #e2e8f0 !important;
+            }
+
+            th {
+                background: #f8fafc !important;
+                color: #0f172a !important;
+                font-weight: 700 !important;
+            }
+
+            td {
+                background: #ffffff !important;
+                color: #1e293b !important;
+            }
+        }
+
+        hr {
+            background: #e2e8f0 !important;
+            border-top: 1px solid #e2e8f0 !important;
+        }
+
+        code {
+            background: #f1f5f9 !important;
+            color: #059669 !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+
+        pre {
+            background: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+
+            code {
+                background: transparent !important;
+                border: none !important;
+                color: #0f172a !important;
+            }
+        }
+
+        blockquote {
+            border-left-color: #10b981 !important;
+            background: #f0fdf4 !important;
+            color: #1e293b !important;
+        }
+    }
+
+    /* Clarification & Deep Analysis Options */
+    .clarificationOptionBtn {
+        background: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        color: #0f172a !important;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
+
+        &:hover {
+            background: #f0fdf4 !important;
+            border-color: #10b981 !important;
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.12) !important;
+            transform: translateY(-2px);
+
+            .clarificationOptionLabel {
+                color: #059669 !important;
+            }
+
+            .clarificationOptionIcon {
+                background: #10b981 !important;
+                border-color: #10b981 !important;
+                color: #ffffff !important;
+            }
+        }
+
+        .clarificationOptionIcon {
+            background: #ecfdf5 !important;
+            border-color: rgba(16, 185, 129, 0.3) !important;
+            color: #059669 !important;
+        }
+
+        .clarificationOptionLabel {
+            color: #0f172a !important;
+        }
+
+        .clarificationOptionSub {
+            color: #64748b !important;
+        }
+    }
+
+    .downloadReportRow {
+        border-top-color: #e2e8f0 !important;
+    }
+
+    .downloadFullReportBtn {
+        background: #10b981 !important;
+        color: #ffffff !important;
+        border: none !important;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25) !important;
+
+        &:hover {
+            background: #059669 !important;
+        }
+    }
+
+    .executiveSummaryCard,
+    .analysisCenterCard,
+    .inlineWidgetCard {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
+    }
+
+    .analysisCenterHeader,
+    .inlineWidgetHeader {
+        border-bottom-color: #f1f5f9 !important;
+
+        .analysisCenterTitle,
+        .inlineWidgetTitle {
+            color: #0f172a !important;
+        }
+    }
+
+    .srToggleBtn {
+        background: #f1f5f9 !important;
+        color: #475569 !important;
+        border-color: #cbd5e1 !important;
+
+        &:hover {
+            background: #e2e8f0 !important;
+            color: #0f172a !important;
+        }
+
+        &.srToggleActive {
+            background: #ecfdf5 !important;
+            color: #059669 !important;
+            border-color: #10b981 !important;
+        }
+    }
+
+    /* Vision Analysis Accordions */
+    .visionSummaryCard,
+    .visionOverviewCard,
+    .visionAccordionCard {
+        background: #ffffff !important;
+        border-color: #e2e8f0 !important;
+        color: #0f172a !important;
+
+        &.visionAccordionOpen {
+            border-color: #10b981 !important;
+        }
+    }
+
+    .visionAccordionHeader {
+        &:hover {
+            background: #f8fafc !important;
+        }
+    }
+
+    .visionSectionTitle {
+        color: #0f172a !important;
+    }
+
+    .visionChevron {
+        color: #64748b !important;
+
+        &.visionChevronOpen {
+            color: #059669 !important;
+        }
+    }
+
+    .visionAccordionBody {
+        border-top-color: #f1f5f9 !important;
+        background: #ffffff !important;
+        color: #1e293b !important;
+    }
+
+    .visionDescText,
+    .visionSummaryText,
+    .visionFieldValue,
+    .visionActionText {
+        color: #334155 !important;
+    }
+
+    .visionObservationText {
+        color: #0284c7 !important;
+    }
+
+    .badgeSlate {
+        background: #f1f5f9 !important;
+        color: #475569 !important;
+        border-color: #cbd5e1 !important;
+    }
+
+    .visionSwingBox {
+        background: #f8fafc !important;
+        border-color: #e2e8f0 !important;
+    }
+}

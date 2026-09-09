@@ -412,9 +412,6 @@ const Signup = () => {
                                                     <span className={styles.featurePillText}>{feat.title}</span>
                                                     <span className={styles.featurePillDesc}>{feat.desc}</span>
                                                 </div>
-                                                {feat.badge && (
-                                                    <span className={styles.featureBadge}>{feat.badge}</span>
-                                                )}
                                             </div>
                                         );
                                     })}

@@ -216,7 +216,18 @@
     "stop": "Itigil",
     "latestSnapshot": "Pinakabagong Timeframe Snapshot",
     "captureLowerTimeframe": "Kumuha ng mababang timeframe",
-    "captureHigherTimeframe": "Kumuha ng mataas na timeframe"
+    "captureHigherTimeframe": "Kumuha ng mataas na timeframe",
+    "quickStartBadge": "AI SCANNER QUICK START",
+    "howItWorksTitle": "Paano I-scan ang Iyong Chart sa Real-Time",
+    "howItWorksSubtitle": "Ikonekta ang iyong live charting screen para sa instant AI technical analysis.",
+    "guideStep1Title": "Buksan ang Iyong Chart",
+    "guideStep1Desc": "Buksan ang TradingView, MT4/MT5, Binance, o kahit anong chart sa iyong screen.",
+    "guideStep2Title": "I-share ang Screen o Window",
+    "guideStep2Desc": "I-click ang \"Start Sharing\" at piliin ang chart tab, window, o buong monitor.",
+    "guideStep3Title": "Instant AI Technical Scan",
+    "guideStep3Desc": "Kumuha ng snapshot o i-enable ang Auto-Capture para sa real-time pattern analysis.",
+    "proTipLabel": "Pro Tip:",
+    "proTipText": "Siguraduhing malinaw ang candlestick at price axis labels."
   },
   "aiChat": {
     "title": "AI Forex Assistant",

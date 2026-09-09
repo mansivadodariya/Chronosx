@@ -18,6 +18,8 @@ import SubPanesArea from './components/SubPanesArea';
 import useSubPaneCharts from './hooks/useSubPaneCharts';
 import useOverlayIndicators from './hooks/useOverlayIndicators';
 import useChartDataLoader from './hooks/useChartDataLoader';
+import { useIndicatorState } from './hooks/useIndicatorState';
+import { useChartExport } from './hooks/useChartExport';
 
 // Re-export constants and calculations for 100% backwards compatibility
 export {
@@ -181,150 +183,28 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
         });
     }, [priceData?.price, loading, activeSymbolClean]);
 
-    // Indicator Configs & Visibility States
-    const [indicatorConfigs, setIndicatorConfigs] = useState(DEFAULT_INDICATOR_CONFIGS);
-    const [indicatorVisibility, setIndicatorVisibility] = useState({
-        ema10: true,
-        ema20: true,
-        ema50: true,
-        bollinger: true,
-        pivot: true,
-        rsi: true,
-        macd: true,
-        stochastic: true,
+    // Indicator Configs & Visibility States Hook
+    const {
+        indicatorConfigs,
+        indicatorVisibility,
+        editingIndicator,
+        setEditingIndicator,
+        toggleIndicatorVisibility,
+        removeIndicator,
+        openIndicatorSettings,
+        addMovingAverage,
+        toggleMAVisibility,
+        removeMovingAverage,
+        saveIndicatorConfig,
+        resetIndicatorDefaults
+    } = useIndicatorState({
+        activeIndicators,
+        setActiveIndicators,
+        movingAverages,
+        setMovingAverages,
+        chartRef,
+        maSeriesRefs: { current: null } // will be hooked
     });
-    const [editingIndicator, setEditingIndicator] = useState(null);
-
-    const toggleIndicatorVisibility = (key) => {
-        setIndicatorVisibility(prev => ({ ...prev, [key]: !prev[key] }));
-    };
-
-    const removeIndicator = (key) => {
-        setActiveIndicators(prev => ({ ...prev, [key]: false }));
-    };
-
-    const openIndicatorSettings = (key) => {
-        setEditingIndicator(key);
-    };
-
-    // Moving Averages Handlers
-    const addMovingAverage = (type = 'EMA', suggestedLength = null) => {
-        if (type === 'EMA_TOGGLE') {
-            setMovingAverages(prev => prev.filter(m => m.type !== 'EMA'));
-            return;
-        }
-        if (type === 'SMA_TOGGLE') {
-            setMovingAverages(prev => prev.filter(m => m.type !== 'SMA'));
-            return;
-        }
-
-        const activeOverlayCount = ['bollinger', 'pivot', 'rsi', 'macd', 'stochastic'].filter(k => Boolean(activeIndicators?.[k])).length;
-        const activeMACount = movingAverages ? movingAverages.filter(m => m.visible).length : 0;
-        if (activeOverlayCount + activeMACount >= 3) {
-            toast('Maximum 3 indicators can be selected at a time');
-            return;
-        }
-
-        const disabledPreset = movingAverages.find(m => m.type === type && !m.visible);
-        if (disabledPreset && !suggestedLength) {
-            setMovingAverages(prev => prev.map(m => m.id === disabledPreset.id ? { ...m, visible: true } : m));
-            return;
-        }
-
-        let nextLength = suggestedLength;
-        if (!nextLength) {
-            const existingLengths = movingAverages.filter(m => m.type === type && m.visible).map(m => m.length || m.period);
-            const standardLengths = [20, 50, 200, 10, 9, 21, 55, 89, 100];
-            nextLength = standardLengths.find(l => !existingLengths.includes(l)) || (20 + (existingLengths.length * 10));
-        }
-        const defaultColors = type === 'EMA' ? ['#38BDF8', '#AA00FF', '#FF1744'] : ['#00E5FF', '#0284C7', '#00E676'];
-        const colorIndex = movingAverages.filter(m => m.type === type).length % defaultColors.length;
-        const newMA = {
-            id: `ma_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
-            name: `${type} ${nextLength}`,
-            type,
-            length: nextLength,
-            period: nextLength,
-            source: 'close',
-            color: defaultColors[colorIndex],
-            lineWidth: 1.5,
-            visible: true,
-        };
-        setMovingAverages(prev => [...prev, newMA]);
-    };
-
-    const toggleMAVisibility = (id) => {
-        setMovingAverages(prev => {
-            const target = prev.find(m => m.id === id);
-            if (target && !target.visible) {
-                const activeOverlayCount = ['bollinger', 'pivot', 'rsi', 'macd', 'stochastic'].filter(k => Boolean(activeIndicators?.[k])).length;
-                const activeMACount = prev.filter(m => m.visible).length;
-                if (activeOverlayCount + activeMACount >= 3) {
-                    toast('Maximum 3 indicators can be selected at a time');
-                    return prev;
-                }
-            }
-            return prev.map(m => m.id === id ? { ...m, visible: !m.visible } : m);
-        });
-    };
-
-    const removeMovingAverage = (id) => {
-        setMovingAverages(prev => prev.filter(m => m.id !== id));
-        const s = maSeriesRefs.current.get(id);
-        if (s && chartRef.current) {
-            try { chartRef.current.removeSeries(s); } catch {}
-            maSeriesRefs.current.delete(id);
-        }
-    };
-
-    const saveIndicatorConfig = (newCfg) => {
-        if (!editingIndicator) return;
-        if (editingIndicator.startsWith('ma_')) {
-            setMovingAverages(prev => prev.map(m => {
-                if (m.id === editingIndicator) {
-                    const finalType = newCfg.type || m.type || 'EMA';
-                    const finalLength = newCfg.length !== undefined ? Number(newCfg.length) : (m.length || 20);
-                    return {
-                        ...m,
-                        ...newCfg,
-                        type: finalType,
-                        length: finalLength,
-                        period: finalLength,
-                        name: `${finalType} ${finalLength}`,
-                    };
-                }
-                return m;
-            }));
-        } else {
-            setIndicatorConfigs(prev => ({ ...prev, [editingIndicator]: newCfg }));
-        }
-    };
-
-    const resetIndicatorDefaults = () => {
-        if (!editingIndicator) return;
-        if (editingIndicator.startsWith('ma_')) {
-            setMovingAverages(prev => prev.map(m => {
-                if (m.id === editingIndicator) {
-                    const defaultLen = 20;
-                    const finalType = m.type || 'EMA';
-                    return {
-                        ...m,
-                        length: defaultLen,
-                        period: defaultLen,
-                        name: `${finalType} ${defaultLen}`,
-                        source: 'close',
-                        lineWidth: 1.5,
-                    };
-                }
-                return m;
-            }));
-        } else {
-            setIndicatorConfigs(prev => ({
-                ...prev,
-                [editingIndicator]: { ...DEFAULT_INDICATOR_CONFIGS[editingIndicator] }
-            }));
-        }
-    };
 
     // Main Chart Overlay Indicators Hook
     const { maSeriesRefs, updateIndicators } = useOverlayIndicators({
@@ -617,55 +497,13 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
         }
     }, [bullishColor, bearishColor, chartType]);
 
-    // Camera Screenshot Actions Implementation
-    const downloadChartImage = () => {
-        if (!chartRef.current) return;
-        const canvas = chartRef.current.takeScreenshot();
-        const dataUrl = canvas.toDataURL('image/png');
-        const link = document.createElement('a');
-        link.download = `${activeSymbolClean}_chart.png`;
-        link.href = dataUrl;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        toast('Chart downloaded as ' + activeSymbolClean + '_chart.png');
-        setCameraDropdownOpen(false);
-    };
-
-    const copyChartImageToClipboard = () => {
-        if (!chartRef.current) return;
-        const canvas = chartRef.current.takeScreenshot();
-        canvas.toBlob(async (blob) => {
-            if (!blob) return;
-            try {
-                await navigator.clipboard.write([
-                    new ClipboardItem({ 'image/png': blob }),
-                ]);
-                toast('Chart screenshot copied to clipboard!');
-            } catch (err) {
-                console.error('Copy screenshot error:', err);
-                toast('Could not copy image to clipboard.');
-            }
-        });
-        setCameraDropdownOpen(false);
-    };
-
-    const attachChartToChat = () => {
-        if (!chartRef.current) return;
-        const canvas = chartRef.current.takeScreenshot();
-        const dataUrl = canvas.toDataURL('image/png');
-        if (onAttachScreenshot) {
-            onAttachScreenshot({
-                name: `${activeSymbolClean}_chart.png`,
-                url: dataUrl,
-                type: 'image/png',
-            });
-            toast('Chart screenshot attached to chat message!');
-        } else {
-            toast('Chart screenshot captured!');
-        }
-        setCameraDropdownOpen(false);
-    };
+    // Camera Screenshot Actions Hook
+    const { downloadChartImage, copyChartImageToClipboard, attachChartToChat } = useChartExport({
+        chartRef,
+        activeSymbolClean,
+        onAttachScreenshot,
+        setCameraDropdownOpen
+    });
 
     const closeAllDropdowns = () => {
         setSymbolDropdownOpen(false);

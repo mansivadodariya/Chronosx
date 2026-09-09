@@ -10,103 +10,23 @@ import { getStoredUser, getStoredUserId } from '@/lib/authSession';
 import { affiliateApi } from '@/lib/api';
 import toast from 'react-hot-toast';
 import styles from './affiliate.module.scss';
-
-// SVG Icons
-const UsersGroupIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-        <circle cx="9" cy="7" r="4" />
-        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-    </svg>
-);
-
-const WalletCryptoIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4" />
-        <path d="M4 6v12a2 2 0 0 0 2 2h14v-4" />
-        <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z" />
-    </svg>
-);
-
-const CopyIcon = () => (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-    </svg>
-);
-
-const CheckIcon = () => (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="20 6 9 17 4 12" />
-    </svg>
-);
-
-const StarIcon = () => (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-    </svg>
-);
-
-const BoltIcon = () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-    </svg>
-);
-
-const EyeIcon = () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-        <circle cx="12" cy="12" r="3" />
-    </svg>
-);
-
-const BotIcon = () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="11" width="18" height="10" rx="2" />
-        <circle cx="12" cy="5" r="2" />
-        <path d="M12 7v4" />
-        <line x1="8" y1="16" x2="8" y2="16" />
-        <line x1="16" y1="16" x2="16" y2="16" />
-    </svg>
-);
-
-const ShieldLockIcon = () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-    </svg>
-);
-
-const QrCodeIcon = () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="7" height="7" rx="1.5" />
-        <rect x="14" y="3" width="7" height="7" rx="1.5" />
-        <rect x="14" y="14" width="7" height="7" rx="1.5" />
-        <rect x="3" y="14" width="7" height="7" rx="1.5" />
-    </svg>
-);
-
-const SparkleIcon = () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-    </svg>
-);
-
-const ExternalLinkIcon = () => (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-        <polyline points="15 3 21 3 21 9" />
-        <line x1="10" y1="14" x2="21" y2="3" />
-    </svg>
-);
-
-const CloseIcon = () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="18" y1="6" x2="6" y2="18" />
-        <line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
-);
-
+import {
+    UsersGroupIcon,
+    WalletCryptoIcon,
+    CopyIcon,
+    CheckIcon,
+    StarIcon,
+    BoltIcon,
+    EyeIcon,
+    BotIcon,
+    ShieldLockIcon,
+    QrCodeIcon,
+    SparkleIcon,
+    ExternalLinkIcon,
+    CloseIcon
+} from './components/AffiliateIcons';
+import { WithdrawModal, QrModal } from './components/WithdrawModal';
+import { MarketingKitTab } from './components/MarketingKitTab';
 export default function AffiliatePage() {
     const { t } = useLanguage();
     const { theme } = useTheme();
@@ -732,260 +652,32 @@ export default function AffiliatePage() {
 
             {/* Tab 4: Marketing Kit */}
             {activeTab === 'marketing' && (
-                <div className={styles.marketingKitGrid}>
-                    <div className={styles.marketingPitchCard}>
-                        <div className={styles.pitchHeader}>
-                            <h4>{t('affiliate.twitterPitchTitle', 'High-Converting Twitter / X Post')}</h4>
-                            <button
-                                type="button"
-                                className={styles.copyTemplateBtn}
-                                onClick={() => handleCopyText(
-                                    `Just started using @ChronosX AI for multi-timeframe pattern detection & algorithmic bot execution. Cleanest interface in modern prop and forex trading.\n\nSign up with my link for exclusive perks:\n${referralUrl}`,
-                                    'Twitter template copied!'
-                                )}
-                            >
-                                <CopyIcon />
-                                <span>{t('affiliate.copyTemplate', 'Copy Template')}</span>
-                            </button>
-                        </div>
-                        <p className={styles.pitchBody}>
-                            &quot;Just started using @ChronosX AI for multi-timeframe pattern detection &amp; algorithmic bot execution. Cleanest interface in modern prop and forex trading.<br/><br/>
-                            Sign up with my link for exclusive perks:<br/>
-                            <span className={styles.linkHighlight}>{referralUrl}</span>&quot;
-                        </p>
-                    </div>
-
-                    <div className={styles.marketingPitchCard}>
-                        <div className={styles.pitchHeader}>
-                            <h4>{t('affiliate.telegramPitchTitle', 'Telegram / Discord Group Broadcast')}</h4>
-                            <button
-                                type="button"
-                                className={styles.copyTemplateBtn}
-                                onClick={() => handleCopyText(
-                                    `For all traders looking for an institutional-grade edge: ChronosX offers automated MT5 bridging, neural OCR chart vision, and 50+ pre-built algorithmic bots.\n\nClaim your account here:\n${referralUrl}`,
-                                    'Telegram template copied!'
-                                )}
-                            >
-                                <CopyIcon />
-                                <span>{t('affiliate.copyTemplate', 'Copy Template')}</span>
-                            </button>
-                        </div>
-                        <p className={styles.pitchBody}>
-                            &quot;For all traders looking for an institutional-grade edge: ChronosX offers automated MT5 bridging, neural OCR chart vision, and 50+ pre-built algorithmic bots.<br/><br/>
-                            Claim your account here:<br/>
-                            <span className={styles.linkHighlight}>{referralUrl}</span>&quot;
-                        </p>
-                    </div>
-
-                    <div className={styles.marketingPitchCard}>
-                        <div className={styles.pitchHeader}>
-                            <h4>{t('affiliate.keyFeaturesTitle', 'Key Features to Highlight')}</h4>
-                        </div>
-                        <ul className={styles.featureBulletList}>
-                            <li><span className={styles.bulletIcon}><BoltIcon /></span> <strong>{t('affiliate.featureLatency', '< 15ms Latency:')}</strong> {t('affiliate.featureLatencyDesc', 'Direct institutional bridge to MetaTrader 5 & cTrader.')}</li>
-                            <li><span className={styles.bulletIcon}><EyeIcon /></span> <strong>{t('affiliate.featureVision', 'Neural OCR Vision:')}</strong> {t('affiliate.featureVisionDesc', 'Multi-timeframe harmonic & breakout pattern detection.')}</li>
-                            <li><span className={styles.bulletIcon}><BotIcon /></span> <strong>{t('affiliate.featureBots', '50+ Algorithmic Bots:')}</strong> {t('affiliate.featureBotsDesc', 'Quantitative playbooks with backtested win metrics.')}</li>
-                            <li><span className={styles.bulletIcon}><ShieldLockIcon /></span> <strong>{t('affiliate.featureSecurity', 'Non-Custodial Security:')}</strong> {t('affiliate.featureSecurityDesc', '256-bit bank grade encryption.')}</li>
-                        </ul>
-                    </div>
-                </div>
+                <MarketingKitTab styles={styles} t={t} handleCopyText={handleCopyText} />
             )}
 
             {/* 5. Crypto Withdrawal Request Modal */}
-            <AnimatePresence>
-                {showWithdrawModal && (
-                    <div className={styles.modalOverlay} onClick={() => setShowWithdrawModal(false)}>
-                        <motion.div
-                            className={styles.modalCard}
-                            onClick={(e) => e.stopPropagation()}
-                            initial={{ opacity: 0, scale: 0.95, y: 15 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.95, y: 15 }}
-                            transition={{ duration: 0.2 }}
-                        >
-                            <div className={styles.modalHeader}>
-                                <div className={styles.modalTitleGroup}>
-                                    <div className={styles.modalIconWrap}>
-                                        <WalletCryptoIcon />
-                                    </div>
-                                    <div>
-                                        <h3>{t('affiliate.modalWithdrawTitle', 'Request Crypto Withdrawal')}</h3>
-                                        <p>{t('affiliate.modalWithdrawDesc', 'Fast on-chain settlement directly to your wallet')}</p>
-                                    </div>
-                                </div>
-                                <button type="button" className={styles.modalCloseBtn} onClick={() => setShowWithdrawModal(false)}>
-                                    <CloseIcon />
-                                </button>
-                            </div>
-
-                            <form onSubmit={handleWithdrawSubmit} className={styles.modalForm}>
-                                {/* Balance Notice */}
-                                <div className={styles.modalBalanceBox}>
-                                    <span className={styles.balanceLabel}>{t('affiliate.withdrawableBalance', 'Withdrawable Balance')}</span>
-                                    <span className={styles.balanceAmount}>${stats.withdrawable_balance.toFixed(2)} USDT</span>
-                                </div>
-
-                                {/* Asset Selection */}
-                                <div className={styles.formGroup}>
-                                    <label>{t('affiliate.selectCryptoAsset', 'Select Crypto Asset')}</label>
-                                    <div className={styles.assetSelector}>
-                                        {['USDT', 'USDC'].map((asset) => (
-                                            <button
-                                                type="button"
-                                                key={asset}
-                                                className={`${styles.assetOption} ${withdrawForm.asset === asset ? styles.assetActive : ''}`}
-                                                onClick={() => setWithdrawForm(f => ({ ...f, asset }))}
-                                            >
-                                                <span className={styles.coinCircle}>{asset}</span>
-                                                <span>{asset} ({asset === 'USDT' ? 'Tether' : 'USD Coin'})</span>
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Network Selection */}
-                                <div className={styles.formGroup}>
-                                    <label>{t('affiliate.selectNetwork', 'Select Network')}</label>
-                                    <div className={styles.networkGrid}>
-                                        {[
-                                            { id: 'TRC20', name: 'Tron (TRC20)', speed: '~2 mins' },
-                                            { id: 'BEP20', name: 'BNB Smart Chain (BEP20)', speed: '~1 min' },
-                                            { id: 'SOLANA', name: 'Solana (SPL)', speed: '< 30s' },
-                                            { id: 'ERC20', name: 'Ethereum (ERC20)', speed: '~5 mins' },
-                                        ].map((net) => (
-                                            <button
-                                                type="button"
-                                                key={net.id}
-                                                className={`${styles.netBtn} ${withdrawForm.network === net.id ? styles.netActive : ''}`}
-                                                onClick={() => setWithdrawForm(f => ({ ...f, network: net.id }))}
-                                            >
-                                                <span className={styles.netName}>{net.name}</span>
-                                                <span className={styles.netSpeed}>{net.speed}</span>
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Destination Address */}
-                                <div className={styles.formGroup}>
-                                    <label>{t('affiliate.destWalletAddress', 'Destination Wallet Address')}</label>
-                                    <div className={styles.inputWithAction}>
-                                        <input
-                                            type="text"
-                                            placeholder={t('affiliate.pastePlaceholder', 'Paste your {network} {asset} address').replace('{network}', withdrawForm.network).replace('{asset}', withdrawForm.asset)}
-                                            value={withdrawForm.wallet_address}
-                                            onChange={(e) => setWithdrawForm(f => ({ ...f, wallet_address: e.target.value.trim() }))}
-                                            required
-                                        />
-                                        <button
-                                            type="button"
-                                            className={styles.inlinePasteBtn}
-                                            onClick={async () => {
-                                                if (navigator?.clipboard) {
-                                                    const clip = await navigator.clipboard.readText();
-                                                    if (clip) setWithdrawForm(f => ({ ...f, wallet_address: clip.trim() }));
-                                                }
-                                            }}
-                                        >
-                                            {t('affiliate.pasteBtn', 'Paste')}
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Amount Input */}
-                                <div className={styles.formGroup}>
-                                    <div className={styles.amountLabelRow}>
-                                        <label>{t('affiliate.withdrawalAmount', 'Withdrawal Amount (${asset})').replace('{asset}', withdrawForm.asset)}</label>
-                                        <span className={styles.minLimitText}>{t('affiliate.minLimit', 'Min: ${min}.00').replace('{min}', stats.current_tier?.min_withdrawal || 50)}</span>
-                                    </div>
-                                    <div className={styles.inputWithAction}>
-                                        <input
-                                            type="number"
-                                            step="0.01"
-                                            min={stats.current_tier?.min_withdrawal || 50}
-                                            max={stats.withdrawable_balance}
-                                            placeholder="0.00"
-                                            value={withdrawForm.amount}
-                                            onChange={(e) => setWithdrawForm(f => ({ ...f, amount: e.target.value }))}
-                                            required
-                                        />
-                                        <button
-                                            type="button"
-                                            className={styles.inlineMaxBtn}
-                                            onClick={() => setWithdrawForm(f => ({ ...f, amount: String(stats.withdrawable_balance) }))}
-                                        >
-                                            {t('affiliate.maxBtn', 'MAX')}
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Summary Breakdown */}
-                                <div className={styles.feeBreakdown}>
-                                    <div className={styles.feeRow}>
-                                        <span>{t('affiliate.networkFee', 'Network Transaction Fee:')}</span>
-                                        <span className={styles.feeFree}>{t('affiliate.zeroFee', '$0.00 (Zero Fee)')}</span>
-                                    </div>
-                                    <div className={styles.feeRow}>
-                                        <span>{t('affiliate.estimatedSettlement', 'Estimated Settlement:')}</span>
-                                        <span>{t('affiliate.within24h', 'Within 24 Hours')}</span>
-                                    </div>
-                                    <div className={`${styles.feeRow} ${styles.totalRow}`}>
-                                        <span>{t('affiliate.netAmountReceive', 'Net Amount to Receive:')}</span>
-                                        <strong>${Number(withdrawForm.amount || 0).toFixed(2)} {withdrawForm.asset}</strong>
-                                    </div>
-                                </div>
-
-                                <button
-                                    type="submit"
-                                    className={styles.modalSubmitBtn}
-                                    disabled={withdrawing || stats.withdrawable_balance <= 0}
-                                >
-                                    {withdrawing ? t('affiliate.submittingRequest', 'Submitting Request...') : t('affiliate.confirmWithdrawal', 'Confirm Crypto Withdrawal')}
-                                </button>
-                            </form>
-                        </motion.div>
-                    </div>
-                )}
-            </AnimatePresence>
+            <WithdrawModal
+                showWithdrawModal={showWithdrawModal}
+                setShowWithdrawModal={setShowWithdrawModal}
+                styles={styles}
+                t={t}
+                handleWithdrawSubmit={handleWithdrawSubmit}
+                stats={stats}
+                withdrawForm={withdrawForm}
+                setWithdrawForm={setWithdrawForm}
+                withdrawing={withdrawing}
+            />
 
             {/* 6. QR Code Modal */}
-            <AnimatePresence>
-                {showQrModal && (
-                    <div className={styles.modalOverlay} onClick={() => setShowQrModal(false)}>
-                        <motion.div
-                            className={styles.qrModalCard}
-                            onClick={(e) => e.stopPropagation()}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.9 }}
-                        >
-                            <div className={styles.modalHeader}>
-                                <h3>{t('affiliate.scanQrTitle', 'Scan to Join via Referral')}</h3>
-                                <button type="button" className={styles.modalCloseBtn} onClick={() => setShowQrModal(false)}>
-                                    <CloseIcon />
-                                </button>
-                            </div>
-
-                            <div className={styles.qrBox}>
-                                <img
-                                    src={`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(referralUrl)}&color=18C98B&bgcolor=040D09`}
-                                    alt="Referral QR Code"
-                                    className={styles.qrImage}
-                                />
-                                <span className={styles.qrCodeText}>{t('affiliate.codePrefix', 'Code:')} {referralCode}</span>
-                            </div>
-
-                            <button
-                                type="button"
-                                className={styles.modalSubmitBtn}
-                                onClick={handleCopyLink}
-                            >
-                                {t('affiliate.copyLink', 'Copy Link')} ({referralCode})
-                            </button>
-                        </motion.div>
-                    </div>
-                )}
-            </AnimatePresence>
+            <QrModal
+                showQrModal={showQrModal}
+                setShowQrModal={setShowQrModal}
+                styles={styles}
+                t={t}
+                referralUrl={referralUrl}
+                referralCode={referralCode}
+                handleCopyLink={handleCopyLink}
+            />
         </div>
     );
 }

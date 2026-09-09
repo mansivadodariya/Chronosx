@@ -1,0 +1,477 @@
+/* ==========================================================================
+   Comprehensive Light Theme Overrides for AI Assistant (Copilot & Chart) - Details
+   ========================================================================== */
+:global(html.light) .aiAssistant,
+.aiAssistant.isLight {
+    .visionSwingLabel {
+        color: #64748b !important;
+    }
+
+    .visionPatternText {
+        color: #059669 !important;
+    }
+
+    .visionLevelCardGreen,
+    .visionZoneCardGreen,
+    .visionActionCardGreen {
+        background: #f0fdf4 !important;
+        border-color: rgba(16, 185, 129, 0.35) !important;
+    }
+
+    .visionLevelCardRed,
+    .visionZoneCardRed,
+    .visionActionCardRed {
+        background: #fef2f2 !important;
+        border-color: rgba(239, 68, 68, 0.35) !important;
+    }
+
+    .visionLevelInfo,
+    .visionZoneText {
+        color: #1e293b !important;
+
+        strong {
+            color: #0f172a !important;
+        }
+    }
+
+    .visionActionTitleGreen {
+        color: #059669 !important;
+    }
+
+    .visionActionTitleRed {
+        color: #dc2626 !important;
+    }
+
+    .visionActionSub {
+        color: #64748b !important;
+    }
+
+    .visionCountBadge {
+        background: #f1f5f9 !important;
+        color: #475569 !important;
+        border-color: #cbd5e1 !important;
+    }
+
+    .visionFieldKey,
+    .visionBlockHeading {
+        color: #059669 !important;
+    }
+
+    .visionFieldBlock {
+        background: #f8fafc !important;
+        border-color: #e2e8f0 !important;
+    }
+
+    .visionList li {
+        color: #1e293b !important;
+    }
+
+    /* Chat Input Bar & Chips */
+    .chipsRow {
+        .chip {
+            background: #f1f5f9 !important;
+            color: #059669 !important;
+            border: 1px solid #e2e8f0 !important;
+
+            &:hover {
+                background: #10b981 !important;
+                color: #ffffff !important;
+                border-color: #10b981 !important;
+            }
+        }
+    }
+
+    .inputArea {
+        background: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04) !important;
+
+        .textarea,
+        textarea {
+            color: #0f172a !important;
+
+            &::placeholder {
+                color: #94a3b8 !important;
+            }
+        }
+
+        .actionBtn {
+            color: #64748b !important;
+
+            &:hover {
+                background: #f1f5f9 !important;
+                color: #0f172a !important;
+            }
+        }
+
+        .sendBtn {
+            background: #10b981 !important;
+            color: #ffffff !important;
+
+            &:hover {
+                background: #059669 !important;
+            }
+        }
+
+        .leftInputControls {
+            .attachDropdownContainer {
+                .attachPlusBtn {
+                    background: transparent !important;
+                    color: #64748b !important;
+
+                    &:hover,
+                    &.attachPlusActive {
+                        color: #10b981 !important;
+                        background: transparent !important;
+                    }
+                }
+
+                .attachFloatingMenu,
+                .attachDropdownMenu {
+                    background: #ffffff !important;
+                    border: 1px solid #e2e8f0 !important;
+                    border-radius: 10px !important;
+                    box-shadow: 0 12px 36px -4px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(15, 23, 42, 0.06) !important;
+
+                    .attachMenuItem {
+                        background: transparent !important;
+                        color: #1e293b !important;
+
+                        svg {
+                            color: #10b981 !important;
+                        }
+
+                        &:hover {
+                            background: #f0fdf4 !important;
+                            color: #059669 !important;
+
+                            svg {
+                                color: #059669 !important;
+                            }
+                        }
+
+                        &.attachMenuItemActive {
+                            background: #ecfdf5 !important;
+                            color: #059669 !important;
+                        }
+                    }
+                }
+            }
+
+            .dropdownContainer {
+                .dropdownTrigger {
+                    background: #ffffff !important;
+                    border: 1px solid #cbd5e1 !important;
+                    border-radius: 8px !important;
+                    height: 32px !important;
+                    padding: 0 10px !important;
+                    color: #0f172a !important;
+                    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+                    display: inline-flex !important;
+                    align-items: center !important;
+                    gap: 6px !important;
+                    cursor: pointer !important;
+                    transition: all 0.15s ease !important;
+
+                    span {
+                        color: #0f172a !important;
+                        font-weight: 600 !important;
+                        font-size: 12.5px !important;
+                    }
+
+                    .chevron {
+                        color: #64748b !important;
+                        display: flex !important;
+                        align-items: center !important;
+
+                        svg {
+                            color: #64748b !important;
+                            width: 12px !important;
+                            height: 12px !important;
+                        }
+                    }
+
+                    &:hover {
+                        background: #f8fafc !important;
+                        border-color: #10b981 !important;
+                        color: #059669 !important;
+
+                        span {
+                            color: #059669 !important;
+                        }
+
+                        .chevron {
+                            color: #059669 !important;
+
+                            svg {
+                                color: #059669 !important;
+                            }
+                        }
+                    }
+                }
+
+                .dropdownMenu {
+                    background: #ffffff !important;
+                    border: 1px solid #e2e8f0 !important;
+                    border-radius: 10px !important;
+                    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.12) !important;
+
+                    .dropdownHeader {
+                        background: #f8fafc !important;
+                        color: #64748b !important;
+                        border-bottom: 1px solid #f1f5f9 !important;
+                    }
+
+                    .dropdownList {
+                        .dropdownItem {
+                            color: #334155 !important;
+                            font-weight: 500 !important;
+
+                            &:hover {
+                                background: #f0fdf4 !important;
+                                color: #059669 !important;
+                            }
+
+                            &.activePair {
+                                background: #ecfdf5 !important;
+                                color: #059669 !important;
+                                font-weight: 700 !important;
+                            }
+
+                            .checkmark {
+                                color: #059669 !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .compactAttachmentCard {
+            background: #f8fafc !important;
+            border-color: #cbd5e1 !important;
+        }
+    }
+
+    /* Right Panel: Chart Pane & Header Controls */
+    .chartPaneContainer {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
+    }
+
+    .chartHeaderControls {
+        background: #ffffff !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        color: #0f172a !important;
+    }
+
+    .symbolSelectorBtn {
+        background: #ffffff !important;
+        color: #0f172a !important;
+        border: 1px solid #cbd5e1 !important;
+
+        &:hover {
+            background: #f1f5f9 !important;
+            border-color: #94a3b8 !important;
+        }
+    }
+
+    .timeframeBar {
+        background: #f1f5f9 !important;
+        border: 1px solid #e2e8f0 !important;
+
+        .tfBtn {
+            color: #64748b !important;
+
+            &:hover {
+                color: #0f172a !important;
+                background: #e2e8f0 !important;
+            }
+
+            &.activeTf {
+                background: #10b981 !important;
+                color: #ffffff !important;
+            }
+        }
+    }
+
+    .chartTypeSelect,
+    .timeframeSelect {
+        background: #ffffff !important;
+        color: #0f172a !important;
+        border: 1px solid #cbd5e1 !important;
+
+        option {
+            background: #ffffff !important;
+            color: #0f172a !important;
+        }
+    }
+
+    .iconControlBtn,
+    .headerIconButton {
+        background: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+        color: #475569 !important;
+
+        &:hover,
+        &.activeControl {
+            background: #e2e8f0 !important;
+            color: #0f172a !important;
+        }
+    }
+
+    .dropdownMenuFloating,
+    .tickerSearchDropdownMenu {
+        background: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.15) !important;
+
+        .categoryHeader {
+            color: #94a3b8 !important;
+        }
+
+        .categorySection:not(:last-child) {
+            border-bottom-color: #f1f5f9 !important;
+        }
+
+        .dropdownMenuItem {
+            color: #334155 !important;
+
+            &:hover {
+                background: #f0fdf4 !important;
+                color: #059669 !important;
+            }
+
+            &.activeItem {
+                background: #ecfdf5 !important;
+                color: #059669 !important;
+            }
+        }
+    }
+
+    .insideChartControlPill {
+        background: rgba(255, 255, 255, 0.96) !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.1) !important;
+
+        .pillSymbolBtn,
+        .pillTimeframeBtn,
+        .pillChartTypeBtn,
+        .pillIconBtn {
+            color: #0f172a !important;
+
+            &:hover {
+                background: #f1f5f9 !important;
+            }
+        }
+
+        .pillDivider {
+            background: #e2e8f0 !important;
+        }
+    }
+
+    /* Modals & Dialogs in Light Mode */
+    .indicatorsModalCard,
+    .settingsModalCard,
+    .imagePreviewCard {
+        background: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.16) !important;
+        color: #0f172a !important;
+
+        h3, h4 {
+            color: #0f172a !important;
+        }
+
+        .settingsHeader,
+        .settingsFooter {
+            border-color: #e2e8f0 !important;
+        }
+
+        .closeBtn {
+            color: #64748b !important;
+
+            &:hover {
+                color: #0f172a !important;
+            }
+        }
+
+        .settingRow {
+            color: #334155 !important;
+        }
+
+        .toggleBtn {
+            background: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+            color: #475569 !important;
+
+            &.activeToggle {
+                background: #10b981 !important;
+                color: #ffffff !important;
+                border-color: #10b981 !important;
+            }
+        }
+
+        .resetBtn,
+        .modalCancelBtn {
+            background: #ffffff !important;
+            border: 1px solid #cbd5e1 !important;
+            color: #475569 !important;
+
+            &:hover {
+                background: #f1f5f9 !important;
+                color: #0f172a !important;
+            }
+        }
+
+        .doneBtn {
+            background: #10b981 !important;
+            color: #ffffff !important;
+
+            &:hover {
+                background: #059669 !important;
+            }
+        }
+    }
+
+    .historyModalContent {
+        .allMessage {
+            .noHistory {
+                color: #94a3b8 !important;
+            }
+
+            .messageBox {
+                background: #f8fafc !important;
+                border: 1px solid #e2e8f0 !important;
+
+                p {
+                    color: #0f172a !important;
+                }
+
+                .icon {
+                    color: #94a3b8 !important;
+
+                    &:hover {
+                        color: #ef4444 !important;
+                        background: #fee2e2 !important;
+                    }
+                }
+
+                &:hover {
+                    background: #f0fdf4 !important;
+                    border-color: #10b981 !important;
+                }
+
+                &.selectedBox {
+                    background: #ecfdf5 !important;
+                    border-color: #10b981 !important;
+                }
+            }
+        }
+    }
+
+    .modalText {
+        color: #475569 !important;
+    }
+}

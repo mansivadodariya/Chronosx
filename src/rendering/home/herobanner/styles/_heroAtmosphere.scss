@@ -1,0 +1,568 @@
+
+
+.herobanner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 100vh;
+    padding: 160px 0 90px 0;
+    overflow: hidden;
+    background: radial-gradient(130% 100% at 50% 25%, #081c14 0%, #05140e 45%, #030a07 100%);
+    display: flex;
+    align-items: center;
+
+    :global(html.light) & {
+        background: #F8FAFC !important;
+
+        .gridOverlay {
+            background-image:
+                linear-gradient(to right, rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(15, 23, 42, 0.08) 1px, transparent 1px) !important;
+            mask-image: radial-gradient(ellipse at 50% 35%, #000 70%, transparent 95%) !important;
+            -webkit-mask-image: radial-gradient(ellipse at 50% 35%, #000 70%, transparent 95%) !important;
+            opacity: 0.001 !important;
+        }
+
+        .greenSpotlightGrid {
+            opacity: 0 !important;
+            display: none !important;
+        }
+
+        .ambientGlowTop,
+        .ambientGlowCenter,
+        .ambientGlowLeft,
+        .ambientGlowRight,
+        .ambientGlowBottom {
+            opacity: 0.1 !important;
+            filter: blur(120px) !important;
+        }
+
+        .topBadgeRow {
+            .badge {
+                background: #FFFFFF !important;
+                border: 1px solid rgba(24, 201, 139, 0.45) !important;
+                box-shadow: 0 4px 18px rgba(24, 201, 139, 0.12) !important;
+
+                &:hover {
+                    background: #F0FDF4 !important;
+                    border-color: #18C98B !important;
+                    box-shadow: 0 6px 22px rgba(24, 201, 139, 0.2) !important;
+                }
+
+                .badgeText {
+                    color: #059669 !important;
+                    font-weight: 700 !important;
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    border: none !important;
+                    box-shadow: none !important;
+                    padding: 0 !important;
+                }
+            }
+        }
+
+        .heroTitle {
+            color: #0F172A !important;
+
+            .titleLine1 {
+                color: #0F172A !important;
+            }
+
+            .greenGradient {
+                color: #059669 !important;
+                background: linear-gradient(90deg, #059669 0%, #10B981 100%) !important;
+                -webkit-background-clip: text !important;
+                -webkit-text-fill-color: transparent !important;
+                filter: none !important;
+            }
+        }
+
+        .heroDesc {
+            color: #475569 !important;
+        }
+
+        .trustBadge {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(24, 201, 139, 0.35) !important;
+            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.08) !important;
+            border-radius: 8px !important;
+
+            .cornerTL,
+            .cornerTR,
+            .cornerBL,
+            .cornerBR {
+                border-color: rgba(15, 23, 42, 0.45) !important;
+            }
+
+            .avatarsGroup .avatarItem {
+                border-color: #FFFFFF !important;
+            }
+
+            .trustText {
+                .trustHighlight {
+                    color: #0F172A !important;
+                    font-weight: 600 !important;
+                }
+                .trustSub {
+                    color: #64748B !important;
+                    font-weight: 500 !important;
+                }
+            }
+        }
+
+        .hudBadge {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+
+            .badgeContent {
+                background: #FFFFFF !important;
+                border: 1px solid rgba(5, 150, 105, 0.35) !important;
+                box-shadow: 0 4px 18px rgba(15, 23, 42, 0.08), 0 0 12px rgba(5, 150, 105, 0.08) !important;
+                color: #0F172A !important;
+
+                &:hover {
+                    background: #F0FDF4 !important;
+                    border-color: #059669 !important;
+                    box-shadow: 0 8px 24px rgba(5, 150, 105, 0.18) !important;
+                }
+
+                .badgeIconWrap {
+                    background: #ECFDF5 !important;
+                    border: 1px solid rgba(5, 150, 105, 0.35) !important;
+                    color: #059669 !important;
+
+                    .badgeIcon {
+                        color: #059669 !important;
+                        filter: none !important;
+                    }
+                }
+
+                .badgeTextCol {
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    border: none !important;
+                    box-shadow: none !important;
+                    outline: none !important;
+                }
+
+                .badgeName,
+                .badgeDesc,
+                span,
+                p {
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    border: none !important;
+                    outline: none !important;
+                    box-shadow: none !important;
+                    text-decoration: none !important;
+                }
+
+                .badgeName {
+                    color: #0F172A !important;
+                    font-weight: 700 !important;
+                    font-size: 11.5px !important;
+                    line-height: 1.25 !important;
+                }
+
+                .badgeDesc {
+                    color: #475569 !important;
+                    font-weight: 500 !important;
+                    font-size: 9.5px !important;
+                    line-height: 1.2 !important;
+                }
+            }
+        }
+
+        .pentagonRaysSvg {
+            line {
+                stroke: #047857 !important;
+            }
+
+            .baseRayLine {
+                stroke: #047857 !important;
+                stroke-opacity: 0.75 !important;
+                stroke-width: 1.8px !important;
+            }
+
+            .flowingBeam {
+                stroke: #059669 !important;
+                stroke-width: 2.5px !important;
+                stroke-opacity: 1 !important;
+                filter: drop-shadow(0 0 5px rgba(4, 120, 87, 0.7)) !important;
+            }
+
+            .movingParticle {
+                fill: #047857 !important;
+                stroke: #059669 !important;
+            }
+
+            .movingParticleSmall {
+                fill: #059669 !important;
+            }
+
+            .centerTargetDot {
+                fill: #047857 !important;
+                filter: drop-shadow(0 0 6px rgba(4, 120, 87, 0.8)) !important;
+            }
+
+            .targetPulseRing {
+                stroke: #047857 !important;
+                stroke-width: 2px !important;
+            }
+        }
+
+        .heroTickerCard {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(24, 201, 139, 0.35) !important;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06) !important;
+
+            &:hover {
+                background: #F8FAFC !important;
+                border-color: #18C98B !important;
+                box-shadow: 0 8px 24px rgba(24, 201, 139, 0.18) !important;
+            }
+
+            .tickerLogoCircle {
+                background: #F1F5F9 !important;
+                border: 1px solid rgba(15, 23, 42, 0.12) !important;
+            }
+
+            .tickerCardTop {
+                .tickerCardName {
+                    color: #0F172A !important;
+                }
+                .tickerCardSymbol {
+                    color: #64748B !important;
+                }
+                .tickerSignalPill {
+                    background: rgba(16, 185, 129, 0.12) !important;
+                    color: #047857 !important;
+                    border: 1px solid rgba(5, 150, 105, 0.3) !important;
+                }
+            }
+
+            .tickerCardBottom {
+                .tickerPrice {
+                    color: #0F172A !important;
+                }
+            }
+        }
+
+        .hudOrbContainer {
+            &::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 76%;
+                height: 76%;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(6, 78, 59, 0.65) 0%, rgba(4, 120, 87, 0.45) 36%, rgba(5, 150, 105, 0.22) 58%, transparent 76%);
+                filter: blur(42px);
+                pointer-events: none;
+                z-index: 0;
+            }
+        }
+
+        .orbBlurryGlow {
+            opacity: 1 !important;
+            width: 88% !important;
+            height: 88% !important;
+            background: radial-gradient(circle, rgba(4, 120, 87, 0.55) 0%, rgba(5, 150, 105, 0.38) 35%, rgba(16, 185, 129, 0.2) 60%, rgba(6, 78, 59, 0.08) 75%, transparent 85%) !important;
+            filter: blur(52px) !important;
+        }
+
+        .socialProofBar {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(24, 201, 139, 0.28) !important;
+            box-shadow: 0 6px 25px rgba(15, 23, 42, 0.06) !important;
+
+            .proofText {
+                .starCluster .scoreText {
+                    color: #0F172A !important;
+                }
+
+                .verifiedSub {
+                    color: #64748B !important;
+                }
+            }
+
+            .proofDivider {
+                background: rgba(15, 23, 42, 0.12) !important;
+            }
+
+            .proofSpeed {
+                .speedHeader .speedLabel {
+                    color: #0F172A !important;
+                }
+
+                .speedSub {
+                    color: #047857 !important;
+                }
+            }
+        }
+    }
+
+    @include respond-to("tab") {
+        padding: 110px 0 60px 0;
+        min-height: auto;
+    }
+
+    @include respond-to("sm") {
+        padding: 120px 0 40px 0;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 1200px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent 0%, rgba(24, 201, 139, 0.35) 50%, transparent 100%);
+        z-index: 5;
+        pointer-events: none;
+    }
+
+    // Scroll background wrapper for Framer Motion animation
+    .scrollBgWrapper {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    // Dynamic Ambient Atmosphere Glows (Main #18c98b Green Aura)
+    .ambientGlowTop {
+        position: absolute;
+        top: -140px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 1500px;
+        height: 600px;
+        border-radius: 50%;
+        background: radial-gradient(ellipse at 50% 30%, rgba(24, 201, 139, 0.38) 0%, rgba(24, 201, 139, 0.16) 48%, transparent 80%);
+        filter: blur(85px);
+        pointer-events: none;
+        z-index: 1;
+        transition: all 0.5s ease;
+    }
+
+    .ambientGlowCenter {
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        max-width: 1600px;
+        height: 800px;
+        border-radius: 50%;
+        background: radial-gradient(ellipse, rgba(24, 201, 139, 0.28) 0%, rgba(24, 201, 139, 0.12) 55%, transparent 85%);
+        filter: blur(95px);
+        pointer-events: none;
+        z-index: 1;
+        transition: all 0.5s ease;
+    }
+
+    .ambientGlowLeft {
+        position: absolute;
+        top: 25%;
+        left: -120px;
+        width: 800px;
+        height: 800px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(24, 201, 139, 0.24) 0%, rgba(24, 201, 139, 0.08) 50%, transparent 75%);
+        filter: blur(100px);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .ambientGlowRight {
+        position: absolute;
+        top: 25%;
+        right: -120px;
+        width: 800px;
+        height: 800px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(24, 201, 139, 0.24) 0%, rgba(24, 201, 139, 0.08) 50%, transparent 75%);
+        filter: blur(100px);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .ambientGlowBottom {
+        position: absolute;
+        bottom: -220px;
+        right: 15%;
+        width: 900px;
+        height: 550px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(24, 201, 139, 0.22) 0%, rgba(24, 201, 139, 0.08) 45%, transparent 75%);
+        filter: blur(90px);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    // Interactive Cursor Spotlight Glow (Small, subtle localized glow)
+    .interactiveSpotlight {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(24, 201, 139, 0.26) 0%, rgba(24, 201, 139, 0.06) 50%, transparent 75%);
+        filter: blur(35px);
+        pointer-events: none;
+        z-index: 2;
+        transition: opacity 0.35s ease;
+    }
+
+    // Base Grid Overlay (Edge-to-Edge visible cyber grid)
+    .gridOverlay {
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(to right, rgba(255, 255, 255, 0.065) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.065) 1px, transparent 1px);
+        background-size: 64px 64px;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.9;
+    }
+
+    // Localized Green Spotlight Grid (Only the area around pointer gets greener!)
+    .greenSpotlightGrid {
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(to right, rgba(24, 201, 139, 0.5) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(24, 201, 139, 0.5) 1px, transparent 1px);
+        background-size: 64px 64px;
+        pointer-events: none;
+        z-index: 2;
+        transition: opacity 0.3s ease;
+    }
+
+
+
+    // SideRays wrapper: strictly visible on desktop/laptop, hidden on mobile
+    .sideRaysWrapper {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 2;
+
+        @include respond-to("sm") {
+            display: none;
+        }
+    }
+
+    // Modern High-Tech Mobile-Specific Ambient Atmosphere & Animations
+    .mobileTechAtmosphere {
+        display: none;
+
+        @include respond-to("sm") {
+            display: block;
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .mobileQuantumHalo {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 320px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(24, 201, 139, 0.25) 0%, rgba(24, 201, 139, 0.12) 42%, rgba(4, 6, 5, 0) 72%);
+            filter: blur(45px);
+            animation: mobileHaloBreathing 4.5s ease-in-out infinite alternate;
+        }
+
+        .mobileLaserScan {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(24, 201, 139, 0.7) 50%, transparent 100%);
+            box-shadow: 0 0 12px rgba(24, 201, 139, 0.85);
+            animation: mobileLaserScan 6s ease-in-out infinite;
+        }
+
+        .mobileConstellation {
+            position: absolute;
+            inset: 0;
+
+            .particleDot {
+                position: absolute;
+                border-radius: 50%;
+                background: #6EE7B7;
+                box-shadow: 0 0 8px rgba(24, 201, 139, 0.9);
+
+                &.pDot1 {
+                    top: 14%;
+                    left: 12%;
+                    width: 3px;
+                    height: 3px;
+                    animation: floatParticle 5s ease-in-out infinite;
+                }
+
+                &.pDot2 {
+                    top: 26%;
+                    right: 14%;
+                    width: 4px;
+                    height: 4px;
+                    animation: floatParticle 6.5s ease-in-out 1s infinite alternate;
+                }
+
+                &.pDot3 {
+                    top: 40%;
+                    left: 8%;
+                    width: 3.5px;
+                    height: 3.5px;
+                    animation: floatParticle 4.8s ease-in-out 0.5s infinite alternate;
+                }
+
+                &.pDot4 {
+                    top: 58%;
+                    right: 10%;
+                    width: 3px;
+                    height: 3px;
+                    animation: floatParticle 7s ease-in-out 2s infinite;
+                }
+
+                &.pDot5 {
+                    top: 72%;
+                    left: 18%;
+                    width: 4px;
+                    height: 4px;
+                    animation: floatParticle 5.5s ease-in-out 1.5s infinite alternate;
+                }
+            }
+        }
+    }
+
+    :global(.container) {
+        position: relative;
+        z-index: 4;
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 24px;
+
+        @include respond-to("sm") {
+            padding: 0 16px;
+        }
+    }
+
+    // 2-Column Row Layout
+}

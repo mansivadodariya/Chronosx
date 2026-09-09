@@ -221,7 +221,18 @@
     "stop": "Stop",
     "latestSnapshot": "Latest Timeframe Snapshot",
     "captureLowerTimeframe": "Capture lower timeframe",
-    "captureHigherTimeframe": "Capture higher timeframe"
+    "captureHigherTimeframe": "Capture higher timeframe",
+    "quickStartBadge": "AI SCANNER QUICK START",
+    "howItWorksTitle": "How to Scan Your Chart in Real-Time",
+    "howItWorksSubtitle": "Connect your live charting screen to run institutional neural OCR analysis in seconds.",
+    "guideStep1Title": "Open Your Chart",
+    "guideStep1Desc": "Launch TradingView, MT4/MT5, Binance, or any brokerage chart on your screen.",
+    "guideStep2Title": "Share Screen or Window",
+    "guideStep2Desc": "Click \"Start Sharing\" and select your chart tab, browser window, or entire monitor.",
+    "guideStep3Title": "Instant AI Technical Scan",
+    "guideStep3Desc": "Capture snapshots or enable Auto-Capture to get real-time pattern detection & trade setups.",
+    "proTipLabel": "Pro Tip:",
+    "proTipText": "Ensure candles and axis labels are clearly visible. Works seamlessly with Dark and Light chart color templates."
   },
   "aiChat": {
     "title": "AI Forex Assistant",

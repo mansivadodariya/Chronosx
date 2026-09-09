@@ -1,0 +1,252 @@
+$primary: #18C98B;
+$text: #FFFFFF;
+$muted: rgba(255, 255, 255, 0.6);
+$border: rgba(24, 201, 139, 0.35);
+$danger: #FF5757;
+$success: #10b981;
+
+
+.tradeSnap {
+    .resultsPanel {
+        border: 1px solid $border;
+        border-radius: 12px;
+        background: #0D0E13;
+        display: flex;
+        flex-direction: column;
+        max-height: calc(100dvh - 180px);
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .resultsHeader {
+        padding: 16px 20px;
+        border-bottom: 1px solid $border;
+        background: rgba(24, 201, 139, 0.04);
+
+        .resultsHeaderRow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: $text;
+            font-family: "Euclid-SemiBold", sans-serif;
+        }
+    }
+
+    .liveEngineBadge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 9999px;
+        background: rgba(24, 201, 139, 0.12);
+        border: 1px solid rgba(24, 201, 139, 0.35);
+        color: #18C98B;
+        font-size: 10.5px;
+        font-weight: 800;
+        font-family: "Euclid-Bold", monospace;
+        letter-spacing: 0.8px;
+    }
+
+    .resultsBody {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 16px;
+        scroll-behavior: smooth;
+        overscroll-behavior-y: contain;
+        touch-action: pan-y;
+        -webkit-overflow-scrolling: touch;
+
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: rgba(24, 201, 139, 0.2);
+            border-radius: 3px;
+        }
+    }
+
+    .analysisErrorCard {
+        border: 1px solid rgba(239, 68, 68, 0.35);
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.09) 0%, rgba(18, 10, 10, 0.95) 100%);
+        border-radius: 12px;
+        padding: 22px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .errorIconWrap {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .errorDetails {
+        h4 {
+            margin: 0 0 4px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #FFFFFF;
+            font-family: "Euclid-Bold", sans-serif;
+        }
+
+        p {
+            margin: 0;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 380px;
+            line-height: 1.45;
+            font-family: "Euclid-Regular", sans-serif;
+        }
+    }
+
+    .retryPrimaryBtn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 24px;
+        border-radius: 9999px;
+        background: #EF4444;
+        color: #FFFFFF;
+        font-size: 13.5px;
+        font-weight: 700;
+        font-family: "Euclid-Bold", sans-serif;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+
+        &:hover {
+            background: #DC2626;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(239, 68, 68, 0.45);
+        }
+    }
+
+    .analysesListContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .resultsEmptyState {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 48px 24px;
+        color: rgba(255, 255, 255, 0.55);
+
+        .emptyIconBox {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: rgba(24, 201, 139, 0.06);
+            border: 1px solid rgba(24, 201, 139, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            margin: 0 0 6px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #FFFFFF;
+            font-family: "Euclid-Bold", sans-serif;
+        }
+
+        p {
+            margin: 0;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 320px;
+            line-height: 1.5;
+            font-family: "Euclid-Regular", sans-serif;
+
+            strong {
+                color: #18C98B;
+            }
+        }
+    }
+
+    .historyGroup {
+        margin-bottom: 24px;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .historyTime {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #18C98B;
+        margin-bottom: 12px;
+        padding: 4px 10px;
+        background: rgba(24, 201, 139, 0.08);
+        border: 1px solid rgba(24, 201, 139, 0.2);
+        border-radius: 6px;
+    }
+
+    .recentEmpty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 140px;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 14px;
+        text-align: center;
+        font-family: "Euclid-Regular", sans-serif;
+    }
+
+    .pulseDot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #18C98B;
+        box-shadow: 0 0 8px #18C98B;
+        animation: activeCandleGlow 1.2s infinite alternate ease-in-out;
+    }
+
+    @keyframes activeCandleGlow {
+        0% {
+            transform: scale(0.9);
+            opacity: 0.7;
+        }
+        100% {
+            transform: scale(1.15);
+            opacity: 1;
+        }
+    }
+
+}
