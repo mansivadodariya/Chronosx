@@ -7,15 +7,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import styles from './quickJump.module.scss';
 
-// --- Quick Jump Navigation Items Registry ---
-const QUICK_JUMP_SECTIONS = [
+// --- Quick Jump Navigation Items Dynamic Generator ---
+const getQuickJumpSections = (t) => [
     {
-        category: 'General',
+        categoryKey: 'general',
+        category: t('quickJump.catGeneral', 'General'),
         items: [
             {
                 id: 'home',
-                title: 'Home',
-                subtitle: 'Return to ChronosX main landing',
+                title: t('nav.home', 'Home'),
+                subtitle: t('quickJump.homeSub', 'Return to ChronosX main landing'),
                 href: '/',
                 keywords: ['home', 'landing', 'main', 'start'],
                 icon: (
@@ -27,8 +28,8 @@ const QUICK_JUMP_SECTIONS = [
             },
             {
                 id: 'dashboard',
-                title: 'Dashboard',
-                subtitle: 'Executive account overview & KPI analytics',
+                title: t('nav.dashboard', 'Dashboard'),
+                subtitle: t('quickJump.dashboardSub', 'Executive account overview & KPI analytics'),
                 href: '/dashboard',
                 keywords: ['dashboard', 'kpi', 'stats', 'analytics', 'overview', 'pnl'],
                 icon: (
@@ -42,8 +43,8 @@ const QUICK_JUMP_SECTIONS = [
             },
             {
                 id: 'profile',
-                title: 'Trader Profile',
-                subtitle: 'Security, personal details & settings',
+                title: t('quickJump.profileTitle', 'Trader Profile'),
+                subtitle: t('quickJump.profileSub', 'Security, personal details & settings'),
                 href: '/profile',
                 keywords: ['profile', 'settings', 'user', 'account', 'security', 'preferences'],
                 icon: (
@@ -56,12 +57,13 @@ const QUICK_JUMP_SECTIONS = [
         ],
     },
     {
-        category: 'Trading',
+        categoryKey: 'trading',
+        category: t('quickJump.catTrading', 'Trading'),
         items: [
             {
                 id: 'live-scanner',
-                title: 'Live Market Scanner',
-                subtitle: 'Live algorithmic market scanner, momentum radar & alerts',
+                title: t('nav.liveMarketScanner', 'Live Market Scanner'),
+                subtitle: t('quickJump.liveScannerSub', 'Live algorithmic market scanner, momentum radar & alerts'),
                 href: '/live-scanner',
                 keywords: ['live', 'scanner', 'trading', 'chart', 'watchlist', 'mt5', 'stream', 'order', 'forex', 'market', 'analysis'],
                 icon: (
@@ -76,8 +78,8 @@ const QUICK_JUMP_SECTIONS = [
             },
             {
                 id: 'strategy-hub',
-                title: 'Strategy Hub',
-                subtitle: 'Automated strategy signals & quantitative algorithms',
+                title: t('nav.strategyHub', 'Strategy Hub'),
+                subtitle: t('quickJump.strategyHubSub', 'Automated strategy signals & quantitative algorithms'),
                 href: '/strategy-hub',
                 keywords: ['signals', 'strategy', 'bot', 'algo', 'supertrend', 'ema', 'automated', 'engine', 'playbooks', 'hub'],
                 icon: (
@@ -88,8 +90,8 @@ const QUICK_JUMP_SECTIONS = [
             },
             {
                 id: 'chart-scanner',
-                title: 'AI Chart Scanner',
-                subtitle: 'Instant vision AI chart screenshot analysis & scanner',
+                title: t('nav.chartScanner', 'AI Chart Scanner'),
+                subtitle: t('quickJump.chartScannerSub', 'Instant vision AI chart screenshot analysis & scanner'),
                 href: '/chart-scanner',
                 keywords: ['chart', 'scanner', 'snap', 'vision', 'camera', 'scan', 'screenshot', 'pattern', 'confluence'],
                 icon: (
@@ -101,8 +103,8 @@ const QUICK_JUMP_SECTIONS = [
             },
             {
                 id: 'trade-audit',
-                title: 'AI Trade Audit',
-                subtitle: 'Statement audit, behavioral flaws & trade ledger review',
+                title: t('nav.tradeAudit', 'AI Trade Audit'),
+                subtitle: t('quickJump.tradeAuditSub', 'Statement audit, behavioral flaws & trade ledger review'),
                 href: '/trade-audit',
                 keywords: ['audit', 'past', 'history', 'statement', 'analysis', 'fomo', 'report', 'ledger', 'csv'],
                 icon: (
@@ -116,12 +118,13 @@ const QUICK_JUMP_SECTIONS = [
         ],
     },
     {
-        category: 'Copilot & AI',
+        categoryKey: 'copilot',
+        category: t('quickJump.catCopilot', 'Copilot & AI'),
         items: [
             {
                 id: 'market-assistant',
-                title: 'AI Market Assistant',
-                subtitle: 'Interactive multi-turn trading copilot & market assistant',
+                title: t('nav.marketAssistant', 'AI Market Assistant'),
+                subtitle: t('quickJump.marketAssistantSub', 'Interactive multi-turn trading copilot & market assistant'),
                 href: '/market-assistant',
                 keywords: ['chat', 'assistant', 'copilot', 'bot', 'ask', 'prompt', 'talk', 'gpt', 'trading', 'market'],
                 icon: (
@@ -137,12 +140,13 @@ const QUICK_JUMP_SECTIONS = [
         ],
     },
     {
-        category: 'Tools & Insights',
+        categoryKey: 'tools',
+        category: t('quickJump.catTools', 'Tools & Insights'),
         items: [
             {
                 id: 'calendar',
-                title: 'Economic Calendar',
-                subtitle: 'Real-time high impact macroeconomic news and events',
+                title: t('nav.economicCalendar', 'Economic Calendar'),
+                subtitle: t('quickJump.calendarSub', 'Real-time high impact macroeconomic news and events'),
                 href: '/calendar',
                 keywords: ['calendar', 'news', 'events', 'nfp', 'cpi', 'fomc', 'interest rate'],
                 icon: (
@@ -156,8 +160,8 @@ const QUICK_JUMP_SECTIONS = [
             },
             {
                 id: 'calculator',
-                title: 'Forex Calculator',
-                subtitle: 'Pip value, risk reward, margin and lot position sizing',
+                title: t('nav.forexCalculator', 'Forex Calculator'),
+                subtitle: t('quickJump.calculatorSub', 'Pip value, risk reward, margin and lot position sizing'),
                 href: '/calculator',
                 keywords: ['calculator', 'pip', 'margin', 'lots', 'sizing', 'risk', 'reward', 'leverage'],
                 icon: (
@@ -171,8 +175,8 @@ const QUICK_JUMP_SECTIONS = [
             },
             {
                 id: 'market-news',
-                title: 'Market News',
-                subtitle: 'Financial markets headline news & sentiment feeds',
+                title: t('nav.marketNews', 'Market News'),
+                subtitle: t('quickJump.marketNewsSub', 'Financial markets headline news & sentiment feeds'),
                 href: '/market-news',
                 keywords: ['news', 'market', 'headlines', 'fx', 'sentiment', 'central bank'],
                 icon: (
@@ -185,12 +189,28 @@ const QUICK_JUMP_SECTIONS = [
         ],
     },
     {
-        category: 'Account & Broker',
+        categoryKey: 'account',
+        category: t('quickJump.catAccount', 'Account & Broker'),
         items: [
             {
+                id: 'affiliate',
+                title: t('nav.affiliate', 'Affiliate'),
+                subtitle: t('quickJump.affiliateSub', 'Referral tracking, tier commissions & crypto withdrawals'),
+                href: '/affiliate',
+                keywords: ['affiliate', 'referral', 'commission', 'withdraw', 'crypto', 'usdt', 'earn', 'invite', 'partner'],
+                icon: (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                ),
+            },
+            {
                 id: 'subscription-plans',
-                title: 'Subscription Plans',
-                subtitle: 'Upgrade to Pro, Institutional tiers & active quotas',
+                title: t('nav.plans', 'Subscription Plans'),
+                subtitle: t('quickJump.plansSub', 'Upgrade to Pro, Institutional tiers & active quotas'),
                 href: '/subscription-plans',
                 keywords: ['plans', 'subscription', 'upgrade', 'pro', 'pricing', 'tier', 'membership'],
                 icon: (
@@ -201,8 +221,8 @@ const QUICK_JUMP_SECTIONS = [
             },
             {
                 id: 'broker',
-                title: 'Broker Integration',
-                subtitle: 'Connect MT4/MT5 accounts, broker API & credentials',
+                title: t('nav.broker', 'Broker Integration'),
+                subtitle: t('quickJump.brokerSub', 'Connect MT4/MT5 accounts, broker API & credentials'),
                 href: '/broker',
                 keywords: ['broker', 'mt5', 'mt4', 'metatrader', 'account', 'deposit', 'credentials'],
                 icon: (
@@ -213,8 +233,8 @@ const QUICK_JUMP_SECTIONS = [
             },
             {
                 id: 'credit-history',
-                title: 'Credit History',
-                subtitle: 'Review AI token usage, credits and transaction logs',
+                title: t('nav.creditHistory', 'Credit History'),
+                subtitle: t('quickJump.creditHistorySub', 'Review AI token usage, credits and transaction logs'),
                 href: '/credit-history',
                 keywords: ['credits', 'tokens', 'history', 'billing', 'balance', 'usage'],
                 icon: (
@@ -228,19 +248,28 @@ const QUICK_JUMP_SECTIONS = [
     },
 ];
 
-const CATEGORIES = ['All', 'Trading', 'General', 'Copilot & AI', 'Tools & Insights', 'Account & Broker'];
-
 export default function QuickJump({ isCollapsed = false }) {
     const { t } = useLanguage();
     const router = useRouter();
     const [mounted, setMounted] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState('');
-    const [activeCategory, setActiveCategory] = useState('All');
+    const [activeCategoryKey, setActiveCategoryKey] = useState('all');
     const [selectedIndex, setSelectedIndex] = useState(0);
     const inputRef = useRef(null);
     const itemRefs = useRef([]);
     const resultsListRef = useRef(null);
+
+    const categories = useMemo(() => [
+        { key: 'all', label: t('quickJump.catAll', 'All') },
+        { key: 'trading', label: t('quickJump.catTrading', 'Trading') },
+        { key: 'general', label: t('quickJump.catGeneral', 'General') },
+        { key: 'copilot', label: t('quickJump.catCopilot', 'Copilot & AI') },
+        { key: 'tools', label: t('quickJump.catTools', 'Tools & Insights') },
+        { key: 'account', label: t('quickJump.catAccount', 'Account & Broker') },
+    ], [t]);
+
+    const sections = useMemo(() => getQuickJumpSections(t), [t]);
 
     // Explicit mouse wheel scrolling support
     const handleListWheel = (e) => {
@@ -257,7 +286,7 @@ export default function QuickJump({ isCollapsed = false }) {
     const handleOpen = () => {
         setIsOpen(true);
         setQuery('');
-        setActiveCategory('All');
+        setActiveCategoryKey('all');
         setSelectedIndex(0);
     };
 
@@ -277,13 +306,13 @@ export default function QuickJump({ isCollapsed = false }) {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
-    // Filtered results by query AND activeCategory
+    // Filtered results by query AND activeCategoryKey
     const filteredSections = useMemo(() => {
         const q = query.trim().toLowerCase();
 
-        return QUICK_JUMP_SECTIONS.map((section) => {
+        return sections.map((section) => {
             // Check if section matches category filter
-            if (activeCategory !== 'All' && section.category !== activeCategory) {
+            if (activeCategoryKey !== 'all' && section.categoryKey !== activeCategoryKey) {
                 return { ...section, items: [] };
             }
 
@@ -302,7 +331,7 @@ export default function QuickJump({ isCollapsed = false }) {
                 items: matchedItems,
             };
         }).filter((section) => section.items.length > 0);
-    }, [query, activeCategory]);
+    }, [query, activeCategoryKey, sections]);
 
     // Flattened items list for keyboard selection
     const flatItems = useMemo(() => {
@@ -312,7 +341,7 @@ export default function QuickJump({ isCollapsed = false }) {
     // Reset selected index when flat items change
     useEffect(() => {
         setSelectedIndex(0);
-    }, [query, activeCategory]);
+    }, [query, activeCategoryKey]);
 
     // Auto-focus input when modal opens & handle body overflow
     useEffect(() => {
@@ -439,14 +468,14 @@ export default function QuickJump({ isCollapsed = false }) {
 
                         {/* 2. Quick Category Filter Chips */}
                         <div className={styles.filterBar}>
-                            {CATEGORIES.map((cat) => (
+                            {categories.map((cat) => (
                                 <button
-                                    key={cat}
+                                    key={cat.key}
                                     type="button"
-                                    className={`${styles.filterChip} ${activeCategory === cat ? styles.filterChipActive : ''}`}
-                                    onClick={() => setActiveCategory(cat)}
+                                    className={`${styles.filterChip} ${activeCategoryKey === cat.key ? styles.filterChipActive : ''}`}
+                                    onClick={() => setActiveCategoryKey(cat.key)}
                                 >
-                                    {cat}
+                                    {cat.label}
                                 </button>
                             ))}
                         </div>

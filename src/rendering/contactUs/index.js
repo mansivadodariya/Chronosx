@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from '@/components/toast';
 import PhoneInputLib from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import { useLanguage } from '@/context/LanguageContext';
 import { supabase } from '@/lib/supabaseClient';
 import CommonCta from '@/components/commonCta';
 import styles from './contactUs.module.scss';
@@ -73,6 +74,7 @@ const FAQS = [
 ];
 
 export default function ContactUs() {
+    const { t } = useLanguage();
     // Form State (Exact 5 fields requested: Full name, Email, Country, Phone, Message)
     const [formData, setFormData] = useState({
         name: '',
@@ -242,21 +244,20 @@ export default function ContactUs() {
                             <span className={styles.pulseDot}>
                                 <span className={styles.pulseRing} />
                             </span>
-                            <span className={styles.pillTag}>LIVE DESK</span>
+                            <span className={styles.pillTag}>{t('contactUs.liveDeskBadge', 'LIVE DESK')}</span>
                             <span className={styles.pillDivider}>|</span>
-                            <span className={styles.pillText}>24/7 Quantitative Support & Assistance</span>
-                            <span className={styles.pillBadge}>ONLINE</span>
+                            <span className={styles.pillText}>{t('contactUs.liveDeskText', '24/7 Quantitative Support & Assistance')}</span>
+                            <span className={styles.pillBadge}>{t('contactUs.onlineBadge', 'ONLINE')}</span>
                         </div>
                     </div>
 
                     <h1 className={styles.mainTitle}>
-                        Get in Touch with our <br />
-                        <span className={styles.goldGradient}>AI Trading Desk & Global Team</span>
+                        {t('contactUs.mainTitle', 'Get in Touch with our')} <br />
+                        <span className={styles.goldGradient}>{t('contactUs.mainTitleGradient', 'AI Trading Desk & Global Team')}</span>
                     </h1>
 
                     <p className={styles.mainSubtitle}>
-                        Have questions about our algorithmic models, predictive signals, or custom indicators?
-                        Reach out to us directly or fill out the message form below.
+                        {t('contactUs.mainSubtitle', 'Have questions about our algorithmic models, predictive signals, or custom indicators? Reach out to us directly or fill out the message form below.')}
                     </p>
                 </motion.header>
 
@@ -275,11 +276,11 @@ export default function ContactUs() {
 
                                 <div className={styles.infoHeader}>
                                     <div className={styles.infoBadge}>
-                                        <span>DIRECT CONTACT</span>
+                                        <span>{t('contactUs.directContactBadge', 'DIRECT CONTACT')}</span>
                                     </div>
-                                    <h2 className={styles.infoTitle}>Connect With Us</h2>
+                                    <h2 className={styles.infoTitle}>{t('contactUs.connectTitle', 'Connect With Us')}</h2>
                                     <p className={styles.infoSubtitle}>
-                                        Reach out through any of our direct contact points. Our team is available around the clock.
+                                        {t('contactUs.connectSubtitle', 'Reach out through any of our direct contact points. Our team is available around the clock.')}
                                     </p>
                                 </div>
 
@@ -293,11 +294,11 @@ export default function ContactUs() {
                                             </svg>
                                         </div>
                                         <div className={styles.infoContent}>
-                                            <span className={styles.infoLabel}>EMAIL</span>
+                                            <span className={styles.infoLabel}>{t('contactUs.labelEmail', 'EMAIL')}</span>
                                             <a href="mailto:support@chronosx.com" className={styles.infoValue}>
                                                 support@chronosx.com
                                             </a>
-                                            <span className={styles.infoHelper}>Average response time: &lt; 15 mins</span>
+                                            <span className={styles.infoHelper}>{t('contactUs.emailHelper', 'Average response time: < 15 mins')}</span>
                                         </div>
                                         <button
                                             type="button"
@@ -327,11 +328,11 @@ export default function ContactUs() {
                                             </svg>
                                         </div>
                                         <div className={styles.infoContent}>
-                                            <span className={styles.infoLabel}>CONTACT NUMBER</span>
+                                            <span className={styles.infoLabel}>{t('contactUs.labelPhone', 'CONTACT NUMBER')}</span>
                                             <a href="tel:+971568840900" className={styles.infoValue}>
                                                 +971 56 884 0900
                                             </a>
-                                            <span className={styles.infoHelper}>WhatsApp &amp; Phone Support (24/7)</span>
+                                            <span className={styles.infoHelper}>{t('contactUs.phoneHelper', 'WhatsApp & Phone Support (24/7)')}</span>
                                         </div>
                                         <button
                                             type="button"
@@ -362,11 +363,11 @@ export default function ContactUs() {
                                             </svg>
                                         </div>
                                         <div className={styles.infoContent}>
-                                            <span className={styles.infoLabel}>OFFICE ADDRESS</span>
+                                            <span className={styles.infoLabel}>{t('contactUs.labelAddress', 'OFFICE ADDRESS')}</span>
                                             <p className={styles.addressValue}>
-                                                Level 24, Boulevard Plaza, Downtown Dubai, UAE
+                                                Dubai, UAE
                                             </p>
-                                            <span className={styles.infoHelper}>Global Financial Intelligence Centre</span>
+                                            <span className={styles.infoHelper}>{t('contactUs.addressHelper', 'Global Financial Intelligence Centre')}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -374,7 +375,7 @@ export default function ContactUs() {
                                 <div className={styles.infoCardFooter}>
                                     <div className={styles.activeStatusPill}>
                                         <span className={styles.greenDot} />
-                                        <span>24/7 Global Trading Desk Online</span>
+                                        <span>{t('contactUs.footerDeskStatus', '24/7 Global Trading Desk Online')}</span>
                                     </div>
                                 </div>
                             </div>
@@ -392,11 +393,11 @@ export default function ContactUs() {
 
                                 <div className={styles.formHeader}>
                                     <div className={styles.formHeaderBadge}>
-                                        <span>SEND MESSAGE</span>
+                                        <span>{t('contactUs.sendMessageBadge', 'SEND MESSAGE')}</span>
                                     </div>
-                                    <h2 className={styles.formTitle}>Send Us a Message</h2>
+                                    <h2 className={styles.formTitle}>{t('contactUs.formTitle', 'Send Us a Message')}</h2>
                                     <p className={styles.formSubtitle}>
-                                        Fill out the details below and our team will get back to you promptly.
+                                        {t('contactUs.formSubtitle', 'Fill out the details below and our team will get back to you promptly.')}
                                     </p>
                                 </div>
 
@@ -416,7 +417,7 @@ export default function ContactUs() {
                                                 {/* 1. Full Name */}
                                                 <div className={styles.inputGroup}>
                                                     <label htmlFor="name">
-                                                        Full Name <span className={styles.required}>*</span>
+                                                        {t('contactUs.labelFullName', 'Full Name')} <span className={styles.required}>*</span>
                                                     </label>
                                                     <div className={styles.inputWrapper}>
                                                         <span className={styles.fieldIcon}>
@@ -429,7 +430,7 @@ export default function ContactUs() {
                                                             id="name"
                                                             type="text"
                                                             name="name"
-                                                            placeholder="Enter your full name"
+                                                            placeholder={t('contactUs.placeholderName', 'Enter your full name')}
                                                             value={formData.name}
                                                             onChange={handleInputChange}
                                                             required
@@ -441,7 +442,7 @@ export default function ContactUs() {
                                                 {/* 2. Email */}
                                                 <div className={styles.inputGroup}>
                                                     <label htmlFor="email">
-                                                        Email <span className={styles.required}>*</span>
+                                                        {t('contactUs.labelEmail', 'Email')} <span className={styles.required}>*</span>
                                                     </label>
                                                     <div className={styles.inputWrapper}>
                                                         <span className={styles.fieldIcon}>
@@ -454,7 +455,7 @@ export default function ContactUs() {
                                                             id="email"
                                                             type="email"
                                                             name="email"
-                                                            placeholder="example@chronosx.com"
+                                                            placeholder={t('contactUs.placeholderEmail', 'example@chronosx.com')}
                                                             value={formData.email}
                                                             onChange={handleInputChange}
                                                             required
@@ -469,7 +470,7 @@ export default function ContactUs() {
                                                 {/* 3. Country */}
                                                 <div className={styles.inputGroup}>
                                                     <label htmlFor="country">
-                                                        Country <span className={styles.required}>*</span>
+                                                        {t('contactUs.labelCountry', 'Country')} <span className={styles.required}>*</span>
                                                     </label>
                                                     <div className={styles.inputWrapper}>
                                                         <span className={styles.fieldIcon}>
@@ -504,7 +505,7 @@ export default function ContactUs() {
                                                 {/* 4. Phone (Custom Styled Phone Input) */}
                                                 <div className={styles.inputGroup}>
                                                     <label htmlFor="phone">
-                                                        Phone <span className={styles.required}>*</span>
+                                                        {t('contactUs.labelPhone', 'Phone')} <span className={styles.required}>*</span>
                                                     </label>
                                                     <div className={styles.phoneInputWrapper}>
                                                         <PhoneInputLib
@@ -512,7 +513,7 @@ export default function ContactUs() {
                                                             defaultCountry="AE"
                                                             value={formData.phone}
                                                             onChange={handlePhoneChange}
-                                                            placeholder="Phone number"
+                                                            placeholder={t('contactUs.placeholderPhone', 'Phone number')}
                                                             className={styles.phoneCustomInput}
                                                             numberInputProps={{
                                                                 id: 'phone',
@@ -528,7 +529,7 @@ export default function ContactUs() {
                                             <div className={styles.inputGroup}>
                                                 <div className={styles.labelRow}>
                                                     <label htmlFor="message">
-                                                        Message <span className={styles.required}>*</span>
+                                                        {t('contactUs.labelMessage', 'Message')} <span className={styles.required}>*</span>
                                                     </label>
                                                     <span className={styles.charCounter}>
                                                         {formData.message.length}/1000
@@ -540,7 +541,7 @@ export default function ContactUs() {
                                                         name="message"
                                                         rows={5}
                                                         maxLength={1000}
-                                                        placeholder="Write your message here..."
+                                                        placeholder={t('contactUs.placeholderMessage', 'Write your message here...')}
                                                         value={formData.message}
                                                         onChange={handleInputChange}
                                                         required
@@ -550,7 +551,6 @@ export default function ContactUs() {
 
                                             {/* Security Guarantee & Submit Button */}
                                             <div className={styles.submitSection}>
-
                                                 <motion.button
                                                     type="submit"
                                                     disabled={isSubmitting}
@@ -561,11 +561,11 @@ export default function ContactUs() {
                                                     {isSubmitting ? (
                                                         <span className={styles.loadingSpinnerWrap}>
                                                             <span className={styles.spinner} />
-                                                            <span>Sending Message...</span>
+                                                            <span>{t('contactUs.btnSending', 'Sending Message...')}</span>
                                                         </span>
                                                     ) : (
                                                         <span className={styles.btnContent}>
-                                                            <span>Send Message</span>
+                                                            <span>{t('contactUs.btnSend', 'Send Message')}</span>
                                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                                                 <line x1="22" y1="2" x2="11" y2="13" />
                                                                 <polygon points="22 2 15 22 11 13 2 9 22 2" />
@@ -591,9 +591,9 @@ export default function ContactUs() {
                                                 </svg>
                                             </div>
 
-                                            <h3 className={styles.successTitle}>Message Sent Successfully!</h3>
+                                            <h3 className={styles.successTitle}>{t('contactUs.successTitle', 'Message Sent Successfully!')}</h3>
                                             <p className={styles.successDesc}>
-                                                Thank you, <strong className={styles.highlightName}>{formData.name}</strong>. Our team has received your message and will reach out to you at <span className={styles.highlightEmail}>{formData.email}</span> shortly.
+                                                {t('contactUs.thankYou', 'Thank you')}, <strong className={styles.highlightName}>{formData.name}</strong>. {t('contactUs.successDesc', 'Our team has received your message and will reach out to you at')} <span className={styles.highlightEmail}>{formData.email}</span> {t('contactUs.shortly', 'shortly.')}
                                             </p>
 
                                             <button
@@ -601,7 +601,7 @@ export default function ContactUs() {
                                                 onClick={handleResetForm}
                                                 className={styles.resetBtn}
                                             >
-                                                Send Another Message
+                                                {t('contactUs.btnSendAnother', 'Send Another Message')}
                                             </button>
                                         </motion.div>
                                     )}
@@ -621,16 +621,37 @@ export default function ContactUs() {
                 >
                     <div className={styles.faqHeader}>
                         <div className={styles.faqBadge}>
-                            <span>SUPPORT FAQ</span>
+                            <span>{t('contactUs.faqBadge', 'SUPPORT FAQ')}</span>
                         </div>
-                        <h2 className={styles.faqTitle}>Frequently Asked Questions</h2>
+                        <h2 className={styles.faqTitle}>{t('contactUs.faqTitle', 'Frequently Asked Questions')}</h2>
                         <p className={styles.faqSubtitle}>
-                            Quick answers to common questions about ChronosX AI tools, account setup, and features.
+                            {t('contactUs.faqSubtitle', 'Quick answers to common questions about ChronosX AI tools, account setup, and features.')}
                         </p>
                     </div>
 
                     <div className={styles.faqAccordionList}>
-                        {FAQS.map((faq, index) => {
+                        {[
+                            {
+                                q: t('contactUs.faqQ1', 'How fast will I receive a response from the ChronosX team?'),
+                                a: t('contactUs.faqA1', 'Our support routing system prioritizes urgent trading requests immediately. General inquiries are typically answered within 15 minutes, while VIP and Institutional partners receive direct Slack/Telegram channels with sub-5-minute SLA.')
+                            },
+                            {
+                                q: t('contactUs.faqQ2', 'Can I integrate ChronosX AI signals directly into my MT5 or broker account?'),
+                                a: t('contactUs.faqA2', 'Yes! ChronosX provides ultra-low latency webhook APIs, MT5 bridge connectors, and automated signal alerts compatible with leading prop firms and global brokers.')
+                            },
+                            {
+                                q: t('contactUs.faqQ3', 'Do you offer 1-on-1 personalized demo onboarding?'),
+                                a: t('contactUs.faqA3', 'Absolutely. If you represent an institutional fund, prop firm, or are a high-volume trader looking for custom algorithmic indicators, please reach out via the form to schedule a private walkthrough.')
+                            },
+                            {
+                                q: t('contactUs.faqQ4', 'How do I request a custom technical indicator or algorithmic strategy?'),
+                                a: t('contactUs.faqA4', 'Submit your message with your exact specifications, chart timeframe requirements, and risk parameters. Our quant engineering team will review and respond with feasibility estimates.')
+                            },
+                            {
+                                q: t('contactUs.faqQ5', 'What is your security and data privacy protocol for trading accounts?'),
+                                a: t('contactUs.faqA5', 'ChronosX adheres to strict zero-knowledge encryption protocols. We never store personal broker credentials or execute unauthorized trades. All analytical and OCR chart vision data is transmitted via end-to-end TLS 1.3 encryption.')
+                            }
+                        ].map((faq, index) => {
                             const isOpen = openFaqIndex === index;
                             return (
                                 <div
@@ -674,11 +695,11 @@ export default function ContactUs() {
             </div>
             {/* 4. Bottom Call to Action Banner (Common CTA) */}
             <CommonCta
-                badge="READY FOR INSTITUTIONAL EXECUTION?"
-                title1="Ready to Trade with"
-                title2="Institutional AI Intelligence?"
-                description="Join thousands of elite forex and crypto traders leveraging ChronosX real-time neural vision and high-probability signals."
-                primaryBtnText="GET STARTED NOW"
+                badge={t('contactUs.ctaBadge', 'READY FOR INSTITUTIONAL EXECUTION?')}
+                title1={t('contactUs.ctaTitle1', 'Ready to Trade with')}
+                title2={t('contactUs.ctaTitle2', 'Institutional AI Intelligence?')}
+                description={t('contactUs.ctaDesc', 'Join thousands of elite forex and crypto traders leveraging ChronosX real-time neural vision and high-probability signals.')}
+                primaryBtnText={t('contactUs.ctaBtn', 'GET STARTED NOW')}
                 primaryBtnAction="/signup"
             />
 

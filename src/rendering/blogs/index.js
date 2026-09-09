@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import SectionHeader from '@/components/sectionHeader';
 import styles from './blogs.module.scss';
 import { BLOG_POSTS, BLOG_CATEGORIES } from './data';
 import { useLanguage } from '@/context/LanguageContext';
@@ -33,20 +34,14 @@ export default function BlogsListing() {
     return (
         <div className={styles.blogsWrapper}>
             <div className={styles.container}>
-                {/* Hero Header */}
-                <div className={styles.heroHeader}>
-                    <div className={styles.badgePill}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-                        </svg>
-                        <span>CHRONOSX TRADING RESEARCH & INSIGHTS</span>
-                    </div>
-                    <h1>Institutional Trading Intelligence & Macro Insights</h1>
-                    <p>
-                        Comprehensive guides, quantitative frameworks, smart money concepts, and real-time market playbooks written by institutional traders.
-                    </p>
-                </div>
+                {/* Uniform Section Header */}
+                <SectionHeader
+                    badge={t('blogs.badge', 'CHRONOSX TRADING RESEARCH & INSIGHTS')}
+                    title1={t('blogs.title1', 'Institutional Trading Intelligence &')}
+                    title2={t('blogs.title2', 'Macro Insights')}
+                    description={t('blogs.description', 'Comprehensive guides, quantitative frameworks, smart money concepts, and real-time market playbooks written by institutional traders.')}
+                    align="center"
+                />
 
                 {/* Controls Bar: Search & Category Pills */}
                 <div className={styles.controlsBar}>

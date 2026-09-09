@@ -9,8 +9,10 @@ import { authApi } from '@/lib/api';
 import { validateResetPassword } from '@/lib/validation';
 import { toast } from '@/components/toast';
 import { useLanguage } from '@/context/LanguageContext';
+import { useTheme } from '@/context/ThemeContext';
 
-const Logo = '/assets/logo/logo.png';
+const DarkLogo = '/assets/logo/logo.png';
+const LightLogo = '/assets/logo/darklogo.png';
 const Lock = '/assets/icons/lock.svg';
 const ArrowIcon = '/assets/icons/arrow.svg';
 
@@ -18,6 +20,8 @@ const ResetPassword = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { t } = useLanguage();
+    const { theme } = useTheme();
+    const Logo = theme === 'light' ? LightLogo : DarkLogo;
     const token = searchParams.get('token') || '';
 
     const [form, setForm] = useState({ new_password: '', confirm_password: '' });

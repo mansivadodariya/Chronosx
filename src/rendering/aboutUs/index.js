@@ -3,6 +3,8 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import { authNavigate } from '@/lib/authRedirect';
 import CommonCta from '@/components/commonCta';
 import styles from './aboutUs.module.scss';
@@ -128,6 +130,8 @@ const GLOBAL_HUBS = [
 
 export default function AboutUs() {
     const router = useRouter();
+    const { t } = useLanguage();
+
     return (
         <div className={styles.aboutPage}>
             {/* Ambient Atmosphere Glows */}
@@ -144,27 +148,13 @@ export default function AboutUs() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 >
-                    <div className={styles.statusPillWrapper}>
-                        <div className={styles.statusPill}>
-                            <span className={styles.pulseDot}>
-                                <span className={styles.pulseRing} />
-                            </span>
-                            <span className={styles.pillTag}>INSTITUTIONAL AI</span>
-                            <span className={styles.pillDivider}>|</span>
-                            <span className={styles.pillText}>Next-Generation Financial Intelligence Architecture</span>
-                            <span className={styles.pillBadge}>EST. 2024</span>
-                        </div>
-                    </div>
-
-                    <h1 className={styles.mainTitle}>
-                        Pioneering the Future of <br />
-                        <span className={styles.goldGradient}>Algorithmic Intelligence & Market Vision</span>
-                    </h1>
-
-                    <p className={styles.mainSubtitle}>
-                        ChronosX was forged by quantitative researchers, deep learning engineers, and veteran market makers
-                        to eliminate retail information asymmetry by delivering institutional-grade neural intelligence to traders worldwide.
-                    </p>
+                    <SectionHeader
+                        badge={t('aboutUs.heroBadge', 'INSTITUTIONAL AI // EST. 2024')}
+                        title1={t('aboutUs.heroTitle1', 'Pioneering the Future of')}
+                        title2={t('aboutUs.heroTitle2', 'Algorithmic Intelligence & Market Vision')}
+                        description={t('aboutUs.heroSubtitle', 'ChronosX was forged by quantitative researchers, deep learning engineers, and veteran market makers to eliminate retail information asymmetry by delivering institutional-grade neural intelligence to traders worldwide.')}
+                        align="center"
+                    />
                 </motion.header>
 
                 {/* 2. Institutional Metrics Strip */}
@@ -195,15 +185,13 @@ export default function AboutUs() {
 
                 {/* 3. Mission & Vision Bento Cards */}
                 <section className={styles.missionSection}>
-                    <div className={styles.sectionHeader}>
-                        <div className={styles.sectionBadge}>
-                            <span>PURPOSE & PHILOSOPHY</span>
-                        </div>
-                        <h2 className={styles.sectionTitle}>Built for Precision. Powered by Data.</h2>
-                        <p className={styles.sectionSubtitle}>
-                            We bridge the gap between complex quantitative models and everyday trading execution.
-                        </p>
-                    </div>
+                    <SectionHeader
+                        badge={t('aboutUs.missionBadge', 'PURPOSE & PHILOSOPHY')}
+                        title1={t('aboutUs.missionTitle1', 'Built for Precision.')}
+                        title2={t('aboutUs.missionTitle2', 'Powered by Data.')}
+                        description={t('aboutUs.missionSubtitle', 'We bridge the gap between complex quantitative models and everyday trading execution.')}
+                        align="center"
+                    />
 
                     <div className={styles.missionGrid}>
                         <motion.div
@@ -259,15 +247,13 @@ export default function AboutUs() {
 
                 {/* 4. Core Technology Pillars */}
                 <section className={styles.pillarsSection}>
-                    <div className={styles.sectionHeader}>
-                        <div className={styles.sectionBadge}>
-                            <span>TECHNOLOGY STACK</span>
-                        </div>
-                        <h2 className={styles.sectionTitle}>The ChronosX Architecture</h2>
-                        <p className={styles.sectionSubtitle}>
-                            Engineered from the ground up for speed, predictive accuracy, and institutional resilience.
-                        </p>
-                    </div>
+                    <SectionHeader
+                        badge={t('aboutUs.techBadge', 'TECHNOLOGY STACK')}
+                        title1={t('aboutUs.techTitle1', 'The ChronosX')}
+                        title2={t('aboutUs.techTitle2', 'Architecture')}
+                        description={t('aboutUs.techSubtitle', 'Engineered from the ground up for speed, predictive accuracy, and institutional resilience.')}
+                        align="center"
+                    />
 
                     <div className={styles.pillarsGrid}>
                         {TECH_PILLARS.map((pillar, idx) => (
@@ -297,15 +283,13 @@ export default function AboutUs() {
 
                 {/* 5. Evolutionary Timeline */}
                 <section className={styles.timelineSection}>
-                    <div className={styles.sectionHeader}>
-                        <div className={styles.sectionBadge}>
-                            <span>MILESTONES</span>
-                        </div>
-                        <h2 className={styles.sectionTitle}>Our Evolutionary Journey</h2>
-                        <p className={styles.sectionSubtitle}>
-                            From deep learning research labs to a global AI financial technology platform.
-                        </p>
-                    </div>
+                    <SectionHeader
+                        badge={t('aboutUs.timelineBadge', 'MILESTONES')}
+                        title1={t('aboutUs.timelineTitle1', 'Our Evolutionary')}
+                        title2={t('aboutUs.timelineTitle2', 'Journey')}
+                        description={t('aboutUs.timelineSubtitle', 'From deep learning research labs to a global AI financial technology platform.')}
+                        align="center"
+                    />
 
                     <div className={styles.timelineWrapper}>
                         <div className={styles.timelineTrack} />
@@ -335,15 +319,13 @@ export default function AboutUs() {
 
                 {/* 6. Executive & Quant Leadership */}
                 <section className={styles.teamSection}>
-                    <div className={styles.sectionHeader}>
-                        <div className={styles.sectionBadge}>
-                            <span>EXECUTIVE LEADERSHIP</span>
-                        </div>
-                        <h2 className={styles.sectionTitle}>Guided by Quantitative Visionaries</h2>
-                        <p className={styles.sectionSubtitle}>
-                            Our leadership team combines decades of deep tech research and top-tier financial markets expertise.
-                        </p>
-                    </div>
+                    <SectionHeader
+                        badge={t('aboutUs.leadershipBadge', 'EXECUTIVE LEADERSHIP')}
+                        title1={t('aboutUs.leadershipTitle1', 'Guided by Quantitative')}
+                        title2={t('aboutUs.leadershipTitle2', 'Visionaries')}
+                        description={t('aboutUs.leadershipSubtitle', 'Our leadership team combines decades of deep tech research and top-tier financial markets expertise.')}
+                        align="center"
+                    />
 
                     <div className={styles.teamGrid}>
                         {LEADERSHIP.map((member, index) => (

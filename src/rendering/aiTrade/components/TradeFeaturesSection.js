@@ -2,24 +2,24 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import { KEY_FEATURES } from '../constants/aiTradeData';
 import styles from '../aiTrade.module.scss';
 
 export default function TradeFeaturesSection() {
+    const { t } = useLanguage();
+
     return (
         <section className={styles.featuresSection}>
             <div className="container">
-                <div className={styles.sectionHeaderCenter}>
-                    <div className={styles.sectionBadge}>
-                        <span>✦ QUANTITATIVE VISION SUITE</span>
-                    </div>
-                    <h2 className={styles.sectionTitle}>
-                        KEY PLATFORM CAPABILITIES
-                    </h2>
-                    <p className={styles.sectionSubtitle}>
-                        Engineered to extract reliable price action patterns, liquidity sweeps, and high-probability setups from raw charts.
-                    </p>
-                </div>
+                <SectionHeader
+                    badge={t('aiTrade.featuresBadge', 'QUANTITATIVE VISION SUITE')}
+                    title1={t('aiTrade.featuresTitle1', 'KEY PLATFORM')}
+                    title2={t('aiTrade.featuresTitle2', 'CAPABILITIES')}
+                    description={t('aiTrade.featuresSubtitle', 'Engineered to extract reliable price action patterns, liquidity sweeps, and high-probability setups from raw charts.')}
+                    align="center"
+                />
 
                 <div className={styles.featuresGrid}>
                     {KEY_FEATURES.map((feat, index) => (

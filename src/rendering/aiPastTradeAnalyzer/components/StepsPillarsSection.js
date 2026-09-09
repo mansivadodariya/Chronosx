@@ -1,9 +1,13 @@
 'use client';
 
 import React from 'react';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../aiPastTradeAnalyzer.module.scss';
 
 export default function StepsPillarsSection() {
+    const { t } = useLanguage();
+
     return (
         <>
             {/* 1.7 3 Value Pillar Bento Cards (Below Cockpit) */}
@@ -54,17 +58,13 @@ export default function StepsPillarsSection() {
             {/* 2. 3 SIMPLE STEPS */}
             <section className={styles.stepsSection}>
                 <div className="container">
-                    <div className={styles.sectionHeaderCenter}>
-                        <div className={styles.sectionBadge}>
-                            <span>✦ HOW IT WORKS</span>
-                        </div>
-                        <h2 className={styles.sectionTitle}>
-                            3 SIMPLE STEPS
-                        </h2>
-                        <p className={styles.sectionSubtitle}>
-                            How ChronosX AI Past Trade Analyzer reviews and upgrades your execution.
-                        </p>
-                    </div>
+                    <SectionHeader
+                        badge={t('tradeAudit.howItWorksBadge', 'HOW IT WORKS')}
+                        title1={t('tradeAudit.howItWorksTitle1', '3 SIMPLE')}
+                        title2={t('tradeAudit.howItWorksTitle2', 'STEPS')}
+                        description={t('tradeAudit.howItWorksSubtitle', 'How ChronosX AI Past Trade Analyzer reviews and upgrades your execution.')}
+                        align="center"
+                    />
 
                     <div className={styles.stepsGrid}>
                         {/* Step 1 */}

@@ -3,6 +3,8 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import { authNavigate } from '@/lib/authRedirect';
 import { SAMPLE_PRESETS } from '../constants/aiTradeData';
 import styles from '../aiTrade.module.scss';
@@ -19,21 +21,18 @@ export default function LiveScannerDemoSection({
     onCopyPlan
 }) {
     const router = useRouter();
+    const { t } = useLanguage();
 
     return (
         <section ref={demoRef} id="live-demo" className={styles.scannerDemoSection}>
             <div className="container">
-                <div className={styles.sectionHeaderCenter}>
-                    <div className={styles.sectionBadge}>
-                        <span>✦ LIVE VISION AI SCANNER PREVIEW</span>
-                    </div>
-                    <h2 className={styles.sectionTitle}>
-                        EXPERIENCE AI TRADE IN ACTION
-                    </h2>
-                    <p className={styles.sectionSubtitle}>
-                        Select a demo preset or test-upload your own chart to inspect instant trade setups, conviction ratings, and multi-TP targets.
-                    </p>
-                </div>
+                <SectionHeader
+                    badge={t('aiTrade.demoBadge', 'LIVE VISION AI SCANNER PREVIEW')}
+                    title1={t('aiTrade.demoTitle1', 'EXPERIENCE AI TRADE')}
+                    title2={t('aiTrade.demoTitle2', 'IN ACTION')}
+                    description={t('aiTrade.demoSubtitle', 'Select a demo preset or test-upload your own chart to inspect instant trade setups, conviction ratings, and multi-TP targets.')}
+                    align="center"
+                />
 
                 <div className={styles.scannerCockpit}>
                     {/* Terminal Window Header */}

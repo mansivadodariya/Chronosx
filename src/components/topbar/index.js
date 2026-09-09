@@ -163,8 +163,11 @@ const Topbar = ({ onMenuClick }) => {
       </div>
 
       <div className={styles.right}>
+        {/* Language Selector */}
+        <LanguageToggle />
+
         {/* Light / Dark Theme Toggle */}
-        {/* <ThemeToggle /> */}
+        <ThemeToggle />
 
         {/* Credits Badge */}
         <div

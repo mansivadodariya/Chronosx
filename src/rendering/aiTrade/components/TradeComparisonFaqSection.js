@@ -2,10 +2,14 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import { COMPARISON_DATA, FAQS } from '../constants/aiTradeData';
 import styles from '../aiTrade.module.scss';
 
 export default function TradeComparisonFaqSection({ openFaq, setOpenFaq }) {
+    const { t } = useLanguage();
+
     return (
         <>
             {/* SECTION DIVIDER */}
@@ -14,17 +18,13 @@ export default function TradeComparisonFaqSection({ openFaq, setOpenFaq }) {
             {/* 6. COMPARISON TABLE (MANUAL VS AI TRADE) */}
             <section className={styles.comparisonSection}>
                 <div className="container">
-                    <div className={styles.sectionHeaderCenter}>
-                        <div className={styles.sectionBadge}>
-                            <span>✦ PERFORMANCE COMPARISON</span>
-                        </div>
-                        <h2 className={styles.sectionTitle}>
-                            AI TRADE VS. TRADITIONAL MANUAL ANALYSIS
-                        </h2>
-                        <p className={styles.sectionSubtitle}>
-                            Why institutional traders switch from manual charting to automated Vision AI scanning.
-                        </p>
-                    </div>
+                    <SectionHeader
+                        badge={t('aiTrade.comparisonBadge', 'PERFORMANCE COMPARISON')}
+                        title1={t('aiTrade.comparisonTitle1', 'AI TRADE VS.')}
+                        title2={t('aiTrade.comparisonTitle2', 'TRADITIONAL MANUAL ANALYSIS')}
+                        description={t('aiTrade.comparisonSubtitle', 'Why institutional traders switch from manual charting to automated Vision AI scanning.')}
+                        align="center"
+                    />
 
                     <div className={styles.tableCard}>
                         <div className={styles.tableResponsive}>
@@ -95,17 +95,13 @@ export default function TradeComparisonFaqSection({ openFaq, setOpenFaq }) {
             {/* 7. FREQUENTLY ASKED QUESTIONS (FAQ SECTION) */}
             <section className={styles.faqSection}>
                 <div className="container-xs4">
-                    <div className={styles.sectionHeaderCenter}>
-                        <div className={styles.sectionBadge}>
-                            <span>✦ FREQUENTLY ASKED QUESTIONS</span>
-                        </div>
-                        <h2 className={styles.sectionTitle}>
-                            ANSWERS TO YOUR QUESTIONS
-                        </h2>
-                        <p className={styles.sectionSubtitle}>
-                            Everything you need to know about uploading charts, Vision AI OCR, and indicator confluence.
-                        </p>
-                    </div>
+                    <SectionHeader
+                        badge={t('aiTrade.faqBadge', 'FREQUENTLY ASKED QUESTIONS')}
+                        title1={t('aiTrade.faqTitle1', 'ANSWERS TO')}
+                        title2={t('aiTrade.faqTitle2', 'YOUR QUESTIONS')}
+                        description={t('aiTrade.faqSubtitle', 'Everything you need to know about uploading charts, Vision AI OCR, and indicator confluence.')}
+                        align="center"
+                    />
 
                     <div className={styles.faqAccordion}>
                         {FAQS.map((faq, index) => {

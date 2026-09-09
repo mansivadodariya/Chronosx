@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../aiStrategyPage.module.scss';
 
 export default function StrategyComparisonFaq({
@@ -10,22 +12,20 @@ export default function StrategyComparisonFaq({
     openFaq,
     setOpenFaq
 }) {
+    const { t } = useLanguage();
+
     return (
         <>
             {/* Comparison Matrix Section */}
             <section className={styles.comparisonSection}>
                 <div className="container">
-                    <div className={styles.sectionHeaderCenter}>
-                        <div className={styles.sectionBadge}>
-                            <span>✦ QUANTITATIVE PERFORMANCE ADVANTAGE</span>
-                        </div>
-                        <h2 className={styles.sectionTitle}>
-                            WHY TRADERS USE OUR AI STRATEGY GENERATOR
-                        </h2>
-                        <p className={styles.sectionSubtitle}>
-                            Discover the edge of automated 100-point scoring over conventional, subjective manual charting.
-                        </p>
-                    </div>
+                    <SectionHeader
+                        badge={t('strategyPage.comparisonBadge', 'QUANTITATIVE PERFORMANCE ADVANTAGE')}
+                        title1={t('strategyPage.comparisonTitle1', 'WHY TRADERS USE OUR')}
+                        title2={t('strategyPage.comparisonTitle2', 'AI STRATEGY GENERATOR')}
+                        description={t('strategyPage.comparisonSubtitle', 'Discover the edge of automated 100-point scoring over conventional, subjective manual charting.')}
+                        align="center"
+                    />
 
                     <div className={styles.tableCard}>
                         <div className={styles.tableResponsive}>
@@ -96,17 +96,13 @@ export default function StrategyComparisonFaq({
             {/* FAQ Section */}
             <section className={styles.faqSection}>
                 <div className="container-xs4">
-                    <div className={styles.sectionHeaderCenter}>
-                        <div className={styles.sectionBadge}>
-                            <span>✦ FREQUENTLY ASKED QUESTIONS</span>
-                        </div>
-                        <h2 className={styles.sectionTitle}>
-                            ANSWERS TO YOUR QUESTIONS
-                        </h2>
-                        <p className={styles.sectionSubtitle}>
-                            Everything you need to know about the 100-point Technical Score, multi-pillar analytics, and automated strategies.
-                        </p>
-                    </div>
+                    <SectionHeader
+                        badge={t('strategyPage.faqBadge', 'FREQUENTLY ASKED QUESTIONS')}
+                        title1={t('strategyPage.faqTitle1', 'ANSWERS TO')}
+                        title2={t('strategyPage.faqTitle2', 'YOUR QUESTIONS')}
+                        description={t('strategyPage.faqSubtitle', 'Everything you need to know about the 100-point Technical Score, multi-pillar analytics, and automated strategies.')}
+                        align="center"
+                    />
 
                     <div className={styles.faqAccordion}>
                         {faqs.map((faq, index) => {

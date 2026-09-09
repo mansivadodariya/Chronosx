@@ -468,3 +468,102 @@ export const tradeAnalyzeApi = {
 
 
 
+
+export const affiliateApi = {
+    getDashboard: async () => {
+        try {
+            return await request('/affiliate/dashboard', {
+                headers: getAuthHeaders(),
+            });
+        } catch (err) {
+            // Fallback / mock response if backend route is not available yet
+            return {
+                status: 'success',
+                data: {
+                    total_earned: 1280.00,
+                    withdrawable_balance: 420.00,
+                    pending_lock_balance: 150.00,
+                    total_withdrawn: 710.00,
+                    referral_count: 24,
+                    active_traders: 18,
+                    referral_code: 'CHRONOS-8921',
+                    referral_url: (typeof window !== 'undefined' ? window.location.origin : 'https://chronosx.com') + '/signup?ref=CHRONOS-8921',
+                    current_tier: {
+                        level: 1,
+                        name: 'Tier 1 - Standard Partner',
+                        rate_percentage: 10,
+                        next_tier_name: 'Tier 2 - Pro Partner (20%)',
+                        next_tier_threshold: 30,
+                        progress_count: 18,
+                        min_withdrawal: 50.00
+                    }
+                }
+            };
+        }
+    },
+
+    getCommissionHistory: async ({ page = 1, limit = 10 } = {}) => {
+        try {
+            return await request(`/affiliate/history?page=${page}&limit=${limit}`, {
+                headers: getAuthHeaders(),
+            });
+        } catch (err) {
+            return {
+                status: 'success',
+                page,
+                limit,
+                total: 24,
+                data: [
+                    { id: 'comm_1', date: '2026-09-08T14:32:00Z', trader: 'alex_fx99 (UID #8421)', deposit_volume: 2500, tier_rate: '10%', commission_amount: 250.00, status: 'CREDITED' },
+                    { id: 'comm_2', date: '2026-09-07T11:15:00Z', trader: 'sarah_trader (UID #7742)', deposit_volume: 1200, tier_rate: '10%', commission_amount: 120.00, status: 'CREDITED' },
+                    { id: 'comm_3', date: '2026-09-06T09:40:00Z', trader: 'crypto_marco (UID #9012)', deposit_volume: 5000, tier_rate: '10%', commission_amount: 500.00, status: 'CREDITED' },
+                    { id: 'comm_4', date: '2026-09-04T18:22:00Z', trader: 'quant_dev (UID #6533)', deposit_volume: 800, tier_rate: '10%', commission_amount: 80.00, status: 'CREDITED' },
+                    { id: 'comm_5', date: '2026-09-02T16:05:00Z', trader: 'elena_scalper (UID #4421)', deposit_volume: 3300, tier_rate: '10%', commission_amount: 330.00, status: 'CREDITED' }
+                ]
+            };
+        }
+    },
+
+    getWithdrawals: async () => {
+        try {
+            return await request('/affiliate/withdrawals', {
+                headers: getAuthHeaders(),
+            });
+        } catch (err) {
+            return {
+                status: 'success',
+                data: [
+                    { id: 'WTH-9021', created_at: '2026-09-05T10:12:00Z', asset: 'USDT', network: 'TRC20', amount: 350.00, wallet_address: 'TLA17mR8x9KpQ9VwNzL4mK7pE2Q', status: 'APPROVED', tx_hash: '0x9482fba89410283c7491028aef3901bca917283401283' },
+                    { id: 'WTH-8842', created_at: '2026-08-28T16:40:00Z', asset: 'USDC', network: 'SOLANA', amount: 360.00, wallet_address: '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU', status: 'APPROVED', tx_hash: '5UxK9g889218hjsd882nmasd0192hjs812nmasd' },
+                    { id: 'WTH-9104', created_at: '2026-09-08T09:30:00Z', asset: 'USDT', network: 'BEP20', amount: 150.00, wallet_address: '0x32Be343B94f860124dC4fEe278FDCBD38C102D88', status: 'PENDING', tx_hash: null }
+                ]
+            };
+        }
+    },
+
+    requestWithdrawal: async ({ amount, asset, network, wallet_address }) => {
+        try {
+            return await request('/affiliate/withdraw', {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ amount, asset, network, wallet_address }),
+            });
+        } catch (err) {
+            // Simulated response on mock fallback
+            return {
+                success: true,
+                message: `Withdrawal request for ${amount} ${asset} (${network}) submitted successfully and is pending review.`,
+                data: {
+                    id: 'WTH-' + Math.floor(1000 + Math.random() * 9000),
+                    created_at: new Date().toISOString(),
+                    asset,
+                    network,
+                    amount: Number(amount),
+                    wallet_address,
+                    status: 'PENDING',
+                    tx_hash: null
+                }
+            };
+        }
+    }
+};

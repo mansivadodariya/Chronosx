@@ -3,6 +3,8 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import { authNavigate } from '@/lib/authRedirect';
 import { QUICK_PROMPTS } from '../constants/aiChatData';
 import styles from '../aiChat.module.scss';
@@ -18,21 +20,18 @@ export default function LiveChatDemoSection({
     onCopySetup
 }) {
     const router = useRouter();
+    const { t } = useLanguage();
 
     return (
         <section ref={demoRef} id="live-demo" className={styles.liveDemoSection}>
             <div className="container">
-                <div className={styles.sectionHeaderCenter}>
-                    <div className={styles.sectionBadge}>
-                        <span>✦ LIVE INTERACTIVE CHAT DEMO</span>
-                    </div>
-                    <h2 className={styles.sectionTitle}>
-                        EXPERIENCE THE AI COPILOT IN ACTION
-                    </h2>
-                    <p className={styles.sectionSubtitle}>
-                        Inspect zero-delay price quotes, automated support/resistance levels, and calculated risk-to-reward setups.
-                    </p>
-                </div>
+                <SectionHeader
+                    badge={t('aiChat.demoBadge', 'LIVE INTERACTIVE CHAT DEMO')}
+                    title1={t('aiChat.demoTitle1', 'EXPERIENCE THE')}
+                    title2={t('aiChat.demoTitle2', 'AI COPILOT IN ACTION')}
+                    description={t('aiChat.demoSubtitle', 'Inspect zero-delay price quotes, automated support/resistance levels, and calculated risk-to-reward setups.')}
+                    align="center"
+                />
 
                 {/* Interactive Cockpit Container */}
                 <div className={styles.terminalCockpit}>

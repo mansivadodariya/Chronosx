@@ -24,19 +24,125 @@ import { supabase } from '@/lib/supabaseClient';
 import { isValidPhoneNumber } from 'react-phone-number-input';
 import { getUtmParameters } from '@/lib/utm';
 import { useLanguage } from '@/context/LanguageContext';
+import { useTheme } from '@/context/ThemeContext';
 
-const Logo = '/assets/logo/logo.png';
+const DarkLogo = '/assets/logo/logo.png';
+const LightLogo = '/assets/logo/darklogo.png';
 const UserIcon = '/assets/icons/user.svg';
 const EmailIcon = '/assets/icons/sms.svg';
 const Lock = '/assets/icons/lock.svg';
+
+const HERO_FEATURES = [
+    {
+        title: 'AI Chart Scanner',
+        desc: 'Instant neural OCR pattern detection',
+        icon: (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 3v18h18" />
+                <path d="m7 14 4-4 4 2 5-6" />
+                <circle cx="7" cy="14" r="1.2" fill="currentColor" />
+                <circle cx="11" cy="10" r="1.2" fill="currentColor" />
+                <circle cx="15" cy="12" r="1.2" fill="currentColor" />
+                <circle cx="20" cy="6" r="1.2" fill="currentColor" />
+            </svg>
+        ),
+        badge: '98.4%'
+    },
+    {
+        title: 'Live Market Scanner',
+        desc: 'Real-time breakout & momentum radar',
+        icon: (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+            </svg>
+        ),
+        badge: 'LIVE'
+    },
+    {
+        title: 'AI Market Assistant',
+        desc: '24/7 conversational market copilot',
+        icon: (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                <circle cx="9" cy="12" r="1" fill="currentColor" />
+                <circle cx="12" cy="12" r="1" fill="currentColor" />
+                <circle cx="15" cy="12" r="1.2" fill="currentColor" />
+            </svg>
+        ),
+        badge: 'COPILOT'
+    },
+    {
+        title: 'AI Strategy Hub & MT5',
+        desc: 'Algorithmic quantitative playbooks',
+        icon: (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 12h3l3-7 4 14 3-8 2 4h4" />
+                <circle cx="9" cy="5" r="1.2" fill="currentColor" />
+                <circle cx="13" cy="19" r="1.2" fill="currentColor" />
+            </svg>
+        ),
+        badge: 'QUANT'
+    },
+    {
+        title: 'Bank-Level Encryption',
+        desc: '256-bit non-custodial protocol security',
+        icon: (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+        ),
+        badge: 'SECURE'
+    }
+];
 
 const Signup = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { t } = useLanguage();
-    const codeFromQuery = searchParams.get('code') || searchParams.get('referral_code') || '';
+    const { theme } = useTheme();
+    const Logo = theme === 'light' ? LightLogo : DarkLogo;
+    const codeFromQuery = searchParams.get('ref') || searchParams.get('code') || searchParams.get('referral_code') || '';
     const redirectTo = getAuthRedirectTarget(searchParams);
     
+    // Auto-cycling active feature highlight animation
+    const [activeFeatureIndex, setActiveFeatureIndex] = useState(0);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setActiveFeatureIndex((prev) => (prev + 1) % HERO_FEATURES.length);
+        }, 2800);
+        return () => clearInterval(timer);
+    }, []);
+    
+    
+    // Capture and persist referral code for 30 days
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const paramRef = searchParams.get('ref') || searchParams.get('code') || searchParams.get('referral_code');
+        const now = Date.now();
+        const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+
+        if (paramRef) {
+            const item = { code: paramRef.trim(), expiry: now + THIRTY_DAYS_MS };
+            try {
+                localStorage.setItem('chronosx_referral_code', JSON.stringify(item));
+            } catch (e) { /* ignore */ }
+            setForm(f => ({ ...f, referral_code: paramRef.trim() }));
+        } else {
+            try {
+                const storedRaw = localStorage.getItem('chronosx_referral_code');
+                if (storedRaw) {
+                    const parsed = JSON.parse(storedRaw);
+                    if (parsed && parsed.code && parsed.expiry > now) {
+                        setForm(f => f.referral_code ? f : ({ ...f, referral_code: parsed.code }));
+                    } else {
+                        localStorage.removeItem('chronosx_referral_code');
+                    }
+                }
+            } catch (e) { /* ignore */ }
+        }
+    }, [searchParams]);
+
     const [form, setForm] = useState({
         first_name: '',
         last_name: '',
@@ -57,15 +163,7 @@ const Signup = () => {
     const [savingPhone, setSavingPhone] = useState(false);
     const [showOtpModal, setShowOtpModal] = useState(false);
 
-    // Auto-cycle active step card on left panel
-    const [activeStepIndex, setActiveStepIndex] = useState(0);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setActiveStepIndex((prev) => (prev + 1) % 3);
-        }, 3000);
-        return () => clearInterval(interval);
-    }, []);
 
     useEffect(() => {
         const checkSession = async () => {
@@ -271,7 +369,7 @@ const Signup = () => {
             <div className={styles.authContainer}>
                 <div className={styles.splitAuthCard}>
                     
-                    {/* ════════════ LEFT HERO PANEL (DESKTOP ONLY) ════════════ */}
+                    {/* ════════════ LEFT HERO PANEL (MATCHING REFERENCE DESIGN) ════════════ */}
                     <div className={styles.leftStepperPanel}>
                         <div className={styles.auroraGlow} aria-hidden="true" />
                         
@@ -286,55 +384,44 @@ const Signup = () => {
                                     <img src={Logo} alt="ChronosX" className={styles.leftLogoImg} />
                                 </Link>
 
-                                {/* Header & Subtitle */}
+                                {/* Header & Subtitle (Aligned with Landing Page) */}
                                 <div className={styles.leftTextGroup}>
-                                    <h2 className={styles.leftTitle}>Join ChronosX Intelligence</h2>
+                                    <h2 className={styles.leftTitle}>
+                                        Trade Smarter with <br />
+                                        <span className={styles.highlightText}>AI That Never Sleeps</span>
+                                    </h2>
                                     <p className={styles.leftSubtitle}>
-                                        Unlock institutional AI market intelligence, live breakout alerts, and automated MT5 execution.
+                                        Get real-time AI trading signals, market insights, and trade recommendations across Forex, Crypto, Stocks, and Global Markets.
                                     </p>
                                 </div>
 
-                                {/* 3 Rounded Step Cards (Auto-Cycles Active State) */}
-                                <div className={styles.stepCardList}>
-                                    <div
-                                        className={`${styles.stepCard} ${activeStepIndex === 0 ? styles.stepCardActive : ''}`}
-                                        onClick={() => setActiveStepIndex(0)}
-                                        onMouseEnter={() => setActiveStepIndex(0)}
-                                    >
-                                        <div className={styles.stepBadge}>1</div>
-                                        <div className={styles.stepCardContent}>
-                                            <span className={styles.stepCardText}>Sign up your account</span>
-                                            <span className={styles.stepCardSubtext}>Instant non-custodial setup</span>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        className={`${styles.stepCard} ${activeStepIndex === 1 ? styles.stepCardActive : ''}`}
-                                        onClick={() => setActiveStepIndex(1)}
-                                        onMouseEnter={() => setActiveStepIndex(1)}
-                                    >
-                                        <div className={styles.stepBadge}>2</div>
-                                        <div className={styles.stepCardContent}>
-                                            <span className={styles.stepCardText}>Set up your workspace</span>
-                                            <span className={styles.stepCardSubtext}>AI Breakout &amp; Liquidity scan</span>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        className={`${styles.stepCard} ${activeStepIndex === 2 ? styles.stepCardActive : ''}`}
-                                        onClick={() => setActiveStepIndex(2)}
-                                        onMouseEnter={() => setActiveStepIndex(2)}
-                                    >
-                                        <div className={styles.stepBadge}>3</div>
-                                        <div className={styles.stepCardContent}>
-                                            <span className={styles.stepCardText}>Connect MT5 &amp; Trade</span>
-                                            <span className={styles.stepCardSubtext}>Direct market execution</span>
-                                        </div>
-                                    </div>
+                                {/* 5 Feature Highlight Pills with Auto-Cycling Animation */}
+                                <div className={styles.featurePillList}>
+                                    {HERO_FEATURES.map((feat, idx) => {
+                                        const isActive = activeFeatureIndex === idx;
+                                        return (
+                                            <div
+                                                key={feat.title}
+                                                className={`${styles.featurePill} ${isActive ? styles.activePill : ''}`}
+                                                onMouseEnter={() => setActiveFeatureIndex(idx)}
+                                            >
+                                                <div className={styles.featureIconBox}>
+                                                    {feat.icon}
+                                                </div>
+                                                <div className={styles.featureContent}>
+                                                    <span className={styles.featurePillText}>{feat.title}</span>
+                                                    <span className={styles.featurePillDesc}>{feat.desc}</span>
+                                                </div>
+                                                {feat.badge && (
+                                                    <span className={styles.featureBadge}>{feat.badge}</span>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             </div>
 
-                            {/* Clean SVG Vector Shield Badge (NO EMOJIS) */}
+                            {/* Clean SVG Vector Assurance Badge */}
                             <div className={styles.leftFooterNotice}>
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>

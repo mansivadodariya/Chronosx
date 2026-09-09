@@ -365,7 +365,39 @@
             }
 
             .splineSvg line {
-                stroke: rgba(15, 23, 42, 0.06) !important;
+                stroke: rgba(15, 23, 42, 0.08) !important;
+            }
+
+            .chartPointsOverlay {
+                .dataPointMarker {
+                    .pointHalo {
+                        background: rgba(16, 185, 129, 0.22) !important;
+                    }
+
+                    .pointDot {
+                        background: #10B981 !important;
+                        border: 2px solid #FFFFFF !important;
+                        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.45) !important;
+                    }
+
+                    &:hover,
+                    &.activeMarker {
+                        .pointHalo {
+                            background: rgba(5, 150, 105, 0.3) !important;
+                        }
+
+                        .pointDot {
+                            background: #059669 !important;
+                            border-color: #FFFFFF !important;
+                            box-shadow: 0 0 12px rgba(5, 150, 105, 0.6) !important;
+                        }
+                    }
+
+                    &.todayMarker .pointDot {
+                        background: #059669 !important;
+                        box-shadow: 0 0 10px rgba(5, 150, 105, 0.5) !important;
+                    }
+                }
             }
 
             .chartTimeLabels {

@@ -19,12 +19,30 @@ export function isUserLoggedIn() {
                 .some((c) => {
                     const trimmed = c.trim();
                     if (!trimmed.startsWith('auth_token=')) return false;
-                    const val = trimmed.split('=')[1];
+                    const parts = trimmed.split('=');
+                    const val = parts.length > 1 ? parts.slice(1).join('=') : '';
                     return Boolean(val && val.trim() && val !== 'undefined' && val !== 'null');
                 })
         );
 
-        return hasLocalToken || hasCookieToken;
+        // Check if user identity exists in localStorage
+        const storedUser = localStorage.getItem('user');
+        const storedUserId = localStorage.getItem('user_id');
+        let hasValidUser = false;
+
+        if (storedUserId && storedUserId.trim() && storedUserId !== 'undefined' && storedUserId !== 'null') {
+            hasValidUser = true;
+        } else if (storedUser && storedUser.trim() && storedUser !== 'undefined' && storedUser !== 'null') {
+            try {
+                const parsed = JSON.parse(storedUser);
+                if (parsed && (parsed.id || parsed.user_id || parsed.email)) {
+                    hasValidUser = true;
+                }
+            } catch (_) {}
+        }
+
+        // To be considered logged in, the client must have an active token AND an associated user profile
+        return (hasLocalToken || hasCookieToken) && hasValidUser;
     } catch {
         return false;
     }

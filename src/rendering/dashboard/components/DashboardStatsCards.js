@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../dashboard.module.scss';
 
 export default function DashboardStatsCards({
@@ -9,14 +10,16 @@ export default function DashboardStatsCards({
     handleExportPdf,
     router
 }) {
+    const { t } = useLanguage();
+
     return (
         <div className={styles.dailyStatsSideCard}>
             <div className={styles.dailyStatsHeader}>
                 <div className={styles.headerTitleWrap}>
-                    <span>AI Usage & Credits</span>
-                    <button type="button" className={styles.infoBtn} title="AI Telemetry & Credit Info">i</button>
+                    <span>{t('dashboard.statsHeader', 'AI Usage & Credits')}</span>
+                    <button type="button" className={styles.infoBtn} title={t('dashboard.telemetryInfo', 'AI Telemetry & Credit Info')}>i</button>
                 </div>
-                <button type="button" className={styles.shareBtn} title="Export Telemetry PDF" onClick={handleExportPdf}>
+                <button type="button" className={styles.shareBtn} title={t('dashboard.exportPdfTooltip', 'Export Telemetry PDF')} onClick={handleExportPdf}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
                         <polyline points="16 6 12 2 8 6" />
@@ -30,8 +33,8 @@ export default function DashboardStatsCards({
                 <div className={styles.statPillRow} onClick={() => router.push('/chart-scanner')}>
                     <div className={styles.rowTopHeader}>
                         <div className={styles.rowTitleWrap}>
-                            <span className={styles.rowTitle}>AI Chart Scanner</span>
-                            <span className={styles.rowDesc}>Automated pattern recognition & OCR scans</span>
+                            <span className={styles.rowTitle}>{t('dashboard.scannerCardTitle', 'AI Chart Scanner')}</span>
+                            <span className={styles.rowDesc}>{t('dashboard.scannerCardDesc', 'Automated pattern recognition & OCR scans')}</span>
                         </div>
                         <div className={`${styles.rowIconWrap} ${styles.greenIcon}`}>
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -46,7 +49,7 @@ export default function DashboardStatsCards({
                     </div>
 
                     <div className={styles.rowCtaLink}>
-                        <span>Launch Scanner</span>
+                        <span>{t('dashboard.launchScanner', 'Launch Scanner')}</span>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
@@ -57,8 +60,8 @@ export default function DashboardStatsCards({
                 <div className={styles.statPillRow} onClick={() => router.push('/market-assistant?tab=chat')}>
                     <div className={styles.rowTopHeader}>
                         <div className={styles.rowTitleWrap}>
-                            <span className={styles.rowTitle}>AI Market Assistant</span>
-                            <span className={styles.rowDesc}>24/7 neural market & trade assistant</span>
+                            <span className={styles.rowTitle}>{t('dashboard.assistantCardTitle', 'AI Market Assistant')}</span>
+                            <span className={styles.rowDesc}>{t('dashboard.assistantCardDesc', '24/7 neural market & trade assistant')}</span>
                         </div>
                         <div className={`${styles.rowIconWrap} ${styles.greenIcon}`}>
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -76,7 +79,7 @@ export default function DashboardStatsCards({
                     </div>
 
                     <div className={styles.rowCtaLink}>
-                        <span>Open Market Assistant</span>
+                        <span>{t('dashboard.openAssistant', 'Open Market Assistant')}</span>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
@@ -87,8 +90,8 @@ export default function DashboardStatsCards({
                 <div className={styles.statPillRow} onClick={() => router.push('/credit-history')}>
                     <div className={styles.rowTopHeader}>
                         <div className={styles.rowTitleWrap}>
-                            <span className={styles.rowTitle}>Available Credits</span>
-                            <span className={styles.rowDesc}>Ready for real-time AI strategy execution</span>
+                            <span className={styles.rowTitle}>{t('dashboard.availableCredits', 'Available Credits')}</span>
+                            <span className={styles.rowDesc}>{t('dashboard.availableCreditsDesc', 'Ready for real-time AI strategy execution')}</span>
                         </div>
                         <div className={`${styles.rowIconWrap} ${styles.greenIcon}`}>
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -102,7 +105,7 @@ export default function DashboardStatsCards({
                     </div>
 
                     <div className={styles.rowCtaLink}>
-                        <span>Manage & Recharge</span>
+                        <span>{t('dashboard.manageRecharge', 'Manage & Recharge')}</span>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
@@ -113,8 +116,8 @@ export default function DashboardStatsCards({
                 <div className={styles.statPillRow} onClick={() => router.push('/credit-history')}>
                     <div className={styles.rowTopHeader}>
                         <div className={styles.rowTitleWrap}>
-                            <span className={styles.rowTitle}>Account Credits</span>
-                            <span className={styles.rowDesc}>Total lifetime credits processed on platform</span>
+                            <span className={styles.rowTitle}>{t('dashboard.accountCredits', 'Account Credits')}</span>
+                            <span className={styles.rowDesc}>{t('dashboard.accountCreditsDesc', 'Total lifetime credits processed on platform')}</span>
                         </div>
                         <div className={`${styles.rowIconWrap} ${styles.greenIcon}`}>
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -129,7 +132,7 @@ export default function DashboardStatsCards({
                     </div>
 
                     <div className={styles.rowCtaLink}>
-                        <span>View Credit History</span>
+                        <span>{t('dashboard.viewCreditHistory', 'View Credit History')}</span>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 import { timeAgo, formatSummary } from '../utils/dashboardHelpers';
 import styles from '../dashboard.module.scss';
 
@@ -12,6 +13,8 @@ export default function DashboardRecentActivities({
     setActivityFilter,
     openRecent
 }) {
+    const { t } = useLanguage();
+
     return (
         <div className={styles.feedColumn}>
             <div className={styles.feedHeader}>
@@ -20,7 +23,7 @@ export default function DashboardRecentActivities({
                         <circle cx="12" cy="12" r="10" />
                         <polyline points="12 6 12 12 16 14" />
                     </svg>
-                    <h3>Recent Activity & Scans Feed</h3>
+                    <h3>{t('dashboard.recentActivityTitle', 'Recent Activity & Scans Feed')}</h3>
                 </div>
 
                 <div className={styles.filterPills}>
@@ -29,21 +32,21 @@ export default function DashboardRecentActivities({
                         className={`${styles.filterTab} ${activityFilter === 'all' ? styles.filterTabActive : ''}`}
                         onClick={() => setActivityFilter('all')}
                     >
-                        All
+                        {t('dashboard.tabAll', 'All')}
                     </button>
                     <button
                         type="button"
                         className={`${styles.filterTab} ${activityFilter === 'blog' ? styles.filterTabActive : ''}`}
                         onClick={() => setActivityFilter('blog')}
                     >
-                        AI Chart Scanner
+                        {t('dashboard.tabScanner', 'AI Chart Scanner')}
                     </button>
                     <button
                         type="button"
                         className={`${styles.filterTab} ${activityFilter === 'chat' ? styles.filterTabActive : ''}`}
                         onClick={() => setActivityFilter('chat')}
                     >
-                        AI Market Assistant
+                        {t('dashboard.tabAssistant', 'AI Market Assistant')}
                     </button>
                 </div>
             </div>
@@ -52,7 +55,7 @@ export default function DashboardRecentActivities({
                 {loading ? (
                     <div className={styles.loadingBox}>
                         <div className={styles.miniSpinner} />
-                        <span>Loading intelligence history...</span>
+                        <span>{t('dashboard.loadingIntelligence', 'Loading intelligence history...')}</span>
                     </div>
                 ) : recents.length === 0 ? (
                     <div className={styles.emptyFeed}>
@@ -62,9 +65,9 @@ export default function DashboardRecentActivities({
                                 <polyline points="12 6 12 12 16 14" />
                             </svg>
                         </div>
-                        <p>No recent activity recorded yet.</p>
+                        <p>{t('dashboard.noRecentActivityRecorded', 'No recent activity recorded yet.')}</p>
                         <Link href="/chart-scanner" className={styles.firstScanBtn}>
-                            Upload Your First Chart →
+                            {t('dashboard.uploadFirstChart', 'Upload Your First Chart →')}
                         </Link>
                     </div>
                 ) : (
@@ -95,7 +98,9 @@ export default function DashboardRecentActivities({
                                     <div className={styles.actTitles}>
                                         <div className={styles.actTitleHeader}>
                                             <strong className={styles.actMainTitle}>{item.title}</strong>
-                                            <span className={styles.actTypeTag}>{item.type === 'blog' ? 'AI Chart Scanner' : 'AI Market Assistant'}</span>
+                                            <span className={styles.actTypeTag}>
+                                                {item.type === 'blog' ? t('dashboard.tabScanner', 'AI Chart Scanner') : t('dashboard.tabAssistant', 'AI Market Assistant')}
+                                            </span>
                                         </div>
                                         <span className={styles.actTime}>{timeAgo(item.created_at)}</span>
                                     </div>
@@ -105,12 +110,12 @@ export default function DashboardRecentActivities({
                                     {item.summary ? (
                                         <div dangerouslySetInnerHTML={{ __html: formatSummary(item.summary) }} />
                                     ) : (
-                                        <span className={styles.noSummary}>Technical analysis details recorded</span>
+                                        <span className={styles.noSummary}>{t('dashboard.techAnalysisRecorded', 'Technical analysis details recorded')}</span>
                                     )}
                                 </div>
 
                                 <div className={styles.actAction}>
-                                    <span>Open →</span>
+                                    <span>{t('dashboard.openAction', 'Open →')}</span>
                                 </div>
                             </div>
                         ))}

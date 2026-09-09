@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from './aiAnalyst.module.scss';
 import SectionHeader from '@/components/sectionHeader';
 import StreamingText from '@/components/streamingText';
+import { useTheme } from '@/context/ThemeContext';
 
 // Word-by-Word Streaming Animation Component
 function StreamingWords({ text = "", speed = 30, onComplete, isActive = true }) {
@@ -380,6 +381,8 @@ const featurePoints = [
 ];
 
 export default function AiAnalyst() {
+  const { theme } = useTheme();
+  const terminalLogo = theme === 'light' ? '/assets/logo/darklogo.png' : '/assets/logo/logo.png';
   const [activeSidebarTab, setActiveSidebarTab] = useState('chat');
   const [messages, setMessages] = useState([]);
   const [isThinking, setIsThinking] = useState(false);
@@ -646,7 +649,7 @@ export default function AiAnalyst() {
                 {/* Top Header Bar */}
                 <header className={styles.terminalHeader}>
                   <div className={styles.brandTitleRow}>
-                    <img src="/assets/logo/logo.png" alt="ChronosX" className={styles.terminalLogoImg} />
+                    <img src={terminalLogo} alt="ChronosX" className={styles.terminalLogoImg} />
                     <span className={styles.headerDivider}>|</span>
                     <span className={styles.headerSubtitle}>AI TRADING ADVISOR</span>
                   </div>

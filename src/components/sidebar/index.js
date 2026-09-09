@@ -16,14 +16,17 @@ import {
   ProfileUserIcon,
   CrownIcon,
   AiTradeAnalysisIcon,
+  AffiliateIcon,
 } from '@/icons/sidebarIcons';
 import { clearAuthSession, getStoredUser, getStoredUserId, hydrateUserFromProfile } from '@/lib/authSession';
 import { useLanguage } from '@/context/LanguageContext';
+import { useTheme } from '@/context/ThemeContext';
 import { getBidiProps } from '@/lib/bidi';
 import { supabase } from '@/lib/supabaseClient';
 import QuickJump from '@/components/QuickJump';
 
-const BrandTextLogo = "/assets/logo/logo.png";
+const BrandDarkLogo = "/assets/logo/darklogo.png";
+const BrandLightLogo = "/assets/logo/logo.png";
 const SmallLogo = "/assets/logo/smallLogo.png";
 
 const LiveAnalysisIcon = () => (
@@ -123,6 +126,7 @@ const getNavSections = (t) => [
       },
       { label: t('nav.plans', 'Subscription Plans'), href: "/subscription-plans", icon: CrownIcon },
       { label: t('nav.broker', 'Broker'), href: "/broker", icon: BrokerBankIcon },
+      // { label: t('nav.affiliate', 'Affiliate'), href: "/affiliate", icon: AffiliateIcon },
       { label: t('nav.profile', 'Settings'), href: "/profile", icon: ProfileUserIcon },
     ]
   }
@@ -312,6 +316,8 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
   const pathname = usePathname();
   const router = useRouter();
   const { t, language } = useLanguage();
+  const { theme } = useTheme();
+  const BrandTextLogo = theme === 'light' ? BrandDarkLogo : BrandLightLogo;
 
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -436,6 +442,8 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
     '/subscription-plans': 'Subscription Plans',
     '/broker': 'Broker',
     '/brokers': 'Broker',
+    '/affiliate': 'Affiliate',
+    '/dashboard/affiliate': 'Affiliate',
     '/profile': 'Profile',
     '/settings': 'Profile',
   };
@@ -447,6 +455,7 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
     const checkTabVisible = (tabLabel, routeHref) => {
       const lowerLabel = (tabLabel || '').toLowerCase();
       const mapped = (ROUTE_TAB_MAP[routeHref] || '').toLowerCase();
+      if (lowerLabel.includes('affiliate') || mapped === 'affiliate') return true;
       return (
         visibleTabNames.has(lowerLabel) ||
         visibleTabNames.has(mapped) ||
@@ -480,7 +489,13 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
         }
 
         // Settings/Profile is always accessible
-        if (parentTabName === 'profile' || parentTabName === 'settings') return item;
+        if (
+          parentTabName === 'profile' ||
+          parentTabName === 'settings' ||
+          parentTabName === 'affiliate' ||
+          item.href === '/affiliate' ||
+          item.href === '/dashboard/affiliate'
+        ) return item;
 
         // Single menu item check
         return checkTabVisible(item.label, item.href) ? item : null;

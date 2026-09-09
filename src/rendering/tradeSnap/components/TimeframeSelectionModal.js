@@ -53,7 +53,7 @@ export default function TimeframeSelectionModal({ open, onClose, onSelectTimefra
                                 }}
                             >
                                 <div className={styles.tfCardTopRow}>
-                                    <span className={styles.tfCardEmoji}>{opt.icon || '⏱️'}</span>
+                                    <span className={styles.tfCardEmoji}>{opt.icon || <ClockIcon size={20} color="#18C98B" />}</span>
                                     <span className={styles.tfBadge}>{opt.value}</span>
                                 </div>
                                 <h3 className={styles.tfCardLabel}>{opt.label}</h3>

@@ -45,16 +45,16 @@ export default function AiStrategyPage() {
     };
 
     const handleCopyScore = () => {
-        const text = `📊 LIVE STRATEGY FEED: ${selectedPair.symbol} (${selectedPair.name})
+        const text = `[LIVE STRATEGY FEED]: ${selectedPair.symbol} (${selectedPair.name})
 ==================================================
 Active Strategy: ${selectedStrategy}
 Market Bias:     ${selectedPair.bias} (Score: ${selectedPair.score}/100)
 AI Confidence:   ${selectedPair.confidence}
-📈 PILLAR SCORE BREAKDOWN:
-├── 📉 Trend Alignment:   ${selectedPair.pillars.trend.score} / 25  (${selectedPair.pillars.trend.note})
-├── ⚡ Momentum Score:   ${selectedPair.pillars.momentum.score} / 25  (${selectedPair.pillars.momentum.note})
-├── 📊 Volume Surge:      ${selectedPair.pillars.volume.score} / 25  (${selectedPair.pillars.volume.note})
-└── 🧱 Structure Score:   ${selectedPair.pillars.structure.score} / 25  (${selectedPair.pillars.structure.note})
+[PILLAR SCORE BREAKDOWN]:
+├── [Trend Alignment]:   ${selectedPair.pillars.trend.score} / 25  (${selectedPair.pillars.trend.note})
+├── [Momentum Score]:   ${selectedPair.pillars.momentum.score} / 25  (${selectedPair.pillars.momentum.note})
+├── [Volume Surge]:      ${selectedPair.pillars.volume.score} / 25  (${selectedPair.pillars.volume.note})
+└── [Structure Score]:   ${selectedPair.pillars.structure.score} / 25  (${selectedPair.pillars.structure.note})
 ──────────────────────────────────────────────────
 TOTAL AGGREGATE SCORE: ${selectedPair.score} / 100 [${selectedPair.bias}]
 ==================================================`;

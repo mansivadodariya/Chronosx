@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import { authNavigate } from '@/lib/authRedirect';
 import styles from '../aiStrategyPage.module.scss';
 
@@ -10,30 +12,20 @@ export default function StrategyPageHero({
     scrollToDemo,
     valueBadges
 }) {
+    const { t } = useLanguage();
+
     return (
         <section className={styles.heroSection}>
             <div className="container">
                 <div className={styles.heroCenterWrapper}>
-                    {/* Main Title (H1) */}
-                    <motion.h1
-                        className={styles.heroMainTitle}
-                        initial={{ opacity: 0, y: 25 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
-                    >
-                        Live Analysis Feed &amp; Quantitative <br />
-                        <span className={styles.goldGradient}>AI Strategy Generator.</span>
-                    </motion.h1>
-
-                    {/* Subtitle */}
-                    <motion.p
-                        className={styles.heroSubtitle}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        Experience real-time institutional FX intelligence. Select custom algorithmic strategies, track live 100-point Technical Scores across major pairs, and execute data-backed trades with multi-factor confluence.
-                    </motion.p>
+                    {/* Uniform Section Header */}
+                    <SectionHeader
+                        badge={t('strategyPage.heroBadge', 'INSTITUTIONAL QUANTITATIVE FEED')}
+                        title1={t('strategyPage.heroTitle1', 'Live Analysis Feed & Quantitative')}
+                        title2={t('strategyPage.heroTitle2', 'AI Strategy Generator.')}
+                        description={t('strategyPage.heroSubtitle', 'Experience real-time institutional FX intelligence. Select custom algorithmic strategies, track live 100-point Technical Scores across major pairs, and execute data-backed trades with multi-factor confluence.')}
+                        align="center"
+                    />
 
                     {/* Hero CTAs */}
                     <motion.div

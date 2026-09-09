@@ -348,9 +348,18 @@ export function clearAuthSession() {
     localStorage.removeItem('user');
     localStorage.removeItem('user_id');
     localStorage.removeItem('has_completed_onboarding');
-    document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
-    document.cookie = 'has_phone=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
-    document.cookie = 'has_completed_onboarding=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
+    localStorage.removeItem('visible_tab_names');
+    
+    const cookieNames = ['auth_token', 'has_phone', 'has_completed_onboarding', 'sb-access-token', 'sb-refresh-token'];
+    cookieNames.forEach(name => {
+        document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax`;
+        if (typeof window !== 'undefined' && window.location.hostname) {
+            document.cookie = `${name}=; path=/; domain=${window.location.hostname}; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax`;
+        }
+    });
+
+    window.dispatchEvent(new CustomEvent('user:updated'));
+    window.dispatchEvent(new CustomEvent('auth:logout'));
 }
 
 export function setPhoneVerifiedInSession(phoneNumber) {

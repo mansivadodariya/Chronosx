@@ -3,38 +3,28 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import { authNavigate } from '@/lib/authRedirect';
 import { TOP_HIGHLIGHTS } from '../constants/aiTradeData';
 import styles from '../aiTrade.module.scss';
 
 export default function TradeHeroSection({ scrollToDemo }) {
     const router = useRouter();
+    const { t } = useLanguage();
 
     return (
         <section className={styles.heroSection}>
             <div className="container">
                 <div className={styles.heroCenterWrapper}>
-                    {/* Main H1 Headline */}
-                    <motion.h1
-                        className={styles.heroMainTitle}
-                        initial={{ opacity: 0, y: 25 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
-                    >
-                        Show Your Chart. <br />
-                        <span className={styles.goldGradient}>Get Instant AI Market Analysis.</span>
-                    </motion.h1>
-
-                    {/* Subtitle */}
-                    <motion.p
-                        className={styles.heroSubtitle}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        Stop spending hours analyzing charts manually. Upload your trading chart or share your screen, and ChronosX AI analyzes the market structure, trend, price action, support & resistance, and key technical
-                        signals to give you a clear, easy-to-understand market analysis in seconds.
-                    </motion.p>
+                    {/* Uniform Section Header */}
+                    <SectionHeader
+                        badge={t('aiTrade.heroBadge', 'NEXT-GEN AI CHART SCANNER')}
+                        title1={t('aiTrade.heroTitle1', 'Show Your Chart.')}
+                        title2={t('aiTrade.heroTitle2', 'Get Instant AI Market Analysis.')}
+                        description={t('aiTrade.heroSubtitle', 'Stop spending hours analyzing charts manually. Upload your trading chart or share your screen, and ChronosX AI analyzes the market structure, trend, price action, support & resistance, and key technical signals to give you a clear, easy-to-understand market analysis in seconds.')}
+                        align="center"
+                    />
 
                     {/* Hero Action CTAs */}
                     <motion.div

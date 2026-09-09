@@ -2,24 +2,24 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import { QUICK_PROMPTS } from '../constants/aiChatData';
 import styles from '../aiChat.module.scss';
 
 export default function PromptStartersSection({ selectedPrompt, onSelectPrompt }) {
+    const { t } = useLanguage();
+
     return (
         <section className={styles.quickPromptsSection}>
             <div className="container">
-                <div className={styles.sectionHeaderCenter}>
-                    <div className={styles.sectionBadge}>
-                        <span>✦ INSTANT CLICKABLE PROMPTS</span>
-                    </div>
-                    <h2 className={styles.sectionTitle}>
-                        PRE-BUILT QUICK PROMPT STARTERS
-                    </h2>
-                    <p className={styles.sectionSubtitle}>
-                        Click any institutional prompt idea below to test live in our interactive AI Copilot engine:
-                    </p>
-                </div>
+                <SectionHeader
+                    badge={t('aiChat.promptsBadge', 'INSTANT CLICKABLE PROMPTS')}
+                    title1={t('aiChat.promptsTitle1', 'PRE-BUILT QUICK')}
+                    title2={t('aiChat.promptsTitle2', 'PROMPT STARTERS')}
+                    description={t('aiChat.promptsSubtitle', 'Click any institutional prompt idea below to test live in our interactive AI Copilot engine:')}
+                    align="center"
+                />
 
                 <div className={styles.promptsGrid}>
                     {QUICK_PROMPTS.map((item, index) => {

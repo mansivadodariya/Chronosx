@@ -3,12 +3,15 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import { authNavigate } from '@/lib/authRedirect';
 import AnimatedAreaChart from '@/components/animatedAreaChart';
 import styles from '../aiPastTradeAnalyzer.module.scss';
 
 export default function HeroBannerSection({ scrollToAudit }) {
     const router = useRouter();
+    const { t } = useLanguage();
     const [mousePos, setMousePos] = useState({ x: 50, y: 50, isHovered: false });
 
     const handleMouseMove = (e) => {
@@ -77,54 +80,14 @@ export default function HeroBannerSection({ scrollToAudit }) {
 
             <div className="container">
                 <div className={styles.heroCenterWrapper}>
-                    {/* 1.1 Top Live Status Pill */}
-                    <motion.div
-                        className={styles.statusPillRow}
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        <div className={styles.statusPill}>
-                            <span className={styles.pulseDot}>
-                                <span className={styles.pulseRing} />
-                            </span>
-                            <span className={styles.pillTag}>QUANT AUDIT ENGINE</span>
-                            <span className={styles.pillDivider}>|</span>
-                            <span className={styles.pillText}>Neural Past Trade Analyzer</span>
-                            <span className={styles.pillBadge}>OCR V3.2</span>
-                        </div>
-                    </motion.div>
-
-                    {/* 1.2 Main Cinematic Headline */}
-                    <motion.h1
-                        className={styles.heroMainTitle}
-                        initial={{ opacity: 0, y: 25 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
-                    >
-                        AI PAST TRADE <br />
-                        <span className={styles.goldGradient}>ANALYZER</span>
-                    </motion.h1>
-
-                    {/* 1.3 Subtitle */}
-                    <motion.p
-                        className={styles.heroTagline}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        Learn From Every Trade. Improve Every Time.
-                    </motion.p>
-
-                    {/* 1.4 Description Narrative */}
-                    <motion.p
-                        className={styles.heroDesc}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.25 }}
-                    >
-                        Upload your past trade screenshots and let our AI deeply analyze your entries, exits, risk management, and overall trade execution. Discover what worked, what didn't, and how to become a consistently profitable trader.
-                    </motion.p>
+                    {/* Uniform Section Header */}
+                    <SectionHeader
+                        badge={t('tradeAudit.heroBadge', 'QUANT AUDIT ENGINE // OCR V3.2')}
+                        title1={t('tradeAudit.heroTitle1', 'AI PAST TRADE')}
+                        title2={t('tradeAudit.heroTitle2', 'ANALYZER')}
+                        description={t('tradeAudit.heroSubtitle', 'Learn From Every Trade. Improve Every Time. Stop repeating the same trading mistakes. Upload a screenshot of any past trade, and our AI will audit your entry, exit, risk management, and market structure.')}
+                        align="center"
+                    />
 
                     {/* 1.5 Hero Action CTAs */}
                     <motion.div

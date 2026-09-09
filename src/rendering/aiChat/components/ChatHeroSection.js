@@ -3,52 +3,27 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import { authNavigate } from '@/lib/authRedirect';
 import styles from '../aiChat.module.scss';
 
 export default function ChatHeroSection({ scrollToDemo }) {
     const router = useRouter();
+    const { t } = useLanguage();
 
     return (
         <section className={styles.heroSection}>
             <div className="container">
                 <div className={styles.heroCenterWrapper}>
-                    {/* Top Telemetry Live Pill */}
-                    <motion.div
-                        className={styles.statusPillRow}
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        <div className={styles.statusPill}>
-                            <span className={styles.pulseDot}>
-                                <span className={styles.pulseRing} />
-                            </span>
-                            <span className={styles.pillText}>Institutional AI Trading Desk</span>
-                            <span className={styles.pillBadge}>0-DELAY TICK STREAM</span>
-                        </div>
-                    </motion.div>
-
-                    {/* Main Cinematic H1 */}
-                    <motion.h1
-                        className={styles.heroMainTitle}
-                        initial={{ opacity: 0, y: 25 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
-                    >
-                        Your 24/7 AI-Powered <br />
-                        <span className={styles.goldGradient}>Institutional Forex &amp; Trading Copilot</span>
-                    </motion.h1>
-
-                    {/* Subtitle */}
-                    <motion.p
-                        className={styles.heroSubtitle}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        Ask questions, analyze real-time market trends, calculate precise risk management parameters, and receive instant data-driven trade setups powered by live MetaTrader 5 (MT5) market feeds.
-                    </motion.p>
+                    {/* Uniform Section Header */}
+                    <SectionHeader
+                        badge={t('aiChat.heroBadge', 'INSTITUTIONAL AI TRADING DESK')}
+                        title1={t('aiChat.heroTitle1', 'Your 24/7 AI-Powered')}
+                        title2={t('aiChat.heroTitle2', 'Institutional Forex & Trading Copilot')}
+                        description={t('aiChat.heroSubtitle', 'Ask questions, analyze real-time market trends, calculate precise risk management parameters, and receive instant data-driven trade setups powered by live MetaTrader 5 (MT5) market feeds.')}
+                        align="center"
+                    />
 
                     {/* Hero CTAs */}
                     <motion.div

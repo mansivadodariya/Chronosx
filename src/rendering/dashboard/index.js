@@ -30,11 +30,7 @@ export default function Dashboard() {
     const [activeHoverPoint, setActiveHoverPoint] = useState(null);
 
     const getGreeting = () => {
-        const hour = new Date().getHours();
-        if (hour < 12) return t('dashboard.goodMorning', 'Good Morning');
-        if (hour < 17) return t('dashboard.goodAfternoon', 'Good Afternoon');
-        if (hour < 21) return t('dashboard.goodEvening', 'Good Evening');
-        return t('dashboard.goodNight', 'Good Night');
+        return t('dashboard.hello', 'Hello');
     };
 
     useEffect(() => {
@@ -160,7 +156,7 @@ export default function Dashboard() {
             const dateKey = d.toISOString().split('T')[0];
             const dayNum = d.getDate();
             const monthShort = d.toLocaleString('en-US', { month: 'short' });
-            const dateFormatted = i === 0 ? 'Today' : `${dayNum} ${monthShort}`;
+            const dateFormatted = i === 0 ? t('dashboard.today', 'Today') : `${dayNum} ${monthShort}`;
 
             const recorded = usageByDate[dateKey];
             const creditsVal = typeof recorded === 'number' ? recorded : 0;
@@ -177,12 +173,16 @@ export default function Dashboard() {
         const maxVal = Math.max(...rawPoints.map((p) => p.credits), 10);
 
         const points = rawPoints.map((p, idx) => {
-            const x = 30 + (idx * 105);
-            const y = 115 - (p.credits / maxVal) * 85;
+            const x = 50 + (idx * 150); // 50, 200, 350, 500, 650, 800, 950 (viewBox 1000)
+            const xPercent = (idx / (rawPoints.length - 1)) * 90 + 5; // 5% to 95%
+            const y = 145 - (p.credits / maxVal) * 110; // 35 to 145 (viewBox 170)
+            const yPercent = (y / 170) * 100;
             return {
                 ...p,
                 x,
                 y,
+                xPercent,
+                yPercent
             };
         });
 
@@ -194,7 +194,7 @@ export default function Dashboard() {
             pathLine += ` C ${cx} ${curr.y}, ${cx} ${next.y}, ${next.x} ${next.y}`;
         }
 
-        const pathArea = `${pathLine} L ${points[points.length - 1].x} 135 L ${points[0].x} 135 Z`;
+        const pathArea = `${pathLine} L ${points[points.length - 1].x} 170 L ${points[0].x} 170 Z`;
         const totalUsed = points.reduce((a, b) => a + b.credits, 0);
 
         return { points, pathLine, pathArea, totalUsed };

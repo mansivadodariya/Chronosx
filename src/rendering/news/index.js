@@ -203,10 +203,10 @@ export default function MarketNews() {
                 <div className={styles.categoryPills}>
                     {[
                         { id: 'ALL', label: 'All Catalysts' },
-                        { id: 'HIGH_IMPACT', label: '⚡ High Impact (Score 3-5)' },
-                        { id: 'FOREX', label: '💱 Forex Markets' },
-                        { id: 'CRYPTO', label: '🪙 Digital Assets & Web3' },
-                        { id: 'EQUITIES', label: '📊 Global Equities' },
+                        { id: 'HIGH_IMPACT', label: 'High Impact (Score 3-5)' },
+                        { id: 'FOREX', label: 'Forex Markets' },
+                        { id: 'CRYPTO', label: 'Digital Assets & Web3' },
+                        { id: 'EQUITIES', label: 'Global Equities' },
                     ].map(cat => (
                         <button
                             key={cat.id}
@@ -446,19 +446,19 @@ export default function MarketNews() {
                                 <div className={styles.scenariosBox}>
                                     {selectedNews.analysis_data.scenario_analysis.if_event_strengthens && (
                                         <div className={styles.scenarioItem}>
-                                            <strong>▲ If Event Strengthens:</strong>
+                                            <strong>[+] If Event Strengthens:</strong>
                                             <span>{selectedNews.analysis_data.scenario_analysis.if_event_strengthens}</span>
                                         </div>
                                     )}
                                     {selectedNews.analysis_data.scenario_analysis.if_event_fades && (
                                         <div className={styles.scenarioItem}>
-                                            <strong>▼ If Event Fades:</strong>
+                                            <strong>[-] If Event Fades:</strong>
                                             <span>{selectedNews.analysis_data.scenario_analysis.if_event_fades}</span>
                                         </div>
                                     )}
                                     {selectedNews.analysis_data.scenario_analysis.invalidation_trigger && (
                                         <div className={styles.scenarioItem}>
-                                            <strong style={{ color: '#F87171' }}>⚠️ Invalidation Trigger:</strong>
+                                            <strong style={{ color: '#F87171' }}>[!] Invalidation Trigger:</strong>
                                             <span>{selectedNews.analysis_data.scenario_analysis.invalidation_trigger}</span>
                                         </div>
                                     )}

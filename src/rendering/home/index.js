@@ -26,17 +26,17 @@ export default function HomePage() {
                 <Capabilities />
                 <MetricsSection />
                 <AiCockpit isHero={false} showHeader={true} />
-                <BeforeAfterComparison />
                 <AiAnalyst />
-                <MarketIntelligence />
+                <BeforeAfterComparison />
                 <HowitWorks />
+                <MarketIntelligence />
                 <BreakoutDetection />
                 <TeamUp />
                 <GlobalNetworkMap />
                 <Testimonials />
                 <ReadytoPut />
             </div>
-        </div>
+        </div>  
     )
 }
 

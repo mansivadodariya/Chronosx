@@ -66,7 +66,7 @@ export default function AiTrade() {
     };
 
     const handleCopyPlan = () => {
-        const text = `📸 AI TRADE ANALYSIS RESULT
+        const text = `[AI TRADE ANALYSIS RESULT]
 ==================================================
 Ticker: ${selectedPreset.pair} | Timeframe: ${selectedPreset.timeframe} | Signal Confidence: ${selectedPreset.confidence}
 Decision: ${selectedPreset.decision}

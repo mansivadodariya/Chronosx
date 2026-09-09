@@ -40,6 +40,8 @@ const ROUTE_TAB_MAP = {
     '/subscription-plans': 'Subscription Plans',
     '/broker': 'Broker',
     '/brokers': 'Broker',
+    '/affiliate': 'Affiliate',
+    '/dashboard/affiliate': 'Affiliate',
     '/profile': 'Profile',
     '/settings': 'Profile',
 };
@@ -186,6 +188,7 @@ const layout = ({ children }) => {
                 currentTabName === 'Tools' ||
                 currentTabName === 'Economic Calendar' ||
                 currentTabName === 'Forex Calculator' ||
+                currentTabName === 'Affiliate' ||
                 currentTabName.toLowerCase() === 'ai trade analysis' ||
                 currentTabName.toLowerCase() === 'ai trade audit'
             ) {

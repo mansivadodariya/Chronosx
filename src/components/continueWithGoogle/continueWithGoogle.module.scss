@@ -49,7 +49,11 @@
             box-shadow: 0 0 14px rgba(24, 201, 139, 0.22);
         }
 
-        :global(html.light) & {
+        :global(html.light) &,
+        :global(html[data-theme='light']) &,
+        :global(body.light) &,
+        :global([data-theme='light']) &,
+        :global(.light) & {
             background: #FFFFFF !important;
             border: 1.5px solid rgba(15, 23, 42, 0.15) !important;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
@@ -80,7 +84,11 @@
         border-radius: 9999px;
         font-family: "Euclid-Medium", sans-serif;
 
-        :global(html.light) & {
+        :global(html.light) &,
+        :global(html[data-theme='light']) &,
+        :global(body.light) &,
+        :global([data-theme='light']) &,
+        :global(.light) & {
             color: #0F172A !important;
         }
 

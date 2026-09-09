@@ -4,8 +4,10 @@ import styles from './footer.module.scss';
 import Link from 'next/link';
 import { getAuthHref } from '@/lib/authRedirect';
 import { useLanguage } from '@/context/LanguageContext';
+import { useTheme } from '@/context/ThemeContext';
 
-const Logo = '/assets/logo/logo.png';
+const DarkLogo = '/assets/logo/logo.png';
+const LightLogo = '/assets/logo/darklogo.png';
 
 const socialLinks = [
   { icon: '/assets/icons/twitter.svg', href: 'https://twitter.com', label: 'Twitter' },
@@ -17,6 +19,8 @@ const socialLinks = [
 
 export default function Footer() {
   const { t } = useLanguage();
+  const { theme } = useTheme();
+  const activeLogo = theme === 'light' ? LightLogo : DarkLogo;
   const containerRef = useRef(null);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -62,7 +66,7 @@ export default function Footer() {
           <div className={styles.brandCol}>
             <div className={styles.brandLogo}>
               <Link href="/" aria-label="ChronosX Home">
-                <img src={Logo} alt='ChronosX Logo' />
+                <img src={activeLogo} alt='ChronosX Logo' />
               </Link>
             </div>
             <p className={styles.brandDesc}>

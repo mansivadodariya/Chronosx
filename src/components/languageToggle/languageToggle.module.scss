@@ -6,40 +6,75 @@
   display: inline-block;
 }
 
+.flagWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
+
+  .flagSvg {
+    display: block;
+    width: 18px;
+    height: 13px;
+    object-fit: cover;
+  }
+}
+
 .toggleButton {
   height: 38px;
   min-height: 38px;
   box-sizing: border-box;
-  padding: 0 14px;
+  padding: 0 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: rgba(14, 13, 10, 0.95);
-  border: 1px solid rgba(24, 201, 139, 0.4);
+  background: rgba(14, 18, 16, 0.85);
+  border: 1px solid rgba(24, 201, 139, 0.32);
   border-radius: 10px;
   color: #FFFFFF;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 500;
   font-family: "Euclid-Medium", sans-serif;
   cursor: pointer;
   user-select: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
 
-  &:hover {
-    border-color: rgba(24, 201, 139, 0.7);
-    background: rgba(6, 24, 18, 0.95);
-    box-shadow: 0 0 12px rgba(24, 201, 139, 0.15);
+  &:hover,
+  &.btnActive {
+    border-color: #18C98B;
+    background: rgba(24, 201, 139, 0.12);
+    box-shadow: 0 0 14px rgba(24, 201, 139, 0.25);
+    color: #FFFFFF;
+  }
+
+  // Header Navbar Variant
+  &.headerNav {
+    height: 36px;
+    min-height: 36px;
+    padding: 0 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    &:hover,
+    &.btnActive {
+      border-color: #18C98B;
+      background: rgba(24, 201, 139, 0.12);
+    }
   }
 }
 
-.globeIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #18C98B;
-  flex-shrink: 0;
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: 1;
 }
 
 .chevronIcon {
@@ -54,27 +89,21 @@
   }
 }
 
-.label {
-  font-size: 13.5px;
-  font-weight: 500;
-  color: #FFFFFF;
-  line-height: 1;
-}
-
 .dropdownMenu {
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
-  min-width: 140px;
-  background: #040605;
-  border: 1px solid rgba(24, 201, 139, 0.4);
-  border-radius: 10px;
+  min-width: 175px;
+  background: #0A0F0D;
+  border: 1px solid rgba(24, 201, 139, 0.35);
+  border-radius: 12px;
   padding: 6px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(24, 201, 139, 0.08);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.85), 0 0 18px rgba(24, 201, 139, 0.1);
   z-index: 1050;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
+  backdrop-filter: blur(14px);
 
   :global([dir="rtl"]) & {
     right: auto;
@@ -84,34 +113,125 @@
 
 .dropdownOption {
   width: 100%;
-  padding: 8px 12px;
+  padding: 8px 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   background: transparent;
-  border: none;
-  border-radius: 6px;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 13px;
-  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 12.5px;
   font-family: "Euclid-Medium", sans-serif;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.18s ease;
+
+  .optionLeft {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .optionLabel {
+      font-weight: 600;
+      color: #FFFFFF;
+    }
+
+    .optionSubLabel {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.45);
+    }
+  }
 
   &:hover {
-    background: rgba(24, 201, 139, 0.1);
+    background: rgba(24, 201, 139, 0.12);
+    border-color: rgba(24, 201, 139, 0.25);
     color: #18C98B;
+
+    .optionSubLabel {
+      color: rgba(24, 201, 139, 0.75);
+    }
   }
 
   &.activeOption {
     color: #18C98B;
-    font-weight: 600;
-    background: rgba(6, 24, 18, 0.95);
-    border: 1px solid rgba(24, 201, 139, 0.3);
+    background: rgba(24, 201, 139, 0.15);
+    border-color: rgba(24, 201, 139, 0.4);
+
+    .optionLabel {
+      color: #18C98B;
+    }
   }
 }
 
 .checkIcon {
   color: #18C98B;
   flex-shrink: 0;
+}
+
+/* Light Theme Overrides */
+:global(html.light) {
+  .toggleButton {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(15, 23, 42, 0.14) !important;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05) !important;
+    color: #0F172A !important;
+
+    .label {
+      color: #0F172A !important;
+    }
+
+    .chevronIcon {
+      color: #059669 !important;
+    }
+
+    &:hover,
+    &.btnActive {
+      border-color: #10B981 !important;
+      background: #F0FDF4 !important;
+    }
+
+    &.headerNav {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(15, 23, 42, 0.12) !important;
+    }
+  }
+
+  .dropdownMenu {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(15, 23, 42, 0.12) !important;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12) !important;
+  }
+
+  .dropdownOption {
+    color: #334155 !important;
+
+    .optionLeft {
+      .optionLabel {
+        color: #0F172A !important;
+      }
+      .optionSubLabel {
+        color: #64748B !important;
+      }
+    }
+
+    &:hover {
+      background: #F0FDF4 !important;
+      border-color: rgba(16, 185, 129, 0.3) !important;
+      color: #059669 !important;
+
+      .optionLabel {
+        color: #059669 !important;
+      }
+    }
+
+    &.activeOption {
+      background: #ECFDF5 !important;
+      border-color: #10B981 !important;
+
+      .optionLabel {
+        color: #047857 !important;
+      }
+    }
+  }
 }

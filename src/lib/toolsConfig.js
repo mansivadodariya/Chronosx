@@ -47,6 +47,8 @@ export const ROUTE_TAB_MAP = {
   '/subscription-plans': 'Subscription Plans',
   '/broker': 'Broker',
   '/brokers': 'Broker',
+  '/affiliate': 'Affiliate',
+  '/dashboard/affiliate': 'Affiliate',
   '/profile': 'Profile',
   '/settings': 'Profile',
 };

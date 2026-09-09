@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import { authNavigate } from '@/lib/authRedirect';
 import styles from '../aiStrategyPage.module.scss';
 
@@ -17,20 +19,18 @@ export default function StrategySimulatorSection({
     handleCopyScore,
     router
 }) {
+    const { t } = useLanguage();
+
     return (
         <section ref={demoRef} id="live-scoring" className={styles.feedDemoSection}>
             <div className="container">
-                <div className={styles.sectionHeaderCenter}>
-                    <div className={styles.sectionBadge}>
-                        <span>✦ QUANTITATIVE COCKPIT PREVIEW</span>
-                    </div>
-                    <h2 className={styles.sectionTitle}>
-                        LIVE 100-POINT TECHNICAL SCORE FEED
-                    </h2>
-                    <p className={styles.sectionSubtitle}>
-                        Select any Forex major or strategy model to inspect live aggregate scores, 4-pillar breakdowns, and market biases in real time.
-                    </p>
-                </div>
+                <SectionHeader
+                    badge={t('strategyPage.simulatorBadge', 'QUANTITATIVE COCKPIT PREVIEW')}
+                    title1={t('strategyPage.simulatorTitle1', 'LIVE 100-POINT')}
+                    title2={t('strategyPage.simulatorTitle2', 'TECHNICAL SCORE FEED')}
+                    description={t('strategyPage.simulatorSubtitle', 'Select any Forex major or strategy model to inspect live aggregate scores, 4-pillar breakdowns, and market biases in real time.')}
+                    align="center"
+                />
 
                 <div className={styles.feedCockpit}>
                     {/* Top Bar: Controls & Strategy Dropdown */}

@@ -182,42 +182,32 @@ export default function SubscriptionPlansView() {
         setSelectedPlanId(plan.id);
         setSubmittingPlanId(plan.id);
         try {
-            const successUrl = new URL(window.location.href);
-            successUrl.searchParams.set('isPayment', 'true');
-            successUrl.searchParams.set('planId', plan.id);
-
-            const cancelUrl = new URL(window.location.href);
-            cancelUrl.searchParams.set('isPayment', 'false');
-            cancelUrl.searchParams.set('planId', plan.id);
-
             const payload = {
                 plan_id: plan.id,
-                planId: plan.id,
-                id: plan.id,
-                amount: plan.price,
-                price: plan.price,
-                actualAmount: plan.originalPrice || plan.price,
-                currency: plan.currency || '$',
+                amount: Number(plan.price),
+                currency: (plan.currency && plan.currency !== '$' && plan.currency !== 'USD') ? plan.currency : 'USDT',
+                chain: plan.chain || 'SOLANA',
                 user_id: user?.id || user?.user_id || userId,
                 email: user?.email,
-                success_url: successUrl.toString(),
-                cancel_url: cancelUrl.toString(),
-                isPayment: true,
             };
 
             const res = await depositApi.createDeposit(payload);
 
             const checkoutUrl =
-                res?.payload?.data?.checkout_url ||
-                res?.payload?.checkout_url ||
+                res?.data?.payment_info?.data?.checkout_url ||
+                res?.data?.payment_info?.checkout_url ||
                 res?.data?.checkout_url ||
                 res?.data?.payment_url ||
                 res?.data?.url ||
                 res?.data?.redirect_url ||
+                res?.payment_info?.data?.checkout_url ||
+                res?.payment_info?.checkout_url ||
                 res?.checkout_url ||
                 res?.payment_url ||
                 res?.url ||
-                res?.redirect_url;
+                res?.redirect_url ||
+                res?.payload?.data?.checkout_url ||
+                res?.payload?.checkout_url;
 
             if (res?.payload?.code && res?.payload?.code !== '00000') {
                 toast.error(
@@ -227,7 +217,7 @@ export default function SubscriptionPlansView() {
                 );
             } else if (checkoutUrl) {
                 toast.success(t('plans.redirecting', 'Redirecting to secure payment...'));
-                window.location.assign(checkoutUrl);
+                window.location.href = checkoutUrl;
                 return;
             } else {
                 toast.success(res?.message || t('plans.upgradeSuccess', 'Deposit request created successfully!'));
@@ -253,16 +243,23 @@ export default function SubscriptionPlansView() {
             <div className="container">
                 {/* 1. Header Section */}
                 {isDashboard ? (
-                    <div className={styles.dashboardTitleBlock}>
-                        <h1 className={styles.dashboardTitleText}>
-                            {t('nav.plans', 'Subscription Plans')}
-                        </h1>
-                    </div>
+                    <CommonSectionHeader
+                        badge={t('plans.pricingTiersBadge', 'CHRONOSX PRICING TIERS')}
+                        badgeIcon={
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                            </svg>
+                        }
+                        title={t('nav.plans', 'Subscription Plans')}
+                        highlightText={t('plans.highlightText', '& AI Credits')}
+                        subtitle={t('plans.subtitle', 'Unlock sub-second AI pattern recognition, live multi-timeframe scans, and automated quant strategy backtesting.')}
+                        isCard={true}
+                    />
                 ) : (
                     <SectionHeader
-                        badge="CHRONOSX PRICING TIERS"
-                        title1="Institutional AI Power,"
-                        title2="Tailored For Your Edge"
+                        badge={t('plans.pricingTiersBadge', 'CHRONOSX PRICING TIERS')}
+                        title1={t('plans.heroTitle1', 'Institutional AI Power,')}
+                        title2={t('plans.heroTitle2', 'Tailored For Your Edge')}
                         breakLine={false}
                         description={t('plans.subtitle', 'Unlock sub-second AI pattern recognition, live multi-timeframe scans, and automated quant strategy backtesting.')}
                         align="center"
@@ -314,8 +311,8 @@ export default function SubscriptionPlansView() {
                                     : defaultPlan.badge;
                             }
 
-                            const isFeatured = isBestValue || plan.id === 'standard';
-                            const isPremium = plan.id === 'premium';
+                            const isFeatured = isBestValue || plan.id === 'standard' || plan.id === 'growth';
+                            const isPremium = plan.id === 'premium' || plan.id === 'pro';
                             const priceNum = Number(plan.price);
                             const isFree = !isNaN(priceNum) ? priceNum === 0 : (String(plan.price || '').toLowerCase() === 'free');
                             const isBasic = plan.id === 'basic' || (plan.name || '').toLowerCase().includes('basic') || (plan.name || '').toLowerCase().includes('starter');
@@ -487,11 +484,14 @@ export default function SubscriptionPlansView() {
 
                 {/* 4. Frequently Asked Questions Section */}
                 <div className={styles.faqSection}>
-                    <div className={styles.faqHeader}>
-                        <span className={styles.faqTag}>GOT QUESTIONS?</span>
-                        <h2>Frequently Asked Questions</h2>
-                        <p>Everything you need to know about ChronosX subscription tiers and AI compute allocation.</p>
-                    </div>
+                    <SectionHeader
+                        badge={t('plans.faqBadge', 'GOT QUESTIONS?')}
+                        title1={t('plans.faqTitle1', 'Frequently Asked')}
+                        title2={t('plans.faqTitle2', 'Questions')}
+                        breakLine={false}
+                        description={t('plans.faqSubtitle', 'Everything you need to know about ChronosX subscription tiers and AI compute allocation.')}
+                        align="center"
+                    />
 
                     <div className={styles.faqList}>
                         {faqs.map((faq, idx) => {
@@ -531,11 +531,11 @@ export default function SubscriptionPlansView() {
                 {isOutside && (
                     <>
                         <CommonCta
-                            badge="UNLIMITED INSTITUTIONAL POTENTIAL"
-                            title1="Upgrade Your Trading Desk with"
-                            title2="Next-Gen AI Intelligence"
-                            description="Get higher compute limits, custom MT5 indicators, real-time chart OCR scans, and dedicated quant support."
-                            primaryBtnText="CHOOSE YOUR PLAN"
+                            badge={t('plans.ctaBadge', 'UNLIMITED INSTITUTIONAL POTENTIAL')}
+                            title1={t('plans.ctaTitle1', 'Upgrade Your Trading Desk with')}
+                            title2={t('plans.ctaTitle2', 'Next-Gen AI Intelligence')}
+                            description={t('plans.ctaDesc', 'Get higher compute limits, custom MT5 indicators, real-time chart OCR scans, and dedicated quant support.')}
+                            primaryBtnText={t('plans.ctaBtn', 'CHOOSE YOUR PLAN')}
                             primaryBtnAction={() => {
                                 window.scrollTo({ top: 300, behavior: 'smooth' });
                             }}
@@ -544,7 +544,7 @@ export default function SubscriptionPlansView() {
                         {/* 6. Footer Disclaimer Box */}
                         <div className={styles.disclaimerBox}>
                             <p>
-                                ChronosX provides software, technical tools, and market intelligence algorithms for educational and research purposes only. Subscription fees cover cloud server infrastructure and AI compute processing. Past performance in backtests or simulations is not indicative of future market results.
+                                {t('plans.disclaimer', 'ChronosX provides software, technical tools, and market intelligence algorithms for educational and research purposes only. Subscription fees cover cloud server infrastructure and AI compute processing. Past performance in backtests or simulations is not indicative of future market results.')}
                             </p>
                         </div>
                     </>

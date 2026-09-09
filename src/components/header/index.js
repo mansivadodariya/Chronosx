@@ -6,15 +6,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { authNavigate, getAuthHref, isUserLoggedIn } from '@/lib/authRedirect';
 import { useLanguage } from '@/context/LanguageContext';
 import { DashboardGridIcon } from '@/icons/sidebarIcons';
+import { useTheme } from '@/context/ThemeContext';
 import styles from './header.module.scss';
 import Button from '../button';
 import ThemeToggle from '../themeToggle';
+import LanguageToggle from '../languageToggle';
 
-const Logo = '/assets/logo/logo.png';
+const DarkLogo = '/assets/logo/logo.png';
+const LightLogo = '/assets/logo/darklogo.png';
 const RightIcon = '/assets/icons/right.svg';
 
 export default function Header() {
     const { t } = useLanguage();
+    const { theme } = useTheme();
+    const activeLogo = theme === 'light' ? LightLogo : DarkLogo;
     const router = useRouter();
     const pathname = usePathname();
     const [scrolled, setScrolled] = useState(false);
@@ -29,10 +34,14 @@ export default function Header() {
         };
         updateAuth();
         window.addEventListener('user:updated', updateAuth);
+        window.addEventListener('auth:logout', updateAuth);
         window.addEventListener('storage', updateAuth);
+        window.addEventListener('focus', updateAuth);
         return () => {
             window.removeEventListener('user:updated', updateAuth);
+            window.removeEventListener('auth:logout', updateAuth);
             window.removeEventListener('storage', updateAuth);
+            window.removeEventListener('focus', updateAuth);
         };
     }, [pathname]);
 
@@ -312,7 +321,7 @@ export default function Header() {
                     {/* Brand Logo */}
                     <div className={styles.logo}>
                         <Link href="/" aria-label="ChronosX Home">
-                            <img src={Logo} alt="ChronosX Logo" />
+                            <img src={activeLogo} alt="ChronosX Logo" />
                         </Link>
                     </div>
 
@@ -407,7 +416,8 @@ export default function Header() {
 
                     {/* Right Desktop CTA */}
                     <div className={styles.desktopAction}>
-                        {/* <ThemeToggle /> */}
+                        <LanguageToggle variant="headerNav" />
+                        <ThemeToggle />
                         <Button
                             text={isLoggedIn ? t('nav.dashboard', 'Dashboard') : t('nav.getStarted', 'Get Started')}
                             icon={isLoggedIn ? DashboardGridIcon : RightIcon}
@@ -530,6 +540,11 @@ export default function Header() {
                                 </ul>
 
                                 <div className={styles.drawerDivider} />
+
+                                <div className={styles.drawerToolsRow}>
+                                    <LanguageToggle variant="headerNav" />
+                                    <ThemeToggle />
+                                </div>
 
                                 <div className={styles.drawerCta}>
                                     <Button

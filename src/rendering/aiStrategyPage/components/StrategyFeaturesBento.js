@@ -2,23 +2,23 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../aiStrategyPage.module.scss';
 
 export default function StrategyFeaturesBento({ coreFeatures }) {
+    const { t } = useLanguage();
+
     return (
         <section className={styles.featuresSection}>
             <div className="container">
-                <div className={styles.sectionHeaderCenter}>
-                    <div className={styles.sectionBadge}>
-                        <span>✦ QUANTITATIVE CAPABILITIES</span>
-                    </div>
-                    <h2 className={styles.sectionTitle}>
-                        CORE PLATFORM FEATURES
-                    </h2>
-                    <p className={styles.sectionSubtitle}>
-                        Engineered for algorithmic accuracy, multi-timeframe confirmation, and real-time execution.
-                    </p>
-                </div>
+                <SectionHeader
+                    badge={t('strategyPage.featuresBadge', 'QUANTITATIVE CAPABILITIES')}
+                    title1={t('strategyPage.featuresTitle1', 'CORE PLATFORM')}
+                    title2={t('strategyPage.featuresTitle2', 'FEATURES')}
+                    description={t('strategyPage.featuresSubtitle', 'Engineered for algorithmic accuracy, multi-timeframe confirmation, and real-time execution.')}
+                    align="center"
+                />
 
                 <div className={styles.featuresGrid}>
                     {coreFeatures.map((feat, index) => (

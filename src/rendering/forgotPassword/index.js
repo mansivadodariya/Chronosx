@@ -9,14 +9,18 @@ import { authApi } from '@/lib/api';
 import { validateForgotPassword } from '@/lib/validation';
 import { toast } from '@/components/toast';
 import { useLanguage } from '@/context/LanguageContext';
+import { useTheme } from '@/context/ThemeContext';
 
-const Logo = '/assets/logo/logo.png';
+const DarkLogo = '/assets/logo/logo.png';
+const LightLogo = '/assets/logo/darklogo.png';
 const EmailIcon = '/assets/icons/sms.svg';
 const ArrowIcon = '/assets/icons/arrow.svg';
 
 const ForgotPassword = () => {
     const router = useRouter();
     const { t } = useLanguage();
+    const { theme } = useTheme();
+    const Logo = theme === 'light' ? LightLogo : DarkLogo;
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
     const [loading, setLoading] = useState(false);

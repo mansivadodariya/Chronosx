@@ -634,6 +634,15 @@
                 margin: 16px 0;
             }
 
+            .drawerToolsRow {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                margin-bottom: 14px;
+                width: 100%;
+            }
+
             .drawerCta {
                 display: flex;
                 justify-content: center;

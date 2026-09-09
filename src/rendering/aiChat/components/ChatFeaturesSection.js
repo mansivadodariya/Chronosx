@@ -2,24 +2,24 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import { KEY_FEATURES } from '../constants/aiChatData';
 import styles from '../aiChat.module.scss';
 
 export default function ChatFeaturesSection() {
+    const { t } = useLanguage();
+
     return (
         <section className={styles.capabilitiesSection}>
             <div className="container">
-                <div className={styles.sectionHeaderCenter}>
-                    <div className={styles.sectionBadge}>
-                        <span>✦ QUANTITATIVE CAPABILITIES</span>
-                    </div>
-                    <h2 className={styles.sectionTitle}>
-                        ENGINEERED FOR INSTITUTIONAL ACCURACY
-                    </h2>
-                    <p className={styles.sectionSubtitle}>
-                        Built specifically for traders who demand real-time data feeds, strict risk models, and reliable execution.
-                    </p>
-                </div>
+                <SectionHeader
+                    badge={t('aiChat.featuresBadge', 'QUANTITATIVE CAPABILITIES')}
+                    title1={t('aiChat.featuresTitle1', 'ENGINEERED FOR')}
+                    title2={t('aiChat.featuresTitle2', 'INSTITUTIONAL ACCURACY')}
+                    description={t('aiChat.featuresSubtitle', 'Built specifically for traders who demand real-time data feeds, strict risk models, and reliable execution.')}
+                    align="center"
+                />
 
                 <div className={styles.featuresGrid}>
                     {KEY_FEATURES.map((feat, index) => (

@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './tradeSnap.module.scss';
 import { ClockIcon, TrendUpIcon, TrendDownIcon, ChartIcon, EyeIcon } from '@/icons/tradeSnapIcons';
 
@@ -38,6 +39,7 @@ function formatTradeCall(tradeCall) {
 }
 
 export default function AnalysisResultItem({ trade, index, onViewDetails }) {
+    const { t } = useLanguage();
     if (!trade) return null;
     const call = (trade.trade_call || '').toLowerCase();
     const isBuy = call.includes('buy');
@@ -100,7 +102,7 @@ export default function AnalysisResultItem({ trade, index, onViewDetails }) {
                         </svg>
                         <span>{confidence}%</span>
                     </div>
-                    <span className={`${styles.confidenceLabel} ${confidenceClass}`}>Confidence</span>
+                    <span className={`${styles.confidenceLabel} ${confidenceClass}`}>{t('tradeSnap.confidence', 'Confidence')}</span>
                 </div>
             </div>
 
@@ -108,33 +110,33 @@ export default function AnalysisResultItem({ trade, index, onViewDetails }) {
                 <div className={styles.resultBody}>
                     <div className={styles.detailGrid}>
                         <div className={styles.detailBox}>
-                            <span>Entry Price</span>
+                            <span>{t('tradeSnap.entryPrice', 'Entry Price')}</span>
                             <strong>{formatValue(trade?.entry?.split('(')[0].trim())}</strong>
                         </div>
                         <div className={styles.detailBox}>
-                            <span>Stop Loss</span>
+                            <span>{t('tradeSnap.stopLoss', 'Stop Loss')}</span>
                             <strong className={styles.lossText}>{formatValue(trade.stop_loss)}</strong>
                         </div>
                     </div>
 
                     <div className={styles.targetsGrid}>
                         <div className={styles.targetsBox}>
-                            <span className={styles.targetsLabel}>TARGETS</span>
+                            <span className={styles.targetsLabel}>{t('tradeSnap.targets', 'TARGETS')}</span>
                             <div className={styles.targetsList}>
                                 {Object.entries(trade?.targets || trade?.Targets || {}).map(([key, value], i) => {
                                     const formattedVal = formatValue(value);
                                     return formattedVal !== '-' ? (
                                         <div key={key} className={styles.targetRow}>
-                                            <span>Target {i + 1}</span>
+                                            <span>{t('tradeSnap.targetNumber', 'Target')} {i + 1}</span>
                                             <strong className={styles.profitText}>{formattedVal}</strong>
                                         </div>
                                     ) : null;
-                                })}
+                                    })}
                             </div>
                         </div>
                         <div className={styles.srColumn}>
                             <div className={styles.detailBox}>
-                                <span>Support</span>
+                                <span>{t('tradeSnap.support', 'Support')}</span>
                                 <strong>
                                     {(() => {
                                         const sp = trade?.Support_price || trade.support_price;
@@ -143,7 +145,7 @@ export default function AnalysisResultItem({ trade, index, onViewDetails }) {
                                 </strong>
                             </div>
                             <div className={styles.detailBox}>
-                                <span>Resistance</span>
+                                <span>{t('tradeSnap.resistance', 'Resistance')}</span>
                                 <strong>{formatValue(trade?.Resistance_price || trade.resistance_price)}</strong>
                             </div>
                         </div>
@@ -154,7 +156,7 @@ export default function AnalysisResultItem({ trade, index, onViewDetails }) {
             {trade.rationale && onViewDetails && (
                 <button type="button" className={styles.viewDetailsBtn} onClick={() => onViewDetails(trade)}>
                     <EyeIcon />
-                    View Detailed Analysis
+                    {t('tradeSnap.viewDetailedAnalysis', 'View Detailed Analysis')}
                 </button>
             )}
         </motion.article>

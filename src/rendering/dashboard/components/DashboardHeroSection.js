@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../dashboard.module.scss';
 
 export default function DashboardHeroSection({
@@ -12,6 +13,8 @@ export default function DashboardHeroSection({
     activeHoverPoint,
     setActiveHoverPoint
 }) {
+    const { t } = useLanguage();
+
     return (
         <section className={styles.hologramHero}>
             <div className={styles.heroGrid}>
@@ -21,15 +24,15 @@ export default function DashboardHeroSection({
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5">
                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                         </svg>
-                        <span>CHRONOSX AI TRADING DESK</span>
+                        <span>{t('dashboard.heroTag', 'CHRONOSX AI TRADING DESK')}</span>
                     </div>
 
                     <h1 className={styles.heroHeadline}>
-                        {greeting}, <span className={styles.nameGradient}>{name || 'Trader'}!</span> <span className={styles.wave}>👋</span>
+                        {greeting}, <span className={styles.nameGradient}>{name || t('dashboard.traderFallback', 'Trader')}!</span> 
                     </h1>
 
                     <p className={styles.heroSubtext}>
-                        Real-time multi-timeframe algorithmic pattern detection, neural OCR chart vision, and automated institutional trade setups.
+                        {t('dashboard.heroSubtext', 'Real-time multi-timeframe algorithmic pattern detection, neural OCR chart vision, and automated institutional trade setups.')}
                     </p>
                 </div>
 
@@ -39,14 +42,14 @@ export default function DashboardHeroSection({
                         <div className={styles.chartTitleGroup}>
                             <span className={styles.chartPulseDot} />
                             <div className={styles.titleTextCol}>
-                                <span className={styles.chartTitle}>Daily AI Credit Consumption</span>
-                                <span className={styles.chartSubtitle}>Track credit usage per day across AI Chart Scanner & AI Market Assistant</span>
+                                <span className={styles.chartTitle}>{t('dashboard.creditChartTitle', 'Daily AI Credit Consumption')}</span>
+                                <span className={styles.chartSubtitle}>{t('dashboard.creditChartSubtitle', 'Track credit usage per day across AI Chart Scanner & AI Market Assistant')}</span>
                             </div>
                         </div>
 
                         <div className={styles.headerRightGroup}>
                             <div className={styles.chartSubBadge}>
-                                <span>Total: {dailyCreditChartData.totalUsed} Credits Used</span>
+                                <span>{t('dashboard.totalCreditsUsedPrefix', 'Total:')} {dailyCreditChartData.totalUsed} {t('dashboard.totalCreditsUsedSuffix', 'Credits Used')}</span>
                             </div>
 
                             <div className={styles.timeframeFilterGroup}>
@@ -64,46 +67,64 @@ export default function DashboardHeroSection({
                         </div>
                     </div>
 
-                    {/* Interactive SVG Spline Canvas */}
+                    {/* Interactive Distortion-Free SVG Spline Canvas */}
                     <div className={styles.splineCanvasWrap}>
                         {activeHoverPoint && (
-                            <div className={styles.floatingChartTooltip} style={{ left: `${(activeHoverPoint.idx / 6) * 82 + 9}%` }}>
+                            <div
+                                className={styles.floatingChartTooltip}
+                                style={{
+                                    left: `${activeHoverPoint.xPercent}%`,
+                                    top: `${Math.max(10, activeHoverPoint.yPercent - 15)}%`
+                                }}
+                            >
                                 <span className={styles.tooltipDay}>{activeHoverPoint.dateFormatted}:</span>
-                                <span className={styles.tooltipVal}>{activeHoverPoint.credits} Credits</span>
+                                <span className={styles.tooltipVal}>{activeHoverPoint.credits} {t('dashboard.credits', 'Credits')}</span>
                             </div>
                         )}
 
-                        <svg viewBox="0 0 700 135" preserveAspectRatio="none" className={styles.splineSvg} onMouseLeave={() => setActiveHoverPoint(null)}>
-                            <defs>
-                                <linearGradient id="creditAreaGlow" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stopColor="#18C98B" stopOpacity="0.35" />
-                                    <stop offset="60%" stopColor="#18C98B" stopOpacity="0.06" />
-                                    <stop offset="100%" stopColor="#18C98B" stopOpacity="0" />
-                                </linearGradient>
-                                <linearGradient id="creditLineStroke" x1="0" y1="0" x2="1" y2="0">
-                                    <stop offset="0%" stopColor="#00F2FE" />
-                                    <stop offset="50%" stopColor="#18C98B" />
-                                    <stop offset="100%" stopColor="#6EE7B7" />
-                                </linearGradient>
-                            </defs>
+                        <div className={styles.chartCanvasInner} onMouseLeave={() => setActiveHoverPoint(null)}>
+                            <svg viewBox="0 0 1000 170" preserveAspectRatio="none" className={styles.splineSvg}>
+                                <defs>
+                                    <linearGradient id="creditAreaGlow" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stopColor="#18C98B" stopOpacity="0.32" />
+                                        <stop offset="60%" stopColor="#18C98B" stopOpacity="0.05" />
+                                        <stop offset="100%" stopColor="#18C98B" stopOpacity="0" />
+                                    </linearGradient>
+                                    <linearGradient id="creditLineStroke" x1="0" y1="0" x2="1" y2="0">
+                                        <stop offset="0%" stopColor="#00F2FE" />
+                                        <stop offset="50%" stopColor="#18C98B" />
+                                        <stop offset="100%" stopColor="#6EE7B7" />
+                                    </linearGradient>
+                                </defs>
 
-                            {/* Horizontal Gridlines */}
-                            <line x1="0" y1="25" x2="700" y2="25" stroke="rgba(255, 255, 255, 0.05)" strokeDasharray="4 4" />
-                            <line x1="0" y1="65" x2="700" y2="65" stroke="rgba(255, 255, 255, 0.05)" strokeDasharray="4 4" />
-                            <line x1="0" y1="105" x2="700" y2="105" stroke="rgba(255, 255, 255, 0.05)" strokeDasharray="4 4" />
+                                {/* Subtle Horizontal Gridlines */}
+                                <line x1="0" y1="35" x2="1000" y2="35" stroke="rgba(255, 255, 255, 0.05)" strokeDasharray="5 5" />
+                                <line x1="0" y1="85" x2="1000" y2="85" stroke="rgba(255, 255, 255, 0.05)" strokeDasharray="5 5" />
+                                <line x1="0" y1="135" x2="1000" y2="135" stroke="rgba(255, 255, 255, 0.05)" strokeDasharray="5 5" />
 
-                            {/* Smooth Bezier Spline Area Fill & Stroke */}
-                            <path d={dailyCreditChartData.pathArea} fill="url(#creditAreaGlow)" />
-                            <path d={dailyCreditChartData.pathLine} fill="none" stroke="url(#creditLineStroke)" strokeWidth="3.5" strokeLinecap="round" />
+                                {/* Smooth Bezier Spline Area Fill & Stroke */}
+                                <path d={dailyCreditChartData.pathArea} fill="url(#creditAreaGlow)" />
+                                <path d={dailyCreditChartData.pathLine} fill="none" stroke="url(#creditLineStroke)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
 
-                            {/* Interactive Glowing Data Nodes for Each Date */}
-                            {dailyCreditChartData.points.map((pt) => (
-                                <g key={pt.dateKey} className={styles.chartNodeGroup} onMouseEnter={() => setActiveHoverPoint(pt)}>
-                                    <circle cx={pt.x} cy={pt.y} r="5" fill="#18C98B" className={styles.nodeCircle} />
-                                    <circle cx={pt.x} cy={pt.y} r="10" fill="rgba(24, 201, 139, 0.3)" className={styles.nodeGlow} />
-                                </g>
-                            ))}
-                        </svg>
+                            {/* Crisp HTML Data Point Markers (100% Round & Distortion-Free) */}
+                            <div className={styles.chartPointsOverlay}>
+                                {dailyCreditChartData.points.map((pt) => {
+                                    const isHovered = activeHoverPoint?.dateKey === pt.dateKey;
+                                    return (
+                                        <div
+                                            key={pt.dateKey}
+                                            className={`${styles.dataPointMarker} ${isHovered ? styles.activeMarker : ''} ${pt.isToday ? styles.todayMarker : ''}`}
+                                            style={{ left: `${pt.xPercent}%`, top: `${pt.yPercent}%` }}
+                                            onMouseEnter={() => setActiveHoverPoint(pt)}
+                                        >
+                                            <span className={styles.pointHalo} />
+                                            <span className={styles.pointDot} />
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
 
                         {/* X-Axis Time Labels displaying Clean Dates */}
                         <div className={styles.chartTimeLabels}>

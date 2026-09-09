@@ -2,10 +2,14 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import { COMPARISON_DATA, FAQS } from '../constants/aiChatData';
 import styles from '../aiChat.module.scss';
 
 export default function ComparisonFaqSection({ openFaq, setOpenFaq }) {
+    const { t } = useLanguage();
+
     return (
         <>
             {/* SECTION DIVIDER */}
@@ -14,17 +18,13 @@ export default function ComparisonFaqSection({ openFaq, setOpenFaq }) {
             {/* 6. WHY USE OUR AI TRADING ASSISTANT? (COMPARISON TABLE) */}
             <section className={styles.comparisonSection}>
                 <div className="container">
-                    <div className={styles.sectionHeaderCenter}>
-                        <div className={styles.sectionBadge}>
-                            <span>✦ SYSTEM COMPARISON MATRIX</span>
-                        </div>
-                        <h2 className={styles.sectionTitle}>
-                            WHY USE OUR SPECIALIZED AI COPILOT?
-                        </h2>
-                        <p className={styles.sectionSubtitle}>
-                            See how ChronosX compares against generic, uncalibrated language models in live trading conditions.
-                        </p>
-                    </div>
+                    <SectionHeader
+                        badge={t('aiChat.comparisonBadge', 'SYSTEM COMPARISON MATRIX')}
+                        title1={t('aiChat.comparisonTitle1', 'WHY USE OUR')}
+                        title2={t('aiChat.comparisonTitle2', 'SPECIALIZED AI COPILOT?')}
+                        description={t('aiChat.comparisonSubtitle', 'See how ChronosX compares against generic, uncalibrated language models in live trading conditions.')}
+                        align="center"
+                    />
 
                     <div className={styles.tableCard}>
                         <div className={styles.tableResponsive}>
@@ -95,17 +95,13 @@ export default function ComparisonFaqSection({ openFaq, setOpenFaq }) {
             {/* 7. FREQUENTLY ASKED QUESTIONS (FAQ SECTION) */}
             <section className={styles.faqSection}>
                 <div className="container-xs4">
-                    <div className={styles.sectionHeaderCenter}>
-                        <div className={styles.sectionBadge}>
-                            <span>✦ FREQUENTLY ASKED QUESTIONS</span>
-                        </div>
-                        <h2 className={styles.sectionTitle}>
-                            ANSWERS TO YOUR QUESTIONS
-                        </h2>
-                        <p className={styles.sectionSubtitle}>
-                            Everything you need to know about ChronosX AI Chat, MT5 feeds, and risk calculation.
-                        </p>
-                    </div>
+                    <SectionHeader
+                        badge={t('aiChat.faqBadge', 'FREQUENTLY ASKED QUESTIONS')}
+                        title1={t('aiChat.faqTitle1', 'ANSWERS TO')}
+                        title2={t('aiChat.faqTitle2', 'YOUR QUESTIONS')}
+                        description={t('aiChat.faqSubtitle', 'Everything you need to know about ChronosX AI Chat, MT5 feeds, and risk calculation.')}
+                        align="center"
+                    />
 
                     <div className={styles.faqAccordion}>
                         {FAQS.map((faq, index) => {

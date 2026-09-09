@@ -6,8 +6,10 @@ import { authApi } from '@/lib/api';
 import styles from './verifyEmail.module.scss';
 import Loader from '@/components/loader';
 import { useLanguage } from '@/context/LanguageContext';
+import { useTheme } from '@/context/ThemeContext';
 
-const Logo = '/assets/logo/logo.png';
+const DarkLogo = '/assets/logo/logo.png';
+const LightLogo = '/assets/logo/darklogo.png';
 
 const STATUS = { LOADING: 'loading', SUCCESS: 'success', ERROR: 'error' };
 
@@ -15,6 +17,8 @@ export default function VerifyEmail() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { t } = useLanguage();
+    const { theme } = useTheme();
+    const Logo = theme === 'light' ? LightLogo : DarkLogo;
     const token = searchParams.get('token') || '';
     const [status, setStatus] = useState(STATUS.LOADING);
     const [errorMsg, setErrorMsg] = useState('');

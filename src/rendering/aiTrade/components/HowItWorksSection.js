@@ -2,24 +2,24 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import { STEPS } from '../constants/aiTradeData';
 import styles from '../aiTrade.module.scss';
 
 export default function HowItWorksSection() {
+    const { t } = useLanguage();
+
     return (
         <section className={styles.howItWorksSection}>
             <div className="container">
-                <div className={styles.sectionHeaderCenter}>
-                    <div className={styles.sectionBadge}>
-                        <span>✦ 3-STEP SCANNING WORKFLOW</span>
-                    </div>
-                    <h2 className={styles.sectionTitle}>
-                        HOW AI TRADE SCANNING WORKS
-                    </h2>
-                    <p className={styles.sectionSubtitle}>
-                        From raw screenshot to full quantitative trade setup in 3 automated steps:
-                    </p>
-                </div>
+                <SectionHeader
+                    badge={t('aiTrade.howItWorksBadge', '3-STEP SCANNING WORKFLOW')}
+                    title1={t('aiTrade.howItWorksTitle1', 'HOW AI TRADE')}
+                    title2={t('aiTrade.howItWorksTitle2', 'SCANNING WORKS')}
+                    description={t('aiTrade.howItWorksSubtitle', 'From raw screenshot to full quantitative trade setup in 3 automated steps:')}
+                    align="center"
+                />
 
                 <div className={styles.stepsGrid}>
                     {STEPS.map((step, idx) => (
