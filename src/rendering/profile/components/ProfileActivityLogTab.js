@@ -69,7 +69,12 @@ export default function ProfileActivityLogTab({
                                     <div className={styles.activityMeta}>
                                         <div className={styles.activityDateRow}>
                                             <span className={styles.activityDateText}>{dateStr || 'Unknown Date'}</span>
-                                            {timeStr && <span className={styles.activityTimeText}>at {timeStr}</span>}
+                                            {timeStr && (
+                                                <>
+                                                    <span className={styles.dateDotSeparator}>•</span>
+                                                    <span className={styles.activityTimeText}>{timeStr}</span>
+                                                </>
+                                            )}
                                         </div>
                                         <span className={styles.activityDescText}>{description}</span>
                                     </div>
@@ -78,10 +83,12 @@ export default function ProfileActivityLogTab({
                                     {isActive ? (
                                         <span className={styles.activeSessionBadge}>
                                             <span className={styles.activePulseDot} />
-                                            Active Session
+                                            {t ? t('profile.activeSession', 'Active Session') : 'Active Session'}
                                         </span>
                                     ) : (
-                                        <span className={styles.pastSessionBadge}>Past Session</span>
+                                        <span className={styles.pastSessionBadge}>
+                                            {t ? t('profile.pastSession', 'Past Session') : 'Past Session'}
+                                        </span>
                                     )}
                                 </div>
                             </div>

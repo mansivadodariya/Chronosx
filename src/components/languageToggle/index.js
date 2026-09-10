@@ -29,11 +29,59 @@ const USFlag = () => (
   </svg>
 );
 
-const SAFlag = () => (
+const UAEFlag = () => (
   <svg width="18" height="13" viewBox="0 0 640 480" className={styles.flagSvg} aria-hidden="true">
-    <path fill="#006c35" d="M0 0h640v480H0z"/>
-    <path fill="#fff" d="M160 210c40-3 120-3 220 0-15-6-40-12-80-12-50 0-90 6-140 12zm-20 30c50 4 150 4 270 0-25 8-70 14-140 14-70 0-110-6-130-14z"/>
-    <path fill="#fff" d="M190 260h200v6H190zm-15-3h15v12h-15z"/>
+    <path fill="#00732f" d="M0 0h640v160H0z"/>
+    <path fill="#ffffff" d="M0 160h640v160H0z"/>
+    <path fill="#000000" d="M0 320h640v160H0z"/>
+    <path fill="#ff0000" d="M0 0h160v480H0z"/>
+  </svg>
+);
+
+const MoroccoFlag = () => (
+  <svg width="18" height="13" viewBox="0 0 640 480" className={styles.flagSvg} aria-hidden="true">
+    <path fill="#c1272d" d="M0 0h640v480H0z"/>
+    <path fill="none" stroke="#006233" strokeWidth="22" strokeLinecap="round" strokeLinejoin="round" d="M320 120 L370 270 L240 180 L400 180 L270 270 Z"/>
+  </svg>
+);
+
+const SpainFlag = () => (
+  <svg width="18" height="13" viewBox="0 0 640 480" className={styles.flagSvg} aria-hidden="true">
+    <path fill="#aa151b" d="M0 0h640v480H0z"/>
+    <path fill="#f1bf00" d="M0 120h640v240H0z"/>
+  </svg>
+);
+
+const RussiaFlag = () => (
+  <svg width="18" height="13" viewBox="0 0 640 480" className={styles.flagSvg} aria-hidden="true">
+    <path fill="#ffffff" d="M0 0h640v160H0z"/>
+    <path fill="#0039a6" d="M0 160h640v160H0z"/>
+    <path fill="#d52b1e" d="M0 320h640v160H0z"/>
+  </svg>
+);
+
+const ChinaFlag = () => (
+  <svg width="18" height="13" viewBox="0 0 640 480" className={styles.flagSvg} aria-hidden="true">
+    <path fill="#de2910" d="M0 0h640v480H0z"/>
+    <polygon fill="#ffde00" points="120,60 135,108 185,108 145,138 160,185 120,155 80,185 95,138 55,108 105,108"/>
+    <circle cx="210" cy="50" r="14" fill="#ffde00"/>
+    <circle cx="250" cy="90" r="14" fill="#ffde00"/>
+    <circle cx="250" cy="150" r="14" fill="#ffde00"/>
+    <circle cx="210" cy="190" r="14" fill="#ffde00"/>
+  </svg>
+);
+
+const VietnamFlag = () => (
+  <svg width="18" height="13" viewBox="0 0 640 480" className={styles.flagSvg} aria-hidden="true">
+    <path fill="#da251d" d="M0 0h640v480H0z"/>
+    <polygon fill="#ffff00" points="320,130 355,238 468,238 376,305 412,412 320,345 228,412 264,305 172,238 285,238"/>
+  </svg>
+);
+
+const IndonesiaFlag = () => (
+  <svg width="18" height="13" viewBox="0 0 640 480" className={styles.flagSvg} aria-hidden="true">
+    <path fill="#ce1126" d="M0 0h640v240H0z"/>
+    <path fill="#ffffff" d="M0 240h640v240H0z"/>
   </svg>
 );
 
@@ -51,8 +99,14 @@ const PHFlag = () => (
 
 const LANGUAGES = [
   { code: 'en', label: 'English', native: 'English', Flag: USFlag },
-  { code: 'ar', label: 'Arabic', native: 'العربية', Flag: SAFlag },
-  { code: 'ph', label: 'Filipino', native: 'Filipino', Flag: PHFlag },
+  { code: 'ar', label: 'UAE / Arabic', native: 'العربية', Flag: UAEFlag },
+  { code: 'ary', label: 'Moroccan Darija', native: 'الدارجة المغربية', Flag: MoroccoFlag },
+  { code: 'es', label: 'Spanish', native: 'Español', Flag: SpainFlag },
+  { code: 'ru', label: 'Russian', native: 'Русский', Flag: RussiaFlag },
+  { code: 'zh', label: 'Chinese', native: '中文（普通话）', Flag: ChinaFlag },
+  { code: 'vi', label: 'Vietnamese', native: 'Tiếng Việt', Flag: VietnamFlag },
+  { code: 'id', label: 'Indonesian', native: 'Bahasa Indonesia', Flag: IndonesiaFlag },
+  { code: 'fil', label: 'Filipino', native: 'Filipino', Flag: PHFlag },
 ];
 
 export default function LanguageToggle({ className = '', variant = 'default' }) {
@@ -79,11 +133,11 @@ export default function LanguageToggle({ className = '', variant = 'default' }) 
   const CurrentFlag = currentLang.Flag;
 
   return (
-    <div className={`${styles.wrapper} ${className}`} ref={wrapperRef}>
+    <div className={[styles.wrapper, className].filter(Boolean).join(' ')} ref={wrapperRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`${styles.toggleButton} ${styles[variant]} ${isOpen ? styles.btnActive : ''}`}
+        className={[styles.toggleButton, styles[variant], isOpen ? styles.btnActive : ''].filter(Boolean).join(' ')}
         aria-label="Select Language"
         aria-expanded={isOpen}
       >
@@ -95,7 +149,7 @@ export default function LanguageToggle({ className = '', variant = 'default' }) 
           {currentLang.native}
         </span>
 
-        <span className={`${styles.chevronIcon} ${isOpen ? styles.rotated : ''}`}>
+        <span className={[styles.chevronIcon, isOpen ? styles.rotated : ''].filter(Boolean).join(' ')}>
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="6 9 12 15 18 9" />
           </svg>
@@ -118,15 +172,17 @@ export default function LanguageToggle({ className = '', variant = 'default' }) 
                 <button
                   key={item.code}
                   type="button"
-                  className={`${styles.dropdownOption} ${isSelected ? styles.activeOption : ''}`}
+                  className={[styles.dropdownOption, isSelected ? styles.activeOption : ''].filter(Boolean).join(' ')}
                   onClick={() => handleSelectLanguage(item.code)}
                 >
                   <div className={styles.optionLeft}>
                     <span className={styles.flagWrap}>
                       <ItemFlag />
                     </span>
-                    <span className={styles.optionLabel}>{item.native}</span>
-                    <span className={styles.optionSubLabel}>({item.label})</span>
+                    <div className={styles.textWrap}>
+                      <span className={styles.optionLabel}>{item.native}</span>
+                      <span className={styles.optionSubLabel}>{item.label}</span>
+                    </div>
                   </div>
 
                   {isSelected && (

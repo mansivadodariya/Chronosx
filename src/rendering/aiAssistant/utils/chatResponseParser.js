@@ -70,6 +70,10 @@ export const parseAssistantResponse = (raw) => {
         image_warning = 'Image not clear or valid chart header missing. Please upload a clear chart screenshot.';
     }
 
+    if (fullReport && shortContent && fullReport.trim() === shortContent.trim()) {
+        shortContent = "";
+    }
+
     return {
         shortContent: shortContent || (typeof payload === 'string' ? payload : JSON.stringify(payload)),
         fullReport: fullReport,

@@ -155,7 +155,7 @@ export default function ChatMessageList({
                                             {(msg.response_format === "deep_analysis" || isDeepAnalysis) && msg.fullReport ? (
                                                 <div className={styles.deepAnalysisCardWrapper}>
                                                     {/* TOP SECTION: SHORT EXECUTIVE BULLETS */}
-                                                    {(contentText || msg.content) && (
+                                                    {(contentText || msg.content) && (contentText || msg.content).trim() !== (msg.fullReport || "").trim() && (
                                                         <div className={styles.executiveSummaryCard}>
                                                             <RenderMarkdownWithWidgets
                                                                 content={contentText || msg.content}

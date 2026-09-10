@@ -93,21 +93,42 @@
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
-  min-width: 175px;
+  width: 530px;
   background: #0A0F0D;
   border: 1px solid rgba(24, 201, 139, 0.35);
   border-radius: 12px;
-  padding: 6px;
+  padding: 8px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.85), 0 0 18px rgba(24, 201, 139, 0.1);
   z-index: 1050;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
   backdrop-filter: blur(14px);
 
   :global([dir="rtl"]) & {
     right: auto;
     left: 0;
+  }
+
+  @media (max-width: 640px) {
+    width: min(calc(100vw - 24px), 490px);
+    right: -40px;
+
+    :global([dir="rtl"]) & {
+      right: auto;
+      left: -40px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    width: min(calc(100vw - 16px), 340px);
+    grid-template-columns: repeat(2, 1fr);
+    right: -20px;
+
+    :global([dir="rtl"]) & {
+      right: auto;
+      left: -20px;
+    }
   }
 }
 
@@ -131,19 +152,42 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    min-width: 0;
+    flex: 1;
 
-    .optionLabel {
-      font-weight: 600;
-      color: #FFFFFF;
-    }
+    .textWrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-width: 0;
+      line-height: 1.25;
 
-    .optionSubLabel {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.45);
+      :global([dir="rtl"]) & {
+        align-items: flex-start;
+        text-align: right;
+      }
+
+      .optionLabel {
+        font-weight: 600;
+        color: #FFFFFF;
+        font-size: 12.5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
+
+      .optionSubLabel {
+        font-size: 10.5px;
+        color: rgba(255, 255, 255, 0.45);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
     }
   }
-
-  &:hover {
+&:hover {
     background: rgba(24, 201, 139, 0.12);
     border-color: rgba(24, 201, 139, 0.25);
     color: #18C98B;

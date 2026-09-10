@@ -1,0 +1,321 @@
+@use '../../../scss/main.scss' as *;
+
+.paymentHistoryPanel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.panelHeaderRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    h3 {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #ffffff;
+        margin: 0 0 4px 0;
+    }
+
+    .panelSubtitle {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.55);
+        margin: 0;
+    }
+}
+
+.statsRow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+.statCard {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 12px;
+    padding: 12px 14px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(24, 201, 139, 0.22);
+    }
+
+    .statLabel {
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.55);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 4px;
+    }
+
+    .statValue {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #18c98b;
+        margin: 0;
+    }
+}
+
+.tableWrapper {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    overflow-x: auto;
+}
+
+.historyTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    text-align: left;
+
+    th {
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.6);
+        font-weight: 600;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        white-space: nowrap;
+    }
+
+    td {
+        padding: 14px 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.85);
+        white-space: nowrap;
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    tr:hover td {
+        background: rgba(24, 201, 139, 0.03);
+    }
+}
+
+.invoiceCol {
+    font-family: monospace;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.planTierBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(24, 201, 139, 0.1);
+    color: #18c98b;
+    border: 1px solid rgba(24, 201, 139, 0.3);
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.amountText {
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.statusPill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+
+    &.statusSuccess {
+        background: rgba(24, 201, 139, 0.12);
+        color: #18c98b;
+    }
+
+    &.statusPending {
+        background: rgba(234, 179, 8, 0.12);
+        color: #eab308;
+    }
+
+    &.statusFailed {
+        background: rgba(239, 68, 68, 0.12);
+        color: #ef4444;
+    }
+}
+
+.downloadBtn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.74rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+
+    &:hover {
+        background: rgba(24, 201, 139, 0.15);
+        border-color: #18c98b;
+        color: #18c98b;
+    }
+}
+
+.emptyState {
+    text-align: center;
+    padding: 48px 24px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+
+    .emptyIcon {
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 12px;
+    }
+
+    h4 {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin: 0 0 6px 0;
+    }
+
+    p {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.55);
+        max-width: 360px;
+        margin: 0 auto 18px auto;
+    }
+
+    .exploreBtn {
+        background: linear-gradient(135deg, #18c98b 0%, #10b981 100%);
+        color: #03130c;
+        font-weight: 800;
+        font-size: 0.82rem;
+        padding: 9px 20px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        &:hover {
+            box-shadow: 0 6px 20px rgba(24, 201, 139, 0.35);
+        }
+    }
+}
+
+/* ========================================================================= */
+/* LIGHT THEME (html.light / [data-theme='light'])                           */
+/* ========================================================================= */
+:global(html.light) .paymentHistoryPanel,
+:global([data-theme='light']) .paymentHistoryPanel {
+    .panelHeaderRow {
+        h3 {
+            color: #0F172A !important;
+        }
+
+        .panelSubtitle {
+            color: #64748B !important;
+        }
+    }
+
+    .statCard {
+        background: #F8FAFC !important;
+        border: 1px solid rgba(24, 201, 139, 0.22) !important;
+
+        &:hover {
+            background: #F1F5F9 !important;
+            border-color: #18C98B !important;
+        }
+
+        .statLabel {
+            color: #64748B !important;
+        }
+
+        .statValue {
+            color: #047857 !important;
+        }
+    }
+
+    .tableWrapper {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+    }
+
+    .historyTable {
+        th {
+            background: #F8FAFC !important;
+            color: #475569 !important;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+        }
+
+        td {
+            color: #334155 !important;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.06) !important;
+        }
+
+        tr:hover td {
+            background: rgba(24, 201, 139, 0.04) !important;
+        }
+    }
+
+    .invoiceCol {
+        color: #0F172A !important;
+    }
+
+    .amountText {
+        color: #0F172A !important;
+    }
+
+    .planTierBadge {
+        background: rgba(24, 201, 139, 0.12) !important;
+        color: #047857 !important;
+        border-color: rgba(24, 201, 139, 0.35) !important;
+    }
+
+    .downloadBtn {
+        background: #F1F5F9 !important;
+        border: 1px solid rgba(15, 23, 42, 0.14) !important;
+        color: #0F172A !important;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+
+        &:hover {
+            background: rgba(24, 201, 139, 0.15) !important;
+            border-color: #18C98B !important;
+            color: #047857 !important;
+            box-shadow: 0 2px 8px rgba(24, 201, 139, 0.2) !important;
+        }
+    }
+
+    .emptyState {
+        background: #F8FAFC !important;
+        border-color: rgba(15, 23, 42, 0.12) !important;
+
+        .emptyIcon {
+            color: #94A3B8 !important;
+        }
+
+        h4 {
+            color: #0F172A !important;
+        }
+
+        p {
+            color: #64748B !important;
+        }
+    }
+}
+

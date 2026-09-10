@@ -7,15 +7,20 @@ import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './plans.module.scss';
 import { fetchSubscriptionPlans, defaultSubscriptionPlans } from '@/lib/plansData';
-import { depositApi } from '@/lib/api';
+import { subscriptionApi } from '@/lib/subscriptionApi';
+import { useSubscription } from '@/context/SubscriptionContext';
 import { getStoredUser, getStoredUserId } from '@/lib/authSession';
 import { refreshCreditsFromServer } from '@/lib/credits';
 import { useLanguage } from '@/context/LanguageContext';
-import { getBidiProps } from '@/lib/bidi';
 import toast from 'react-hot-toast';
 import CommonCta from '@/components/commonCta';
 
-import { HexGiftBoxIcon, Gold3DGiftBox } from '@/icons/giftBoxIcon';
+import ActiveSubscriptionCard from './components/ActiveSubscriptionCard';
+import PaymentSummaryModal from './components/PaymentSummaryModal';
+import PaymentSuccessModal from './components/PaymentSuccessModal';
+import PaymentFailedModal from './components/PaymentFailedModal';
+
+import { HexGiftBoxIcon } from '@/icons/giftBoxIcon';
 
 const GoldenCheckCircleIcon = () => (
     <div className={styles.goldenCheckCircle}>
@@ -23,12 +28,6 @@ const GoldenCheckCircleIcon = () => (
             <polyline points="20 6 9 17 4 12" />
         </svg>
     </div>
-);
-
-const CheckIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-        <polyline points="20 6 9 17 4 12" />
-    </svg>
 );
 
 const ZapIcon = () => (
@@ -104,11 +103,26 @@ export default function SubscriptionPlansView() {
     const isDashboard = Boolean(pathname?.includes('subscription-plans'));
     const isOutside = !isDashboard;
     const { t, language } = useLanguage();
+
+    const { subscription, hasActivePlan, evaluatePlanAction, refreshSubscription } = useSubscription();
+
     const [plans, setPlans] = useState(defaultSubscriptionPlans);
     const [loading, setLoading] = useState(true);
     const [selectedPlanId, setSelectedPlanId] = useState(null);
     const [submittingPlanId, setSubmittingPlanId] = useState(null);
     const [openFaq, setOpenFaq] = useState(null);
+
+    // Modal states
+    const [summaryModalOpen, setSummaryModalOpen] = useState(false);
+    const [summaryPlan, setSummaryPlan] = useState(null);
+    const [summaryActionType, setSummaryActionType] = useState('SUBSCRIBE');
+
+    const [successModalOpen, setSuccessModalOpen] = useState(false);
+    const [successPlan, setSuccessPlan] = useState(null);
+    const [successOrderId, setSuccessOrderId] = useState(null);
+
+    const [failedModalOpen, setFailedModalOpen] = useState(false);
+    const [failedReason, setFailedReason] = useState(null);
 
     useEffect(() => {
         let isMounted = true;
@@ -132,24 +146,51 @@ export default function SubscriptionPlansView() {
     useEffect(() => {
         if (typeof window === 'undefined') return;
         const params = new URLSearchParams(window.location.search);
+        const paymentStatus = params.get('payment_status');
         const isPayment = params.get('isPayment');
-        if (isPayment === 'true') {
-            toast.success(t('plans.paymentSuccess', 'Payment completed successfully! Credits have been allocated.'));
+        const planId = params.get('plan_id') || params.get('planId');
+        const orderId = params.get('order_id') || params.get('orderId');
+        const reason = params.get('reason') || params.get('error');
+
+        if (paymentStatus === 'success' || isPayment === 'true') {
+            const matchingPlan = plans.find(p => p.id === planId) || defaultSubscriptionPlans.find(p => p.id === planId) || plans[1] || defaultSubscriptionPlans[1];
+            setSuccessPlan(matchingPlan);
+            setSuccessOrderId(orderId);
+            setSuccessModalOpen(true);
+            if (orderId) {
+                subscriptionApi.verifyPaymentReturn(orderId, 'success');
+            }
+            refreshSubscription();
             refreshCreditsFromServer();
+            toast.success(t('plans.paymentSuccess', 'Payment completed successfully! Subscription is active.'));
+
             const cleanUrl = new URL(window.location.href);
             cleanUrl.searchParams.delete('isPayment');
+            cleanUrl.searchParams.delete('payment_status');
             cleanUrl.searchParams.delete('planId');
+            cleanUrl.searchParams.delete('plan_id');
+            cleanUrl.searchParams.delete('order_id');
             window.history.replaceState({}, '', cleanUrl.toString());
-        } else if (isPayment === 'false') {
-            toast.error(t('plans.paymentCancelled', 'Payment was cancelled.'));
+        } else if (paymentStatus === 'failed' || isPayment === 'false') {
+            if (orderId) {
+                subscriptionApi.verifyPaymentReturn(orderId, 'failed', reason || 'cancelled');
+            }
+            setFailedReason(reason);
+            setFailedModalOpen(true);
+            toast.error(t('plans.paymentCancelled', 'Payment was cancelled or incomplete. Your active plan is safe.'));
+
             const cleanUrl = new URL(window.location.href);
             cleanUrl.searchParams.delete('isPayment');
+            cleanUrl.searchParams.delete('payment_status');
             cleanUrl.searchParams.delete('planId');
+            cleanUrl.searchParams.delete('plan_id');
+            cleanUrl.searchParams.delete('order_id');
+            cleanUrl.searchParams.delete('reason');
             window.history.replaceState({}, '', cleanUrl.toString());
         }
-    }, [t]);
+    }, [plans, refreshSubscription, t]);
 
-    const handleUpgradePlan = async (plan) => {
+    const handleSelectPlan = async (plan) => {
         if (typeof window === 'undefined') return;
 
         const token = localStorage.getItem('access_token');
@@ -179,54 +220,72 @@ export default function SubscriptionPlansView() {
             return;
         }
 
+        const actionMeta = evaluatePlanAction(plan, t);
+        let resolvedAction = actionMeta.action;
+
+        // Check backend plan eligibility: POST /api/v1/subscription/check-eligibility
+        try {
+            const eligibility = await subscriptionApi.checkEligibility(plan.id);
+            if (eligibility) {
+                if (eligibility.allowed === false) {
+                    toast.error(eligibility.message || 'You cannot select this plan at this time.');
+                    return;
+                }
+                if (eligibility.action_type) {
+                    resolvedAction = eligibility.action_type;
+                }
+            }
+        } catch (err) {
+            console.warn('[plans] Eligibility check note:', err);
+        }
+
+        setSummaryPlan(plan);
+        setSummaryActionType(resolvedAction);
+        setSelectedPlanId(plan.id);
+        setSummaryModalOpen(true);
+    };
+
+    const handleProceedPayment = async ({ plan, couponCode, gateway }) => {
         setSelectedPlanId(plan.id);
         setSubmittingPlanId(plan.id);
         try {
-            const payload = {
-                plan_id: plan.id,
-                amount: Number(plan.price),
-                currency: (plan.currency && plan.currency !== '$' && plan.currency !== 'USD') ? plan.currency : 'USDT',
-                chain: plan.chain || 'SOLANA',
-                user_id: user?.id || user?.user_id || userId,
-                email: user?.email,
-            };
-
-            const res = await depositApi.createDeposit(payload);
-
+            const res = await subscriptionApi.createPaymentSession({ plan, couponCode, gateway });
             const checkoutUrl =
+                res?.data?.checkout_url ||
                 res?.data?.payment_info?.data?.checkout_url ||
                 res?.data?.payment_info?.checkout_url ||
-                res?.data?.checkout_url ||
-                res?.data?.payment_url ||
-                res?.data?.url ||
-                res?.data?.redirect_url ||
-                res?.payment_info?.data?.checkout_url ||
-                res?.payment_info?.checkout_url ||
                 res?.checkout_url ||
                 res?.payment_url ||
-                res?.url ||
-                res?.redirect_url ||
-                res?.payload?.data?.checkout_url ||
-                res?.payload?.checkout_url;
+                res?.url;
 
-            if (res?.payload?.code && res?.payload?.code !== '00000') {
-                toast.error(
-                    res?.payload?.message ||
-                    res?.message ||
-                    'A payment session is already active and will expire in 10 minutes. Please complete the current payment or try again.'
-                );
-            } else if (checkoutUrl) {
+            if (checkoutUrl) {
                 toast.success(t('plans.redirecting', 'Redirecting to secure payment...'));
+                setSummaryModalOpen(false);
                 window.location.href = checkoutUrl;
-                return;
             } else {
-                toast.success(res?.message || t('plans.upgradeSuccess', 'Deposit request created successfully!'));
+                setSummaryModalOpen(false);
+                const orderId = res?.order_id || res?.data?.order_id || `ORD-${Date.now()}`;
+                setSuccessPlan(plan);
+                setSuccessOrderId(orderId);
+                setSuccessModalOpen(true);
+                await refreshSubscription();
+                await refreshCreditsFromServer();
+                toast.success(t('plans.upgradeSuccess', 'Subscription activated successfully!'));
             }
         } catch (err) {
-            toast.error(err?.message || t('common.somethingWentWrong', 'Failed to create deposit request.'));
+            toast.error(err?.message || t('common.somethingWentWrong', 'Failed to create payment session.'));
+            throw err;
         } finally {
             setSubmittingPlanId(null);
         }
+    };
+
+    const handleRenewActivePlan = () => {
+        if (!subscription) return;
+        const currentPlanObj = plans.find(p => p.id === subscription.plan_id) || defaultSubscriptionPlans.find(p => p.id === subscription.plan_id) || plans[0];
+        setSummaryPlan(currentPlanObj);
+        setSummaryActionType('RENEW');
+        setSummaryModalOpen(true);
     };
 
     const toggleFaq = (idx) => {
@@ -266,7 +325,15 @@ export default function SubscriptionPlansView() {
                     />
                 )}
 
-                {/* 2. Pricing Plans Grid */}
+                {/* 2. Active Subscription Banner (Dashboard View) */}
+                {isDashboard && hasActivePlan && subscription && (
+                    <ActiveSubscriptionCard
+                        subscription={subscription}
+                        onRenewClick={handleRenewActivePlan}
+                    />
+                )}
+
+                {/* 3. Pricing Plans Grid */}
                 {loading ? (
                     <div className={styles.loadingGrid}>
                         <div className={styles.skeletonCard} />
@@ -336,9 +403,10 @@ export default function SubscriptionPlansView() {
                                 ? (plan.validity_ar || defaultPlan.validity_ar || plan.validity)
                                 : (plan.validity || defaultPlan.validity);
 
+                            const actionMeta = evaluatePlanAction(plan, t);
                             const ctaText = isFree
                                 ? t('plans.getStartedFree', 'Get Started Free')
-                                : t('plans.upgradePlan', isFilipino ? 'Mag-upgrade ng Plano' : isArabic ? 'ترقية الخطة' : 'Upgrade Plan');
+                                : actionMeta.label;
 
                             const featuresList = (isFilipino && plan.features_ph?.length)
                                 ? plan.features_ph
@@ -410,7 +478,7 @@ export default function SubscriptionPlansView() {
                                         <button
                                             type="button"
                                             className={`${styles.buyBtn} ${isFeatured ? styles.featuredBuyBtn : isPremium ? styles.premiumBuyBtn : styles.basicBuyBtn}`}
-                                            onClick={() => handleUpgradePlan(plan)}
+                                            onClick={() => handleSelectPlan(plan)}
                                             disabled={submittingPlanId === plan.id}
                                         >
                                             <span>
@@ -449,7 +517,7 @@ export default function SubscriptionPlansView() {
                     </motion.div>
                 )}
 
-                {/* 3. Trust & Security Strip */}
+                {/* 4. Trust & Security Strip */}
                 <motion.div 
                     className={styles.trustStrip}
                     initial={{ opacity: 0, y: 20 }}
@@ -482,7 +550,7 @@ export default function SubscriptionPlansView() {
                     </div>
                 </motion.div>
 
-                {/* 4. Frequently Asked Questions Section */}
+                {/* 5. Frequently Asked Questions Section */}
                 <div className={styles.faqSection}>
                     <SectionHeader
                         badge={t('plans.faqBadge', 'GOT QUESTIONS?')}
@@ -527,7 +595,7 @@ export default function SubscriptionPlansView() {
                     </div>
                 </div>
 
-                {/* 5. Bottom Conversion CTA & Disclaimer (Only on public /plans marketing site, NOT in dashboard) */}
+                {/* 6. Bottom Conversion CTA & Disclaimer (Outside site) */}
                 {isOutside && (
                     <>
                         <CommonCta
@@ -541,7 +609,6 @@ export default function SubscriptionPlansView() {
                             }}
                         />
 
-                        {/* 6. Footer Disclaimer Box */}
                         <div className={styles.disclaimerBox}>
                             <p>
                                 {t('plans.disclaimer', 'ChronosX provides software, technical tools, and market intelligence algorithms for educational and research purposes only. Subscription fees cover cloud server infrastructure and AI compute processing. Past performance in backtests or simulations is not indicative of future market results.')}
@@ -550,6 +617,33 @@ export default function SubscriptionPlansView() {
                     </>
                 )}
             </div>
+
+            {/* 7. Payment Lifecycle Modals */}
+            <PaymentSummaryModal
+                isOpen={summaryModalOpen}
+                onClose={() => setSummaryModalOpen(false)}
+                plan={summaryPlan}
+                currentSubscription={subscription}
+                actionType={summaryActionType}
+                onProceed={handleProceedPayment}
+            />
+
+            <PaymentSuccessModal
+                isOpen={successModalOpen}
+                onClose={() => setSuccessModalOpen(false)}
+                plan={successPlan}
+                orderId={successOrderId}
+            />
+
+            <PaymentFailedModal
+                isOpen={failedModalOpen}
+                onClose={() => setFailedModalOpen(false)}
+                onRetry={() => {
+                    setFailedModalOpen(false);
+                    if (summaryPlan) setSummaryModalOpen(true);
+                }}
+                reason={failedReason}
+            />
         </div>
     );
 }

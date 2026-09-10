@@ -1,0 +1,440 @@
+@use '../../../scss/main.scss' as *;
+
+.calendarContainer {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    padding-top: 14px; // Spacing for top binder rings
+}
+
+/* ========================================================================= */
+/* 1. CALENDAR BINDER RINGS / SPIRALS                                        */
+/* ========================================================================= */
+.binderSpirals {
+    position: absolute;
+    top: 0;
+    left: 24px;
+    right: 24px;
+    display: flex;
+    justify-content: space-around;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.spiralRing {
+    position: relative;
+    width: 16px;
+    height: 26px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ringCoil {
+    width: 10px;
+    height: 22px;
+    background: linear-gradient(180deg, #94a3b8 0%, #f1f5f9 35%, #64748b 70%, #1e293b 100%);
+    border-radius: 6px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.ringHole {
+    position: absolute;
+    bottom: 2px;
+    width: 12px;
+    height: 8px;
+    background: #060907;
+    border-radius: 50%;
+    border: 1px solid rgba(24, 201, 139, 0.3);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+/* ========================================================================= */
+/* 2. CALENDAR PAD                                                           */
+/* ========================================================================= */
+.calendarPad {
+    background: linear-gradient(180deg, #131a15 0%, #0c100e 100%);
+    border: 1px solid rgba(24, 201, 139, 0.3);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        border-color: rgba(24, 201, 139, 0.5);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65), 0 0 25px rgba(24, 201, 139, 0.12);
+    }
+}
+
+/* ========================================================================= */
+/* 3. CALENDAR HEADER STRIP (Month & Banner)                                  */
+/* ========================================================================= */
+.calendarHeaderStrip {
+    background: linear-gradient(135deg, #18c98b 0%, #0f9f6e 60%, #087f55 100%);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.calIcon {
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.calendarMonthText {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.calendarBadge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    background: rgba(0, 0, 0, 0.25);
+    color: #ffffff;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.06em;
+}
+
+.headerRight {
+    display: flex;
+    align-items: center;
+}
+
+.liveIndicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(0, 0, 0, 0.35) !important;
+    backdrop-filter: blur(6px);
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+.livePulseDot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ffffff !important;
+    box-shadow: 0 0 8px #ffffff !important;
+    animation: pulseLiveDot 1.4s infinite ease-in-out;
+}
+
+@keyframes pulseLiveDot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.6; }
+}
+
+.liveText {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #ffffff !important;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* ========================================================================= */
+/* 4. PERFORATED TEAR LINE                                                   */
+/* ========================================================================= */
+.perforatedLine {
+    width: 100%;
+    height: 4px;
+    background: radial-gradient(circle, rgba(24, 201, 139, 0.4) 1px, transparent 1.5px);
+    background-size: 8px 4px;
+    opacity: 0.8;
+}
+
+/* ========================================================================= */
+/* 5. BIG CLOCK LEAF CARDS ROW                                               */
+/* ========================================================================= */
+.clockCardsRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 22px 20px 18px 20px;
+    gap: 12px;
+    flex-wrap: nowrap;
+}
+
+.calendarLeafCard {
+    flex: 1;
+    max-width: 130px;
+    min-width: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.leafTopHoles {
+    display: flex;
+    justify-content: space-between;
+    width: 65%;
+    margin-bottom: -5px;
+    z-index: 3;
+}
+
+.leafHole {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #060907;
+    border: 1px solid rgba(24, 201, 139, 0.35);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+.leafFace {
+    position: relative;
+    width: 100%;
+    background: linear-gradient(180deg, #18221b 0%, #101813 50%, #0c120e 100%);
+    border: 1px solid rgba(24, 201, 139, 0.28);
+    border-radius: 12px;
+    padding: 12px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+
+    &:hover {
+        border-color: rgba(24, 201, 139, 0.6);
+        transform: translateY(-2px);
+    }
+}
+
+.flipDivider {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.65);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+    z-index: 2;
+}
+
+.digitDisplay {
+    font-size: 2.6rem;
+    font-weight: 900;
+    line-height: 1;
+    color: #ffffff;
+    font-family: 'JetBrains Mono', 'Roboto Mono', 'SF Mono', Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    z-index: 1;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.secondsDigit {
+    color: #18c98b;
+    text-shadow: 0 0 16px rgba(24, 201, 139, 0.5);
+}
+
+.leafLabel {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    color: rgba(255, 255, 255, 0.65);
+    text-transform: uppercase;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.colonSeparator {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #18c98b;
+    line-height: 1;
+    margin-bottom: 22px;
+    opacity: 0.85;
+    animation: blinkColon 1s infinite;
+    user-select: none;
+}
+
+@keyframes blinkColon {
+    0%, 100% { opacity: 0.9; }
+    50% { opacity: 0.25; }
+}
+
+/* ========================================================================= */
+/* 6. CALENDAR FOOTER & PROGRESS BAR                                         */
+/* ========================================================================= */
+.calendarFooter {
+    padding: 10px 20px 16px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.18);
+}
+
+.progressRow {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.progressBarTrack {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progressBarFill {
+    height: 100%;
+    background: linear-gradient(90deg, #18c98b 0%, #34d399 100%);
+    border-radius: 999px;
+    box-shadow: 0 0 10px rgba(24, 201, 139, 0.5);
+    transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.footerMetaRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.74rem;
+    color: rgba(255, 255, 255, 0.55);
+    flex-wrap: wrap;
+    gap: 8px;
+
+    strong {
+        color: rgba(255, 255, 255, 0.85);
+    }
+}
+
+.cyclePercentText {
+    color: #18c98b;
+    font-weight: 700;
+}
+
+/* ========================================================================= */
+/* 7. RESPONSIVE BREAKPOINTS                                                 */
+/* ========================================================================= */
+@media (max-width: 640px) {
+    .clockCardsRow {
+        gap: 6px;
+        padding: 16px 12px 14px 12px;
+    }
+
+    .digitDisplay {
+        font-size: 1.85rem;
+    }
+
+    .leafLabel {
+        font-size: 0.62rem;
+    }
+
+    .colonSeparator {
+        font-size: 1.5rem;
+        margin-bottom: 18px;
+    }
+
+    .calendarMonthText {
+        font-size: 0.82rem;
+    }
+
+    .liveText {
+        display: none;
+    }
+}
+
+/* ========================================================================= */
+/* 8. LIGHT THEME OVERRIDES                                                  */
+/* ========================================================================= */
+:global(html.light) .calendarPad,
+:global([data-theme='light']) .calendarPad {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(24, 201, 139, 0.38) !important;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08) !important;
+
+    .calendarHeaderStrip,
+    .calendarHeaderStrip *,
+    .calendarMonthText,
+    .calendarBadge,
+    .liveIndicator,
+    .liveText,
+    span.liveText {
+        color: #FFFFFF !important;
+    }
+
+    .liveIndicator {
+        background: rgba(0, 0, 0, 0.35) !important;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    }
+
+    .livePulseDot {
+        background: #FFFFFF !important;
+        box-shadow: 0 0 8px #FFFFFF !important;
+    }
+
+    .ringHole,
+    .leafHole {
+        background: #E2E8F0 !important;
+        border-color: rgba(24, 201, 139, 0.4) !important;
+    }
+
+    .leafFace {
+        background: linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%) !important;
+        border: 1px solid rgba(24, 201, 139, 0.35) !important;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06), inset 0 1px 0 #FFFFFF !important;
+    }
+
+    .flipDivider {
+        background: rgba(15, 23, 42, 0.15) !important;
+        box-shadow: 0 1px 0 #FFFFFF !important;
+    }
+
+    .digitDisplay {
+        color: #0F172A !important;
+        text-shadow: none !important;
+    }
+
+    .secondsDigit {
+        color: #047857 !important;
+        text-shadow: none !important;
+    }
+
+    .leafLabel {
+        color: #475569 !important;
+    }
+
+    .colonSeparator {
+        color: #047857 !important;
+    }
+
+    .calendarFooter {
+        background: #F8FAFC !important;
+        border-top-color: rgba(15, 23, 42, 0.08) !important;
+    }
+
+    .progressBarTrack {
+        background: rgba(24, 201, 139, 0.16) !important;
+        border: 1px solid rgba(24, 201, 139, 0.25) !important;
+    }
+
+    .footerMetaRow {
+        color: #64748B !important;
+
+        strong {
+            color: #0F172A !important;
+        }
+    }
+
+    .cyclePercentText {
+        color: #047857 !important;
+    }
+}

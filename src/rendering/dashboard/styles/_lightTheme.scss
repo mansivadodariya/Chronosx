@@ -542,14 +542,14 @@
                     }
                 }
 
-                .actLeft {
-                    .actTypeIcon {
-                        background: rgba(24, 201, 139, 0.1) !important;
-                        border-color: rgba(24, 201, 139, 0.25) !important;
-                        color: #047857 !important;
-                    }
+                .actTypeIcon {
+                    background: rgba(24, 201, 139, 0.1) !important;
+                    border-color: rgba(24, 201, 139, 0.25) !important;
+                    color: #047857 !important;
+                }
 
-                    .actTitles {
+                .actContent {
+                    .actHeaderRow {
                         .actMainTitle {
                             color: #0F172A !important;
                         }
@@ -560,27 +560,33 @@
                             color: #047857 !important;
                         }
 
+                        .actSignalTag {
+                            &.signalSell {
+                                background: rgba(239, 68, 68, 0.12) !important;
+                                border-color: rgba(239, 68, 68, 0.3) !important;
+                                color: #DC2626 !important;
+                            }
+                            &.signalBuy {
+                                background: rgba(16, 185, 129, 0.12) !important;
+                                border-color: rgba(16, 185, 129, 0.3) !important;
+                                color: #047857 !important;
+                            }
+                        }
+
                         .actTime {
                             color: #64748B !important;
                         }
                     }
-                }
 
-                .actSummary {
-                    color: #475569 !important;
-                    border-left-color: rgba(15, 23, 42, 0.1) !important;
-
-                    strong {
-                        color: #0F172A !important;
-                    }
-
-                    .noSummary {
-                        color: #94A3B8 !important;
+                    .actDescription {
+                        color: #475569 !important;
                     }
                 }
 
                 .actAction {
                     color: #047857 !important;
+                    background: rgba(24, 201, 139, 0.08) !important;
+                    border-color: rgba(24, 201, 139, 0.2) !important;
                 }
             }
 

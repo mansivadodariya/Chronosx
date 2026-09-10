@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { ToolStateProvider } from '@/context/toolState';
+import { SubscriptionProvider } from '@/context/SubscriptionContext';
 import NeweraCreditsModal from '@/components/neweraCreditsModal';
 import { extractAvailableCredits, CREDITS_UPDATED_EVENT, notifyCreditsUpdated, refreshCreditsFromServer } from '@/lib/credits';
 import { captureUtmParameters } from '@/lib/utm';
@@ -252,6 +253,7 @@ const layout = ({ children }) => {
     return (
         <AuthGuard>
             <ThemeProvider>
+                <SubscriptionProvider>
                 <ToolStateProvider>
                     <div className={`user-layout ${effectiveCollapsed ? 'collapsed' : ''}`}>
                         <div className={`sidebar-wrapper ${effectiveCollapsed ? 'collapsed' : ''} ${isSidebarOpen ? 'open' : ''}`}>
@@ -287,6 +289,7 @@ const layout = ({ children }) => {
                         />
                     )} */}
                 </ToolStateProvider>
+                </SubscriptionProvider>
             </ThemeProvider>
         </AuthGuard>
     );

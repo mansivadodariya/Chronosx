@@ -4,8 +4,8 @@
     width: 100%;
     min-height: 100vh;
     background: #040605;
-    padding: 24px 20px 80px 20px;
-    overflow: hidden;
+    padding: 20px 16px 60px 16px;
+    overflow-x: clip;
     color: #FFFFFF;
 
     :global(html.light) & {
@@ -14,11 +14,11 @@
     }
 
     @include respond-to("md") {
-        padding: 20px 16px 60px 16px;
+        padding: 16px 12px 40px 12px;
     }
 
     @include respond-to("sm") {
-        padding: 16px 12px 40px 12px;
+        padding: 12px 8px 30px 8px;
     }
 
     &.outsidePage {
@@ -46,16 +46,16 @@
     }
 
     &.dashboardPlansPage {
-        padding-top: 14px !important;
-        padding-bottom: 40px !important;
+        padding-top: 10px !important;
+        padding-bottom: 36px !important;
 
         @include respond-to("md") {
-            padding-top: 10px !important;
-            padding-bottom: 30px !important;
+            padding-top: 8px !important;
+            padding-bottom: 28px !important;
         }
 
         @include respond-to("sm") {
-            padding-top: 6px !important;
+            padding-top: 4px !important;
             padding-bottom: 20px !important;
         }
 
@@ -219,13 +219,21 @@
 /* Loading Skeletons */
 .loadingGrid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
     margin-top: 28px;
     margin-bottom: 60px;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
 
-    @include respond-to("md") {
+    @media (max-width: 1200px) {
+        gap: 16px;
+    }
+
+    @media (max-width: 992px) {
         grid-template-columns: 1fr;
+        max-width: 520px;
         gap: 24px;
         margin-top: 20px;
     }
@@ -245,40 +253,41 @@
     100% { opacity: 0.4; }
 }
 
-/* Plans Grid */
+/* Plans Grid - Fluid 3-column on desktop/laptop, adaptive 1-column on tablet/mobile */
 .plansGrid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 28px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
     align-items: stretch;
-    margin-top: 82px;
+    margin-top: 36px;
     margin-bottom: 50px;
     width: 100%;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
 
-    .planCard {
-        flex: 1 1 380px;
-        max-width: 460px;
-        width: 100%;
-    }
-
-    @include respond-to("lg") {
-        gap: 20px;
+    @media (max-width: 1200px) {
+        gap: 16px;
         margin-top: 28px;
     }
 
-    @include respond-to("md") {
-        flex-direction: column;
-        align-items: center;
-        max-width: 500px;
-        margin-left: auto;
-        margin-right: auto;
+    @media (max-width: 992px) {
+        grid-template-columns: 1fr;
+        max-width: 520px;
+        gap: 32px;
         margin-top: 24px;
-        gap: 36px;
+    }
 
-        .planCard {
-            max-width: 100%;
-        }
+    @include respond-to("sm") {
+        max-width: 100%;
+        gap: 24px;
+        margin-top: 20px;
+        margin-bottom: 36px;
+    }
+
+    .planCard {
+        width: 100%;
+        max-width: 100%;
     }
 }
 
@@ -319,19 +328,19 @@
         #121514;
     border: 1.5px solid #18C98B !important;
     box-shadow: 0 16px 45px rgba(0, 0, 0, 0.7), 0 0 35px rgba(24, 201, 139, 0.22);
-    transform: scale(1.03);
+    transform: translateY(-8px);
     z-index: 6;
 
-    @include respond-to("md") {
-        transform: scale(1);
+    &:hover {
+        transform: translateY(-14px);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 45px rgba(24, 201, 139, 0.32);
     }
 
-    &:hover {
-        transform: scale(1.03) translateY(-8px);
-        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 45px rgba(24, 201, 139, 0.32);
+    @media (max-width: 992px) {
+        transform: none;
 
-        @include respond-to("md") {
-            transform: translateY(-8px);
+        &:hover {
+            transform: translateY(-6px);
         }
     }
 }
@@ -347,16 +356,16 @@
 /* Badges */
 .tierBadge {
     position: absolute;
-    top: -15px;
+    top: -14px;
     left: 50%;
     transform: translateX(-50%);
     background: linear-gradient(135deg, #A7F3D0 0%, #18C98B 40%, #059669 75%, #047857 100%);
     color: #000000;
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 900;
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
-    padding: 5px 16px;
+    padding: 4px 14px;
     border-radius: 99px;
     box-shadow: 0 4px 16px rgba(24, 201, 139, 0.4);
     display: flex;
@@ -368,7 +377,7 @@
 
 /* Card Header Content */
 .cardHeader {
-    padding: 24px 28px 18px;
+    padding: 24px 20px 18px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -376,28 +385,36 @@
     width: 100%;
     box-sizing: border-box;
 
+    @media (max-width: 1200px) {
+        padding: 20px 16px 16px;
+    }
+
     @include respond-to("sm") {
-        padding: 20px 20px 16px;
+        padding: 18px 14px 14px;
     }
 
     .tierCategoryRow {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
         width: 100%;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
 
         .tierCategoryGroup {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            min-width: 0;
 
             .tierCategory {
                 color: #18C98B;
-                font-size: 13px;
+                font-size: clamp(11.5px, 1vw, 13px);
                 font-weight: 800;
-                letter-spacing: 1.2px;
+                letter-spacing: 0.8px;
                 text-transform: uppercase;
+                white-space: nowrap;
             }
         }
 
@@ -405,16 +422,17 @@
             background: rgba(24, 201, 139, 0.06);
             border: 1px solid rgba(24, 201, 139, 0.35);
             color: #18C98B;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 700;
-            padding: 4px 14px;
+            padding: 3px 10px;
             border-radius: 99px;
+            white-space: nowrap;
         }
     }
 
     .planName {
         font-family: var(--font-syne), "Syne", sans-serif;
-        font-size: 32px;
+        font-size: clamp(24px, 2.2vw, 30px);
         font-weight: 900;
         color: #FFFFFF;
         margin: 0 0 6px 0;
@@ -425,110 +443,123 @@
 
     .planDesc {
         color: rgba(255, 255, 255, 0.65);
-        font-size: 13.5px;
+        font-size: 13px;
         line-height: 1.5;
-        margin: 0 0 20px 0;
+        margin: 0 0 16px 0;
         min-height: 40px;
         @include font-normal;
+
+        @media (max-width: 992px) {
+            min-height: auto;
+        }
     }
 }
 
 /* Pricing Container */
 .priceContainer {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     width: 100%;
     position: relative;
-    padding: 18px 20px;
+    padding: 14px 16px;
     border-radius: 12px;
     background: radial-gradient(100% 100% at 100% 50%, rgba(24, 201, 139, 0.08) 0%, rgba(0, 0, 0, 0.5) 100%);
     border-top: 1px solid rgba(24, 201, 139, 0.12);
     border-bottom: 1px solid rgba(24, 201, 139, 0.12);
 
+    @include respond-to("sm") {
+        padding: 12px 14px;
+    }
+
     .priceRow {
         display: flex;
         align-items: baseline;
-        gap: 4px;
+        flex-wrap: wrap;
+        gap: 4px 6px;
 
         .originalPrice {
-            font-size: 20px;
+            font-size: clamp(15px, 1.3vw, 18px);
             font-weight: 700;
             color: #615e58;
             text-decoration: line-through;
-            margin-right: 4px;
+            margin-right: 2px;
         }
 
         .currency {
-            font-size: 28px;
+            font-size: clamp(20px, 1.8vw, 26px);
             font-weight: 800;
             color: #18C98B;
         }
 
         .amount {
             font-family: var(--font-syne), "Syne", sans-serif;
-            font-size: 50px;
-            // font-weight: 900;
+            font-size: clamp(34px, 3vw, 46px);
             color: #FFFFFF;
             letter-spacing: -1.5px;
             line-height: 1;
-
-            @include respond-to("sm") {
-                font-size: 42px;
-            }
         }
 
         .validityLabel {
-            font-size: 13.5px;
+            font-size: clamp(12px, 1vw, 13px);
             font-weight: 600;
             color: rgba(255, 255, 255, 0.5);
-            margin-left: 6px;
+            margin-left: 2px;
+            white-space: nowrap;
         }
     }
 
     .savingsBadge {
         display: inline-block;
         color: #10B981;
-        font-size: 12px;
+        font-size: 11.5px;
         font-weight: 700;
-        margin-top: 6px;
+        margin-top: 4px;
     }
 }
 
-/* Bottom Features Box with 3D Gift Box Graphic */
+/* Bottom Features Box */
 .cardFeaturesBox {
-    margin: 0 16px 20px 16px;
-    padding: 18px 20px;
+    margin: 0 14px 18px 14px;
+    padding: 16px 18px;
     background: #080A08;
     border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 16px;
+    border-radius: 14px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 16px;
+    gap: 14px;
+    flex: 1;
+
+    @media (max-width: 1200px) {
+        margin: 0 12px 16px 12px;
+        padding: 14px 14px;
+    }
 
     @include respond-to("sm") {
-        margin: 0 12px 16px 12px;
-        padding: 14px 16px;
+        margin: 0 10px 14px 10px;
+        padding: 12px 12px;
     }
 
     .featuresLeftContent {
         flex: 1;
+        width: 100%;
 
         .featuresHeader {
             display: flex;
             align-items: center;
             gap: 6px;
             color: #18C98B;
-            font-size: 11.5px;
+            font-size: 11px;
             font-weight: 800;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
             text-transform: uppercase;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
 
             .headerAccentBar {
                 width: 3px;
                 height: 12px;
                 background: #18C98B;
                 border-radius: 2px;
+                flex-shrink: 0;
             }
         }
 
@@ -538,20 +569,21 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
 
             li {
                 display: flex;
-                align-items: center;
-                gap: 10px;
+                align-items: flex-start;
+                gap: 8px;
                 color: rgba(255, 255, 255, 0.85);
-                font-size: 13px;
+                font-size: 12.5px;
                 font-weight: 600;
+                line-height: 1.4;
                 @include font-normal;
 
                 .goldenCheckCircle {
-                    width: 22px;
-                    height: 22px;
+                    width: 18px;
+                    height: 18px;
                     border-radius: 50%;
                     background: rgba(24, 201, 139, 0.1);
                     border: 1px solid rgba(24, 201, 139, 0.35);
@@ -559,6 +591,7 @@
                     align-items: center;
                     justify-content: center;
                     flex-shrink: 0;
+                    margin-top: 1px;
                 }
             }
         }

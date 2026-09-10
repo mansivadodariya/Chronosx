@@ -540,7 +540,6 @@ html.light [class*="featuredCard"],
 html.light [class*="blogCard"],
 html.light [class*="newsletterCard"],
 html.light [class*="chartContainer"],
-html.light [class*="widgetCard"],
 html.light [class*="analysisPanel"],
 html.light [class*="strategyPanel"],
 html.light [class*="statusCard"],
@@ -701,6 +700,48 @@ html.light [class*="inputField"]:focus {
   border-color: #18C98B !important;
   outline: none !important;
   box-shadow: 0 0 0 3px rgba(24, 201, 139, 0.22) !important;
+}
+
+/* Light Theme: Calendar Header & Live Countdown Badge Protection */
+html.light [class*="calendarHeaderStrip"],
+html.light [class*="calendarHeaderStrip"] *,
+html.light [class*="liveIndicator"],
+html.light [class*="liveText"] {
+  color: #FFFFFF !important;
+}
+
+/* Light Theme: Modals Close Button Visibility */
+html.light [class*="modalCard"] [class*="closeBtn"],
+html.light [class*="modalBox"] [class*="closeBtn"],
+html.light [class*="modalContent"] [class*="closeBtn"],
+html.light button[class*="closeBtn"] {
+  color: #0F172A !important;
+}
+html.light [class*="modalCard"] [class*="closeBtn"] svg,
+html.light [class*="modalBox"] [class*="closeBtn"] svg,
+html.light [class*="modalContent"] [class*="closeBtn"] svg,
+html.light button[class*="closeBtn"] svg {
+  stroke: #0F172A !important;
+  color: #0F172A !important;
+}
+
+/* Light Theme: Sidebar Subscription Green Widget Protection */
+html.light [class*="widgetCard"] [class*="daysBadge"],
+html.light [class*="widgetCard"] [class*="daysBadge"] * {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  background: rgba(0, 0, 0, 0.25) !important;
+}
+
+html.light [class*="widgetCard"] [class*="footerRow"],
+html.light [class*="widgetCard"] [class*="statusText"],
+html.light [class*="widgetCard"] [class*="cycleText"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
 }
 
 /* Custom Pointer / Futuristic Cursor Global Rules */

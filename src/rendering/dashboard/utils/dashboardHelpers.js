@@ -151,3 +151,68 @@ export async function exportDashboardPdf({ name, stats }) {
         console.error('Failed to export PDF report:', err);
     }
 }
+
+export function formatRecentActivityItem(item) {
+    if (!item) return { title: 'Recent Item', description: '', signal: null };
+
+    let rawTitle = item.title || item.pair || item.symbol || 'Recent Item';
+    let cleanTitle = extractCleanText(rawTitle);
+
+    // Standardize symbol pairs (e.g. XAUUSD -> XAU/USD, EURUSD -> EUR/USD)
+    const pairMatch = cleanTitle.match(/^([A-Z]{3})([A-Z]{3})$/i);
+    let displayTitle = cleanTitle;
+
+    if (pairMatch) {
+        displayTitle = `${pairMatch[1].toUpperCase()}/${pairMatch[2].toUpperCase()}`;
+    }
+
+    // Detect Signal (BUY / SELL / HOLD / STRONG BUY / STRONG SELL)
+    let signal = null;
+    const rawSignal = String(item.action || item.signal || item.direction || '').trim().toUpperCase();
+    if (['BUY', 'SELL', 'HOLD', 'STRONG BUY', 'STRONG SELL'].includes(rawSignal)) {
+        signal = rawSignal;
+    }
+
+    let rawSummary = String(item.description || item.desc || item.summary || item.response || '').trim();
+    let cleanSummary = extractCleanText(rawSummary);
+
+    // Check if summary itself is a signal like "SELL"
+    const summaryUpper = cleanSummary.trim().toUpperCase();
+    if (!signal && ['BUY', 'SELL', 'HOLD', 'STRONG BUY', 'STRONG SELL'].includes(summaryUpper)) {
+        signal = summaryUpper;
+        cleanSummary = '';
+    } else if (summaryUpper.startsWith('SELL') || summaryUpper.startsWith('BUY')) {
+        if (!signal) {
+            signal = summaryUpper.startsWith('SELL') ? 'SELL' : 'BUY';
+        }
+    }
+
+    // Clean summary from HTML/markdown tags
+    cleanSummary = cleanSummary
+        .replace(/<[^>]*>?/gm, ' ')
+        .replace(/\*\*/g, '')
+        .replace(/^[•\-\*]\s*/, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+    // If description is empty or identical to signal, synthesize a professional telemetry description
+    let description = cleanSummary;
+    if (!description || description.toUpperCase() === signal) {
+        if (signal === 'SELL' || signal === 'STRONG SELL') {
+            description = `AI market assistant identified a SELL order flow setup on ${displayTitle}.`;
+        } else if (signal === 'BUY' || signal === 'STRONG BUY') {
+            description = `AI market assistant identified a BUY order flow setup on ${displayTitle}.`;
+        } else if (item.type === 'blog') {
+            description = `Chart pattern analysis & OCR structural breakdown recorded for ${displayTitle}.`;
+        } else {
+            description = `Technical analysis telemetry and setup parameters recorded.`;
+        }
+    }
+
+    return {
+        title: displayTitle,
+        description,
+        signal
+    };
+}
+

@@ -2,20 +2,32 @@
 /* Action Buttons */
 .buyBtn {
     width: 100%;
-    height: 52px;
-    padding: 6px 6px 6px 24px;
+    height: 50px;
+    padding: 6px 6px 6px 20px;
     border-radius: 9999px;
-    font-size: 15px;
+    font-size: 14.5px;
     font-weight: 800;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 10px;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     font-family: inherit;
     box-sizing: border-box;
     margin-bottom: 10px;
+
+    @media (max-width: 1200px) {
+        height: 46px;
+        padding: 5px 6px 5px 16px;
+        font-size: 13.5px;
+    }
+
+    @include respond-to("sm") {
+        height: 46px;
+        padding: 5px 5px 5px 14px;
+        font-size: 13px;
+    }
 
     span {
         white-space: nowrap;
@@ -24,8 +36,8 @@
     }
 
     .btnIconBox {
-        width: 38px;
-        height: 38px;
+        width: 36px;
+        height: 36px;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -33,6 +45,11 @@
         flex-shrink: 0;
         transition: all 0.3s ease;
         line-height: 0;
+
+        @include respond-to("sm") {
+            width: 34px;
+            height: 34px;
+        }
 
         svg, .btnArrow {
             display: block;
@@ -109,16 +126,16 @@
     align-items: center;
     justify-content: space-between;
     max-width: 1060px;
-    margin: 0 auto 70px auto;
-    padding: 20px 32px;
+    margin: 0 auto 50px auto;
+    padding: 20px 28px;
     border-radius: 16px;
     background: linear-gradient(180deg, rgba(18, 14, 10, 0.6) 0%, rgba(10, 8, 6, 0.8) 100%);
     border: 1px solid rgba(24, 201, 139, 0.2);
 
-    @include respond-to("md") {
+    @media (max-width: 992px) {
         flex-direction: column;
         gap: 20px;
-        padding: 24px 20px;
+        padding: 20px 18px;
         text-align: center;
     }
 
@@ -127,9 +144,10 @@
         align-items: center;
         gap: 16px;
 
-        @include respond-to("md") {
+        @media (max-width: 992px) {
             flex-direction: column;
             gap: 10px;
+            text-align: center;
         }
 
         .trustIcon {
@@ -177,7 +195,7 @@
         height: 36px;
         background: rgba(24, 201, 139, 0.2);
 
-        @include respond-to("md") {
+        @media (max-width: 992px) {
             display: none;
         }
     }
@@ -186,7 +204,7 @@
 /* FAQ Section */
 .faqSection {
     max-width: 860px;
-    margin: 0 auto 70px auto;
+    margin: 0 auto 50px auto;
     text-align: center;
 
     .faqHeader {

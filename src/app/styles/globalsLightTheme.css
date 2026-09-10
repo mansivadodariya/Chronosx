@@ -208,8 +208,8 @@ html.light [class*="eyebrowBadge"],
 html.light [class*="sectionTag"],
 html.light [class*="statusBadge"],
 html.light [class*="chip"],
-html.light span[class*="badge"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="Label"]):not([class*="label"]):not([class*="headerLivePriceBadge"]),
-html.light span[class*="Badge"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="Label"]):not([class*="label"]):not([class*="headerLivePriceBadge"]),
+html.light span[class*="badge"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="Label"]):not([class*="label"]):not([class*="headerLivePriceBadge"]):not([class*="days"]):not([class*="Days"]),
+html.light span[class*="Badge"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="Label"]):not([class*="label"]):not([class*="headerLivePriceBadge"]):not([class*="days"]):not([class*="Days"]),
 html.light span[class*="tag"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="pill"]):not([class*="Pill"]):not([class*="faq"]):not([class*="Faq"]):not([class*="Label"]):not([class*="label"]),
 html.light span[class*="Tag"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="pill"]):not([class*="Pill"]):not([class*="faq"]):not([class*="Faq"]):not([class*="Label"]):not([class*="label"]),
 html.light [class*="pillBadge"],
@@ -553,7 +553,7 @@ html.light [class*="dropdownItem"]:hover [class*="itemIconBox"] {
 
 /* Footer */
 html.light footer,
-html.light [class*="footer"],
+html.light [class*="footer"]:not([class*="Row"]):not([class*="row"]):not([class*="card"]):not([class*="Card"]),
 html.light [class*="footerSection"],
 html.light [class*="footerWrapper"] {
   background-color: #F8FAFC !important;
@@ -561,6 +561,23 @@ html.light [class*="footerWrapper"] {
   border: none !important;
   color: #334155 !important;
   box-shadow: none !important;
+}
+
+/* Sidebar Subscription Green Widget Protection */
+html.light [class*="widgetCard"] [class*="footerRow"],
+html.light [class*="widgetCard"] [class*="statusText"],
+html.light [class*="widgetCard"] [class*="cycleText"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+html.light [class*="widgetCard"] [class*="daysBadge"] {
+  color: #FFFFFF !important;
+  background: rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
 }
 
 html.light [class*="navCol"] h4 {

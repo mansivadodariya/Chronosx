@@ -24,6 +24,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { getBidiProps } from '@/lib/bidi';
 import { supabase } from '@/lib/supabaseClient';
 import QuickJump from '@/components/QuickJump';
+import SidebarSubscriptionWidget from './SidebarSubscriptionWidget';
 
 const BrandDarkLogo = "/assets/logo/darklogo.png";
 const BrandLightLogo = "/assets/logo/logo.png";
@@ -98,8 +99,6 @@ const getNavSections = (t) => [
     title: null,
     items: [
       { label: t('nav.dashboard', 'Dashboard'), href: "/dashboard", icon: DashboardGridIcon },
-      { label: t('nav.chartScanner', 'AI Chart Scanner'), href: "/chart-scanner", icon: AiTradeSparkIcon },
-      { label: t('nav.tradeAudit', 'AI Trade Audit'), href: "/trade-audit", icon: AiTradeAnalysisIcon },
       { label: t('nav.marketAssistant', 'AI Market Assistant'), href: "/market-assistant", icon: AiChatBotIcon },
       {
         label: t('nav.strategyHub', 'Strategy Hub'),
@@ -110,6 +109,8 @@ const getNavSections = (t) => [
           { label: t('nav.strategyPlaybooks', 'Strategy Playbooks'), href: "/strategy-hub/strategy", icon: StrategyIcon },
         ]
       },
+      { label: t('nav.chartScanner', 'AI Chart Scanner'), href: "/chart-scanner", icon: AiTradeSparkIcon },
+      { label: t('nav.tradeAudit', 'AI Trade Audit'), href: "/trade-audit", icon: AiTradeAnalysisIcon },
     ]
   },
   {
@@ -584,45 +585,12 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
 
         {/* Bottom Section: Upgrade Card & Profile Card */}
         <div className={styles.bottomSection}>
-          {/* Upgrade to Pro Card - links to subscription plans */}
+          {/* Active Plan / Upgrade to Pro Widget */}
           {hasPlansPermission && (
-            !isCollapsed ? (
-              <Link
-                href="/subscription-plans"
-                className={styles.upgradeCard}
-                onClick={handleNavigate}
-              >
-                <div className={styles.upgradeIcon}>
-                  <CrownIcon />
-                </div>
-                <div className={styles.upgradeText}>
-                  <span className={styles.upgradeSub}>{t('sidebar.upgradeTo', 'Upgrade to')}</span>
-                  <span className={styles.upgradeMain}>{t('sidebar.proAccount', 'Pro Account')}</span>
-                </div>
-                <div
-                  className={styles.upgradeArrowBtn}
-                  aria-hidden="true"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#040300" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </Link>
-            ) : (
-              <div className={styles.compactUpgradeBox}>
-                <Link
-                  href="/subscription-plans"
-                  className={styles.compactUpgradeBtn}
-                  onClick={handleNavigate}
-                  aria-label={t('sidebar.upgradeToPro', 'Upgrade to Pro')}
-                >
-                  <CrownIcon />
-                  <span className={styles.tooltip}>
-                    {t('sidebar.upgradeToPro', 'Upgrade to Pro')}
-                  </span>
-                </Link>
-              </div>
-            )
+            <SidebarSubscriptionWidget
+              isCollapsed={isCollapsed}
+              onNavigate={handleNavigate}
+            />
           )}
 
           {/* User Profile Card */}

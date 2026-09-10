@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { getTranslation } from '@/locales';
+import { getTranslation, SUPPORTED_LOCALES, RTL_LOCALES } from '@/locales';
 
 const LanguageContext = createContext({
   language: 'en',
@@ -11,8 +11,8 @@ const LanguageContext = createContext({
   isPending: false,
   setLanguage: () => {},
   toggleLanguage: () => {},
-  t: (key, fallback) => fallback || key,
-  tDynamic: (item, keyEn, keyAr) => '',
+  t: (key, fallback, variables) => fallback || key,
+  tDynamic: (item, keyEn) => '',
 });
 
 export const LanguageProvider = ({ children }) => {
@@ -20,11 +20,18 @@ export const LanguageProvider = ({ children }) => {
 
   useEffect(() => {
     try {
-      const storedLang = localStorage.getItem('app_language');
-      if (storedLang === 'ar' || storedLang === 'en' || storedLang === 'ph') {
+      let storedLang = localStorage.getItem('app_language');
+      // Migrate legacy 'ph' code to 'fil'
+      if (storedLang === 'ph') {
+        storedLang = 'fil';
+        localStorage.setItem('app_language', 'fil');
+      }
+
+      if (storedLang && SUPPORTED_LOCALES.includes(storedLang)) {
         setLanguageState(storedLang);
+        const isRtl = RTL_LOCALES.includes(storedLang);
         document.documentElement.setAttribute('lang', storedLang);
-        document.documentElement.setAttribute('dir', storedLang === 'ar' ? 'rtl' : 'ltr');
+        document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
       } else {
         document.documentElement.setAttribute('lang', 'en');
         document.documentElement.setAttribute('dir', 'ltr');
@@ -35,7 +42,7 @@ export const LanguageProvider = ({ children }) => {
   }, []);
 
   const setLanguage = useCallback((lang) => {
-    if (lang !== 'en' && lang !== 'ar' && lang !== 'ph') return;
+    if (!SUPPORTED_LOCALES.includes(lang)) return;
     setLanguageState(lang);
     try {
       localStorage.setItem('app_language', lang);
@@ -43,31 +50,37 @@ export const LanguageProvider = ({ children }) => {
       console.warn('Could not save language to localStorage:', e);
     }
     if (typeof document !== 'undefined') {
+      const isRtl = RTL_LOCALES.includes(lang);
       document.documentElement.setAttribute('lang', lang);
-      document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+      document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
     }
   }, []);
 
   const toggleLanguage = useCallback(() => {
-    setLanguage(language === 'en' ? 'ar' : language === 'ar' ? 'ph' : 'en');
+    const currentIndex = SUPPORTED_LOCALES.indexOf(language);
+    const nextIndex = (currentIndex + 1) % SUPPORTED_LOCALES.length;
+    setLanguage(SUPPORTED_LOCALES[nextIndex]);
   }, [language, setLanguage]);
 
-  const t = useCallback((key, fallback = '') => {
-    return getTranslation(language, key, fallback);
+  const t = useCallback((key, fallback = '', variables = null) => {
+    return getTranslation(language, key, fallback, variables);
   }, [language]);
 
-  /** Helper to translate dynamic backend data objects (e.g. backend fields with _en / _ar / _ph) */
+  /** Helper to translate dynamic backend data objects (e.g. backend fields with _en / _ar / _es etc.) */
   const tDynamic = useCallback((item, fieldEn = 'title', fieldAr, fieldPh) => {
     if (!item) return '';
-    const arKey = fieldAr || `${fieldEn}_ar`;
-    const phKey = fieldPh || `${fieldEn}_ph`;
-    if (language === 'ar' && item[arKey]) return item[arKey];
-    if (language === 'ph' && item[phKey]) return item[phKey];
-    return item[fieldEn] || item[arKey] || item[phKey] || '';
+    const localizedKey = fieldEn + '_' + language;
+    if (item[localizedKey]) return item[localizedKey];
+    
+    // Legacy fallbacks
+    if (language === 'ar' && fieldAr && item[fieldAr]) return item[fieldAr];
+    if ((language === 'fil' || language === 'ph') && fieldPh && item[fieldPh]) return item[fieldPh];
+
+    return item[fieldEn] || item[fieldEn + '_en'] || item[fieldAr] || item[fieldPh] || '';
   }, [language]);
 
-  const dir = language === 'ar' ? 'rtl' : 'ltr';
-  const isRTL = language === 'ar';
+  const isRTL = RTL_LOCALES.includes(language);
+  const dir = isRTL ? 'rtl' : 'ltr';
 
   return (
     <LanguageContext.Provider value={{ language, dir, isRTL, isPending: false, setLanguage, toggleLanguage, t, tDynamic }}>
@@ -85,5 +98,3 @@ export const LanguageProvider = ({ children }) => {
 };
 
 export const useLanguage = () => useContext(LanguageContext);
-
-

@@ -437,12 +437,17 @@ export const profileApi = {
 };
 
 export const depositApi = {
-    createDeposit: (payload) =>
-        request('/deposit/create', {
+    createDeposit: ({ amount, plan_id, planId } = {}) => {
+        const resolvedPlanId = plan_id ?? planId;
+        return request('/deposit/create', {
             method: 'POST',
             headers: getAuthHeaders(),
-            body: JSON.stringify(payload),
-        }),
+            body: JSON.stringify({
+                amount: Number(amount),
+                plan_id: resolvedPlanId !== undefined && resolvedPlanId !== null ? resolvedPlanId : null,
+            }),
+        });
+    },
 
     getDepositHistory: (user_id) => {
         const path = (!user_id || user_id === 'all') ? '/deposit/history' : `/deposit/history?user_id=${user_id}`;

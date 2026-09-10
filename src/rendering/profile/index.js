@@ -18,6 +18,7 @@ import ProfileSecurityTab from './components/ProfileSecurityTab';
 import ProfileActivityLogTab from './components/ProfileActivityLogTab';
 import ProfileRightSidebar from './components/ProfileRightSidebar';
 import ProfileModals from './components/ProfileModals';
+import ProfilePaymentHistoryTab from './components/ProfilePaymentHistoryTab';
 
 function getUserFromStorage() {
     try {
@@ -78,7 +79,7 @@ export default function Profile() {
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
-        if (tabParam && ['profile', 'security', 'activity_log', 'credit_history'].includes(tabParam)) {
+        if (tabParam && ['profile', 'security', 'activity_log', 'credit_history', 'payment_history'].includes(tabParam)) {
             setActiveTab(tabParam);
         }
     }, [tabParam]);
@@ -413,6 +414,19 @@ export default function Profile() {
                     <line x1="2" y1="10" x2="22" y2="10" />
                 </svg>
             )
+        },
+        {
+            id: 'payment_history',
+            title: t('profile.paymentHistory', 'Payment History'),
+            icon: (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <polyline points="10 9 9 9 8 9" />
+                </svg>
+            )
         }
     ];
 
@@ -477,6 +491,12 @@ export default function Profile() {
                     {activeTab === 'credit_history' && (
                         <div className={styles.tabContentPanel}>
                             <CreditHistory embedded={true} />
+                        </div>
+                    )}
+
+                    {activeTab === 'payment_history' && (
+                        <div className={styles.tabContentPanel}>
+                            <ProfilePaymentHistoryTab t={t} />
                         </div>
                     )}
                 </div>

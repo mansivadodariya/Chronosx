@@ -283,7 +283,13 @@ export function useCreateAiAssistantStore() {
 
             const parsed = parseAssistantResponse(rawResp);
             const assistantMsg = buildAssistantMessage(parsed);
-            setChatMessages(prev => [...prev, { ...assistantMsg, isNewlyGenerated: true }]);
+            setChatMessages(prev => {
+                const lastMsg = prev[prev.length - 1];
+                if (lastMsg && lastMsg.role === 'assistant' && lastMsg.content && assistantMsg.content && lastMsg.content.trim() === assistantMsg.content.trim()) {
+                    return prev;
+                }
+                return [...prev, { ...assistantMsg, isNewlyGenerated: true }];
+            });
 
             if (activeUid) {
                 syncCreditsAfterAction(activeUid);
