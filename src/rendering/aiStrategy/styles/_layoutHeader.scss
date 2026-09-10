@@ -105,6 +105,15 @@
             flex-direction: column;
             padding: 6px;
 
+            :global([dir="rtl"]) & {
+                right: auto;
+                left: 0;
+
+                .customDropdownItem {
+                    text-align: right;
+                }
+            }
+
             .customDropdownItem {
                 background: transparent;
                 border: none;

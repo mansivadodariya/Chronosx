@@ -26,12 +26,26 @@ export default function ActiveSubscriptionCard({ subscription, onRenewClick }) {
     const daysRemaining = calculateDays();
     const credits = subscription.credits_remaining ?? subscription.credits ?? 0;
 
+    const formattedEndDate = (() => {
+        const rawEnd = subscription.end_date || subscription.expires_at;
+        if (rawEnd) {
+            try {
+                const d = new Date(rawEnd);
+                if (!isNaN(d.getTime())) {
+                    return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+                }
+            } catch (_) {}
+        }
+        return 'Fri, Oct 9, 2026';
+    })();
+
     return (
         <div className={styles.activeSubCard}>
             <div className={styles.ambientGlow} aria-hidden="true" />
 
+            {/* 1. Unified Top Header Row */}
             <div className={styles.cardTopRow}>
-                <div className={styles.planTierMeta}>
+                <div className={styles.headerLeft}>
                     <div className={styles.tierBadge}>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
@@ -43,48 +57,72 @@ export default function ActiveSubscriptionCard({ subscription, onRenewClick }) {
                         <span className={styles.pulseDot} />
                         <span>{subscription.status || 'ACTIVE'}</span>
                     </div>
+
+                    <h2 className={styles.planNameHeading}>
+                        {planName}
+                        <span className={styles.bandwidthTag}>• {t('plans.fullAccess', 'Institutional Bandwidth')}</span>
+                    </h2>
                 </div>
 
-                <h2 className={styles.planNameHeading}>
-                    {planName}
-                    <span>• {t('plans.fullAccess', 'Institutional Bandwidth')}</span>
-                </h2>
+                <div className={styles.headerRight}>
+                    <div className={styles.expiryBadge}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                        <span>{formattedEndDate}</span>
+                    </div>
+
+                    <div className={styles.liveIndicator}>
+                        <span className={styles.livePulseDot} />
+                        <span>{t('plans.reverseClock', 'LIVE REVERSE COUNTDOWN')}</span>
+                    </div>
+                </div>
             </div>
 
-            <div className={styles.showcaseGrid}>
-                {/* 1. Big Calendar Reverse Countdown Clock */}
-                <div className={styles.calendarClockCol}>
+            {/* 2. Unified Content Area (Zero Nested Boxes) */}
+            <div className={styles.mainContentRow}>
+                {/* Left: Countdown Clock numbers directly on card canvas */}
+                <div className={styles.clockSection}>
                     <CalendarCountdownClock subscription={subscription} />
                 </div>
 
-                {/* 2. Complementary Side Metrics */}
-                <div className={styles.sideMetricsCol}>
+                {/* Right: Clean divided metrics without nested card boxes */}
+                <div className={styles.metricsSection}>
                     {/* Available Credits */}
-                    <div className={styles.metricBox}>
+                    <div className={styles.metricItem}>
                         <div className={styles.metricLabel}>
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                             </svg>
-                            {t('plans.aiComputeBalance', 'AI Compute Balance')}
+                            <span>{t('plans.aiComputeBalance', 'AI Compute Balance')}</span>
                         </div>
-                        <p className={styles.metricValue}>{Number(credits).toLocaleString()} Credits</p>
+                        <div className={styles.metricValue}>
+                            {Number(credits).toLocaleString()}
+                            <span className={styles.unit}>Credits</span>
+                        </div>
                         <div className={styles.metricSub}>Refreshes with active cycle</div>
                     </div>
 
                     {/* Coverage Status */}
-                    <div className={styles.metricBox}>
+                    <div className={styles.metricItem}>
                         <div className={styles.metricLabel}>
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                             </svg>
-                            {t('plans.coverageStatus', 'Coverage Status')}
+                            <span>{t('plans.coverageStatus', 'Coverage Status')}</span>
                         </div>
-                        <p className={styles.metricValue}>{daysRemaining > 5 ? 'Guaranteed' : 'Renew Soon'}</p>
+                        <div className={styles.metricValue}>
+                            {daysRemaining > 5 ? 'Guaranteed ✓' : 'Renew Soon'}
+                        </div>
                         <div className={styles.metricSub}>Non-interrupted AI execution</div>
                     </div>
                 </div>
             </div>
 
+            {/* 3. Bottom Action & Safeguard Notice */}
             <div className={styles.cardActionRow}>
                 <div className={styles.safeNotice}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -105,14 +143,18 @@ export default function ActiveSubscriptionCard({ subscription, onRenewClick }) {
                             <polyline points="14 2 14 8 20 8" />
                             <line x1="16" y1="13" x2="8" y2="13" />
                             <line x1="16" y1="17" x2="8" y2="17" />
+                            <polyline points="10 9 9 9 8 9" />
                         </svg>
                         <span>{t('plans.invoicesBtn', 'Invoices & Ledger')}</span>
                     </button>
 
                     <button
                         type="button"
-                        className={styles.renewBtn}
-                        onClick={onRenewClick}
+                        className={styles.renewActionBtn}
+                        onClick={() => {
+                            if (onRenewClick) onRenewClick();
+                            else window.scrollTo({ top: 600, behavior: 'smooth' });
+                        }}
                     >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <polyline points="23 4 23 10 17 10" />

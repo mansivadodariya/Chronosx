@@ -5,14 +5,15 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 const ThemeContext = createContext({
     theme: 'dark',
     toggleTheme: () => {},
+    setTheme: () => {},
 });
 
 export const ThemeProvider = ({ children }) => {
-    const [theme, setTheme] = useState('dark');
+    const [theme, setThemeState] = useState('dark');
 
     useEffect(() => {
         const savedTheme = localStorage.getItem('theme') || 'dark';
-        setTheme(savedTheme);
+        setThemeState(savedTheme);
         applyTheme(savedTheme);
     }, []);
 
@@ -30,14 +31,18 @@ export const ThemeProvider = ({ children }) => {
         localStorage.setItem('theme', newTheme);
     };
 
+    const setTheme = (newTheme) => {
+        setThemeState(newTheme);
+        applyTheme(newTheme);
+    };
+
     const toggleTheme = () => {
         const nextTheme = theme === 'dark' ? 'light' : 'dark';
         setTheme(nextTheme);
-        applyTheme(nextTheme);
     };
 
     return (
-        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
             {children}
         </ThemeContext.Provider>
     );

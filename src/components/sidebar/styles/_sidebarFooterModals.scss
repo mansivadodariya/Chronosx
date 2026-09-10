@@ -252,29 +252,45 @@
 /* ============================================================
    COMPLETE & REFINED LIGHT MODE RULES FOR SIDEBAR
    ============================================================ */
-:global(html.light) .sidebar {
+:global(html.light) .sidebar,
+:global([data-theme='light']) .sidebar {
     background: #FFFFFF !important;
     border: none !important;
+    border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
 
     .logoHeader {
         background: #FFFFFF !important;
         border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
-        border-right: none !important;
+        border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
         border-left: none !important;
         border-top: none !important;
     }
 
+    .quickJumpWrapper {
+        border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
+    }
+
     .toggleBtn {
         background: #FFFFFF !important;
-        border: 1px solid rgba(15, 23, 42, 0.12) !important;
+        border: 1px solid rgba(15, 23, 42, 0.16) !important;
         color: #047857 !important;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.12) !important;
+
+        svg {
+            color: #047857 !important;
+            stroke: #047857 !important;
+        }
 
         &:hover {
             background: #F1F5F9 !important;
             color: #047857 !important;
-            border-color: rgba(24, 201, 139, 0.5) !important;
-            box-shadow: 0 0 12px rgba(24, 201, 139, 0.2) !important;
+            border-color: rgba(24, 201, 139, 0.6) !important;
+            box-shadow: 0 0 14px rgba(24, 201, 139, 0.25) !important;
+
+            svg {
+                color: #047857 !important;
+                stroke: #047857 !important;
+            }
         }
     }
 

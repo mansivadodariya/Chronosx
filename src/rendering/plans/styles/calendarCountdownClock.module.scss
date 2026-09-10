@@ -1,440 +1,344 @@
 @use '../../../scss/main.scss' as *;
 
-.calendarContainer {
-    position: relative;
+/* ========================================================================= */
+/* COUNTDOWN DISPLAY (Borderless Direct Canvas with Half-Height Falling)     */
+/* ========================================================================= */
+
+.clockWrapper {
     width: 100%;
-    margin: 0;
-    padding-top: 14px; // Spacing for top binder rings
-}
-
-/* ========================================================================= */
-/* 1. CALENDAR BINDER RINGS / SPIRALS                                        */
-/* ========================================================================= */
-.binderSpirals {
-    position: absolute;
-    top: 0;
-    left: 24px;
-    right: 24px;
-    display: flex;
-    justify-content: space-around;
-    pointer-events: none;
-    z-index: 10;
-}
-
-.spiralRing {
-    position: relative;
-    width: 16px;
-    height: 26px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 16px;
 }
 
-.ringCoil {
-    width: 10px;
-    height: 22px;
-    background: linear-gradient(180deg, #94a3b8 0%, #f1f5f9 35%, #64748b 70%, #1e293b 100%);
-    border-radius: 6px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(0, 0, 0, 0.3);
-}
-
-.ringHole {
-    position: absolute;
-    bottom: 2px;
-    width: 12px;
-    height: 8px;
-    background: #060907;
-    border-radius: 50%;
-    border: 1px solid rgba(24, 201, 139, 0.3);
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.9);
-}
-
-/* ========================================================================= */
-/* 2. CALENDAR PAD                                                           */
-/* ========================================================================= */
-.calendarPad {
-    background: linear-gradient(180deg, #131a15 0%, #0c100e 100%);
-    border: 1px solid rgba(24, 201, 139, 0.3);
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-
-    &:hover {
-        border-color: rgba(24, 201, 139, 0.5);
-        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65), 0 0 25px rgba(24, 201, 139, 0.12);
-    }
-}
-
-/* ========================================================================= */
-/* 3. CALENDAR HEADER STRIP (Month & Banner)                                  */
-/* ========================================================================= */
-.calendarHeaderStrip {
-    background: linear-gradient(135deg, #18c98b 0%, #0f9f6e 60%, #087f55 100%);
-    padding: 12px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-}
-
-.headerLeft {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.calIcon {
-    color: #ffffff;
-    flex-shrink: 0;
-}
-
-.calendarMonthText {
-    font-size: 0.92rem;
-    font-weight: 800;
-    color: #ffffff;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-}
-
-.calendarBadge {
-    font-size: 0.68rem;
-    font-weight: 700;
-    background: rgba(0, 0, 0, 0.25);
-    color: #ffffff;
-    padding: 3px 8px;
-    border-radius: 6px;
-    letter-spacing: 0.06em;
-}
-
-.headerRight {
-    display: flex;
-    align-items: center;
-}
-
-.liveIndicator {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    background: rgba(0, 0, 0, 0.35) !important;
-    backdrop-filter: blur(6px);
-    padding: 4px 10px;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
-}
-
-.livePulseDot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #ffffff !important;
-    box-shadow: 0 0 8px #ffffff !important;
-    animation: pulseLiveDot 1.4s infinite ease-in-out;
-}
-
-@keyframes pulseLiveDot {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.4); opacity: 0.6; }
-}
-
-.liveText {
-    font-size: 0.68rem;
-    font-weight: 800;
-    color: #ffffff !important;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-/* ========================================================================= */
-/* 4. PERFORATED TEAR LINE                                                   */
-/* ========================================================================= */
-.perforatedLine {
-    width: 100%;
-    height: 4px;
-    background: radial-gradient(circle, rgba(24, 201, 139, 0.4) 1px, transparent 1.5px);
-    background-size: 8px 4px;
-    opacity: 0.8;
-}
-
-/* ========================================================================= */
-/* 5. BIG CLOCK LEAF CARDS ROW                                               */
-/* ========================================================================= */
+/* ---------------- Flip Clock Cards Row ---------------- */
 .clockCardsRow {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 22px 20px 18px 20px;
-    gap: 12px;
-    flex-wrap: nowrap;
-}
+    justify-content: flex-start;
+    gap: 14px;
+    padding: 4px 0;
 
-.calendarLeafCard {
-    flex: 1;
-    max-width: 130px;
-    min-width: 70px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.leafTopHoles {
-    display: flex;
-    justify-content: space-between;
-    width: 65%;
-    margin-bottom: -5px;
-    z-index: 3;
-}
-
-.leafHole {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #060907;
-    border: 1px solid rgba(24, 201, 139, 0.35);
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.9);
-}
-
-.leafFace {
-    position: relative;
-    width: 100%;
-    background: linear-gradient(180deg, #18221b 0%, #101813 50%, #0c120e 100%);
-    border: 1px solid rgba(24, 201, 139, 0.28);
-    border-radius: 12px;
-    padding: 12px 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    overflow: hidden;
-    transition: transform 0.2s, border-color 0.2s;
-
-    &:hover {
-        border-color: rgba(24, 201, 139, 0.6);
-        transform: translateY(-2px);
+    @media (max-width: 640px) {
+        gap: 6px;
+        justify-content: center;
     }
 }
 
-.flipDivider {
+.cardCol {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    max-width: 125px;
+
+    @media (max-width: 640px) {
+        max-width: 78px;
+    }
+}
+
+.flipCard {
+    position: relative;
+    width: 100%;
+    height: 94px;
+    border-radius: 12px;
+    perspective: 600px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+
+    @media (max-width: 640px) {
+        height: 72px;
+    }
+}
+
+/* Base Top & Bottom Half Structure */
+.halfCard {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    overflow: hidden;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .digit {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 200%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', monospace;
+        font-size: 2.85rem;
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: -0.02em;
+
+        @media (max-width: 640px) {
+            font-size: 2rem;
+        }
+    }
+}
+
+/* Static Upper Half (revealed as leaf falls) */
+.upperCard {
+    top: 0;
+    background: linear-gradient(180deg, #1d2735 0%, #141c26 100%);
+    border-radius: 12px 12px 0 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: none;
+
+    .digit {
+        top: 0;
+    }
+}
+
+/* Static Lower Half (waiting for leaf to land) */
+.lowerCard {
+    top: 50%;
+    background: linear-gradient(180deg, #111720 0%, #0b1017 100%);
+    border-radius: 0 0 12px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: none;
+
+    .digit {
+        top: -100%;
+    }
+}
+
+/* ---------------- Half-Height Falling Leaf Animations ---------------- */
+.fallingTopLeaf {
+    top: 0;
+    background: linear-gradient(180deg, #1d2735 0%, #141c26 100%);
+    border-radius: 12px 12px 0 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: none;
+    transform-origin: bottom center;
+    animation: fallTopHalf 0.28s ease-in forwards;
+    z-index: 5;
+
+    .digit {
+        top: 0;
+    }
+}
+
+.fallingBottomLeaf {
+    top: 50%;
+    background: linear-gradient(180deg, #111720 0%, #0b1017 100%);
+    border-radius: 0 0 12px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: none;
+    transform-origin: top center;
+    animation: fallBottomHalf 0.28s ease-out 0.26s forwards;
+    transform: rotateX(90deg);
+    z-index: 6;
+
+    .digit {
+        top: -100%;
+    }
+}
+
+@keyframes fallTopHalf {
+    0% {
+        transform: rotateX(0deg);
+        filter: brightness(1);
+    }
+    100% {
+        transform: rotateX(-90deg);
+        filter: brightness(0.5);
+    }
+}
+
+@keyframes fallBottomHalf {
+    0% {
+        transform: rotateX(90deg);
+        filter: brightness(0.6);
+    }
+    100% {
+        transform: rotateX(0deg);
+        filter: brightness(1);
+    }
+}
+
+/* Horizontal Midline Split Seam */
+.splitLine {
     position: absolute;
     top: 50%;
     left: 0;
     right: 0;
     height: 1px;
-    background: rgba(0, 0, 0, 0.65);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
-    z-index: 2;
+    background: rgba(0, 0, 0, 0.75);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.07);
+    z-index: 10;
+    pointer-events: none;
 }
 
-.digitDisplay {
-    font-size: 2.6rem;
-    font-weight: 900;
-    line-height: 1;
-    color: #ffffff;
-    font-family: 'JetBrains Mono', 'Roboto Mono', 'SF Mono', Consolas, monospace;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.02em;
-    z-index: 1;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+/* Side Notches at 50% Crease */
+.notchLeft,
+.notchRight {
+    position: absolute;
+    top: 50%;
+    width: 6px;
+    height: 10px;
+    background: #0c100e;
+    transform: translateY(-50%);
+    z-index: 12;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    pointer-events: none;
 }
 
-.secondsDigit {
-    color: #18c98b;
-    text-shadow: 0 0 16px rgba(24, 201, 139, 0.5);
+.notchLeft {
+    left: -1px;
+    border-radius: 0 4px 4px 0;
+    border-left: none;
 }
 
-.leafLabel {
+.notchRight {
+    right: -1px;
+    border-radius: 4px 0 0 4px;
+    border-right: none;
+}
+
+/* Vivid Seconds Accent */
+.secondsCard {
+    border: 1px solid rgba(24, 201, 139, 0.35);
+
+    .digit {
+        color: #18c98b !important;
+        text-shadow: 0 0 16px rgba(24, 201, 139, 0.4);
+    }
+}
+
+/* Unit Label below each Card */
+.unitLabel {
     font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.09em;
-    color: rgba(255, 255, 255, 0.65);
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    margin-top: 8px;
-    text-align: center;
+
+    @media (max-width: 640px) {
+        font-size: 0.65rem;
+    }
 }
 
+/* Colon Separator */
 .colonSeparator {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     font-weight: 800;
     color: #18c98b;
-    line-height: 1;
-    margin-bottom: 22px;
-    opacity: 0.85;
-    animation: blinkColon 1s infinite;
-    user-select: none;
+    opacity: 0.75;
+    margin-bottom: 24px;
+    animation: colonBlink 1s infinite;
+
+    @media (max-width: 640px) {
+        font-size: 1.3rem;
+        margin-bottom: 18px;
+    }
 }
 
-@keyframes blinkColon {
-    0%, 100% { opacity: 0.9; }
+@keyframes colonBlink {
+    0%, 100% { opacity: 0.85; }
     50% { opacity: 0.25; }
 }
 
-/* ========================================================================= */
-/* 6. CALENDAR FOOTER & PROGRESS BAR                                         */
-/* ========================================================================= */
-.calendarFooter {
-    padding: 10px 20px 16px 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    background: rgba(0, 0, 0, 0.18);
-}
-
-.progressRow {
-    width: 100%;
-    margin-bottom: 8px;
+/* ---------------- Progress Bar ---------------- */
+.progressContainer {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-top: 4px;
 }
 
 .progressBarTrack {
-    width: 100%;
-    height: 6px;
+    flex: 1;
+    height: 5px;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 999px;
     overflow: hidden;
-    position: relative;
 }
 
 .progressBarFill {
     height: 100%;
-    background: linear-gradient(90deg, #18c98b 0%, #34d399 100%);
+    background: linear-gradient(90deg, #18c98b 0%, #10b981 100%);
     border-radius: 999px;
-    box-shadow: 0 0 10px rgba(24, 201, 139, 0.5);
-    transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 0 10px rgba(24, 201, 139, 0.45);
+    transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.footerMetaRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.74rem;
-    color: rgba(255, 255, 255, 0.55);
-    flex-wrap: wrap;
-    gap: 8px;
-
-    strong {
-        color: rgba(255, 255, 255, 0.85);
-    }
-}
-
-.cyclePercentText {
+.progressMeta {
+    font-size: 0.76rem;
     color: #18c98b;
-    font-weight: 700;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 /* ========================================================================= */
-/* 7. RESPONSIVE BREAKPOINTS                                                 */
+/* LIGHT THEME                                                                */
 /* ========================================================================= */
-@media (max-width: 640px) {
-    .clockCardsRow {
-        gap: 6px;
-        padding: 16px 12px 14px 12px;
+:global(html.light) .clockWrapper,
+:global([data-theme='light']) .clockWrapper {
+    .flipCard {
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1) !important;
     }
 
-    .digitDisplay {
-        font-size: 1.85rem;
-    }
+    .upperCard,
+    .fallingTopLeaf {
+        background: linear-gradient(180deg, #F8FAFC 0%, #EDF2F7 100%) !important;
+        border-color: rgba(15, 23, 42, 0.12) !important;
 
-    .leafLabel {
-        font-size: 0.62rem;
-    }
-
-    .colonSeparator {
-        font-size: 1.5rem;
-        margin-bottom: 18px;
-    }
-
-    .calendarMonthText {
-        font-size: 0.82rem;
-    }
-
-    .liveText {
-        display: none;
-    }
-}
-
-/* ========================================================================= */
-/* 8. LIGHT THEME OVERRIDES                                                  */
-/* ========================================================================= */
-:global(html.light) .calendarPad,
-:global([data-theme='light']) .calendarPad {
-    background: #FFFFFF !important;
-    border: 1px solid rgba(24, 201, 139, 0.38) !important;
-    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08) !important;
-
-    .calendarHeaderStrip,
-    .calendarHeaderStrip *,
-    .calendarMonthText,
-    .calendarBadge,
-    .liveIndicator,
-    .liveText,
-    span.liveText {
-        color: #FFFFFF !important;
-    }
-
-    .liveIndicator {
-        background: rgba(0, 0, 0, 0.35) !important;
-        border: 1px solid rgba(255, 255, 255, 0.25) !important;
-    }
-
-    .livePulseDot {
-        background: #FFFFFF !important;
-        box-shadow: 0 0 8px #FFFFFF !important;
-    }
-
-    .ringHole,
-    .leafHole {
-        background: #E2E8F0 !important;
-        border-color: rgba(24, 201, 139, 0.4) !important;
-    }
-
-    .leafFace {
-        background: linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%) !important;
-        border: 1px solid rgba(24, 201, 139, 0.35) !important;
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06), inset 0 1px 0 #FFFFFF !important;
-    }
-
-    .flipDivider {
-        background: rgba(15, 23, 42, 0.15) !important;
-        box-shadow: 0 1px 0 #FFFFFF !important;
-    }
-
-    .digitDisplay {
-        color: #0F172A !important;
-        text-shadow: none !important;
-    }
-
-    .secondsDigit {
-        color: #047857 !important;
-        text-shadow: none !important;
-    }
-
-    .leafLabel {
-        color: #475569 !important;
-    }
-
-    .colonSeparator {
-        color: #047857 !important;
-    }
-
-    .calendarFooter {
-        background: #F8FAFC !important;
-        border-top-color: rgba(15, 23, 42, 0.08) !important;
-    }
-
-    .progressBarTrack {
-        background: rgba(24, 201, 139, 0.16) !important;
-        border: 1px solid rgba(24, 201, 139, 0.25) !important;
-    }
-
-    .footerMetaRow {
-        color: #64748B !important;
-
-        strong {
+        .digit {
             color: #0F172A !important;
         }
     }
 
-    .cyclePercentText {
+    .lowerCard,
+    .fallingBottomLeaf {
+        background: linear-gradient(180deg, #EDF2F7 0%, #E2E8F0 100%) !important;
+        border-color: rgba(15, 23, 42, 0.1) !important;
+
+        .digit {
+            color: #0F172A !important;
+        }
+    }
+
+    .splitLine {
+        background: rgba(15, 23, 42, 0.14) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+    }
+
+    .notchLeft,
+    .notchRight {
+        background: #FFFFFF !important;
+        border-color: rgba(15, 23, 42, 0.15) !important;
+    }
+
+    .secondsCard {
+        border-color: rgba(24, 201, 139, 0.5) !important;
+
+        .digit {
+            color: #047857 !important;
+            text-shadow: none !important;
+        }
+    }
+
+    .unitLabel {
+        color: #64748B !important;
+    }
+
+    .colonSeparator {
+        color: #047857 !important;
+    }
+
+    .progressBarTrack {
+        background: rgba(15, 23, 42, 0.08) !important;
+    }
+
+    .progressMeta {
         color: #047857 !important;
     }
 }

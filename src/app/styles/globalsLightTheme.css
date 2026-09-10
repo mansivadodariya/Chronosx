@@ -85,7 +85,10 @@ html.light [class*="mobileDrawer"] {
 }
 
 /* Sidebar & Topbar */
+/* Sidebar & Topbar */
+html.light aside,
 html.light .sidebar,
+html.light [class*="sidebar_sidebar"],
 html.light [class*="sidebarContainer"] {
   background-color: #FFFFFF !important;
   border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
@@ -96,10 +99,11 @@ html.light .sidebar-wrapper {
   border-right: none !important;
 }
 
-html.light [class*="sidebarmenu"],
 html.light [class*="logoHeader"],
+html.light [class*="quickJumpWrapper"],
+html.light [class*="sidebarmenu"],
 html.light [class*="bottomSection"] {
-  border-right: none !important;
+  border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
 }
 
 html.light [class*="topbar"],
@@ -208,8 +212,8 @@ html.light [class*="eyebrowBadge"],
 html.light [class*="sectionTag"],
 html.light [class*="statusBadge"],
 html.light [class*="chip"],
-html.light span[class*="badge"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="Label"]):not([class*="label"]):not([class*="headerLivePriceBadge"]):not([class*="days"]):not([class*="Days"]),
-html.light span[class*="Badge"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="Label"]):not([class*="label"]):not([class*="headerLivePriceBadge"]):not([class*="days"]):not([class*="Days"]),
+html.light span[class*="badge"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="Label"]):not([class*="label"]):not([class*="headerLivePriceBadge"]):not([class*="days"]):not([class*="Days"]):not([class*="calendar"]):not([class*="Calendar"]),
+html.light span[class*="Badge"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="Label"]):not([class*="label"]):not([class*="headerLivePriceBadge"]):not([class*="days"]):not([class*="Days"]):not([class*="calendar"]):not([class*="Calendar"]),
 html.light span[class*="tag"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="pill"]):not([class*="Pill"]):not([class*="faq"]):not([class*="Faq"]):not([class*="Label"]):not([class*="label"]),
 html.light span[class*="Tag"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="pill"]):not([class*="Pill"]):not([class*="faq"]):not([class*="Faq"]):not([class*="Label"]):not([class*="label"]),
 html.light [class*="pillBadge"],
@@ -576,7 +580,17 @@ html.light [class*="widgetCard"] [class*="cycleText"] {
 
 html.light [class*="widgetCard"] [class*="daysBadge"] {
   color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
   background: rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+html.light [class*="calendarBadge"],
+html.light span[class*="calendarBadge"],
+html.light [class*="calendarHeaderStrip"] [class*="calendarBadge"] {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  background: rgba(0, 0, 0, 0.28) !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
 }
 

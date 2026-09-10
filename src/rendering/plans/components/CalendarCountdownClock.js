@@ -1,8 +1,71 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import styles from '../styles/calendarCountdownClock.module.scss';
 import { useLanguage } from '@/context/LanguageContext';
+
+/**
+ * Single Flip Card with 3D Half-Height Falling Calendar Leaf Animation
+ */
+function FlipCardItem({ value, label, isSeconds = false }) {
+    const [displayVal, setDisplayVal] = useState(value);
+    const [prevVal, setPrevVal] = useState(value);
+    const [isFlipping, setIsFlipping] = useState(false);
+    const prevRef = useRef(value);
+
+    useEffect(() => {
+        if (value !== prevRef.current) {
+            setPrevVal(prevRef.current);
+            setDisplayVal(value);
+            setIsFlipping(true);
+            prevRef.current = value;
+
+            const timer = setTimeout(() => {
+                setIsFlipping(false);
+            }, 560);
+
+            return () => clearTimeout(timer);
+        }
+    }, [value]);
+
+    return (
+        <div className={styles.cardCol}>
+            <div className={`${styles.flipCard} ${isSeconds ? styles.secondsCard : ''}`}>
+                {/* 1. Static Upper Half (shows incoming value) */}
+                <div className={`${styles.halfCard} ${styles.upperCard}`}>
+                    <span className={styles.digit}>{displayVal}</span>
+                </div>
+
+                {/* 2. Static Lower Half (shows previous value until covered) */}
+                <div className={`${styles.halfCard} ${styles.lowerCard}`}>
+                    <span className={styles.digit}>{isFlipping ? prevVal : displayVal}</span>
+                </div>
+
+                {/* 3. Half-Height Falling Leaves */}
+                {isFlipping && (
+                    <>
+                        {/* Top leaf hinges at midline (half height) and falls forward/down */}
+                        <div className={`${styles.halfCard} ${styles.fallingTopLeaf}`}>
+                            <span className={styles.digit}>{prevVal}</span>
+                        </div>
+                        {/* Bottom leaf folds in flat onto lower half */}
+                        <div className={`${styles.halfCard} ${styles.fallingBottomLeaf}`}>
+                            <span className={styles.digit}>{displayVal}</span>
+                        </div>
+                    </>
+                )}
+
+                {/* Left & Right Half-Height Hinge Notches */}
+                <div className={styles.notchLeft} aria-hidden="true" />
+                <div className={styles.notchRight} aria-hidden="true" />
+
+                {/* Crisp Horizontal Split Seam at 50% (Half Height) */}
+                <div className={styles.splitLine} aria-hidden="true" />
+            </div>
+            <span className={styles.unitLabel}>{label}</span>
+        </div>
+    );
+}
 
 export default function CalendarCountdownClock({ subscription }) {
     const { t } = useLanguage();
@@ -60,16 +123,6 @@ export default function CalendarCountdownClock({ subscription }) {
 
     const targetDate = useMemo(() => new Date(targetTimestamp), [targetTimestamp]);
 
-    const monthName = useMemo(() => {
-        try {
-            return targetDate.toLocaleDateString('en-US', { month: 'long' }).toUpperCase();
-        } catch (_) {
-            return 'OCTOBER';
-        }
-    }, [targetDate]);
-
-    const year = targetDate.getFullYear();
-
     const formattedEndDate = useMemo(() => {
         try {
             return targetDate.toLocaleDateString('en-US', {
@@ -88,132 +141,35 @@ export default function CalendarCountdownClock({ subscription }) {
     const daysRemaining = Number(timeLeft.days);
     const progressPercent = Math.min(100, Math.max(5, Math.round((daysRemaining / totalCycleDays) * 100)));
 
+    const daysVal = mounted ? timeLeft.days : '29';
+    const hoursVal = mounted ? timeLeft.hours : '01';
+    const minutesVal = mounted ? timeLeft.minutes : '44';
+    const secondsVal = mounted ? timeLeft.seconds : '08';
+
     return (
-        <div className={styles.calendarContainer}>
-            {/* 1. Binder Wire Rings Hanging the Calendar */}
-            <div className={styles.binderSpirals} aria-hidden="true">
-                {[0, 1, 2, 3, 4, 5].map((i) => (
-                    <div key={i} className={styles.spiralRing}>
-                        <span className={styles.ringHole} />
-                        <span className={styles.ringCoil} />
-                    </div>
-                ))}
+        <div className={styles.clockWrapper}>
+            {/* Flip Clock Row — rendered directly on parent card canvas */}
+            <div className={styles.clockCardsRow}>
+                <FlipCardItem value={daysVal} label={t('plans.days', 'DAYS')} />
+                <div className={styles.colonSeparator}>:</div>
+                <FlipCardItem value={hoursVal} label={t('plans.hours', 'HOURS')} />
+                <div className={styles.colonSeparator}>:</div>
+                <FlipCardItem value={minutesVal} label={t('plans.minutes', 'MINUTES')} />
+                <div className={styles.colonSeparator}>:</div>
+                <FlipCardItem value={secondsVal} label={t('plans.seconds', 'SECONDS')} isSeconds={true} />
             </div>
 
-            {/* 2. Calendar Main Pad */}
-            <div className={styles.calendarPad}>
-                {/* Top Calendar Month Banner / Header */}
-                <div className={styles.calendarHeaderStrip}>
-                    <div className={styles.headerLeft}>
-                        <svg className={styles.calIcon} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                            <line x1="16" y1="2" x2="16" y2="6" />
-                            <line x1="8" y1="2" x2="8" y2="6" />
-                            <line x1="3" y1="10" x2="21" y2="10" />
-                        </svg>
-                        <span className={styles.calendarMonthText}>
-                            {monthName} {year}
-                        </span>
-                        <span className={styles.calendarBadge}>
-                            {t('plans.cycleExpiry', 'CYCLE EXPIRATION')}
-                        </span>
-                    </div>
-
-                    <div className={styles.headerRight}>
-                        <div className={styles.liveIndicator}>
-                            <span className={styles.livePulseDot} />
-                            <span className={styles.liveText}>
-                                {t('plans.reverseClock', 'LIVE REVERSE COUNTDOWN')}
-                            </span>
-                        </div>
-                    </div>
+            {/* Slim progress bar + cycle info */}
+            <div className={styles.progressContainer}>
+                <div className={styles.progressBarTrack}>
+                    <div
+                        className={styles.progressBarFill}
+                        style={{ width: `${progressPercent}%` }}
+                    />
                 </div>
-
-                {/* Perforation Tear-line */}
-                <div className={styles.perforatedLine} />
-
-                {/* 3. Big Calendar Countdown Blocks */}
-                <div className={styles.clockCardsRow}>
-                    {/* Days */}
-                    <div className={styles.calendarLeafCard}>
-                        <div className={styles.leafTopHoles}>
-                            <span className={styles.leafHole} />
-                            <span className={styles.leafHole} />
-                        </div>
-                        <div className={styles.leafFace}>
-                            <span className={styles.flipDivider} />
-                            <div className={styles.digitDisplay}>{mounted ? timeLeft.days : '29'}</div>
-                        </div>
-                        <div className={styles.leafLabel}>{t('plans.days', 'DAYS')}</div>
-                    </div>
-
-                    <div className={styles.colonSeparator}>:</div>
-
-                    {/* Hours */}
-                    <div className={styles.calendarLeafCard}>
-                        <div className={styles.leafTopHoles}>
-                            <span className={styles.leafHole} />
-                            <span className={styles.leafHole} />
-                        </div>
-                        <div className={styles.leafFace}>
-                            <span className={styles.flipDivider} />
-                            <div className={styles.digitDisplay}>{mounted ? timeLeft.hours : '00'}</div>
-                        </div>
-                        <div className={styles.leafLabel}>{t('plans.hours', 'HOURS')}</div>
-                    </div>
-
-                    <div className={styles.colonSeparator}>:</div>
-
-                    {/* Minutes */}
-                    <div className={styles.calendarLeafCard}>
-                        <div className={styles.leafTopHoles}>
-                            <span className={styles.leafHole} />
-                            <span className={styles.leafHole} />
-                        </div>
-                        <div className={styles.leafFace}>
-                            <span className={styles.flipDivider} />
-                            <div className={styles.digitDisplay}>{mounted ? timeLeft.minutes : '00'}</div>
-                        </div>
-                        <div className={styles.leafLabel}>{t('plans.minutes', 'MINUTES')}</div>
-                    </div>
-
-                    <div className={styles.colonSeparator}>:</div>
-
-                    {/* Seconds */}
-                    <div className={`${styles.calendarLeafCard} ${styles.secondsLeaf}`}>
-                        <div className={styles.leafTopHoles}>
-                            <span className={styles.leafHole} />
-                            <span className={styles.leafHole} />
-                        </div>
-                        <div className={styles.leafFace}>
-                            <span className={styles.flipDivider} />
-                            <div className={`${styles.digitDisplay} ${styles.secondsDigit}`}>
-                                {mounted ? timeLeft.seconds : '00'}
-                            </div>
-                        </div>
-                        <div className={styles.leafLabel}>{t('plans.seconds', 'SECONDS')}</div>
-                    </div>
-                </div>
-
-                {/* 4. Calendar Footer / Progress Bar */}
-                <div className={styles.calendarFooter}>
-                    <div className={styles.progressRow}>
-                        <div className={styles.progressBarTrack}>
-                            <div 
-                                className={styles.progressBarFill} 
-                                style={{ width: `${progressPercent}%` }} 
-                            />
-                        </div>
-                    </div>
-                    <div className={styles.footerMetaRow}>
-                        <span className={styles.expiryDateText}>
-                            <strong>Expires:</strong> {formattedEndDate}
-                        </span>
-                        <span className={styles.cyclePercentText}>
-                            {progressPercent}% cycle remaining
-                        </span>
-                    </div>
-                </div>
+                <span className={styles.progressMeta}>
+                    {progressPercent}% remaining
+                </span>
             </div>
         </div>
     );

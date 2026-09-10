@@ -112,17 +112,85 @@ const LANGUAGES = [
 export default function LanguageToggle({ className = '', variant = 'default' }) {
   const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({});
   const wrapperRef = useRef(null);
+  const menuRef = useRef(null);
+
+  const updatePosition = () => {
+    if (!wrapperRef.current) return;
+    const rect = wrapperRef.current.getBoundingClientRect();
+    const isRtl = document.documentElement.getAttribute('dir') === 'rtl' || document.dir === 'rtl';
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    const isSmall = vw < 540;
+    const targetWidth = isSmall ? Math.min(vw - 20, 330) : Math.min(vw - 24, 460);
+
+    let left;
+    if (isRtl) {
+      // In RTL, the button is located near the start (left) in user topbar, or right in public header.
+      // If expanding rightwards exceeds viewport - 12:
+      if (rect.left + targetWidth > vw - 12) {
+        left = Math.max(10, vw - targetWidth - 12);
+      } else {
+        left = Math.max(10, rect.left);
+      }
+    } else {
+      // In LTR, align dropdown right edge with button right edge
+      if (rect.right - targetWidth < 12) {
+        left = Math.max(10, rect.left);
+        if (left + targetWidth > vw - 12) {
+          left = Math.max(10, vw - targetWidth - 12);
+        }
+      } else {
+        left = rect.right - targetWidth;
+      }
+    }
+
+    const spaceBelow = vh - rect.bottom - 12;
+    const top = rect.bottom + 6;
+
+    setMenuPosition({
+      position: 'fixed',
+      top: `${top}px`,
+      left: `${left}px`,
+      width: `${targetWidth}px`,
+      maxHeight: `${Math.max(180, spaceBelow)}px`,
+      zIndex: 99999,
+    });
+  };
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target) &&
+        (!menuRef.current || !menuRef.current.contains(event.target))
+      ) {
         setIsOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
+    return () => {
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
+    };
+  }, [isOpen]);
+
+  const toggleOpen = () => {
+    if (!isOpen && wrapperRef.current) {
+      updatePosition();
+    }
+    setIsOpen((prev) => !prev);
+  };
 
   const handleSelectLanguage = (lang) => {
     setLanguage(lang);
@@ -136,7 +204,7 @@ export default function LanguageToggle({ className = '', variant = 'default' }) 
     <div className={[styles.wrapper, className].filter(Boolean).join(' ')} ref={wrapperRef}>
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleOpen}
         className={[styles.toggleButton, styles[variant], isOpen ? styles.btnActive : ''].filter(Boolean).join(' ')}
         aria-label="Select Language"
         aria-expanded={isOpen}
@@ -159,7 +227,9 @@ export default function LanguageToggle({ className = '', variant = 'default' }) 
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            ref={menuRef}
             className={styles.dropdownMenu}
+            style={menuPosition}
             initial={{ opacity: 0, y: 6, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 6, scale: 0.96 }}

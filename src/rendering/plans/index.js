@@ -245,18 +245,19 @@ export default function SubscriptionPlansView() {
         setSummaryModalOpen(true);
     };
 
-    const handleProceedPayment = async ({ plan, couponCode, gateway }) => {
+    const handleProceedPayment = async ({ plan, amount }) => {
         setSelectedPlanId(plan.id);
         setSubmittingPlanId(plan.id);
         try {
-            const res = await subscriptionApi.createPaymentSession({ plan, couponCode, gateway });
-            const checkoutUrl =
-                res?.data?.checkout_url ||
-                res?.data?.payment_info?.data?.checkout_url ||
-                res?.data?.payment_info?.checkout_url ||
-                res?.checkout_url ||
-                res?.payment_url ||
-                res?.url;
+            // Direct Instant Crypto (Cregis Gateway)
+            const res = await subscriptionApi.createCryptoDeposit({
+                amount: Number(amount ?? plan.price),
+                plan_id: plan.id,
+                currency: 'USDT',
+                chain: 'TRON',
+            });
+
+            const checkoutUrl = subscriptionApi.extractCheckoutUrl(res);
 
             if (checkoutUrl) {
                 toast.success(t('plans.redirecting', 'Redirecting to secure payment...'));
@@ -264,7 +265,7 @@ export default function SubscriptionPlansView() {
                 window.location.href = checkoutUrl;
             } else {
                 setSummaryModalOpen(false);
-                const orderId = res?.order_id || res?.data?.order_id || `ORD-${Date.now()}`;
+                const orderId = res?.order_id || res?.data?.order_id || res?.data?.deposit_id || `ORD-${Date.now()}`;
                 setSuccessPlan(plan);
                 setSuccessOrderId(orderId);
                 setSuccessModalOpen(true);
@@ -273,7 +274,7 @@ export default function SubscriptionPlansView() {
                 toast.success(t('plans.upgradeSuccess', 'Subscription activated successfully!'));
             }
         } catch (err) {
-            toast.error(err?.message || t('common.somethingWentWrong', 'Failed to create payment session.'));
+            toast.error(err?.message || t('common.somethingWentWrong', 'Failed to initialize payment session.'));
             throw err;
         } finally {
             setSubmittingPlanId(null);

@@ -16,54 +16,82 @@ export default function PaymentSummaryModal({
     onProceed
 }) {
     const { t } = useLanguage();
-    const [couponCode, setCouponCode] = useState('');
-    const [appliedCoupon, setAppliedCoupon] = useState(null);
-    const [couponLoading, setCouponLoading] = useState(false);
     const [summary, setSummary] = useState(null);
-    const [gateway, setGateway] = useState('CRYPTO');
-    const [submitting, setSubmitting] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    // Recalculate summary whenever plan or appliedCoupon changes
+    // Calculate itemized summary whenever modal opens via POST /api/v1/payments/calculate-summary
     useEffect(() => {
-        if (!plan) return;
+        if (!isOpen || !plan) return;
         let isMounted = true;
         async function updateSummary() {
-            const calculated = await subscriptionApi.calculateSummary({ plan, coupon: appliedCoupon });
-            if (isMounted) setSummary(calculated);
+            setIsLoading(true);
+            try {
+                const calculated = await subscriptionApi.calculateSummary({
+                    planId: plan.id,
+                    plan,
+                });
+                if (isMounted && calculated) {
+                    setSummary(calculated);
+                }
+            } catch (err) {
+                console.warn('[PaymentSummaryModal] Failed to calculate summary:', err);
+                if (isMounted) {
+                    setSummary({
+                        plan_id: plan.id,
+                        plan_name: plan.name,
+                        base_price: Number(plan.price || 0),
+                        discount_amount: 0,
+                        tax_rate: 0,
+                        tax_amount: 0,
+                        final_amount: Number(plan.price || 0),
+                        currency: plan.currency || 'USD',
+                    });
+                }
+            } finally {
+                if (isMounted) setIsLoading(false);
+            }
         }
         updateSummary();
         return () => { isMounted = false; };
-    }, [plan, appliedCoupon]);
+    }, [plan, isOpen]);
 
     if (!isOpen || !plan) return null;
 
-    const handleApplyCoupon = async () => {
-        if (!couponCode.trim()) return;
-        setCouponLoading(true);
-        try {
-            const result = await subscriptionApi.validateCoupon(couponCode, plan.id);
-            setAppliedCoupon(result);
-            toast.success(result?.message || t('plans.couponApplied', 'Coupon applied successfully!'));
-        } catch (err) {
-            toast.error(err.message || t('plans.invalidCoupon', 'Invalid coupon code.'));
-        } finally {
-            setCouponLoading(false);
-        }
-    };
-
-    const handleRemoveCoupon = () => {
-        setAppliedCoupon(null);
-        setCouponCode('');
-    };
-
+    // CTA Click Handler ("Proceed to Secure Checkout") -> Direct Cregis Redirect
     const handleCheckout = async () => {
-        setSubmitting(true);
+        setIsLoading(true);
         try {
-            await onProceed({ plan, couponCode: appliedCoupon?.code, gateway });
+            const payableAmount = Number(summary?.final_amount ?? plan.price);
+
+            if (onProceed) {
+                await onProceed({
+                    plan,
+                    gateway: 'CREGIS',
+                    amount: payableAmount,
+                    summary,
+                });
+            } else {
+                const res = await subscriptionApi.createCryptoDeposit({
+                    amount: payableAmount,
+                    plan_id: plan.id,
+                    currency: 'USDT',
+                    chain: 'TRON',
+                });
+                const checkoutUrl = subscriptionApi.extractCheckoutUrl(res);
+
+                if (checkoutUrl) {
+                    toast.success(t('plans.redirecting', 'Redirecting to secure payment...'));
+                    onClose();
+                    window.location.href = checkoutUrl;
+                } else {
+                    toast.success(t('plans.cryptoOrderCreated', 'Crypto deposit order created successfully.'));
+                    onClose();
+                }
+            }
         } catch (err) {
             toast.error(err.message || 'Payment initiation failed.');
         } finally {
-            setSubmitting(false);
+            setIsLoading(false);
         }
     };
 
@@ -119,54 +147,13 @@ export default function PaymentSummaryModal({
                             </div>
                         </div>
 
-                        {/* 2. Coupon Section */}
-                        <div className={styles.couponSection}>
-                            <label className={styles.couponLabel}>
-                                {t('plans.promoCode', 'Promo / Coupon Code')}
-                            </label>
-                            <div className={styles.couponInputRow}>
-                                <input
-                                    type="text"
-                                    placeholder="ENTER CODE"
-                                    value={couponCode}
-                                    onChange={(e) => setCouponCode(e.target.value)}
-                                    disabled={Boolean(appliedCoupon)}
-                                />
-                                {appliedCoupon ? (
-                                    <button type="button" onClick={handleRemoveCoupon}>
-                                        {t('common.remove', 'Remove')}
-                                    </button>
-                                ) : (
-                                    <button type="button" onClick={handleApplyCoupon} disabled={couponLoading || !couponCode.trim()}>
-                                        {couponLoading ? '...' : t('common.apply', 'Apply')}
-                                    </button>
-                                )}
-                            </div>
-
-                            {appliedCoupon && (
-                                <div className={styles.couponSuccessMsg}>
-                                    <span>✓ {appliedCoupon.message || 'Coupon Applied (-20%)'}</span>
-                                    <button type="button" className={styles.removeCouponBtn} onClick={handleRemoveCoupon}>
-                                        Remove
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* 3. Itemized Financial Summary */}
+                        {/* 2. Itemized Financial Summary */}
                         {summary && (
                             <div className={styles.summaryTable}>
                                 <div className={styles.summaryRow}>
                                     <span>{t('plans.basePrice', 'Base Plan Price')}</span>
                                     <span>${summary.base_price.toFixed(2)}</span>
                                 </div>
-
-                                {summary.discount_amount > 0 && (
-                                    <div className={`${styles.summaryRow} ${styles.discountRow}`}>
-                                        <span>{t('plans.discountApplied', 'Promotional Discount')}</span>
-                                        <span>-${summary.discount_amount.toFixed(2)}</span>
-                                    </div>
-                                )}
 
                                 <div className={styles.summaryRow}>
                                     <span>
@@ -185,46 +172,8 @@ export default function PaymentSummaryModal({
                             </div>
                         )}
 
-                        {/* 4. Payment Gateway Selector */}
-                        <div className={styles.gatewaySelector}>
-                            <span className={styles.gatewayLabel}>{t('plans.selectGateway', 'Select Payment Route')}</span>
-                            <div className={styles.gatewayOptions}>
-                                <div
-                                    className={`${styles.gatewayCard} ${gateway === 'CRYPTO' ? styles.activeGateway : ''}`}
-                                    onClick={() => setGateway('CRYPTO')}
-                                >
-                                    <div className={styles.gatewayIcon}>
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <circle cx="12" cy="12" r="10" />
-                                            <path d="M9.5 9.5h5a2 2 0 0 1 0 4h-5" />
-                                            <line x1="9.5" y1="9.5" x2="9.5" y2="14.5" />
-                                        </svg>
-                                    </div>
-                                    <div className={styles.gatewayInfo}>
-                                        <span className={styles.name}>Instant Crypto</span>
-                                        <span className={styles.sub}>USDT / SOL / BTC</span>
-                                    </div>
-                                </div>
 
-                                <div
-                                    className={`${styles.gatewayCard} ${gateway === 'CARD' ? styles.activeGateway : ''}`}
-                                    onClick={() => setGateway('CARD')}
-                                >
-                                    <div className={styles.gatewayIcon}>
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <rect x="2" y="5" width="20" height="14" rx="2" />
-                                            <line x1="2" y1="10" x2="22" y2="10" />
-                                        </svg>
-                                    </div>
-                                    <div className={styles.gatewayInfo}>
-                                        <span className={styles.name}>Credit / Debit</span>
-                                        <span className={styles.sub}>Visa / Mastercard</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* 5. Zero-Deactivation Safeguard Notice */}
+                        {/* 4. Zero-Deactivation Safeguard Notice */}
                         <div className={styles.safeguardBanner}>
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -240,12 +189,12 @@ export default function PaymentSummaryModal({
 
                     {/* Footer */}
                     <div className={styles.modalFooter}>
-                        <button type="button" className={styles.cancelBtn} onClick={onClose} disabled={submitting}>
+                        <button type="button" className={styles.cancelBtn} onClick={onClose} disabled={isLoading}>
                             {t('common.cancel', 'Cancel')}
                         </button>
 
-                        <button type="button" className={styles.checkoutBtn} onClick={handleCheckout} disabled={submitting}>
-                            {submitting ? t('common.processing', 'Redirecting...') : (
+                        <button type="button" className={styles.checkoutBtn} onClick={handleCheckout} disabled={isLoading}>
+                            {isLoading ? t('common.processing', 'Redirecting...') : (
                                 <>
                                     <span>{t('plans.proceedToGateway', 'Proceed to Secure Checkout')}</span>
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">

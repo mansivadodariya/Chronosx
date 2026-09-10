@@ -147,12 +147,12 @@ export const subscriptionApi = {
         return {
             plan_id: data.plan_id || effectivePlanId,
             plan_name: data.plan_name || plan?.name || '',
-            base_price: Number(data.base_price ?? data.price ?? plan?.price ?? 0),
+            base_price: Number(data.subtotal ?? data.original_price ?? data.base_price ?? data.price ?? plan?.price ?? 0),
             discount_amount: Number(data.discount_amount ?? data.discount ?? 0),
             tax_rate: Number(data.tax_rate ?? 0),
             tax_amount: Number(data.tax_amount ?? data.tax ?? 0),
-            final_amount: Number(data.final_amount ?? data.total ?? data.net_payable ?? plan?.price ?? 0),
-            currency: data.currency || plan?.currency || 'USD',
+            final_amount: Number(data.final_amount ?? data.total_amount ?? data.total ?? data.final_price ?? data.net_payable ?? plan?.price ?? 0),
+            currency: data.currency || plan?.currency || 'USDT',
             coupon: data.coupon || null,
         };
     },
@@ -232,28 +232,101 @@ export const subscriptionApi = {
             throw new Error(json?.detail || 'Failed to download invoice PDF.');
         }
 
-        const contentType = res.headers.get('content-type') || '';
-        if (contentType.includes('application/pdf') || contentType.includes('octet-stream')) {
-            const blob = await res.blob();
-            const downloadUrl = window.URL.createObjectURL(blob);
+        const contentType = (res.headers.get('content-type') || '').toLowerCase();
+        const contentDisposition = (res.headers.get('content-disposition') || '').toLowerCase();
+
+        // Helper to trigger direct browser file download
+        const triggerBlobDownload = (blob, filename) => {
+            const blobUrl = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = downloadUrl;
-            a.download = `Invoice-${invoiceNumber}.pdf`;
+            a.href = blobUrl;
+            a.download = filename || `Invoice-${invoiceNumber}.pdf`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            window.URL.revokeObjectURL(downloadUrl);
-            return { downloaded: true };
+            setTimeout(() => window.URL.revokeObjectURL(blobUrl), 1000);
+        };
+
+        // 1. Binary stream / PDF / Octet / Attachment
+        if (
+            contentType.includes('pdf') ||
+            contentType.includes('octet-stream') ||
+            contentDisposition.includes('attachment') ||
+            contentDisposition.includes('filename') ||
+            (!contentType.includes('json') && !contentType.includes('text'))
+        ) {
+            const blob = await res.blob();
+            if (blob && blob.size > 0) {
+                const pdfBlob = blob.type === 'application/pdf' ? blob : new Blob([blob], { type: 'application/pdf' });
+                triggerBlobDownload(pdfBlob, `Invoice-${invoiceNumber}.pdf`);
+                return { downloaded: true };
+            }
         }
 
+        // 2. If response is JSON containing a file download URL or base64
         const json = await res.json().catch(() => ({}));
-        const fileUrl = json?.download_url || json?.url || json?.pdf_url || json?.data?.url;
+
+        const fileUrl =
+            (typeof json === 'string' && json.startsWith('http') ? json : null) ||
+            (typeof json?.data === 'string' && json.data.startsWith('http') ? json.data : null) ||
+            json?.download_url ||
+            json?.data?.download_url ||
+            json?.url ||
+            json?.data?.url ||
+            json?.pdf_url ||
+            json?.data?.pdf_url ||
+            json?.invoice_url ||
+            json?.data?.invoice_url ||
+            json?.file_url ||
+            json?.data?.file_url ||
+            json?.receipt_url ||
+            json?.data?.receipt_url;
+
         if (fileUrl) {
-            window.open(fileUrl, '_blank');
+            try {
+                const fileFetch = await fetch(fileUrl);
+                if (fileFetch.ok) {
+                    const blob = await fileFetch.blob();
+                    triggerBlobDownload(blob, `Invoice-${invoiceNumber}.pdf`);
+                    return { downloaded: true, url: fileUrl };
+                }
+            } catch (_) {}
+
+            const a = document.createElement('a');
+            a.href = fileUrl;
+            a.download = `Invoice-${invoiceNumber}.pdf`;
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
             return { downloaded: true, url: fileUrl };
         }
 
-        return json;
+        const base64 =
+            json?.base64 ||
+            json?.pdf_base64 ||
+            json?.pdf ||
+            json?.data?.base64 ||
+            json?.data?.pdf_base64 ||
+            json?.data?.pdf;
+
+        if (base64 && typeof base64 === 'string') {
+            try {
+                const clean = base64.replace(/^data:application\/pdf;base64,/, '').trim();
+                const binaryString = window.atob(clean);
+                const bytes = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                const blob = new Blob([bytes], { type: 'application/pdf' });
+                triggerBlobDownload(blob, `Invoice-${invoiceNumber}.pdf`);
+                return { downloaded: true };
+            } catch (b64Err) {
+                console.warn('[subscriptionApi] Failed to decode base64 invoice:', b64Err);
+            }
+        }
+
+        return { downloaded: false, data: json };
     },
 
     /**
@@ -282,25 +355,71 @@ export const subscriptionApi = {
     },
 
     /**
-     * 9. POST /api/v1/deposit/create
+     * 9. POST /api/v1/deposit/create (Cregis Crypto Deposit)
      * Cregis / Crypto deposit creation
      */
-    createCryptoDeposit: async ({ amount, planId, plan_id }) => {
+    createCryptoDeposit: async ({ amount, planId, plan_id, currency = 'USDT', chain = 'TRON' }) => {
         const resolvedPlanId = planId ?? plan_id;
-        const res = await fetch(`${BASE_URL}/deposit/create`, {
+        const payload = {
+            amount: Number(amount),
+            currency: currency || 'USDT',
+            chain: chain || 'TRON',
+            plan_id: resolvedPlanId !== undefined && resolvedPlanId !== null ? String(resolvedPlanId) : null,
+        };
+
+        // Attempt live Cregis endpoint /deposit/create first
+        let res = await fetch(`${BASE_URL}/deposit/create`, {
             method: 'POST',
             headers: getAuthHeaders(),
-            body: JSON.stringify({
-                amount: Number(amount),
-                plan_id: resolvedPlanId !== undefined && resolvedPlanId !== null ? resolvedPlanId : null,
-            }),
+            body: JSON.stringify(payload),
         });
+
+        // Fallback to /deposit/cregis/create-request if /deposit/create returns 404
+        if (res.status === 404) {
+            res = await fetch(`${BASE_URL}/deposit/cregis/create-request`, {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: JSON.stringify(payload),
+            });
+        }
 
         const json = await res.json().catch(() => ({}));
         if (!res.ok) {
-            throw new Error(json?.detail || 'Failed to create crypto deposit.');
+            throw new Error(json?.detail || json?.message || 'Failed to create crypto deposit.');
+        }
+        if (json && typeof json === 'object' && json.data && typeof json.data === 'object' && !Array.isArray(json.data)) {
+            return { ...json, ...json.data, data: json.data };
         }
         return json?.data || json;
+    },
+
+    /**
+     * Helper to safely extract redirect checkout URL from gateway response
+     */
+    extractCheckoutUrl: (res) => {
+        if (!res) return null;
+        if (typeof res === 'string' && (res.startsWith('http://') || res.startsWith('https://'))) {
+            return res;
+        }
+        const candidate =
+            res.checkout_url ||
+            res.data?.checkout_url ||
+            res.payment_url ||
+            res.data?.payment_url ||
+            res.pay_url ||
+            res.data?.pay_url ||
+            res.redirect_url ||
+            res.data?.redirect_url ||
+            res.web_url ||
+            res.data?.web_url ||
+            res.url ||
+            res.data?.url ||
+            res.payment_info?.data?.checkout_url ||
+            res.payment_info?.checkout_url ||
+            res.data?.payment_info?.data?.checkout_url ||
+            res.data?.payment_info?.checkout_url ||
+            res.payment_info?.url;
+        return typeof candidate === 'string' ? candidate : null;
     },
 };
 

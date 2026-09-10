@@ -25,22 +25,25 @@
         }
 
         .customSelectWrapper {
-            .customSelectOptions {
-                background: #FFFFFF;
-                border-color: rgba(24, 201, 139, 0.25);
-                box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+            .customSelectOptions,
+            .customDropdownMenu {
+                background: #FFFFFF !important;
+                border-color: rgba(24, 201, 139, 0.25) !important;
+                box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12) !important;
 
-                .customOption {
-                    color: #1E293B;
+                .customOption,
+                .customDropdownItem {
+                    color: #1E293B !important;
 
                     &:hover {
-                        background: rgba(24, 201, 139, 0.08);
-                        color: #047857;
+                        background: rgba(24, 201, 139, 0.08) !important;
+                        color: #047857 !important;
                     }
 
-                    &.selectedOption {
-                        background: rgba(24, 201, 139, 0.14);
-                        color: #047857;
+                    &.selectedOption,
+                    &.itemSelected {
+                        background: rgba(24, 201, 139, 0.14) !important;
+                        color: #047857 !important;
                     }
                 }
             }

@@ -123,83 +123,6 @@
     }
 }
 
-.couponSection {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 12px;
-    padding: 14px 16px;
-
-    .couponLabel {
-        font-size: 0.76rem;
-        color: rgba(255, 255, 255, 0.6);
-        font-weight: 600;
-        margin-bottom: 8px;
-        display: block;
-    }
-
-    .couponInputRow {
-        display: flex;
-        gap: 8px;
-
-        input {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 0.84rem;
-            color: #f8fafc;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-
-            &:focus {
-                outline: none;
-                border-color: #18c98b;
-            }
-        }
-
-        button {
-            background: rgba(24, 201, 139, 0.15);
-            border: 1px solid rgba(24, 201, 139, 0.35);
-            color: #18c98b;
-            font-weight: 700;
-            font-size: 0.8rem;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-
-            &:hover:not(:disabled) {
-                background: #18c98b;
-                color: #03130c;
-            }
-
-            &:disabled {
-                opacity: 0.5;
-                cursor: not-allowed;
-            }
-        }
-    }
-
-    .couponSuccessMsg {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 8px;
-        font-size: 0.75rem;
-        color: #18c98b;
-        font-weight: 600;
-
-        .removeCouponBtn {
-            background: none;
-            border: none;
-            color: #f87171;
-            font-size: 0.72rem;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-    }
-}
 
 .summaryTable {
     display: flex;
@@ -236,59 +159,6 @@
     }
 }
 
-.gatewaySelector {
-    .gatewayLabel {
-        font-size: 0.76rem;
-        color: rgba(255, 255, 255, 0.6);
-        font-weight: 600;
-        margin-bottom: 8px;
-        display: block;
-    }
-
-    .gatewayOptions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-    }
-
-    .gatewayCard {
-        background: rgba(255, 255, 255, 0.035);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        padding: 12px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        transition: all 0.2s;
-
-        &.activeGateway {
-            border-color: #18c98b;
-            background: rgba(24, 201, 139, 0.08);
-        }
-
-        .gatewayIcon {
-            color: #18c98b;
-        }
-
-        .gatewayInfo {
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-
-            .name {
-                font-size: 0.8rem;
-                font-weight: 700;
-                color: #f8fafc;
-            }
-
-            .sub {
-                font-size: 0.68rem;
-                color: rgba(255, 255, 255, 0.45);
-            }
-        }
-    }
-}
 
 .safeguardBanner {
     display: flex;
@@ -418,37 +288,6 @@
         }
     }
 
-    .couponSection {
-        background: #F8FAFC !important;
-        border-color: rgba(15, 23, 42, 0.08) !important;
-
-        .couponLabel {
-            color: #334155 !important;
-        }
-
-        .couponInputRow {
-            input {
-                background: #FFFFFF !important;
-                border-color: rgba(24, 201, 139, 0.35) !important;
-                color: #0F172A !important;
-
-                &::placeholder {
-                    color: #94A3B8 !important;
-                }
-            }
-
-            button {
-                background: rgba(24, 201, 139, 0.14) !important;
-                border-color: rgba(24, 201, 139, 0.4) !important;
-                color: #047857 !important;
-
-                &:hover:not(:disabled) {
-                    background: #18C98B !important;
-                    color: #FFFFFF !important;
-                }
-            }
-        }
-    }
 
     .summaryTable {
         background: #F8FAFC !important;
@@ -472,31 +311,6 @@
         }
     }
 
-    .gatewaySelector {
-        .gatewayLabel {
-            color: #334155 !important;
-        }
-
-        .gatewayCard {
-            background: #FFFFFF !important;
-            border-color: rgba(15, 23, 42, 0.12) !important;
-
-            &.activeGateway {
-                border-color: #18C98B !important;
-                background: rgba(24, 201, 139, 0.08) !important;
-            }
-
-            .gatewayInfo {
-                .name {
-                    color: #0F172A !important;
-                }
-
-                .sub {
-                    color: #64748B !important;
-                }
-            }
-        }
-    }
 
     .safeguardBanner {
         background: rgba(24, 201, 139, 0.08) !important;

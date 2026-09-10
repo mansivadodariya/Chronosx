@@ -451,6 +451,10 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             font-weight: 500;
+
+            :global([dir="rtl"]) & {
+                text-align: right;
+            }
         }
 
         .chevronIcon {
@@ -478,6 +482,14 @@
         overflow-y: auto;
         box-shadow: 0 12px 36px rgba(0, 0, 0, 0.85), 0 0 20px rgba(24, 201, 139, 0.12);
         animation: fadeInDown 0.15s ease-out;
+
+        :global([dir="rtl"]) & {
+            text-align: right;
+
+            .dropdownItem {
+                text-align: right;
+            }
+        }
 
         &::-webkit-scrollbar {
             width: 4px;

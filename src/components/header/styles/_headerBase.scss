@@ -256,6 +256,10 @@
                                 text-align: left;
                                 overflow: hidden;
 
+                                :global([dir="rtl"]) & {
+                                    text-align: right;
+                                }
+
                                 .dropdownHeaderTag {
                                     padding: 2px 8px 10px 8px;
                                     font-size: 10.5px;

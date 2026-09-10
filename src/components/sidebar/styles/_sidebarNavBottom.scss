@@ -261,6 +261,23 @@
                 min-width: 180px;
             }
 
+            :global([dir="rtl"]) & {
+                text-align: right;
+
+                &.collapsedMenuDropdown {
+                    right: calc(100% + 10px) !important;
+                    left: auto !important;
+                }
+
+                .dropdownHeader {
+                    text-align: right;
+                }
+
+                .dropdownItem {
+                    text-align: right;
+                }
+            }
+
             .dropdownHeader {
                 padding: 4px 6px 8px;
                 background: transparent !important;

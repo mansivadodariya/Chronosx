@@ -158,7 +158,7 @@ html.light .children-wrapper {
 .sidebar-wrapper {
   width: 250px;
   position: relative;
-  z-index: 90;
+  z-index: 101;
   overflow: visible !important;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: #040605;
@@ -171,7 +171,7 @@ html.light .children-wrapper {
 .children-wrapper {
   width: calc(100% - 250px);
   position: relative;
-  z-index: 1;
+  z-index: auto;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: #040605;
   min-height: 100vh;
@@ -706,8 +706,11 @@ html.light [class*="inputField"]:focus {
 html.light [class*="calendarHeaderStrip"],
 html.light [class*="calendarHeaderStrip"] *,
 html.light [class*="liveIndicator"],
-html.light [class*="liveText"] {
+html.light [class*="liveText"],
+html.light [class*="calendarBadge"],
+html.light span[class*="calendarBadge"] {
   color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
 }
 
 /* Light Theme: Modals Close Button Visibility */

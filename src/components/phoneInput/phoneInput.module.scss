@@ -378,6 +378,10 @@
                 @include respond-to('sm') {
                     right: -8px !important;
                 }
+
+                .countryItem {
+                    text-align: right !important;
+                }
             }
         }
 

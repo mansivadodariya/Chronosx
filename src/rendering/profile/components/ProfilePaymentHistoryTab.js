@@ -32,28 +32,57 @@ export default function ProfilePaymentHistoryTab({ t }) {
     }, []);
 
     const handleDownloadReceipt = async (item, idx) => {
+        const isPending = String(item.status || '').toUpperCase() === 'PENDING';
+        if (isPending) {
+            toast.error(t?.('profile.invoicePendingNotice', 'Invoice is available after payment is confirmed.') || 'Invoice is available after payment is confirmed.');
+            return;
+        }
+
         setDownloadingId(item.id);
         const toastId = toast.loading(t?.('profile.downloadingPdf', 'Downloading official invoice...') || 'Downloading official invoice...');
         try {
+            let downloaded = false;
+
+            // 1. Primary: Call backend invoice download API
             const invoiceNum = item.invoice_number || item.id;
             if (invoiceNum) {
                 try {
-                    await subscriptionApi.downloadInvoice(invoiceNum);
-                    toast.dismiss(toastId);
-                    toast.success(t?.('profile.receiptDownloaded', 'PDF Invoice downloaded successfully!') || 'PDF Invoice downloaded!');
-                    return;
+                    const res = await subscriptionApi.downloadInvoice(invoiceNum);
+                    if (res?.downloaded) {
+                        downloaded = true;
+                    }
                 } catch (apiErr) {
-                    console.warn('[ProfilePaymentHistoryTab] Backend download failed, attempting fallback generator:', apiErr);
+                    console.warn('[ProfilePaymentHistoryTab] Backend download API error:', apiErr);
                 }
             }
 
-            if (item.pdf_url) {
-                window.open(item.pdf_url, '_blank');
-                toast.dismiss(toastId);
-                return;
+            // 2. Secondary: If direct pdf_url exists on item
+            if (!downloaded && item.pdf_url) {
+                try {
+                    const fileFetch = await fetch(item.pdf_url);
+                    if (fileFetch.ok) {
+                        const blob = await fileFetch.blob();
+                        const blobUrl = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = blobUrl;
+                        a.download = `Invoice-${invoiceNum || item.id}.pdf`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        setTimeout(() => window.URL.revokeObjectURL(blobUrl), 1000);
+                        downloaded = true;
+                    }
+                } catch (urlErr) {
+                    console.warn('[ProfilePaymentHistoryTab] Failed to fetch pdf_url:', urlErr);
+                }
             }
 
-            await generateInvoicePdf(item, idx + 1);
+            // 3. Guaranteed fallback: Generate executive PDF invoice immediately
+            if (!downloaded) {
+                await generateInvoicePdf(item, idx + 1);
+                downloaded = true;
+            }
+
             toast.dismiss(toastId);
             toast.success(t?.('profile.receiptDownloaded', 'PDF Invoice downloaded successfully!') || 'PDF Invoice downloaded!');
         } catch (err) {
@@ -151,20 +180,29 @@ export default function ProfilePaymentHistoryTab({ t }) {
                                             </span>
                                         </td>
                                         <td style={{ textAlign: 'right' }}>
-                                            <button
-                                                type="button"
-                                                className={styles.downloadBtn}
-                                                onClick={() => handleDownloadReceipt(item, idx)}
-                                                disabled={downloadingId === item.id}
-                                                title="Download Official PDF Invoice"
-                                            >
-                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                                    <polyline points="7 10 12 15 17 10" />
-                                                    <line x1="12" y1="15" x2="12" y2="3" />
-                                                </svg>
-                                                <span>{downloadingId === item.id ? 'Exporting...' : (t?.('profile.invoice', 'Invoice') || 'Invoice')}</span>
-                                            </button>
+                                            {(() => {
+                                                const isPending = String(item.status || '').toUpperCase() === 'PENDING';
+                                                return (
+                                                    <button
+                                                        type="button"
+                                                        className={`${styles.downloadBtn} ${isPending ? styles.btnDisabled : ''}`}
+                                                        onClick={() => handleDownloadReceipt(item, idx)}
+                                                        disabled={isPending || downloadingId === item.id}
+                                                        title={
+                                                            isPending
+                                                                ? (t?.('profile.invoicePendingTooltip', 'Invoice available once payment is confirmed') || 'Invoice available once payment is confirmed')
+                                                                : (t?.('profile.downloadInvoiceTooltip', 'Download Official PDF Invoice') || 'Download Official PDF Invoice')
+                                                        }
+                                                    >
+                                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                                            <polyline points="7 10 12 15 17 10" />
+                                                            <line x1="12" y1="15" x2="12" y2="3" />
+                                                        </svg>
+                                                        <span>{downloadingId === item.id ? 'Exporting...' : (t?.('profile.invoice', 'Invoice') || 'Invoice')}</span>
+                                                    </button>
+                                                );
+                                            })()}
                                         </td>
                                     </tr>
                                 );

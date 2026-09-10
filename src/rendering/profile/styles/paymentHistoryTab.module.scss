@@ -165,10 +165,20 @@
     gap: 5px;
     transition: all 0.2s;
 
-    &:hover {
+    &:hover:not(:disabled):not(.btnDisabled) {
         background: rgba(24, 201, 139, 0.15);
         border-color: #18c98b;
         color: #18c98b;
+    }
+
+    &:disabled,
+    &.btnDisabled {
+        opacity: 0.35 !important;
+        cursor: not-allowed !important;
+        pointer-events: none !important;
+        border-color: rgba(255, 255, 255, 0.06) !important;
+        background: rgba(255, 255, 255, 0.02) !important;
+        color: rgba(255, 255, 255, 0.3) !important;
     }
 }
 
@@ -293,11 +303,22 @@
         color: #0F172A !important;
         box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
 
-        &:hover {
+        &:hover:not(:disabled):not(.btnDisabled) {
             background: rgba(24, 201, 139, 0.15) !important;
             border-color: #18C98B !important;
             color: #047857 !important;
             box-shadow: 0 2px 8px rgba(24, 201, 139, 0.2) !important;
+        }
+
+        &:disabled,
+        &.btnDisabled {
+            opacity: 0.35 !important;
+            cursor: not-allowed !important;
+            pointer-events: none !important;
+            background: #F1F5F9 !important;
+            border-color: rgba(15, 23, 42, 0.08) !important;
+            color: #94A3B8 !important;
+            box-shadow: none !important;
         }
     }
 
