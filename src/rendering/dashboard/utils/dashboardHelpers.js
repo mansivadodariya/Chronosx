@@ -12,7 +12,7 @@ export function timeAgo(dateLike) {
     if (!d || Number.isNaN(d.getTime())) return '';
 
     const day = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const monthName = d.toLocaleString('en-US', { month: 'short' });
     const year = d.getFullYear();
 
     let hours = d.getHours();
@@ -22,7 +22,7 @@ export function timeAgo(dateLike) {
     hours = hours % 12 || 12;
     hours = String(hours).padStart(2, '0');
 
-    return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
+    return `${day} ${monthName} ${year}, ${hours}:${minutes} ${ampm}`;
 }
 
 export function extractCleanText(val) {

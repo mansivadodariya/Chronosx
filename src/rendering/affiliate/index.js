@@ -1,13 +1,11 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
 import CommonSectionHeader from '@/components/CommonSectionHeader';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
 import { getStoredUser, getStoredUserId } from '@/lib/authSession';
-import { affiliateApi } from '@/lib/api';
+import { affiliateService } from '@/services/affiliateService';
 import toast from 'react-hot-toast';
 import styles from './affiliate.module.scss';
 import {
@@ -16,17 +14,14 @@ import {
     CopyIcon,
     CheckIcon,
     StarIcon,
-    BoltIcon,
-    EyeIcon,
-    BotIcon,
-    ShieldLockIcon,
     QrCodeIcon,
-    SparkleIcon,
-    ExternalLinkIcon,
-    CloseIcon
+    SparkleIcon
 } from './components/AffiliateIcons';
 import { WithdrawModal, QrModal } from './components/WithdrawModal';
 import { MarketingKitTab } from './components/MarketingKitTab';
+import { CommissionLedgerTab } from './components/CommissionLedgerTab';
+import { WithdrawalsTab } from './components/WithdrawalsTab';
+
 export default function AffiliatePage() {
     const { t } = useLanguage();
     const { theme } = useTheme();
@@ -49,7 +44,7 @@ export default function AffiliatePage() {
         referral_count: 24,
         active_traders: 18,
         referral_code: 'CHRONOS-8921',
-        referral_url: '',
+        referral_link: '',
         current_tier: {
             level: 1,
             name: 'Tier 1 - Standard Partner',
@@ -82,22 +77,23 @@ export default function AffiliatePage() {
     }, [stats.referral_code, userId]);
 
     const referralUrl = useMemo(() => {
+        if (stats.referral_link) return stats.referral_link;
         if (typeof window !== 'undefined') {
             return `${window.location.origin}/signup?ref=${referralCode}`;
         }
         return `https://chronosx.com/signup?ref=${referralCode}`;
-    }, [referralCode]);
+    }, [stats.referral_link, referralCode]);
 
-    // Fetch initial affiliate data
+    // Fetch dynamic affiliate data from backend
     useEffect(() => {
         let isMounted = true;
         async function loadAffiliateData() {
             try {
                 setLoading(true);
                 const [dashRes, commRes, withRes] = await Promise.all([
-                    affiliateApi.getDashboard().catch(() => null),
-                    affiliateApi.getCommissionHistory({ page: 1, limit: 20 }).catch(() => null),
-                    affiliateApi.getWithdrawals().catch(() => null),
+                    affiliateService.getDashboard().catch(() => null),
+                    affiliateService.getCommissionHistory({ page: 1, limit: 20 }).catch(() => null),
+                    affiliateService.getWithdrawalHistory({ page: 1, limit: 20 }).catch(() => null),
                 ]);
 
                 if (isMounted) {
@@ -190,8 +186,9 @@ export default function AffiliatePage() {
 
         try {
             setWithdrawing(true);
-            const res = await affiliateApi.requestWithdrawal({
+            const res = await affiliateService.requestWithdrawal({
                 amount: numAmount,
+                crypto_currency: withdrawForm.asset,
                 asset: withdrawForm.asset,
                 network: withdrawForm.network,
                 wallet_address: withdrawForm.wallet_address.trim()
@@ -210,6 +207,7 @@ export default function AffiliatePage() {
                 created_at: new Date().toISOString(),
                 amount: numAmount,
                 asset: withdrawForm.asset,
+                crypto_currency: withdrawForm.asset,
                 network: withdrawForm.network,
                 wallet_address: withdrawForm.wallet_address.trim(),
                 status: 'PENDING',
@@ -222,7 +220,7 @@ export default function AffiliatePage() {
             setShowWithdrawModal(false);
             setWithdrawForm(prev => ({ ...prev, amount: '', wallet_address: '' }));
         } catch (err) {
-            toast.error(err.message || 'Failed to submit withdrawal request.');
+            toast.error(err?.message || 'Failed to submit withdrawal request.');
         } finally {
             setWithdrawing(false);
         }
@@ -493,161 +491,24 @@ export default function AffiliatePage() {
 
             {/* Tab 2: Commission Ledger Table */}
             {activeTab === 'ledger' && (
-                <div className={styles.tableWrapperCard}>
-                    <div className={styles.tableToolbar}>
-                        <div className={styles.tableTitleGroup}>
-                            <h3>{t('affiliate.commissionLedgerTitle', 'Commission History Ledger')}</h3>
-                            <p>{t('affiliate.commissionLedgerDesc', "Real-time audit of commissions credited from referred traders' deposits and trading volume.")}</p>
-                        </div>
-
-                        <div className={styles.searchBar}>
-                            <input
-                                type="text"
-                                placeholder={t('affiliate.searchPlaceholder', 'Search by trader, ID or status...')}
-                                value={ledgerSearch}
-                                onChange={(e) => setLedgerSearch(e.target.value)}
-                            />
-                        </div>
-                    </div>
-
-                    <div className={styles.tableScroll}>
-                        <table className={styles.customTable}>
-                            <thead>
-                                <tr>
-                                    <th>{t('affiliate.thDateTime', 'Date & Time')}</th>
-                                    <th>{t('affiliate.thReferredTrader', 'Referred Trader')}</th>
-                                    <th>{t('affiliate.thDepositVolume', 'Deposit / Volume')}</th>
-                                    <th>{t('affiliate.thTierRate', 'Tier Rate')}</th>
-                                    <th>{t('affiliate.thCommissionEarned', 'Commission Earned')}</th>
-                                    <th>{t('affiliate.thStatus', 'Status')}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredLedger.length > 0 ? (
-                                    filteredLedger.map((item) => (
-                                        <tr key={item.id}>
-                                            <td className={styles.dateCol}>
-                                                {new Date(item.date).toLocaleDateString()} <span className={styles.timeSub}>{new Date(item.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                                            </td>
-                                            <td className={styles.traderCol}>
-                                                <strong>{item.trader}</strong>
-                                            </td>
-                                            <td>${Number(item.deposit_volume).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
-                                            <td><span className={styles.tierPill}>{item.tier_rate}</span></td>
-                                            <td className={styles.commissionVal}>+${Number(item.commission_amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
-                                            <td>
-                                                <span className={`${styles.statusBadge} ${item.status === 'CREDITED' ? styles.statusCredited : styles.statusPending}`}>
-                                                    {item.status}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan={6} className={styles.emptyTableRow}>
-                                            {t('affiliate.noCommissionRecords', 'No commission records found.')}
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <CommissionLedgerTab
+                    styles={styles}
+                    t={t}
+                    ledgerSearch={ledgerSearch}
+                    setLedgerSearch={setLedgerSearch}
+                    filteredLedger={filteredLedger}
+                />
             )}
 
             {/* Tab 3: Withdrawal History Table */}
             {activeTab === 'withdrawals' && (
-                <div className={styles.tableWrapperCard}>
-                    <div className={styles.tableToolbar}>
-                        <div className={styles.tableTitleGroup}>
-                            <h3>{t('affiliate.cryptoWithdrawalTitle', 'Crypto Withdrawal Requests')}</h3>
-                            <p>{t('affiliate.cryptoWithdrawalDesc', 'History of on-chain crypto settlements to your destination wallet addresses.')}</p>
-                        </div>
-                        <button
-                            type="button"
-                            className={styles.secondaryWithdrawBtn}
-                            onClick={() => setShowWithdrawModal(true)}
-                        >
-                            <WalletCryptoIcon />
-                            <span>{t('affiliate.requestNewWithdrawal', 'Request New Withdrawal')}</span>
-                        </button>
-                    </div>
-
-                    <div className={styles.tableScroll}>
-                        <table className={styles.customTable}>
-                            <thead>
-                                <tr>
-                                    <th>{t('affiliate.thRequestId', 'Request ID')}</th>
-                                    <th>{t('affiliate.thDate', 'Date')}</th>
-                                    <th>{t('affiliate.thAssetNetwork', 'Asset & Network')}</th>
-                                    <th>{t('affiliate.thAmount', 'Amount')}</th>
-                                    <th>{t('affiliate.thDestAddress', 'Destination Address')}</th>
-                                    <th>{t('affiliate.thStatus', 'Status')}</th>
-                                    <th>{t('affiliate.thTxHash', 'Transaction Hash')}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {withdrawalsList.length > 0 ? (
-                                    withdrawalsList.map((item) => (
-                                        <tr key={item.id}>
-                                            <td className={styles.monoId}>{item.id}</td>
-                                            <td>{new Date(item.created_at).toLocaleDateString()}</td>
-                                            <td>
-                                                <span className={styles.assetBadge}>{item.asset}</span>
-                                                <span className={styles.networkSub}>{item.network}</span>
-                                            </td>
-                                            <td className={styles.withdrawAmountVal}>
-                                                ${Number(item.amount).toFixed(2)} {item.asset}
-                                            </td>
-                                            <td>
-                                                <div className={styles.addressBox}>
-                                                    <span>{item.wallet_address?.slice(0, 8)}...{item.wallet_address?.slice(-6)}</span>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleCopyText(item.wallet_address, 'Wallet address copied!')}
-                                                        className={styles.miniCopyIconBtn}
-                                                    >
-                                                        <CopyIcon />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <span className={`${styles.statusBadge} ${
-                                                    item.status === 'APPROVED' ? styles.statusApproved :
-                                                    item.status === 'PENDING' ? styles.statusPending :
-                                                    styles.statusRejected
-                                                }`}>
-                                                    {item.status}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                {item.tx_hash ? (
-                                                    <a
-                                                        href={`https://tronscan.org/#/transaction/${item.tx_hash}`}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className={styles.txLink}
-                                                    >
-                                                        <span>{item.tx_hash.slice(0, 10)}...</span>
-                                                        <ExternalLinkIcon />
-                                                    </a>
-                                                ) : (
-                                                    <span className={styles.pendingTxText}>{t('affiliate.processingSettlement', 'Processing settlement...')}</span>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan={7} className={styles.emptyTableRow}>
-                                            {t('affiliate.noWithdrawalRecords', 'No withdrawal history records found.')}
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <WithdrawalsTab
+                    styles={styles}
+                    t={t}
+                    withdrawalsList={withdrawalsList}
+                    setShowWithdrawModal={setShowWithdrawModal}
+                    handleCopyText={handleCopyText}
+                />
             )}
 
             {/* Tab 4: Marketing Kit */}

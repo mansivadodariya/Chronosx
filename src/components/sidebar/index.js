@@ -100,6 +100,8 @@ const getNavSections = (t) => [
     items: [
       { label: t('nav.dashboard', 'Dashboard'), href: "/dashboard", icon: DashboardGridIcon },
       { label: t('nav.marketAssistant', 'AI Market Assistant'), href: "/market-assistant", icon: AiChatBotIcon },
+      { label: t('nav.chartScanner', 'AI Chart Scanner'), href: "/chart-scanner", icon: AiTradeSparkIcon },
+      { label: t('nav.tradeAudit', 'AI Trade Audit'), href: "/trade-audit", icon: AiTradeAnalysisIcon },
       {
         label: t('nav.strategyHub', 'Strategy Hub'),
         href: "/strategy-hub",
@@ -109,8 +111,6 @@ const getNavSections = (t) => [
           { label: t('nav.strategyPlaybooks', 'Strategy Playbooks'), href: "/strategy-hub/strategy", icon: StrategyIcon },
         ]
       },
-      { label: t('nav.chartScanner', 'AI Chart Scanner'), href: "/chart-scanner", icon: AiTradeSparkIcon },
-      { label: t('nav.tradeAudit', 'AI Trade Audit'), href: "/trade-audit", icon: AiTradeAnalysisIcon },
     ]
   },
   {
@@ -127,7 +127,7 @@ const getNavSections = (t) => [
       },
       { label: t('nav.plans', 'Subscription Plans'), href: "/subscription-plans", icon: CrownIcon },
       { label: t('nav.broker', 'Broker'), href: "/broker", icon: BrokerBankIcon },
-      // { label: t('nav.affiliate', 'Affiliate'), href: "/affiliate", icon: AffiliateIcon },
+      { label: t('nav.affiliate', 'Affiliate'), href: "/affiliate", icon: AffiliateIcon },
       { label: t('nav.profile', 'Settings'), href: "/profile", icon: ProfileUserIcon },
     ]
   }

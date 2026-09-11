@@ -69,7 +69,7 @@ export default function Header() {
 
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth > 992) {
+            if (window.innerWidth > 1024) {
                 setMobileMenuOpen(false);
                 setOpenMobileDropdown(null);
             }

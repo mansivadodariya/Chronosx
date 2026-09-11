@@ -133,16 +133,47 @@ $danger: #F87171;
         }
     }
 
-    /* Social Share Buttons in Light Mode */
+    /* Social Share Buttons & Referral Code in Light Mode */
     .overviewGrid .shareBoxCard {
-        .referralCodeGroup {
-            .codeLabel {
-                color: #475569;
+        .codeRow {
+            .codeGroup {
+                .codeLabel {
+                    color: #475569;
+                }
+
+                .codeBadge {
+                    background: rgba(24, 201, 139, 0.1);
+                    border: 1px solid rgba(24, 201, 139, 0.35);
+                    color: #047857;
+                }
+
+                .miniCopyBtn {
+                    color: #64748B;
+
+                    &:hover {
+                        color: #10B981;
+                    }
+                }
             }
-            .codePill {
-                background: rgba(24, 201, 139, 0.1);
-                border-color: rgba(24, 201, 139, 0.4);
-                color: #059669;
+
+            .qrBtn {
+                background: #F8FAFC;
+                border: 1px solid #CBD5E1;
+                color: #334155;
+
+                svg {
+                    stroke: #334155;
+                }
+
+                &:hover {
+                    background: rgba(24, 201, 139, 0.08);
+                    border-color: #10B981;
+                    color: #047857;
+
+                    svg {
+                        stroke: #047857;
+                    }
+                }
             }
         }
 
@@ -153,6 +184,10 @@ $danger: #F87171;
             .linkInput {
                 color: #0F172A;
             }
+        }
+
+        .socialShareSection {
+            border-top: 1px solid #E2E8F0;
         }
 
         .socialTitle {
@@ -246,10 +281,44 @@ $danger: #F87171;
         }
     }
 
-    .marketingKitGrid .marketingPitchCard .pitchBody {
-        background: #F8FAFC;
-        border-color: #E2E8F0;
-        color: #334155;
+    .marketingKitGrid .marketingPitchCard {
+        background: #FFFFFF;
+        border-color: rgba(24, 201, 139, 0.3);
+
+        .pitchText,
+        .pitchBody {
+            background: #F8FAFC;
+            border-color: #E2E8F0;
+            color: #334155;
+        }
+
+        .copyPitchBtn,
+        .copyTemplateBtn {
+            background: rgba(24, 201, 139, 0.12);
+            color: #10B981;
+            border-color: rgba(24, 201, 139, 0.35);
+
+            &:hover {
+                background: #10B981;
+                color: #FFFFFF;
+            }
+        }
+
+        .pitchFooter {
+            border-color: #F1F5F9;
+
+            .channelTag {
+                background: rgba(24, 201, 139, 0.1);
+                color: #10B981;
+                border-color: rgba(24, 201, 139, 0.25);
+            }
+
+            .pitchLength {
+                background: #F1F5F9;
+                color: #64748B;
+                border-color: #E2E8F0;
+            }
+        }
     }
 
     /* Withdrawal Modal in Light Mode */
@@ -264,6 +333,10 @@ $danger: #F87171;
 
             .modalHeader {
                 border-bottom: 1px solid #F1F5F9;
+
+                h3 {
+                    color: #0F172A;
+                }
 
                 .modalTitleGroup {
                     h3 {

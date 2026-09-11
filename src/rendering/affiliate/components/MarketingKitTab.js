@@ -18,7 +18,7 @@ export function MarketingKitTab({ styles, t, handleCopyText }) {
                         <span>{t('affiliate.copyScript', 'Copy Script')}</span>
                     </button>
                 </div>
-                <p>
+                <p className={styles.pitchText}>
                     &ldquo;{t('affiliate.pitch1Text', "Stop guessing your trades. I've been using ChronosX AI-powered real-time chart analysis and high-probability signals. Sign up with my link and unlock lifetime pro insights!")}&rdquo;
                 </p>
                 <div className={styles.pitchFooter}>
@@ -41,7 +41,7 @@ export function MarketingKitTab({ styles, t, handleCopyText }) {
                         <span>{t('affiliate.copyScript', 'Copy Script')}</span>
                     </button>
                 </div>
-                <p>
+                <p className={styles.pitchText}>
                     &ldquo;{t('affiliate.pitch2Text', "Upload any trading chart screenshot and get instant institutional breakdown, risk-to-reward metrics, and multi-factor validation with ChronosX. Try it here!")}&rdquo;
                 </p>
                 <div className={styles.pitchFooter}>
@@ -64,7 +64,7 @@ export function MarketingKitTab({ styles, t, handleCopyText }) {
                         <span>{t('affiliate.copyScript', 'Copy Script')}</span>
                     </button>
                 </div>
-                <p>
+                <p className={styles.pitchText}>
                     &ldquo;{t('affiliate.pitch3Text', "Empower your community with institutional AI trading tools. Partner with ChronosX and access premium multi-timeframe analytics.")}&rdquo;
                 </p>
                 <div className={styles.pitchFooter}>

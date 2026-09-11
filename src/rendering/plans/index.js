@@ -491,7 +491,7 @@ export default function SubscriptionPlansView() {
                                         </button>
 
                                         <p className={styles.subCtaNote}>
-                                            {plan.subCtaText || (isFree ? 'No credit card required' : 'Instant activation • Cancel anytime')}
+                                            {plan.subCtaText || (isFree ? 'No credit card required' : 'Instant activation')}
                                         </p>
                                     </div>
 
@@ -595,29 +595,31 @@ export default function SubscriptionPlansView() {
                         })}
                     </div>
                 </div>
+            </div>
 
-                {/* 6. Bottom Conversion CTA & Disclaimer (Outside site) */}
-                {isOutside && (
-                    <>
-                        <CommonCta
-                            badge={t('plans.ctaBadge', 'UNLIMITED INSTITUTIONAL POTENTIAL')}
-                            title1={t('plans.ctaTitle1', 'Upgrade Your Trading Desk with')}
-                            title2={t('plans.ctaTitle2', 'Next-Gen AI Intelligence')}
-                            description={t('plans.ctaDesc', 'Get higher compute limits, custom MT5 indicators, real-time chart OCR scans, and dedicated quant support.')}
-                            primaryBtnText={t('plans.ctaBtn', 'CHOOSE YOUR PLAN')}
-                            primaryBtnAction={() => {
-                                window.scrollTo({ top: 300, behavior: 'smooth' });
-                            }}
-                        />
+            {/* 6. Bottom Conversion CTA & Disclaimer (Outside site) */}
+            {isOutside && (
+                <>
+                    <CommonCta
+                        badge={t('plans.ctaBadge', 'UNLIMITED INSTITUTIONAL POTENTIAL')}
+                        title1={t('plans.ctaTitle1', 'Upgrade Your Trading Desk with')}
+                        title2={t('plans.ctaTitle2', 'Next-Gen AI Intelligence')}
+                        description={t('plans.ctaDesc', 'Get higher compute limits, custom MT5 indicators, real-time chart OCR scans, and dedicated quant support.')}
+                        primaryBtnText={t('plans.ctaBtn', 'CHOOSE YOUR PLAN')}
+                        primaryBtnAction={() => {
+                            window.scrollTo({ top: 300, behavior: 'smooth' });
+                        }}
+                    />
 
+                    <div className="container" style={{ paddingBottom: 60 }}>
                         <div className={styles.disclaimerBox}>
                             <p>
                                 {t('plans.disclaimer', 'ChronosX provides software, technical tools, and market intelligence algorithms for educational and research purposes only. Subscription fees cover cloud server infrastructure and AI compute processing. Past performance in backtests or simulations is not indicative of future market results.')}
                             </p>
                         </div>
-                    </>
-                )}
-            </div>
+                    </div>
+                </>
+            )}
 
             {/* 7. Payment Lifecycle Modals */}
             <PaymentSummaryModal

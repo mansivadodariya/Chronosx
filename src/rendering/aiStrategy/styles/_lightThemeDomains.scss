@@ -1,0 +1,209 @@
+/* ============================================================
+   LIGHT THEME: UNIFIED DOMAINS, OSCILLATOR TRACKS & EMPTY LINES
+   ============================================================ */
+:global(html.light) .aiStrategyWrapper {
+    .analysisPanel {
+        /* Unified Domain Cards & Section Dividers */
+        .unifiedDomainCard,
+        .aiIntelligenceShowcaseCard {
+            border-bottom-color: #E2E8F0 !important;
+
+            .domainHeaderRow {
+                border-bottom-color: #E2E8F0 !important;
+
+                .domainTitleGroup {
+                    .domainMainTitle {
+                        color: #0F172A !important;
+                    }
+                    .domainSubtitle {
+                        color: #64748B !important;
+                    }
+                }
+            }
+
+            /* Unified 3-Column Architecture Dividers */
+            .threeColumnUnifiedRow {
+                >div:nth-child(1),
+                >div:nth-child(2) {
+                    border-right-color: #E2E8F0 !important;
+                }
+
+                @media (max-width: 1040px) {
+                    >div:nth-child(3) {
+                        border-top-color: #E2E8F0 !important;
+                    }
+                }
+
+                @media (max-width: 768px) {
+                    >div:nth-child(1),
+                    >div:nth-child(2) {
+                        border-bottom-color: #E2E8F0 !important;
+                    }
+                }
+            }
+
+            /* Visual Slider Block (Oscillators Column) */
+            .visualSliderBlock {
+                background: #F8FAFC !important;
+                border: 1px solid #E2E8F0 !important;
+
+                .sliderHeaderRow {
+                    .sliderName {
+                        color: #0F172A !important;
+                    }
+                    .sliderValueText {
+                        color: #0F172A !important;
+                    }
+                }
+
+                /* MACD Track - Empty Line / Baseline */
+                .macdTrack {
+                    background: #CBD5E1 !important;
+                    height: 6px !important;
+                    border-radius: 3px !important;
+
+                    .macdZeroLine {
+                        background: #64748B !important;
+                        width: 2px !important;
+                    }
+
+                    .macdBarFill {
+                        border-radius: 2px !important;
+                    }
+                }
+
+                .macdDetailsRow {
+                    color: #475569 !important;
+                    font-weight: 600 !important;
+                }
+
+                /* Stochastic Tracks - Empty Line / Baseline */
+                .stochRow {
+                    .stochLabel {
+                        color: #475569 !important;
+                        font-weight: 600 !important;
+                    }
+
+                    .stochBarTrack {
+                        background: #CBD5E1 !important;
+                        height: 5px !important;
+                        border-radius: 3px !important;
+
+                        .stochBarFill {
+                            border-radius: 3px !important;
+                        }
+                    }
+
+                    .stochValue {
+                        color: #0F172A !important;
+                        font-weight: 700 !important;
+                    }
+                }
+
+                /* RSI Track Needle in Light Mode */
+                .rsiTrack {
+                    height: 6px !important;
+                    border-radius: 3px !important;
+
+                    .rsiNeedlePin {
+                        background: #FFFFFF !important;
+                        border: 2px solid #0F172A !important;
+                        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+                    }
+                }
+
+                .rsiThresholds {
+                    span {
+                        color: #64748B !important;
+                        font-weight: 600 !important;
+                    }
+                }
+            }
+
+            /* Structure Confluence Score Card Progress Track */
+            .structureScoreCardColumn {
+                .structureScoreCard {
+                    background: #F8FAFC !important;
+                    border: 1px solid #E2E8F0 !important;
+
+                    .structScoreCardTop {
+                        .structCardHeading {
+                            color: #0F172A !important;
+                        }
+                        .structCardFraction {
+                            color: #0F172A !important;
+
+                            span {
+                                color: #64748B !important;
+                            }
+                        }
+                    }
+
+                    .structProgressTrack {
+                        background: #CBD5E1 !important;
+                        height: 7px !important;
+                    }
+
+                    .structScoreCardBottom {
+                        .structPctText {
+                            color: #0F172A !important;
+                        }
+                    }
+                }
+            }
+
+            /* Clean Indicators Table in Light Mode */
+            .cleanIndicatorsListTable {
+                .indicatorTableRow {
+                    border-bottom-color: #F1F5F9 !important;
+
+                    .rowName {
+                        color: #475569 !important;
+                    }
+                    .rowValue {
+                        color: #0F172A !important;
+                    }
+                }
+            }
+
+            /* Evidence Column in Light Mode */
+            .seamlessEvidenceColumn {
+                .evidenceHeaderTag {
+                    .evidenceTitleText {
+                        color: #0F172A !important;
+                    }
+                }
+
+                .domainEvidenceList {
+                    li,
+                    .domainEvidenceItem {
+                        color: #334155 !important;
+                    }
+                }
+            }
+        }
+
+        /* Generic Track Fallbacks (All progress tracks & baselines) */
+        .macdTrack {
+            background: #CBD5E1 !important;
+
+            .macdZeroLine {
+                background: #64748B !important;
+            }
+        }
+
+        .stochBarTrack {
+            background: #CBD5E1 !important;
+        }
+
+        .structProgressTrack {
+            background: #CBD5E1 !important;
+        }
+
+        .pillarTrackWrap {
+            .pillarTrack {
+                background: #CBD5E1 !important;
+            }
+        }
+    }
+}

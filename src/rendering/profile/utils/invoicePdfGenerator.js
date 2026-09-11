@@ -1,15 +1,19 @@
 import { getStoredUser } from '@/lib/authSession';
 
 /**
- * Formats any transaction or invoice string to "TXN-0000001" format
+ * Formats any transaction or invoice string to "TXN-XXXXXXX" format
  */
 export function formatTransactionId(rawId, index = 1) {
     if (!rawId) {
         return `TXN-${String(index).padStart(7, '0')}`;
     }
-    const digits = String(rawId).replace(/\D/g, '');
-    if (digits.length > 0) {
-        return `TXN-${digits.slice(-7).padStart(7, '0')}`;
+    const str = String(rawId).trim().toUpperCase();
+    if (str.startsWith('TXN-')) {
+        return str;
+    }
+    const clean = str.replace(/[^A-Z0-9]/g, '');
+    if (clean.length > 0) {
+        return `TXN-${clean.slice(0, 7)}`;
     }
     return `TXN-${String(index).padStart(7, '0')}`;
 }
@@ -116,14 +120,36 @@ export async function generateInvoicePdf(item, index = 1) {
         doc.setTextColor(24, 201, 139); // emerald
         doc.text(txnId, 194, 26, { align: 'right' });
 
-        // Status Badge (PAID)
-        doc.setFillColor(236, 253, 245); // emerald 50
-        doc.setDrawColor(24, 201, 139);
-        doc.roundedRect(165, 30, 29, 7, 2, 2, 'FD');
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(9);
-        doc.setTextColor(5, 150, 105);
-        doc.text('✓ PAID', 179.5, 35, { align: 'center' });
+        const statusStr = String(item?.status || item?.payment_status || item?.original_status || 'PAID').toUpperCase();
+        const isPaid = statusStr === 'PAID' || statusStr === 'SUCCESS' || statusStr === 'COMPLETED' || item?.is_paid;
+        const isExpired = statusStr === 'EXPIRED';
+
+        // Status Badge
+        if (isPaid) {
+            doc.setFillColor(236, 253, 245); // emerald 50
+            doc.setDrawColor(24, 201, 139);
+            doc.roundedRect(165, 30, 29, 7, 2, 2, 'FD');
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9);
+            doc.setTextColor(5, 150, 105);
+            doc.text('✓ PAID', 179.5, 35, { align: 'center' });
+        } else if (isExpired) {
+            doc.setFillColor(254, 242, 242); // red 50
+            doc.setDrawColor(239, 68, 68);
+            doc.roundedRect(160, 30, 34, 7, 2, 2, 'FD');
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9);
+            doc.setTextColor(220, 38, 38);
+            doc.text('✕ EXPIRED', 177, 35, { align: 'center' });
+        } else {
+            doc.setFillColor(254, 249, 195); // amber 50
+            doc.setDrawColor(234, 179, 8);
+            doc.roundedRect(160, 30, 34, 7, 2, 2, 'FD');
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9);
+            doc.setTextColor(180, 83, 9);
+            doc.text(statusStr, 177, 35, { align: 'center' });
+        }
 
         // Divider
         doc.setDrawColor(226, 232, 240); // slate 200
@@ -246,28 +272,47 @@ export async function generateInvoicePdf(item, index = 1) {
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(11);
         doc.setTextColor(15, 23, 42);
-        doc.text('TOTAL PAID:', 140, y);
-        doc.setTextColor(24, 201, 139);
+        doc.text(isPaid ? 'TOTAL PAID:' : 'TOTAL AMOUNT:', 140, y);
+        doc.setTextColor(isPaid ? 24 : 100, isPaid ? 201 : 116, isPaid ? 139 : 139);
         doc.text(`$${amountNum} USD`, 190, y, { align: 'right' });
 
         // ================= 5. CRYPTOGRAPHIC VERIFICATION SEAL =================
         y += 18;
-        doc.setFillColor(240, 253, 244); // emerald 50
-        doc.setDrawColor(24, 201, 139);
-        doc.setLineWidth(0.4);
-        doc.roundedRect(16, y, 178, 22, 2, 2, 'FD');
+        if (isPaid) {
+            doc.setFillColor(240, 253, 244); // emerald 50
+            doc.setDrawColor(24, 201, 139);
+            doc.setLineWidth(0.4);
+            doc.roundedRect(16, y, 178, 22, 2, 2, 'FD');
 
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(9);
-        doc.setTextColor(5, 150, 105);
-        doc.text('VERIFIED SETTLEMENT CONFIRMATION', 22, y + 7);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9);
+            doc.setTextColor(5, 150, 105);
+            doc.text('VERIFIED SETTLEMENT CONFIRMATION', 22, y + 7);
 
-        doc.setFont('courier', 'normal');
-        doc.setFontSize(7.5);
-        doc.setTextColor(71, 85, 105);
-        doc.text(`Transaction Reference: ${txnId}`, 22, y + 12);
-        doc.text(`Gateway Settlement:    ${gateway}`, 22, y + 16);
-        doc.text(`Status:                SUCCESS • Autonomous System Activation Confirmed`, 22, y + 20);
+            doc.setFont('courier', 'normal');
+            doc.setFontSize(7.5);
+            doc.setTextColor(71, 85, 105);
+            doc.text(`Transaction Reference: ${txnId}`, 22, y + 12);
+            doc.text(`Gateway Settlement:    ${gateway}`, 22, y + 16);
+            doc.text(`Status:                SUCCESS • Autonomous System Activation Confirmed`, 22, y + 20);
+        } else {
+            doc.setFillColor(248, 250, 252); // slate 50
+            doc.setDrawColor(203, 213, 225);
+            doc.setLineWidth(0.4);
+            doc.roundedRect(16, y, 178, 22, 2, 2, 'FD');
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9);
+            doc.setTextColor(71, 85, 105);
+            doc.text('ORDER TRANSACTION RECORD', 22, y + 7);
+
+            doc.setFont('courier', 'normal');
+            doc.setFontSize(7.5);
+            doc.setTextColor(100, 116, 139);
+            doc.text(`Transaction Reference: ${txnId}`, 22, y + 12);
+            doc.text(`Gateway Settlement:    ${gateway}`, 22, y + 16);
+            doc.text(`Status:                ${statusStr} • Record Archived`, 22, y + 20);
+        }
 
         // ================= 6. FOOTER =================
         doc.setDrawColor(226, 232, 240);

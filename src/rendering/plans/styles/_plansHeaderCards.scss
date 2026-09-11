@@ -22,14 +22,14 @@
     }
 
     &.outsidePage {
-        padding-top: 130px !important;
+        padding: 130px 0 0 0 !important;
 
         @include respond-to("md") {
-            padding-top: 110px !important;
+            padding: 110px 0 0 0 !important;
         }
 
         @include respond-to("sm") {
-            padding-top: 95px !important;
+            padding: 95px 0 0 0 !important;
         }
 
         :global(.container) {

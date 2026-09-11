@@ -7,6 +7,7 @@ import styles from '../dashboard.module.scss';
 export default function DashboardStatsCards({
     loading,
     stats,
+    totalAccountCredits,
     handleExportPdf,
     router
 }) {
@@ -128,7 +129,7 @@ export default function DashboardStatsCards({
                     </div>
 
                     <div className={styles.bigNumWrap}>
-                        <span className={styles.statBigNum}>{loading ? '...' : (stats?.total_credits ?? 100)}</span>
+                        <span className={styles.statBigNum}>{loading ? '...' : (stats?.total_credits ?? totalAccountCredits ?? 0)}</span>
                     </div>
 
                     <div className={styles.rowCtaLink}>

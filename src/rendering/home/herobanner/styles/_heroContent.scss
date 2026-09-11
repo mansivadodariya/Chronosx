@@ -1,403 +1,94 @@
-
-
 .herobanner {
-    .heroGridRow {
+    // Centered Hero Layout
+    .heroCenterCol {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        gap: 36px;
+        text-align: center;
         width: 100%;
+        max-width: 1100px;
         margin: 0 auto;
-
-        @include respond-to("tab") {
-            flex-direction: column;
-            text-align: center;
-            gap: 40px;
-        }
-
-        @include respond-to("sm") {
-            gap: 32px;
-        }
-    }
-
-    // Left Column: Text & Actions
-    .heroLeftCol {
-        flex: 1 1 50%;
-        max-width: 650px;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        text-align: left;
-        padding-top: 10px;
-
-        @include respond-to("tab") {
-            flex: 1 1 100%;
-            max-width: 100%;
-            align-items: center;
-            text-align: center;
-            padding-top: 0;
-        }
-    }
-
-    // Right Column: Showcase HUD Orb & Holographic Badges
-    .heroRightCol {
-        flex: 1 1 50%;
-        max-width: 620px;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         position: relative;
-
-        @include respond-to("tab") {
-            flex: 1 1 100%;
-            max-width: 540px;
-            width: 100%;
-            margin-top: 15px;
-        }
-
-        @include respond-to("sm") {
-            max-width: 100%;
-        }
-    }
-
-    // Interactive HUD Orb Container
-    .hudOrbContainer {
-        position: relative;
-        width: 100%;
-        max-width: 600px;
-        aspect-ratio: 1 / 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: transparent;
-
-        @include respond-to("sm") {
-            max-width: 380px;
-        }
-    }
-
-    // Ambient Blurry Emerald Center Glow behind video
-    .orbBlurryGlow {
-        position: absolute;
-        width: 82%;
-        height: 82%;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(24, 201, 139, 0.52) 0%, rgba(20, 180, 120, 0.24) 42%, rgba(10, 80, 50, 0.08) 65%, transparent 75%);
-        filter: blur(55px);
-        pointer-events: none;
-        z-index: 0;
-        animation: orbGlowBreathe 4.5s ease-in-out infinite alternate;
-    }
-
-    // Video Container
-    .videoContainer {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1;
-        background: transparent;
-        transform: scale(1.06);
-    }
-
-    .heroVideo {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        display: block;
-        background: transparent;
-        mix-blend-mode: screen;
-        pointer-events: none;
-    }
-
-    // Holographic HUD Badges Base
-    .hudBadge {
-        position: absolute;
         z-index: 3;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        pointer-events: auto;
-    }
 
-    .badgeContent {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 7px 14px 7px 10px;
-        border-radius: 12px;
-        background: rgba(6, 15, 12, 0.88);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border: 1px solid rgba(24, 201, 139, 0.32);
-        box-shadow: 0 4px 22px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-        white-space: nowrap;
-        font-family: var(--font-inter, sans-serif);
-        color: #f1fdf7;
-        cursor: pointer;
-        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-
-        &:hover {
-            border-color: rgba(24, 201, 139, 0.7);
-            background: rgba(8, 20, 16, 0.95);
-            box-shadow: 0 0 20px rgba(24, 201, 139, 0.3), 0 8px 28px rgba(0, 0, 0, 0.8);
-            transform: scale(1.03);
-
-            .badgeIconWrap {
-                background: rgba(24, 201, 139, 0.22);
-                border-color: rgba(24, 201, 139, 0.55);
-            }
-        }
-
-        @include respond-to("sm") {
-            padding: 5px 10px 5px 8px;
-            gap: 7px;
-            border-radius: 10px;
-        }
-    }
-
-    .badgeIconWrap {
-        width: 28px;
-        height: 28px;
-        border-radius: 8px;
-        background: rgba(24, 201, 139, 0.12);
-        border: 1px solid rgba(24, 201, 139, 0.28);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        transition: all 0.25s ease;
-
-        @include respond-to("sm") {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-        }
-    }
-
-    .badgeIcon {
-        color: #18c98b;
-        flex-shrink: 0;
-        filter: drop-shadow(0 0 5px rgba(24, 201, 139, 0.6));
-    }
-
-    .badgeTextCol {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        text-align: left;
-        gap: 1px;
-    }
-
-    .badgeName {
-        font-weight: 700;
-        font-size: 11.5px;
-        letter-spacing: 0.02em;
-        color: #f3fdf9;
-        line-height: 1.25;
-
-        @include respond-to("sm") {
-            font-size: 10px;
-        }
-    }
-
-    .badgeDesc {
-        font-weight: 500;
-        font-size: 9.5px;
-        letter-spacing: 0.01em;
-        color: rgba(255, 255, 255, 0.55);
-        line-height: 1.2;
-
-        @include respond-to("sm") {
-            font-size: 8.5px;
-        }
-    }
-
-    // SVG Pentagon Laser Rays Connecting Inside Center Video
-    .pentagonRaysSvg {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 2;
-        pointer-events: none;
-        overflow: visible;
-    }
-
-    .flowingBeam {
-        animation: rayBeamFlow 1.6s linear infinite;
-        filter: drop-shadow(0 0 5px rgba(24, 201, 139, 0.75));
-    }
-
-    .centerTargetDot {
-        animation: targetDotPulse 2s ease-in-out infinite alternate;
-    }
-
-    // 5-Point Pentagon HUD Badge Positions Around Video Sphere
-    // 1. TOP VERTEX (AI Chart Scanner)
-    .pentagonTop {
-        top: 1%;
-        left: 50%;
-        transform: translateX(-50%);
-        animation: hudFloatTop 4s ease-in-out infinite alternate;
-    }
-
-    // 2. TOP-RIGHT VERTEX (Strategy Hub)
-    .pentagonTopRight {
-        top: 22%;
-        right: -6%;
-        transform: translateY(-50%);
-        animation: hudFloatRight 4.2s ease-in-out infinite alternate 0.4s;
-
-        @include respond-to("sm") {
-            right: -2%;
-            top: 20%;
-        }
-    }
-
-    // 3. BOTTOM-RIGHT VERTEX (Live Market Scanner)
-    .pentagonBottomRight {
-        bottom: 5%;
-        right: 0%;
-        animation: hudFloatBottomRight 4.4s ease-in-out infinite alternate 0.8s;
-
-        @include respond-to("sm") {
-            bottom: 4%;
-            right: 0%;
-        }
-    }
-
-    // 4. BOTTOM-LEFT VERTEX (AI Trade Audit)
-    .pentagonBottomLeft {
-        bottom: 5%;
-        left: 0%;
-        animation: hudFloatBottomLeft 4.4s ease-in-out infinite alternate 1.2s;
-
-        @include respond-to("sm") {
-            bottom: 4%;
-            left: 0%;
-        }
-    }
-
-    // 5. TOP-LEFT VERTEX (AI Market Assistant)
-    .pentagonTopLeft {
-        top: 22%;
-        left: -6%;
-        transform: translateY(-50%);
-        animation: hudFloatLeft 4.2s ease-in-out infinite alternate 1.6s;
-
-        @include respond-to("sm") {
-            left: -2%;
-            top: 20%;
-        }
-    }
-
-    // 1. Futuristic Pill Badge
-    .topBadgeRow {
-        margin-bottom: 30px;
-        display: flex;
-        justify-content: flex-start;
-
-        @include respond-to("tab") {
-            justify-content: center;
+        // 1. Futuristic Pill Badge
+        .topBadgeRow {
             margin-bottom: 22px;
-        }
-
-        @include respond-to("sm") {
-            margin-bottom: 18px;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
+            display: flex;
             justify-content: center;
-            gap: 8px;
-            padding: 6px 18px;
-            border-radius: 999px;
-            background: rgba(24, 201, 139, 0.08);
-            border: 1px solid rgba(24, 201, 139, 0.22);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-            &:hover {
-                background: rgba(24, 201, 139, 0.16);
-                border-color: rgba(24, 201, 139, 0.45);
-                box-shadow: 0 0 20px rgba(24, 201, 139, 0.25);
-                transform: translateY(-1px);
+            @include respond-to("sm") {
+                margin-bottom: 16px;
             }
 
-            .badgeText {
-                color: rgba(255, 255, 255, 0.9);
-                font-size: 13.5px;
-                font-family: var(--font-plus-jakarta), sans-serif;
-                font-weight: 500;
-                display: flex;
+            .badge {
+                display: inline-flex;
                 align-items: center;
+                justify-content: center;
                 gap: 8px;
-                letter-spacing: 0.1px;
+                padding: 6px 20px;
+                border-radius: 999px;
+                background: rgba(24, 201, 139, 0.08);
+                border: 1px solid rgba(24, 201, 139, 0.28);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
+                cursor: pointer;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-                @include respond-to("sm") {
-                    font-size: 12px;
+                &:hover {
+                    background: rgba(24, 201, 139, 0.16);
+                    border-color: rgba(24, 201, 139, 0.48);
+                    box-shadow: 0 0 20px rgba(24, 201, 139, 0.25);
+                    transform: translateY(-1px);
+                }
+
+                .badgeText {
+                    color: rgba(255, 255, 255, 0.92);
+                    font-size: 13.5px;
+                    font-family: var(--font-plus-jakarta), sans-serif;
+                    font-weight: 500;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    letter-spacing: 0.1px;
+
+                    @include respond-to("sm") {
+                        font-size: 12px;
+                    }
                 }
             }
-
-            .badgeArrow {
-                color: #18C98B;
-                font-size: 13px;
-                transition: transform 0.2s ease;
-            }
         }
     }
 
-    // 2. High Impact Headline (3-Line High Impact Layout)
+    // High Impact Centered Headline with Candlesticks SVG Icon
     .heroTitle {
         font-family: "Euclid-Bold", "Euclid Circular A", var(--font-plus-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        font-size: clamp(38px, 4vw, 56px);
-        line-height: 1.1;
+        font-size: clamp(32px, 4.4vw, 54px);
+        line-height: 1.14;
         font-weight: 900;
-        letter-spacing: -1.4px;
+        letter-spacing: -0.02em;
         color: #FFFFFF;
-        margin: 0 0 32px 0;
-        text-align: left;
-        // text-transform: uppercase;
+        margin: 0 0 20px 0;
+        text-align: center;
+        text-transform: uppercase;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-rendering: optimizeLegibility;
 
         .titleLine1 {
-            display: inline-block;
-            white-space: nowrap;
+            display: block;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7);
         }
 
         .titleLine2 {
-            display: inline-block;
-            white-space: nowrap;
-        }
-
-        .titleLine3 {
             display: inline-flex;
             align-items: center;
-            white-space: nowrap;
-            gap: 12px;
-        }
-
-        .greenGradient {
-            background: #fff !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-            background-clip: text !important;
-            color: transparent !important;
-            display: inline-block;
-            filter: drop-shadow(0 0 16px rgba(12, 17, 15, 0.5));
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7);
         }
 
         .candleIconBox {
@@ -409,78 +100,60 @@
         }
 
         .titleCandleIcon {
-            width: 48px;
-            height: 48px;
+            width: 38px;
+            height: 38px;
             display: block;
-            filter: drop-shadow(0 0 12px rgba(83, 230, 180, 0.65));
-        }
-
-        @include respond-to("lg") {
-            font-size: 48px;
-            letter-spacing: -1.4px;
-
-            .titleCandleIcon {
-                width: 42px;
-                height: 42px;
-            }
+            filter: drop-shadow(0 0 14px rgba(83, 230, 180, 0.85));
         }
 
         @include respond-to("tab") {
-            text-align: center;
-            font-size: 40px;
-            letter-spacing: -1px;
-            line-height: 1.15;
-            margin-bottom: 26px;
+            font-size: 38px;
+            letter-spacing: -0.8px;
 
-            .titleLine1,
             .titleLine2 {
-                white-space: normal;
-            }
-
-            .titleLine3 {
-                justify-content: center;
-                white-space: normal;
-                flex-wrap: wrap;
-                gap: 8px;
+                gap: 10px;
             }
 
             .titleCandleIcon {
-                width: 36px;
-                height: 36px;
+                width: 32px;
+                height: 32px;
             }
         }
 
         @include respond-to("sm") {
-            font-size: 30px;
-            letter-spacing: -0.6px;
-            margin-bottom: 20px;
-            line-height: 1.18;
+            font-size: 26px;
+            letter-spacing: -0.5px;
+            line-height: 1.22;
+            margin-bottom: 16px;
 
-            .titleLine3 {
-                gap: 6px;
+            .titleLine1 {
+                margin-bottom: 4px;
+            }
+
+            .titleLine2 {
+                gap: 8px;
             }
 
             .titleCandleIcon {
-                width: 28px;
-                height: 28px;
+                width: 26px;
+                height: 26px;
             }
         }
     }
 
-    // 3. Hero Description
+    // Centered Hero Description
     .heroDesc {
-        color: rgba(255, 255, 255, 0.75);
+        color: #94A3B8;
         font-family: "Euclid-Regular", sans-serif;
-        font-size: 16.5px;
+        font-size: 16px;
         line-height: 1.6;
-        margin: 0 0 40px 0;
-        max-width: 580px;
-        text-align: left;
+        margin: 0 auto 34px auto;
+        max-width: 680px;
+        text-align: center;
 
         @include respond-to("tab") {
-            text-align: center;
             font-size: 15px;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
             max-width: 90%;
         }
 
@@ -491,18 +164,17 @@
         }
     }
 
-    // 4. Actions Group
+    // Centered Actions Group (Button + Cyber Trust Badge)
     .actionsGroup {
         display: flex;
         align-items: center;
-        justify-content: flex-start;
-        gap: 20px;
+        justify-content: center;
+        gap: 24px;
         margin-bottom: 0;
         flex-wrap: wrap;
 
         @include respond-to("tab") {
-            justify-content: center;
-            margin-bottom: 10px;
+            gap: 20px;
         }
 
         @include respond-to("sm") {
@@ -520,9 +192,9 @@
         gap: 14px;
         padding: 10px 20px;
         height: 52px;
-        background: rgba(8, 16, 12, 0.45);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+        background: rgba(8, 16, 12, 0.55);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
 
         .cornerTL,
         .cornerTR,
@@ -628,5 +300,263 @@
         }
     }
 
-    // 5. Hero Bottom Live Asset Ticker Marquee Strip
+    // 3 Floating Feature Cards Grid at Base of Hero
+    .heroCardsRow {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+        width: 100%;
+        margin-top: 56px;
+        margin-bottom: 40px;
+
+        @include respond-to("tab") {
+            grid-template-columns: 1fr;
+            max-width: 540px;
+            margin-top: 42px;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        @include respond-to("sm") {
+            margin-top: 32px;
+            margin-bottom: 24px;
+            gap: 16px;
+            max-width: 100%;
+        }
+    }
+
+    // Base Feature Card
+    .featureCard {
+        background: rgba(12, 19, 15, 0.88);
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 14px;
+        padding: 18px 20px;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        cursor: pointer;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+                    border-color 0.25s ease,
+                    box-shadow 0.28s ease,
+                    background-color 0.25s ease;
+
+        @include respond-to("sm") {
+            padding: 14px 16px;
+            gap: 14px;
+        }
+    }
+
+    .cardNormal {
+        width: 100%;
+
+        &:hover {
+            border-color: rgba(24, 201, 139, 0.5);
+            background: rgba(16, 25, 20, 0.95);
+            box-shadow: 0 16px 40px rgba(24, 201, 139, 0.18), 0 0 0 1px rgba(24, 201, 139, 0.28);
+            transform: translateY(-5px) translateZ(0);
+
+            .cardIconBox {
+                background: rgba(24, 201, 139, 0.18);
+                border-color: rgba(24, 201, 139, 0.55);
+            }
+        }
+    }
+
+    // Center Card: Tilted & Layered Deck Effect
+    .tiltedCardWrapper {
+        position: relative;
+        display: flex;
+        width: 100%;
+
+        &:hover {
+            .cardTilted {
+                border-color: rgba(24, 201, 139, 0.55);
+                background: rgba(18, 28, 23, 0.98);
+                box-shadow: 0 20px 48px rgba(24, 201, 139, 0.22), 0 0 0 1px rgba(24, 201, 139, 0.3);
+                transform: rotate(-3.5deg) translateY(-5px) translateZ(0);
+
+                .cardIconBox {
+                    background: rgba(24, 201, 139, 0.18);
+                    border-color: rgba(24, 201, 139, 0.55);
+                }
+            }
+
+            .layeredCardBack {
+                transform: rotate(-1.8deg) translateY(2px) translateZ(0);
+                border-color: rgba(24, 201, 139, 0.25);
+            }
+        }
+
+        @include respond-to("tab") {
+            &:hover {
+                .cardTilted {
+                    transform: rotate(-1.5deg) translateY(-4px) translateZ(0);
+                }
+            }
+        }
+
+        @include respond-to("sm") {
+            &:hover {
+                .cardTilted {
+                    transform: translateY(-4px) translateZ(0) !important;
+                }
+            }
+        }
+    }
+
+    .layeredCardBack {
+        position: absolute;
+        top: 7px;
+        left: -5px;
+        right: 5px;
+        bottom: -7px;
+        background: rgba(8, 14, 11, 0.82);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 14px;
+        transform: rotate(-1.8deg) translateZ(0);
+        z-index: 1;
+        pointer-events: none;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+        transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+
+        @include respond-to("sm") {
+            display: none;
+        }
+    }
+
+    .cardTilted {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        transform: rotate(-3.5deg) translateZ(0);
+        background: rgba(14, 22, 18, 0.94);
+        border-color: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+
+        @include respond-to("tab") {
+            transform: rotate(-1.5deg) translateZ(0);
+        }
+
+        @include respond-to("sm") {
+            transform: none !important;
+        }
+    }
+
+    .cardIconBox {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: rgba(24, 201, 139, 0.08);
+        border: 1px solid rgba(24, 201, 139, 0.22);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: background-color 0.25s ease, border-color 0.25s ease;
+
+        @include respond-to("sm") {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+        }
+    }
+
+    .cardSvgIcon {
+        color: #18C98B;
+        flex-shrink: 0;
+        filter: drop-shadow(0 0 8px rgba(24, 201, 139, 0.45));
+    }
+
+    .cardTextCol {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        gap: 3px;
+        flex: 1;
+    }
+
+    .cardTitle {
+        font-size: 15.5px;
+        font-weight: 700;
+        color: #FFFFFF;
+        line-height: 1.25;
+        font-family: var(--font-inter, sans-serif);
+        letter-spacing: 0.1px;
+
+        @include respond-to("sm") {
+            font-size: 14px;
+        }
+    }
+
+    .cardDesc {
+        font-size: 12px;
+        line-height: 1.45;
+        color: #94A3B8;
+        font-weight: 400;
+        font-family: var(--font-inter, sans-serif);
+
+        @include respond-to("sm") {
+            font-size: 11.5px;
+        }
+    }
+
+    // Light Mode Overrides for Cards
+    :global(html.light) & {
+        .featureCard {
+            background: #FFFFFF !important;
+            border: 1px solid rgba(15, 23, 42, 0.12) !important;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
+
+            .cardTitle {
+                color: #0F172A !important;
+            }
+
+            .cardDesc {
+                color: #64748B !important;
+            }
+
+            .cardIconBox {
+                background: rgba(24, 201, 139, 0.12) !important;
+                border-color: rgba(24, 201, 139, 0.3) !important;
+            }
+
+            &:hover {
+                background: #F0FDF4 !important;
+                border-color: #18C98B !important;
+                box-shadow: 0 10px 30px rgba(24, 201, 139, 0.15) !important;
+            }
+        }
+
+        .layeredCardBack {
+            background: #F1F5F9 !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        }
+
+        .trustBadge {
+            background: rgba(255, 255, 255, 0.9) !important;
+            border: 1px solid rgba(24, 201, 139, 0.3) !important;
+
+            .cornerTL, .cornerTR, .cornerBL, .cornerBR {
+                border-color: rgba(15, 23, 42, 0.4) !important;
+            }
+
+            .trustHighlight {
+                color: #0F172A !important;
+            }
+
+            .trustSub {
+                color: #64748B !important;
+            }
+        }
+    }
 }

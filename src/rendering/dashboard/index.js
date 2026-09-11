@@ -4,6 +4,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './dashboard.module.scss';
 import { dashboardApi } from '@/lib/api';
+import { supabase } from '@/lib/supabaseClient';
+import { CREDITS_UPDATED_EVENT } from '@/lib/credits';
 import { getStoredUserId } from '@/lib/authSession';
 import { useLanguage } from '@/context/LanguageContext';
 import {
@@ -22,6 +24,7 @@ export default function Dashboard() {
     const [userId, setUserId] = useState('');
     const [stats, setStats] = useState(null);
     const [recentActivity, setRecentActivity] = useState([]);
+    const [creditHistory, setCreditHistory] = useState([]);
     const [loading, setLoading] = useState(true);
     const [greeting, setGreeting] = useState('');
     const [name, setName] = useState('');
@@ -53,9 +56,16 @@ export default function Dashboard() {
         const load = async () => {
             setLoading(true);
             try {
-                const [statsRes, recentRes] = await Promise.allSettled([
+                const [statsRes, recentRes, creditHistoryRes] = await Promise.allSettled([
                     dashboardApi.getStats(userId),
                     dashboardApi.getRecentActivity(userId),
+                    supabase
+                        ? supabase
+                            .from('credit_history')
+                            .select('*')
+                            .eq('user_id', userId)
+                            .order('created_at', { ascending: false })
+                        : Promise.resolve({ data: [] }),
                 ]);
 
                 if (!mounted) return;
@@ -67,6 +77,10 @@ export default function Dashboard() {
                 const recentPayload =
                     recentRes.status === 'fulfilled' ? (recentRes.value?.data?.recent_activity ?? recentRes.value) : [];
                 setRecentActivity(Array.isArray(recentPayload) ? recentPayload : (recentPayload?.items || []));
+
+                const creditHistoryPayload =
+                    creditHistoryRes.status === 'fulfilled' ? (creditHistoryRes.value?.data || []) : [];
+                setCreditHistory(Array.isArray(creditHistoryPayload) ? creditHistoryPayload : []);
             } finally {
                 if (mounted) setLoading(false);
             }
@@ -76,6 +90,40 @@ export default function Dashboard() {
             mounted = false;
         };
     }, [userId]);
+
+    // Live update when credits are updated anywhere across the app
+    useEffect(() => {
+        if (!userId || !supabase) return;
+        const refetchCredits = async () => {
+            try {
+                const { data } = await supabase
+                    .from('credit_history')
+                    .select('*')
+                    .eq('user_id', userId)
+                    .order('created_at', { ascending: false });
+                if (Array.isArray(data)) {
+                    setCreditHistory(data);
+                }
+            } catch (err) {
+                console.warn('Failed to refetch credit_history:', err);
+            }
+        };
+        window.addEventListener(CREDITS_UPDATED_EVENT, refetchCredits);
+        return () => window.removeEventListener(CREDITS_UPDATED_EVENT, refetchCredits);
+    }, [userId]);
+
+    const totalAccountCredits = useMemo(() => {
+        if (!Array.isArray(creditHistory) || creditHistory.length === 0) {
+            return stats?.total_credits ?? 0;
+        }
+        const added = creditHistory
+            .filter(c => {
+                const type = String(c?.transaction_type || '').toLowerCase();
+                return type === 'add' || type === 'deposit';
+            })
+            .reduce((sum, c) => sum + (Number(c?.amount) || 0), 0);
+        return added > 0 ? added : (stats?.total_credits ?? 0);
+    }, [creditHistory, stats]);
 
     const handleExportPdf = () => {
         exportDashboardPdf({ name, stats });
@@ -123,37 +171,37 @@ export default function Dashboard() {
 
     const dailyCreditChartData = useMemo(() => {
         const today = new Date();
-        const rawPoints = [];
-        const usageByDate = {};
+        const numDays = chartTimeframe === '90D' ? 90 : chartTimeframe === '30D' ? 30 : 7;
 
-        if (Array.isArray(recentActivity)) {
-            recentActivity.forEach((item) => {
-                const rawDate = item?.created_at || item?.createdAt || item?.time;
-                if (rawDate) {
-                    const d = new Date(rawDate);
+        // Group real deductions from Supabase credit_history by user local date (YYYY-MM-DD)
+        const usageByDate = {};
+        if (Array.isArray(creditHistory)) {
+            creditHistory.forEach((item) => {
+                const type = String(item?.transaction_type || '').toLowerCase();
+                const isDeduction = type === 'deduct' || type === 'debit' || (type !== 'add' && type !== 'deposit');
+                if (isDeduction && item?.created_at) {
+                    const d = new Date(item.created_at);
                     if (!isNaN(d.getTime())) {
-                        const key = d.toISOString().split('T')[0];
-                        const cost = (item?.type === 'blog' || item?.type === 'analysis') ? 5 : 2;
-                        usageByDate[key] = (usageByDate[key] || 0) + cost;
+                        const year = d.getFullYear();
+                        const month = String(d.getMonth() + 1).padStart(2, '0');
+                        const day = String(d.getDate()).padStart(2, '0');
+                        const key = `${year}-${month}-${day}`;
+                        usageByDate[key] = (usageByDate[key] || 0) + (Number(item.amount) || 0);
                     }
                 }
             });
         }
 
-        const todayChat = stats?.total_chat_history ?? 0;
-        const todayAnalysis = stats?.total_analysis_history ?? 0;
-        const todayTotalRealCredits = (todayAnalysis * 5) + (todayChat * 2);
-
-        const todayKey = today.toISOString().split('T')[0];
-        if (todayTotalRealCredits > 0) {
-            usageByDate[todayKey] = Math.max(usageByDate[todayKey] || 0, todayTotalRealCredits);
-        }
-
-        for (let i = 6; i >= 0; i--) {
+        const rawPoints = [];
+        for (let i = numDays - 1; i >= 0; i--) {
             const d = new Date(today);
             d.setDate(today.getDate() - i);
 
-            const dateKey = d.toISOString().split('T')[0];
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            const dateKey = `${year}-${month}-${day}`;
+
             const dayNum = d.getDate();
             const monthShort = d.toLocaleString('en-US', { month: 'short' });
             const dateFormatted = i === 0 ? t('dashboard.today', 'Today') : `${dayNum} ${monthShort}`;
@@ -166,16 +214,18 @@ export default function Dashboard() {
                 dateKey,
                 credits: creditsVal,
                 isToday: i === 0,
-                idx: 6 - i,
+                idx: numDays - 1 - i,
             });
         }
 
         const maxVal = Math.max(...rawPoints.map((p) => p.credits), 10);
+        const totalPoints = rawPoints.length;
 
         const points = rawPoints.map((p, idx) => {
-            const x = 50 + (idx * 150); // 50, 200, 350, 500, 650, 800, 950 (viewBox 1000)
-            const xPercent = (idx / (rawPoints.length - 1)) * 90 + 5; // 5% to 95%
-            const y = 145 - (p.credits / maxVal) * 110; // 35 to 145 (viewBox 170)
+            const ratio = totalPoints > 1 ? idx / (totalPoints - 1) : 0;
+            const x = 50 + ratio * 900; // 50 to 950 across viewBox 1000
+            const xPercent = ratio * 90 + 5; // 5% to 95%
+            const y = 145 - (p.credits / maxVal) * 110; // 35 to 145 in viewBox 170
             const yPercent = (y / 170) * 100;
             return {
                 ...p,
@@ -195,10 +245,28 @@ export default function Dashboard() {
         }
 
         const pathArea = `${pathLine} L ${points[points.length - 1].x} 170 L ${points[0].x} 170 Z`;
-        const totalUsed = points.reduce((a, b) => a + b.credits, 0);
+        const totalUsed = points.reduce((sum, p) => sum + p.credits, 0);
 
-        return { points, pathLine, pathArea, totalUsed };
-    }, [recentActivity, stats]);
+        // Compute clean milestone labels for X-axis
+        let labels = [];
+        if (numDays === 7) {
+            labels = points;
+        } else {
+            const step = Math.floor((totalPoints - 1) / 5);
+            const labelIndices = new Set();
+            for (let s = 0; s < totalPoints; s += step) {
+                labelIndices.add(s);
+            }
+            labelIndices.add(totalPoints - 1);
+            labels = points.filter((_, idx) => labelIndices.has(idx));
+        }
+
+        const displayPoints = numDays === 7
+            ? points
+            : points.filter((p, idx) => p.credits > 0 || p.isToday || idx % 5 === 0);
+
+        return { points, displayPoints, labels, pathLine, pathArea, totalUsed };
+    }, [creditHistory, chartTimeframe, t]);
 
     return (
         <div className={styles.modernDashboard}>
@@ -217,6 +285,7 @@ export default function Dashboard() {
                 <DashboardStatsCards
                     loading={loading}
                     stats={stats}
+                    totalAccountCredits={totalAccountCredits}
                     handleExportPdf={handleExportPdf}
                     router={router}
                 />

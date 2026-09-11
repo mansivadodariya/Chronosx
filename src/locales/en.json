@@ -227,7 +227,8 @@
     "desktopRequiredDesc": "Screen sharing is not supported on mobile Safari or iOS devices. Please open on desktop Chrome, Edge, or Mac Safari.",
     "scannerTitle": "AI Live Chart Scanner",
     "scannerDesc": "Share your live chart screen or capture snapshots to get real-time AI technical analysis, key levels, and trade setups.",
-    "history": "History"
+    "history": "History",
+    "pleaseAddGraphScreenshot": "Please add a graph screenshot to analyze"
   },
   "aiChat": {
     "heroBadge": "24/7 INSTITUTIONAL QUANT COPILOT",
@@ -404,9 +405,9 @@
     "qrModalDesc": "Direct scan for mobile traders to open your affiliate link instantly.",
     "btnClose": "Close",
     "pitch1Title": "Pitch 1: AI Precision & Speed",
-    "pitch1Copy": "Stop guessing your trades. I",
+    "pitch1Copy": "Stop guessing your trades. I've been using ChronosX AI-powered real-time chart analysis and high-probability signals. Sign up with my link and unlock lifetime pro insights: ",
     "copyScript": "Copy Script",
-    "pitch1Text": "Stop guessing your trades. I",
+    "pitch1Text": "Stop guessing your trades. I've been using ChronosX AI-powered real-time chart analysis and high-probability signals. Sign up with my link and unlock lifetime pro insights!",
     "tagTwitter": "X (Twitter) / Telegram",
     "shortForm": "Short Form",
     "pitch2Title": "Pitch 2: Trade-Snap & Strategy",
@@ -1020,7 +1021,15 @@
         "uptimeSub": "24/7 continuous market telemetry"
       },
       "trustCount": "Trusted by over +32k",
-      "trustSub": "people in the world"
+      "trustSub": "people in the world",
+      "cards": {
+        "analysisTitle": "AI Market Analysis",
+        "analysisDesc": "Scan charts with computer vision to detect candlestick patterns, liquidity sweeps, and high-probability setups.",
+        "strategyTitle": "Smart Trade Strategy",
+        "strategyDesc": "Build and backtest quantitative trading playbooks with multi-timeframe trend rules and automated signals.",
+        "riskTitle": "Risk Management",
+        "riskDesc": "Audit trade history, calculate mathematical position sizing, and protect capital with strict drawdown limits."
+      }
     },
     "metrics": {
       "badge": "PLATFORM METRICS",

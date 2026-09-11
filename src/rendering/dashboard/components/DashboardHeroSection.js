@@ -109,7 +109,7 @@ export default function DashboardHeroSection({
 
                             {/* Crisp HTML Data Point Markers (100% Round & Distortion-Free) */}
                             <div className={styles.chartPointsOverlay}>
-                                {dailyCreditChartData.points.map((pt) => {
+                                {(dailyCreditChartData.displayPoints || dailyCreditChartData.points || []).map((pt) => {
                                     const isHovered = activeHoverPoint?.dateKey === pt.dateKey;
                                     return (
                                         <div
@@ -128,7 +128,7 @@ export default function DashboardHeroSection({
 
                         {/* X-Axis Time Labels displaying Clean Dates */}
                         <div className={styles.chartTimeLabels}>
-                            {dailyCreditChartData.points.map((pt) => (
+                            {(dailyCreditChartData.labels || dailyCreditChartData.points || []).map((pt) => (
                                 <div key={pt.dateKey} className={`${styles.dayLabelItem} ${pt.isToday ? styles.todayLabel : ''}`}>
                                     <span className={styles.dayName}>{pt.dateFormatted}</span>
                                 </div>

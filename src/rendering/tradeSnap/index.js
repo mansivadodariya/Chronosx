@@ -219,14 +219,14 @@ export default function TradeSnap() {
     const applyAnalyzeResult = useCallback((result, { onInvalidChart } = {}) => {
         const trades = extractTradesFromPayload(result);
         if (trades[0]?.error) {
-            const errText = trades[0].raw || 'No valid chart found in the image';
+            const errText = t('tradeSnap.pleaseAddGraphScreenshot', 'Please add a graph screenshot to analyze');
             setError(errText);
             setAnalysisError(errText);
             onInvalidChart?.();
             return false;
         }
         if (!trades.length) {
-            const errText = 'No analysis data in response';
+            const errText = t('tradeSnap.pleaseAddGraphScreenshot', 'Please add a graph screenshot to analyze');
             setError(errText);
             setAnalysisError(errText);
             onInvalidChart?.();
@@ -234,11 +234,11 @@ export default function TradeSnap() {
         }
         pushAnalysis(trades);
         return true;
-    }, [pushAnalysis]);
+    }, [pushAnalysis, t]);
 
     const analyzeImage = useCallback(async () => {
         if (!capturedImage) {
-            setError('No image captured');
+            setError(t('tradeSnap.pleaseAddGraphScreenshot', 'Please add a graph screenshot to analyze'));
             return;
         }
         setIsAnalyzing(true);
@@ -252,16 +252,28 @@ export default function TradeSnap() {
                 setAnalysisError(null);
             }
         } catch (err) {
-            const errMsg = err?.message || 'Failed to analyze image';
-            setAnalysisError(errMsg);
-            setError(errMsg);
             if (err?.detail?.error_code === 'INSUFFICIENT_CREDITS' || err?.message?.toLowerCase().includes('insufficient credits')) {
+                const creditMsg = t('tradeSnap.insufficientCredits', 'Insufficient credits. Please upgrade your plan.');
+                setAnalysisError(creditMsg);
+                setError(creditMsg);
                 notifyCreditsUpdated(0);
+                return;
             }
+            if (err?.status === 401 || err?.message?.toLowerCase().includes('session expired') || err?.message?.toLowerCase().includes('log in')) {
+                const authMsg = err?.message || 'Session expired. Please log in again.';
+                setAnalysisError(authMsg);
+                setError(authMsg);
+                return;
+            }
+
+            // User-friendly toast message for non-chart/invalid images or backend vision processing failures
+            const friendlyMsg = t('tradeSnap.pleaseAddGraphScreenshot', 'Please add a graph screenshot to analyze');
+            setAnalysisError(friendlyMsg);
+            setError(friendlyMsg);
         } finally {
             setIsAnalyzing(false);
         }
-    }, [capturedImage, applyAnalyzeResult, setShowSnapshot, setIsAnalyzing, setShowAnalysis]);
+    }, [capturedImage, applyAnalyzeResult, setShowSnapshot, setIsAnalyzing, setShowAnalysis, t]);
 
     const handleScreenshot = () => {
         captureScreenshot();

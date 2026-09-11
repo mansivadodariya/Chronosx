@@ -5,18 +5,16 @@ import { getStoredUser, getStoredUserId } from '@/lib/authSession';
 const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://192.168.0.153:8000'}/api/v1`;
 
 function getAuthHeaders() {
+    let token = '';
     if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('access_token');
-        if (token) {
-            return {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'ngrok-skip-browser-warning': 'true',
-            };
+        token = localStorage.getItem('access_token');
+        if (!token && typeof document !== 'undefined') {
+            const match = document.cookie.match(/(?:^|;\s*)(?:auth_token|access_token)=([^;]*)/);
+            if (match) token = decodeURIComponent(match[1]);
         }
     }
     return {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
         'Content-Type': 'application/json',
         Accept: 'application/json',
         'ngrok-skip-browser-warning': 'true',

@@ -10,7 +10,7 @@
         box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.08) !important;
     }
 
-    @include respond-to("tab") {
+    @include respond-to("md") {
         background: #FFFFFF !important;
         border-bottom-color: rgba(15, 23, 42, 0.1) !important;
 
@@ -28,7 +28,7 @@
             background: transparent !important;
             background-color: transparent !important;
 
-            a,
+            > a,
             .dropdownTrigger {
                 background: transparent !important;
                 background-color: transparent !important;
@@ -45,7 +45,7 @@
                 background: transparent !important;
                 background-color: transparent !important;
 
-                a,
+                > a,
                 .dropdownTrigger {
                     background: transparent !important;
                     background-color: transparent !important;

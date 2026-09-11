@@ -93,11 +93,27 @@ export default function ProfilePaymentHistoryTab({ t }) {
         }
     };
 
-    const totalSpent = history
-        .filter(item => item.status === 'SUCCESS')
-        .reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+    const isPaidRecord = (item) => {
+        if (item?.is_paid === true) return true;
+        const s = String(item?.status || item?.payment_status || item?.original_status || '').toUpperCase();
+        return s === 'SUCCESS' || s === 'COMPLETED' || s === 'PAID';
+    };
 
-    const activeCount = history.filter(item => item.status === 'SUCCESS').length;
+    const totalSpent = history
+        .filter(isPaidRecord)
+        .reduce((sum, item) => sum + (Number(item?.amount_paid || item?.paid_amount || item?.amount || item?.total) || 0), 0);
+
+    const activeCount = history.filter(isPaidRecord).length;
+
+    const settlementCurrency = React.useMemo(() => {
+        const currencies = new Set();
+        history.forEach(item => {
+            if (item?.currency) currencies.add(String(item.currency).toUpperCase());
+        });
+        if (currencies.size === 0) return 'USD / USDT';
+        if (currencies.size === 1) return `${Array.from(currencies)[0]}`;
+        return Array.from(currencies).join(' / ');
+    }, [history]);
 
     return (
         <div className={styles.paymentHistoryPanel}>
@@ -119,12 +135,14 @@ export default function ProfilePaymentHistoryTab({ t }) {
 
                 <div className={styles.statCard}>
                     <div className={styles.statLabel}>{t?.('profile.invoicesCount', 'Paid Invoices') || 'Paid Invoices'}</div>
-                    <p className={styles.statValue}>{activeCount}</p>
+                    <p className={styles.statValue}>
+                        {activeCount} {history.length > 0 && <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'rgba(255,255,255,0.45)' }}>/ {history.length}</span>}
+                    </p>
                 </div>
 
                 <div className={styles.statCard}>
                     <div className={styles.statLabel}>{t?.('profile.billingCurrency', 'Settlement') || 'Settlement'}</div>
-                    <p className={styles.statValue}>USD / USDT</p>
+                    <p className={styles.statValue}>{settlementCurrency}</p>
                 </div>
             </div>
 
@@ -154,21 +172,27 @@ export default function ProfilePaymentHistoryTab({ t }) {
                                     ? d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
                                     : '—';
 
-                                const txnFormatted = formatTransactionId(item.invoice_number || item.id, idx + 1);
-                                const isSuccess = item.status === 'SUCCESS';
-                                const isPending = item.status === 'PENDING';
+                                const txnFormatted = item.invoice_number || formatTransactionId(item.id, idx + 1);
+                                const statusStr = String(item.status || item.payment_status || item.original_status || 'PENDING').toUpperCase();
+                                const isSuccess = statusStr === 'SUCCESS' || statusStr === 'COMPLETED' || statusStr === 'PAID' || item.is_paid;
+                                const isPending = statusStr === 'PENDING' || statusStr === 'WAITING_PAYMENT' || statusStr === 'CREATED';
+                                const isExpired = statusStr === 'EXPIRED';
+
+                                const planName = item.plan_name || item.tier_name || item.tier || item.subscription_plans?.name || item.plan || 'Starter';
+                                const method = item.method || item.gateway || (item.currency ? `Crypto ${item.currency} (${item.chain || 'TRON'})` : 'Crypto USDT');
+                                const amountNum = Number(item.amount ?? item.total ?? 0).toFixed(2);
 
                                 return (
-                                    <tr key={item.id}>
+                                    <tr key={item.id || idx}>
                                         <td className={styles.invoiceCol}>{txnFormatted}</td>
                                         <td>{dateStr}</td>
                                         <td>
                                             <span className={styles.planTierBadge}>
-                                                {item.plan_name}
+                                                {planName}
                                             </span>
                                         </td>
-                                        <td>{item.gateway || 'Crypto USDT'}</td>
-                                        <td className={styles.amountText}>${Number(item.amount).toFixed(2)}</td>
+                                        <td>{method}</td>
+                                        <td className={styles.amountText}>${amountNum}</td>
                                         <td>
                                             <span
                                                 className={`
@@ -176,33 +200,28 @@ export default function ProfilePaymentHistoryTab({ t }) {
                                                     ${isSuccess ? styles.statusSuccess : isPending ? styles.statusPending : styles.statusFailed}
                                                 `}
                                             >
-                                                {item.status}
+                                                {statusStr}
                                             </span>
                                         </td>
                                         <td style={{ textAlign: 'right' }}>
-                                            {(() => {
-                                                const isPending = String(item.status || '').toUpperCase() === 'PENDING';
-                                                return (
-                                                    <button
-                                                        type="button"
-                                                        className={`${styles.downloadBtn} ${isPending ? styles.btnDisabled : ''}`}
-                                                        onClick={() => handleDownloadReceipt(item, idx)}
-                                                        disabled={isPending || downloadingId === item.id}
-                                                        title={
-                                                            isPending
-                                                                ? (t?.('profile.invoicePendingTooltip', 'Invoice available once payment is confirmed') || 'Invoice available once payment is confirmed')
-                                                                : (t?.('profile.downloadInvoiceTooltip', 'Download Official PDF Invoice') || 'Download Official PDF Invoice')
-                                                        }
-                                                    >
-                                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                                            <polyline points="7 10 12 15 17 10" />
-                                                            <line x1="12" y1="15" x2="12" y2="3" />
-                                                        </svg>
-                                                        <span>{downloadingId === item.id ? 'Exporting...' : (t?.('profile.invoice', 'Invoice') || 'Invoice')}</span>
-                                                    </button>
-                                                );
-                                            })()}
+                                            <button
+                                                type="button"
+                                                className={`${styles.downloadBtn} ${isPending ? styles.btnDisabled : ''}`}
+                                                onClick={() => handleDownloadReceipt({ ...item, invoice_number: txnFormatted, plan_name: planName, gateway: method, amount: amountNum, status: statusStr }, idx)}
+                                                disabled={isPending || downloadingId === item.id}
+                                                title={
+                                                    isPending
+                                                        ? (t?.('profile.invoicePendingTooltip', 'Invoice available once payment is confirmed') || 'Invoice available once payment is confirmed')
+                                                        : (t?.('profile.downloadInvoiceTooltip', 'Download Official PDF Invoice') || 'Download Official PDF Invoice')
+                                                }
+                                            >
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                                    <polyline points="7 10 12 15 17 10" />
+                                                    <line x1="12" y1="15" x2="12" y2="3" />
+                                                </svg>
+                                                <span>{downloadingId === item.id ? 'Exporting...' : (t?.('profile.invoice', 'Invoice') || 'Invoice')}</span>
+                                            </button>
                                         </td>
                                     </tr>
                                 );
