@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from '@/context/ThemeContext';
 import { WalletCryptoIcon, CloseIcon } from './AffiliateIcons';
 
 export function WithdrawModal({
@@ -181,6 +182,11 @@ export function QrModal({
     referralCode,
     handleCopyLink
 }) {
+    const { theme } = useTheme();
+    const isLight = theme === 'light';
+    const qrBgColor = isLight ? 'FFFFFF' : '040D09';
+    const qrColor = isLight ? '0F172A' : '18C98B';
+
     return (
         <AnimatePresence>
             {showQrModal && (
@@ -201,7 +207,7 @@ export function QrModal({
 
                         <div className={styles.qrBox}>
                             <img
-                                src={`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(referralUrl)}&color=18C98B&bgcolor=040D09`}
+                                src={`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(referralUrl)}&color=${qrColor}&bgcolor=${qrBgColor}&margin=10`}
                                 alt="Referral QR Code"
                                 className={styles.qrImage}
                             />

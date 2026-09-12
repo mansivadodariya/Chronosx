@@ -43,6 +43,12 @@ const handleResponse = async (res) => {
     return data;
 };
 
+const toNum = (val, def = 0) => {
+    if (val === undefined || val === null || val === '') return def;
+    const n = Number(val);
+    return isNaN(n) ? def : n;
+};
+
 export const affiliateService = {
     /**
      * Fetch aggregate dashboard metrics, tier status, and referral links
@@ -59,48 +65,58 @@ export const affiliateService = {
             const raw = result?.data || result || {};
 
             // Normalize fields across backend schemas
+            const tierRaw = raw.current_tier;
+            let currentTier;
+            if (typeof tierRaw === 'object' && tierRaw !== null) {
+                currentTier = {
+                    level: toNum(tierRaw.level, 1),
+                    name: tierRaw.name || (tierRaw.level === 2 ? 'Tier 2 - Pro Partner' : 'Tier 1 - Standard Partner'),
+                    rate_percentage: toNum(tierRaw.rate_percentage ?? tierRaw.rate ?? raw.active_commission_rate, 10),
+                    next_tier_name: tierRaw.next_tier_name || 'Tier 2 - Pro Partner (20%)',
+                    next_tier_threshold: toNum(tierRaw.next_tier_threshold, 30),
+                    progress_count: toNum(tierRaw.progress_count ?? raw.active_traders ?? raw.referral_count, 0),
+                    min_withdrawal: toNum(tierRaw.min_withdrawal, 50)
+                };
+            } else {
+                const isPro = String(tierRaw).toLowerCase().includes('pro') || String(tierRaw).toLowerCase().includes('premium') || String(tierRaw) === '2';
+                currentTier = {
+                    level: isPro ? 2 : 1,
+                    name: isPro ? 'Tier 2 - Pro Partner' : 'Tier 1 - Standard Partner',
+                    rate_percentage: toNum(raw.active_commission_rate ?? (isPro ? 20 : 10), 10),
+                    next_tier_name: 'Tier 2 - Pro Partner (20%)',
+                    next_tier_threshold: 30,
+                    progress_count: toNum(raw.active_traders ?? raw.referral_count, 0),
+                    min_withdrawal: 50
+                };
+            }
+
             return {
                 status: 'success',
                 data: {
-                    total_earned: Number(raw.total_earned ?? raw.total_earnings ?? 0),
-                    withdrawable_balance: Number(raw.withdrawable_balance ?? raw.balance ?? 0),
-                    pending_lock_balance: Number(raw.pending_withdrawal ?? raw.pending_lock_balance ?? 0),
-                    total_withdrawn: Number(raw.total_withdrawn ?? 0),
-                    referral_count: Number(raw.total_referrals ?? raw.referral_count ?? 0),
-                    active_traders: Number(raw.active_traders ?? 0),
+                    total_earned: toNum(raw.total_earned ?? raw.total_earnings ?? raw.earnings, 0),
+                    withdrawable_balance: toNum(raw.withdrawable_balance ?? raw.balance ?? raw.withdrawable, 0),
+                    pending_lock_balance: toNum(raw.pending_lock_balance ?? raw.pending_withdrawal ?? raw.pending, 0),
+                    total_withdrawn: toNum(raw.total_withdrawn ?? raw.withdrawn, 0),
+                    referral_count: toNum(raw.total_referrals ?? raw.referral_count ?? raw.referrals, 0),
+                    active_traders: toNum(raw.active_traders ?? raw.active_referrals, 0),
                     referral_code: raw.referral_code || '',
                     referral_link: raw.referral_link || raw.referral_url || '',
-                    current_tier: typeof raw.current_tier === 'object' && raw.current_tier !== null ? {
-                        level: raw.current_tier.level || 1,
-                        name: raw.current_tier.name || 'Tier 1 - Standard Partner',
-                        rate_percentage: Number(raw.current_tier.rate_percentage || raw.active_commission_rate || 10),
-                        next_tier_name: raw.current_tier.next_tier_name || 'Tier 2 - Pro Partner (20%)',
-                        next_tier_threshold: Number(raw.current_tier.next_tier_threshold || 30),
-                        progress_count: Number(raw.current_tier.progress_count || raw.active_traders || 0),
-                        min_withdrawal: Number(raw.current_tier.min_withdrawal || 50)
-                    } : {
-                        level: raw.current_tier === 'Premium' ? 2 : 1,
-                        name: raw.current_tier === 'Premium' ? 'Tier 2 - Pro Partner' : 'Tier 1 - Standard Partner',
-                        rate_percentage: Number(raw.active_commission_rate || (raw.current_tier === 'Premium' ? 20 : 10)),
-                        next_tier_name: 'Tier 2 - Pro Partner (20%)',
-                        next_tier_threshold: 30,
-                        progress_count: Number(raw.active_traders || 0),
-                        min_withdrawal: 50
-                    }
+                    current_tier: currentTier
                 }
             };
         } catch (err) {
-            console.warn('[affiliateService] getDashboard fallback:', err?.message);
+            console.warn('[affiliateService] getDashboard error:', err?.message);
             return {
-                status: 'fallback',
+                status: 'error',
+                message: err?.message || 'Failed to load affiliate dashboard',
                 data: {
-                    total_earned: 1280.00,
-                    withdrawable_balance: 420.00,
-                    pending_lock_balance: 150.00,
-                    total_withdrawn: 710.00,
-                    referral_count: 24,
-                    active_traders: 18,
-                    referral_code: 'CHRONOS-8921',
+                    total_earned: 0,
+                    withdrawable_balance: 0,
+                    pending_lock_balance: 0,
+                    total_withdrawn: 0,
+                    referral_count: 0,
+                    active_traders: 0,
+                    referral_code: '',
                     referral_link: '',
                     current_tier: {
                         level: 1,
@@ -108,7 +124,7 @@ export const affiliateService = {
                         rate_percentage: 10,
                         next_tier_name: 'Tier 2 - Pro Partner (20%)',
                         next_tier_threshold: 30,
-                        progress_count: 18,
+                        progress_count: 0,
                         min_withdrawal: 50.00
                     }
                 }
@@ -128,36 +144,40 @@ export const affiliateService = {
                 headers: getAuthHeaders(),
             });
             const result = await handleResponse(res);
-            const items = Array.isArray(result?.data) ? result.data : Array.isArray(result) ? result : [];
+            const items = Array.isArray(result?.data)
+                ? result.data
+                : Array.isArray(result?.items)
+                ? result.items
+                : Array.isArray(result)
+                ? result
+                : [];
 
             const normalizedItems = items.map((item, idx) => ({
                 id: item.id || `comm_${idx + 1}`,
-                date: item.date || item.created_at || new Date().toISOString(),
-                trader: item.trader || item.masked_referee_email || 'Trader',
-                deposit_volume: Number(item.deposit_volume ?? item.order_amount ?? 0),
+                date: item.date || item.created_at || item.timestamp || new Date().toISOString(),
+                trader: item.trader || item.masked_referee_email || item.referred_user_id || item.user_id || 'Trader',
+                deposit_volume: Number(item.deposit_volume ?? item.order_amount ?? item.amount ?? 0),
                 tier_rate: item.tier_rate || (item.commission_rate ? `${item.commission_rate}%` : '10%'),
-                commission_amount: Number(item.commission_amount ?? 0),
-                status: item.status || 'CREDITED'
+                commission_amount: Number(item.commission_amount ?? item.commission ?? 0),
+                status: (item.status || 'CREDITED').toUpperCase()
             }));
 
             return {
                 status: 'success',
                 page,
                 limit,
-                total: result?.total || normalizedItems.length,
+                total: result?.total ?? result?.count ?? normalizedItems.length,
                 data: normalizedItems
             };
         } catch (err) {
-            console.warn('[affiliateService] getCommissionHistory fallback:', err?.message);
+            console.warn('[affiliateService] getCommissionHistory error:', err?.message);
             return {
-                status: 'fallback',
-                data: [
-                    { id: 'comm_1', date: '2026-09-08T14:32:00Z', trader: 'alex_fx99 (UID #8421)', deposit_volume: 2500, tier_rate: '10%', commission_amount: 250.00, status: 'CREDITED' },
-                    { id: 'comm_2', date: '2026-09-07T11:15:00Z', trader: 'sarah_trader (UID #7742)', deposit_volume: 1200, tier_rate: '10%', commission_amount: 120.00, status: 'CREDITED' },
-                    { id: 'comm_3', date: '2026-09-06T09:40:00Z', trader: 'crypto_marco (UID #9012)', deposit_volume: 5000, tier_rate: '10%', commission_amount: 500.00, status: 'CREDITED' },
-                    { id: 'comm_4', date: '2026-09-04T18:22:00Z', trader: 'quant_dev (UID #6533)', deposit_volume: 800, tier_rate: '10%', commission_amount: 80.00, status: 'CREDITED' },
-                    { id: 'comm_5', date: '2026-09-02T16:05:00Z', trader: 'elena_scalper (UID #4421)', deposit_volume: 3300, tier_rate: '10%', commission_amount: 330.00, status: 'CREDITED' }
-                ]
+                status: 'error',
+                message: err?.message || 'Failed to load commission history',
+                page,
+                limit,
+                total: 0,
+                data: []
             };
         }
     },
@@ -174,11 +194,17 @@ export const affiliateService = {
                 headers: getAuthHeaders(),
             });
             const result = await handleResponse(res);
-            const items = Array.isArray(result?.data) ? result.data : Array.isArray(result) ? result : [];
+            const items = Array.isArray(result?.data)
+                ? result.data
+                : Array.isArray(result?.items)
+                ? result.items
+                : Array.isArray(result)
+                ? result
+                : [];
 
             const normalizedItems = items.map((item, idx) => ({
-                id: item.id || `WTH-${9000 + idx}`,
-                created_at: item.created_at || item.date || new Date().toISOString(),
+                id: item.id || item.withdrawal_id || item.reference || `WTH-${9000 + idx}`,
+                created_at: item.created_at || item.date || item.timestamp || new Date().toISOString(),
                 asset: item.crypto_currency || item.asset || 'USDT',
                 crypto_currency: item.crypto_currency || item.asset || 'USDT',
                 network: item.network || 'TRC20',
@@ -190,17 +216,20 @@ export const affiliateService = {
 
             return {
                 status: 'success',
+                page,
+                limit,
+                total: result?.total ?? result?.count ?? normalizedItems.length,
                 data: normalizedItems
             };
         } catch (err) {
-            console.warn('[affiliateService] getWithdrawalHistory fallback:', err?.message);
+            console.warn('[affiliateService] getWithdrawalHistory error:', err?.message);
             return {
-                status: 'fallback',
-                data: [
-                    { id: 'WTH-9021', created_at: '2026-09-05T10:12:00Z', asset: 'USDT', network: 'TRC20', amount: 350.00, wallet_address: 'TLA17mR8x9KpQ9VwNzL4mK7pE2Q', status: 'APPROVED', tx_hash: '0x9482fba89410283c7491028aef3901bca917283401283' },
-                    { id: 'WTH-8842', created_at: '2026-08-28T16:40:00Z', asset: 'USDC', network: 'SOLANA', amount: 360.00, wallet_address: '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU', status: 'APPROVED', tx_hash: '5UxK9g889218hjsd882nmasd0192hjs812nmasd' },
-                    { id: 'WTH-9104', created_at: '2026-09-08T09:30:00Z', asset: 'USDT', network: 'BEP20', amount: 150.00, wallet_address: '0x32Be343B94f860124dC4fEe278FDCBD38C102D88', status: 'PENDING', tx_hash: null }
-                ]
+                status: 'error',
+                message: err?.message || 'Failed to load withdrawal history',
+                page,
+                limit,
+                total: 0,
+                data: []
             };
         }
     },
@@ -211,7 +240,7 @@ export const affiliateService = {
      * Body: { amount, crypto_currency, network, wallet_address }
      */
     requestWithdrawal: async ({ amount, crypto_currency, asset, network, wallet_address }) => {
-        const coin = crypto_currency || asset || 'USDT';
+        const coin = (crypto_currency || asset || 'USDT').toUpperCase();
         const url = `${getApiBaseUrl()}/affiliate/withdraw`;
         const res = await fetch(url, {
             method: 'POST',
@@ -219,9 +248,29 @@ export const affiliateService = {
             body: JSON.stringify({
                 amount: Number(amount),
                 crypto_currency: coin,
-                asset: coin,
-                network,
-                wallet_address
+                network: String(network || 'TRC20').toUpperCase(),
+                wallet_address: String(wallet_address || '').trim()
+            }),
+        });
+        const result = await handleResponse(res);
+        return result;
+    },
+
+    /**
+     * Simulate Purchase Commission Webhook (Testing & Webhook trigger)
+     * POST /api/v1/affiliate/purchase-webhook
+     * Body: { referred_user_id, plan_name, order_reference, order_amount }
+     */
+    simulatePurchaseWebhook: async ({ referred_user_id, plan_name, order_reference, order_amount }) => {
+        const url = `${getApiBaseUrl()}/affiliate/purchase-webhook`;
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({
+                referred_user_id,
+                plan_name: plan_name || 'Pro',
+                order_reference: order_reference || `ORD-${Date.now()}`,
+                order_amount: Number(order_amount || 0)
             }),
         });
         const result = await handleResponse(res);

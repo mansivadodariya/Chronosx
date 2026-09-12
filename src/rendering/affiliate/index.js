@@ -18,7 +18,6 @@ import {
     SparkleIcon
 } from './components/AffiliateIcons';
 import { WithdrawModal, QrModal } from './components/WithdrawModal';
-import { MarketingKitTab } from './components/MarketingKitTab';
 import { CommissionLedgerTab } from './components/CommissionLedgerTab';
 import { WithdrawalsTab } from './components/WithdrawalsTab';
 
@@ -28,7 +27,7 @@ export default function AffiliatePage() {
     const user = getStoredUser();
     const userId = getStoredUserId();
 
-    const [activeTab, setActiveTab] = useState('overview'); // overview, ledger, withdrawals, marketing
+    const [activeTab, setActiveTab] = useState('overview'); // overview, ledger, withdrawals
     const [copiedCode, setCopiedCode] = useState(false);
     const [copiedLink, setCopiedLink] = useState(false);
     const [showWithdrawModal, setShowWithdrawModal] = useState(false);
@@ -37,13 +36,13 @@ export default function AffiliatePage() {
 
     // Dashboard State
     const [stats, setStats] = useState({
-        total_earned: 1280.00,
-        withdrawable_balance: 420.00,
-        pending_lock_balance: 150.00,
-        total_withdrawn: 710.00,
-        referral_count: 24,
-        active_traders: 18,
-        referral_code: 'CHRONOS-8921',
+        total_earned: 0,
+        withdrawable_balance: 0,
+        pending_lock_balance: 0,
+        total_withdrawn: 0,
+        referral_count: 0,
+        active_traders: 0,
+        referral_code: '',
         referral_link: '',
         current_tier: {
             level: 1,
@@ -51,7 +50,7 @@ export default function AffiliatePage() {
             rate_percentage: 10,
             next_tier_name: 'Tier 2 - Pro Partner (20%)',
             next_tier_threshold: 30,
-            progress_count: 18,
+            progress_count: 0,
             min_withdrawal: 50.00
         }
     });
@@ -69,15 +68,17 @@ export default function AffiliatePage() {
     });
     const [withdrawing, setWithdrawing] = useState(false);
 
-    // Compute active referral code and link
+    // Compute active referral code and link dynamically
     const referralCode = useMemo(() => {
         if (stats.referral_code) return stats.referral_code;
-        if (userId) return 'REF' + userId.slice(0, 6).toUpperCase();
-        return 'CHRONOS-8921';
-    }, [stats.referral_code, userId]);
+        if (user?.referral_code) return user.referral_code;
+        if (userId) return 'REF-' + String(userId).slice(0, 8).toUpperCase();
+        return '';
+    }, [stats.referral_code, user?.referral_code, userId]);
 
     const referralUrl = useMemo(() => {
         if (stats.referral_link) return stats.referral_link;
+        if (!referralCode) return '';
         if (typeof window !== 'undefined') {
             return `${window.location.origin}/signup?ref=${referralCode}`;
         }
@@ -237,6 +238,16 @@ export default function AffiliatePage() {
         );
     }, [commissionHistory, ledgerSearch]);
 
+    const safeCurrency = (val) => {
+        const num = Number(val);
+        return isNaN(num) ? '0.00' : num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
+
+    const safeNumber = (val) => {
+        const num = Number(val);
+        return isNaN(num) ? '0' : num.toLocaleString('en-US');
+    };
+
     return (
         <div className={styles.affiliatePage}>
             {/* 1. Header Section */}
@@ -262,34 +273,76 @@ export default function AffiliatePage() {
                     <div className={styles.kpiCard}>
                         <div className={styles.kpiTop}>
                             <span className={styles.kpiLabel}>{t('affiliate.totalEarned', 'Total Earned')}</span>
-                            <span className={styles.kpiBadge}>{t('affiliate.thisMonth', '+18.4% this mo')}</span>
+                            {loading ? (
+                                <span className={styles.skeletonPulse} style={{ width: '60px', height: '18px', borderRadius: '99px' }} />
+                            ) : (
+                                <span className={styles.kpiBadge}>{stats.current_tier?.rate_percentage || 10}% {t('affiliate.rateBadge', 'Rate')}</span>
+                            )}
                         </div>
                         <div className={styles.kpiValue}>
-                            ${stats.total_earned.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                            {loading ? (
+                                <div className={styles.skeletonPulse} style={{ width: '100px', height: '26px' }} />
+                            ) : (
+                                `$${safeCurrency(stats.total_earned)}`
+                            )}
                         </div>
-                        <span className={styles.kpiSub}>{t('affiliate.lifetimeRevenue', 'Lifetime partner revenue')}</span>
+                        <span className={styles.kpiSub}>
+                            {loading ? (
+                                <span className={styles.skeletonPulse} style={{ width: '120px', height: '12px', marginTop: '2px' }} />
+                            ) : (
+                                t('affiliate.lifetimeRevenue', 'Lifetime partner revenue')
+                            )}
+                        </span>
                     </div>
 
                     <div className={`${styles.kpiCard} ${styles.highlightCard}`}>
                         <div className={styles.kpiTop}>
                             <span className={styles.kpiLabel}>{t('affiliate.withdrawableBalance', 'Withdrawable Balance')}</span>
-                            <span className={styles.readyBadge}>{t('affiliate.readyPayout', 'Ready Payout')}</span>
+                            {loading ? (
+                                <span className={styles.skeletonPulse} style={{ width: '65px', height: '18px', borderRadius: '99px' }} />
+                            ) : (
+                                <span className={styles.readyBadge}>{t('affiliate.readyPayout', 'Ready Payout')}</span>
+                            )}
                         </div>
                         <div className={styles.kpiValueEmerald}>
-                            ${stats.withdrawable_balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                            {loading ? (
+                                <div className={styles.skeletonPulse} style={{ width: '110px', height: '28px' }} />
+                            ) : (
+                                `$${safeCurrency(stats.withdrawable_balance)}`
+                            )}
                         </div>
-                        <span className={styles.kpiSub}>{t('affiliate.availableInstant', 'Available for instant crypto withdrawal')}</span>
+                        <span className={styles.kpiSub}>
+                            {loading ? (
+                                <span className={styles.skeletonPulse} style={{ width: '150px', height: '12px', marginTop: '2px' }} />
+                            ) : (
+                                t('affiliate.availableInstant', 'Available for instant crypto withdrawal')
+                            )}
+                        </span>
                     </div>
 
                     <div className={styles.kpiCard}>
                         <div className={styles.kpiTop}>
                             <span className={styles.kpiLabel}>{t('affiliate.pendingLock', 'Pending Lock')}</span>
-                            <span className={styles.pendingBadge}>{t('affiliate.rolling48h', 'Rolling 48h')}</span>
+                            {loading ? (
+                                <span className={styles.skeletonPulse} style={{ width: '55px', height: '18px', borderRadius: '99px' }} />
+                            ) : (
+                                <span className={styles.pendingBadge}>{t('affiliate.rolling48h', 'Rolling 48h')}</span>
+                            )}
                         </div>
                         <div className={styles.kpiValueAmber}>
-                            ${stats.pending_lock_balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                            {loading ? (
+                                <div className={styles.skeletonPulse} style={{ width: '90px', height: '26px' }} />
+                            ) : (
+                                `$${safeCurrency(stats.pending_lock_balance)}`
+                            )}
                         </div>
-                        <span className={styles.kpiSub}>{t('affiliate.securityWindow', 'In security settlement window')}</span>
+                        <span className={styles.kpiSub}>
+                            {loading ? (
+                                <span className={styles.skeletonPulse} style={{ width: '135px', height: '12px', marginTop: '2px' }} />
+                            ) : (
+                                t('affiliate.securityWindow', 'In security settlement window')
+                            )}
+                        </span>
                     </div>
 
                     <div className={styles.kpiCard}>
@@ -298,9 +351,21 @@ export default function AffiliatePage() {
                             <UsersGroupIcon />
                         </div>
                         <div className={styles.kpiValue}>
-                            {stats.referral_count} <span className={styles.unitText}>{t('affiliate.tradersUnit', 'Traders')}</span>
+                            {loading ? (
+                                <div className={styles.skeletonPulse} style={{ width: '95px', height: '26px' }} />
+                            ) : (
+                                <>
+                                    {safeNumber(stats.referral_count)} <span className={styles.unitText}>{t('affiliate.tradersUnit', 'Traders')}</span>
+                                </>
+                            )}
                         </div>
-                        <span className={styles.kpiSub}>{stats.active_traders} {t('affiliate.activeTradingAccounts', 'active trading accounts')}</span>
+                        <span className={styles.kpiSub}>
+                            {loading ? (
+                                <span className={styles.skeletonPulse} style={{ width: '125px', height: '12px', marginTop: '2px' }} />
+                            ) : (
+                                `${safeNumber(stats.active_traders)} ${t('affiliate.activeTradingAccounts', 'active trading accounts')}`
+                            )}
+                        </span>
                     </div>
 
                     <div className={styles.kpiCard}>
@@ -309,9 +374,19 @@ export default function AffiliatePage() {
                             <WalletCryptoIcon />
                         </div>
                         <div className={styles.kpiValue}>
-                            ${stats.total_withdrawn.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                            {loading ? (
+                                <div className={styles.skeletonPulse} style={{ width: '95px', height: '26px' }} />
+                            ) : (
+                                `$${safeCurrency(stats.total_withdrawn)}`
+                            )}
                         </div>
-                        <span className={styles.kpiSub}>{t('affiliate.processedOnChain', 'Processed on-chain to your wallets')}</span>
+                        <span className={styles.kpiSub}>
+                            {loading ? (
+                                <span className={styles.skeletonPulse} style={{ width: '145px', height: '12px', marginTop: '2px' }} />
+                            ) : (
+                                t('affiliate.processedOnChain', 'Processed on-chain to your wallets')
+                            )}
+                        </span>
                     </div>
                 </div>
             </CommonSectionHeader>
@@ -343,13 +418,6 @@ export default function AffiliatePage() {
                         <span>{t('affiliate.tabWithdrawals', 'Withdrawals')}</span>
                         {withdrawalsList.length > 0 && <span className={styles.countBadge}>{withdrawalsList.length}</span>}
                     </button>
-                    <button
-                        type="button"
-                        className={`${styles.tabItem} ${activeTab === 'marketing' ? styles.tabActive : ''}`}
-                        onClick={() => setActiveTab('marketing')}
-                    >
-                        <span>{t('affiliate.tabMarketing', 'Marketing Kit')}</span>
-                    </button>
                 </div>
             </div>
 
@@ -359,30 +427,55 @@ export default function AffiliatePage() {
                     {/* Left Column: Dynamic Tier Card & Progress */}
                     <div className={styles.tierBoxCard}>
                         <div className={styles.tierHeader}>
-                            <div className={styles.tierBadgeGroup}>
-                                <div className={styles.tierTag}>
-                                    <SparkleIcon />
-                                    <span>{t('affiliate.tierPartner', 'TIER {level} PARTNER').replace('{level}', stats.current_tier?.level || 1)}</span>
+                            {loading ? (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%', justifyContent: 'space-between' }}>
+                                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                        <span className={styles.skeletonPulse} style={{ width: '120px', height: '24px', borderRadius: '99px' }} />
+                                        <span className={styles.skeletonPulse} style={{ width: '90px', height: '20px' }} />
+                                    </div>
+                                    <span className={styles.skeletonPulse} style={{ width: '80px', height: '18px' }} />
                                 </div>
-                                <span className={styles.tierRate}>{stats.current_tier?.rate_percentage || 10}{t('affiliate.commissionSuffix', '% Commission')}</span>
-                            </div>
-                            <div className={styles.tierStatus}>{t('affiliate.activeStandard', 'Active Standard')}</div>
+                            ) : (
+                                <>
+                                    <div className={styles.tierBadgeGroup}>
+                                        <div className={styles.tierTag}>
+                                            <SparkleIcon />
+                                            <span>{t('affiliate.tierPartner', 'TIER {level} PARTNER').replace('{level}', stats.current_tier?.level || 1)}</span>
+                                        </div>
+                                        <span className={styles.tierRate}>{stats.current_tier?.rate_percentage || 10}{t('affiliate.commissionSuffix', '% Commission')}</span>
+                                    </div>
+                                    <div className={styles.tierStatus}>{t('affiliate.activeStandard', 'Active Standard')}</div>
+                                </>
+                            )}
                         </div>
 
                         <div className={styles.tierProgressBlock}>
-                            <div className={styles.progressLabels}>
-                                <span>{t('affiliate.milestoneTo', 'Milestone to')} {stats.current_tier?.next_tier_name || 'Tier 2 (20%)'}</span>
-                                <strong>{stats.current_tier?.progress_count || 18} / {stats.current_tier?.next_tier_threshold || 30} {t('affiliate.activeTraders', 'Active Traders')}</strong>
-                            </div>
-                            <div className={styles.progressBarTrack}>
-                                <div
-                                    className={styles.progressBarFill}
-                                    style={{ width: `${Math.min(100, ((stats.current_tier?.progress_count || 18) / (stats.current_tier?.next_tier_threshold || 30)) * 100)}%` }}
-                                />
-                            </div>
-                            <p className={styles.progressHint}>
-                                {t('affiliate.referMorePrefix', 'Refer')} <strong>{(stats.current_tier?.next_tier_threshold || 30) - (stats.current_tier?.progress_count || 18)} {t('affiliate.referMoreMiddle', 'more active traders to unlock')}</strong> <strong>{t('affiliate.referMoreHighlight', '20% Lifetime Commissions')}</strong> {t('affiliate.referMoreSuffix', 'and same-day priority crypto settlements.')}
-                            </p>
+                            {loading ? (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', margin: '4px 0' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <span className={styles.skeletonPulse} style={{ width: '140px', height: '16px' }} />
+                                        <span className={styles.skeletonPulse} style={{ width: '100px', height: '16px' }} />
+                                    </div>
+                                    <div className={styles.skeletonPulse} style={{ width: '100%', height: '8px', borderRadius: '99px' }} />
+                                    <span className={styles.skeletonPulse} style={{ width: '80%', height: '14px' }} />
+                                </div>
+                            ) : (
+                                <>
+                                    <div className={styles.progressLabels}>
+                                        <span>{t('affiliate.milestoneTo', 'Milestone to')} {stats.current_tier?.next_tier_name || 'Tier 2 (20%)'}</span>
+                                        <strong>{stats.current_tier?.progress_count || 0} / {stats.current_tier?.next_tier_threshold || 30} {t('affiliate.activeTraders', 'Active Traders')}</strong>
+                                    </div>
+                                    <div className={styles.progressBarTrack}>
+                                        <div
+                                            className={styles.progressBarFill}
+                                            style={{ width: `${Math.min(100, (((stats.current_tier?.progress_count || 0) / (stats.current_tier?.next_tier_threshold || 30)) * 100))}%` }}
+                                        />
+                                    </div>
+                                    <p className={styles.progressHint}>
+                                        {t('affiliate.referMorePrefix', 'Refer')} <strong>{Math.max(0, (stats.current_tier?.next_tier_threshold || 30) - (stats.current_tier?.progress_count || 0))} {t('affiliate.referMoreMiddle', 'more active traders to unlock')}</strong> <strong>{t('affiliate.referMoreHighlight', '20% Lifetime Commissions')}</strong> {t('affiliate.referMoreSuffix', 'and same-day priority crypto settlements.')}
+                                    </p>
+                                </>
+                            )}
                         </div>
 
                         {/* Tier Benefits Comparison */}
@@ -417,30 +510,42 @@ export default function AffiliatePage() {
 
                         {/* Link Box */}
                         <div className={styles.linkBox}>
-                            <input
-                                type="text"
-                                readOnly
-                                value={referralUrl}
-                                className={styles.linkInput}
-                            />
-                            <button
-                                type="button"
-                                className={`${styles.copyBtn} ${copiedLink ? styles.copied : ''}`}
-                                onClick={handleCopyLink}
-                            >
-                                {copiedLink ? <CheckIcon /> : <CopyIcon />}
-                                <span>{copiedLink ? t('affiliate.copied', 'Copied') : t('affiliate.copyLink', 'Copy Link')}</span>
-                            </button>
+                            {loading ? (
+                                <div className={styles.skeletonPulse} style={{ width: '100%', height: '44px', borderRadius: '10px' }} />
+                            ) : (
+                                <>
+                                    <input
+                                        type="text"
+                                        readOnly
+                                        value={referralUrl}
+                                        className={styles.linkInput}
+                                    />
+                                    <button
+                                        type="button"
+                                        className={`${styles.copyBtn} ${copiedLink ? styles.copied : ''}`}
+                                        onClick={handleCopyLink}
+                                    >
+                                        {copiedLink ? <CheckIcon /> : <CopyIcon />}
+                                        <span>{copiedLink ? t('affiliate.copied', 'Copied') : t('affiliate.copyLink', 'Copy Link')}</span>
+                                    </button>
+                                </>
+                            )}
                         </div>
 
                         {/* Code Box */}
                         <div className={styles.codeRow}>
                             <div className={styles.codeGroup}>
                                 <span className={styles.codeLabel}>{t('affiliate.referralCodeLabel', 'Referral Code:')}</span>
-                                <span className={styles.codeBadge}>{referralCode}</span>
-                                <button type="button" className={styles.miniCopyBtn} onClick={handleCopyCode}>
-                                    {copiedCode ? <CheckIcon /> : <CopyIcon />}
-                                </button>
+                                {loading ? (
+                                    <span className={styles.skeletonPulse} style={{ width: '110px', height: '24px', borderRadius: '6px' }} />
+                                ) : (
+                                    <>
+                                        <span className={styles.codeBadge}>{referralCode}</span>
+                                        <button type="button" className={styles.miniCopyBtn} onClick={handleCopyCode}>
+                                            {copiedCode ? <CheckIcon /> : <CopyIcon />}
+                                        </button>
+                                    </>
+                                )}
                             </div>
                             <button
                                 type="button"
@@ -497,6 +602,7 @@ export default function AffiliatePage() {
                     ledgerSearch={ledgerSearch}
                     setLedgerSearch={setLedgerSearch}
                     filteredLedger={filteredLedger}
+                    loading={loading}
                 />
             )}
 
@@ -508,12 +614,8 @@ export default function AffiliatePage() {
                     withdrawalsList={withdrawalsList}
                     setShowWithdrawModal={setShowWithdrawModal}
                     handleCopyText={handleCopyText}
+                    loading={loading}
                 />
-            )}
-
-            {/* Tab 4: Marketing Kit */}
-            {activeTab === 'marketing' && (
-                <MarketingKitTab styles={styles} t={t} handleCopyText={handleCopyText} />
             )}
 
             {/* 5. Crypto Withdrawal Request Modal */}

@@ -57,7 +57,7 @@ export default function SidebarSubscriptionWidget({ isCollapsed, onNavigate }) {
         onClick={onNavigate}
         title={`${planDisplayName} • ${daysLeft} days remaining. Click to manage or renew.`}
       >
-        {/* Row 1: Plan Title, Days Left Badge & Action Arrow */}
+        {/* Row 1: Plan Title & Action Arrow */}
         <div className={styles.headerRow}>
           <div className={styles.identityGroup}>
             <div className={styles.iconBadge}>
@@ -70,9 +70,6 @@ export default function SidebarSubscriptionWidget({ isCollapsed, onNavigate }) {
           </div>
 
           <div className={styles.metaActionGroup}>
-            <span className={styles.daysBadge}>
-              {daysLeft > 1 ? `${daysLeft} ${t('sidebar.daysLeft', 'd left')}` : `${hoursLeft}h left`}
-            </span>
             <div className={styles.arrowBtn} aria-hidden="true">
               <ArrowRightIcon />
             </div>

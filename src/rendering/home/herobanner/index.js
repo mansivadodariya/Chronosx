@@ -8,6 +8,7 @@ import styles from './herobanner.module.scss';
 import Button from '@/components/button';
 import CandlesticksIcon from './CandlesticksIcon';
 import HeroSideDots from './HeroSideDots';
+import HeroSlopeLasers from './HeroSlopeLasers';
 import HeroFeatureCards from './HeroFeatureCards';
 import HeroTickerMarquee from './HeroTickerMarquee';
 
@@ -52,6 +53,9 @@ export default function Herobanner() {
     >
       {/* Floating Side Animation Dots on Both Sides */}
       <HeroSideDots />
+
+      {/* Animated Slope Laser Lines on Perspective Candlestick Slopes */}
+      <HeroSlopeLasers />
 
       {/* High-Tech Ambient Atmosphere & Glow Layers */}
       <motion.div style={{ opacity: bgOpacity }} className={styles.scrollBgWrapper}>

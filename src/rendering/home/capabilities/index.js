@@ -242,7 +242,7 @@ export default function Capabilities() {
 
                 <div className={styles.cardFooter}>
                   <p className={styles.cardDesc}>
-                    Ask questions, validate trade setups, and receive real-time institutional market insights.
+                    {t('homeSections.capabilities.card2Desc', 'Ask questions, validate trade setups, and receive real-time institutional market insights.')}
                   </p>
                 </div>
               </div>
@@ -315,12 +315,12 @@ export default function Capabilities() {
                       <span className={styles.watermarkNum}>03</span>
                     </div>
                   </div>
-                  <h3>{t('homeSections.capabilities.card4Title', 'STRATEGY HUB')}</h3>
+                  <h3>{t('homeSections.capabilities.card3Title', 'STRATEGY HUB')}</h3>
                 </div>
 
                 <div className={styles.cardFooter}>
                   <p className={styles.cardDesc}>
-                    Execute live market intelligence and automate proven strategy playbooks.
+                    {t('homeSections.capabilities.card3Desc', 'Execute live market intelligence and automate proven strategy playbooks.')}
                   </p>
                 </div>
               </div>
@@ -423,7 +423,7 @@ export default function Capabilities() {
                     >
                       <span className={styles.arrowIcon}>↗</span>
                       <div className={styles.toastText}>
-                        NVDA breakout <span>142.50 → 145.20</span> +1.9%
+                        XAU/USD breakout <span>142.50 → 145.20</span> +1.9%
                       </div>
                     </motion.div>
                   </div>
@@ -455,12 +455,12 @@ export default function Capabilities() {
                       <span className={styles.watermarkNum}>04</span>
                     </div>
                   </div>
-                  <h3>AI TRADE AUDIT</h3>
+                  <h3>{t('homeSections.capabilities.card4Title', 'AI TRADE AUDIT')}</h3>
                 </div>
 
                 <div className={styles.cardFooter}>
                   <p className={styles.cardDesc}>
-                    Audit win rates, profit factor, and max drawdown curves before putting capital at risk.
+                    {t('homeSections.capabilities.card4Desc', 'Audit win rates, profit factor, and max drawdown curves before putting capital at risk.')}
                   </p>
                 </div>
               </div>

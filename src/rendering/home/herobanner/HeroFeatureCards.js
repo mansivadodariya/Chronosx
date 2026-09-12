@@ -18,7 +18,7 @@ export default function HeroFeatureCards() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.85, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* 1. Left Card: AI Market Analysis */}
+      {/* 1. Left Card: AI Chart Scanner */}
       <div
         className={`${styles.featureCard} ${styles.cardNormal}`}
         onClick={() => authNavigate(router, '/chart-scanner')}
@@ -30,43 +30,43 @@ export default function HeroFeatureCards() {
           <AiChipIcon className={styles.cardSvgIcon} width={38} height={38} />
         </div>
         <div className={styles.cardTextCol}>
-          <h3 className={styles.cardTitle}>
-            {t('homeSections.hero.cards.analysisTitle', 'AI Market Analysis')}
-          </h3>
+          <div className={styles.cardHeaderRow}>
+            <h3 className={styles.cardTitle}>
+              {t('header.products.chartScanner.title', 'AI Chart Scanner')}
+            </h3>
+            <span className={styles.cardMiniBadge}>VISION</span>
+          </div>
           <p className={styles.cardDesc}>
-            {t('homeSections.hero.cards.analysisDesc', 'Scan charts with computer vision to detect candlestick patterns, liquidity sweeps, and high-probability setups.')}
+            {t('homeSections.hero.cards.analysisDesc', 'Multi-timeframe technical pattern detection and neural OCR chart vision.')}
           </p>
         </div>
       </div>
 
-      {/* 2. Center Card: Smart Trade Strategy (Tilted & Layered Stack) */}
-      <div className={styles.tiltedCardWrapper}>
-        {/* Layered Backdrop Shadow Card */}
-        <div className={styles.layeredCardBack} aria-hidden="true" />
-
-        {/* Main Tilted Card */}
-        <div
-          className={`${styles.featureCard} ${styles.cardTilted}`}
-          onClick={() => authNavigate(router, '/strategy-hub')}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => e.key === 'Enter' && authNavigate(router, '/strategy-hub')}
-        >
-          <div className={styles.cardIconBox}>
-            <TrendChartIcon className={styles.cardSvgIcon} width={38} height={38} />
-          </div>
-          <div className={styles.cardTextCol}>
+      {/* 2. Center Card: AI Strategy Hub (Tilted Angle) */}
+      <div
+        className={`${styles.featureCard} ${styles.cardTilted}`}
+        onClick={() => authNavigate(router, '/strategy-hub')}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === 'Enter' && authNavigate(router, '/strategy-hub')}
+      >
+        <div className={styles.cardIconBox}>
+          <TrendChartIcon className={styles.cardSvgIcon} width={38} height={38} />
+        </div>
+        <div className={styles.cardTextCol}>
+          <div className={styles.cardHeaderRow}>
             <h3 className={styles.cardTitle}>
-              {t('homeSections.hero.cards.strategyTitle', 'Smart Trade Strategy')}
+              {t('header.products.strategyHub.title', 'AI Strategy Hub')}
             </h3>
-            <p className={styles.cardDesc}>
-              {t('homeSections.hero.cards.strategyDesc', 'Build and backtest quantitative trading playbooks with multi-timeframe trend rules and automated signals.')}
-            </p>
+            <span className={styles.cardMiniBadge}>ALGO</span>
           </div>
+          <p className={styles.cardDesc}>
+            {t('homeSections.hero.cards.strategyDesc', 'Execute live market intelligence, algorithmic playbooks, and quant signals.')}
+          </p>
         </div>
       </div>
 
-      {/* 3. Right Card: Risk Management */}
+      {/* 3. Right Card: AI Trade Audit */}
       <div
         className={`${styles.featureCard} ${styles.cardNormal}`}
         onClick={() => authNavigate(router, '/trade-audit')}
@@ -78,11 +78,14 @@ export default function HeroFeatureCards() {
           <RiskAlertIcon className={styles.cardSvgIcon} width={38} height={38} />
         </div>
         <div className={styles.cardTextCol}>
-          <h3 className={styles.cardTitle}>
-            {t('homeSections.hero.cards.riskTitle', 'Risk Management')}
-          </h3>
+          <div className={styles.cardHeaderRow}>
+            <h3 className={styles.cardTitle}>
+              {t('header.tradingTools.tradeAudit.title', 'AI Trade Audit')}
+            </h3>
+            <span className={styles.cardMiniBadge}>AUDIT</span>
+          </div>
           <p className={styles.cardDesc}>
-            {t('homeSections.hero.cards.riskDesc', 'Audit trade history, calculate mathematical position sizing, and protect capital with strict drawdown limits.')}
+            {t('homeSections.hero.cards.riskDesc', 'Review historical trading data to evaluate performance, win rates, and max drawdowns.')}
           </p>
         </div>
       </div>

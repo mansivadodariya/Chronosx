@@ -4,7 +4,6 @@ import styles from './herobanner.module.scss';
 
 const LEFT_DOTS = [
   { id: 'ld1', left: '4%', top: '24%', size: 5, delay: '0s', duration: '5.2s' },
-  { id: 'ld2', left: '11%', top: '36%', size: 7, delay: '1.4s', duration: '6.8s' },
   { id: 'ld3', left: '17%', top: '26%', size: 4, delay: '2.1s', duration: '4.7s' },
   { id: 'ld4', left: '7%', top: '56%', size: 6, delay: '0.7s', duration: '7.3s' },
   { id: 'ld5', left: '14%', top: '70%', size: 5, delay: '2.8s', duration: '5.9s' },

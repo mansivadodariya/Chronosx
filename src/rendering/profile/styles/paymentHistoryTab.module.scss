@@ -3,7 +3,12 @@
 .paymentHistoryPanel {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 14px;
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
+    flex: 1;
+    overflow: hidden;
 }
 
 .panelHeaderRow {
@@ -12,6 +17,7 @@
     align-items: flex-start;
     flex-wrap: wrap;
     gap: 12px;
+    flex-shrink: 0;
 
     h3 {
         font-size: 1.25rem;
@@ -31,6 +37,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 12px;
+    flex-shrink: 0;
 }
 
 .statCard {
@@ -62,32 +69,74 @@
 }
 
 .tableWrapper {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 14px;
+    background: rgba(4, 13, 9, 0.75);
+    border: 1px solid rgba(24, 201, 139, 0.22);
+    border-radius: 10px;
+    overflow-y: auto;
     overflow-x: auto;
+    flex: 1;
+    min-height: 240px;
+    max-height: 100%;
+    position: relative;
+    overscroll-behavior: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y pan-x;
+    scroll-behavior: smooth;
+
+    /* Custom Sleek Emerald Scrollbar */
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: rgba(24, 201, 139, 0.35);
+        border-radius: 4px;
+        transition: background 0.2s ease;
+
+        &:hover {
+            background: rgba(24, 201, 139, 0.7);
+        }
+    }
+    scrollbar-width: thin;
+    scrollbar-color: rgba(24, 201, 139, 0.35) transparent;
 }
 
 .historyTable {
     width: 100%;
-    border-collapse: collapse;
+    min-width: 680px;
+    border-collapse: separate;
+    border-spacing: 0;
     font-size: 0.8rem;
     text-align: left;
 
+    thead {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
     th {
-        background: rgba(255, 255, 255, 0.04);
-        color: rgba(255, 255, 255, 0.6);
-        font-weight: 600;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: #0B130E;
+        color: rgba(255, 255, 255, 0.75);
+        font-weight: 700;
         font-size: 0.72rem;
         text-transform: uppercase;
         letter-spacing: 0.06em;
         padding: 12px 16px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: 1px solid rgba(24, 201, 139, 0.25);
         white-space: nowrap;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
     }
 
     td {
-        padding: 14px 16px;
+        padding: 13px 16px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         color: rgba(255, 255, 255, 0.85);
         white-space: nowrap;
@@ -98,7 +147,7 @@
     }
 
     tr:hover td {
-        background: rgba(24, 201, 139, 0.03);
+        background: rgba(24, 201, 139, 0.04);
     }
 }
 
@@ -126,6 +175,44 @@
     color: #ffffff;
 }
 
+.creditsBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(24, 201, 139, 0.12);
+    color: #18c98b;
+    border: 1px solid rgba(24, 201, 139, 0.35);
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    white-space: nowrap;
+
+    svg {
+        flex-shrink: 0;
+    }
+}
+
+.cregisSub {
+    display: block;
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.45);
+    font-family: monospace;
+    margin-top: 2px;
+}
+
+.chainTag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 1px 5px;
+    border-radius: 4px;
+    margin-left: 4px;
+    text-transform: uppercase;
+}
+
 .statusPill {
     display: inline-flex;
     align-items: center;
@@ -138,16 +225,48 @@
     &.statusSuccess {
         background: rgba(24, 201, 139, 0.12);
         color: #18c98b;
+        border: 1px solid rgba(24, 201, 139, 0.25);
     }
 
     &.statusPending {
         background: rgba(234, 179, 8, 0.12);
         color: #eab308;
+        border: 1px solid rgba(234, 179, 8, 0.25);
+    }
+
+    &.statusExpired {
+        background: rgba(148, 163, 184, 0.12);
+        color: #94a3b8;
+        border: 1px solid rgba(148, 163, 184, 0.25);
     }
 
     &.statusFailed {
         background: rgba(239, 68, 68, 0.12);
         color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.25);
+    }
+}
+
+.skeletonPulse {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.04) 0%,
+        rgba(24, 201, 139, 0.14) 50%,
+        rgba(255, 255, 255, 0.04) 100%
+    );
+    background-size: 200% 100%;
+    animation: paymentShimmer 1.5s infinite ease-in-out;
+    border-radius: 6px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+@keyframes paymentShimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
     }
 }
 
@@ -295,6 +414,39 @@
         background: rgba(24, 201, 139, 0.12) !important;
         color: #047857 !important;
         border-color: rgba(24, 201, 139, 0.35) !important;
+    }
+
+    .creditsBadge {
+        background: rgba(24, 201, 139, 0.12) !important;
+        color: #047857 !important;
+        border-color: rgba(24, 201, 139, 0.35) !important;
+    }
+
+    .cregisSub {
+        color: #64748B !important;
+    }
+
+    .chainTag {
+        background: #E2E8F0 !important;
+        color: #475569 !important;
+    }
+
+    .statusPill {
+        &.statusExpired {
+            background: #F1F5F9 !important;
+            color: #64748B !important;
+            border-color: #CBD5E1 !important;
+        }
+    }
+
+    .skeletonPulse {
+        background: linear-gradient(
+            90deg,
+            rgba(15, 23, 42, 0.06) 0%,
+            rgba(24, 201, 139, 0.18) 50%,
+            rgba(15, 23, 42, 0.06) 100%
+        ) !important;
+        background-size: 200% 100% !important;
     }
 
     .downloadBtn {

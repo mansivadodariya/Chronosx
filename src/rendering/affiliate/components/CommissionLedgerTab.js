@@ -7,7 +7,8 @@ export function CommissionLedgerTab({
     t,
     ledgerSearch,
     setLedgerSearch,
-    filteredLedger
+    filteredLedger,
+    loading = false
 }) {
     return (
         <div className={styles.tableWrapperCard}>
@@ -40,7 +41,18 @@ export function CommissionLedgerTab({
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredLedger.length > 0 ? (
+                        {loading ? (
+                            Array.from({ length: 5 }).map((_, idx) => (
+                                <tr key={`skel-comm-${idx}`}>
+                                    <td><div className={styles.skeletonPulse} style={{ width: '110px', height: '18px' }} /></td>
+                                    <td><div className={styles.skeletonPulse} style={{ width: '130px', height: '18px' }} /></td>
+                                    <td><div className={styles.skeletonPulse} style={{ width: '80px', height: '18px' }} /></td>
+                                    <td><div className={styles.skeletonPulse} style={{ width: '50px', height: '18px', borderRadius: '99px' }} /></td>
+                                    <td><div className={styles.skeletonPulse} style={{ width: '70px', height: '18px' }} /></td>
+                                    <td><div className={styles.skeletonPulse} style={{ width: '65px', height: '18px', borderRadius: '4px' }} /></td>
+                                </tr>
+                            ))
+                        ) : filteredLedger.length > 0 ? (
                             filteredLedger.map((item) => (
                                 <tr key={item.id || item.date + item.trader}>
                                     <td className={styles.dateCol}>

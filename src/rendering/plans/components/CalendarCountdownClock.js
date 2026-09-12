@@ -136,10 +136,15 @@ export default function CalendarCountdownClock({ subscription }) {
         }
     }, [targetDate]);
 
-    // Total cycle days estimation
-    const totalCycleDays = (Number(timeLeft.days) > 30) ? 90 : 30;
-    const daysRemaining = Number(timeLeft.days);
-    const progressPercent = Math.min(100, Math.max(5, Math.round((daysRemaining / totalCycleDays) * 100)));
+    // Total cycle progress percentage synced with actual subscription lifecycle
+    const progressPercent = useMemo(() => {
+        const now = Date.now();
+        const end = targetTimestamp;
+        const start = subscription?.start_date ? new Date(subscription.start_date).getTime() : (end - 30 * 86400000);
+        const totalDuration = Math.max(86400000, end - start);
+        const msLeft = Math.max(0, end - now);
+        return Math.min(100, Math.max(1, Math.round((msLeft / totalDuration) * 100)));
+    }, [subscription?.start_date, targetTimestamp]);
 
     const daysVal = mounted ? timeLeft.days : '29';
     const hoursVal = mounted ? timeLeft.hours : '01';

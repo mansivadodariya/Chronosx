@@ -8,7 +8,8 @@ export function WithdrawalsTab({
     t,
     withdrawalsList,
     setShowWithdrawModal,
-    handleCopyText
+    handleCopyText,
+    loading = false
 }) {
     return (
         <div className={styles.tableWrapperCard}>
@@ -41,7 +42,19 @@ export function WithdrawalsTab({
                         </tr>
                     </thead>
                     <tbody>
-                        {withdrawalsList.length > 0 ? (
+                        {loading ? (
+                            Array.from({ length: 5 }).map((_, idx) => (
+                                <tr key={`skel-with-${idx}`}>
+                                    <td><div className={styles.skeletonPulse} style={{ width: '85px', height: '18px' }} /></td>
+                                    <td><div className={styles.skeletonPulse} style={{ width: '75px', height: '18px' }} /></td>
+                                    <td><div className={styles.skeletonPulse} style={{ width: '60px', height: '18px', borderRadius: '4px' }} /></td>
+                                    <td><div className={styles.skeletonPulse} style={{ width: '85px', height: '18px' }} /></td>
+                                    <td><div className={styles.skeletonPulse} style={{ width: '130px', height: '18px' }} /></td>
+                                    <td><div className={styles.skeletonPulse} style={{ width: '70px', height: '18px', borderRadius: '4px' }} /></td>
+                                    <td><div className={styles.skeletonPulse} style={{ width: '90px', height: '18px' }} /></td>
+                                </tr>
+                            ))
+                        ) : withdrawalsList.length > 0 ? (
                             withdrawalsList.map((item) => {
                                 const assetName = item.crypto_currency || item.asset || 'USDT';
                                 return (

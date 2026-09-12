@@ -18,7 +18,8 @@ export async function OPTIONS() {
 export async function POST(request) {
     try {
         const body = await request.json();
-        const { amount, asset, network, wallet_address } = body;
+        const { amount, asset, crypto_currency, network, wallet_address } = body;
+        const coin = (crypto_currency || asset || 'USDT').toUpperCase();
 
         if (!amount || Number(amount) <= 0) {
             return NextResponse.json(
@@ -27,18 +28,40 @@ export async function POST(request) {
             );
         }
 
-        if (!asset || !network || !wallet_address) {
+        if (!coin || !network || !wallet_address) {
             return NextResponse.json(
                 { error: 'Asset, network, and destination wallet address are required.' },
                 { status: 400, headers: corsHeaders }
             );
         }
 
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || '';
+        if (backendUrl) {
+            const authHeader = request.headers.get('authorization') || '';
+            const res = await fetch(`${backendUrl.replace(/\/+$/, '')}/api/v1/affiliate/withdraw`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    accept: 'application/json',
+                    ...(authHeader ? { Authorization: authHeader } : {})
+                },
+                body: JSON.stringify({
+                    amount: Number(amount),
+                    crypto_currency: coin,
+                    network: String(network).toUpperCase(),
+                    wallet_address: String(wallet_address).trim()
+                })
+            });
+            const data = await res.json();
+            return NextResponse.json(data, { status: res.status, headers: corsHeaders });
+        }
+
         const withdrawalRecord = {
             id: 'WTH-' + Math.floor(1000 + Math.random() * 9000),
             created_at: new Date().toISOString(),
             amount: Number(amount),
-            asset,
+            asset: coin,
+            crypto_currency: coin,
             network,
             wallet_address,
             status: 'PENDING',
@@ -47,8 +70,9 @@ export async function POST(request) {
 
         return NextResponse.json(
             {
+                status: 'success',
                 success: true,
-                message: `Withdrawal request for ${amount} ${asset} (${network}) has been submitted successfully.`,
+                message: `Withdrawal request for ${amount} ${coin} (${network}) has been submitted successfully.`,
                 data: withdrawalRecord
             },
             { status: 201, headers: corsHeaders }

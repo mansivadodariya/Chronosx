@@ -124,31 +124,34 @@ export async function generateInvoicePdf(item, index = 1) {
         const isPaid = statusStr === 'PAID' || statusStr === 'SUCCESS' || statusStr === 'COMPLETED' || item?.is_paid;
         const isExpired = statusStr === 'EXPIRED';
 
-        // Status Badge
+        // Status Badge (Clean standard font without glitched unicode glyphs)
         if (isPaid) {
             doc.setFillColor(236, 253, 245); // emerald 50
             doc.setDrawColor(24, 201, 139);
-            doc.roundedRect(165, 30, 29, 7, 2, 2, 'FD');
+            doc.setLineWidth(0.4);
+            doc.roundedRect(165, 29.5, 29, 7.5, 2, 2, 'FD');
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(9);
             doc.setTextColor(5, 150, 105);
-            doc.text('✓ PAID', 179.5, 35, { align: 'center' });
+            doc.text('PAID', 179.5, 34.8, { align: 'center' });
         } else if (isExpired) {
             doc.setFillColor(254, 242, 242); // red 50
             doc.setDrawColor(239, 68, 68);
-            doc.roundedRect(160, 30, 34, 7, 2, 2, 'FD');
+            doc.setLineWidth(0.4);
+            doc.roundedRect(160, 29.5, 34, 7.5, 2, 2, 'FD');
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(9);
             doc.setTextColor(220, 38, 38);
-            doc.text('✕ EXPIRED', 177, 35, { align: 'center' });
+            doc.text('EXPIRED', 177, 34.8, { align: 'center' });
         } else {
             doc.setFillColor(254, 249, 195); // amber 50
             doc.setDrawColor(234, 179, 8);
-            doc.roundedRect(160, 30, 34, 7, 2, 2, 'FD');
+            doc.setLineWidth(0.4);
+            doc.roundedRect(160, 29.5, 34, 7.5, 2, 2, 'FD');
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(9);
             doc.setTextColor(180, 83, 9);
-            doc.text(statusStr, 177, 35, { align: 'center' });
+            doc.text(statusStr, 177, 34.8, { align: 'center' });
         }
 
         // Divider
@@ -166,9 +169,9 @@ export async function generateInvoicePdf(item, index = 1) {
         doc.text('ISSUED BY:', 16, y);
 
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(10);
+        doc.setFontSize(10.5);
         doc.setTextColor(15, 23, 42);
-        doc.text('ChronosX AI Technologies Ltd.', 16, y + 6);
+        doc.text('ChronosX', 16, y + 6);
 
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(8.5);
@@ -185,7 +188,7 @@ export async function generateInvoicePdf(item, index = 1) {
         doc.text('BILLED TO (CUSTOMER):', 115, y);
 
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(10);
+        doc.setFontSize(10.5);
         doc.setTextColor(15, 23, 42);
         doc.text(userName, 115, y + 6);
 
@@ -193,9 +196,8 @@ export async function generateInvoicePdf(item, index = 1) {
         doc.setFontSize(8.5);
         doc.setTextColor(71, 85, 105);
         doc.text(`Account Email: ${userEmail}`, 115, y + 11);
-        doc.text(`Client ID: ${userUid}`, 115, y + 16);
-        doc.text(`Invoice Date: ${invoiceDate}`, 115, y + 21);
-        doc.text(`Payment Gateway: ${gateway}`, 115, y + 26);
+        doc.text(`Invoice Date: ${invoiceDate}`, 115, y + 16);
+        doc.text(`Payment Gateway: ${gateway}`, 115, y + 21);
 
         // ================= 3. LINE ITEMS TABLE =================
         y = 86;
@@ -208,8 +210,8 @@ export async function generateInvoicePdf(item, index = 1) {
         doc.setFontSize(8);
         doc.setTextColor(255, 255, 255);
         doc.text('DESCRIPTION & PLATFORM ENTITLEMENT', 22, y + 6);
-        doc.text('VALIDITY', 110, y + 6);
-        doc.text('AI COMPUTE', 145, y + 6);
+        doc.text('VALIDITY', 105, y + 6);
+        doc.text('AI COMPUTE', 142, y + 6);
         doc.text('AMOUNT (USD)', 190, y + 6, { align: 'right' });
 
         // Table Row Background
@@ -232,8 +234,8 @@ export async function generateInvoicePdf(item, index = 1) {
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(8.5);
         doc.setTextColor(51, 65, 85);
-        doc.text(period, 110, y + 8);
-        doc.text(`${item?.credits || 500} Credits`, 145, y + 8);
+        doc.text(period, 105, y + 8);
+        doc.text(`${item?.credits || 500} Credits`, 142, y + 8);
 
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(9.5);
@@ -273,10 +275,10 @@ export async function generateInvoicePdf(item, index = 1) {
         doc.setFontSize(11);
         doc.setTextColor(15, 23, 42);
         doc.text(isPaid ? 'TOTAL PAID:' : 'TOTAL AMOUNT:', 140, y);
-        doc.setTextColor(isPaid ? 24 : 100, isPaid ? 201 : 116, isPaid ? 139 : 139);
+        doc.setTextColor(isPaid ? 5 : 100, isPaid ? 150 : 116, isPaid ? 105 : 139);
         doc.text(`$${amountNum} USD`, 190, y, { align: 'right' });
 
-        // ================= 5. CRYPTOGRAPHIC VERIFICATION SEAL =================
+        // ================= 5. CRYPTOGRAPHIC SETTLEMENT SEAL =================
         y += 18;
         if (isPaid) {
             doc.setFillColor(240, 253, 244); // emerald 50
@@ -294,7 +296,7 @@ export async function generateInvoicePdf(item, index = 1) {
             doc.setTextColor(71, 85, 105);
             doc.text(`Transaction Reference: ${txnId}`, 22, y + 12);
             doc.text(`Gateway Settlement:    ${gateway}`, 22, y + 16);
-            doc.text(`Status:                SUCCESS • Autonomous System Activation Confirmed`, 22, y + 20);
+            doc.text(`Status:                SUCCESS | Autonomous System Activation Confirmed`, 22, y + 20);
         } else {
             doc.setFillColor(248, 250, 252); // slate 50
             doc.setDrawColor(203, 213, 225);
@@ -311,7 +313,7 @@ export async function generateInvoicePdf(item, index = 1) {
             doc.setTextColor(100, 116, 139);
             doc.text(`Transaction Reference: ${txnId}`, 22, y + 12);
             doc.text(`Gateway Settlement:    ${gateway}`, 22, y + 16);
-            doc.text(`Status:                ${statusStr} • Record Archived`, 22, y + 20);
+            doc.text(`Status:                ${statusStr} | Record Archived`, 22, y + 20);
         }
 
         // ================= 6. FOOTER =================
@@ -322,7 +324,7 @@ export async function generateInvoicePdf(item, index = 1) {
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(7.5);
         doc.setTextColor(148, 163, 184);
-        doc.text('ChronosX AI Technologies Ltd. • Subscription fees cover high-availability GPU cloud inferences and market research tools.', 105, 275, { align: 'center' });
+        doc.text('ChronosX - Subscription fees cover high-availability GPU cloud inferences and market research tools.', 105, 275, { align: 'center' });
         doc.text('Questions or custom enterprise requirements? Email support@chronosx.com or visit https://chronosx.com', 105, 279, { align: 'center' });
 
         // ================= 7. TRIGGER DOWNLOAD =================

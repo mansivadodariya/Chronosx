@@ -1024,11 +1024,11 @@
       "trustSub": "people in the world",
       "cards": {
         "analysisTitle": "AI Market Analysis",
-        "analysisDesc": "Scan charts with computer vision to detect candlestick patterns, liquidity sweeps, and high-probability setups.",
+        "analysisDesc": "Instant market screening, technical pattern detection, and high-conviction chart vision.",
         "strategyTitle": "Smart Trade Strategy",
-        "strategyDesc": "Build and backtest quantitative trading playbooks with multi-timeframe trend rules and automated signals.",
+        "strategyDesc": "Execute live market intelligence and automate proven strategy playbooks.",
         "riskTitle": "Risk Management",
-        "riskDesc": "Audit trade history, calculate mathematical position sizing, and protect capital with strict drawdown limits."
+        "riskDesc": "Audit win rates, profit factor, and max drawdown curves before putting capital at risk."
       }
     },
     "metrics": {
@@ -1053,11 +1053,11 @@
       "card1Title": "AI CHART SCANNER",
       "card1Desc": "Instant market screening, technical pattern detection, and high-conviction chart vision.",
       "card2Title": "AI MARKET ASSISTANT",
-      "card2Desc": "Natural language market intelligence, multi-pair commentary, and macro news context.",
-      "card3Title": "LIVE MARKET SCANNER",
-      "card3Desc": "Real-time algorithmic breakout detection, live momentum radar, and multi-symbol confluence.",
-      "card4Title": "STRATEGY HUB",
-      "card4Desc": "Algorithmic backtesting, quantitative playbooks, and custom trade execution rules."
+      "card2Desc": "Ask questions, validate trade setups, and receive real-time institutional market insights.",
+      "card3Title": "STRATEGY HUB",
+      "card3Desc": "Execute live market intelligence and automate proven strategy playbooks.",
+      "card4Title": "AI TRADE AUDIT",
+      "card4Desc": "Audit win rates, profit factor, and max drawdown curves before putting capital at risk."
     },
     "howItWorks": {
       "badge": "MT5 BROKER INTEGRATION",

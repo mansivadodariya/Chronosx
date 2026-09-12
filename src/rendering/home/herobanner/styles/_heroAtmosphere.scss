@@ -16,7 +16,13 @@
     align-items: center;
 
     :global(html.light) & {
-        background: #F8FAFC !important;
+        background-color: #F8FAFC !important;
+        background-image:
+            linear-gradient(180deg, rgba(248, 250, 252, 0.75) 0%, rgba(248, 250, 252, 0.2) 25%, transparent 45%),
+            url('/assets/images/herobannerlight.png') !important;
+        background-repeat: no-repeat !important;
+        background-position: center bottom !important;
+        background-size: cover !important;
 
         .gridOverlay {
             background-image:
@@ -74,6 +80,18 @@
 
             .titleLine2 {
                 color: #0F172A !important;
+            }
+
+            .candleIconBox {
+                background: transparent !important;
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+
+            .titleCandleIcon {
+                background: transparent !important;
+                background-color: transparent !important;
             }
 
             .greenGradient {
@@ -338,6 +356,32 @@
         animation-name: sideDotFloatPulse;
         animation-iteration-count: infinite;
         animation-timing-function: ease-in-out;
+    }
+
+    // Animated Slope Laser Beams along Perspective Candlestick Stairs
+    .slopeLasersWrapper {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 3;
+        overflow: hidden;
+    }
+
+    .slopeLasersSvg {
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        display: block;
+    }
+
+    .slopeTrackLine {
+        opacity: 0.45;
+    }
+
+    .slopeActiveBeam {
+        animation-name: slopeBeamFlow;
+        animation-iteration-count: infinite;
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     :global(.container) {

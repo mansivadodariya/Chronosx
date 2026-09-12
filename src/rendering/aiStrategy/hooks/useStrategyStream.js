@@ -352,13 +352,14 @@ export const normalizeSetupItem = (item) => {
 
 export const getStrategyWebSocketUrl = () => {
     if (typeof window === 'undefined') return '';
-    const envWs = process.env.NEXT_PUBLIC_WS_URL;
+    const envWs = process.env.NEXT_PUBLIC_WS_URL || process.env.NEXT_PUBLIC_WS_LIVE_URL;
     if (envWs) {
-        return envWs.replace(/\/api\/v1\/ws\/.*/, '/api/v1/ws/strategy');
+        let base = envWs.split('?')[0].replace(/\/api\/v1\/ws\/.*/, '/api/v1/ws/strategy');
+        return base;
     }
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://127.0.0.1:8000';
     const proto = backendUrl.startsWith('https') ? 'wss:' : 'ws:';
-    const host = backendUrl.replace(/^https?:\/\//, '');
+    const host = backendUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '');
     return `${proto}//${host}/api/v1/ws/strategy`;
 };
 
