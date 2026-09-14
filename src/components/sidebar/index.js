@@ -102,7 +102,15 @@ const getNavSections = (t) => [
       { label: t('nav.marketAssistant', 'AI Market Assistant'), href: "/market-assistant", icon: AiChatBotIcon },
       { label: t('nav.chartScanner', 'AI Chart Scanner'), href: "/chart-scanner", icon: AiTradeSparkIcon },
       { label: t('nav.tradeAudit', 'AI Trade Advisor'), href: "/trade-advisor", icon: AiTradeAnalysisIcon },
-      { label: t('nav.strategyHub', 'AI Strategy Core'), href: "/strategy-core", icon: AiStrategyIcon },
+      {
+        label: t('nav.strategyHub', 'AI Strategy Core'),
+        href: "/strategy-core",
+        icon: AiStrategyIcon,
+        subItems: [
+          { label: t('nav.signalTerminal', 'Signal Terminal'), href: "/signal-terminal", icon: LiveAnalysisIcon },
+          { label: t('nav.strategySignal', 'Strategy Signal'), href: "/strategy-signal", icon: StrategyIcon },
+        ]
+      },
     ]
   },
   {
