@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import Loader from '@/components/loader';
 import styles from './pageLoader.module.scss';
 
 
@@ -104,16 +105,8 @@ export default function PageLoader() {
                         transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
                     >
                         <div className={styles.emblemContainer}>
-                            <div className={styles.spinnerRing} />
+                            <Loader size="xl" />
                         </div>
-                        {/* <div className={styles.loaderTextRow}>
-                            <span>Loading</span>
-                            <div className={styles.dotsPulse}>
-                                <span />
-                                <span />
-                                <span />
-                            </div>
-                        </div> */}
                     </motion.div>
                 </motion.div>
             )}

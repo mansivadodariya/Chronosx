@@ -164,6 +164,104 @@
     flex-direction: column;
 }
 
+/* Strategy Category Filter Bar */
+.strategyCategoryFilterBar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 16px;
+    background: rgba(10, 18, 14, 0.65);
+    border: 1px solid rgba(24, 201, 139, 0.18);
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    margin-bottom: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    @include respond-to('md') {
+        padding: 8px 12px;
+        gap: 12px;
+    }
+}
+
+.filterTitleGroup {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #FFFFFF;
+    font-size: 13.5px;
+    font-weight: 600;
+    font-family: "Euclid-SemiBold", sans-serif;
+    white-space: nowrap;
+    flex-shrink: 0;
+    user-select: none;
+
+    .filterIcon {
+        color: rgba(255, 255, 255, 0.85);
+        flex-shrink: 0;
+    }
+}
+
+.categoryPillsTrack {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    padding: 2px 0;
+}
+
+.categoryPill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 18px;
+    border-radius: 9999px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: "Euclid-Medium", sans-serif;
+    white-space: nowrap;
+    cursor: pointer;
+    background: #08130E;
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(24, 201, 139, 0.16);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    outline: none;
+
+    &:hover {
+        background: rgba(24, 201, 139, 0.12);
+        color: #18C98B;
+        border-color: rgba(24, 201, 139, 0.35);
+        transform: translateY(-1px);
+    }
+
+    &.activeCategoryPill {
+        background: #00E5A3;
+        color: #041811;
+        font-weight: 700;
+        font-family: "Euclid-Bold", sans-serif;
+        border-color: #00E5A3;
+        box-shadow: 0 0 14px rgba(0, 229, 163, 0.4);
+        transform: translateY(-1px);
+
+        &:hover {
+            background: #18C98B;
+            border-color: #18C98B;
+            color: #041811;
+        }
+    }
+}
+
 /* Live Analysis Layout (Top: Watchlist + Chart, Bottom: Full-Width Analysis) */
 .liveAnalysisLayout {
     display: flex;

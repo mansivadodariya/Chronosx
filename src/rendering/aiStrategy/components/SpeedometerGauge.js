@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useId } from 'react';
 import styles from '../aiStrategy.module.scss';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function SpeedometerGauge({
     score = 50,
@@ -12,6 +13,14 @@ export default function SpeedometerGauge({
     customMax = 100,
     mode = 'labels' // 'numeric' (0 to 100 numbers) or 'labels' (Bull/Bear strings)
 }) {
+    const { theme } = useTheme();
+    const isDark = theme !== 'light';
+
+    const trackColor = isDark ? '#1F242C' : '#E2E8F0';
+    const needleColor = isDark ? '#FFFFFF' : '#1E293B';
+    const defaultTextColor = isDark ? '#94A3B8' : '#64748B';
+    const textPrimary = isDark ? '#FFFFFF' : '#0F172A';
+
     const rawTargetScore = Math.max(0, Math.min(customMax, Number(score) || 0));
     // Normalize to 0-100 scale
     let normalizedScore = customMax === 100 ? rawTargetScore : Math.round((rawTargetScore / customMax) * 100);
@@ -152,12 +161,12 @@ export default function SpeedometerGauge({
                         mode === 'numeric' ? (
                             <>
                                 {/* TECHNICAL SCORE: 0 to 100 Numeric Scale Markers */}
-                                <text x={cx - r - 16} y={cy} textAnchor="end" dominantBaseline="central" fontSize="13" fontWeight="700" fill={animatedScore <= 10 ? '#EF4444' : '#94A3B8'} fontFamily="monospace">0</text>
-                                <text x="120" y="66" textAnchor="middle" fontSize="13" fontWeight="700" fill={animatedScore > 10 && animatedScore <= 30 ? '#F97316' : '#94A3B8'} fontFamily="monospace">20</text>
-                                <text x="160" y="35" textAnchor="middle" fontSize="13" fontWeight="700" fill={animatedScore > 30 && animatedScore <= 50 ? '#EAB308' : '#94A3B8'} fontFamily="monospace">40</text>
-                                <text x="230" y="35" textAnchor="middle" fontSize="13" fontWeight="700" fill={animatedScore > 50 && animatedScore <= 70 ? '#84CC16' : '#94A3B8'} fontFamily="monospace">60</text>
-                                <text x="270" y="66" textAnchor="middle" fontSize="13" fontWeight="700" fill={animatedScore > 70 && animatedScore <= 90 ? '#10B981' : '#94A3B8'} fontFamily="monospace">80</text>
-                                <text x={cx + r + 16} y={cy} textAnchor="start" dominantBaseline="central" fontSize="13" fontWeight="700" fill={animatedScore > 90 ? '#18C98B' : '#94A3B8'} fontFamily="monospace">100</text>
+                                <text x={cx - r - 16} y={cy} textAnchor="end" dominantBaseline="central" fontSize="13" fontWeight="700" fill={animatedScore <= 10 ? '#EF4444' : defaultTextColor} fontFamily="monospace">0</text>
+                                <text x="120" y="66" textAnchor="middle" fontSize="13" fontWeight="700" fill={animatedScore > 10 && animatedScore <= 30 ? '#F97316' : defaultTextColor} fontFamily="monospace">20</text>
+                                <text x="160" y="35" textAnchor="middle" fontSize="13" fontWeight="700" fill={animatedScore > 30 && animatedScore <= 50 ? '#EAB308' : defaultTextColor} fontFamily="monospace">40</text>
+                                <text x="230" y="35" textAnchor="middle" fontSize="13" fontWeight="700" fill={animatedScore > 50 && animatedScore <= 70 ? '#84CC16' : defaultTextColor} fontFamily="monospace">60</text>
+                                <text x="270" y="66" textAnchor="middle" fontSize="13" fontWeight="700" fill={animatedScore > 70 && animatedScore <= 90 ? '#10B981' : defaultTextColor} fontFamily="monospace">80</text>
+                                <text x={cx + r + 16} y={cy} textAnchor="start" dominantBaseline="central" fontSize="13" fontWeight="700" fill={animatedScore > 90 ? '#18C98B' : defaultTextColor} fontFamily="monospace">100</text>
                             </>
                         ) : (
                             <>
@@ -169,7 +178,7 @@ export default function SpeedometerGauge({
                                     dominantBaseline="central"
                                     fontSize="11.5"
                                     fontWeight={activeZone === 'strong_bearish' ? '800' : '700'}
-                                    fill={activeZone === 'strong_bearish' ? '#EF4444' : '#94A3B8'}
+                                    fill={activeZone === 'strong_bearish' ? '#EF4444' : defaultTextColor}
                                     letterSpacing="0.2px"
                                 >
                                     Strong Bearish
@@ -181,7 +190,7 @@ export default function SpeedometerGauge({
                                     textAnchor="middle"
                                     fontSize="12.5"
                                     fontWeight={activeZone === 'bearish' ? '800' : '700'}
-                                    fill={activeZone === 'bearish' ? '#EF4444' : '#94A3B8'}
+                                    fill={activeZone === 'bearish' ? '#EF4444' : defaultTextColor}
                                 >
                                     Bearish
                                 </text>
@@ -192,7 +201,7 @@ export default function SpeedometerGauge({
                                     textAnchor="middle"
                                     fontSize="13"
                                     fontWeight={activeZone === 'neutral' ? '800' : '700'}
-                                    fill={activeZone === 'neutral' ? '#EAB308' : '#94A3B8'}
+                                    fill={activeZone === 'neutral' ? '#EAB308' : defaultTextColor}
                                 >
                                     Neutral
                                 </text>
@@ -203,7 +212,7 @@ export default function SpeedometerGauge({
                                     textAnchor="middle"
                                     fontSize="12.5"
                                     fontWeight={activeZone === 'bullish' ? '800' : '700'}
-                                    fill={activeZone === 'bullish' ? '#18C98B' : '#94A3B8'}
+                                    fill={activeZone === 'bullish' ? '#18C98B' : defaultTextColor}
                                 >
                                     Bullish
                                 </text>
@@ -215,7 +224,7 @@ export default function SpeedometerGauge({
                                     dominantBaseline="central"
                                     fontSize="11.5"
                                     fontWeight={activeZone === 'strong_bullish' ? '800' : '700'}
-                                    fill={activeZone === 'strong_bullish' ? '#18C98B' : '#94A3B8'}
+                                    fill={activeZone === 'strong_bullish' ? '#18C98B' : defaultTextColor}
                                     letterSpacing="0.2px"
                                 >
                                     Strong Bullish
@@ -224,11 +233,11 @@ export default function SpeedometerGauge({
                         )
                     )}
 
-                    {/* Background Dark Arc Track */}
+                    {/* Background Arc Track */}
                     <path
                         d={`M ${cx - r},${cy} A ${r},${r} 0 0,1 ${cx + r},${cy}`}
                         fill="none"
-                        stroke="#1F242C"
+                        stroke={trackColor}
                         strokeWidth="9.5"
                         strokeLinecap="round"
                     />
@@ -247,41 +256,56 @@ export default function SpeedometerGauge({
                         }}
                     />
 
-                    {/* Rotating Indicator Needle with Center Pin */}
+                    {/* Rotating Indicator Needle with Center Pin - TradeSnap Style */}
                     <g
                         transform={`translate(${cx}, ${cy}) rotate(${needleAngle})`}
-                        style={{ transition: 'transform 0.85s cubic-bezier(0.16, 1, 0.3, 1)' }}
+                        style={{
+                            transition: 'transform 0.85s cubic-bezier(0.16, 1, 0.3, 1)',
+                            transformOrigin: '0px 0px'
+                        }}
                     >
-                        {/* Needle Body */}
+                        {/* Invisible symmetrical boundary to lock bounding box center to (0, 0) */}
+                        <circle cx="0" cy="0" r={r - 10} fill="none" opacity="0" pointerEvents="none" />
+
+                        {/* Needle stem pointer */}
                         <line
                             x1="0"
                             y1="0"
                             x2="0"
                             y2={-(r - 14)}
-                            stroke="#FFFFFF"
-                            strokeWidth="3.4"
+                            stroke={needleColor}
+                            strokeWidth="2.8"
                             strokeLinecap="round"
-                            style={{ filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.85))' }}
+                            style={{
+                                filter: isDark
+                                    ? 'drop-shadow(0 0 5px rgba(255, 255, 255, 0.8))'
+                                    : 'drop-shadow(0 0 3px rgba(0, 0, 0, 0.35))'
+                            }}
                         />
-                        {/* Needle Accent Tip */}
+
+                        {/* Sleek needle tip pointer */}
+                        <polygon
+                            points={`-3,-10 3,-10 0,${-(r - 13)}`}
+                            fill={needleColor}
+                        />
+
+                        {/* Attached Center Pivot Dot */}
                         <circle
                             cx="0"
-                            cy={-(r - 14)}
-                            r="3.2"
+                            cy="0"
+                            r="6.5"
                             fill={activeColor}
-                        />
-                        {/* Center Pivot Disc */}
-                        <circle
-                            cx="0"
-                            cy="0"
-                            r="7"
-                            fill="#FFFFFF"
+                            style={{
+                                filter: isDark
+                                    ? `drop-shadow(0 0 6px ${activeColor}99)`
+                                    : 'drop-shadow(0 0 2px rgba(0, 0, 0, 0.2))'
+                            }}
                         />
                         <circle
                             cx="0"
                             cy="0"
-                            r="3.2"
-                            fill="#0D0E13"
+                            r="2.6"
+                            fill={isDark ? '#FFFFFF' : '#0F172A'}
                         />
                     </g>
 
@@ -306,8 +330,8 @@ export default function SpeedometerGauge({
                         textAnchor="middle"
                         fontFamily="monospace"
                     >
-                        <tspan fontSize="20" fontWeight="800" fill="#FFFFFF">{displayScore}</tspan>
-                        <tspan fontSize="14" fontWeight="600" fill="#94A3B8">/{customMax}</tspan>
+                        <tspan fontSize="20" fontWeight="800" fill={textPrimary}>{displayScore}</tspan>
+                        <tspan fontSize="14" fontWeight="600" fill={defaultTextColor}>/{customMax}</tspan>
                     </text>
 
                     {/* Confidence Footer (e.g. CONFIDENCE: 50%) */}
@@ -321,7 +345,7 @@ export default function SpeedometerGauge({
                             letterSpacing="0.5px"
                             fontFamily="'Euclid-Bold', 'Inter', sans-serif"
                         >
-                            <tspan fill="#94A3B8">CONFIDENCE: </tspan>
+                            <tspan fill={defaultTextColor}>CONFIDENCE: </tspan>
                             <tspan fill={activeColor} fontWeight="800">{confidence}</tspan>
                         </text>
                     )}

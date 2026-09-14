@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './aiStrategy.module.scss';
 import { useLanguage } from '@/context/LanguageContext';
+import { PRESET_STRATEGIES } from './constants/strategyCategories';
 
 function ChevronDownIcon({ className, ...props }) {
     return (
@@ -68,9 +69,13 @@ export default function StrategyDropdown({ strategies: propStrategies = [], sele
                 
                 // Handle various response wrappers
                 const list = Array.isArray(data) ? data : (data.strategies || data.data || []);
-                const effectiveList = list.length > 0 ? list : [
-                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback Strategy', description: 'Trend Following EMA Pullback' }
-                ];
+                
+                // Merge backend strategies with preset strategies ensuring all categories are represented
+                const strategyMap = new Map();
+                PRESET_STRATEGIES.forEach(s => strategyMap.set(s.id, s));
+                list.forEach(s => strategyMap.set(s.id || s.strategy_id, s));
+                
+                const effectiveList = Array.from(strategyMap.values());
                 setStrategies(effectiveList);
                 if (effectiveList.length > 0) {
                     const firstId = effectiveList[0].id || effectiveList[0].strategy_id;
@@ -82,11 +87,8 @@ export default function StrategyDropdown({ strategies: propStrategies = [], sele
                 }
             } catch (err) {
                 console.error("Error fetching strategies:", err);
-                const fallbackList = [
-                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback Strategy', description: 'Trend Following EMA Pullback' }
-                ];
-                setStrategies(fallbackList);
-                const firstId = fallbackList[0].id;
+                setStrategies(PRESET_STRATEGIES);
+                const firstId = PRESET_STRATEGIES[0].id;
                 setSelectedId(prev => prev || firstId);
                 if (onSelect && !initialSelectFiredRef.current) {
                     initialSelectFiredRef.current = true;

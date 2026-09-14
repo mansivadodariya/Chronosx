@@ -175,10 +175,15 @@
     }
 
     .itemRow {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+
         &:hover,
         &.itemActive {
             background: #F8FAFC !important;
-            border-color: rgba(24, 201, 139, 0.35) !important;
+            border-color: rgba(24, 201, 139, 0.45) !important;
+            box-shadow: 0 4px 12px rgba(24, 201, 139, 0.12) !important;
 
             .itemIconWrap {
                 background: rgba(24, 201, 139, 0.14) !important;
@@ -202,7 +207,7 @@
 
         &.itemActive {
             background: rgba(24, 201, 139, 0.08) !important;
-            border-color: rgba(24, 201, 139, 0.35) !important;
+            border-color: rgba(24, 201, 139, 0.45) !important;
         }
     }
 

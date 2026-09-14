@@ -84,8 +84,7 @@ export default function Footer() {
             <ul>
               <li><Link href="/ai-chart-scanner">{t('header.products.chartScanner.title', 'AI Chart Scanner')}</Link></li>
               <li><Link href="/ai-market-assistant">{t('header.products.marketAssistant.title', 'AI Market Assistant')}</Link></li>
-              <li><Link href="/live-market-scanner">{t('header.products.liveScanner.title', 'Live Market Scanner')}</Link></li>
-              <li><Link href="/ai-strategy-hub">{t('header.products.strategyHub.title', 'Strategy Hub')}</Link></li>
+              <li><Link href="/ai-strategy-core">{t('header.products.strategyHub.title', 'AI Strategy Core')}</Link></li>
             </ul>
           </div>
 
@@ -93,9 +92,9 @@ export default function Footer() {
           <div className={styles.navCol}>
             <h4>{t('footer.tradingToolsTitle', 'TRADING TOOLS')}</h4>
             <ul>
-              <li><Link href="/ai-trade-audit">{t('header.tradingTools.tradeAudit.title', 'AI Trade Audit')}</Link></li>
-              <li><Link href={getAuthHref('/strategy-hub')}>{t('footer.strategyBuilder', 'Strategy Builder')}</Link></li>
-              <li><Link href={getAuthHref('/strategy-hub')}>{t('footer.quantBacktesting', 'Quant Backtesting')}</Link></li>
+              <li><Link href="/ai-trade-advisor">{t('header.tradingTools.tradeAudit.title', 'AI Trade Advisor')}</Link></li>
+              <li><Link href={getAuthHref('/strategy-core')}>{t('footer.strategyBuilder', 'Strategy Builder')}</Link></li>
+              <li><Link href={getAuthHref('/strategy-core')}>{t('footer.quantBacktesting', 'Quant Backtesting')}</Link></li>
               <li><Link href={getAuthHref('/dashboard')}>{t('footer.paperTradingDesk', 'Paper Trading Desk')}</Link></li>
             </ul>
           </div>

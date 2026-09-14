@@ -42,13 +42,13 @@ export default function HeroFeatureCards() {
         </div>
       </div>
 
-      {/* 2. Center Card: AI Strategy Hub (Tilted Angle) */}
+      {/* 2. Center Card: AI Strategy Core (Tilted Angle) */}
       <div
         className={`${styles.featureCard} ${styles.cardTilted}`}
-        onClick={() => authNavigate(router, '/strategy-hub')}
+        onClick={() => authNavigate(router, '/strategy-core')}
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => e.key === 'Enter' && authNavigate(router, '/strategy-hub')}
+        onKeyDown={(e) => e.key === 'Enter' && authNavigate(router, '/strategy-core')}
       >
         <div className={styles.cardIconBox}>
           <TrendChartIcon className={styles.cardSvgIcon} width={38} height={38} />
@@ -56,7 +56,7 @@ export default function HeroFeatureCards() {
         <div className={styles.cardTextCol}>
           <div className={styles.cardHeaderRow}>
             <h3 className={styles.cardTitle}>
-              {t('header.products.strategyHub.title', 'AI Strategy Hub')}
+              {t('header.products.strategyHub.title', 'AI Strategy Core')}
             </h3>
             <span className={styles.cardMiniBadge}>ALGO</span>
           </div>
@@ -66,13 +66,13 @@ export default function HeroFeatureCards() {
         </div>
       </div>
 
-      {/* 3. Right Card: AI Trade Audit */}
+      {/* 3. Right Card: AI Trade Advisor */}
       <div
         className={`${styles.featureCard} ${styles.cardNormal}`}
-        onClick={() => authNavigate(router, '/trade-audit')}
+        onClick={() => authNavigate(router, '/trade-advisor')}
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => e.key === 'Enter' && authNavigate(router, '/trade-audit')}
+        onKeyDown={(e) => e.key === 'Enter' && authNavigate(router, '/trade-advisor')}
       >
         <div className={styles.cardIconBox}>
           <RiskAlertIcon className={styles.cardSvgIcon} width={38} height={38} />
@@ -80,9 +80,9 @@ export default function HeroFeatureCards() {
         <div className={styles.cardTextCol}>
           <div className={styles.cardHeaderRow}>
             <h3 className={styles.cardTitle}>
-              {t('header.tradingTools.tradeAudit.title', 'AI Trade Audit')}
+              {t('header.tradingTools.tradeAudit.title', 'AI Trade Advisor')}
             </h3>
-            <span className={styles.cardMiniBadge}>AUDIT</span>
+            <span className={styles.cardMiniBadge}>ADVISOR</span>
           </div>
           <p className={styles.cardDesc}>
             {t('homeSections.hero.cards.riskDesc', 'Review historical trading data to evaluate performance, win rates, and max drawdowns.')}

@@ -4,9 +4,13 @@ import { NextResponse } from "next/server";
 const PROTECTED_PREFIXES = [
   "/dashboard",
   "/chart-scanner",
+  "/trade-advisor",
   "/trade-audit",
   "/market-assistant",
+  "/signal-terminal",
   "/live-scanner",
+  "/strategy-core",
+  "/strategy-signal",
   "/strategy-hub",
   "/calendar",
   "/calculator",
@@ -36,7 +40,33 @@ export function proxy(request) {
   const isLoggedIn = Boolean(token);
 
   if (pathname === "/tools") {
-    return NextResponse.redirect(new URL("/calendar", request.url));
+    return NextResponse.redirect(new URL("/calculator", request.url));
+  }
+
+  // Redirect legacy / old route names to new standardized route names
+  if (pathname === "/strategy-hub/strategy") {
+    return NextResponse.redirect(new URL("/strategy-signal", request.url));
+  }
+  if (pathname === "/strategy-hub/live") {
+    return NextResponse.redirect(new URL("/signal-terminal", request.url));
+  }
+  if (pathname === "/strategy-hub" || pathname.startsWith("/strategy-hub/")) {
+    return NextResponse.redirect(new URL(pathname.replace("/strategy-hub", "/strategy-core"), request.url));
+  }
+  if (pathname === "/ai-strategy-hub" || pathname.startsWith("/ai-strategy-hub/")) {
+    return NextResponse.redirect(new URL(pathname.replace("/ai-strategy-hub", "/ai-strategy-core"), request.url));
+  }
+  if (pathname === "/live-scanner" || pathname.startsWith("/live-scanner/")) {
+    return NextResponse.redirect(new URL(pathname.replace("/live-scanner", "/signal-terminal"), request.url));
+  }
+  if (pathname === "/live-market-scanner" || pathname.startsWith("/live-market-scanner/")) {
+    return NextResponse.redirect(new URL(pathname.replace("/live-market-scanner", "/signal-terminal"), request.url));
+  }
+  if (pathname === "/trade-audit" || pathname.startsWith("/trade-audit/")) {
+    return NextResponse.redirect(new URL(pathname.replace("/trade-audit", "/trade-advisor"), request.url));
+  }
+  if (pathname === "/ai-trade-audit" || pathname.startsWith("/ai-trade-audit/")) {
+    return NextResponse.redirect(new URL(pathname.replace("/ai-trade-audit", "/ai-trade-advisor"), request.url));
   }
 
   const isProtected = PROTECTED_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`));
@@ -69,15 +99,30 @@ export const config = {
     "/dashboard/:path*",
     "/chart-scanner/:path*",
     "/trade-audit/:path*",
+    "/trade-advisor/:path*",
+    "/ai-trade-audit/:path*",
+    "/ai-trade-advisor/:path*",
     "/market-assistant/:path*",
     "/live-scanner/:path*",
+    "/live-market-scanner/:path*",
+    "/signal-terminal/:path*",
+    "/strategy-core/:path*",
+    "/strategy-signal/:path*",
+    "/ai-strategy-core/:path*",
     "/strategy-hub/:path*",
+    "/ai-strategy-hub/:path*",
     "/calendar",
     "/calendar/:path*",
+    "/economic-calendar",
+    "/economic-calendar/:path*",
     "/calculator",
     "/calculator/:path*",
+    "/forex-calculator",
+    "/forex-calculator/:path*",
     "/news",
     "/news/:path*",
+    "/market-news",
+    "/market-news/:path*",
     "/tools",
     "/tools/:path*",
     "/credit-history/:path*",

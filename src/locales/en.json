@@ -2,22 +2,22 @@
   "nav": {
     "home": "Home",
     "chartScanner": "AI Chart Scanner",
-    "tradeAudit": "AI Trade Audit",
+    "tradeAudit": "AI Trade Advisor",
     "marketAssistant": "AI Market Assistant",
-    "liveMarketScanner": "Live Market Scanner",
-    "strategyHub": "Strategy Hub",
-    "strategyPlaybooks": "Strategy Playbooks",
+    "liveMarketScanner": "Signal Terminal",
+    "strategyHub": "AI Strategy Core",
+    "strategyPlaybooks": "Strategy Signal",
     "marketSnapshot": "AI Chart Scanner",
     "aiTrade": "AI Chart Scanner",
     "aiTradingAdvisor": "AI Market Assistant",
     "aiChat": "AI Market Assistant",
-    "aiStrategy": "Strategy Hub",
-    "aiStrategyHub": "Strategy Hub",
+    "aiStrategy": "AI Strategy Core",
+    "aiStrategyHub": "AI Strategy Core",
     "aiStrategyDesc": "Build, test and optimize AI-powered trading strategies.",
-    "liveAnalysis": "Live Market Scanner",
-    "liveMarketAnalysis": "Live Market Scanner",
-    "strategyEnginePlaybooks": "Strategy Playbooks",
-    "aiTradeAnalysis": "AI Trade Audit",
+    "liveAnalysis": "Signal Terminal",
+    "liveMarketAnalysis": "Signal Terminal",
+    "strategyEnginePlaybooks": "Strategy Signal",
+    "aiTradeAnalysis": "AI Trade Advisor",
     "tools": "Tools",
     "economicCalendar": "Economic Calendar",
     "forexCalculator": "Forex Calculator",
@@ -580,9 +580,9 @@
     "toolScanner": "AI Chart Scanner",
     "toolAssistant": "AI Market Assistant",
     "startChatting": "Start Chatting",
-    "toolLiveScanner": "Live Market Scanner",
+    "toolLiveScanner": "Signal Terminal",
     "openTerminal": "Open Terminal",
-    "toolTradeAudit": "AI Trade Audit",
+    "toolTradeAudit": "AI Trade Advisor",
     "auditStatements": "Audit Statements",
     "toolForexRisk": "Forex & Risk Calculators",
     "openCalculators": "Open Calculators",
@@ -878,19 +878,19 @@
         "badge": "LIVE AI"
       },
       "liveScanner": {
-        "title": "Live Market Scanner",
+        "title": "Signal Terminal",
         "desc": "Algorithmic breakout signals, live momentum radar & market alerts",
         "badge": "LIVE"
       },
       "strategyHub": {
-        "title": "Strategy Hub",
+        "title": "AI Strategy Core",
         "desc": "Algorithmic backtesting, quantitative playbooks & strategy signals",
         "badge": "QUANT"
       }
     },
     "tradingTools": {
       "tradeAudit": {
-        "title": "AI Trade Audit",
+        "title": "AI Trade Advisor",
         "desc": "Review historical trading data to evaluate performance, pinpoint mistakes, and track win rates.",
         "badge": "AI AUDIT"
       },
@@ -1054,9 +1054,9 @@
       "card1Desc": "Instant market screening, technical pattern detection, and high-conviction chart vision.",
       "card2Title": "AI MARKET ASSISTANT",
       "card2Desc": "Ask questions, validate trade setups, and receive real-time institutional market insights.",
-      "card3Title": "STRATEGY HUB",
+      "card3Title": "AI STRATEGY CORE",
       "card3Desc": "Execute live market intelligence and automate proven strategy playbooks.",
-      "card4Title": "AI TRADE AUDIT",
+      "card4Title": "AI TRADE ADVISOR",
       "card4Desc": "Audit win rates, profit factor, and max drawdown curves before putting capital at risk."
     },
     "howItWorks": {
@@ -1078,9 +1078,29 @@
     },
     "network": {
       "badge": "GLOBAL INFRASTRUCTURE",
-      "title1": "Ultra Low-Latency",
-      "title2": "AI Execution Mesh",
-      "description": "Connected directly to tier-1 liquidity providers and major financial exchanges worldwide for institutional-grade signal speed."
+      "title1": "Ultra-Low Latency.",
+      "title2": "Global Reach.",
+      "description": "Our distributed infrastructure ensures real-time trade signals and sub-millisecond execution analysis worldwide.",
+      "stat1Label": "Sub-Second Execution",
+      "stat1Desc": "Institutional routing architecture",
+      "stat2Label": "Tier-1 Cloud Points of Presence",
+      "stat2Desc": "Ultra-low latency edge network",
+      "stat3Label": "Broker & Liquidity Protocols",
+      "stat3Desc": "Direct bridge connectivity",
+      "stat4Label": "Live Trading Desks Online",
+      "stat4Desc": "Global institutional community"
+    },
+    "tradingSuite": {
+      "badge": "AI TRADING SUITE",
+      "title1": "Master the Markets with",
+      "title2": "Real-Time Intelligence.",
+      "subtitle": "Discover our suite of institutional-grade AI trading tools designed to give you a definitive edge in any market condition.",
+      "tabs": {
+        "patternVision": "Pattern Vision",
+        "aiAssistant": "AI Assistant",
+        "strategyCore": "Strategy Core",
+        "tradeAudit": "Trade Advisor"
+      }
     },
     "testimonials": {
       "badge": "VERIFIED TRADER REVIEWS",
@@ -1160,7 +1180,7 @@
     "featuresBadge": "POWERFUL ENGINE ARCHITECTURE",
     "featuresTitle1": "Architected for Quants.",
     "featuresTitle2": "Built for Every Trader.",
-    "featuresSubtitle": "Explore the core technological pillars powering the ChronosX Strategy Hub.",
+    "featuresSubtitle": "Explore the core technological pillars powering the ChronosX AI Strategy Core.",
     "simulatorBadge": "INTERACTIVE SIMULATOR",
     "simulatorTitle1": "Interactive Strategy",
     "simulatorTitle2": "Telemetry & Backtester",

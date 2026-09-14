@@ -32,6 +32,7 @@ import {
 
 import LiveAnalysisView from './components/LiveAnalysisView';
 import StrategyExecutionView from './components/StrategyExecutionView';
+import StrategyCategoryTabs from './components/StrategyCategoryTabs';
 import { useAiStrategyStore } from '@/context/toolState';
 
 export default function AiStrategy({ initialTab = 'live' }) {
@@ -382,7 +383,7 @@ export default function AiStrategy({ initialTab = 'live' }) {
         if (typeof window !== 'undefined') {
             sessionStorage.setItem('selectedStrategySymbol', sym);
         }
-        router.push('/live-scanner');
+        router.push('/signal-terminal');
     };
 
     // Parse strength and details from REST scanner output
@@ -563,6 +564,10 @@ export default function AiStrategy({ initialTab = 'live' }) {
                             transition={{ duration: 0.2 }}
                             className={styles.liveTabContainer}
                         >
+                            <StrategyCategoryTabs
+                                selectedStrategyId={selectedStrategyId}
+                                onSelectStrategyId={setSelectedStrategyId}
+                            />
                             <LiveAnalysisView
                                 selectedSymbol={selectedSymbol}
                                 setSelectedSymbol={setSelectedSymbol}

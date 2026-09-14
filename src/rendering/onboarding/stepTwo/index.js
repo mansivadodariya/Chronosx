@@ -72,7 +72,7 @@ const HELP_OPTIONS = [
     },
     {
         id: 'build_strategies',
-        title: 'Strategy Hub',
+        title: 'AI Strategy Core',
         desc: 'Design, configure, and automate rule-based confluence triggers across multi-timeframe cascades.',
         icon: BrainIcon,
         tag: 'Algorithmic Rules',
@@ -86,14 +86,14 @@ const HELP_OPTIONS = [
     },
     {
         id: 'leak_detection',
-        title: 'AI Trade Audit',
+        title: 'AI Trade Advisor',
         desc: 'Analyze closed trading journals to pinpoint psychological leaks, revenge trading, and expectancy drag.',
         icon: ShieldLeakIcon,
         tag: 'Behavioral Diagnostics',
     },
     {
         id: 'realtime_scanner',
-        title: 'Live Market Scanner',
+        title: 'Signal Terminal',
         desc: 'Filter 1,000+ instruments for high-probability liquidity grabs, fair value gaps, and momentum breakouts.',
         icon: MarketScannerIcon,
         tag: 'Zero-Lag Feeds',

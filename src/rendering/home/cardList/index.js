@@ -23,24 +23,24 @@ const gridData = [
     },
     {
         icon: '/assets/icons/strategy-builder.svg',
-        title: 'LIVE MARKET SCANNER',
+        title: 'SIGNAL TERMINAL',
         desc: 'Real-time breakout scanner, momentum radar & algorithmic signals.',
         publicPath: '/live-market-scanner',
-        dashboardPath: '/live-scanner'
+        dashboardPath: '/signal-terminal'
     },
     {
         icon: '/assets/icons/strategy-builder.svg',
-        title: 'STRATEGY HUB',
+        title: 'AI STRATEGY CORE',
         desc: 'Build, backtest, and deploy algorithmic trading playbooks with AI.',
-        publicPath: '/ai-strategy-hub',
-        dashboardPath: '/strategy-hub'
+        publicPath: '/ai-strategy-core',
+        dashboardPath: '/strategy-core'
     },
     {
         icon: '/assets/icons/analysis.svg',
-        title: 'AI TRADE AUDIT',
+        title: 'AI TRADE ADVISOR',
         desc: 'Deep algorithmic trade audit, performance review, and leak elimination.',
-        publicPath: '/ai-trade-audit',
-        dashboardPath: '/trade-audit'
+        publicPath: '/ai-trade-advisor',
+        dashboardPath: '/trade-advisor'
     }
 ];
 

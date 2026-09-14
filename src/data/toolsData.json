@@ -11,14 +11,14 @@
       "legacyRoutes": ["/trade-snap", "/tradesnap", "/ai-trade"]
     },
     {
-      "id": "trade-audit",
-      "name": "AI Trade Audit",
-      "shortName": "AI Trade Audit",
-      "outerRoute": "/ai-trade-audit",
-      "innerRoute": "/trade-audit",
+      "id": "trade-advisor",
+      "name": "AI Trade Advisor",
+      "shortName": "AI Trade Advisor",
+      "outerRoute": "/ai-trade-advisor",
+      "innerRoute": "/trade-advisor",
       "description": "Review your historical trading data to evaluate performance, pinpoint mistakes, and track win rates.",
-      "badge": "AI AUDIT",
-      "legacyRoutes": ["/trade-analysis", "/ai-trade-analysis", "/ai-past-trade-analyzer"]
+      "badge": "AI ADVISOR",
+      "legacyRoutes": ["/trade-advisor", "/ai-trade-advisor", "/trade-analysis", "/ai-trade-analysis", "/ai-past-trade-analyzer", "/ai-trade-audit", "/trade-audit"]
     },
     {
       "id": "market-assistant",
@@ -31,24 +31,24 @@
       "legacyRoutes": ["/ai-assistant", "/ai-chat"]
     },
     {
-      "id": "live-scanner",
-      "name": "Live Market Scanner",
-      "shortName": "Live Market Scanner",
+      "id": "signal-terminal",
+      "name": "Signal Terminal",
+      "shortName": "Signal Terminal",
       "outerRoute": "/live-market-scanner",
-      "innerRoute": "/live-scanner",
+      "innerRoute": "/signal-terminal",
       "description": "Real-time market scanner, momentum breakouts & algorithmic signals",
       "badge": "LIVE",
-      "legacyRoutes": ["/ai-strategy/live", "/strategy/live"]
+      "legacyRoutes": ["/signal-terminal", "/ai-strategy/live", "/strategy/live", "/live-scanner", "/live-market-scanner", "/strategy-hub/live"]
     },
     {
-      "id": "strategy-hub",
-      "name": "Strategy Hub",
-      "shortName": "Strategy Hub",
-      "outerRoute": "/ai-strategy-hub",
-      "innerRoute": "/strategy-hub",
+      "id": "strategy-core",
+      "name": "AI Strategy Core",
+      "shortName": "AI Strategy Core",
+      "outerRoute": "/ai-strategy-core",
+      "innerRoute": "/strategy-core",
       "description": "Custom algorithmic trading logic, parameter tuning & rule engines",
       "badge": "QUANT",
-      "legacyRoutes": ["/strategy", "/ai-strategy", "/ai-strategy/strategy", "/strategy-hub"]
+      "legacyRoutes": ["/strategy-core", "/ai-strategy-core", "/strategy", "/ai-strategy", "/ai-strategy/strategy", "/strategy-hub", "/ai-strategy-hub", "/strategy-signal", "/strategy-hub/strategy"]
     }
   ],
   "utilityTools": [

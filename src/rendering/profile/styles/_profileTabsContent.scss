@@ -60,13 +60,13 @@
     border-radius: 8px;
     padding: 20px 22px;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    height: 100%;
+    height: auto;
     min-height: 0;
-    max-height: 100%;
+    max-height: none;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow: visible;
     flex: 1;
 
     .panelHeaderRow {

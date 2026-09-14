@@ -1,7 +1,9 @@
 /* ============================================================
    LIGHT THEME HIGH-CONTRAST SUPPORT FOR AI STRATEGY
    ============================================================ */
-:global(html.light) .aiStrategyWrapper {
+:global(html.light) .aiStrategyWrapper,
+:global(html[data-theme='light']) .aiStrategyWrapper,
+:global([data-theme='light']) .aiStrategyWrapper {
     color: #0F172A;
 
     .header {
@@ -45,6 +47,44 @@
                         background: rgba(24, 201, 139, 0.14) !important;
                         color: #047857 !important;
                     }
+                }
+            }
+        }
+    }
+
+    .strategyCategoryFilterBar {
+        background: #FFFFFF !important;
+        border-color: rgba(24, 201, 139, 0.25) !important;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+
+        .filterTitleGroup {
+            color: #0F172A;
+
+            .filterIcon {
+                color: #475569;
+            }
+        }
+
+        .categoryPill {
+            background: #F8FAFC;
+            color: #475569;
+            border-color: rgba(24, 201, 139, 0.2);
+
+            &:hover {
+                background: rgba(24, 201, 139, 0.1);
+                color: #047857;
+                border-color: #18C98B;
+            }
+
+            &.activeCategoryPill {
+                background: #00E5A3;
+                color: #041811;
+                border-color: #00E5A3;
+                box-shadow: 0 2px 10px rgba(0, 229, 163, 0.35);
+
+                &:hover {
+                    background: #18C98B;
+                    color: #041811;
                 }
             }
         }
@@ -638,3 +678,5 @@
         }
     }
 }
+
+

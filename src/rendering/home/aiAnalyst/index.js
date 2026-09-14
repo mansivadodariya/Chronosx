@@ -163,7 +163,7 @@ export default function AiAnalyst() {
   };
 
   return (
-    <section className={styles.aiAnalystSection} aria-label="ChronosX AI Trading Advisor Section">
+    <section className={styles.aiAnalystSection} aria-label="ChronosX AI Market Assistant Section">
       <div className="container">
         <div className={styles.mainGrid}>
           
@@ -178,7 +178,7 @@ export default function AiAnalyst() {
             <div className={styles.terminalContainer}>
               
               {/* Left Sidebar Navigation Dock */}
-              <aside className={styles.sidebarDock} aria-label="Advisor Mode Switcher">
+              <aside className={styles.sidebarDock} aria-label="Market Assistant Mode Switcher">
                 <div className={styles.sidebarTopGroup}>
                   
                   {/* 1. Chat Tab (Breakout Setup) */}
@@ -188,8 +188,8 @@ export default function AiAnalyst() {
                       type="button"
                       onClick={() => handleTabClick('chat')}
                       className={`${styles.dockIconBtn} ${activeSidebarTab === 'chat' ? styles.activeDockBtn : ''}`}
-                      title="AI Chat Advisor (XAU/USD Breakout)"
-                      aria-label="AI Chat Advisor"
+                      title="AI Market Assistant (XAU/USD Breakout)"
+                      aria-label="AI Market Assistant"
                     >
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
@@ -279,7 +279,7 @@ export default function AiAnalyst() {
                   <div className={styles.brandTitleRow}>
                     <img src={terminalLogo} alt="ChronosX" className={styles.terminalLogoImg} />
                     <span className={styles.headerDivider}>|</span>
-                    <span className={styles.headerSubtitle}>AI TRADING ADVISOR</span>
+                    <span className={styles.headerSubtitle}>AI MARKET ASSISTANT</span>
                   </div>
 
                   <div className={styles.onlineStatusBadge}>
@@ -334,7 +334,7 @@ export default function AiAnalyst() {
                                     <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z"/>
                                   </svg>
                                 </div>
-                                <span className={styles.aiBotName}>ChronosX Advisor</span>
+                                <span className={styles.aiBotName}>ChronosX Assistant</span>
                                 <span className={styles.verifiedSignalBadge}>
                                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                                     <circle cx="12" cy="12" r="10"/>
@@ -441,7 +441,7 @@ export default function AiAnalyst() {
                     type="text"
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
-                    placeholder="Ask ChronosX Advisor anything..."
+                    placeholder="Ask ChronosX Assistant anything..."
                     className={styles.terminalInput}
                   />
 
@@ -477,7 +477,7 @@ export default function AiAnalyst() {
           >
             <SectionHeader
               align="left"
-              badge="CHRONOSX · AI TRADING ADVISOR"
+              badge="CHRONOSX · AI MARKET ASSISTANT"
               title1="AI on Top of Verified Data."
               title2="Not Instead of It."
               description="Raw signals and setups originate from real-time market data and quantitative algorithms. ChronosX translates complex charts into plain English—explaining exactly why a setup triggered, filtering market scans, and validating your risk parameters in milliseconds."

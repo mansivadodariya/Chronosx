@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './dashboard.module.scss';
 import { dashboardApi } from '@/lib/api';
-import { supabase } from '@/lib/supabaseClient';
 import { CREDITS_UPDATED_EVENT } from '@/lib/credits';
 import { getStoredUserId } from '@/lib/authSession';
 import { useLanguage } from '@/context/LanguageContext';
@@ -15,6 +14,7 @@ import {
 } from './utils/dashboardHelpers';
 import DashboardHeroSection from './components/DashboardHeroSection';
 import DashboardStatsCards from './components/DashboardStatsCards';
+import DashboardMarketOverview from './components/DashboardMarketOverview';
 import DashboardRecentActivities from './components/DashboardRecentActivities';
 import DashboardToolsGrid from './components/DashboardToolsGrid';
 
@@ -23,8 +23,6 @@ export default function Dashboard() {
     const { t } = useLanguage();
     const [userId, setUserId] = useState('');
     const [stats, setStats] = useState(null);
-    const [recentActivity, setRecentActivity] = useState([]);
-    const [creditHistory, setCreditHistory] = useState([]);
     const [loading, setLoading] = useState(true);
     const [greeting, setGreeting] = useState('');
     const [name, setName] = useState('');
@@ -32,9 +30,9 @@ export default function Dashboard() {
     const [chartTimeframe, setChartTimeframe] = useState('7D');
     const [activeHoverPoint, setActiveHoverPoint] = useState(null);
 
-    const getGreeting = () => {
+    const getGreeting = useCallback(() => {
         return t('dashboard.hello', 'Hello');
-    };
+    }, [t]);
 
     useEffect(() => {
         const syncUser = () => {
@@ -45,177 +43,133 @@ export default function Dashboard() {
         syncUser();
         window.addEventListener('user:updated', syncUser);
         return () => window.removeEventListener('user:updated', syncUser);
-    }, []);
+    }, [getGreeting]);
 
-    useEffect(() => {
-        if (!userId) {
+    // Single unified API fetch for user dashboard
+    const fetchDashboardData = useCallback(async (uid) => {
+        if (!uid) {
             setLoading(false);
             return;
         }
-        let mounted = true;
-        const load = async () => {
-            setLoading(true);
-            try {
-                const [statsRes, recentRes, creditHistoryRes] = await Promise.allSettled([
-                    dashboardApi.getStats(userId),
-                    dashboardApi.getRecentActivity(userId),
-                    supabase
-                        ? supabase
-                            .from('credit_history')
-                            .select('*')
-                            .eq('user_id', userId)
-                            .order('created_at', { ascending: false })
-                        : Promise.resolve({ data: [] }),
-                ]);
-
-                if (!mounted) return;
-
-                const statsPayload =
-                    statsRes.status === 'fulfilled' ? (statsRes.value?.data ?? statsRes.value) : null;
-                setStats(statsPayload);
-
-                const recentPayload =
-                    recentRes.status === 'fulfilled' ? (recentRes.value?.data?.recent_activity ?? recentRes.value) : [];
-                setRecentActivity(Array.isArray(recentPayload) ? recentPayload : (recentPayload?.items || []));
-
-                const creditHistoryPayload =
-                    creditHistoryRes.status === 'fulfilled' ? (creditHistoryRes.value?.data || []) : [];
-                setCreditHistory(Array.isArray(creditHistoryPayload) ? creditHistoryPayload : []);
-            } finally {
-                if (mounted) setLoading(false);
+        setLoading(true);
+        try {
+            const res = await dashboardApi.getStats(uid);
+            const payload = res?.data ?? res ?? null;
+            if (payload) {
+                setStats(payload);
             }
-        };
-        load();
-        return () => {
-            mounted = false;
-        };
-    }, [userId]);
+        } catch (err) {
+            console.warn('Dashboard stats fetch error:', err);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchDashboardData(userId);
+    }, [userId, fetchDashboardData]);
 
     // Live update when credits are updated anywhere across the app
     useEffect(() => {
-        if (!userId || !supabase) return;
-        const refetchCredits = async () => {
-            try {
-                const { data } = await supabase
-                    .from('credit_history')
-                    .select('*')
-                    .eq('user_id', userId)
-                    .order('created_at', { ascending: false });
-                if (Array.isArray(data)) {
-                    setCreditHistory(data);
-                }
-            } catch (err) {
-                console.warn('Failed to refetch credit_history:', err);
-            }
+        if (!userId) return;
+        const refetchStats = () => {
+            fetchDashboardData(userId);
         };
-        window.addEventListener(CREDITS_UPDATED_EVENT, refetchCredits);
-        return () => window.removeEventListener(CREDITS_UPDATED_EVENT, refetchCredits);
-    }, [userId]);
-
-    const totalAccountCredits = useMemo(() => {
-        if (!Array.isArray(creditHistory) || creditHistory.length === 0) {
-            return stats?.total_credits ?? 0;
-        }
-        const added = creditHistory
-            .filter(c => {
-                const type = String(c?.transaction_type || '').toLowerCase();
-                return type === 'add' || type === 'deposit';
-            })
-            .reduce((sum, c) => sum + (Number(c?.amount) || 0), 0);
-        return added > 0 ? added : (stats?.total_credits ?? 0);
-    }, [creditHistory, stats]);
+        window.addEventListener(CREDITS_UPDATED_EVENT, refetchStats);
+        return () => window.removeEventListener(CREDITS_UPDATED_EVENT, refetchStats);
+    }, [userId, fetchDashboardData]);
 
     const handleExportPdf = () => {
         exportDashboardPdf({ name, stats });
     };
 
+    // Normalized Recent Activity from API response
     const recents = useMemo(() => {
-        const normalize = (item, index) => {
-            const type = item?.type || item?.activity_type || item?.kind || "";
-            const normalizedType = String(type).toLowerCase().includes("blog") ? "blog" : "chat";
+        const rawList = stats?.recent_activity || [];
+        if (!Array.isArray(rawList)) return [];
 
-            const rawSummary = item?.summary || item?.response || item?.short_response || item?.shortResponse || item?.answer || item?.content || "";
+        const normalized = rawList.map((item, index) => {
+            const rawType = String(item?.type || item?.activity_type || 'analysis').toLowerCase();
+            const normalizedType = (rawType.includes('chat') || rawType.includes('assistant')) ? 'chat' : 'analysis';
+
+            const rawSummary = item?.summary || item?.description || item?.response || '';
             const summary = extractCleanText(rawSummary);
-            const rawTitle = item?.title || item?.question || item?.message || "Recent item";
+            const rawTitle = item?.title || item?.pair || item?.symbol || 'Recent Item';
             const title = extractCleanText(rawTitle);
 
             return {
                 type: normalizedType,
-                id: item?.id || item?.activity_id || item?.chat_id || item?.created_at || index,
-                title: typeof title === 'string' && title.length > 0 ? title : "Recent item",
+                id: item?.id || item?.activity_id || index,
+                title: typeof title === 'string' && title.length > 0 ? title : 'Recent Item',
                 summary,
-                pair: item?.pair || item?.symbol || "",
-                created_at: item?.created_at || item?.createdAt || item?.time || "",
+                description: item?.description || summary,
+                signal: item?.signal || item?.action || null,
+                timeframe: item?.timeframe || '',
+                pair: item?.pair || item?.symbol || '',
+                created_at: item?.created_at || item?.createdAt || '',
             };
-        };
-
-        const list = (Array.isArray(recentActivity) ? recentActivity : [])
-            .map(normalize)
-            .sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
+        });
 
         if (activityFilter === 'chat') {
-            return list.filter(i => i.type === 'chat').slice(0, 4);
+            return normalized.filter(i => i.type === 'chat').slice(0, 5);
         }
-        if (activityFilter === 'blog') {
-            return list.filter(i => i.type === 'blog').slice(0, 4);
+        if (activityFilter === 'analysis' || activityFilter === 'blog') {
+            return normalized.filter(i => i.type === 'analysis').slice(0, 5);
         }
-        return list.slice(0, 4);
-    }, [recentActivity, activityFilter]);
+        return normalized.slice(0, 5);
+    }, [stats?.recent_activity, activityFilter]);
 
     const openRecent = (item) => {
-        const params = new URLSearchParams();
-        params.set('tab', item.type);
-        params.set('open', String(item.id));
-        router.push(`/market-assistant?${params.toString()}`);
+        if (item.type === 'analysis') {
+            router.push('/chart-scanner');
+        } else {
+            const params = new URLSearchParams();
+            params.set('tab', 'chat');
+            if (item.id) params.set('open', String(item.id));
+            if (item.pair) params.set('pair', String(item.pair));
+            router.push(`/market-assistant?${params.toString()}`);
+        }
     };
 
+    // Daily Credit Consumption Chart spline points calculation
     const dailyCreditChartData = useMemo(() => {
-        const today = new Date();
-        const numDays = chartTimeframe === '90D' ? 90 : chartTimeframe === '30D' ? 30 : 7;
+        let rawPoints = [];
 
-        // Group real deductions from Supabase credit_history by user local date (YYYY-MM-DD)
-        const usageByDate = {};
-        if (Array.isArray(creditHistory)) {
-            creditHistory.forEach((item) => {
-                const type = String(item?.transaction_type || '').toLowerCase();
-                const isDeduction = type === 'deduct' || type === 'debit' || (type !== 'add' && type !== 'deposit');
-                if (isDeduction && item?.created_at) {
-                    const d = new Date(item.created_at);
-                    if (!isNaN(d.getTime())) {
-                        const year = d.getFullYear();
-                        const month = String(d.getMonth() + 1).padStart(2, '0');
-                        const day = String(d.getDate()).padStart(2, '0');
-                        const key = `${year}-${month}-${day}`;
-                        usageByDate[key] = (usageByDate[key] || 0) + (Number(item.amount) || 0);
-                    }
-                }
+        // 1. Primary: Use daily_usage array from backend API response
+        if (Array.isArray(stats?.daily_usage) && stats.daily_usage.length > 0) {
+            rawPoints = stats.daily_usage.map((item, idx) => {
+                const creditsVal = Number(item?.credits_used ?? item?.credits ?? 0);
+                const isToday = item?.label === 'Today' || item?.is_today === true || idx === stats.daily_usage.length - 1;
+                return {
+                    dateFormatted: item?.label || item?.date || `Day ${idx + 1}`,
+                    dateKey: item?.date || `day-${idx}`,
+                    credits: creditsVal,
+                    isToday,
+                    idx,
+                };
             });
-        }
+        } else {
+            // 2. Fallback: Generate 7-day default baseline dates
+            const today = new Date();
+            const numDays = 7;
+            for (let i = numDays - 1; i >= 0; i--) {
+                const d = new Date(today);
+                d.setDate(today.getDate() - i);
+                const dayNum = d.getDate();
+                const monthShort = d.toLocaleString('en-US', { month: 'short' });
+                const dateFormatted = i === 0 ? t('dashboard.today', 'Today') : `${dayNum} ${monthShort}`;
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
 
-        const rawPoints = [];
-        for (let i = numDays - 1; i >= 0; i--) {
-            const d = new Date(today);
-            d.setDate(today.getDate() - i);
-
-            const year = d.getFullYear();
-            const month = String(d.getMonth() + 1).padStart(2, '0');
-            const day = String(d.getDate()).padStart(2, '0');
-            const dateKey = `${year}-${month}-${day}`;
-
-            const dayNum = d.getDate();
-            const monthShort = d.toLocaleString('en-US', { month: 'short' });
-            const dateFormatted = i === 0 ? t('dashboard.today', 'Today') : `${dayNum} ${monthShort}`;
-
-            const recorded = usageByDate[dateKey];
-            const creditsVal = typeof recorded === 'number' ? recorded : 0;
-
-            rawPoints.push({
-                dateFormatted,
-                dateKey,
-                credits: creditsVal,
-                isToday: i === 0,
-                idx: numDays - 1 - i,
-            });
+                rawPoints.push({
+                    dateFormatted,
+                    dateKey: `${year}-${month}-${day}`,
+                    credits: 0,
+                    isToday: i === 0,
+                    idx: numDays - 1 - i,
+                });
+            }
         }
 
         const maxVal = Math.max(...rawPoints.map((p) => p.credits), 10);
@@ -245,32 +199,21 @@ export default function Dashboard() {
         }
 
         const pathArea = `${pathLine} L ${points[points.length - 1].x} 170 L ${points[0].x} 170 Z`;
-        const totalUsed = points.reduce((sum, p) => sum + p.credits, 0);
+        const totalUsed = stats?.total_credits_used ?? points.reduce((sum, p) => sum + p.credits, 0);
 
-        // Compute clean milestone labels for X-axis
-        let labels = [];
-        if (numDays === 7) {
-            labels = points;
-        } else {
-            const step = Math.floor((totalPoints - 1) / 5);
-            const labelIndices = new Set();
-            for (let s = 0; s < totalPoints; s += step) {
-                labelIndices.add(s);
-            }
-            labelIndices.add(totalPoints - 1);
-            labels = points.filter((_, idx) => labelIndices.has(idx));
-        }
-
-        const displayPoints = numDays === 7
-            ? points
-            : points.filter((p, idx) => p.credits > 0 || p.isToday || idx % 5 === 0);
-
-        return { points, displayPoints, labels, pathLine, pathArea, totalUsed };
-    }, [creditHistory, chartTimeframe, t]);
+        return {
+            points,
+            displayPoints: points,
+            labels: points,
+            pathLine,
+            pathArea,
+            totalUsed
+        };
+    }, [stats?.daily_usage, stats?.total_credits_used, t]);
 
     return (
         <div className={styles.modernDashboard}>
-            {/* Holographic Hero Terminal & Daily Stats Side Card */}
+            {/* 1. Holographic Hero Terminal & Daily Stats Side Card */}
             <div className={styles.topHeroRowGrid}>
                 <DashboardHeroSection
                     greeting={greeting}
@@ -285,14 +228,24 @@ export default function Dashboard() {
                 <DashboardStatsCards
                     loading={loading}
                     stats={stats}
-                    totalAccountCredits={totalAccountCredits}
+                    totalAccountCredits={stats?.total_credits ?? 10002}
                     handleExportPdf={handleExportPdf}
                     router={router}
                 />
             </div>
 
-            {/* Split Section: Recent Activity & AI Quick Hub */}
-            <div className={styles.splitBottomGrid}>
+            {/* 2. Full-Width Row: Quick Actions Hub (All cards in one row) */}
+            <div className={styles.quickActionsRowFull}>
+                <DashboardToolsGrid />
+            </div>
+
+            {/* 3. Split Row: Market Overview & Recent Activity Feed side by side */}
+            <div className={styles.splitMarketFeedGrid}>
+                <DashboardMarketOverview
+                    initialItems={stats?.market_overview}
+                    userId={userId}
+                />
+
                 <DashboardRecentActivities
                     loading={loading}
                     recents={recents}
@@ -300,8 +253,6 @@ export default function Dashboard() {
                     setActivityFilter={setActivityFilter}
                     openRecent={openRecent}
                 />
-
-                <DashboardToolsGrid />
             </div>
         </div>
     );

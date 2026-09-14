@@ -36,8 +36,8 @@ export default function DashboardRecentActivities({
                     </button>
                     <button
                         type="button"
-                        className={`${styles.filterTab} ${activityFilter === 'blog' ? styles.filterTabActive : ''}`}
-                        onClick={() => setActivityFilter('blog')}
+                        className={`${styles.filterTab} ${(activityFilter === 'analysis' || activityFilter === 'blog') ? styles.filterTabActive : ''}`}
+                        onClick={() => setActivityFilter('analysis')}
                     >
                         {t('dashboard.tabScanner', 'AI Chart Scanner')}
                     </button>
@@ -74,6 +74,7 @@ export default function DashboardRecentActivities({
                     <div className={styles.activityItemsList}>
                         {recents.map((item) => {
                             const { title, description, signal } = formatRecentActivityItem(item);
+                            const isScanner = item.type === 'analysis' || item.type === 'blog';
                             return (
                                 <div
                                     key={`${item.type}-${item.id}`}
@@ -81,7 +82,7 @@ export default function DashboardRecentActivities({
                                     onClick={() => openRecent(item)}
                                 >
                                     <div className={styles.actTypeIcon}>
-                                        {item.type === 'blog' ? (
+                                        {isScanner ? (
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2">
                                                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
                                                 <circle cx="12" cy="13" r="4" />
@@ -101,7 +102,7 @@ export default function DashboardRecentActivities({
                                         <div className={styles.actHeaderRow}>
                                             <strong className={styles.actMainTitle}>{title}</strong>
                                             <span className={styles.actTypeTag}>
-                                                {item.type === 'blog' ? t('dashboard.tabScanner', 'AI Chart Scanner') : t('dashboard.tabAssistant', 'AI Market Assistant')}
+                                                {isScanner ? t('dashboard.tabScanner', 'AI Chart Scanner') : t('dashboard.tabAssistant', 'AI Market Assistant')}
                                             </span>
                                             {signal && (
                                                 <span className={`${styles.actSignalTag} ${signal.includes('BUY') ? styles.signalBuy : styles.signalSell}`}>

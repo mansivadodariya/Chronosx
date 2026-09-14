@@ -19,16 +19,22 @@ const ROUTE_TAB_MAP = {
     '/dashboard': 'Dashboard',
     '/chart-scanner': 'AI Chart Scanner',
     '/ai-chart-scanner': 'AI Chart Scanner',
-    '/trade-audit': 'AI Trade Audit',
-    '/ai-trade-audit': 'AI Trade Audit',
+    '/trade-audit': 'AI Trade Advisor',
+    '/ai-trade-audit': 'AI Trade Advisor',
+    '/trade-advisor': 'AI Trade Advisor',
+    '/ai-trade-advisor': 'AI Trade Advisor',
     '/market-assistant': 'AI Market Assistant',
     '/ai-market-assistant': 'AI Market Assistant',
-    '/live-scanner': 'Live Market Scanner',
-    '/live-market-scanner': 'Live Market Scanner',
-    '/strategy-hub': 'Strategy Hub',
-    '/ai-strategy-hub': 'Strategy Hub',
-    '/strategy-hub/live': 'Live Market Scanner',
-    '/strategy-hub/strategy': 'Strategy Playbooks',
+    '/live-scanner': 'Signal Terminal',
+    '/live-market-scanner': 'Signal Terminal',
+    '/signal-terminal': 'Signal Terminal',
+    '/strategy-hub': 'AI Strategy Core',
+    '/ai-strategy-hub': 'AI Strategy Core',
+    '/strategy-core': 'AI Strategy Core',
+    '/ai-strategy-core': 'AI Strategy Core',
+    '/strategy-hub/live': 'Signal Terminal',
+    '/strategy-hub/strategy': 'Strategy Signal',
+    '/strategy-signal': 'Strategy Signal',
     '/tools': 'Tools',
     '/calendar': 'Economic Calendar',
     '/economic-calendar': 'Economic Calendar',
@@ -56,7 +62,6 @@ const layout = ({ children }) => {
     const [showCreditsModal, setShowCreditsModal] = useState(false);
     const [userId, setUserId] = useState('');
     const [isTabAllowed, setIsTabAllowed] = useState(true);
-    const isCheckingRef = React.useRef(false);
 
     useEffect(() => {
         const checkMobile = () => {
@@ -181,49 +186,45 @@ const layout = ({ children }) => {
         const checkPermission = async () => {
             if (!supabase) return;
             const currentTabName = Object.entries(ROUTE_TAB_MAP).find(([route]) =>
-                pathname === route || pathname.startsWith(`${route}/`)
+                pathname === route || (route !== '/' && pathname.startsWith(`${route}/`))
             )?.[1];
 
             if (
                 !currentTabName ||
+                currentTabName === 'Dashboard' ||
                 currentTabName === 'Tools' ||
                 currentTabName === 'Economic Calendar' ||
                 currentTabName === 'Forex Calculator' ||
+                currentTabName === 'Market News' ||
+                currentTabName === 'Credit History' ||
                 currentTabName === 'Affiliate' ||
-                currentTabName.toLowerCase() === 'ai trade analysis' ||
-                currentTabName.toLowerCase() === 'ai trade audit'
+                currentTabName === 'Profile'
             ) {
                 setIsTabAllowed(true);
                 return;
             }
 
             try {
-                const { data: visibleTabs, error } = await supabase.rpc('get_visible_dashboard_tabs');
-                if (!error && Array.isArray(visibleTabs)) {
-                    const isVisible = visibleTabs.some(
-                        (tab) => {
-                            const name = (tab.name || '').toLowerCase();
-                            const cur = currentTabName.toLowerCase();
-                            return (
-                                name === cur ||
-                                ((cur.includes('chart scanner') || cur === 'market snapshot & scanner') &&
-                                    (name === 'ai chart scanner' || name === 'chart-scanner' || name === 'ai trade' || name === 'ai-trade' || name === 'trade-snap' || name === 'trade snap')) ||
-                                ((cur.includes('trade audit') || cur.includes('trade analysis')) &&
-                                    (name === 'ai trade audit' || name === 'trade-audit' || name === 'ai trade analysis' || name === 'trade-analysis' || name === 'trade analysis' || name === 'ai-trade-analysis' || name === 'ai-past-trade-analyzer' || name === 'ai trade')) ||
-                                ((cur.includes('market assistant') || cur.includes('trading advisor')) &&
-                                    (name === 'ai market assistant' || name === 'market-assistant' || name === 'ai chat' || name === 'ai-chat' || name === 'ai assistant' || name === 'ai-assistant')) ||
-                                ((cur.includes('strategy') || cur.includes('strategy hub')) &&
-                                    (name === 'strategy hub' || name === 'strategy-hub' || name === 'ai strategy' || name === 'ai-strategy' || name === 'strategy')) ||
-                                ((cur.includes('live') || cur.includes('live scanner')) &&
-                                    (name === 'live market scanner' || name === 'live-scanner' || name === 'live analysis' || name === 'ai strategy' || name === 'strategy hub'))
-                            ) && tab.is_visible === true;
-                        }
-                    );
-                    setIsTabAllowed(isVisible);
-                } else {
-                    setIsTabAllowed(true);
+                const { data, error } = await supabase.rpc('get_visible_dashboard_tabs');
+                if (!error && Array.isArray(data)) {
+                    const visibleNames = data.map(t => (t.name || '').toLowerCase());
+                    const currentLower = currentTabName.toLowerCase();
+                    const isAllowed = visibleNames.some(name => {
+                        if (name === currentLower) return true;
+                        if (currentLower === 'ai trade advisor' && (name.includes('trade advisor') || name.includes('trade audit') || name.includes('trade analysis') || name.includes('trade-audit') || name.includes('trade-analysis') || name.includes('ai trade'))) return true;
+                        if (currentLower === 'signal terminal' && (name.includes('signal terminal') || name.includes('live market scanner') || name.includes('live-scanner') || name.includes('live analysis') || name.includes('strategy hub'))) return true;
+                        if (currentLower === 'ai strategy core' && (name.includes('ai strategy core') || name.includes('strategy core') || name.includes('strategy hub') || name.includes('strategy-hub') || name.includes('ai strategy') || name.includes('strategy'))) return true;
+                        if (currentLower === 'strategy signal' && (name.includes('strategy signal') || name.includes('strategy playbooks') || name.includes('strategy hub') || name.includes('ai strategy') || name.includes('strategy'))) return true;
+                        if (currentLower === 'ai chart scanner' && (name.includes('chart scanner') || name.includes('market snapshot') || name.includes('chart-scanner') || name.includes('ai trade'))) return true;
+                        if (currentLower === 'ai market assistant' && (name.includes('market assistant') || name.includes('trading advisor') || name.includes('ai chat') || name.includes('ai assistant'))) return true;
+                        if (currentLower === 'subscription plans' && name.includes('subscription plans')) return true;
+                        if (currentLower === 'broker' && name.includes('broker')) return true;
+                        return false;
+                    });
+                    setIsTabAllowed(isAllowed);
                 }
-            } catch (err) {
+            } catch (e) {
+                console.warn("Failed to check tab permissions:", e);
                 setIsTabAllowed(true);
             }
         };
@@ -296,4 +297,3 @@ const layout = ({ children }) => {
 }
 
 export default layout;
-

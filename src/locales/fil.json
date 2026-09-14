@@ -2,22 +2,22 @@
   "nav": {
     "home": "Tahanan",
     "chartScanner": "AI Chart Scanner",
-    "tradeAudit": "AI Trade Audit",
+    "tradeAudit": "AI Trade Advisor",
     "marketAssistant": "AI Market Assistant",
-    "liveMarketScanner": "Live Market Scanner",
-    "strategyHub": "Strategy Hub",
-    "strategyPlaybooks": "Strategy Playbooks",
+    "liveMarketScanner": "Signal Terminal",
+    "strategyHub": "AI Strategy Core",
+    "strategyPlaybooks": "Strategy Signal",
     "marketSnapshot": "AI Chart Scanner",
     "aiTrade": "AI Chart Scanner",
     "aiTradingAdvisor": "AI Market Assistant",
     "aiChat": "AI Market Assistant",
-    "aiStrategy": "Strategy Hub",
-    "aiStrategyHub": "Strategy Hub",
+    "aiStrategy": "AI Strategy Core",
+    "aiStrategyHub": "AI Strategy Core",
     "aiStrategyDesc": "Bumuo, subukan at i-optimize ang mga diskarte sa pag-trade na pinapagana ng AI.",
-    "liveAnalysis": "Live Market Scanner",
-    "liveMarketAnalysis": "Live Market Scanner",
-    "strategyEnginePlaybooks": "Strategy Playbooks",
-    "aiTradeAnalysis": "AI Trade Audit",
+    "liveAnalysis": "Signal Terminal",
+    "liveMarketAnalysis": "Signal Terminal",
+    "strategyEnginePlaybooks": "Strategy Signal",
+    "aiTradeAnalysis": "AI Trade Advisor",
     "tools": "Mga tool",
     "economicCalendar": "Kalendaryong Pang-ekonomiya",
     "forexCalculator": "Forex Calculator",
@@ -579,9 +579,9 @@
     "toolScanner": "AI Chart Scanner",
     "toolAssistant": "AI Market Assistant",
     "startChatting": "Simulan ang Pakikipag-usap",
-    "toolLiveScanner": "Live Market Scanner",
+    "toolLiveScanner": "Signal Terminal",
     "openTerminal": "Buksan ang Terminal",
-    "toolTradeAudit": "AI Trade Audit",
+    "toolTradeAudit": "AI Trade Advisor",
     "auditStatements": "Suriin ang mga Pahayag",
     "toolForexRisk": "Forex at Risk Calculators",
     "openCalculators": "Buksan ang mga Calculator",
@@ -856,19 +856,19 @@
         "badge": "LIVE AI"
       },
       "liveScanner": {
-        "title": "Live Market Scanner",
+        "title": "Signal Terminal",
         "desc": "Mga signal ng algorithmic breakout, live momentum radar at mga alerto",
         "badge": "LIVE"
       },
       "strategyHub": {
-        "title": "Strategy Hub",
+        "title": "AI Strategy Core",
         "desc": "Algorithmic backtesting, quantitative playbooks at mga signal ng diskarte",
         "badge": "QUANT"
       }
     },
     "tradingTools": {
       "tradeAudit": {
-        "title": "AI Trade Audit",
+        "title": "AI Trade Advisor",
         "desc": "Suriin ang data ng kalakalan sa kasaysayan upang suriin ang pagganap at mga rate ng panalo.",
         "badge": "AI AUDIT"
       },
@@ -1024,9 +1024,9 @@
       "card1Desc": "Mabilis na pag-screen sa merkado, pagtuklas ng pattern, at chart vision.",
       "card2Title": "AI MARKET ASSISTANT",
       "card2Desc": "Natural na wika ng katalinuhan sa merkado at konteksto ng balita.",
-      "card3Title": "LIVE MARKET SCANNER",
+      "card3Title": "SIGNAL TERMINAL",
       "card3Desc": "Real-time na pagtuklas ng breakout at live momentum radar.",
-      "card4Title": "STRATEGY HUB",
+      "card4Title": "AI STRATEGY CORE",
       "card4Desc": "Algorithmic backtesting, quantitative playbooks, at custom na mga panuntunan."
     },
     "howItWorks": {

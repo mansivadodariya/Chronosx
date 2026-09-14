@@ -1,0 +1,468 @@
+/* ============================================================
+   MARKET OVERVIEW CARD
+   ============================================================ */
+.radarSectionRow {
+    width: 100%;
+}
+
+.marketOverviewCard {
+    background: 
+        radial-gradient(ellipse 60% 50% at 50% 0%, rgba(24, 201, 139, 0.07) 0%, transparent 70%),
+        #0A0D0C;
+    border: 1px solid rgba(24, 201, 139, 0.16);
+    border-radius: 16px;
+    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+    transition: all 0.25s ease;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+
+    &:hover {
+        border-color: rgba(24, 201, 139, 0.28);
+        box-shadow: 0 6px 28px rgba(0, 0, 0, 0.55), 0 0 16px rgba(24, 201, 139, 0.08);
+    }
+
+    /* 1. Header with Title & Category Tabs */
+    .overviewHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 14px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+        .overviewTitleWrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .overviewIconPulse {
+                width: 32px;
+                height: 32px;
+                border-radius: 9px;
+                background: rgba(24, 201, 139, 0.12);
+                border: 1px solid rgba(24, 201, 139, 0.3);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+
+            .overviewTitleText {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                h3 {
+                    color: #FFFFFF;
+                    font-size: 16.5px;
+                    font-weight: 700;
+                    margin: 0;
+                    font-family: "Euclid-Bold", sans-serif;
+                    letter-spacing: -0.2px;
+
+                    @include respond-to('sm') {
+                        font-size: 15px;
+                    }
+                }
+
+                .liveStreamBadge {
+                    font-size: 9px;
+                    font-weight: 800;
+                    color: #18C98B;
+                    background: rgba(24, 201, 139, 0.12);
+                    border: 1px solid rgba(24, 201, 139, 0.35);
+                    border-radius: 4px;
+                    padding: 2px 6px;
+                    letter-spacing: 0.6px;
+                }
+            }
+        }
+
+        .overviewTabsRow {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow-x: auto;
+            max-width: 100%;
+            padding-bottom: 2px;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            .overviewTabBtn {
+                padding: 6px 13px;
+                border-radius: 8px;
+                font-size: 12.5px;
+                font-weight: 600;
+                color: #94A3B8;
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.07);
+                cursor: pointer;
+                transition: all 0.2s ease;
+                white-space: nowrap;
+
+                &:hover {
+                    color: #FFFFFF;
+                    background: rgba(255, 255, 255, 0.06);
+                    border-color: rgba(255, 255, 255, 0.14);
+                }
+
+                &.overviewTabActive {
+                    color: #18C98B;
+                    background: rgba(24, 201, 139, 0.12);
+                    border-color: rgba(24, 201, 139, 0.4);
+                    box-shadow: 0 0 10px rgba(24, 201, 139, 0.15);
+                }
+            }
+        }
+    }
+
+    /* 2. Table Layout */
+    .overviewTableWrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .overviewTableHeader {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            user-select: none;
+        }
+
+        .overviewTableBody {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .colInstrument {
+            flex: 1.4;
+            min-width: 160px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .colPrice {
+            flex: 1;
+            min-width: 100px;
+            text-align: right;
+            font-family: monospace, sans-serif;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #FFFFFF;
+            padding-right: 18px;
+            transition: color 0.3s ease;
+
+            &.priceUp {
+                color: #10B981 !important;
+                text-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+            }
+
+            &.priceDown {
+                color: #F43F5E !important;
+                text-shadow: 0 0 8px rgba(244, 63, 94, 0.5);
+            }
+        }
+
+        .colTrend {
+            flex: 1;
+            min-width: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .colChange {
+            flex: 0.9;
+            min-width: 90px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .overviewRow {
+            display: flex;
+            align-items: center;
+            padding: 11px 12px;
+            border-radius: 9px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.035);
+                transform: translateX(2px);
+            }
+
+            &.flashUp {
+                background: rgba(16, 185, 129, 0.06);
+            }
+
+            &.flashDown {
+                background: rgba(244, 63, 94, 0.06);
+            }
+
+            .flagPairContainer {
+                display: flex;
+                align-items: center;
+                position: relative;
+                width: 32px;
+                height: 24px;
+                flex-shrink: 0;
+
+                .flagDisc {
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+                    border: 1px solid rgba(255, 255, 255, 0.15);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1;
+
+                    svg {
+                        display: block;
+                    }
+
+                    &.flagDiscOverlap {
+                        margin-left: -8px;
+                        z-index: 2;
+                    }
+                }
+            }
+
+            .assetBadgeGold,
+            .assetBadgeSilver,
+            .assetBadgeOil,
+            .assetBadgeBtc,
+            .assetBadgeEth,
+            .assetBadgeSol,
+            .assetBadgeBnb,
+            .assetBadgeIndex {
+                width: 30px;
+                height: 30px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+            }
+
+            .assetBadgeGold {
+                background: rgba(245, 158, 11, 0.12);
+                border-color: rgba(245, 158, 11, 0.3);
+            }
+
+            .assetBadgeSilver {
+                background: rgba(148, 163, 184, 0.12);
+                border-color: rgba(148, 163, 184, 0.3);
+            }
+
+            .assetBadgeOil {
+                background: rgba(234, 88, 12, 0.12);
+                border-color: rgba(234, 88, 12, 0.3);
+            }
+
+            .assetBadgeBtc {
+                background: rgba(247, 147, 26, 0.12);
+                border-color: rgba(247, 147, 26, 0.3);
+            }
+
+            .assetBadgeEth {
+                background: rgba(98, 126, 234, 0.12);
+                border-color: rgba(98, 126, 234, 0.3);
+            }
+
+            .assetBadgeSol {
+                background: rgba(20, 241, 149, 0.12);
+                border-color: rgba(20, 241, 149, 0.3);
+            }
+
+            .assetBadgeBnb {
+                background: rgba(243, 186, 47, 0.12);
+                border-color: rgba(243, 186, 47, 0.3);
+            }
+
+            .assetBadgeIndex {
+                background: rgba(56, 189, 248, 0.12);
+                border-color: rgba(56, 189, 248, 0.3);
+            }
+
+            .instrumentMeta {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5px;
+                min-width: 0;
+
+                .instrumentPair {
+                    color: #FFFFFF;
+                    font-size: 13.5px;
+                    font-weight: 700;
+                    letter-spacing: 0.2px;
+                }
+
+                .instrumentDisplay {
+                    color: #94A3B8;
+                    font-size: 11.5px;
+                    font-weight: 500;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+
+            .changePill {
+                font-size: 11.5px;
+                font-weight: 700;
+                padding: 3px 8px;
+                border-radius: 5px;
+                display: inline-flex;
+                align-items: center;
+                letter-spacing: 0.2px;
+
+                &.pillPositive {
+                    color: #10B981;
+                    background: rgba(16, 185, 129, 0.12);
+                    border: 1px solid rgba(16, 185, 129, 0.25);
+                }
+
+                &.pillNegative {
+                    color: #F43F5E;
+                    background: rgba(244, 63, 94, 0.12);
+                    border: 1px solid rgba(244, 63, 94, 0.25);
+                }
+            }
+        }
+    }
+
+    /* 3. Footer Link */
+    .overviewFooter {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+        .viewAllMarketsLink {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #18C98B;
+            font-size: 12.5px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s ease;
+
+            svg {
+                transition: transform 0.2s ease;
+            }
+
+            &:hover {
+                color: #2DE0A1;
+                text-decoration: underline;
+
+                svg {
+                    transform: translateX(3px);
+                }
+            }
+        }
+    }
+}
+
+/* Light Theme Overrides */
+[data-theme='light'] {
+    .marketOverviewCard {
+        background: #FFFFFF !important;
+        border-color: rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06) !important;
+
+        .overviewHeader {
+            border-bottom-color: rgba(15, 23, 42, 0.06) !important;
+
+            .overviewTitleWrap {
+                .overviewTitleText {
+                    h3 {
+                        color: #0F172A !important;
+                    }
+                }
+            }
+
+            .overviewTabsRow {
+                .overviewTabBtn {
+                    color: #64748B !important;
+                    background: #F1F5F9 !important;
+                    border-color: #E2E8F0 !important;
+
+                    &:hover {
+                        color: #0F172A !important;
+                        background: #E2E8F0 !important;
+                    }
+
+                    &.overviewTabActive {
+                        color: #059669 !important;
+                        background: #ECFDF5 !important;
+                        border-color: #A7F3D0 !important;
+                    }
+                }
+            }
+        }
+
+        .overviewTableWrapper {
+            .overviewTableHeader {
+                color: #94A3B8 !important;
+                border-bottom-color: rgba(15, 23, 42, 0.06) !important;
+            }
+
+            .colPrice {
+                color: #0F172A !important;
+            }
+
+            .overviewRow {
+                border-bottom-color: rgba(15, 23, 42, 0.04) !important;
+
+                &:hover {
+                    background: #F8FAFC !important;
+                }
+
+                .instrumentMeta {
+                    .instrumentPair {
+                        color: #0F172A !important;
+                    }
+                    .instrumentDisplay {
+                        color: #64748B !important;
+                    }
+                }
+            }
+        }
+
+        .overviewFooter {
+            border-top-color: rgba(15, 23, 42, 0.06) !important;
+
+            .viewAllMarketsLink {
+                color: #059669 !important;
+            }
+        }
+    }
+}

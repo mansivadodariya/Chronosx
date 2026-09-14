@@ -217,28 +217,26 @@
         }
       }
 
+      .lightweightChartWrapper,
+      [class*="lightweightChartWrapper"],
       .svgChartContainer,
       [class*="svgChartContainer"] {
         background: #FFFFFF !important;
       }
 
-      .visibleGridOverlay,
-      [class*="visibleGridOverlay"] {
-        .gridRow,
-        .gridCol,
-        [class*="gridRow"],
-        [class*="gridCol"] {
-          border-color: rgba(226, 232, 240, 0.8) !important;
-        }
-      }
+      .chartOhlcHud,
+      [class*="chartOhlcHud"] {
+        background: rgba(255, 255, 255, 0.9) !important;
+        border-color: #E2E8F0 !important;
 
-      .yAxisScaleGutter,
-      [class*="yAxisScaleGutter"] {
-        background: #F8FAFC !important;
-        border-left: 1px solid #E2E8F0 !important;
-        span { 
-          color: #64748B !important; 
-          font-weight: 600 !important;
+        .hudItem span,
+        [class*="hudItem"] span {
+          color: #0F172A !important;
+        }
+
+        .hudLabel,
+        [class*="hudLabel"] {
+          color: #64748B !important;
         }
       }
 

@@ -4,52 +4,27 @@
     flex-direction: column;
     gap: 16px;
     min-width: 0;
-    height: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: auto;
+    max-height: none;
     min-height: 0;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
     box-sizing: border-box;
-
-    @include respond-to('md') {
-        height: auto;
-        max-height: none;
-        overflow: visible;
-    }
 }
 
 .profileTabWrapper {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    height: 100%;
-    min-height: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-right: 4px;
-
-    /* Custom Sleek Scrollbar */
-    &::-webkit-scrollbar {
-        width: 6px;
-    }
-    &::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.02);
-        border-radius: 4px;
-    }
-    &::-webkit-scrollbar-thumb {
-        background: rgba(24, 201, 139, 0.3);
-        border-radius: 4px;
-        transition: background 0.2s ease;
-
-        &:hover {
-            background: rgba(24, 201, 139, 0.6);
-        }
-    }
-    scrollbar-width: thin;
-    scrollbar-color: rgba(24, 201, 139, 0.3) transparent;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    padding-right: 0;
 }
 
-/* Hero Profile Card */
+/* Unified Personal Details & Profile Info Card */
+.personalDetailsCard,
 .heroProfileCard {
     background:
         radial-gradient(ellipse 40% 70% at 100% 0%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 80%),
@@ -62,6 +37,7 @@
     position: relative;
     overflow: hidden;
 
+    .detailsCardHeader,
     .heroCardHeader {
         display: flex;
         align-items: center;
@@ -69,6 +45,7 @@
         gap: 16px;
         border-bottom: 1px solid rgba(24, 201, 139, 0.15);
         padding-bottom: 16px;
+        margin-bottom: 16px;
 
         .heroCardHeaderLeft {
             display: flex;
@@ -115,6 +92,7 @@
             font-family: "Euclid-Medium", sans-serif;
             cursor: pointer;
             transition: all 0.2s ease;
+            flex-shrink: 0;
 
             &:hover {
                 background: #18C98B;
@@ -125,11 +103,12 @@
         }
     }
 
+    /* Hero User Meta */
     .heroCardBody {
         display: flex;
         align-items: center;
-        gap: 22px;
-        padding-top: 18px;
+        gap: 20px;
+        padding-bottom: 18px;
 
         @include respond-to('sm') {
             flex-direction: column;
@@ -142,8 +121,8 @@
         flex-shrink: 0;
 
         .avatarCircle {
-            width: 84px;
-            height: 84px;
+            width: 76px;
+            height: 76px;
             border-radius: 50%;
             border: 2px solid #18C98B;
             background: #0D0E13;
@@ -153,7 +132,7 @@
             box-shadow: 0 0 20px rgba(24, 201, 139, 0.25);
 
             .avatarInitialsText {
-                font-size: 30px;
+                font-size: 26px;
                 font-weight: 700;
                 color: #18C98B;
                 font-family: "Euclid-Bold", sans-serif;
@@ -207,59 +186,38 @@
             }
         }
 
-        .uidRow {
-            color: rgba(255, 255, 255, 0.45);
-            font-size: 12px;
-            font-family: "Euclid-Medium", sans-serif;
-            letter-spacing: 0.5px;
-        }
-
-        .joinedRow {
+        .metaBadgesRow {
             display: flex;
             align-items: center;
-            gap: 6px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 12px;
+            gap: 10px;
+            flex-wrap: wrap;
             margin-top: 2px;
+
+            .uidBadge {
+                color: rgba(255, 255, 255, 0.55);
+                font-size: 11.5px;
+                font-family: "Euclid-Medium", sans-serif;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                padding: 2px 8px;
+                border-radius: 6px;
+                letter-spacing: 0.3px;
+            }
+
+            .joinedBadge {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                color: rgba(255, 255, 255, 0.5);
+                font-size: 12px;
+            }
         }
     }
-}
 
-/* Personal Details Card */
-.personalDetailsCard {
-    background:
-        radial-gradient(ellipse 40% 70% at 100% 0%, rgba(24, 201, 139, 0.18) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 80%),
-        radial-gradient(ellipse 40% 70% at 0% 100%, rgba(0, 242, 254, 0.1) 0%, transparent 75%),
-        #121514;
-    border: 1px solid rgba(24, 201, 139, 0.22);
-    border-radius: 8px;
-    padding: 22px 24px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-
-    .detailsCardHeader {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+    .cardDivider {
+        height: 1px;
+        background: rgba(24, 201, 139, 0.12);
         margin-bottom: 18px;
-
-        .cardHeaderIcon {
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            background: rgba(24, 201, 139, 0.12);
-            border: 1px solid rgba(24, 201, 139, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        h3 {
-            color: #FFFFFF;
-            font-size: 16px;
-            font-weight: 700;
-            font-family: "Euclid-Bold", sans-serif;
-            margin: 0;
-        }
     }
 
     /* Grid for View Mode */
@@ -275,8 +233,8 @@
         .detailFieldItem {
             background: rgba(13, 14, 19, 0.55);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 14px 18px;
+            border-radius: 10px;
+            padding: 13px 16px;
             display: flex;
             flex-direction: column;
             gap: 4px;

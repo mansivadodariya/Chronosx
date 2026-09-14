@@ -6,6 +6,51 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import styles from './quickJump.module.scss';
+import {
+    DashboardGridIcon,
+    AiTradeSparkIcon,
+    AiChatBotIcon,
+    AiStrategyIcon,
+    CalendarIcon,
+    ToolsIcon,
+    CreditShieldIcon,
+    BrokerBankIcon,
+    ProfileUserIcon,
+    CrownIcon,
+    AiTradeAnalysisIcon,
+    AffiliateIcon,
+} from '@/icons/sidebarIcons';
+
+const HomeIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+        <polyline points="9 22 9 12 15 12 15 22" />
+    </svg>
+);
+
+const LiveAnalysisIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+    </svg>
+);
+
+const SubCalculatorIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="4" y="2" width="16" height="20" rx="2" />
+        <line x1="8" y1="6" x2="16" y2="6" />
+        <line x1="16" y1="14" x2="16" y2="18" />
+        <path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01" />
+    </svg>
+);
+
+const SubNewsIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
+        <path d="M18 14h-8" />
+        <path d="M15 18h-5" />
+        <path d="M10 6h8v4h-8V6Z" />
+    </svg>
+);
 
 // --- Quick Jump Navigation Items Dynamic Generator ---
 const getQuickJumpSections = (t) => [
@@ -19,12 +64,7 @@ const getQuickJumpSections = (t) => [
                 subtitle: t('quickJump.homeSub', 'Return to ChronosX main landing'),
                 href: '/',
                 keywords: ['home', 'landing', 'main', 'start'],
-                icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                        <polyline points="9 22 9 12 15 12 15 22" />
-                    </svg>
-                ),
+                icon: <HomeIcon />,
             },
             {
                 id: 'dashboard',
@@ -32,14 +72,7 @@ const getQuickJumpSections = (t) => [
                 subtitle: t('quickJump.dashboardSub', 'Executive account overview & KPI analytics'),
                 href: '/dashboard',
                 keywords: ['dashboard', 'kpi', 'stats', 'analytics', 'overview', 'pnl'],
-                icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="3" y="3" width="7" height="7" rx="1.5" />
-                        <rect x="14" y="3" width="7" height="7" rx="1.5" />
-                        <rect x="14" y="14" width="7" height="7" rx="1.5" />
-                        <rect x="3" y="14" width="7" height="7" rx="1.5" />
-                    </svg>
-                ),
+                icon: <DashboardGridIcon />,
             },
             {
                 id: 'profile',
@@ -47,12 +80,7 @@ const getQuickJumpSections = (t) => [
                 subtitle: t('quickJump.profileSub', 'Security, personal details & settings'),
                 href: '/profile',
                 keywords: ['profile', 'settings', 'user', 'account', 'security', 'preferences'],
-                icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                        <circle cx="12" cy="7" r="4" />
-                    </svg>
-                ),
+                icon: <ProfileUserIcon />,
             },
         ],
     },
@@ -61,32 +89,20 @@ const getQuickJumpSections = (t) => [
         category: t('quickJump.catTrading', 'Trading'),
         items: [
             {
-                id: 'live-scanner',
-                title: t('nav.liveMarketScanner', 'Live Market Scanner'),
+                id: 'signal-terminal',
+                title: t('nav.liveMarketScanner', 'Signal Terminal'),
                 subtitle: t('quickJump.liveScannerSub', 'Live algorithmic market scanner, momentum radar & alerts'),
-                href: '/live-scanner',
-                keywords: ['live', 'scanner', 'trading', 'chart', 'watchlist', 'mt5', 'stream', 'order', 'forex', 'market', 'analysis'],
-                icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="18" y1="20" x2="18" y2="10" />
-                        <line x1="12" y1="20" x2="12" y2="4" />
-                        <line x1="6" y1="20" x2="6" y2="14" />
-                        <circle cx="18" cy="7" r="3" />
-                        <circle cx="6" cy="17" r="3" />
-                    </svg>
-                ),
+                href: '/signal-terminal',
+                keywords: ['signal', 'terminal', 'live', 'scanner', 'trading', 'chart', 'watchlist', 'mt5', 'stream', 'order', 'forex', 'market', 'analysis'],
+                icon: <LiveAnalysisIcon />,
             },
             {
-                id: 'strategy-hub',
-                title: t('nav.strategyHub', 'Strategy Hub'),
+                id: 'strategy-core',
+                title: t('nav.strategyHub', 'AI Strategy Core'),
                 subtitle: t('quickJump.strategyHubSub', 'Automated strategy signals & quantitative algorithms'),
-                href: '/strategy-hub',
-                keywords: ['signals', 'strategy', 'bot', 'algo', 'supertrend', 'ema', 'automated', 'engine', 'playbooks', 'hub'],
-                icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-                    </svg>
-                ),
+                href: '/strategy-core',
+                keywords: ['signals', 'strategy', 'core', 'bot', 'algo', 'supertrend', 'ema', 'automated', 'engine', 'playbooks', 'hub'],
+                icon: <AiStrategyIcon />,
             },
             {
                 id: 'chart-scanner',
@@ -94,26 +110,15 @@ const getQuickJumpSections = (t) => [
                 subtitle: t('quickJump.chartScannerSub', 'Instant vision AI chart screenshot analysis & scanner'),
                 href: '/chart-scanner',
                 keywords: ['chart', 'scanner', 'snap', 'vision', 'camera', 'scan', 'screenshot', 'pattern', 'confluence'],
-                icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                        <circle cx="12" cy="13" r="4" />
-                    </svg>
-                ),
+                icon: <AiTradeSparkIcon />,
             },
             {
-                id: 'trade-audit',
-                title: t('nav.tradeAudit', 'AI Trade Audit'),
+                id: 'trade-advisor',
+                title: t('nav.tradeAudit', 'AI Trade Advisor'),
                 subtitle: t('quickJump.tradeAuditSub', 'Statement audit, behavioral flaws & trade ledger review'),
-                href: '/trade-audit',
-                keywords: ['audit', 'past', 'history', 'statement', 'analysis', 'fomo', 'report', 'ledger', 'csv'],
-                icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="18" y1="20" x2="18" y2="10" />
-                        <line x1="12" y1="20" x2="12" y2="4" />
-                        <line x1="6" y1="20" x2="6" y2="14" />
-                    </svg>
-                ),
+                href: '/trade-advisor',
+                keywords: ['advisor', 'audit', 'past', 'history', 'statement', 'analysis', 'fomo', 'report', 'ledger', 'csv'],
+                icon: <AiTradeAnalysisIcon />,
             },
         ],
     },
@@ -127,15 +132,7 @@ const getQuickJumpSections = (t) => [
                 subtitle: t('quickJump.marketAssistantSub', 'Interactive multi-turn trading copilot & market assistant'),
                 href: '/market-assistant',
                 keywords: ['chat', 'assistant', 'copilot', 'bot', 'ask', 'prompt', 'talk', 'gpt', 'trading', 'market'],
-                icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="3" y="11" width="18" height="10" rx="2" />
-                        <circle cx="12" cy="5" r="2" />
-                        <path d="M12 7v4" />
-                        <line x1="8" y1="16" x2="8" y2="16" />
-                        <line x1="16" y1="16" x2="16" y2="16" />
-                    </svg>
-                ),
+                icon: <AiChatBotIcon />,
             },
         ],
     },
@@ -144,47 +141,28 @@ const getQuickJumpSections = (t) => [
         category: t('quickJump.catTools', 'Tools & Insights'),
         items: [
             {
-                id: 'calendar',
+                id: 'economic-calendar',
                 title: t('nav.economicCalendar', 'Economic Calendar'),
                 subtitle: t('quickJump.calendarSub', 'Real-time high impact macroeconomic news and events'),
                 href: '/calendar',
                 keywords: ['calendar', 'news', 'events', 'nfp', 'cpi', 'fomc', 'interest rate'],
-                icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                        <line x1="16" y1="2" x2="16" y2="6" />
-                        <line x1="8" y1="2" x2="8" y2="6" />
-                        <line x1="3" y1="10" x2="21" y2="10" />
-                    </svg>
-                ),
+                icon: <CalendarIcon />,
             },
             {
-                id: 'calculator',
+                id: 'forex-calculator',
                 title: t('nav.forexCalculator', 'Forex Calculator'),
                 subtitle: t('quickJump.calculatorSub', 'Pip value, risk reward, margin and lot position sizing'),
                 href: '/calculator',
                 keywords: ['calculator', 'pip', 'margin', 'lots', 'sizing', 'risk', 'reward', 'leverage'],
-                icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="4" y="2" width="16" height="20" rx="2" />
-                        <line x1="8" y1="6" x2="16" y2="6" />
-                        <line x1="16" y1="14" x2="16" y2="18" />
-                        <path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01" />
-                    </svg>
-                ),
+                icon: <SubCalculatorIcon />,
             },
             {
                 id: 'market-news',
                 title: t('nav.marketNews', 'Market News'),
                 subtitle: t('quickJump.marketNewsSub', 'Financial markets headline news & sentiment feeds'),
-                href: '/market-news',
+                href: '/news',
                 keywords: ['news', 'market', 'headlines', 'fx', 'sentiment', 'central bank'],
-                icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
-                        <path d="M18 14h-8M15 18h-5M10 6h8v4h-8V6Z" />
-                    </svg>
-                ),
+                icon: <SubNewsIcon />,
             },
         ],
     },
@@ -198,14 +176,7 @@ const getQuickJumpSections = (t) => [
                 subtitle: t('quickJump.affiliateSub', 'Referral tracking, tier commissions & crypto withdrawals'),
                 href: '/affiliate',
                 keywords: ['affiliate', 'referral', 'commission', 'withdraw', 'crypto', 'usdt', 'earn', 'invite', 'partner'],
-                icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                        <circle cx="9" cy="7" r="4" />
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                ),
+                icon: <AffiliateIcon />,
             },
             {
                 id: 'subscription-plans',
@@ -213,11 +184,7 @@ const getQuickJumpSections = (t) => [
                 subtitle: t('quickJump.plansSub', 'Upgrade to Pro, Institutional tiers & active quotas'),
                 href: '/subscription-plans',
                 keywords: ['plans', 'subscription', 'upgrade', 'pro', 'pricing', 'tier', 'membership'],
-                icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14" />
-                    </svg>
-                ),
+                icon: <CrownIcon />,
             },
             {
                 id: 'broker',
@@ -225,11 +192,7 @@ const getQuickJumpSections = (t) => [
                 subtitle: t('quickJump.brokerSub', 'Connect MT4/MT5 accounts, broker API & credentials'),
                 href: '/broker',
                 keywords: ['broker', 'mt5', 'mt4', 'metatrader', 'account', 'deposit', 'credentials'],
-                icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v4M12 14v4M16 14v4" />
-                    </svg>
-                ),
+                icon: <BrokerBankIcon />,
             },
             {
                 id: 'credit-history',
@@ -237,12 +200,7 @@ const getQuickJumpSections = (t) => [
                 subtitle: t('quickJump.creditHistorySub', 'Review AI token usage, credits and transaction logs'),
                 href: '/credit-history',
                 keywords: ['credits', 'tokens', 'history', 'billing', 'balance', 'usage'],
-                icon: (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="12" r="10" />
-                        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8M12 6v2M12 16v2" />
-                    </svg>
-                ),
+                icon: <CreditShieldIcon />,
             },
         ],
     },

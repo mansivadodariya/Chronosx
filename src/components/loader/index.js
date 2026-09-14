@@ -4,11 +4,17 @@ import styles from './loader.module.scss';
 
 /**
  * Common spinner loader.
- * size: 'sm' | 'md' (default) | 'lg'
+ * size: 'sm' | 'md' (default) | 'lg' | 'xl'
  * centered: wraps in a flex container that fills available space
  */
-export default function Loader({ size = 'md', centered = false }) {
-    const spinner = <span className={`${styles.spinner} ${styles[size]}`} aria-label="Loading" role="status" />;
+export default function Loader({ size = 'md', centered = false, className = '' }) {
+    const spinner = (
+        <span
+            className={`${styles.spinner} ${styles[size] || styles.md} ${className}`}
+            aria-label="Loading"
+            role="status"
+        />
+    );
     if (centered) {
         return <div className={styles.centered}>{spinner}</div>;
     }

@@ -116,6 +116,25 @@ $danger: #F87171;
                     }
                 }
 
+                .zeroBalanceAlert {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    background: rgba(245, 158, 11, 0.1);
+                    border: 1px solid rgba(245, 158, 11, 0.3);
+                    border-radius: 8px;
+                    padding: 9px 12px;
+                    color: #FBBF24;
+                    font-size: 12px;
+                    font-weight: 500;
+                    line-height: 1.4;
+
+                    svg {
+                        flex-shrink: 0;
+                        color: #F59E0B;
+                    }
+                }
+
                 .formGroup {
                     display: flex;
                     flex-direction: column;

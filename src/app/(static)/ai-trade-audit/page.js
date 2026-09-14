@@ -1,12 +1,13 @@
 import AiPastTradeAnalyzer from "@/rendering/aiPastTradeAnalyzer";
 
 export const metadata = {
-    title: "AI Trade Audit — Learn From Every Trade & Eliminate Leaks | ChronosX",
+    title: "AI Trade Advisor — Learn From Every Trade & Eliminate Leaks | ChronosX",
     description:
-        "Upload your past trade screenshots and statements to get instant AI-powered audits. Identify poor entries, risk management errors, market structure conflicts, and execution mistakes to trade smarter.",
+        "Upload your past trade screenshots and statements to get instant AI-powered advice and audits. Identify poor entries, risk management errors, market structure conflicts, and execution mistakes to trade smarter.",
     keywords: [
+        "AI Trade Advisor",
+        "trade advisor",
         "AI Trade Audit",
-        "trade audit",
         "trading mistake detection",
         "forex trade review",
         "market trade analysis",
@@ -16,7 +17,7 @@ export const metadata = {
         "trading psychology"
     ],
     openGraph: {
-        title: "AI Trade Audit — Learn From Every Trade | ChronosX",
+        title: "AI Trade Advisor — Learn From Every Trade | ChronosX",
         description:
             "Stop guessing why you lost. Let ChronosX AI analyze your completed trade screenshots, detect execution flaws, and give you actionable improvements in seconds.",
         url: "https://chronosx.com/ai-trade-audit",
@@ -26,7 +27,7 @@ export const metadata = {
                 url: "/assets/images/ai-past-trade-analyzer/brain-pedestal.jpg",
                 width: 1200,
                 height: 630,
-                alt: "ChronosX AI Trade Audit"
+                alt: "ChronosX AI Trade Advisor"
             }
         ],
         locale: "en_US",
@@ -34,9 +35,9 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "AI Trade Audit — ChronosX",
+        title: "AI Trade Advisor — ChronosX",
         description:
-            "Your past trades have the answers. Deep AI audits for your entries, exits, risk management, and execution mistakes.",
+            "Your past trades have the answers. Deep AI advice for your entries, exits, risk management, and execution mistakes.",
         images: ["/assets/images/ai-past-trade-analyzer/brain-pedestal.jpg"]
     },
     alternates: {

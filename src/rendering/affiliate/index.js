@@ -170,6 +170,16 @@ export default function AffiliatePage() {
         const numAmount = Number(withdrawForm.amount);
         const minAmount = stats.current_tier?.min_withdrawal || 50;
 
+        if (stats.withdrawable_balance <= 0) {
+            toast.error('Withdrawal amount must be greater than $0.00. You currently have no withdrawable balance.');
+            return;
+        }
+
+        if (isNaN(numAmount) || numAmount <= 0) {
+            toast.error('Withdrawal amount must be greater than $0.00.');
+            return;
+        }
+
         if (!withdrawForm.wallet_address.trim()) {
             toast.error('Please enter a valid destination wallet address.');
             return;

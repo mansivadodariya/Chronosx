@@ -328,10 +328,10 @@
     overscroll-behavior: contain !important;
     -webkit-overflow-scrolling: touch;
     pointer-events: auto;
-    padding: 8px 12px 14px;
+    padding: 10px 14px 16px;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 8px;
     scrollbar-width: thin;
     scrollbar-color: rgba(24, 201, 139, 0.45) rgba(0, 0, 0, 0.2);
 
@@ -359,8 +359,14 @@
     font-weight: 700;
     letter-spacing: 0.07em;
     color: #556D60;
-    padding: 10px 8px 4px;
+    padding: 14px 8px 6px;
+    margin-top: 4px;
     text-transform: uppercase;
+
+    &:first-of-type {
+        margin-top: 0;
+        padding-top: 4px;
+    }
 
     &::after {
         content: '';
@@ -376,11 +382,11 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding: 9px 12px;
-    border-radius: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
     cursor: pointer;
-    background: transparent;
-    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     transition: all 0.14s cubic-bezier(0.16, 1, 0.3, 1);
     user-select: none;
     position: relative;

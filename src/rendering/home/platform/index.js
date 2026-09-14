@@ -40,9 +40,9 @@ const platformData = [
     {
         topIcon: '/assets/icons/shield-square.svg',
         image: AiStrategy,
-        title: 'STRATEGY HUB',
-        publicPath: '/ai-strategy-hub',
-        dashboardPath: '/strategy-hub',
+        title: 'AI STRATEGY CORE',
+        publicPath: '/ai-strategy-core',
+        dashboardPath: '/strategy-core',
         desc: 'Build and analyze smarter trading\nstrategies with AI.',
         features: [
             { icon: '/assets/icons/strategy-builder.svg', text: 'Strategy\nBuilder' },

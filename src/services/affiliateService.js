@@ -64,28 +64,67 @@ export const affiliateService = {
             const result = await handleResponse(res);
             const raw = result?.data || result || {};
 
-            // Normalize fields across backend schemas
-            const tierRaw = raw.current_tier;
+            // Normalize nested balance / wallet balances if present
+            const bal = (typeof raw.balance === 'object' && raw.balance !== null) ? raw.balance : {};
+            const wb = (typeof raw.wallet_balances === 'object' && raw.wallet_balances !== null)
+                ? raw.wallet_balances
+                : ((typeof raw.wallets === 'object' && raw.wallets !== null)
+                    ? raw.wallets
+                    : ((typeof raw.balances === 'object' && raw.balances !== null)
+                        ? raw.balances
+                        : bal));
+
+            const totalEarned = toNum(
+                raw.total_earned ?? raw.total_earnings ?? raw.earnings ?? bal.total_earned ?? bal.total_earnings ?? bal.earned ?? bal.earnings ?? wb.total_earned ?? wb.total_earnings ?? wb.earned ?? wb.earnings,
+                0
+            );
+            const withdrawableBalance = toNum(
+                raw.withdrawable_balance ?? raw.withdrawable ?? bal.withdrawable_balance ?? bal.withdrawable ?? bal.balance ?? wb.withdrawable_balance ?? wb.withdrawable ?? wb.available_balance ?? wb.available ?? wb.balance,
+                0
+            );
+            const pendingLockBalance = toNum(
+                raw.pending_lock_balance ?? raw.pending_withdrawal ?? raw.pending_balance ?? raw.pending ?? bal.pending_lock_balance ?? bal.pending_withdrawal ?? bal.pending_balance ?? bal.pending ?? bal.locked ?? wb.pending_lock_balance ?? wb.pending_withdrawal ?? wb.pending_balance ?? wb.pending ?? wb.locked,
+                0
+            );
+            const totalWithdrawn = toNum(
+                raw.total_withdrawn ?? raw.withdrawn ?? bal.total_withdrawn ?? bal.withdrawn ?? wb.total_withdrawn ?? wb.withdrawn,
+                0
+            );
+            const referralCount = toNum(
+                raw.total_referrals ?? raw.total_referrals_count ?? raw.referral_count ?? raw.referrals ?? raw.referrals_count,
+                0
+            );
+            const activeTraders = toNum(
+                raw.active_traders ?? raw.active_referrals ?? raw.active_users,
+                referralCount
+            );
+            const referralCode = raw.referral_code || raw.code || '';
+            const referralLink = raw.referral_link || raw.referral_url || raw.link || raw.url || '';
+            const activeRate = toNum(raw.active_commission_rate ?? raw.commission_rate ?? raw.rate, 10);
+
+            // Normalize current tier
+            const tierRaw = raw.current_tier || raw.tier;
             let currentTier;
             if (typeof tierRaw === 'object' && tierRaw !== null) {
                 currentTier = {
                     level: toNum(tierRaw.level, 1),
                     name: tierRaw.name || (tierRaw.level === 2 ? 'Tier 2 - Pro Partner' : 'Tier 1 - Standard Partner'),
-                    rate_percentage: toNum(tierRaw.rate_percentage ?? tierRaw.rate ?? raw.active_commission_rate, 10),
+                    rate_percentage: toNum(tierRaw.rate_percentage ?? tierRaw.rate ?? activeRate, activeRate || 10),
                     next_tier_name: tierRaw.next_tier_name || 'Tier 2 - Pro Partner (20%)',
                     next_tier_threshold: toNum(tierRaw.next_tier_threshold, 30),
-                    progress_count: toNum(tierRaw.progress_count ?? raw.active_traders ?? raw.referral_count, 0),
+                    progress_count: toNum(tierRaw.progress_count ?? activeTraders, activeTraders),
                     min_withdrawal: toNum(tierRaw.min_withdrawal, 50)
                 };
             } else {
-                const isPro = String(tierRaw).toLowerCase().includes('pro') || String(tierRaw).toLowerCase().includes('premium') || String(tierRaw) === '2';
+                const tierStr = String(tierRaw || '').toLowerCase();
+                const isPro = tierStr.includes('pro') || tierStr.includes('premium') || tierStr === '2';
                 currentTier = {
                     level: isPro ? 2 : 1,
                     name: isPro ? 'Tier 2 - Pro Partner' : 'Tier 1 - Standard Partner',
-                    rate_percentage: toNum(raw.active_commission_rate ?? (isPro ? 20 : 10), 10),
+                    rate_percentage: activeRate || (isPro ? 20 : 10),
                     next_tier_name: 'Tier 2 - Pro Partner (20%)',
                     next_tier_threshold: 30,
-                    progress_count: toNum(raw.active_traders ?? raw.referral_count, 0),
+                    progress_count: activeTraders,
                     min_withdrawal: 50
                 };
             }
@@ -93,14 +132,15 @@ export const affiliateService = {
             return {
                 status: 'success',
                 data: {
-                    total_earned: toNum(raw.total_earned ?? raw.total_earnings ?? raw.earnings, 0),
-                    withdrawable_balance: toNum(raw.withdrawable_balance ?? raw.balance ?? raw.withdrawable, 0),
-                    pending_lock_balance: toNum(raw.pending_lock_balance ?? raw.pending_withdrawal ?? raw.pending, 0),
-                    total_withdrawn: toNum(raw.total_withdrawn ?? raw.withdrawn, 0),
-                    referral_count: toNum(raw.total_referrals ?? raw.referral_count ?? raw.referrals, 0),
-                    active_traders: toNum(raw.active_traders ?? raw.active_referrals, 0),
-                    referral_code: raw.referral_code || '',
-                    referral_link: raw.referral_link || raw.referral_url || '',
+                    total_earned: totalEarned,
+                    withdrawable_balance: withdrawableBalance,
+                    pending_lock_balance: pendingLockBalance,
+                    total_withdrawn: totalWithdrawn,
+                    referral_count: referralCount,
+                    active_traders: activeTraders,
+                    referral_code: referralCode,
+                    referral_link: referralLink,
+                    active_commission_rate: activeRate,
                     current_tier: currentTier
                 }
             };
@@ -118,6 +158,7 @@ export const affiliateService = {
                     active_traders: 0,
                     referral_code: '',
                     referral_link: '',
+                    active_commission_rate: 10,
                     current_tier: {
                         level: 1,
                         name: 'Tier 1 - Standard Partner',
@@ -144,29 +185,24 @@ export const affiliateService = {
                 headers: getAuthHeaders(),
             });
             const result = await handleResponse(res);
-            const items = Array.isArray(result?.data)
-                ? result.data
-                : Array.isArray(result?.items)
-                ? result.items
-                : Array.isArray(result)
-                ? result
-                : [];
+            const rawData = result?.data || result?.items || result?.commissions || result?.history || result;
+            const items = Array.isArray(rawData) ? rawData : [];
 
             const normalizedItems = items.map((item, idx) => ({
-                id: item.id || `comm_${idx + 1}`,
-                date: item.date || item.created_at || item.timestamp || new Date().toISOString(),
-                trader: item.trader || item.masked_referee_email || item.referred_user_id || item.user_id || 'Trader',
-                deposit_volume: Number(item.deposit_volume ?? item.order_amount ?? item.amount ?? 0),
-                tier_rate: item.tier_rate || (item.commission_rate ? `${item.commission_rate}%` : '10%'),
-                commission_amount: Number(item.commission_amount ?? item.commission ?? 0),
-                status: (item.status || 'CREDITED').toUpperCase()
+                id: item.id || item._id || item.commission_id || item.reference || `comm_${idx + 1}`,
+                date: item.date || item.created_at || item.created_time || item.timestamp || item.time || new Date().toISOString(),
+                trader: item.trader || item.referred_user_email || item.masked_referee_email || item.referred_user_name || item.referred_user_id || item.user_email || item.user_id || 'Referred Trader',
+                deposit_volume: toNum(item.deposit_volume ?? item.order_amount ?? item.base_amount ?? item.amount ?? item.volume, 0),
+                tier_rate: item.tier_rate || (item.commission_rate ? `${item.commission_rate}%` : (item.rate_percent ? `${item.rate_percent}%` : '10%')),
+                commission_amount: toNum(item.commission_amount ?? item.commission ?? item.amount ?? item.earned_amount, 0),
+                status: String(item.status || 'CREDITED').toUpperCase()
             }));
 
             return {
                 status: 'success',
                 page,
                 limit,
-                total: result?.total ?? result?.count ?? normalizedItems.length,
+                total: toNum(result?.total ?? result?.count, normalizedItems.length),
                 data: normalizedItems
             };
         } catch (err) {
@@ -194,31 +230,29 @@ export const affiliateService = {
                 headers: getAuthHeaders(),
             });
             const result = await handleResponse(res);
-            const items = Array.isArray(result?.data)
-                ? result.data
-                : Array.isArray(result?.items)
-                ? result.items
-                : Array.isArray(result)
-                ? result
-                : [];
+            const rawData = result?.data || result?.items || result?.withdrawals || result?.history || result;
+            const items = Array.isArray(rawData) ? rawData : [];
 
-            const normalizedItems = items.map((item, idx) => ({
-                id: item.id || item.withdrawal_id || item.reference || `WTH-${9000 + idx}`,
-                created_at: item.created_at || item.date || item.timestamp || new Date().toISOString(),
-                asset: item.crypto_currency || item.asset || 'USDT',
-                crypto_currency: item.crypto_currency || item.asset || 'USDT',
-                network: item.network || 'TRC20',
-                amount: Number(item.amount ?? 0),
-                wallet_address: item.wallet_address || '',
-                status: (item.status || 'PENDING').toUpperCase(),
-                tx_hash: item.tx_hash || null
-            }));
+            const normalizedItems = items.map((item, idx) => {
+                const coin = (item.crypto_currency || item.currency || item.asset || item.coin || 'USDT').toUpperCase();
+                return {
+                    id: item.id || item._id || item.withdrawal_id || item.reference || `WTH-${9000 + idx}`,
+                    created_at: item.created_at || item.date || item.created_time || item.timestamp || new Date().toISOString(),
+                    asset: coin,
+                    crypto_currency: coin,
+                    network: String(item.network || item.chain || 'TRC20').toUpperCase(),
+                    amount: toNum(item.amount ?? item.usd_amount ?? item.crypto_amount, 0),
+                    wallet_address: item.wallet_address || item.destination_address || item.to_address || item.address || '',
+                    status: String(item.status || 'PENDING').toUpperCase(),
+                    tx_hash: item.tx_hash || item.transaction_hash || item.hash || null
+                };
+            });
 
             return {
                 status: 'success',
                 page,
                 limit,
-                total: result?.total ?? result?.count ?? normalizedItems.length,
+                total: toNum(result?.total ?? result?.count, normalizedItems.length),
                 data: normalizedItems
             };
         } catch (err) {

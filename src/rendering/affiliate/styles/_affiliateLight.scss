@@ -372,6 +372,16 @@ $danger: #F87171;
                     }
                 }
 
+                .zeroBalanceAlert {
+                    background: #FEF3C7;
+                    border-color: #FCD34D;
+                    color: #92400E;
+
+                    svg {
+                        color: #D97706;
+                    }
+                }
+
                 .formGroup {
                     label {
                         color: #1E293B;

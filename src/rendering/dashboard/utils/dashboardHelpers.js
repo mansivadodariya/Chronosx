@@ -158,12 +158,9 @@ export function formatRecentActivityItem(item) {
     let rawTitle = item.title || item.pair || item.symbol || 'Recent Item';
     let cleanTitle = extractCleanText(rawTitle);
 
-    // Standardize symbol pairs (e.g. XAUUSD -> XAU/USD, EURUSD -> EUR/USD)
-    const pairMatch = cleanTitle.match(/^([A-Z]{3})([A-Z]{3})$/i);
-    let displayTitle = cleanTitle;
-
-    if (pairMatch) {
-        displayTitle = `${pairMatch[1].toUpperCase()}/${pairMatch[2].toUpperCase()}`;
+    // If item has timeframe and not already present in cleanTitle
+    if (item.timeframe && !cleanTitle.toUpperCase().includes(item.timeframe.toUpperCase())) {
+        cleanTitle = `${cleanTitle} ${item.timeframe}`;
     }
 
     // Detect Signal (BUY / SELL / HOLD / STRONG BUY / STRONG SELL)
@@ -197,20 +194,25 @@ export function formatRecentActivityItem(item) {
 
     // If description is empty or identical to signal, synthesize a professional telemetry description
     let description = cleanSummary;
+    const isAnalysisType = item.type === 'analysis' || item.type === 'blog';
     if (!description || description.toUpperCase() === signal) {
         if (signal === 'SELL' || signal === 'STRONG SELL') {
-            description = `AI market assistant identified a SELL order flow setup on ${displayTitle}.`;
+            description = isAnalysisType
+                ? `AI chart scanner identified a SELL order flow setup on ${cleanTitle}.`
+                : `AI market assistant identified a SELL order flow setup on ${cleanTitle}.`;
         } else if (signal === 'BUY' || signal === 'STRONG BUY') {
-            description = `AI market assistant identified a BUY order flow setup on ${displayTitle}.`;
-        } else if (item.type === 'blog') {
-            description = `Chart pattern analysis & OCR structural breakdown recorded for ${displayTitle}.`;
+            description = isAnalysisType
+                ? `AI chart scanner identified a BUY order flow setup on ${cleanTitle}.`
+                : `AI market assistant identified a BUY order flow setup on ${cleanTitle}.`;
+        } else if (isAnalysisType) {
+            description = `Chart pattern analysis & OCR structural breakdown recorded for ${cleanTitle}.`;
         } else {
             description = `Technical analysis telemetry and setup parameters recorded.`;
         }
     }
 
     return {
-        title: displayTitle,
+        title: cleanTitle,
         description,
         signal
     };

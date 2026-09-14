@@ -297,12 +297,12 @@ export default function Capabilities() {
             className={`${styles.cockpitCard} ${hoveredIndex === 2 ? styles.cardActive : ''} ${hoveredIndex !== null && hoveredIndex !== 2 ? styles.cardDimmed : ''}`}
             onMouseEnter={() => setHoveredIndex(2)}
             onMouseLeave={() => setHoveredIndex(null)}
-            onClick={() => router.push('/ai-strategy-hub')}
+            onClick={() => router.push('/ai-strategy-core')}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                router.push('/ai-strategy-hub');
+                router.push('/ai-strategy-core');
               }
             }}
           >
@@ -315,7 +315,7 @@ export default function Capabilities() {
                       <span className={styles.watermarkNum}>03</span>
                     </div>
                   </div>
-                  <h3>{t('homeSections.capabilities.card3Title', 'STRATEGY HUB')}</h3>
+                  <h3>{t('homeSections.capabilities.card3Title', 'AI STRATEGY CORE')}</h3>
                 </div>
 
                 <div className={styles.cardFooter}>
@@ -437,12 +437,12 @@ export default function Capabilities() {
             className={`${styles.cockpitCard} ${hoveredIndex === 3 ? styles.cardActive : ''} ${hoveredIndex !== null && hoveredIndex !== 3 ? styles.cardDimmed : ''}`}
             onMouseEnter={() => setHoveredIndex(3)}
             onMouseLeave={() => setHoveredIndex(null)}
-            onClick={() => router.push('/ai-trade-audit')}
+            onClick={() => router.push('/ai-trade-advisor')}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                router.push('/ai-trade-audit');
+                router.push('/ai-trade-advisor');
               }
             }}
           >
@@ -455,7 +455,7 @@ export default function Capabilities() {
                       <span className={styles.watermarkNum}>04</span>
                     </div>
                   </div>
-                  <h3>{t('homeSections.capabilities.card4Title', 'AI TRADE AUDIT')}</h3>
+                  <h3>{t('homeSections.capabilities.card4Title', 'AI TRADE ADVISOR')}</h3>
                 </div>
 
                 <div className={styles.cardFooter}>

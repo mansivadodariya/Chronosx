@@ -165,8 +165,8 @@
       }
     }
 
-    /* Candlestick SVG Body Stretches to 100% Full Height */
-    .svgChartContainer {
+    /* Lightweight Charts Container & Live OHLC HUD */
+    .lightweightChartWrapper {
       position: relative;
       width: 100%;
       flex: 1 1 auto;
@@ -176,140 +176,81 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
 
       @include respond-to("sm") {
-        min-height: 300px;
+        min-height: 320px;
       }
 
-      .visibleGridOverlay {
+      .chartOhlcHud {
         position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 1;
-
-        .gridRow {
-          position: absolute;
-          left: 0;
-          right: 0;
-          border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
-
-          &:nth-child(1) {
-            top: 12%;
-          }
-
-          &:nth-child(2) {
-            top: 32%;
-          }
-
-          &:nth-child(3) {
-            top: 52%;
-          }
-
-          &:nth-child(4) {
-            top: 72%;
-          }
-
-          &:nth-child(5) {
-            top: 90%;
-          }
-        }
-
-        .gridCol {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          border-left: 1px dashed rgba(255, 255, 255, 0.05);
-        }
-      }
-
-      .yAxisScaleGutter {
-        position: absolute;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        width: 72px;
-        background: rgba(6, 8, 14, 0.94);
-        border-left: 1px solid rgba(255, 255, 255, 0.06);
+        top: 10px;
+        left: 14px;
+        z-index: 10;
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 28px 10px 38px 0;
+        align-items: center;
+        gap: 12px;
+        background: rgba(6, 8, 14, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(8px);
+        padding: 4px 10px;
+        border-radius: 6px;
         pointer-events: none;
-        z-index: 3;
 
         @include respond-to("sm") {
-          width: 58px;
-          padding: 20px 6px 28px 0;
+          top: 6px;
+          left: 8px;
+          gap: 8px;
+          padding: 3px 6px;
         }
 
-        span {
+        .hudItem {
+          display: flex;
+          align-items: center;
+          gap: 4px;
           font-family: monospace, sans-serif;
-          font-size: 11px;
-          font-weight: 600;
-          color: #64748B;
-          text-align: right;
-          letter-spacing: 0.3px;
+          font-size: 11.5px;
 
           @include respond-to("sm") {
             font-size: 9.5px;
+            gap: 2px;
+          }
+
+          .hudLabel {
+            color: #64748B;
+            font-weight: 700;
+          }
+
+          .hudVal {
+            color: #E2E8F0;
+            font-weight: 600;
+
+            &.bullish {
+              color: #10B981;
+            }
+
+            &.bearish {
+              color: #F43F5E;
+            }
           }
         }
       }
 
-      .chartSvg {
+      .chartCanvasMount {
         width: 100%;
         height: 100%;
-        display: block;
+        flex: 1 1 auto;
+        min-height: 420px;
         position: relative;
         z-index: 2;
-      }
-
-      .liveRightPricePill {
-        position: absolute;
-        right: 4px;
-        border-radius: 4px;
-        padding: 3px 8px;
-        z-index: 5;
-        transform: translateY(-50%);
-        transition: top 0.2s ease, background-color 0.25s ease, box-shadow 0.25s ease;
 
         @include respond-to("sm") {
-          padding: 2px 5px;
-          right: 2px;
+          min-height: 300px;
         }
 
-        &.pillGreen {
-          background: #10B981;
-          box-shadow: 0 0 16px rgba(16, 185, 129, 0.85);
-
-          .pillText {
-            color: #042F2E;
-          }
-        }
-
-        &.pillRed {
-          background: #F43F5E;
-          box-shadow: 0 0 16px rgba(244, 63, 94, 0.85);
-
-          .pillText {
-            color: #FFFFFF;
-          }
-        }
-
-        .pillText {
-          font-family: monospace, sans-serif;
-          font-size: 10.5px;
-          font-weight: 900;
-          letter-spacing: 0.4px;
-
-          @include respond-to("sm") {
-            font-size: 9px;
-          }
+        :global(.tv-lightweight-charts) {
+          border-radius: 0 0 14px 14px;
         }
       }
-
     }
   }
-
 }

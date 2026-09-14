@@ -48,6 +48,18 @@ export function WithdrawModal({
                                 <span className={styles.balanceAmount}>${stats.withdrawable_balance.toFixed(2)} USDT</span>
                             </div>
 
+                            {/* Zero Balance Alert Notice */}
+                            {stats.withdrawable_balance <= 0 && (
+                                <div className={styles.zeroBalanceAlert}>
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <line x1="12" y1="8" x2="12" y2="12" />
+                                        <line x1="12" y1="16" x2="12.01" y2="16" />
+                                    </svg>
+                                    <span>{t('affiliate.zeroBalanceNotice', 'Withdrawal amount must be greater than $0.00. Only balances above $0.00 can be withdrawn.')}</span>
+                                </div>
+                            )}
+
                             {/* Asset Selection */}
                             <div className={styles.formGroup}>
                                 <label>{t('affiliate.selectCryptoAsset', 'Select Crypto Asset')}</label>
@@ -163,7 +175,11 @@ export function WithdrawModal({
                                 className={styles.modalSubmitBtn}
                                 disabled={withdrawing || stats.withdrawable_balance <= 0}
                             >
-                                {withdrawing ? t('affiliate.submittingRequest', 'Submitting Request...') : t('affiliate.confirmWithdrawal', 'Confirm Crypto Withdrawal')}
+                                {withdrawing
+                                    ? t('affiliate.submittingRequest', 'Submitting Request...')
+                                    : stats.withdrawable_balance <= 0
+                                        ? t('affiliate.insufficientBalanceBtn', 'Amount must be greater than $0.00 to withdraw')
+                                        : t('affiliate.confirmWithdrawal', 'Confirm Crypto Withdrawal')}
                             </button>
                         </form>
                     </motion.div>

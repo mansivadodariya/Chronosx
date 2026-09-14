@@ -14,23 +14,29 @@ export const ROUTE_TAB_MAP = {
   '/chart-scanner': 'AI Chart Scanner',
   '/ai-chart-scanner': 'AI Chart Scanner',
 
-  // AI Trade Audit
-  '/trade-audit': 'AI Trade Audit',
-  '/ai-trade-audit': 'AI Trade Audit',
+  // AI Trade Advisor
+  '/trade-audit': 'AI Trade Advisor',
+  '/ai-trade-audit': 'AI Trade Advisor',
+  '/trade-advisor': 'AI Trade Advisor',
+  '/ai-trade-advisor': 'AI Trade Advisor',
 
   // AI Market Assistant
   '/market-assistant': 'AI Market Assistant',
   '/ai-market-assistant': 'AI Market Assistant',
 
-  // Live Market Scanner
-  '/live-scanner': 'Live Market Scanner',
-  '/live-market-scanner': 'Live Market Scanner',
+  // Signal Terminal
+  '/live-scanner': 'Signal Terminal',
+  '/live-market-scanner': 'Signal Terminal',
+  '/signal-terminal': 'Signal Terminal',
 
-  // Strategy Hub
-  '/strategy-hub': 'Strategy Hub',
-  '/ai-strategy-hub': 'Strategy Hub',
-  '/strategy-hub/live': 'Live Market Scanner',
-  '/strategy-hub/strategy': 'Strategy Playbooks',
+  // AI Strategy Core
+  '/strategy-hub': 'AI Strategy Core',
+  '/ai-strategy-hub': 'AI Strategy Core',
+  '/strategy-core': 'AI Strategy Core',
+  '/ai-strategy-core': 'AI Strategy Core',
+  '/strategy-hub/live': 'Signal Terminal',
+  '/strategy-hub/strategy': 'Strategy Signal',
+  '/strategy-signal': 'Strategy Signal',
 
   // Utility Tools
   '/tools': 'Tools',

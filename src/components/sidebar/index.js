@@ -101,16 +101,8 @@ const getNavSections = (t) => [
       { label: t('nav.dashboard', 'Dashboard'), href: "/dashboard", icon: DashboardGridIcon },
       { label: t('nav.marketAssistant', 'AI Market Assistant'), href: "/market-assistant", icon: AiChatBotIcon },
       { label: t('nav.chartScanner', 'AI Chart Scanner'), href: "/chart-scanner", icon: AiTradeSparkIcon },
-      { label: t('nav.tradeAudit', 'AI Trade Audit'), href: "/trade-audit", icon: AiTradeAnalysisIcon },
-      {
-        label: t('nav.strategyHub', 'Strategy Hub'),
-        href: "/strategy-hub",
-        icon: AiStrategyIcon,
-        subItems: [
-          { label: t('nav.liveMarketScanner', 'Live Market Scanner'), href: "/live-scanner", icon: LiveAnalysisIcon },
-          { label: t('nav.strategyPlaybooks', 'Strategy Playbooks'), href: "/strategy-hub/strategy", icon: StrategyIcon },
-        ]
-      },
+      { label: t('nav.tradeAudit', 'AI Trade Advisor'), href: "/trade-advisor", icon: AiTradeAnalysisIcon },
+      { label: t('nav.strategyHub', 'AI Strategy Core'), href: "/strategy-core", icon: AiStrategyIcon },
     ]
   },
   {
@@ -421,16 +413,22 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
     '/dashboard': 'Dashboard',
     '/chart-scanner': 'AI Chart Scanner',
     '/ai-chart-scanner': 'AI Chart Scanner',
-    '/trade-audit': 'AI Trade Audit',
-    '/ai-trade-audit': 'AI Trade Audit',
+    '/trade-audit': 'AI Trade Advisor',
+    '/ai-trade-audit': 'AI Trade Advisor',
+    '/trade-advisor': 'AI Trade Advisor',
+    '/ai-trade-advisor': 'AI Trade Advisor',
     '/market-assistant': 'AI Market Assistant',
     '/ai-market-assistant': 'AI Market Assistant',
-    '/strategy-hub': 'Strategy Hub',
-    '/ai-strategy-hub': 'Strategy Hub',
-    '/strategy-hub/live': 'Live Market Scanner',
-    '/strategy-hub/strategy': 'Strategy Playbooks',
-    '/live-scanner': 'Live Market Scanner',
-    '/live-market-scanner': 'Live Market Scanner',
+    '/strategy-hub': 'AI Strategy Core',
+    '/ai-strategy-hub': 'AI Strategy Core',
+    '/strategy-core': 'AI Strategy Core',
+    '/ai-strategy-core': 'AI Strategy Core',
+    '/strategy-hub/live': 'Signal Terminal',
+    '/strategy-hub/strategy': 'Strategy Signal',
+    '/strategy-signal': 'Strategy Signal',
+    '/live-scanner': 'Signal Terminal',
+    '/live-market-scanner': 'Signal Terminal',
+    '/signal-terminal': 'Signal Terminal',
     '/tools': 'Tools',
     '/calendar': 'Economic Calendar',
     '/economic-calendar': 'Economic Calendar',
@@ -462,14 +460,14 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
         visibleTabNames.has(mapped) ||
         ((lowerLabel.includes('chart scanner') || lowerLabel.includes('market snapshot') || mapped.includes('chart scanner')) &&
           (visibleTabNames.has('ai chart scanner') || visibleTabNames.has('chart-scanner') || visibleTabNames.has('ai trade') || visibleTabNames.has('ai-trade') || visibleTabNames.has('trade-snap') || visibleTabNames.has('trade snap'))) ||
-        ((lowerLabel.includes('trade audit') || lowerLabel.includes('trade analysis') || mapped.includes('trade audit')) &&
-          (visibleTabNames.has('ai trade audit') || visibleTabNames.has('trade-audit') || visibleTabNames.has('ai trade analysis') || visibleTabNames.has('trade-analysis') || visibleTabNames.has('trade analysis') || visibleTabNames.has('ai-trade-analysis') || visibleTabNames.has('ai-past-trade-analyzer') || visibleTabNames.has('ai trade'))) ||
+        ((lowerLabel.includes('trade audit') || lowerLabel.includes('trade advisor') || lowerLabel.includes('trade analysis') || mapped.includes('trade audit') || mapped.includes('trade advisor')) &&
+          (visibleTabNames.has('ai trade advisor') || visibleTabNames.has('trade advisor') || visibleTabNames.has('ai trade audit') || visibleTabNames.has('trade-audit') || visibleTabNames.has('ai trade analysis') || visibleTabNames.has('trade-analysis') || visibleTabNames.has('trade analysis') || visibleTabNames.has('ai-trade-analysis') || visibleTabNames.has('ai-past-trade-analyzer') || visibleTabNames.has('ai trade'))) ||
         ((lowerLabel.includes('market assistant') || lowerLabel.includes('trading advisor') || mapped.includes('market assistant')) &&
           (visibleTabNames.has('ai market assistant') || visibleTabNames.has('market-assistant') || visibleTabNames.has('ai chat') || visibleTabNames.has('ai-chat') || visibleTabNames.has('ai assistant') || visibleTabNames.has('ai-assistant'))) ||
         ((lowerLabel.includes('strategy') || mapped.includes('strategy')) &&
-          (visibleTabNames.has('strategy hub') || visibleTabNames.has('strategy-hub') || visibleTabNames.has('ai strategy') || visibleTabNames.has('ai-strategy') || visibleTabNames.has('strategy'))) ||
-        ((lowerLabel.includes('live') || mapped.includes('live')) &&
-          (visibleTabNames.has('live market scanner') || visibleTabNames.has('live-scanner') || visibleTabNames.has('live analysis') || visibleTabNames.has('ai strategy') || visibleTabNames.has('strategy hub'))) ||
+          (visibleTabNames.has('ai strategy core') || visibleTabNames.has('strategy core') || visibleTabNames.has('strategy hub') || visibleTabNames.has('strategy-hub') || visibleTabNames.has('ai strategy') || visibleTabNames.has('ai-strategy') || visibleTabNames.has('strategy') || visibleTabNames.has('strategy signal') || visibleTabNames.has('strategy playbooks'))) ||
+        ((lowerLabel.includes('live') || lowerLabel.includes('terminal') || lowerLabel.includes('signal') || mapped.includes('live') || mapped.includes('terminal')) &&
+          (visibleTabNames.has('signal terminal') || visibleTabNames.has('live market scanner') || visibleTabNames.has('live-scanner') || visibleTabNames.has('live analysis') || visibleTabNames.has('ai strategy') || visibleTabNames.has('strategy hub'))) ||
         ((lowerLabel.includes('tool') || mapped.includes('tool') || lowerLabel.includes('calendar') || lowerLabel.includes('calculator') || lowerLabel.includes('news')) &&
           (visibleTabNames.has('tools') || visibleTabNames.has('economic calendar') || visibleTabNames.has('forex calculator') || visibleTabNames.has('market news') || visibleTabNames.has('calendar') || visibleTabNames.has('calculator') || visibleTabNames.has('news')))
       );

@@ -1,7 +1,9 @@
 /* ============================================================
    LIGHT THEME: UNIFIED DOMAINS, OSCILLATOR TRACKS & EMPTY LINES
    ============================================================ */
-:global(html.light) .aiStrategyWrapper {
+:global(html.light) .aiStrategyWrapper,
+:global(html[data-theme='light']) .aiStrategyWrapper,
+:global([data-theme='light']) .aiStrategyWrapper {
     .analysisPanel {
         /* Unified Domain Cards & Section Dividers */
         .unifiedDomainCard,

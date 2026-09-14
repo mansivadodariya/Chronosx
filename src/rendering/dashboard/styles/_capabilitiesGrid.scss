@@ -71,6 +71,31 @@
     }
 }
 
+.quickActionsRowFull {
+    width: 100%;
+}
+
+.splitMarketFeedGrid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 20px;
+    align-items: stretch;
+
+    @include respond-to('xl') {
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 16px;
+    }
+
+    @include respond-to('lg') {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    @include respond-to('sm') {
+        gap: 16px;
+    }
+}
+
 .splitBottomGrid {
     display: grid;
     grid-template-columns: 1.4fr 1fr;
@@ -91,6 +116,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    height: 100%;
 
     .feedHeader {
         display: flex;
@@ -395,136 +421,198 @@
     .hubHeader {
         display: flex;
         align-items: center;
-        gap: 8px;
+        justify-content: space-between;
         min-height: 33px;
 
-        h3 {
-            color: #FFFFFF;
-            font-size: 16px;
-            font-weight: 700;
-            margin: 0;
-            font-family: "Euclid-Bold", sans-serif;
+        .hubHeaderLeft {
+            display: flex;
+            align-items: center;
+            gap: 8px;
 
-            @include respond-to('sm') {
-                font-size: 15px;
+            .hubHeaderIcon {
+                width: 28px;
+                height: 28px;
+                border-radius: 8px;
+                background: rgba(24, 201, 139, 0.12);
+                border: 1px solid rgba(24, 201, 139, 0.3);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+
+            h3 {
+                color: #FFFFFF;
+                font-size: 16px;
+                font-weight: 700;
+                margin: 0;
+                font-family: "Euclid-Bold", sans-serif;
+
+                @include respond-to('sm') {
+                    font-size: 15px;
+                }
             }
         }
     }
 
-    .toolsGrid3x2 {
+    .toolsGrid2x3,
+    .toolsGridRow {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(6, 1fr);
         gap: 12px;
 
-        @include respond-to('lg') {
+        @include respond-to('xl') {
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
         }
 
-        @include respond-to('tab') {
+        @include respond-to('md') {
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
         }
 
         @include respond-to('sm') {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr;
             gap: 10px;
-        }
-
-        @media (max-width: 420px) {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
         }
     }
 
-    .hubFeatureCard {
-        background: #060908;
-        border: 1px solid rgba(24, 201, 139, 0.15);
-        border-radius: 14px;
-        padding: 16px 12px;
+    .modernToolCard {
+        background: 
+            radial-gradient(ellipse 70% 80% at 0% 0%, rgba(24, 201, 139, 0.1) 0%, transparent 60%),
+            #090C0B;
+        border: 1px solid rgba(24, 201, 139, 0.16);
+        border-radius: 12px;
+        padding: 14px 16px;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        justify-content: space-between;
         gap: 10px;
-        min-height: 125px;
+        min-height: 120px;
         text-decoration: none;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-        transition: all 0.22s ease;
-        text-align: center;
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        box-sizing: border-box;
 
         @include respond-to('sm') {
-            padding: 14px 10px;
-            min-height: 115px;
-            gap: 8px;
-            border-radius: 12px;
+            padding: 12px 14px;
+            min-height: 110px;
         }
 
         &:hover {
-            transform: translateY(-3px);
-            border-color: rgba(24, 201, 139, 0.6);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(24, 201, 139, 0.12);
+            transform: translateY(-2px);
+            border-color: rgba(24, 201, 139, 0.5);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 16px rgba(24, 201, 139, 0.14);
 
-            .hubIconCircleGold {
-                box-shadow: 0 4px 18px rgba(24, 201, 139, 0.45);
-                transform: scale(1.08);
+            .toolCardTop .toolIconBadge {
+                background: rgba(24, 201, 139, 0.2);
+                border-color: #18C98B;
+                color: #FFFFFF;
+                box-shadow: 0 0 12px rgba(24, 201, 139, 0.35);
+                transform: scale(1.04);
             }
 
-            .hubCta {
-                color: #6EE7B7;
-                svg {
-                    transform: translateX(4px);
+            .toolCardFooter {
+                .toolCtaText {
+                    color: #6EE7B7;
+                }
+                .toolCtaArrow {
+                    background: #18C98B;
+                    color: #040605;
+                    transform: translateX(3px);
                 }
             }
         }
 
-        .hubIconCircleGold {
-            width: 38px;
-            height: 38px;
-            border-radius: 11px;
-            background: linear-gradient(145deg, #A7F3D0 0%, #18C98B 35%, #059669 70%, #047857 100%);
+        .toolCardTop {
             display: flex;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 3px 12px rgba(24, 201, 139, 0.3);
-            flex-shrink: 0;
-            transition: all 0.25s ease;
+            justify-content: space-between;
+            gap: 8px;
 
-            @include respond-to('sm') {
+            .toolIconBadge {
                 width: 34px;
                 height: 34px;
-                border-radius: 10px;
+                border-radius: 9px;
+                background: rgba(24, 201, 139, 0.1);
+                border: 1px solid rgba(24, 201, 139, 0.25);
+                color: #18C98B;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                transition: all 0.2s ease;
+
+                svg {
+                    width: 17px;
+                    height: 17px;
+                }
+            }
+
+            .toolBadgeTag {
+                font-size: 9.5px;
+                font-weight: 800;
+                color: rgba(255, 255, 255, 0.65);
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 4px;
+                padding: 2px 6px;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
             }
         }
 
-        h4 {
-            color: #FFFFFF;
-            font-size: 13px;
-            font-weight: 700;
-            font-family: "Euclid-Bold", sans-serif;
-            margin: 0;
-            line-height: 1.3;
+        .toolCardBody {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
 
-            @include respond-to('sm') {
-                font-size: 12px;
+            .toolTitle {
+                color: #FFFFFF;
+                font-size: 13.5px;
+                font-weight: 700;
+                font-family: "Euclid-Bold", sans-serif;
+                margin: 0;
+                line-height: 1.3;
+            }
+
+            .toolDescription {
+                color: rgba(255, 255, 255, 0.5);
+                font-size: 11.5px;
+                line-height: 1.35;
+                margin: 0;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
 
-        .hubCta {
+        .toolCardFooter {
             display: flex;
             align-items: center;
-            gap: 6px;
-            color: #18C98B;
-            font-size: 11.5px;
-            font-weight: 700;
-            transition: color 0.2s ease;
+            justify-content: space-between;
+            padding-top: 4px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
 
-            @include respond-to('sm') {
-                font-size: 11px;
+            .toolCtaText {
+                color: #18C98B;
+                font-size: 11.5px;
+                font-weight: 700;
+                transition: color 0.2s ease;
             }
 
-            svg {
-                transition: transform 0.2s ease;
+            .toolCtaArrow {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: rgba(24, 201, 139, 0.1);
+                color: #18C98B;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s ease;
             }
         }
     }

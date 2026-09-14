@@ -4,6 +4,7 @@ import React from 'react';
 import Input from '@/components/input';
 import PhoneInput from '@/components/phoneInput';
 import Button from '@/components/button';
+import ProfileOnboardingSurveyCard from './ProfileOnboardingSurveyCard';
 import styles from '../profile.module.scss';
 
 export default function ProfileDetailsTab({
@@ -19,13 +20,14 @@ export default function ProfileDetailsTab({
     handlePhoneChange,
     handleSave,
     saving,
+    onboardingData,
     t
 }) {
     return (
         <div className={styles.profileTabWrapper}>
-            {/* Hero Card: Profile Information */}
-            <div className={styles.heroProfileCard}>
-                <div className={styles.heroCardHeader}>
+            {/* Unified Personal Details & Profile Information Card */}
+            <div className={styles.personalDetailsCard}>
+                <div className={styles.detailsCardHeader}>
                     <div className={styles.heroCardHeaderLeft}>
                         <div className={styles.cardHeaderIcon}>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -34,8 +36,8 @@ export default function ProfileDetailsTab({
                             </svg>
                         </div>
                         <div className={styles.cardHeaderTexts}>
-                            <h3>{t('profile.profileInfoTitle', 'Profile Information')}</h3>
-                            <p>{t('profile.profileInfoDesc', 'View and update your personal details')}</p>
+                            <h3>{t('profile.personalDetailsTitle', 'Personal Details')}</h3>
+                            <p>{t('profile.profileInfoDesc', 'View and update your personal details and account preferences')}</p>
                         </div>
                     </div>
                     <button
@@ -47,15 +49,14 @@ export default function ProfileDetailsTab({
                     </button>
                 </div>
 
+                {/* Profile Hero Header: Avatar, Name, Email, UID, Join Date */}
                 <div className={styles.heroCardBody}>
-                    {/* Large Avatar */}
                     <div className={styles.avatarWrapper}>
                         <div className={styles.avatarCircle}>
                             <span className={styles.avatarInitialsText}>{initials}</span>
                         </div>
                     </div>
 
-                    {/* User Meta */}
                     <div className={styles.userMetaDetails}>
                         <div className={styles.userNameRow}>
                             <h2>{fullName}</h2>
@@ -66,36 +67,24 @@ export default function ProfileDetailsTab({
                                 Verified ✓
                             </span>
                         </div>
-                        <div className={styles.uidRow}>
-                            <span>{displayUid}</span>
-                        </div>
-                        <div className={styles.joinedRow}>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                                <line x1="16" y1="2" x2="16" y2="6" />
-                                <line x1="8" y1="2" x2="8" y2="6" />
-                                <line x1="3" y1="10" x2="21" y2="10" />
-                            </svg>
-                            <span>Joined on {userCreatedAt}</span>
+                        <div className={styles.metaBadgesRow}>
+                            <span className={styles.uidBadge}>{displayUid}</span>
+                            <div className={styles.joinedBadge}>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="3" y1="10" x2="21" y2="10" />
+                                </svg>
+                                <span>Joined on {userCreatedAt}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Card 2: Personal Details Grid / Form */}
-            <div className={styles.personalDetailsCard}>
-                <div className={styles.detailsCardHeader}>
-                    <div className={styles.cardHeaderIcon}>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                            <polyline points="14 2 14 8 20 8" />
-                            <line x1="16" y1="13" x2="8" y2="13" />
-                            <line x1="16" y1="17" x2="8" y2="17" />
-                        </svg>
-                    </div>
-                    <h3>{t('profile.personalDetailsTitle', 'Personal Details')}</h3>
-                </div>
+                <div className={styles.cardDivider} />
 
+                {/* Main Details Body: View or Edit Mode */}
                 {!isEditing ? (
                     <div className={styles.detailsViewGrid}>
                         <div className={styles.detailFieldItem}>
@@ -182,6 +171,12 @@ export default function ProfileDetailsTab({
                     </form>
                 )}
             </div>
+
+            {/* Card 2: Trader Onboarding Survey & Strategy Profile */}
+            <ProfileOnboardingSurveyCard
+                onboardingData={onboardingData}
+                t={t}
+            />
         </div>
     );
 }

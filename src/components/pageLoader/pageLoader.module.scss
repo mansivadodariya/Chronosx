@@ -7,7 +7,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(4, 6, 5, 0.45);
+    background: rgba(4, 6, 5, 0.55);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     pointer-events: all;
@@ -27,73 +27,14 @@
 
         .emblemContainer {
             position: relative;
-            width: 72px;
-            height: 72px;
             display: flex;
             align-items: center;
             justify-content: center;
-
-            .spinnerRing {
-                position: absolute;
-                inset: 0;
-                border-radius: 50%;
-                border: 2.5px solid rgba(24, 201, 139, 0.15);
-                border-top-color: #18C98B;
-                border-right-color: #18C98B;
-                animation: spinLoader 0.85s linear infinite;
-            }
-
-            .logoWrap {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                animation: pulseEmblem 1.6s ease-in-out infinite;
-
-                svg {
-                    width: 34px;
-                    height: 34px;
-                }
-            }
-        }
-
-        .loaderTextRow {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-
-            span {
-                color: #FFFFFF;
-                font-size: 14px;
-                font-weight: 700;
-                font-family: var(--font-plus-jakarta), "Euclid-Bold", sans-serif;
-                letter-spacing: 0.5px;
-            }
-
-            .dotsPulse {
-                display: flex;
-                gap: 4px;
-
-                span {
-                    width: 4px;
-                    height: 4px;
-                    background: #18C98B;
-                    border-radius: 50%;
-                    animation: dotFade 1.2s infinite ease-in-out;
-
-                    &:nth-child(2) {
-                        animation-delay: 0.2s;
-                    }
-
-                    &:nth-child(3) {
-                        animation-delay: 0.4s;
-                    }
-                }
-            }
         }
     }
 
     :global(html.light) & {
-        background: rgba(255, 255, 255, 0.45) !important;
+        background: rgba(255, 255, 255, 0.55) !important;
         backdrop-filter: blur(10px) !important;
         -webkit-backdrop-filter: blur(10px) !important;
 
@@ -102,60 +43,6 @@
             background-color: transparent !important;
             border: none !important;
             box-shadow: none !important;
-
-            .emblemContainer {
-                .spinnerRing {
-                    border-color: rgba(16, 185, 129, 0.2);
-                    border-top-color: #10B981;
-                    border-right-color: #10B981;
-                }
-            }
-
-            .loaderTextRow {
-                span {
-                    color: #0F172A !important;
-                    font-weight: 800 !important;
-                }
-
-                .dotsPulse {
-                    span {
-                        background: #10B981 !important;
-                    }
-                }
-            }
         }
     }
-}
-
-@keyframes spinLoader {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes pulseEmblem {
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 0.92;
-    }
-    50% {
-        transform: scale(1.08);
-        opacity: 1;
-    }
-}
-
-@keyframes dotFade {
-    0%,
-    100% {
-        opacity: 0.2;
-        transform: scale(0.8);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.2);
-    }
-}
+}

@@ -28,10 +28,16 @@ export default function sitemap() {
             priority: 0.9,
         },
         {
-            url: `${baseUrl}/ai-trade-audit`,
+            url: `${baseUrl}/ai-trade-advisor`,
             lastModified,
             changeFrequency: 'weekly',
             priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/ai-trade-audit`,
+            lastModified,
+            changeFrequency: 'weekly',
+            priority: 0.8,
         },
         {
             url: `${baseUrl}/ai-market-assistant`,
@@ -46,10 +52,16 @@ export default function sitemap() {
             priority: 0.9,
         },
         {
-            url: `${baseUrl}/ai-strategy-hub`,
+            url: `${baseUrl}/ai-strategy-core`,
             lastModified,
             changeFrequency: 'weekly',
             priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/ai-strategy-hub`,
+            lastModified,
+            changeFrequency: 'weekly',
+            priority: 0.8,
         },
         {
             url: `${baseUrl}/about-us`,

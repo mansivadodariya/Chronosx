@@ -53,8 +53,9 @@
         }
     }
 
-    /* Hero Profile Card */
-    .heroProfileCard {
+    /* Hero Profile Card & Personal Details Card */
+    .heroProfileCard,
+    .personalDetailsCard {
         background: #FFFFFF !important;
         border: 1px solid rgba(15, 23, 42, 0.09) !important;
         box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
@@ -100,8 +101,15 @@
                 color: #0F172A !important;
             }
 
-            .userEmailRow .emailText {
-                color: #475569 !important;
+            .userEmailRow {
+                .emailText {
+                    color: #475569 !important;
+                }
+                .verifiedPill {
+                    background: #DCFCE7 !important;
+                    border-color: #86EFAC !important;
+                    color: #15803D !important;
+                }
             }
 
             .uidRow {
@@ -110,6 +118,10 @@
 
             .joinedRow {
                 color: #64748B !important;
+
+                svg {
+                    stroke: #64748B !important;
+                }
             }
         }
     }
@@ -151,6 +163,125 @@
         }
     }
 
+    /* Onboarding Survey & Strategy Profile Card */
+    .onboardingSurveyCard {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(15, 23, 42, 0.09) !important;
+        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+
+        .surveyCardHeader {
+            border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+
+            .surveyHeaderLeft {
+                .surveyIconPulse {
+                    background: rgba(24, 201, 139, 0.12) !important;
+                    border-color: rgba(24, 201, 139, 0.3) !important;
+                    color: #047857 !important;
+                }
+
+                .surveyHeaderTexts {
+                    h3 { color: #0F172A !important; }
+                    p { color: #64748B !important; }
+
+                    .calibratedBadge {
+                        background: #DCFCE7 !important;
+                        border-color: #86EFAC !important;
+                        color: #15803D !important;
+
+                        .greenBeacon {
+                            background: #15803D !important;
+                            box-shadow: 0 0 6px rgba(21, 128, 61, 0.6) !important;
+                        }
+                    }
+                }
+            }
+
+            .recalibrateBtn {
+                background: #F8FAFC !important;
+                border-color: rgba(24, 201, 139, 0.4) !important;
+                color: #047857 !important;
+
+                &:hover {
+                    background: #18C98B !important;
+                    color: #040605 !important;
+                }
+            }
+        }
+
+        .emptySurveyBanner {
+            background: #F8FAFC !important;
+            border-color: rgba(24, 201, 139, 0.4) !important;
+
+            .emptyTexts {
+                h4 { color: #0F172A !important; }
+                p { color: #64748B !important; }
+            }
+        }
+
+        .surveyBlockItem {
+            background: #F8FAFC !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            &:hover {
+                background: #F1F5F9 !important;
+                border-color: rgba(24, 201, 139, 0.4) !important;
+            }
+
+            .blockHead {
+                .blockLabel { color: #64748B !important; }
+                .expBadgePill {
+                    background: #DCFCE7 !important;
+                    border-color: #86EFAC !important;
+                    color: #15803D !important;
+                }
+                .countBadge { color: #64748B !important; }
+            }
+
+            .blockMainVal {
+                h4 { color: #0F172A !important; }
+                .blockSubDesc { color: #475569 !important; }
+            }
+
+            .blockFooterTag span {
+                background: #DCFCE7 !important;
+                border-color: #86EFAC !important;
+                color: #15803D !important;
+            }
+
+            .pillsCluster .emptyTextMuted {
+                color: #94A3B8 !important;
+            }
+
+            .surveyPillTag,
+            .goalPillTag,
+            .assetPillTag {
+                background: #FFFFFF !important;
+                border-color: rgba(15, 23, 42, 0.12) !important;
+
+                &:hover {
+                    border-color: rgba(24, 201, 139, 0.45) !important;
+                    background: rgba(24, 201, 139, 0.06) !important;
+                }
+
+                .pillLabel,
+                .goalText,
+                .assetName {
+                    color: #0F172A !important;
+                }
+
+                .pillTimeframe,
+                .assetCategory {
+                    color: #64748B !important;
+                }
+
+                .goalTagBadge {
+                    background: #DCFCE7 !important;
+                    color: #15803D !important;
+                }
+            }
+        }
+    }
+
     /* Right Column */
     .rightSummaryColumn,
     .rightSidebar {
@@ -168,6 +299,30 @@
             .summaryMetaRows .summaryRow {
                 .summaryLabel {
                     color: #64748B !important;
+                }
+
+                .summaryActiveTag {
+                    color: #059669 !important;
+                    font-weight: 700 !important;
+                    font-size: 13px !important;
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    border: none !important;
+                    outline: none !important;
+                    box-shadow: none !important;
+                    padding: 0 !important;
+                }
+
+                .summaryProTag {
+                    color: #059669 !important;
+                    font-weight: 700 !important;
+                    font-size: 13px !important;
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    border: none !important;
+                    outline: none !important;
+                    box-shadow: none !important;
+                    padding: 0 !important;
                 }
             }
 

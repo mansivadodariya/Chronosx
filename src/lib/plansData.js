@@ -81,7 +81,7 @@ export const defaultSubscriptionPlans = [
         features: [
             '500 AI Processing Credits',
             'Valid for 3 Months Full Access',
-            'Deep AI Trade Audit & Win-Rate Forensics',
+            'Deep AI Trade Advisor & Win-Rate Forensics',
             'Sub-Second Pattern Detection Cloud',
             'Advanced Multi-Asset Confluence Scoring',
             'Automated Imbalance & Liquidity Mapping',
@@ -99,7 +99,7 @@ export const defaultSubscriptionPlans = [
         features_ph: [
             '500 AI Processing Credits',
             'Valid for 3 Months Full Access',
-            'Deep AI Trade Audit & Win-Rate Forensics',
+            'Deep AI Trade Advisor & Win-Rate Forensics',
             'Sub-Second Pattern Detection Cloud',
             'Advanced Multi-Asset Confluence Scoring',
             'Automated Imbalance & Liquidity Mapping',

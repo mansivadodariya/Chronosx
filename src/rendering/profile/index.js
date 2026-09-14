@@ -64,6 +64,7 @@ export default function Profile() {
     const [initialPhone, setInitialPhone] = useState('');
     const [referralCount, setReferralCount] = useState(0);
     const [visibleTabNames, setVisibleTabNames] = useState(null);
+    const [onboardingData, setOnboardingData] = useState(null);
 
     // Modals
     const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -149,6 +150,13 @@ export default function Profile() {
             setLastLogins(initialLogins.slice(-5));
         }
 
+        try {
+            const cachedOnboarding = localStorage.getItem('chronosx_onboarding');
+            if (cachedOnboarding) {
+                setOnboardingData(JSON.parse(cachedOnboarding));
+            }
+        } catch (_) {}
+
         fetchProfile(id);
     }, []);
 
@@ -170,7 +178,7 @@ export default function Profile() {
                 try {
                     const { data } = await supabase
                         .from('users')
-                        .select('first_name, last_name, email, phone_number, referral_code, last_logins, created_at')
+                        .select('first_name, last_name, email, phone_number, referral_code, last_logins, created_at, experience_level, trading_styles, help_goals, preferred_markets, onboarding_completed, onboarding_completed_at')
                         .eq('id', id)
                         .maybeSingle();
 
@@ -194,6 +202,33 @@ export default function Profile() {
                             phone_number: data.phone_number || prev.phone_number || '',
                             referral_code: data.referral_code || prev.referral_code || id || '',
                         }));
+
+                        if (data.experience_level || data.trading_styles || data.help_goals || data.preferred_markets || data.onboarding_completed) {
+                            const parseArr = (val) => {
+                                if (Array.isArray(val)) return val;
+                                if (typeof val === 'string') {
+                                    try {
+                                        const parsed = JSON.parse(val);
+                                        if (Array.isArray(parsed)) return parsed;
+                                    } catch (_) {}
+                                    return [val];
+                                }
+                                return [];
+                            };
+
+                            const surveyObj = {
+                                experience: data.experience_level || '',
+                                tradingStyles: parseArr(data.trading_styles),
+                                helpGoals: parseArr(data.help_goals),
+                                markets: parseArr(data.preferred_markets),
+                                completed: !!data.onboarding_completed,
+                                completedAt: data.onboarding_completed_at || null,
+                            };
+                            setOnboardingData(surveyObj);
+                            try {
+                                localStorage.setItem('chronosx_onboarding', JSON.stringify(surveyObj));
+                            } catch (_) {}
+                        }
                     }
 
                     const { count: refCount, error: countErr } = await supabase
@@ -481,6 +516,7 @@ export default function Profile() {
                             handlePhoneChange={handlePhoneChange}
                             handleSave={handleSave}
                             saving={saving}
+                            onboardingData={onboardingData}
                             t={t}
                         />
                     )}

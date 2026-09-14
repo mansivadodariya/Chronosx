@@ -1,0 +1,179 @@
+/* ============================================================
+   LIGHT THEME: STRATEGY EXECUTION GRID & PAIR CARDS
+   ============================================================ */
+:global(html.light) .aiStrategyWrapper,
+:global(html[data-theme='light']) .aiStrategyWrapper,
+:global([data-theme='light']) .aiStrategyWrapper {
+    .strategyAccordion {
+        .strategyControlBar {
+            .controlTitleGroup {
+                h3 {
+                    color: #0F172A !important;
+                }
+            }
+
+            .wsStatusIndicator {
+                &.disconnected {
+                    color: #64748B !important;
+                    background: #F1F5F9 !important;
+                    border-color: #CBD5E1 !important;
+                }
+            }
+        }
+
+        .pairsGrid {
+            .pairCard {
+                background: #FFFFFF !important;
+                border: 1px solid #E2E8F0 !important;
+                box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.03) !important;
+
+                &.activeBuy {
+                    border-color: rgba(16, 185, 129, 0.25) !important;
+                    border-left: 4px solid #10B981 !important;
+                    box-shadow: 0 4px 24px rgba(16, 185, 129, 0.08), 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+
+                    &:hover {
+                        border-color: rgba(16, 185, 129, 0.45) !important;
+                        border-left: 4px solid #059669 !important;
+                        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.14) !important;
+                    }
+                }
+
+                &.activeSell {
+                    border-color: rgba(239, 68, 68, 0.25) !important;
+                    border-left: 4px solid #EF4444 !important;
+                    box-shadow: 0 4px 24px rgba(239, 68, 68, 0.08), 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+
+                    &:hover {
+                        border-color: rgba(239, 68, 68, 0.45) !important;
+                        border-left: 4px solid #DC2626 !important;
+                        box-shadow: 0 10px 30px rgba(239, 68, 68, 0.14) !important;
+                    }
+                }
+
+                .pairCardHead {
+                    .cardHeaderLeft {
+                        .cardPairTitle {
+                            .pairMainName {
+                                color: #0F172A !important;
+                            }
+                            .pairTicker {
+                                color: #334155 !important;
+                            }
+                            .marketSeparator {
+                                color: #94A3B8 !important;
+                            }
+                            .marketType {
+                                color: #64748B !important;
+                            }
+                        }
+                    }
+
+                    .cardHeaderRight {
+                        .priceMetaBlock {
+                            .pricePrimary {
+                                color: #0F172A !important;
+                            }
+                        }
+                    }
+                }
+
+                .cardBodyRow {
+                    .leftLevelsColumn {
+                        .levelRow {
+                            .levelLabel {
+                                color: #475569 !important;
+                            }
+
+                            .levelValue {
+                                color: #0F172A !important;
+
+                                &.entryColor {
+                                    color: #0F172A !important;
+                                }
+                                &.slColor {
+                                    color: #DC2626 !important;
+                                }
+                                &.tpColor {
+                                    color: #059669 !important;
+                                }
+                            }
+
+                            .timeTagValue,
+                            .riskRewardValue {
+                                color: #0F172A !important;
+                            }
+
+                            .directionBadgePill {
+                                &.buyPill {
+                                    background: #10B981 !important;
+                                    color: #FFFFFF !important;
+                                    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+                                }
+                                &.sellPill {
+                                    background: #EF4444 !important;
+                                    color: #FFFFFF !important;
+                                    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
+                                }
+                            }
+
+                            .strategyPill {
+                                background: rgba(16, 185, 129, 0.1) !important;
+                                border-color: rgba(16, 185, 129, 0.35) !important;
+                                color: #065F46 !important;
+                            }
+
+                            .volumeBadgePill {
+                                color: #047857 !important;
+                                background: rgba(16, 185, 129, 0.1) !important;
+                                border-color: rgba(16, 185, 129, 0.35) !important;
+                            }
+                        }
+                    }
+
+                    .verticalSeparator {
+                        background: #E2E8F0 !important;
+                    }
+                }
+
+                .pairCardFooter {
+                    border-top-color: #E2E8F0 !important;
+
+                    .tagsContainerRow {
+                        .tagsHeadingLabel {
+                            color: #475569 !important;
+                        }
+
+                        .tagsPillsGroup {
+                            .tagPillBadge {
+                                color: #065F46 !important;
+                                background: rgba(16, 185, 129, 0.1) !important;
+                                border-color: rgba(16, 185, 129, 0.35) !important;
+
+                                &:hover {
+                                    background: rgba(16, 185, 129, 0.2) !important;
+                                    border-color: #10B981 !important;
+                                    color: #047857 !important;
+                                }
+                            }
+                        }
+                    }
+
+                    .viewDetailBtn {
+                        color: #047857 !important;
+                        background: rgba(16, 185, 129, 0.1) !important;
+                        border: 1px solid rgba(16, 185, 129, 0.45) !important;
+                        font-weight: 700 !important;
+
+                        &:hover {
+                            background: #10B981 !important;
+                            border-color: #10B981 !important;
+                            color: #FFFFFF !important;
+                            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3) !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
