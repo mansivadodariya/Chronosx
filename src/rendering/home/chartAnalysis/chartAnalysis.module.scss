@@ -13,13 +13,16 @@
         background: #FFFFFF !important;
 
         .graphicImg {
-            .interactiveSvg, img {
+
+            .interactiveSvg,
+            img {
                 filter: none !important;
             }
         }
 
         .pedestal {
             opacity: 0.2 !important;
+
             .pedestalLight,
             .pedestalRingOuter,
             .pedestalRingInner {
@@ -58,7 +61,7 @@
     }
 
     @include respond-to("sm") {
-        padding: 50px 0;
+        padding: 60px 0;
     }
 
     &::after {
@@ -109,7 +112,7 @@
 
         h2 {
             font-family: var(--font-syne), "Syne", sans-serif;
-            font-size: 46px;
+            font-size: 45px;
             font-weight: 800;
             line-height: 1.12;
             letter-spacing: -1.2px;

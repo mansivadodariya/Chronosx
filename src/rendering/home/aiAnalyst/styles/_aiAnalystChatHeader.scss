@@ -9,7 +9,7 @@
   }
 
   @include respond-to("sm") {
-    padding: 50px 0;
+    padding: 60px 0;
   }
 
   &::after {
@@ -115,7 +115,7 @@
 
       p {
         @include font-normal;
-        font-size: 13.5px;
+        font-size: 14px;
         line-height: 1.55;
         color: #9CA3AF;
         margin: 0;
@@ -141,48 +141,93 @@
 
     .dockIconBtn {
       color: #64748B !important;
-      &:hover, &.activeDockBtn {
+
+      &:hover,
+      &.activeDockBtn {
         color: #047857 !important;
       }
     }
 
     .terminalHeader {
       border-bottom-color: #E2E8F0 !important;
-      .chronosLogoText { color: #0F172A !important; }
-      .headerSubtitle { color: #64748B !important; }
+
+      .chronosLogoText {
+        color: #0F172A !important;
+      }
+
+      .headerSubtitle {
+        color: #64748B !important;
+      }
     }
 
     .tickersBar {
       border-bottom-color: #E2E8F0 !important;
-      .tickerName { color: #64748B !important; }
-      .tickerPrice { color: #0F172A !important; }
-      .tickerDivider { background: #E2E8F0 !important; }
+
+      .tickerName {
+        color: #64748B !important;
+      }
+
+      .tickerPrice {
+        color: #0F172A !important;
+      }
+
+      .tickerDivider {
+        background: #E2E8F0 !important;
+      }
     }
 
     .userBubbleCard {
       background: #F1F5F9 !important;
       border-color: #E2E8F0 !important;
-      .userHeaderName { color: #0F172A !important; }
-      .userQueryText { color: #334155 !important; }
-      .userTimestampRow { color: #64748B !important; }
+
+      .userHeaderName {
+        color: #0F172A !important;
+      }
+
+      .userQueryText {
+        color: #334155 !important;
+      }
+
+      .userTimestampRow {
+        color: #64748B !important;
+      }
     }
 
     .aiResponseCard {
       background: #FAFDFA !important;
       border-color: rgba(16, 185, 129, 0.35) !important;
       box-shadow: 0 4px 20px rgba(16, 185, 129, 0.08) !important;
-      .aiBotName { color: #0F172A !important; }
-      .aiCardTime { color: #64748B !important; }
-      .aiHeadlineIntro { color: #047857 !important; }
-      .breakoutNumber, .breakoutSymbol { color: #0F172A !important; }
-      .breakoutSubdesc { color: #475569 !important; }
+
+      .aiBotName {
+        color: #0F172A !important;
+      }
+
+      .aiCardTime {
+        color: #64748B !important;
+      }
+
+      .aiHeadlineIntro {
+        color: #047857 !important;
+      }
+
+      .breakoutNumber,
+      .breakoutSymbol {
+        color: #0F172A !important;
+      }
+
+      .breakoutSubdesc {
+        color: #475569 !important;
+      }
     }
 
-    .sourcesBtn, .filterPill {
+    .sourcesBtn,
+    .filterPill {
       background: #F1F5F9 !important;
       border-color: #E2E8F0 !important;
       color: #475569 !important;
-      &:hover, &.activeFilterPill {
+
+      &:hover,
+      &.activeFilterPill {
         background: rgba(16, 185, 129, 0.12) !important;
         border-color: rgba(5, 150, 105, 0.4) !important;
         color: #047857 !important;
@@ -192,27 +237,43 @@
     .chatInputContainer {
       background: #F8FAFC !important;
       border-color: #E2E8F0 !important;
+
       .terminalInput {
         color: #0F172A !important;
-        &::placeholder { color: #94A3B8 !important; }
+
+        &::placeholder {
+          color: #94A3B8 !important;
+        }
       }
-      .attachmentBtn, .micBtn { color: #64748B !important; }
+
+      .attachmentBtn,
+      .micBtn {
+        color: #64748B !important;
+      }
     }
 
     .featureItem {
       background: #FFFFFF !important;
       border: 1px solid rgba(24, 201, 139, 0.22) !important;
+
       &:hover {
         background: #F0FDF4 !important;
         border-color: rgba(24, 201, 139, 0.45) !important;
       }
+
       .numBadge {
         color: #047857 !important;
         background: #F0FDF4 !important;
       }
+
       .featureContent {
-        h3 { color: #0F172A !important; }
-        p { color: #475569 !important; }
+        h3 {
+          color: #0F172A !important;
+        }
+
+        p {
+          color: #475569 !important;
+        }
       }
     }
   }

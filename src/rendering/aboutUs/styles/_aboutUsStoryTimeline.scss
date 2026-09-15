@@ -220,7 +220,7 @@
     margin: 0;
 
     @include respond-to('md') {
-        font-size: 15.5px;
+        font-size: 16px;
     }
 
     @include respond-to('sm') {
@@ -328,18 +328,18 @@
     letter-spacing: -0.5px;
 
     @include respond-to('sm') {
-        font-size: 24px;
+        font-size: 26px;
     }
 }
 
 .sectionSubtitle {
     color: rgba(255, 255, 255, 0.65);
-    font-size: 15.5px;
+    font-size: 16px;
     max-width: 640px;
     margin: 0 auto;
 
     @include respond-to('sm') {
-        font-size: 13.5px;
+        font-size: 14px;
     }
 }
 
@@ -396,7 +396,7 @@
 
 .missionCardTitle {
     color: #FFFFFF;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 700;
     font-family: var(--font-plus-jakarta), sans-serif;
     margin-bottom: 14px;
@@ -638,4 +638,3 @@
     line-height: 1.6;
     margin: 0;
 }
-

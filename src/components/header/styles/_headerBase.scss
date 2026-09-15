@@ -1,4 +1,3 @@
-
 .header {
     position: fixed;
     top: 20px;
@@ -170,7 +169,7 @@
                     position: relative;
                     flex-shrink: 0;
 
-                    > a,
+                    >a,
                     .dropdownTrigger {
                         text-decoration: none;
                         color: rgba(255, 255, 255, 0.75);
@@ -243,7 +242,7 @@
                     &.active,
                     &.dropdownOpen {
 
-                        > a,
+                        >a,
                         .dropdownTrigger {
                             color: var(--primary-green);
 
@@ -374,7 +373,7 @@
 
                                                 .itemTitle {
                                                     color: #FFFFFF;
-                                                    font-size: 13.5px;
+                                                    font-size: 14px;
                                                     font-family: "Euclid-SemiBold", sans-serif;
                                                     font-weight: 600;
                                                     transition: color 0.2s ease;
@@ -555,5 +554,3 @@
     }
 
 }
-
-

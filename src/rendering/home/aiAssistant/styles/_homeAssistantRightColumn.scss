@@ -1,4 +1,5 @@
 .assistantSection {
+
   /* ============================================================
      RIGHT COLUMN: NON-TRADING AI COPILOT REASONING CONSOLE
      ============================================================ */
@@ -284,7 +285,7 @@
 
           .signalText {
             @include font-bold;
-            font-size: 13.5px;
+            font-size: 14px;
             color: #FFFFFF;
             letter-spacing: 0.3px;
           }
@@ -566,10 +567,13 @@
   }
 
   @keyframes pulseGlow {
-    0%, 100% {
+
+    0%,
+    100% {
       opacity: 1;
       transform: scale(1);
     }
+
     50% {
       opacity: 0.45;
       transform: scale(1.3);

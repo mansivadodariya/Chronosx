@@ -98,7 +98,7 @@
             word-break: break-word;
 
             @include respond-to('lg') {
-                font-size: 24px;
+                font-size: 26px;
             }
 
             @include respond-to('tab') {
@@ -362,7 +362,8 @@
         }
     }
 
-    input, select {
+    input,
+    select {
         width: 100%;
         height: 46px;
         background: #040406;
@@ -494,6 +495,7 @@
         &::-webkit-scrollbar {
             width: 4px;
         }
+
         &::-webkit-scrollbar-thumb {
             background: rgba(24, 201, 139, 0.35);
             border-radius: 4px;
@@ -507,7 +509,7 @@
         background: transparent;
         border: none;
         color: rgba(255, 255, 255, 0.75);
-        font-size: 13.5px;
+        font-size: 14px;
         text-align: left;
         display: flex;
         align-items: center;
@@ -540,4 +542,4 @@
             font-weight: bold;
         }
     }
-}
+}

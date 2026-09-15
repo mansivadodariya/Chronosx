@@ -501,7 +501,7 @@
                 gap: 2px;
 
                 .authorName {
-                    font-size: 13.5px;
+                    font-size: 14px;
                     font-weight: 700;
                     color: #FFFFFF;
 
@@ -526,7 +526,7 @@
             align-items: center;
             gap: 8px;
             color: #18C98B;
-            font-size: 13.5px;
+            font-size: 14px;
             font-weight: 700;
 
             @include respond-to('sm') {
@@ -539,4 +539,4 @@
             }
         }
     }
-}
+}

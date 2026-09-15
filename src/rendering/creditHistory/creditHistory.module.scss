@@ -48,7 +48,7 @@ $danger: #F87171;
     .headerTitleMeta {
         h1 {
             color: #FFFFFF;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
             font-family: "Euclid-Bold", sans-serif;
             margin: 0 0 2px;
@@ -57,7 +57,7 @@ $danger: #F87171;
 
         p {
             color: $textMuted;
-            font-size: 13.5px;
+            font-size: 14px;
             font-family: "Euclid-Regular", sans-serif;
             margin: 0;
         }
@@ -167,6 +167,7 @@ $danger: #F87171;
 
 .historyHeader {
     flex-shrink: 0;
+
     .historyHeaderLeft {
         display: flex;
         align-items: center;
@@ -245,10 +246,12 @@ $danger: #F87171;
         width: 6px;
         height: 6px;
     }
+
     &::-webkit-scrollbar-track {
         background: rgba(0, 0, 0, 0.25);
         border-radius: 4px;
     }
+
     &::-webkit-scrollbar-thumb {
         background: rgba(24, 201, 139, 0.35);
         border-radius: 4px;
@@ -258,6 +261,7 @@ $danger: #F87171;
             background: rgba(24, 201, 139, 0.7);
         }
     }
+
     scrollbar-width: thin;
     scrollbar-color: rgba(24, 201, 139, 0.35) transparent;
 }
@@ -268,7 +272,8 @@ $danger: #F87171;
     border-spacing: 0;
     min-width: 600px;
 
-    th, td {
+    th,
+    td {
         text-align: start !important;
 
         :global(html[dir="rtl"]) & {
@@ -305,7 +310,7 @@ $danger: #F87171;
 
     td {
         padding: 16px 18px;
-        font-size: 13.5px;
+        font-size: 14px;
         color: #FFFFFF;
         border-bottom: 1px solid rgba(24, 201, 139, 0.12);
         vertical-align: middle;
@@ -313,6 +318,7 @@ $danger: #F87171;
 
     .tableRow {
         transition: background-color 0.15s ease;
+
         &:hover {
             background-color: rgba(24, 201, 139, 0.04);
         }
@@ -472,4 +478,3 @@ $danger: #F87171;
         transform: rotate(360deg);
     }
 }
-

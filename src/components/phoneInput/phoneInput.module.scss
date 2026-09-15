@@ -138,7 +138,8 @@
             justify-content: center;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 
-            img, svg {
+            img,
+            svg {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
@@ -196,7 +197,7 @@
                 border: none;
                 outline: none;
                 color: #FFFFFF;
-                font-size: 13.5px;
+                font-size: 14px;
                 font-family: "Euclid-Regular", sans-serif;
 
                 &::placeholder {
@@ -313,7 +314,8 @@
                     justify-content: center;
                     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 
-                    img, svg {
+                    img,
+                    svg {
                         width: 100%;
                         height: 100%;
                         object-fit: cover;
@@ -324,7 +326,7 @@
                 .countryName {
                     flex: 1;
                     color: rgba(255, 255, 255, 0.85);
-                    font-size: 13.5px;
+                    font-size: 14px;
                     font-family: "Euclid-Regular", sans-serif;
                     white-space: nowrap;
                     overflow: hidden;
@@ -355,6 +357,7 @@
         opacity: 0;
         transform: translateY(-6px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);

@@ -244,7 +244,7 @@
                     }
 
                     .welcomeTitle {
-                        font-size: 24px;
+                        font-size: 26px;
                         font-weight: 800;
                         color: #ffffff;
                         margin: 0 0 8px;
@@ -403,76 +403,76 @@
                             }
                         }
                     }
-                    }
-                    }
+                }
+            }
+        }
+
+        .messageRow {
+            .pairBadge {
+                background: rgba(24, 201, 139, 0.15);
+                color: #18C98B;
+                border: 1px solid rgba(24, 201, 139, 0.3);
+            }
+
+            .assistantMessage {
+                background: #000000 !important;
+                color: #f1f5f9 !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+
+                p,
+                li {
+                    color: #f1f5f9;
+                }
+            }
+        }
+
+        .userRow {
+            max-width: 90% !important;
+            width: auto !important;
+
+            .userMessage {
+                background: linear-gradient(135deg, rgba(24, 201, 139, 0.16) 0%, rgba(24, 201, 139, 0.08) 100%) !important;
+                border: 1px solid rgba(24, 201, 139, 0.38) !important;
+                color: #FFFFFF !important;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(24, 201, 139, 0.15) !important;
+                width: max-content !important;
+                max-width: 100% !important;
+                white-space: pre-wrap !important;
+                word-break: normal !important;
+                overflow-wrap: break-word !important;
+            }
+        }
+
+        .blogViewContainer {
+            .blogTitle {
+                color: #ffffff;
+            }
+
+            .blogTypeBadge {
+                background: rgba(24, 201, 139, 0.15);
+                color: #18C98B;
+            }
+
+            .blogContent {
+                color: #f3f4f6;
+
+                p,
+                li {
+                    color: #f3f4f6;
                 }
 
-                .messageRow {
-                    .pairBadge {
-                        background: rgba(24, 201, 139, 0.15);
-                        color: #18C98B;
-                        border: 1px solid rgba(24, 201, 139, 0.3);
+                .blogLoadingState {
+                    .spinner {
+                        border-color: rgba(24, 201, 139, 0.1);
+                        border-top-color: #18C98B;
                     }
 
-                    .assistantMessage {
-                        background: #000000 !important;
-                        color: #f1f5f9 !important;
-                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-
-                        p,
-                        li {
-                            color: #f1f5f9;
-                        }
-                    }
-                }
-
-                .userRow {
-                    max-width: 90% !important;
-                    width: auto !important;
-
-                    .userMessage {
-                        background: linear-gradient(135deg, rgba(24, 201, 139, 0.16) 0%, rgba(24, 201, 139, 0.08) 100%) !important;
-                        border: 1px solid rgba(24, 201, 139, 0.38) !important;
-                        color: #FFFFFF !important;
-                        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(24, 201, 139, 0.15) !important;
-                        width: max-content !important;
-                        max-width: 100% !important;
-                        white-space: pre-wrap !important;
-                        word-break: normal !important;
-                        overflow-wrap: break-word !important;
-                    }
-                }
-
-                .blogViewContainer {
-                    .blogTitle {
-                        color: #ffffff;
-                    }
-
-                    .blogTypeBadge {
-                        background: rgba(24, 201, 139, 0.15);
-                        color: #18C98B;
-                    }
-
-                    .blogContent {
-                        color: #f3f4f6;
-
-                        p,
-                        li {
-                            color: #f3f4f6;
-                        }
-
-                        .blogLoadingState {
-                            .spinner {
-                                border-color: rgba(24, 201, 139, 0.1);
-                                border-top-color: #18C98B;
-                            }
-
-                            p {
-                                color: rgba(255, 255, 255, 0.5);
-                            }
-                        }
+                    p {
+                        color: rgba(255, 255, 255, 0.5);
                     }
                 }
             }
-
         }
+    }
+
+}

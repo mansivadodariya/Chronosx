@@ -14,7 +14,7 @@
     flex-direction: column;
     gap: 12px;
     width: 100%;
-    background: 
+    background:
         radial-gradient(ellipse 25% 85% at 0% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
         radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.12) 0%, rgba(110, 231, 183, 0.05) 50%, transparent 70%),
         radial-gradient(ellipse 25% 85% at 100% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
@@ -36,7 +36,7 @@
         justify-content: space-between;
 
         h3 {
-            font-size: 15.5px;
+            font-size: 16px;
             font-weight: 800;
             margin: 0;
             color: $textWhite;
@@ -74,13 +74,21 @@
             }
 
             span.statVal {
-                font-size: 15.5px;
+                font-size: 16px;
                 font-weight: 800;
                 color: $textWhite;
 
-                &.green { color: $successGreen; }
-                &.red { color: $dangerRed; }
-                &.gold { color: $primaryGold; }
+                &.green {
+                    color: $successGreen;
+                }
+
+                &.red {
+                    color: $dangerRed;
+                }
+
+                &.gold {
+                    color: $primaryGold;
+                }
             }
         }
     }
@@ -118,6 +126,7 @@
         thead {
             tr {
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
                 th {
                     padding: 9px 12px;
                     color: $textDim;
@@ -158,8 +167,13 @@
                         color: $textWhite;
                     }
 
-                    &.greenText { color: $successGreen; }
-                    &.redText { color: $dangerRed; }
+                    &.greenText {
+                        color: $successGreen;
+                    }
+
+                    &.redText {
+                        color: $dangerRed;
+                    }
                 }
             }
         }
@@ -265,4 +279,3 @@
         }
     }
 }
-

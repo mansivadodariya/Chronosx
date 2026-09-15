@@ -542,7 +542,7 @@ $success: #10b981;
 
         .rotatingMainMessage {
             margin: 0;
-            font-size: 15.5px;
+            font-size: 16px;
             font-weight: 700;
             color: #FFFFFF;
             font-family: "Euclid-Bold", sans-serif;
@@ -628,9 +628,11 @@ $success: #10b981;
             top: 4%;
             opacity: 0.75;
         }
+
         50% {
             opacity: 1;
         }
+
         100% {
             top: 94%;
             opacity: 0.75;

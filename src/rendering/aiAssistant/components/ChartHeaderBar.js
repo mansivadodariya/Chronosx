@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import styles from '../aiAssistant.module.scss';
 
 export default function ChartHeaderBar({
@@ -13,10 +12,9 @@ export default function ChartHeaderBar({
 }) {
     const isUp = latestCandle && latestCandle.close >= latestCandle.open;
     const priceText = latestCandle ? latestCandle.close.toFixed(5) : '...';
-    const changeText = priceChangePct !== 0 
-        ? `${priceChangePct > 0 ? '+' : ''}${priceChangePct.toFixed(2)}%` 
+    const changeText = priceChangePct !== 0
+        ? `${priceChangePct > 0 ? '+' : ''}${priceChangePct.toFixed(2)}%`
         : '0.00%';
-
     return (
         <div className={styles.chartHeaderControls}>
             <div className={styles.headerLeftGroup}>
@@ -33,7 +31,7 @@ export default function ChartHeaderBar({
                 </button>
 
                 {/* Top-left real-time price badge */}
-                <div 
+                <div
                     className={`${styles.headerLivePriceBadge} ${isUp ? styles.badgeUp : styles.badgeDown}`}
                     style={{ background: 'transparent', backgroundColor: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}
                 >

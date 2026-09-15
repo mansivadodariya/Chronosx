@@ -4,14 +4,14 @@
 .feedDemoSection {
     position: relative;
     z-index: 2;
-    padding: 85px 0;
+    padding: 80px 0;
 
     @include respond-to('md') {
         padding: 65px 0;
     }
 
     @include respond-to('sm') {
-        padding: 50px 0;
+        padding: 60px 0;
     }
 }
 
@@ -147,10 +147,12 @@
         transform: scale(0.95);
         opacity: 0.8;
     }
+
     50% {
         transform: scale(1.4);
         opacity: 1;
     }
+
     100% {
         transform: scale(0.95);
         opacity: 0.8;
@@ -250,7 +252,7 @@
 }
 
 .pairSymbol {
-    font-size: 13.5px;
+    font-size: 14px;
     font-weight: 800;
     color: #FFFFFF;
     letter-spacing: 0.02em;
@@ -568,6 +570,7 @@
     &.bullish,
     &.strong_bullish {
         border-color: rgba(16, 185, 129, 0.3);
+
         .indVal {
             color: #10B981;
         }
@@ -576,6 +579,7 @@
     &.bearish,
     &.strong_bearish {
         border-color: rgba(239, 68, 68, 0.3);
+
         .indVal {
             color: #EF4444;
         }
@@ -583,6 +587,7 @@
 
     &.neutral {
         border-color: rgba(14, 165, 233, 0.3);
+
         .indVal {
             color: #38BDF8;
         }
@@ -641,7 +646,7 @@
     background: #18C98B;
     color: #040605;
     font-family: "Euclid-Bold", "Euclid Circular A", var(--font-plus-jakarta), sans-serif;
-    font-size: 13.5px;
+    font-size: 14px;
     font-weight: 800;
     letter-spacing: 0.04em;
     border: none;

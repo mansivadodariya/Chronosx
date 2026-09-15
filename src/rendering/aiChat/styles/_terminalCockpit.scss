@@ -4,14 +4,14 @@
 .liveDemoSection {
     position: relative;
     z-index: 2;
-    padding: 85px 0;
+    padding: 80px 0;
 
     @include respond-to('md') {
         padding: 65px 0;
     }
 
     @include respond-to('sm') {
-        padding: 50px 0;
+        padding: 60px 0;
     }
 }
 
@@ -286,7 +286,7 @@
     gap: 12px;
     text-align: center;
     color: #9CA3AF;
-    font-size: 13.5px;
+    font-size: 14px;
 }
 
 .typingIndicator {
@@ -469,7 +469,7 @@
     justify-content: space-between;
     padding: 6px 0;
     border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
-    font-size: 13.5px;
+    font-size: 14px;
 
     &:last-child {
         border-bottom: none;
@@ -667,7 +667,7 @@
     border: none;
     outline: none;
     color: #FFFFFF;
-    font-size: 13.5px;
+    font-size: 14px;
 
     &::placeholder {
         color: #6B7280;

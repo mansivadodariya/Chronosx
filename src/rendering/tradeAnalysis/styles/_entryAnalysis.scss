@@ -276,7 +276,7 @@
             }
 
             h4 {
-                font-size: 15.5px;
+                font-size: 16px;
                 font-weight: 700;
                 color: #FFFFFF;
                 margin: 0;
@@ -424,10 +424,13 @@
 }
 
 @keyframes pulseGlow {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
         transform: scale(1);
     }
+
     50% {
         opacity: 0.5;
         transform: scale(0.85);
@@ -496,4 +499,3 @@
         cursor: not-allowed;
     }
 }
-

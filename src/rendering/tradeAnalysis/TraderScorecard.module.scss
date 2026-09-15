@@ -64,7 +64,7 @@
     }
 
     h2 {
-        font-size: 24px;
+        font-size: 26px;
         font-weight: 800;
         color: #FFFFFF;
         margin: 0;
@@ -72,7 +72,7 @@
     }
 
     p {
-        font-size: 13.5px;
+        font-size: 14px;
         color: #94A3B8;
         margin: 0;
         max-width: 600px;
@@ -197,7 +197,7 @@
 }
 
 .gaugeCard {
-    background: 
+    background:
         radial-gradient(ellipse 25% 85% at 0% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
         radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.12) 0%, rgba(110, 231, 183, 0.05) 50%, transparent 70%),
         radial-gradient(ellipse 25% 85% at 100% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
@@ -290,7 +290,7 @@
 }
 
 .radarCard {
-    background: 
+    background:
         radial-gradient(ellipse 25% 85% at 0% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
         radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.12) 0%, rgba(110, 231, 183, 0.05) 50%, transparent 70%),
         radial-gradient(ellipse 25% 85% at 100% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
@@ -589,6 +589,7 @@
    LIGHT MODE THEME OVERRIDES
    ============================================================ */
 :global(html.light) .scorecardContainer {
+
     .scorecardHeroHeader,
     .gaugeCard,
     .radarCard,
@@ -674,6 +675,7 @@
         .catScoreVal {
             color: #047857 !important;
         }
+
         .catScoreDenom {
             color: #64748B !important;
         }
@@ -724,5 +726,3 @@
         background: #E2E8F0 !important;
     }
 }
-
-

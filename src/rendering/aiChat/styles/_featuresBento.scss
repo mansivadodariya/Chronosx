@@ -4,14 +4,14 @@
 .capabilitiesSection {
     position: relative;
     z-index: 2;
-    padding: 85px 0;
+    padding: 80px 0;
 
     @include respond-to('md') {
         padding: 65px 0;
     }
 
     @include respond-to('sm') {
-        padding: 50px 0;
+        padding: 60px 0;
     }
 }
 
@@ -84,7 +84,7 @@
 }
 
 .featureNum {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 800;
     color: rgba(24, 201, 139, 0.25);
     font-family: monospace;
@@ -113,7 +113,7 @@
 }
 
 .featureCardDesc {
-    font-size: 13.5px;
+    font-size: 14px;
     line-height: 1.6;
     color: #9CA3AF;
     flex-grow: 1;

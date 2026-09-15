@@ -182,6 +182,15 @@ html.light .children-wrapper {
   width: calc(100% - 68px);
 }
 
+@media (max-width: 1024px) {
+  .children-wrapper,
+  .sidebar-wrapper.collapsed~.children-wrapper,
+  .user-layout.collapsed .children-wrapper {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+}
+
 .children-spacing {
   padding: 16px;
   width: 100%;
@@ -198,6 +207,17 @@ html.light .children-wrapper {
   .children-spacing {
     padding: 10px;
   }
+}
+
+/* Responsive Table Wrappers & Touch Scrolling */
+.table-responsive,
+[class*="tableWrapper"],
+[class*="tableContainer"],
+[class*="ledgerTableWrapper"],
+[class*="historyTableWrapper"] {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .nsm7Bb-HzV7m-LgbsSe {

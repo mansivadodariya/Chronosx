@@ -65,9 +65,11 @@
         .legOb {
           color: #047857 !important;
         }
+
         .legFvg {
           color: #047857 !important;
         }
+
         .legLiq {
           color: #7C3AED !important;
         }
@@ -132,7 +134,7 @@
   }
 
   @include respond-to("sm") {
-    padding: 50px 0;
+    padding: 60px 0;
   }
 
   &::after {

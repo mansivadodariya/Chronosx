@@ -14,7 +14,8 @@
       border: 1px solid rgba(24, 201, 139, 0.22) !important;
       box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05) !important;
 
-      &:hover, &.cardActive {
+      &:hover,
+      &.cardActive {
         background: #FFFFFF !important;
         border-color: #18C98B !important;
         box-shadow: 0 12px 36px rgba(24, 201, 139, 0.12) !important;
@@ -65,6 +66,7 @@
         .cardDesc {
           color: #64748B !important;
         }
+
         .watermarkNum {
           color: #CBD5E1 !important;
         }
@@ -85,6 +87,7 @@
         .liveTag {
           color: #475569 !important;
         }
+
         .subMeta,
         .tickerText,
         .resLabel,
@@ -92,6 +95,7 @@
         .sampleBadge {
           color: #64748B !important;
         }
+
         .proTag,
         .momText.momActive {
           color: #047857 !important;
@@ -101,13 +105,21 @@
 
     .convictionList {
       .convRow {
-        .rankNum { color: #64748B !important; }
-        .symText { color: #0F172A !important; }
+        .rankNum {
+          color: #64748B !important;
+        }
+
+        .symText {
+          color: #0F172A !important;
+        }
+
         .trackBar {
           background: #E2E8F0 !important;
         }
+
         .scoreText {
           color: #475569 !important;
+
           &.scoreActive {
             color: #047857 !important;
             text-shadow: none !important;
@@ -130,6 +142,7 @@
           box-shadow: none !important;
         }
       }
+
       .widgetFooterMeta {
         color: #64748B !important;
       }
@@ -139,6 +152,7 @@
       .resLevelMarker {
         color: #047857 !important;
       }
+
       .breakoutToast {
         background: #F1F5F9 !important;
         border-color: #E2E8F0 !important;
@@ -151,7 +165,8 @@
           color: #047857 !important;
           box-shadow: none !important;
 
-          .arrowIcon, span {
+          .arrowIcon,
+          span {
             color: #047857 !important;
           }
         }
@@ -165,14 +180,25 @@
           border-color: #E2E8F0 !important;
           box-shadow: none !important;
 
-          .statTitle { color: #64748B !important; }
-          .statNum { color: #0F172A !important; text-shadow: none !important; }
+          .statTitle {
+            color: #64748B !important;
+          }
+
+          .statNum {
+            color: #0F172A !important;
+            text-shadow: none !important;
+          }
 
           &.statPillActive {
             background: rgba(16, 185, 129, 0.12) !important;
             border-color: rgba(16, 185, 129, 0.35) !important;
             box-shadow: none !important;
-            .statTitle, .statNum { color: #047857 !important; text-shadow: none !important; }
+
+            .statTitle,
+            .statNum {
+              color: #047857 !important;
+              text-shadow: none !important;
+            }
           }
         }
       }
@@ -182,6 +208,7 @@
     svg line[stroke="rgba(255, 255, 255, 0.2)"] {
       stroke: rgba(15, 23, 42, 0.25) !important;
     }
+
     svg circle[fill="rgba(255, 255, 255, 0.4)"] {
       fill: rgba(15, 23, 42, 0.4) !important;
     }
@@ -239,7 +266,7 @@
 
       h2 {
         font-family: var(--font-syne), "Syne", sans-serif;
-        font-size: 46px;
+        font-size: 45px;
         font-weight: 800;
         line-height: 1.12;
         letter-spacing: -1.2px;
@@ -312,7 +339,8 @@
     box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(24, 201, 139, 0.12);
     transition: all 0.38s cubic-bezier(0.22, 1, 0.36, 1);
 
-    &:hover, &.cardActive {
+    &:hover,
+    &.cardActive {
       opacity: 1;
       border-color: rgba(24, 201, 139, 0.55);
       background: radial-gradient(circle at 50% 15%, rgba(24, 201, 139, 0.14) 0%, transparent 75%), rgba(4, 14, 10, 0.96);
@@ -326,7 +354,7 @@
         }
       }
 
-   
+
     }
 
     &.cardDimmed {
@@ -379,6 +407,7 @@
         display: flex;
         align-items: center;
         gap: 10px;
+
         .watermarkNum {
           color: #6EE7B7;
           text-shadow: 0 0 12px rgba(24, 201, 139, 0.6);
@@ -432,7 +461,7 @@
       }
 
       h3 {
-        font-size: 24px;
+        font-size: 26px;
         font-weight: 700;
         color: #ffffff;
         margin: 0;
@@ -453,7 +482,7 @@
       width: 100%;
 
       .cardDesc {
-        font-size: 13.5px;
+        font-size: 14px;
         line-height: 1.55;
         color: #D1D5DB;
         margin: 0;

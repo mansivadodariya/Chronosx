@@ -46,7 +46,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-                       position: relative;
+            position: relative;
             flex-shrink: 0;
 
             .stepNum {
@@ -76,7 +76,7 @@
 
         &.stepActive {
             .stepCircle {
-            
+
 
                 .stepNum {
                     color: #18C98B;
@@ -142,7 +142,7 @@
 
 /* CENTRAL HIGH-TECH OBSIDIAN DROPZONE (BOX 1) */
 .uploadCard {
-    background: 
+    background:
         radial-gradient(ellipse 25% 85% at 0% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
         radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.12) 0%, rgba(110, 231, 183, 0.05) 50%, transparent 70%),
         radial-gradient(ellipse 25% 85% at 100% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
@@ -166,11 +166,11 @@
     &:hover,
     &.activeDrag {
         border-color: #18C98B;
-        background: 
-                    radial-gradient(ellipse 30% 90% at 0% 50%, rgba(24, 201, 139, 0.28) 0%, rgba(16, 185, 129, 0.1) 50%, transparent 75%),
-                        radial-gradient(ellipse 55% 65% at 50% 30%, rgba(0, 242, 254, 0.18) 0%, rgba(110, 231, 183, 0.08) 50%, transparent 70%),
-                        radial-gradient(ellipse 30% 90% at 100% 50%, rgba(24, 201, 139, 0.28) 0%, rgba(16, 185, 129, 0.1) 50%, transparent 75%),
-                        #121514;
+        background:
+            radial-gradient(ellipse 30% 90% at 0% 50%, rgba(24, 201, 139, 0.28) 0%, rgba(16, 185, 129, 0.1) 50%, transparent 75%),
+            radial-gradient(ellipse 55% 65% at 50% 30%, rgba(0, 242, 254, 0.18) 0%, rgba(110, 231, 183, 0.08) 50%, transparent 70%),
+            radial-gradient(ellipse 30% 90% at 100% 50%, rgba(24, 201, 139, 0.28) 0%, rgba(16, 185, 129, 0.1) 50%, transparent 75%),
+            #121514;
         box-shadow: 0 0 40px rgba(24, 201, 139, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         transform: translateY(-2px);
 
@@ -231,7 +231,7 @@
         max-width: 600px;
 
         h2 {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 800;
             color: $textWhite;
             margin: 0;
@@ -501,13 +501,14 @@
         opacity: 0.8;
         transform: scale(1);
     }
+
     50% {
         opacity: 0.2;
         transform: scale(1.2);
     }
+
     100% {
         opacity: 0.8;
         transform: scale(1);
     }
 }
-
