@@ -4,6 +4,14 @@
   overflow: hidden;
   background: #040302;
 
+  @include respond-to("tab") {
+    padding: 70px 0;
+  }
+
+  @include respond-to("sm") {
+    padding: 48px 0;
+  }
+
   :global(.container) {
     position: relative;
     z-index: 5;
@@ -98,7 +106,8 @@
       letter-spacing: 0.5px;
       margin: 0 0 18px 0;
 
-      span, .goldHighlight {
+      span,
+      .goldHighlight {
         @include heading-gold-gradient;
         display: inline-block;
         text-shadow: 0 0 24px rgba(24, 201, 139, 0.25);
@@ -312,7 +321,7 @@
 
           .itemDesc {
             color: #9CA3AF;
-            font-size: 13.5px;
+            font-size: 14px;
             line-height: 1.52;
             margin: 0 0 12px 0;
             @include font-normal;

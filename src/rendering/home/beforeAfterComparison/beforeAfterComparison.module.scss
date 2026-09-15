@@ -47,12 +47,15 @@
 
       .hudTableRow {
         color: #0F172A !important;
+
         .tfBadge {
           color: #047857 !important;
         }
+
         .valGreen {
           color: #047857 !important;
         }
+
         .valWhite {
           color: #0F172A !important;
         }
@@ -70,6 +73,7 @@
           .btLabel {
             color: #64748B !important;
           }
+
           .btVal {
             color: #047857 !important;
           }
@@ -79,16 +83,20 @@
       .trendStrengthBox {
         .tsHeader {
           color: #64748B !important;
+
           .tsLabel {
             color: #047857 !important;
           }
         }
+
         .tsMeterBar {
           background: #E2E8F0 !important;
+
           .tsMeterFill {
             box-shadow: none !important;
           }
         }
+
         .tsScore {
           color: #047857 !important;
         }
@@ -99,6 +107,7 @@
       background: #F1F5F9 !important;
       border: 1px solid #E2E8F0 !important;
       box-shadow: none !important;
+
       span {
         color: #047857 !important;
       }
@@ -106,6 +115,7 @@
 
     .sliderLine {
       box-shadow: none !important;
+
       .sliderHandle {
         box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3) !important;
       }
@@ -117,7 +127,7 @@
   }
 
   @include respond-to("sm") {
-    padding: 50px 0;
+    padding: 60px 0;
   }
 
   &::after {
@@ -154,7 +164,7 @@
 
     h2 {
       font-family: var(--font-syne), "Syne", sans-serif;
-      font-size: 46px;
+      font-size: 45px;
       font-weight: 800;
       line-height: 1.12;
       letter-spacing: -1.2px;

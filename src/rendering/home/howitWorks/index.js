@@ -1,11 +1,10 @@
 "use client";
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './howitWorks.module.scss';
 import Link from 'next/link';
 import SectionHeader from '@/components/sectionHeader';
-
 const steps = [
   {
     step: '01',
@@ -37,8 +36,8 @@ export default function HowitWorks() {
   const { t } = useLanguage();
   const [activeStep, setActiveStep] = useState(0);
   const [isIntro, setIsIntro] = useState(true);
-
   // Phase 1 (intro label) → Phase 2 (simulation) after 1.4s
+
   useEffect(() => {
     setIsIntro(true);
     const t = setTimeout(() => setIsIntro(false), 1400);

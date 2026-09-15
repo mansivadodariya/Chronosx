@@ -523,6 +523,10 @@
 
                 .viewAllMarketsLink {
                     color: #059669 !important;
+
+                    &:hover {
+                        color: #047857 !important;
+                    }
                 }
             }
         }

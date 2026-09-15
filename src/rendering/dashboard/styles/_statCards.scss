@@ -18,7 +18,7 @@
 }
 
 .hologramHero {
-    background: 
+    background:
         radial-gradient(ellipse 25% 85% at 0% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
         radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.12) 0%, rgba(110, 231, 183, 0.05) 50%, transparent 70%),
         radial-gradient(ellipse 25% 85% at 100% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
@@ -63,7 +63,7 @@
         position: absolute;
         inset: 0;
         background: radial-gradient(circle at 75% 50%, transparent 0%, rgba(4, 6, 5, 0.85) 60%, #040605 100%),
-                    linear-gradient(90deg, #040605 0%, rgba(4, 6, 5, 0.6) 45%, transparent 100%);
+            linear-gradient(90deg, #040605 0%, rgba(4, 6, 5, 0.6) 45%, transparent 100%);
     }
 }
 
@@ -97,7 +97,7 @@
 
     .heroHeadline {
         color: #FFFFFF;
-        font-size: 24px;
+        font-size: 26px;
         font-weight: 700;
         font-family: "Euclid-Bold", sans-serif;
         margin: 0;
@@ -186,10 +186,9 @@
 
                 .chartTitle {
                     color: #FFFFFF;
-                    font-size: 16px;
+                    font-size: 15px;
                     font-weight: 700;
                     font-family: "Euclid-Bold", sans-serif;
-                    line-height: 1.3;
                 }
 
                 .chartSubtitle {
@@ -408,6 +407,7 @@
                         color: #18C98B;
                         font-weight: 700;
                     }
+
                     .dayVal {
                         color: #18C98B;
                     }
@@ -417,57 +417,57 @@
     }
 }
 
-    .heroFastActions {
+.heroFastActions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+
+    .actionButtonGold {
+        background: #FFFFFF;
+        color: #040605;
+        font-size: 14px;
+        font-weight: 700;
+        font-family: "Euclid-Bold", sans-serif;
+        padding: 10px 22px;
+        border-radius: 99px;
         display: flex;
         align-items: center;
-        gap: 14px;
-        margin-top: 4px;
-        flex-wrap: wrap;
+        gap: 8px;
+        text-decoration: none;
+        border: none;
+        box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
+        transition: all 0.2s ease;
 
-        .actionButtonGold {
-            background: #FFFFFF;
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(255, 255, 255, 0.35);
             color: #040605;
-            font-size: 13.5px;
-            font-weight: 700;
-            font-family: "Euclid-Bold", sans-serif;
-            padding: 10px 22px;
-            border-radius: 99px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            border: none;
-            box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
-            transition: all 0.2s ease;
-
-            &:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 24px rgba(255, 255, 255, 0.35);
-                color: #040605;
-            }
-        }
-
-        .actionButtonOutline {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 13.5px;
-            font-weight: 600;
-            padding: 10px 20px;
-            border-radius: 99px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            transition: all 0.2s ease;
-
-            &:hover {
-                background: rgba(255, 255, 255, 0.14);
-                border-color: rgba(255, 255, 255, 0.25);
-                color: #FFFFFF;
-            }
         }
     }
+
+    .actionButtonOutline {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 14px;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 99px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.25);
+            color: #FFFFFF;
+        }
+    }
+}
 
 .heroRightCol {
     display: flex;
@@ -618,8 +618,13 @@
                 font-weight: 700;
                 font-family: "Euclid-Bold", sans-serif;
 
-                &.valGreen { color: #34D399; }
-                &.valRed { color: #F87171; }
+                &.valGreen {
+                    color: #34D399;
+                }
+
+                &.valRed {
+                    color: #F87171;
+                }
             }
         }
     }
@@ -656,4 +661,3 @@
         }
     }
 }
-

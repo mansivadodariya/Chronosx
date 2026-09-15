@@ -81,8 +81,17 @@
 }
 
 @keyframes pulseDotAnim {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.25); opacity: 0.6; }
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.25);
+        opacity: 0.6;
+    }
 }
 
 .nameBlock {
@@ -273,7 +282,7 @@
         }
 
         .fallbackMain {
-            font-size: 13.5px;
+            font-size: 14px;
             font-weight: 700;
             color: #FFFFFF;
             letter-spacing: 0.3px;
@@ -512,5 +521,3 @@
     color: #FFFFFF !important;
     box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3) !important;
 }
-
-

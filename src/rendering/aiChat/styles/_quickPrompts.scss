@@ -4,14 +4,14 @@
 .quickPromptsSection {
     position: relative;
     z-index: 2;
-    padding: 85px 0;
+    padding: 80px 0;
 
     @include respond-to('md') {
         padding: 65px 0;
     }
 
     @include respond-to('sm') {
-        padding: 50px 0;
+        padding: 60px 0;
     }
 }
 
@@ -97,7 +97,7 @@
 }
 
 .promptText {
-    font-size: 13.5px;
+    font-size: 14px;
     line-height: 1.55;
     color: #A3A3A3;
     font-style: italic;

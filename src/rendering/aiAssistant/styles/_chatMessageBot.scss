@@ -105,15 +105,19 @@
                         color: #E2E8F0 !important;
                         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(24, 201, 139, 0.12) !important;
 
-                        p, span, li {
+                        p,
+                        span,
+                        li {
                             color: #E2E8F0 !important;
                         }
 
-                        strong, b {
+                        strong,
+                        b {
                             color: #FFFFFF !important;
                         }
 
-                        ul, ol {
+                        ul,
+                        ol {
                             padding-left: 18px;
                             margin: 6px 0;
                         }
@@ -150,18 +154,26 @@
                             }
                         }
 
-                        p, span, li {
+                        p,
+                        span,
+                        li {
                             color: #CBD5E1 !important;
                         }
 
-                        h1, h2, h3, h4, h5, h6 {
+                        h1,
+                        h2,
+                        h3,
+                        h4,
+                        h5,
+                        h6 {
                             color: #18C98B !important;
                             margin-top: 16px;
                             margin-bottom: 8px;
                             font-weight: 700;
                         }
 
-                        strong, b {
+                        strong,
+                        b {
                             color: #FFFFFF !important;
                         }
 
@@ -213,17 +225,26 @@
                     p {
                         margin: 0 0 10px 0;
                         color: #E2E8F0;
-                        &:last-child { margin-bottom: 0; }
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
                     }
 
-                    h1, h2, h3, h4, h5, h6 {
+                    h1,
+                    h2,
+                    h3,
+                    h4,
+                    h5,
+                    h6 {
                         color: #18C98B;
                         font-weight: 700;
                         margin: 14px 0 8px 0;
                         letter-spacing: -0.2px;
                     }
 
-                    ul, ol {
+                    ul,
+                    ol {
                         margin: 8px 0;
                         padding-left: 20px;
                         display: flex;
@@ -236,7 +257,8 @@
                         }
                     }
 
-                    strong, b {
+                    strong,
+                    b {
                         color: #FFFFFF;
                         font-weight: 700;
                     }
@@ -310,7 +332,10 @@
                         color: #18C98B;
                         text-decoration: underline;
                         transition: color 0.2s ease;
-                        &:hover { color: #FFFFFF; }
+
+                        &:hover {
+                            color: #FFFFFF;
+                        }
                     }
                 }
 
@@ -403,7 +428,7 @@
 
                                 .visionSectionTitle {
                                     font-family: var(--font-syne), "Syne", sans-serif;
-                                    font-size: 13.5px;
+                                    font-size: 14px;
                                     font-weight: 700;
                                     color: #18C98B;
                                 }

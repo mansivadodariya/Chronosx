@@ -1,4 +1,3 @@
-
 $primary: #18C98B;
 $primaryDark: #10B981;
 $bgDark: #040605;
@@ -12,6 +11,7 @@ $danger: #F87171;
 
 
 .affiliatePage {
+
     /* Modal Styles */
     .modalOverlay {
         position: fixed;
@@ -258,7 +258,8 @@ $danger: #F87171;
                             }
                         }
 
-                        .inlinePasteBtn, .inlineMaxBtn {
+                        .inlinePasteBtn,
+                        .inlineMaxBtn {
                             position: absolute;
                             right: 8px;
                             background: rgba(24, 201, 139, 0.18);
@@ -303,7 +304,7 @@ $danger: #F87171;
                             padding-top: 6px;
                             border-top: 1px solid rgba(255, 255, 255, 0.08);
                             color: #FFFFFF;
-                            font-size: 13.5px;
+                            font-size: 14px;
 
                             strong {
                                 color: #18C98B;

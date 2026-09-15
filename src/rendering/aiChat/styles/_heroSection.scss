@@ -188,7 +188,7 @@
     background: #18C98B;
     color: #040605;
     font-family: "Euclid-Bold", "Euclid Circular A", var(--font-plus-jakarta), sans-serif;
-    font-size: 13.5px;
+    font-size: 14px;
     font-weight: 800;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -227,7 +227,7 @@
     background: rgba(255, 255, 255, 0.03);
     color: #E5E7EB;
     font-family: "Euclid-Bold", "Euclid Circular A", var(--font-plus-jakarta), sans-serif;
-    font-size: 13.5px;
+    font-size: 14px;
     font-weight: 800;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -346,7 +346,7 @@
 
         .badgeContent {
             h4 {
-                font-size: 13.5px;
+                font-size: 14px;
             }
 
             p {
@@ -400,12 +400,12 @@
     }
 
     @include respond-to('sm') {
-        font-size: 24px;
+        font-size: 26px;
     }
 }
 
 .sectionSubtitle {
-    font-size: 15.5px;
+    font-size: 16px;
     line-height: 1.6;
     color: #9CA3AF;
     margin: 0 auto;

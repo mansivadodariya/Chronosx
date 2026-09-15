@@ -281,7 +281,8 @@
     }
 }
 
-.securityActionsList, .activityList {
+.securityActionsList,
+.activityList {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -310,10 +311,13 @@
 }
 
 @keyframes activePulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
         transform: scale(1);
     }
+
     50% {
         opacity: 0.35;
         transform: scale(0.85);
@@ -573,7 +577,6 @@
     padding: 36px 16px;
     gap: 12px;
     color: rgba(255, 255, 255, 0.45);
-    font-size: 13.5px;
+    font-size: 14px;
     text-align: center;
 }
-

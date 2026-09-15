@@ -62,7 +62,7 @@ $success: #10b981;
             }
 
             .guideSub {
-                font-size: 13.5px;
+                font-size: 14px;
                 color: rgba(255, 255, 255, 0.6);
                 margin: 0;
                 line-height: 1.45;
@@ -290,6 +290,7 @@ $success: #10b981;
 
 :global(html[data-theme='light']) {
     .tradeSnap {
+
         .panel,
         .resultsPanel {
             background: #FFFFFF;

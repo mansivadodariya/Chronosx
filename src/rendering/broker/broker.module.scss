@@ -51,7 +51,7 @@ $danger: #F87171;
                 position: absolute;
                 inset: 0;
                 background: radial-gradient(circle at 75% 50%, transparent 0%, rgba(3, 4, 4, 0.85) 60%, #030404 100%),
-                            linear-gradient(90deg, #030404 0%, rgba(3, 4, 4, 0.6) 45%, transparent 100%);
+                    linear-gradient(90deg, #030404 0%, rgba(3, 4, 4, 0.6) 45%, transparent 100%);
             }
         }
 
@@ -94,7 +94,7 @@ $danger: #F87171;
 
             p {
                 color: rgba(255, 255, 255, 0.7);
-                font-size: 13.5px;
+                font-size: 14px;
                 line-height: 1.6;
                 margin: 0;
                 font-family: "Euclid-Regular", sans-serif;
@@ -297,7 +297,7 @@ $danger: #F87171;
 
         p {
             color: rgba(255, 255, 255, 0.55);
-            font-size: 13.5px;
+            font-size: 14px;
             margin: 0;
             max-width: 400px;
         }
@@ -335,6 +335,7 @@ $danger: #F87171;
             h1 {
                 color: #0F172A;
             }
+
             p {
                 color: #475569;
             }

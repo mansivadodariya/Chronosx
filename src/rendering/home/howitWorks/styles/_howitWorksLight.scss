@@ -1,0 +1,246 @@
+.howitWorks {
+  :global(html.light) & {
+    background: #F8FAFC !important;
+    border-bottom: 1px solid rgba(24, 201, 139, 0.15) !important;
+
+    .badge {
+      color: #047857 !important;
+    }
+
+    .title {
+      color: #0F172A !important;
+
+      span {
+        color: #059669 !important;
+        -webkit-text-fill-color: #059669 !important;
+      }
+    }
+
+    .desc {
+      color: #1E293B !important;
+    }
+
+    .sub {
+      color: #64748B !important;
+    }
+
+    .cta {
+      background: #059669 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3) !important;
+
+      &:hover {
+        background: #047857 !important;
+      }
+    }
+
+    .dots .dot {
+      background: #CBD5E1 !important;
+
+      &.dotActive {
+        background: #059669 !important;
+      }
+    }
+
+    .tvBox {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(24, 201, 139, 0.3) !important;
+      box-shadow: 0 16px 45px rgba(15, 23, 42, 0.08) !important;
+
+      &::before {
+        display: none !important;
+      }
+
+      .introState {
+        .introIcon {
+          color: #059669 !important;
+        }
+
+        .introLabel {
+          color: #0F172A !important;
+        }
+      }
+
+      .sim {
+        .simHead {
+          border-bottom-color: #E2E8F0 !important;
+
+          .numTag {
+            background: #F1F5F9 !important;
+            border-color: #CBD5E1 !important;
+            color: #047857 !important;
+          }
+
+          .simTitle {
+            color: #0F172A !important;
+          }
+
+          .statusGreen,
+          .statusGold,
+          .signal {
+            background: rgba(5, 150, 105, 0.12) !important;
+            border-color: rgba(5, 150, 105, 0.3) !important;
+            color: #047857 !important;
+          }
+        }
+
+        .form {
+          .lbl {
+            color: #64748B !important;
+          }
+
+          .input {
+            background: #F8FAFC !important;
+            border-color: #E2E8F0 !important;
+            color: #0F172A !important;
+
+            span {
+              color: #0F172A !important;
+            }
+          }
+
+          .btn {
+            background: #059669 !important;
+            color: #FFFFFF !important;
+
+            &:hover {
+              background: #047857 !important;
+            }
+          }
+        }
+
+        .alert {
+          background: #F8FAFC !important;
+          border-color: rgba(24, 201, 139, 0.3) !important;
+
+          .check {
+            background: rgba(5, 150, 105, 0.15) !important;
+            color: #059669 !important;
+          }
+
+          strong {
+            color: #0F172A !important;
+          }
+
+          .alertSub {
+            color: #64748B !important;
+          }
+        }
+
+        .brokerRow {
+          background: #F8FAFC !important;
+          border-color: #E2E8F0 !important;
+
+          .brokerLogo {
+            background: #059669 !important;
+            color: #FFFFFF !important;
+          }
+
+          h4 {
+            color: #0F172A !important;
+          }
+
+          p {
+            color: #64748B !important;
+          }
+        }
+
+        .mt5Row {
+          background: #F8FAFC !important;
+          border-color: #E2E8F0 !important;
+          color: #64748B !important;
+
+          strong {
+            color: #0F172A !important;
+          }
+        }
+
+        .reward {
+          background: rgba(5, 150, 105, 0.08) !important;
+          border-color: rgba(5, 150, 105, 0.28) !important;
+
+          .star {
+            color: #059669 !important;
+          }
+
+          strong {
+            color: #047857 !important;
+          }
+
+          p {
+            color: #475569 !important;
+          }
+        }
+
+        .chart {
+          background: #F8FAFC !important;
+          border-color: #E2E8F0 !important;
+
+          .sessions span {
+            color: #64748B !important;
+            background: #E2E8F0 !important;
+          }
+
+          .callouts {
+            border-top-color: #E2E8F0 !important;
+
+            .tp {
+              color: #059669 !important;
+            }
+
+            .sl {
+              color: #DC2626 !important;
+            }
+          }
+        }
+
+        .loop {
+          .ring1 {
+            border-color: rgba(5, 150, 105, 0.35) !important;
+          }
+
+          .ring2 {
+            border-color: rgba(5, 150, 105, 0.25) !important;
+          }
+
+          .loopCenter {
+            background: #F8FAFC !important;
+            border-color: #059669 !important;
+            box-shadow: 0 4px 20px rgba(5, 150, 105, 0.15) !important;
+
+            .loopIcon {
+              color: #059669 !important;
+            }
+
+            .loopNum {
+              color: #0F172A !important;
+            }
+
+            .loopLabel {
+              color: #047857 !important;
+            }
+          }
+        }
+
+        .meta {
+          background: #F8FAFC !important;
+          border-color: #E2E8F0 !important;
+
+          .metaRow {
+            span {
+              color: #64748B !important;
+            }
+
+            .green {
+              color: #059669 !important;
+            }
+
+            .gold {
+              color: #047857 !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}

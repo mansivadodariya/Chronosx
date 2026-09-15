@@ -65,7 +65,7 @@
 }
 
 .clarificationOptionLabel {
-    font-size: 13.5px;
+    font-size: 14px;
     font-weight: 600;
     color: #FFFFFF;
     transition: color 0.2s ease;
@@ -118,7 +118,9 @@
     line-height: 1.65;
     color: #E2E8F0;
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
         font-size: 15px;
         font-weight: 700;
         color: #18C98B;
@@ -130,8 +132,10 @@
         }
     }
 
-    h4, h5, h6 {
-        font-size: 13.5px;
+    h4,
+    h5,
+    h6 {
+        font-size: 14px;
         font-weight: 700;
         color: #FFFFFF;
         margin: 12px 0 6px 0;
@@ -146,7 +150,8 @@
         }
     }
 
-    ul, ol {
+    ul,
+    ol {
         margin: 0 0 10px 0;
         padding-left: 20px;
 
@@ -160,7 +165,8 @@
         }
     }
 
-    strong, b {
+    strong,
+    b {
         color: #FFFFFF;
         font-weight: 700;
     }
@@ -175,7 +181,8 @@
         border: 1px solid rgba(24, 201, 139, 0.25);
         background: #0D0E13;
 
-        th, td {
+        th,
+        td {
             padding: 8px 12px;
             border: 1px solid rgba(24, 201, 139, 0.15);
             color: #E2E8F0;
@@ -362,15 +369,20 @@
     .chatMarkdown {
         color: #f1f5f9 !important;
 
-        h1, h2, h3 {
+        h1,
+        h2,
+        h3 {
             color: #18C98B !important;
         }
 
-        h4, h5, h6 {
+        h4,
+        h5,
+        h6 {
             color: #18C98B !important;
         }
 
-        p, li {
+        p,
+        li {
             color: #f1f5f9 !important;
 
             &::marker {
@@ -378,14 +390,16 @@
             }
         }
 
-        strong, b {
+        strong,
+        b {
             color: #ffffff !important;
         }
 
         table {
             border-color: rgba(255, 255, 255, 0.15) !important;
 
-            th, td {
+            th,
+            td {
                 border-color: rgba(255, 255, 255, 0.15) !important;
             }
 

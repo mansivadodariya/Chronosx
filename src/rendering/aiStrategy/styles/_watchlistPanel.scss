@@ -2,7 +2,7 @@
    PANEL 1: WATCHLIST PANEL (DASHBOARD THEME & ROW TINTS)
    ============================================================ */
 .watchlistPanel {
-    background: 
+    background:
         radial-gradient(ellipse 50% 60% at 50% 0%, rgba(24, 201, 139, 0.08) 0%, transparent 70%),
         #121514;
     border: 1px solid rgba(24, 201, 139, 0.2);
@@ -219,7 +219,7 @@
 
         .quoteSymbolName {
             color: #FFFFFF;
-            font-size: 13.5px;
+            font-size: 14px;
             font-weight: 700;
             font-family: "Euclid-Bold", "Inter", sans-serif;
             white-space: nowrap;
@@ -238,7 +238,7 @@
 
         .quotePrice {
             color: #FFFFFF;
-            font-size: 13.5px;
+            font-size: 14px;
             font-weight: 700;
             font-family: "Euclid-Medium", "Inter", monospace;
             white-space: nowrap;
@@ -292,6 +292,7 @@
     0% {
         background-color: rgba(24, 201, 139, 0.35);
     }
+
     100% {
         background-color: transparent;
     }
@@ -301,8 +302,8 @@
     0% {
         background-color: rgba(239, 68, 68, 0.35);
     }
+
     100% {
         background-color: transparent;
     }
 }
-

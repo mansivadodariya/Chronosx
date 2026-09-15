@@ -2,7 +2,7 @@
    PANEL 2: CHART PANEL (DASHBOARD THEME)
    ============================================================ */
 .chartPanel {
-    background: 
+    background:
         radial-gradient(ellipse 50% 60% at 50% 0%, rgba(24, 201, 139, 0.08) 0%, transparent 70%),
         #121514;
     border: 1px solid rgba(24, 201, 139, 0.2);
@@ -136,7 +136,7 @@
         justify-content: center;
         gap: 12px;
         color: rgba(255, 255, 255, 0.7);
-        font-size: 13.5px;
+        font-size: 14px;
         z-index: 10;
 
         .chartSpinner {
@@ -150,7 +150,7 @@
 
         .chartErrorText {
             color: #EF5350;
-            font-size: 13.5px;
+            font-size: 14px;
         }
 
         .chartRetryBtn {
@@ -229,4 +229,3 @@
         }
     }
 }
-

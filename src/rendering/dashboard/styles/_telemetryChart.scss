@@ -177,7 +177,7 @@
                         line-height: 1.25;
 
                         @include respond-to('sm') {
-                            font-size: 13.5px;
+                            font-size: 14px;
                         }
                     }
 
@@ -450,4 +450,3 @@
     animation: shimmerWave 1.8s ease-in-out infinite !important;
     border-color: rgba(24, 201, 139, 0.2) !important;
 }
-

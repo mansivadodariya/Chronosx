@@ -4,14 +4,14 @@
 .comparisonSection {
     position: relative;
     z-index: 2;
-    padding: 85px 0;
+    padding: 80px 0;
 
     @include respond-to('md') {
         padding: 65px 0;
     }
 
     @include respond-to('sm') {
-        padding: 50px 0;
+        padding: 60px 0;
     }
 }
 
@@ -83,7 +83,7 @@
 
         td {
             padding: 18px 22px;
-            font-size: 13.5px;
+            font-size: 14px;
             line-height: 1.5;
             vertical-align: middle;
 
@@ -184,14 +184,14 @@
 .faqSection {
     position: relative;
     z-index: 2;
-    padding: 85px 0;
+    padding: 80px 0;
 
     @include respond-to('md') {
         padding: 65px 0;
     }
 
     @include respond-to('sm') {
-        padding: 50px 0;
+        padding: 60px 0;
     }
 }
 
@@ -444,7 +444,7 @@
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(24, 201, 139, 0.3);
     color: #18C98B;
-    font-size: 13.5px;
+    font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.04em;
     cursor: pointer;

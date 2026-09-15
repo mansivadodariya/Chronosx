@@ -64,35 +64,35 @@ export default function Testimonials() {
           title2="Forex Traders"
           description="Real reviews from active traders using ChronosX."
         />
+      </div>
+      {/* Standard Width Marquee with Foggy Edge Layers */}
+      <div className={styles.marqueeWrapper}>
+        <div className={styles.fogLeft}></div>
+        <div className={styles.fogRight}></div>
 
-        {/* Standard Width Marquee with Foggy Edge Layers */}
-        <div className={styles.marqueeWrapper}>
-          <div className={styles.fogLeft}></div>
-          <div className={styles.fogRight}></div>
+        <div className={styles.marqueeTrack}>
+          {marqueeItems.map((item, index) => (
+            <div key={index} className={styles.card}>
+              <div className={styles.stars}>
+                {[...Array(item.rating)].map((_, i) => (
+                  <img key={i} src="/assets/icons/star.svg" alt="star" />
+                ))}
+              </div>
 
-          <div className={styles.marqueeTrack}>
-            {marqueeItems.map((item, index) => (
-              <div key={index} className={styles.card}>
-                <div className={styles.stars}>
-                  {[...Array(item.rating)].map((_, i) => (
-                    <img key={i} src="/assets/icons/star.svg" alt="star" />
-                  ))}
-                </div>
+              <p className={styles.quote}>{item.quote}</p>
 
-                <p className={styles.quote}>{item.quote}</p>
-
-                <div className={styles.author}>
-                  <div className={styles.avatar}>{item.initials}</div>
-                  <div className={styles.authorInfo}>
-                    <h4>{item.name}</h4>
-                    <span>{item.role}</span>
-                  </div>
+              <div className={styles.author}>
+                <div className={styles.avatar}>{item.initials}</div>
+                <div className={styles.authorInfo}>
+                  <h4>{item.name}</h4>
+                  <span>{item.role}</span>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
+
     </div>
   );
 }

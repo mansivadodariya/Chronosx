@@ -42,6 +42,7 @@
         0% {
             background-color: rgba(38, 166, 154, 0.35);
         }
+
         100% {
             background-color: transparent;
         }
@@ -51,6 +52,7 @@
         0% {
             background-color: rgba(239, 83, 80, 0.35);
         }
+
         100% {
             background-color: transparent;
         }
@@ -126,7 +128,7 @@
 
         .livePriceText,
         .badgePrice {
-            font-size: 13.5px;
+            font-size: 14px;
             font-weight: 700;
             font-family: var(--font-plus-jakarta), var(--font-roboto), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-variant-numeric: tabular-nums;
@@ -161,6 +163,7 @@
         }
 
         @container chartpane (max-width: 650px) {
+
             .liveDirectionTag,
             .badgeDirection,
             .livePctTag,

@@ -1,4 +1,3 @@
-
 $primary: #18C98B;
 $primaryDark: #10B981;
 $bgDark: #040605;
@@ -131,7 +130,7 @@ $danger: #F87171;
 
             .kpiValueEmerald {
                 color: #18C98B;
-                font-size: 24px;
+                font-size: 26px;
                 font-weight: 700;
                 font-family: "Euclid-Bold", sans-serif;
                 line-height: 1.2;
@@ -608,25 +607,41 @@ $danger: #F87171;
                     .socialBtnX {
                         background: rgba(255, 255, 255, 0.05);
                         color: #FFF;
-                        &:hover { background: rgba(255, 255, 255, 0.1); }
+
+                        &:hover {
+                            background: #222;
+                            border-color: #555;
+                        }
                     }
 
                     .socialBtnTg {
                         background: rgba(36, 161, 222, 0.12);
                         color: #24A1DE;
-                        &:hover { background: rgba(36, 161, 222, 0.25); color: #FFF; }
+
+                        &:hover {
+                            background: #24A1DE;
+                            color: #FFF;
+                        }
                     }
 
                     .socialBtnWa {
                         background: rgba(37, 211, 102, 0.12);
                         color: #25D366;
-                        &:hover { background: rgba(37, 211, 102, 0.25); color: #FFF; }
+
+                        &:hover {
+                            background: #25D366;
+                            color: #FFF;
+                        }
                     }
 
                     .socialBtnIn {
                         background: rgba(10, 102, 194, 0.12);
                         color: #0A66C2;
-                        &:hover { background: rgba(10, 102, 194, 0.25); color: #FFF; }
+
+                        &:hover {
+                            background: #0A66C2;
+                            color: #FFF;
+                        }
                     }
                 }
             }
@@ -635,12 +650,10 @@ $danger: #F87171;
 
     /* Skeleton Loading Placeholder */
     .skeletonPulse {
-        background: linear-gradient(
-            90deg,
-            rgba(255, 255, 255, 0.05) 0%,
-            rgba(24, 201, 139, 0.16) 50%,
-            rgba(255, 255, 255, 0.05) 100%
-        );
+        background: linear-gradient(90deg,
+                rgba(255, 255, 255, 0.05) 0%,
+                rgba(24, 201, 139, 0.16) 50%,
+                rgba(255, 255, 255, 0.05) 100%);
         background-size: 200% 100%;
         animation: affiliateShimmer 1.5s infinite ease-in-out;
         border-radius: 6px;
@@ -653,6 +666,7 @@ $danger: #F87171;
     0% {
         background-position: -200% 0;
     }
+
     100% {
         background-position: 200% 0;
     }

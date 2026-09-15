@@ -65,6 +65,14 @@
             margin: 20px 0 16px 0;
             font-family: var(--font-anton);
 
+            @include respond-to("tab") {
+                font-size: 38px;
+            }
+
+            @include respond-to("sm") {
+                font-size: 28px;
+            }
+
             span {
                 @include heading-gold-gradient;
                 display: inline-block;
@@ -78,6 +86,10 @@
             margin: 0;
             max-width: 760px;
             @include font-medium;
+
+            @include respond-to("sm") {
+                font-size: 15px;
+            }
         }
     }
 
@@ -85,6 +97,16 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 26px;
+
+        @include respond-to("lg") {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @include respond-to("sm") {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
 
         .card {
             border-radius: 16px;
@@ -191,7 +213,7 @@
 
                 h3 {
                     color: #ffffff;
-                    font-size: 24px;
+                    font-size: 26px;
                     font-weight: 800;
                     margin: 0 0 8px 0;
                     text-transform: uppercase;

@@ -161,9 +161,9 @@
     max-width: 620px;
     height: 560px;
     max-height: min(84vh, 600px);
-    box-shadow: 0 32px 80px -10px rgba(0, 0, 0, 0.95), 
-                0 0 0 1px rgba(255, 255, 255, 0.05), 
-                0 0 45px -10px rgba(24, 201, 139, 0.22);
+    box-shadow: 0 32px 80px -10px rgba(0, 0, 0, 0.95),
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 0 45px -10px rgba(24, 201, 139, 0.22);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -338,12 +338,15 @@
     &::-webkit-scrollbar {
         width: 5px;
     }
+
     &::-webkit-scrollbar-track {
         background: rgba(0, 0, 0, 0.15);
     }
+
     &::-webkit-scrollbar-thumb {
         background: rgba(24, 201, 139, 0.35);
         border-radius: 99px;
+
         &:hover {
             background: rgba(24, 201, 139, 0.55);
         }
@@ -459,7 +462,7 @@
 }
 
 .itemTitle {
-    font-size: 13.5px;
+    font-size: 14px;
     font-weight: 600;
     color: #E2E8E4;
     line-height: 1.3;
@@ -535,7 +538,7 @@
     }
 
     p {
-        font-size: 13.5px;
+        font-size: 14px;
         font-weight: 500;
         margin: 0;
         color: #A0B5AA;
@@ -618,13 +621,15 @@
 }
 
 @keyframes pulseGlow {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
         transform: scale(1);
     }
+
     50% {
         opacity: 0.35;
         transform: scale(0.85);
     }
 }
-

@@ -1,4 +1,5 @@
 .herobanner {
+
     // Centered Hero Layout
     .heroCenterCol {
         display: flex;
@@ -45,7 +46,7 @@
 
                 .badgeText {
                     color: rgba(255, 255, 255, 0.92);
-                    font-size: 13.5px;
+                    font-size: 14px;
                     font-family: var(--font-plus-jakarta), sans-serif;
                     font-weight: 500;
                     display: flex;
@@ -163,7 +164,7 @@
         }
 
         @include respond-to("sm") {
-            font-size: 13.5px;
+            font-size: 14px;
             line-height: 1.5;
             margin-bottom: 24px;
         }
@@ -298,6 +299,7 @@
                 .trustHighlight {
                     font-size: 12px;
                 }
+
                 .trustSub {
                     font-size: 11px;
                 }
@@ -353,9 +355,9 @@
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
         transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
-                    border-color 0.25s ease,
-                    box-shadow 0.28s ease,
-                    background-color 0.25s ease;
+            border-color 0.25s ease,
+            box-shadow 0.28s ease,
+            background-color 0.25s ease;
 
         // Shiny moving light reflection sweep
         &::after {
@@ -365,14 +367,12 @@
             left: -150%;
             width: 75%;
             height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent 0%,
-                rgba(24, 201, 139, 0.05) 30%,
-                rgba(110, 231, 183, 0.22) 50%,
-                rgba(255, 255, 255, 0.2) 60%,
-                transparent 100%
-            );
+            background: linear-gradient(90deg,
+                    transparent 0%,
+                    rgba(24, 201, 139, 0.05) 30%,
+                    rgba(110, 231, 183, 0.22) 50%,
+                    rgba(255, 255, 255, 0.2) 60%,
+                    transparent 100%);
             transform: skewX(-24deg);
             pointer-events: none;
             animation: cardShineSweep 6.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
@@ -541,6 +541,7 @@
 
     // Light Mode Overrides for Cards & Title
     :global(html.light) & {
+
         .heroCenterCol,
         .heroCardsRow {
             background: transparent !important;
@@ -596,14 +597,12 @@
             }
 
             &::after {
-                background: linear-gradient(
-                    90deg,
-                    transparent 0%,
-                    rgba(24, 201, 139, 0.08) 30%,
-                    rgba(52, 211, 153, 0.25) 50%,
-                    rgba(255, 255, 255, 0.75) 60%,
-                    transparent 100%
-                ) !important;
+                background: linear-gradient(90deg,
+                        transparent 0%,
+                        rgba(24, 201, 139, 0.08) 30%,
+                        rgba(52, 211, 153, 0.25) 50%,
+                        rgba(255, 255, 255, 0.75) 60%,
+                        transparent 100%) !important;
             }
 
             &.cardTilted {
@@ -643,7 +642,10 @@
             background: rgba(255, 255, 255, 0.9) !important;
             border: 1px solid rgba(24, 201, 139, 0.3) !important;
 
-            .cornerTL, .cornerTR, .cornerBL, .cornerBR {
+            .cornerTL,
+            .cornerTR,
+            .cornerBL,
+            .cornerBR {
                 border-color: rgba(15, 23, 42, 0.4) !important;
             }
 

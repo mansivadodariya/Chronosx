@@ -11,10 +11,12 @@
     .sectionHeader {
       h2 {
         color: #0F172A !important;
+
         span {
           color: #059669 !important;
         }
       }
+
       p {
         color: #475569 !important;
       }
@@ -98,7 +100,7 @@
     h2 {
       font-family: var(--font-syne), "Syne", sans-serif;
       color: #FFFFFF;
-      font-size: 46px;
+      font-size: 45px;
       font-weight: 800;
       line-height: 1.12;
       letter-spacing: -1.2px;
@@ -129,7 +131,7 @@
       @include font-normal;
 
       @include respond-to("sm") {
-        font-size: 13.5px;
+        font-size: 14px;
       }
     }
   }
@@ -243,16 +245,31 @@
       /* Part 2: Top Breadcrumbs & Watchlist */
       .cockpitTopBreadcrumb,
       [class*="cockpitTopBreadcrumb"] {
+
         .breadcrumbTitle,
         [class*="breadcrumbTitle"] {
+
           .arrowLeft,
-          [class*="arrowLeft"] { color: #94A3B8 !important; }
+          [class*="arrowLeft"] {
+            color: #94A3B8 !important;
+          }
+
           .parentName,
-          [class*="parentName"] { color: #64748B !important; font-weight: 700 !important; }
+          [class*="parentName"] {
+            color: #64748B !important;
+            font-weight: 700 !important;
+          }
+
           .slash,
-          [class*="slash"] { color: #CBD5E1 !important; }
+          [class*="slash"] {
+            color: #CBD5E1 !important;
+          }
+
           .activeAssetTicker,
-          [class*="activeAssetTicker"] { color: #047857 !important; font-weight: 800 !important; }
+          [class*="activeAssetTicker"] {
+            color: #047857 !important;
+            font-weight: 800 !important;
+          }
         }
 
         .watchlistTag,
@@ -276,6 +293,7 @@
       /* Asset Header & Live Status */
       .identityLeft,
       [class*="identityLeft"] {
+
         .logoGold,
         [class*="logoGold"] {
           background: #ECFDF5 !important;
@@ -325,6 +343,7 @@
 
       .priceChangeAndClock,
       [class*="priceChangeAndClock"] {
+
         .changePercentTag,
         [class*="changePercentTag"] {
           background: #ECFDF5 !important;
@@ -352,22 +371,41 @@
         background: #F1F5F9 !important;
         border: 1px solid #E2E8F0 !important;
 
-        span { color: #334155 !important; font-weight: 600 !important; }
-        svg { color: #64748B !important; }
+        span {
+          color: #334155 !important;
+          font-weight: 600 !important;
+        }
+
+        svg {
+          color: #64748B !important;
+        }
 
         &:hover {
           background: #E2E8F0 !important;
           border-color: rgba(16, 185, 129, 0.4) !important;
-          span { color: #047857 !important; }
-          svg { color: #047857 !important; }
+
+          span {
+            color: #047857 !important;
+          }
+
+          svg {
+            color: #047857 !important;
+          }
         }
 
         &.tabLinkActive,
         [class*="tabLinkActive"] {
           background: #ECFDF5 !important;
           border-color: rgba(16, 185, 129, 0.45) !important;
-          span { color: #047857 !important; font-weight: 800 !important; }
-          svg { color: #047857 !important; }
+
+          span {
+            color: #047857 !important;
+            font-weight: 800 !important;
+          }
+
+          svg {
+            color: #047857 !important;
+          }
         }
       }
 
