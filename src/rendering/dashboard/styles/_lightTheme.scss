@@ -6,9 +6,12 @@
 
     /* Barometer */
     .marketBarometer {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(15, 23, 42, 0.09) !important;
-        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+        background: 
+            radial-gradient(ellipse 40% 90% at 0% 50%, rgba(24, 201, 139, 0.08) 0%, transparent 70%),
+            radial-gradient(ellipse 40% 90% at 100% 50%, rgba(24, 201, 139, 0.08) 0%, transparent 70%),
+            #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.18) !important;
+        box-shadow: 0 4px 20px -2px rgba(24, 201, 139, 0.08) !important;
 
         .baroLabel {
             color: #64748B !important;
@@ -23,9 +26,13 @@
 
     /* 1. Hologram Hero Terminal in Light Mode */
     .hologramHero {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(15, 23, 42, 0.09) !important;
-        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+        background: 
+            radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+            radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.2) !important;
+        box-shadow: 0 8px 30px rgba(24, 201, 139, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
 
         .heroBackdropWrap {
             display: none !important;
@@ -43,22 +50,23 @@
             color: #475569 !important;
         }
 
-        .heroTagPill {
-            background: rgba(24, 201, 139, 0.1) !important;
-            border-color: rgba(24, 201, 139, 0.3) !important;
-            color: #047857 !important;
-        }
     }
 
     /* Hero Chart Section in Light Mode */
     .heroChartSection {
-        background: #F8FAFC !important;
-        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        background: 
+            radial-gradient(ellipse 60% 60% at 50% 0%, rgba(24, 201, 139, 0.08) 0%, transparent 70%),
+            #F8FAFC !important;
+        border: 1px solid rgba(24, 201, 139, 0.18) !important;
+        box-shadow: 0 4px 16px rgba(24, 201, 139, 0.06) !important;
 
         .chartTitleGroup {
             .titleTextCol {
                 .chartTitle {
                     color: #0F172A !important;
+                    font-size: 16px !important;
+                    font-weight: 700 !important;
+                    font-family: "Euclid-Bold", sans-serif !important;
                 }
 
                 .chartSubtitle {
@@ -169,13 +177,20 @@
 
     /* 2. Daily Stats Side Card in Light Mode */
     .dailyStatsSideCard {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(15, 23, 42, 0.09) !important;
-        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+        background: 
+            radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+            radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.2) !important;
+        box-shadow: 0 8px 30px rgba(24, 201, 139, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
 
         .dailyStatsHeader {
             .headerTitleWrap {
                 color: #0F172A !important;
+                font-size: 16px !important;
+                font-weight: 700 !important;
+                font-family: "Euclid-Bold", sans-serif !important;
 
                 .infoBtn {
                     background: #F1F5F9 !important;
@@ -201,14 +216,18 @@
 
         .dailyStatsRows {
             .statPillRow {
-                background: #F8FAFC !important;
-                border: 1px solid rgba(15, 23, 42, 0.08) !important;
-                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03) !important;
+                background: 
+                    radial-gradient(ellipse 60% 80% at 0% 0%, rgba(24, 201, 139, 0.08) 0%, transparent 70%),
+                    #F8FAFC !important;
+                border: 1px solid rgba(24, 201, 139, 0.18) !important;
+                box-shadow: 0 2px 8px rgba(24, 201, 139, 0.04) !important;
 
                 &:hover {
-                    background: #F1F5F9 !important;
-                    border-color: rgba(24, 201, 139, 0.4) !important;
-                    box-shadow: 0 6px 20px rgba(24, 201, 139, 0.1) !important;
+                    background: 
+                        radial-gradient(ellipse 60% 80% at 0% 0%, rgba(24, 201, 139, 0.14) 0%, transparent 70%),
+                        #F1F5F9 !important;
+                    border-color: rgba(24, 201, 139, 0.45) !important;
+                    box-shadow: 0 6px 20px rgba(24, 201, 139, 0.12) !important;
 
                     .rowCtaLink {
                         color: #047857 !important;
@@ -227,9 +246,10 @@
                     }
 
                     .rowIconWrap.greenIcon {
-                        background: rgba(24, 201, 139, 0.12) !important;
-                        border-color: rgba(24, 201, 139, 0.3) !important;
+                        background: rgba(24, 201, 139, 0.14) !important;
+                        border: 1px solid rgba(24, 201, 139, 0.3) !important;
                         color: #047857 !important;
+                        border-radius: 9px !important;
                         box-shadow: none !important;
                     }
                 }
@@ -253,6 +273,9 @@
         .feedHeader {
             .feedTitleWrap h3 {
                 color: #0F172A !important;
+                font-size: 16px !important;
+                font-weight: 700 !important;
+                font-family: "Euclid-Bold", sans-serif !important;
             }
 
             .filterPills {
@@ -272,30 +295,49 @@
 
         .feedCardContainer {
             .activityRowItem {
-                background: #FFFFFF !important;
-                border: 1px solid rgba(15, 23, 42, 0.09) !important;
-                box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03) !important;
+                background: 
+                    radial-gradient(ellipse 60% 80% at 0% 0%, rgba(24, 201, 139, 0.08) 0%, transparent 70%),
+                    #FFFFFF !important;
+                border: 1px solid rgba(24, 201, 139, 0.18) !important;
+                box-shadow: 0 3px 12px rgba(24, 201, 139, 0.04) !important;
 
                 &:hover {
-                    background: #F8FAFC !important;
-                    border-color: rgba(24, 201, 139, 0.4) !important;
-                    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06) !important;
+                    background: 
+                        radial-gradient(ellipse 60% 80% at 0% 0%, rgba(24, 201, 139, 0.14) 0%, transparent 70%),
+                        #F8FAFC !important;
+                    border-color: rgba(24, 201, 139, 0.45) !important;
+                    box-shadow: 0 6px 20px rgba(24, 201, 139, 0.1) !important;
 
                     .actAction {
                         color: #047857 !important;
                     }
                 }
 
+                .actIndexBadge,
                 .actTypeIcon {
-                    background: rgba(24, 201, 139, 0.1) !important;
-                    border-color: rgba(24, 201, 139, 0.25) !important;
+                    background: rgba(24, 201, 139, 0.14) !important;
+                    border: 1px solid rgba(24, 201, 139, 0.3) !important;
                     color: #047857 !important;
+                    border-radius: 9px !important;
+                }
+
+                .skeletonBar {
+                    background: linear-gradient(
+                        90deg, 
+                        #E2E8F0 25%, 
+                        rgba(24, 201, 139, 0.2) 50%, 
+                        #E2E8F0 75%
+                    ) !important;
+                    background-size: 200% 100% !important;
                 }
 
                 .actContent {
                     .actHeaderRow {
                         .actMainTitle {
                             color: #0F172A !important;
+                            font-size: 14px !important;
+                            font-weight: 700 !important;
+                            font-family: "Euclid-Bold", sans-serif !important;
                         }
 
                         .actTypeTag {
@@ -361,27 +403,37 @@
         .hubHeader {
             .hubHeaderLeft {
                 .hubHeaderIcon {
-                    background: rgba(24, 201, 139, 0.12) !important;
-                    border-color: rgba(24, 201, 139, 0.3) !important;
+                    background: rgba(24, 201, 139, 0.14) !important;
+                    border: 1px solid rgba(24, 201, 139, 0.3) !important;
+                    border-radius: 9px !important;
                 }
                 h3 {
                     color: #0F172A !important;
+                    font-size: 16px !important;
+                    font-weight: 700 !important;
+                    font-family: "Euclid-Bold", sans-serif !important;
                 }
             }
         }
 
         .modernToolCard {
-            background: #FFFFFF !important;
-            border: 1px solid rgba(15, 23, 42, 0.09) !important;
-            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04) !important;
+            background: 
+                radial-gradient(ellipse 60% 70% at 0% 0%, rgba(24, 201, 139, 0.16) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 70% at 100% 100%, rgba(24, 201, 139, 0.14) 0%, transparent 70%),
+                #EDF8F3 !important;
+            border: 1px solid rgba(24, 201, 139, 0.25) !important;
+            box-shadow: 0 4px 16px rgba(24, 201, 139, 0.08) !important;
 
             &:hover {
-                background: #F8FAFC !important;
+                background: 
+                    radial-gradient(ellipse 60% 70% at 0% 0%, rgba(24, 201, 139, 0.24) 0%, transparent 70%),
+                    radial-gradient(ellipse 60% 70% at 100% 100%, rgba(24, 201, 139, 0.2) 0%, transparent 70%),
+                    #E3F4EC !important;
                 border-color: rgba(24, 201, 139, 0.5) !important;
-                box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08) !important;
+                box-shadow: 0 8px 24px rgba(24, 201, 139, 0.16) !important;
 
                 .toolCardTop .toolIconBadge {
-                    background: rgba(24, 201, 139, 0.18) !important;
+                    background: rgba(24, 201, 139, 0.25) !important;
                     border-color: #10B981 !important;
                     color: #047857 !important;
                 }
@@ -397,45 +449,131 @@
                 }
             }
 
+            .toolCardTop,
+            .toolCardBody,
+            .toolCardFooter {
+                background: transparent !important;
+                background-color: transparent !important;
+            }
+
             .toolCardTop {
                 .toolIconBadge {
-                    background: #F1F5F9 !important;
-                    border-color: #E2E8F0 !important;
+                    background: rgba(24, 201, 139, 0.14) !important;
+                    border: 1px solid rgba(24, 201, 139, 0.28) !important;
                     color: #047857 !important;
+                    border-radius: 9px !important;
                 }
 
                 .toolBadgeTag {
-                    background: #F1F5F9 !important;
-                    border-color: #E2E8F0 !important;
-                    color: #64748B !important;
+                    background: rgba(24, 201, 139, 0.1) !important;
+                    border-color: rgba(24, 201, 139, 0.25) !important;
+                    color: #047857 !important;
                 }
             }
 
             .toolCardBody {
                 .toolTitle {
                     color: #0F172A !important;
+                    font-size: 14px !important;
+                    font-weight: 700 !important;
+                    font-family: "Euclid-Bold", sans-serif !important;
+                    background: transparent !important;
+                    background-color: transparent !important;
                 }
                 .toolDescription {
-                    color: #64748B !important;
+                    color: #475569 !important;
+                    background: transparent !important;
+                    background-color: transparent !important;
                 }
             }
 
             .toolCardFooter {
-                border-top-color: rgba(15, 23, 42, 0.06) !important;
+                border-top-color: rgba(24, 201, 139, 0.15) !important;
 
                 .toolCtaText {
                     color: #047857 !important;
+                    background: transparent !important;
+                    background-color: transparent !important;
                 }
 
                 .toolCtaArrow {
-                    background: rgba(24, 201, 139, 0.12) !important;
+                    background: rgba(24, 201, 139, 0.14) !important;
                     color: #047857 !important;
                 }
             }
         }
     }
 
-    /* 5. Matrix & Other Legacy Cards in Light Mode */
+    /* 5. Market Overview in Light Mode */
+    .marketOverviewColumn {
+        .overviewHeader {
+            .overviewTitleWrap {
+                .overviewIconPulse {
+                    background: rgba(24, 201, 139, 0.14) !important;
+                    border: 1px solid rgba(24, 201, 139, 0.3) !important;
+                    border-radius: 8px !important;
+                }
+
+                .overviewTitleText {
+                    h3 {
+                        color: #0F172A !important;
+                        font-size: 16px !important;
+                        font-weight: 700 !important;
+                        font-family: "Euclid-Bold", sans-serif !important;
+                    }
+                }
+            }
+
+            .overviewTabsRow {
+                background: #F1F5F9 !important;
+                border: 1px solid #E2E8F0 !important;
+
+                .overviewTabBtn {
+                    color: #64748B !important;
+
+                    &:hover {
+                        color: #0F172A !important;
+                        background: #E2E8F0 !important;
+                    }
+
+                    &.overviewTabActive {
+                        color: #059669 !important;
+                        background: #ECFDF5 !important;
+                        border: 1px solid #A7F3D0 !important;
+                    }
+                }
+            }
+        }
+
+        .marketOverviewCard {
+            background: 
+                radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+                radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+                radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+                #FFFFFF !important;
+            border: 1px solid rgba(24, 201, 139, 0.2) !important;
+            box-shadow: 0 8px 30px rgba(24, 201, 139, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+
+            .overviewTableWrapper {
+                .overviewTableBody {
+                    scrollbar-width: none;
+                    -ms-overflow-style: none;
+
+                    &::-webkit-scrollbar {
+                        display: none !important;
+                        width: 0 !important;
+                        height: 0 !important;
+                    }
+
+                    &::-webkit-scrollbar-button {
+                        display: none !important;
+                    }
+                }
+            }
+        }
+    }
+
+    /* 6. Matrix & Other Legacy Cards in Light Mode */
     .glassStatCard {
         background: #FFFFFF !important;
         border: 1px solid rgba(15, 23, 42, 0.09) !important;

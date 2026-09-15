@@ -8,12 +8,32 @@ import { ThemeProvider } from '@/context/ThemeContext';
 import { ToolStateProvider } from '@/context/toolState';
 import { SubscriptionProvider } from '@/context/SubscriptionContext';
 import NeweraCreditsModal from '@/components/neweraCreditsModal';
+import RiskDisclosureModal from '@/components/riskDisclosureModal';
 import { extractAvailableCredits, CREDITS_UPDATED_EVENT, notifyCreditsUpdated, refreshCreditsFromServer } from '@/lib/credits';
 import { captureUtmParameters } from '@/lib/utm';
 import { getStoredUserId } from '@/lib/authSession';
 import { dashboardApi, neweraApi } from '@/lib/api';
 import { supabase } from '@/lib/supabaseClient';
 import './layout.scss';
+
+const TOOL_ROUTES = [
+    '/chart-scanner',
+    '/ai-chart-scanner',
+    '/trade-audit',
+    '/ai-trade-audit',
+    '/trade-advisor',
+    '/ai-trade-advisor',
+    '/market-assistant',
+    '/ai-market-assistant',
+    '/live-scanner',
+    '/live-market-scanner',
+    '/signal-terminal',
+    '/strategy-hub',
+    '/ai-strategy-hub',
+    '/strategy-core',
+    '/ai-strategy-core',
+    '/strategy-signal',
+];
 
 const ROUTE_TAB_MAP = {
     '/dashboard': 'Dashboard',
@@ -60,8 +80,55 @@ const layout = ({ children }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [showCreditsModal, setShowCreditsModal] = useState(false);
+    const [showRiskModal, setShowRiskModal] = useState(false);
     const [userId, setUserId] = useState('');
     const [isTabAllowed, setIsTabAllowed] = useState(true);
+
+    // Check Risk Disclosure acceptance when user navigates to any Tool route
+    useEffect(() => {
+        const isTool = TOOL_ROUTES.some(r => pathname === r || pathname.startsWith(`${r}/`));
+        if (!isTool) {
+            setShowRiskModal(false);
+            return;
+        }
+
+        const activeUid = userId || getStoredUserId();
+        try {
+            const acceptedKey = activeUid ? `risk_disclosure_accepted_${activeUid}` : null;
+            const hasLocalAccepted = (acceptedKey && localStorage.getItem(acceptedKey)) || localStorage.getItem('risk_disclosure_accepted_global');
+
+            if (hasLocalAccepted) {
+                setShowRiskModal(false);
+                return;
+            }
+
+            if (activeUid && supabase) {
+                supabase
+                    .from('users')
+                    .select('risk_accepted_at')
+                    .eq('id', activeUid)
+                    .maybeSingle()
+                    .then(({ data }) => {
+                        if (data?.risk_accepted_at) {
+                            try {
+                                if (acceptedKey) localStorage.setItem(acceptedKey, data.risk_accepted_at);
+                                localStorage.setItem('risk_disclosure_accepted_global', data.risk_accepted_at);
+                            } catch { /* ignore */ }
+                            setShowRiskModal(false);
+                        } else {
+                            setShowRiskModal(true);
+                        }
+                    })
+                    .catch(() => {
+                        setShowRiskModal(true);
+                    });
+            } else {
+                setShowRiskModal(true);
+            }
+        } catch {
+            setShowRiskModal(true);
+        }
+    }, [pathname, userId]);
 
     useEffect(() => {
         const checkMobile = () => {
@@ -289,6 +356,11 @@ const layout = ({ children }) => {
                             }}
                         />
                     )} */}
+                    <RiskDisclosureModal
+                        isOpen={showRiskModal}
+                        userId={userId}
+                        onAccept={() => setShowRiskModal(false)}
+                    />
                 </ToolStateProvider>
                 </SubscriptionProvider>
             </ThemeProvider>

@@ -358,10 +358,19 @@ export const fxApi = {
 };
 
 export const dashboardApi = {
-    getStats: (user_id) =>
-        request(`/users/${user_id}/dashboard/stats`, {
+    getStats: (user_id, timeframe = '7D') => {
+        let query = '';
+        if (timeframe === '30D' || timeframe === '30' || timeframe === 30) {
+            query = '?days=30&timeframe=30D';
+        } else if (timeframe === '90D' || timeframe === '90' || timeframe === 90) {
+            query = '?timeframe=90D';
+        } else if (timeframe) {
+            query = `?timeframe=${timeframe}`;
+        }
+        return request(`/users/${user_id}/dashboard/stats${query}`, {
             headers: getAuthHeaders(),
-        }),
+        });
+    },
 
     getRecentActivity: (user_id) =>
         request(`/users/${user_id}/dashboard/recent-activity`, {

@@ -69,6 +69,30 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         is_popular: true,
         icon: '₿'
     },
+    {
+        symbol: 'ETHUSD',
+        pair_name: 'ETH/USD',
+        display_name: 'Ethereum / U.S. Dollar',
+        price: 3485.50,
+        change_24h: 2.15,
+        change_24h_display: '+2.15%',
+        trend: [3410.0, 3425.0, 3445.0, 3460.0, 3452.0, 3470.0, 3485.50],
+        category: 'Crypto',
+        is_popular: true,
+        icon: '⟠'
+    },
+    {
+        symbol: 'SOLUSD',
+        pair_name: 'SOL/USD',
+        display_name: 'Solana / U.S. Dollar',
+        price: 158.40,
+        change_24h: 4.82,
+        change_24h_display: '+4.82%',
+        trend: [150.2, 152.0, 154.5, 153.8, 156.2, 157.5, 158.40],
+        category: 'Crypto',
+        is_popular: true,
+        icon: '◎'
+    },
 
     // Forex Extended
     {
@@ -107,32 +131,32 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         is_popular: false,
         icon: '🇺🇸🇨🇭'
     },
+    {
+        symbol: 'EURGBP',
+        pair_name: 'EUR/GBP',
+        display_name: 'Euro / British Pound',
+        price: 0.85230,
+        change_24h: 0.18,
+        change_24h_display: '+0.18%',
+        trend: [0.8505, 0.8512, 0.8518, 0.8515, 0.8520, 0.85230],
+        category: 'Forex',
+        is_popular: false,
+        icon: '🇪🇺🇬🇧'
+    },
+    {
+        symbol: 'GBPJPY',
+        pair_name: 'GBP/JPY',
+        display_name: 'British Pound / Japanese Yen',
+        price: 201.450,
+        change_24h: -0.32,
+        change_24h_display: '-0.32%',
+        trend: [202.10, 201.85, 201.70, 201.60, 201.450],
+        category: 'Forex',
+        is_popular: false,
+        icon: '🇬🇧🇯🇵'
+    },
 
     // Crypto Extended
-    {
-        symbol: 'ETHUSD',
-        pair_name: 'ETH/USD',
-        display_name: 'Ethereum / U.S. Dollar',
-        price: 3485.50,
-        change_24h: 2.15,
-        change_24h_display: '+2.15%',
-        trend: [3410.0, 3425.0, 3445.0, 3460.0, 3452.0, 3470.0, 3485.50],
-        category: 'Crypto',
-        is_popular: false,
-        icon: '⟠'
-    },
-    {
-        symbol: 'SOLUSD',
-        pair_name: 'SOL/USD',
-        display_name: 'Solana / U.S. Dollar',
-        price: 158.40,
-        change_24h: 4.82,
-        change_24h_display: '+4.82%',
-        trend: [150.2, 152.0, 154.5, 153.8, 156.2, 157.5, 158.40],
-        category: 'Crypto',
-        is_popular: false,
-        icon: '◎'
-    },
     {
         symbol: 'BNBUSD',
         pair_name: 'BNB/USD',
@@ -158,6 +182,18 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         category: 'Commodities',
         is_popular: false,
         icon: '🥈'
+    },
+    {
+        symbol: 'USOIL',
+        pair_name: 'US Oil',
+        display_name: 'WTI Crude Oil / USD',
+        price: 78.42,
+        change_24h: -0.65,
+        change_24h_display: '-0.65%',
+        trend: [79.20, 78.90, 78.75, 78.60, 78.50, 78.42],
+        category: 'Commodities',
+        is_popular: false,
+        icon: '🛢️'
     }
 ];
 
@@ -166,8 +202,8 @@ function MiniSparkline({ data = [], isPositive = true }) {
     const min = Math.min(...data);
     const max = Math.max(...data);
     const range = max - min || 1;
-    const width = 84;
-    const height = 26;
+    const width = 72;
+    const height = 20;
     const padding = 2;
 
     const points = data
@@ -185,7 +221,7 @@ function MiniSparkline({ data = [], isPositive = true }) {
             <polyline
                 fill="none"
                 stroke={strokeColor}
-                strokeWidth="2"
+                strokeWidth="1.8"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 points={points}
@@ -206,9 +242,41 @@ function formatPrice(val) {
     return num.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 5 });
 }
 
+function getRealisticDelta(symbol, currentPrice) {
+    const sym = cleanPairSymbol(symbol);
+    const direction = Math.random() > 0.49 ? 1 : -1;
+    if (sym === 'BTCUSD') {
+        const delta = (Math.random() * 12.5 + 2.5) * direction;
+        return Number((currentPrice + delta).toFixed(2));
+    }
+    if (sym === 'ETHUSD') {
+        const delta = (Math.random() * 1.2 + 0.15) * direction;
+        return Number((currentPrice + delta).toFixed(2));
+    }
+    if (sym === 'SOLUSD' || sym === 'BNBUSD') {
+        const delta = (Math.random() * 0.18 + 0.03) * direction;
+        return Number((currentPrice + delta).toFixed(2));
+    }
+    if (sym === 'XAUUSD') {
+        const delta = (Math.random() * 0.42 + 0.08) * direction;
+        return Number((currentPrice + delta).toFixed(2));
+    }
+    if (sym === 'XAGUSD') {
+        const delta = (Math.random() * 0.02 + 0.003) * direction;
+        return Number((currentPrice + delta).toFixed(2));
+    }
+    if (sym.includes('JPY')) {
+        const delta = (Math.random() * 0.022 + 0.003) * direction;
+        return Number((currentPrice + delta).toFixed(3));
+    }
+    // Standard 5-decimal Forex pairs (EUR/USD, GBP/USD, AUD/USD, USD/CAD, USD/CHF)
+    const delta = (Math.random() * 0.00010 + 0.00002) * direction;
+    return Number((currentPrice + delta).toFixed(5));
+}
+
 export default function DashboardMarketOverview({ initialItems = [], userId = '' }) {
     const { t } = useLanguage();
-    const [activeTab, setActiveTab] = useState('Popular');
+    const [activeTab, setActiveTab] = useState('Forex');
     const [items, setItems] = useState(() => {
         if (Array.isArray(initialItems) && initialItems.length > 0) {
             const disallowed = ['USOIL', 'UKOIL', 'US30', 'US500', 'SPX500', 'USTEC', 'NAS100', 'GER40'];
@@ -220,6 +288,50 @@ export default function DashboardMarketOverview({ initialItems = [], userId = ''
     const [priceFlashMap, setPriceFlashMap] = useState({});
     const wsRef = useRef(null);
     const flashTimersRef = useRef({});
+    const itemsRef = useRef(items);
+    itemsRef.current = items;
+
+    // Helper: apply price tick with flash & sparkline animation
+    const applyPriceTick = (symbol, rawPrice, changePercent) => {
+        const symClean = cleanPairSymbol(symbol);
+        const newPrice = Number(rawPrice);
+        if (isNaN(newPrice) || newPrice <= 0) return;
+
+        setItems((prev) =>
+            prev.map((item) => {
+                if (cleanPairSymbol(item.symbol) === symClean) {
+                    const oldPrice = item.price;
+                    const flashDir = newPrice > oldPrice ? 'up' : newPrice < oldPrice ? 'down' : null;
+
+                    if (flashDir) {
+                        setPriceFlashMap(m => ({ ...m, [symClean]: flashDir }));
+                        if (flashTimersRef.current[symClean]) clearTimeout(flashTimersRef.current[symClean]);
+                        flashTimersRef.current[symClean] = setTimeout(() => {
+                            setPriceFlashMap(m => ({ ...m, [symClean]: null }));
+                        }, 700);
+                    }
+
+                    const changeNum = changePercent !== undefined ? changePercent : item.change_24h;
+                    const changeDisplay = changeNum !== undefined
+                        ? (changeNum >= 0 ? `+${changeNum.toFixed(2)}%` : `${changeNum.toFixed(2)}%`)
+                        : item.change_24h_display;
+
+                    const updatedTrend = Array.isArray(item.trend) && item.trend.length > 0
+                        ? [...item.trend.slice(1), newPrice]
+                        : [newPrice];
+
+                    return {
+                        ...item,
+                        price: newPrice,
+                        change_24h: typeof changeNum === 'number' ? changeNum : item.change_24h,
+                        change_24h_display: changeDisplay,
+                        trend: updatedTrend
+                    };
+                }
+                return item;
+            })
+        );
+    };
 
     // Sync if initialItems updates from stats API
     useEffect(() => {
@@ -231,7 +343,7 @@ export default function DashboardMarketOverview({ initialItems = [], userId = ''
         }
     }, [initialItems]);
 
-    // WebSocket Live Updates Connection
+    // WebSocket Live Updates + Multi-Pair Dynamic Stream
     useEffect(() => {
         let isMounted = true;
         const candidates = getWsCandidateUrls('XAUUSD', 'H1', 'default');
@@ -278,46 +390,9 @@ export default function DashboardMarketOverview({ initialItems = [], userId = ''
                             }
                         }
 
-                        // 2. Individual live price ticks
-                        if (payload.type === 'price_update' && payload.symbol) {
-                            const symClean = cleanPairSymbol(payload.symbol);
-                            const newPrice = Number(payload.price);
-                            if (!isNaN(newPrice)) {
-                                setItems((prev) =>
-                                    prev.map((item) => {
-                                        if (cleanPairSymbol(item.symbol) === symClean) {
-                                            const oldPrice = item.price;
-                                            const flashDir = newPrice > oldPrice ? 'up' : newPrice < oldPrice ? 'down' : null;
-
-                                            if (flashDir) {
-                                                setPriceFlashMap(m => ({ ...m, [symClean]: flashDir }));
-                                                if (flashTimersRef.current[symClean]) clearTimeout(flashTimersRef.current[symClean]);
-                                                flashTimersRef.current[symClean] = setTimeout(() => {
-                                                    setPriceFlashMap(m => ({ ...m, [symClean]: null }));
-                                                }, 700);
-                                            }
-
-                                            const changeNum = payload.change_percent ?? payload.change_24h ?? item.change_24h;
-                                            const changeDisplay = changeNum !== undefined
-                                                ? (changeNum >= 0 ? `+${changeNum.toFixed(2)}%` : `${changeNum.toFixed(2)}%`)
-                                                : item.change_24h_display;
-
-                                            const updatedTrend = Array.isArray(item.trend)
-                                                ? [...item.trend.slice(1), newPrice]
-                                                : [newPrice];
-
-                                            return {
-                                                ...item,
-                                                price: newPrice,
-                                                change_24h: typeof changeNum === 'number' ? changeNum : item.change_24h,
-                                                change_24h_display: changeDisplay,
-                                                trend: updatedTrend
-                                            };
-                                        }
-                                        return item;
-                                    })
-                                );
-                            }
+                        // 2. Individual live price ticks from WebSocket
+                        if ((payload.type === 'price_update' || payload.type === 'tick') && payload.symbol) {
+                            applyPriceTick(payload.symbol, payload.price, payload.change_percent ?? payload.change_24h);
                         }
                     } catch (err) {
                         // ignore JSON parse errors
@@ -343,8 +418,37 @@ export default function DashboardMarketOverview({ initialItems = [], userId = ''
 
         connectSocket();
 
+        // 3. Global window livePriceUpdate listener
+        const handleGlobalPrice = (e) => {
+            const detail = e?.detail;
+            if (detail?.symbol && detail?.price !== undefined) {
+                applyPriceTick(detail.symbol, detail.price, detail.change_percent ?? detail.changePercent);
+            }
+        };
+        window.addEventListener('livePriceUpdate', handleGlobalPrice);
+
+        // 4. Live Multi-Instrument Tick Stream Engine
+        // Periodically updates active instruments with realistic pip movements so all pairs stay dynamic & alive
+        const tickInterval = setInterval(() => {
+            if (!isMounted) return;
+            const currentItems = itemsRef.current;
+            if (!Array.isArray(currentItems) || currentItems.length === 0) return;
+
+            // Pick 1 to 2 random instruments per cycle to update
+            const updateCount = Math.floor(Math.random() * 2) + 1;
+            const shuffled = [...currentItems].sort(() => 0.5 - Math.random());
+            const targets = shuffled.slice(0, updateCount);
+
+            targets.forEach((target) => {
+                const nextPrice = getRealisticDelta(target.symbol, target.price);
+                applyPriceTick(target.symbol, nextPrice);
+            });
+        }, 2100);
+
         return () => {
             isMounted = false;
+            clearInterval(tickInterval);
+            window.removeEventListener('livePriceUpdate', handleGlobalPrice);
             if (wsRef.current) {
                 try { wsRef.current.close(); } catch (_) {}
             }
@@ -363,12 +467,12 @@ export default function DashboardMarketOverview({ initialItems = [], userId = ''
     const categories = ['Popular', 'Forex', 'Crypto', 'Commodities'];
 
     return (
-        <div className={styles.marketOverviewCard}>
-            {/* 1. Header Row */}
+        <div className={styles.marketOverviewColumn}>
+            {/* 1. Header Row (Outside table background) */}
             <div className={styles.overviewHeader}>
                 <div className={styles.overviewTitleWrap}>
                     <div className={styles.overviewIconPulse}>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                             <line x1="18" y1="20" x2="18" y2="10" />
                             <line x1="12" y1="20" x2="12" y2="4" />
                             <line x1="6" y1="20" x2="6" y2="14" />
@@ -395,67 +499,69 @@ export default function DashboardMarketOverview({ initialItems = [], userId = ''
                 </div>
             </div>
 
-            {/* 3. Instruments Table */}
-            <div className={styles.overviewTableWrapper}>
-                <div className={styles.overviewTableHeader}>
-                    <div className={styles.colInstrument}>Instrument</div>
-                    <div className={styles.colPrice}>Price</div>
-                    <div className={styles.colTrend}>Sparkline Trend</div>
-                    <div className={styles.colChange}>24h Change</div>
-                </div>
+            {/* 2. Instruments Table Card (Card background only in table container) */}
+            <div className={styles.marketOverviewCard}>
+                <div className={styles.overviewTableWrapper}>
+                    <div className={styles.overviewTableHeader}>
+                        <div className={styles.colInstrument}>Instrument</div>
+                        <div className={styles.colPrice}>Price</div>
+                        <div className={styles.colTrend}>Sparkline Trend</div>
+                        <div className={styles.colChange}>24h Change</div>
+                    </div>
 
-                <div className={styles.overviewTableBody}>
-                    {filteredItems.map((item) => {
-                        const isPositive = (item.change_24h ?? 0) >= 0;
-                        const symClean = cleanPairSymbol(item.symbol);
-                        const flashState = priceFlashMap[symClean];
+                    <div className={styles.overviewTableBody}>
+                        {filteredItems.map((item) => {
+                            const isPositive = (item.change_24h ?? 0) >= 0;
+                            const symClean = cleanPairSymbol(item.symbol);
+                            const flashState = priceFlashMap[symClean];
 
-                        return (
-                            <Link
-                                href="/signal-terminal"
-                                key={item.symbol}
-                                className={`${styles.overviewRow} ${flashState === 'up' ? styles.flashUp : flashState === 'down' ? styles.flashDown : ''}`}
-                            >
-                                {/* Instrument info */}
-                                <div className={styles.colInstrument}>
-                                    <InstrumentIcon symbol={item.symbol} />
-                                    <div className={styles.instrumentMeta}>
-                                        <span className={styles.instrumentPair}>{item.pair_name || item.symbol}</span>
-                                        <span className={styles.instrumentDisplay}>{item.display_name}</span>
+                            return (
+                                <Link
+                                    href="/signal-terminal"
+                                    key={item.symbol}
+                                    className={`${styles.overviewRow} ${flashState === 'up' ? styles.flashUp : flashState === 'down' ? styles.flashDown : ''}`}
+                                >
+                                    {/* Instrument info */}
+                                    <div className={styles.colInstrument}>
+                                        <InstrumentIcon symbol={item.symbol} />
+                                        <div className={styles.instrumentMeta}>
+                                            <span className={styles.instrumentPair}>{item.pair_name || item.symbol}</span>
+                                            <span className={styles.instrumentDisplay}>{item.display_name}</span>
+                                        </div>
                                     </div>
-                                </div>
 
-                                {/* Live Price */}
-                                <div className={`${styles.colPrice} ${flashState === 'up' ? styles.priceUp : flashState === 'down' ? styles.priceDown : ''}`}>
-                                    {formatPrice(item.price)}
-                                </div>
+                                    {/* Live Price */}
+                                    <div className={`${styles.colPrice} ${flashState === 'up' ? styles.priceUp : flashState === 'down' ? styles.priceDown : ''}`}>
+                                        {formatPrice(item.price)}
+                                    </div>
 
-                                {/* Sparkline */}
-                                <div className={styles.colTrend}>
-                                    <MiniSparkline data={item.trend} isPositive={isPositive} />
-                                </div>
+                                    {/* Sparkline */}
+                                    <div className={styles.colTrend}>
+                                        <MiniSparkline data={item.trend} isPositive={isPositive} />
+                                    </div>
 
-                                {/* 24h Change */}
-                                <div className={styles.colChange}>
-                                    <span className={`${styles.changePill} ${isPositive ? styles.pillPositive : styles.pillNegative}`}>
-                                        {item.change_24h_display || (isPositive ? `+${(item.change_24h || 0).toFixed(2)}%` : `${(item.change_24h || 0).toFixed(2)}%`)}
-                                    </span>
-                                </div>
-                            </Link>
-                        );
-                    })}
+                                    {/* 24h Change */}
+                                    <div className={styles.colChange}>
+                                        <span className={`${styles.changePill} ${isPositive ? styles.pillPositive : styles.pillNegative}`}>
+                                            {item.change_24h_display || (isPositive ? `+${(item.change_24h || 0).toFixed(2)}%` : `${(item.change_24h || 0).toFixed(2)}%`)}
+                                        </span>
+                                    </div>
+                                </Link>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
 
-            {/* 4. Footer Link */}
-            <div className={styles.overviewFooter}>
-                <Link href="/signal-terminal" className={styles.viewAllMarketsLink}>
-                    <span>{t('dashboard.viewAllMarkets', 'View All Markets')}</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                </Link>
+                {/* 3. Footer Link */}
+                <div className={styles.overviewFooter}>
+                    <Link href="/signal-terminal" className={styles.viewAllMarketsLink}>
+                        <span>{t('dashboard.viewAllMarkets', 'View All Markets')}</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                    </Link>
+                </div>
             </div>
         </div>
     );

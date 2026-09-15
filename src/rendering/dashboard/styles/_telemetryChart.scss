@@ -231,6 +231,18 @@
                         font-size: 26px;
                     }
                 }
+
+                .skeletonStatNum {
+                    display: inline-block;
+                    width: 76px;
+                    height: 30px;
+                    border-radius: 6px;
+
+                    @include respond-to('sm') {
+                        width: 60px;
+                        height: 26px;
+                    }
+                }
             }
 
             .rowCtaLink {
@@ -416,5 +428,26 @@
 @keyframes dotGlow {
     0%, 100% { opacity: 0.5; transform: scale(0.9); }
     50% { opacity: 1; transform: scale(1.15); }
+}
+
+@keyframes shimmerWave {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.skeletonPulse {
+    background: linear-gradient(
+        90deg, 
+        rgba(255, 255, 255, 0.04) 25%, 
+        rgba(24, 201, 139, 0.16) 50%, 
+        rgba(255, 255, 255, 0.04) 75%
+    ) !important;
+    background-size: 200% 100% !important;
+    animation: shimmerWave 1.8s ease-in-out infinite !important;
+    border-color: rgba(24, 201, 139, 0.2) !important;
 }
 
