@@ -44,7 +44,7 @@ const ShieldHighlightIcon = () => (
     </svg>
 );
 
-export default function BrokerCard({ broker, detailHref }) {
+export default function BrokerCard({ broker, detailHref, showHighlights = true }) {
     const { t, tDynamic, language } = useLanguage();
     const { theme } = useTheme();
     const isLight = theme === 'light';
@@ -138,7 +138,6 @@ export default function BrokerCard({ broker, detailHref }) {
 
             {/* Top Banner Header with Luxury Cyber Graphic */}
             <div className={`${styles.bannerHeader} ${isLight ? styles.isLightHeader : (isDarkLogo ? styles.hasLightBg : '')}`}>
-                    {/* Dynamic white background applied when logo is dark */}
                 {broker.logo ? (
                     <div className={styles.logoWrapper}>
                         <img src={broker.logo} alt={name || 'Broker Logo'} />
@@ -197,7 +196,7 @@ export default function BrokerCard({ broker, detailHref }) {
             </div>
 
             {/* Mini Highlights / Features Grid (Strictly 3 items) */}
-            {displayItems.length > 0 && (
+            {showHighlights && displayItems.length > 0 && (
                 <div className={styles.highlightsGrid}>
                     {displayItems.map((item, idx) => (
                         <div key={idx} className={styles.highlightItem}>

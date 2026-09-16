@@ -66,15 +66,16 @@ export default function DashboardFeaturedBrokers() {
             {/* Dynamic Brokers Grid using exact BrokerCard component */}
             <div className={styles.featuredBrokersGrid}>
                 {isLoading ? (
-                    Array.from({ length: 3 }).map((_, idx) => (
-                        <BrokerCardSkeleton key={idx} />
+                    Array.from({ length: 4 }).map((_, idx) => (
+                        <BrokerCardSkeleton key={idx} showHighlights={false} />
                     ))
                 ) : (
-                    brokers.slice(0, 3).map((b) => (
+                    brokers.slice(0, 4).map((b) => (
                         <BrokerCard
                             key={b.id}
                             broker={b}
                             detailHref={`/broker/${b.id}`}
+                            showHighlights={false}
                         />
                     ))
                 )}

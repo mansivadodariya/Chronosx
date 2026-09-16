@@ -14,11 +14,11 @@
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
-    background-color: #030806;
+    background: transparent;
     color: #FFFFFF;
 
     [data-theme='light'] & {
-        background-color: #F8FAFC;
+        background: transparent;
         color: #0F172A;
     }
 }
@@ -474,9 +474,9 @@
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    background-color: #030806;
+    background: transparent;
 
-    [data-theme='light'] & { background-color: #F8FAFC; }
+    [data-theme='light'] & { background: transparent; }
 }
 
 .tradezeeChatScrollArea {
