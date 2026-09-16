@@ -17,6 +17,7 @@ import DashboardStatsCards from './components/DashboardStatsCards';
 import DashboardMarketOverview from './components/DashboardMarketOverview';
 import DashboardRecentActivities from './components/DashboardRecentActivities';
 import DashboardToolsGrid from './components/DashboardToolsGrid';
+import DashboardFeaturedBrokers from './components/DashboardFeaturedBrokers';
 
 export default function Dashboard() {
     const router = useRouter();
@@ -241,6 +242,9 @@ export default function Dashboard() {
                     router={router}
                 />
             </div>
+
+            {/* Featured Brokers Row — Immediately visible without scrolling */}
+            <DashboardFeaturedBrokers />
 
             {/* 2. Full-Width Row: Quick Actions Hub (All cards in one row) */}
             <div className={styles.quickActionsRowFull}>

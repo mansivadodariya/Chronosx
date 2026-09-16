@@ -14,8 +14,8 @@ html.light [class*="planCard"]:not([class*="Title"]):not([class*="title"]):not([
 html.light [class*="pricingCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
 html.light [class*="brokerCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]) {
   background: #FFFFFF !important;
-  border: 1px solid rgba(24, 201, 139, 0.22) !important;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+  border: none !important;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06) !important;
 }
 
 html.light [class*="featureCardTitle"],
@@ -680,4 +680,60 @@ html.light [class*="ambientGlowBottom"],
 html.light [class*="mobileTechAtmosphere"],
 html.light [class*="mobileQuantumHalo"] {
   display: none !important;
+}
+
+/* Universal Light Theme Styling for Broker Cards */
+html.light [class*="brokerCard"],
+html[data-theme='light'] [class*="brokerCard"],
+[data-theme='light'] [class*="brokerCard"] {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light [class*="brokerCard"] [class*="bannerHeader"],
+html[data-theme='light'] [class*="brokerCard"] [class*="bannerHeader"],
+[data-theme='light'] [class*="brokerCard"] [class*="bannerHeader"] {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%) !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light [class*="brokerCard"] [class*="bannerHeader"]::before,
+html.light [class*="brokerCard"] [class*="bannerHeader"]::after,
+[data-theme='light'] [class*="brokerCard"] [class*="bannerHeader"]::before,
+[data-theme='light'] [class*="brokerCard"] [class*="bannerHeader"]::after {
+  display: none !important;
+  content: none !important;
+}
+
+html.light [class*="brokerCard"] [class*="logoWrapper"],
+[data-theme='light'] [class*="brokerCard"] [class*="logoWrapper"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0 !important;
+}
+
+html.light [class*="brokerCard"] [class*="logoWrapper"] img,
+[data-theme='light'] [class*="brokerCard"] [class*="logoWrapper"] img {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  mix-blend-mode: multiply !important;
+  filter: contrast(1.05) !important;
+}
+
+html.light [class*="brokerCard"] [class*="chartGraphic"],
+[data-theme='light'] [class*="brokerCard"] [class*="chartGraphic"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  opacity: 0.88 !important;
 }

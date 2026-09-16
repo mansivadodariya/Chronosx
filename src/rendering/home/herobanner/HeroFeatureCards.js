@@ -42,13 +42,13 @@ export default function HeroFeatureCards() {
         </div>
       </div>
 
-      {/* 2. Center Card: AI Strategy Core (Tilted Angle) */}
+      {/* 2. Center Card: AI Trading Signal (Tilted Angle) */}
       <div
         className={`${styles.featureCard} ${styles.cardTilted}`}
-        onClick={() => authNavigate(router, '/strategy-core')}
+        onClick={() => authNavigate(router, '/trading-signal')}
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => e.key === 'Enter' && authNavigate(router, '/strategy-core')}
+        onKeyDown={(e) => e.key === 'Enter' && authNavigate(router, '/trading-signal')}
       >
         <div className={styles.cardIconBox}>
           <TrendChartIcon className={styles.cardSvgIcon} width={38} height={38} />
@@ -56,7 +56,7 @@ export default function HeroFeatureCards() {
         <div className={styles.cardTextCol}>
           <div className={styles.cardHeaderRow}>
             <h3 className={styles.cardTitle}>
-              {t('header.products.strategyHub.title', 'AI Strategy Core')}
+              {t('header.products.strategyHub.title', 'AI Trading Signal')}
             </h3>
             <span className={styles.cardMiniBadge}>ALGO</span>
           </div>
@@ -66,7 +66,7 @@ export default function HeroFeatureCards() {
         </div>
       </div>
 
-      {/* 3. Right Card: AI Trade Advisor */}
+      {/* 3. Right Card: AI Past Trade Analyzer */}
       <div
         className={`${styles.featureCard} ${styles.cardNormal}`}
         onClick={() => authNavigate(router, '/trade-advisor')}
@@ -80,7 +80,7 @@ export default function HeroFeatureCards() {
         <div className={styles.cardTextCol}>
           <div className={styles.cardHeaderRow}>
             <h3 className={styles.cardTitle}>
-              {t('header.tradingTools.tradeAudit.title', 'AI Trade Advisor')}
+              {t('header.tradingTools.tradeAudit.title', 'AI Past Trade Analyzer')}
             </h3>
             <span className={styles.cardMiniBadge}>ADVISOR</span>
           </div>

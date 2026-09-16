@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from './brokerDetail.module.scss';
-import { fetchBrokerById, getBrokerById, brokerList } from '@/lib/brokersData';
+import { useLogoLuminance } from '@/lib/useLogoLuminance';
+import { fetchBrokerById, getBrokerById } from '@/lib/brokersData';
 import { BrokerDetailSkeleton } from '@/components/brokerSkeleton';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -42,6 +43,7 @@ export default function BrokerDetailPage({ brokerId, isPublicLanding = false }) 
     const { t, tDynamic, language } = useLanguage();
     const [broker, setBroker] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const isDarkLogo = useLogoLuminance(broker);
 
     useEffect(() => {
         let isMounted = true;
@@ -53,10 +55,18 @@ export default function BrokerDetailPage({ brokerId, isPublicLanding = false }) 
             try {
                 const data = await fetchBrokerById(brokerId);
                 if (isMounted) {
-                    setBroker(data || getBrokerById(brokerId));
+                    const found = data || getBrokerById(brokerId);
+                    if (found && found.is_active !== false) {
+                        setBroker(found);
+                    } else {
+                        setBroker(null);
+                    }
                 }
             } catch (_) {
-                if (isMounted) setBroker(getBrokerById(brokerId));
+                if (isMounted) {
+                    const fallback = getBrokerById(brokerId);
+                    setBroker(fallback && fallback.is_active !== false ? fallback : null);
+                }
             } finally {
                 if (isMounted) setIsLoading(false);
             }
@@ -65,7 +75,7 @@ export default function BrokerDetailPage({ brokerId, isPublicLanding = false }) 
         return () => { isMounted = false; };
     }, [brokerId]);
 
-    const backPath = isPublicLanding ? '/#ecosystem' : '/broker';
+    const backPath = isPublicLanding ? '/#ecosystem' : '/brokers';
 
     const handleBackClick = () => {
         if (isPublicLanding) {
@@ -77,7 +87,7 @@ export default function BrokerDetailPage({ brokerId, isPublicLanding = false }) 
                 }
             }, 150);
         } else {
-            router.push('/broker');
+            router.push('/brokers');
         }
     };
 
@@ -89,11 +99,11 @@ export default function BrokerDetailPage({ brokerId, isPublicLanding = false }) 
         );
     }
 
-    if (!broker) {
+    if (!broker || broker.is_active === false) {
         return (
             <div className={styles.notFound}>
                 <h2>{t('broker.notFoundTitle', 'Broker Not Found')}</h2>
-                <p>{t('broker.notFoundDesc', 'The requested broker or platform does not exist.')}</p>
+                <p>{t('broker.notFoundDesc', 'The requested broker or platform does not exist or is inactive.')}</p>
                 <Link href={backPath} className={styles.backBtn}>
                     <BackArrowIcon /> {t('broker.backToBrokers', 'Back to Brokers')}
                 </Link>
@@ -124,8 +134,9 @@ export default function BrokerDetailPage({ brokerId, isPublicLanding = false }) 
             <div className={styles.heroBanner}>
                 <div className={styles.logoRow}>
                     {broker.logo && (
-                        <div className={styles.logoBox}>
-                            <img src={broker.logo} alt={name || 'Broker Logo'} style={{ filter: 'brightness(1.5)' }} />
+                        <div className={`${styles.logoBox} ${isDarkLogo ? styles.hasLightBg : ''}`}>
+                            {/* Dynamic white background applied when logo is dark */}
+                            <img src={broker.logo} alt={name || 'Broker Logo'} />
                         </div>
                     )}
                     {broker.category && (
@@ -202,4 +213,3 @@ export default function BrokerDetailPage({ brokerId, isPublicLanding = false }) 
         </div>
     );
 }
-

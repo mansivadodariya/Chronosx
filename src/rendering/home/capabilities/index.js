@@ -297,12 +297,12 @@ export default function Capabilities() {
             className={`${styles.cockpitCard} ${hoveredIndex === 2 ? styles.cardActive : ''} ${hoveredIndex !== null && hoveredIndex !== 2 ? styles.cardDimmed : ''}`}
             onMouseEnter={() => setHoveredIndex(2)}
             onMouseLeave={() => setHoveredIndex(null)}
-            onClick={() => router.push('/ai-strategy-core')}
+            onClick={() => router.push('/ai-trading-signal')}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                router.push('/ai-strategy-core');
+                router.push('/ai-trading-signal');
               }
             }}
           >
@@ -315,7 +315,7 @@ export default function Capabilities() {
                       <span className={styles.watermarkNum}>03</span>
                     </div>
                   </div>
-                  <h3>{t('homeSections.capabilities.card3Title', 'AI STRATEGY CORE')}</h3>
+                  <h3>{t('homeSections.capabilities.card3Title', 'AI TRADING SIGNAL')}</h3>
                 </div>
 
                 <div className={styles.cardFooter}>
@@ -455,7 +455,7 @@ export default function Capabilities() {
                       <span className={styles.watermarkNum}>04</span>
                     </div>
                   </div>
-                  <h3>{t('homeSections.capabilities.card4Title', 'AI TRADE ADVISOR')}</h3>
+                  <h3>{t('homeSections.capabilities.card4Title', 'AI PAST TRADE ANALYZER')}</h3>
                 </div>
 
                 <div className={styles.cardFooter}>

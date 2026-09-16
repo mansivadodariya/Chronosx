@@ -82,6 +82,7 @@ export default function AiStrategy({ initialTab = 'live' }) {
 
     const [wsStatus, setWsStatus] = useState('disconnected'); // 'connected' | 'connecting' | 'disconnected'
     const [showPairSelector, setShowPairSelector] = useState(true);
+    const [activeCategory, setActiveCategory] = useState('all');
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -553,6 +554,16 @@ export default function AiStrategy({ initialTab = 'live' }) {
                 }
             />
 
+            {/* Filter by Category Tabs (All Strategies, Trend) */}
+            {activeTab === 'live' && (
+                <StrategyCategoryTabs
+                    selectedStrategyId={selectedStrategyId}
+                    onSelectStrategyId={setSelectedStrategyId}
+                    activeCategory={activeCategory}
+                    onSelectCategory={setActiveCategory}
+                />
+            )}
+
             <div className={styles.contentBody}>
                 <AnimatePresence mode="wait">
                     {activeTab === 'live' ? (
@@ -564,10 +575,6 @@ export default function AiStrategy({ initialTab = 'live' }) {
                             transition={{ duration: 0.2 }}
                             className={styles.liveTabContainer}
                         >
-                            <StrategyCategoryTabs
-                                selectedStrategyId={selectedStrategyId}
-                                onSelectStrategyId={setSelectedStrategyId}
-                            />
                             <LiveAnalysisView
                                 selectedSymbol={selectedSymbol}
                                 setSelectedSymbol={setSelectedSymbol}

@@ -12,26 +12,29 @@ $textMuted: rgba(255, 255, 255, 0.65);
 $success: #34D399;
 
 .brokerCard {
-    background: #040605;
-    border: 1px solid $border;
-    border-radius: 18px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    background:
+        radial-gradient(ellipse 70% 80% at 100% 0%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.03) 50%, transparent 80%),
+        radial-gradient(ellipse 60% 60% at 0% 100%, rgba(0, 242, 254, 0.06) 0%, transparent 70%),
+        #080B0A;
+    border: 1px solid rgba(24, 201, 139, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     padding: 16px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
 
     @include respond-to(sm) {
         padding: 14px;
-        border-radius: 16px;
+        border-radius: 14px;
     }
 
     &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(24, 201, 139, 0.15);
-        border-color: rgba(24, 201, 139, 0.7);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 20px rgba(24, 201, 139, 0.16);
+        border-color: rgba(24, 201, 139, 0.45);
 
         .bannerHeader .chartGraphic {
             opacity: 0.95;
@@ -40,28 +43,108 @@ $success: #34D399;
     }
 
     .bannerHeader {
-        height: 90px;
-        background: linear-gradient(135deg, #0C0B09 0%, #17130A 50%, #261D0C 100%);
-        border-radius: 14px;
+        &.isLightHeader {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%) !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
+
+            &::before,
+            &::after {
+                display: none !important;
+                content: none !important;
+            }
+
+            .logoWrapper {
+                background: transparent !important;
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                outline: none !important;
+                padding: 0 !important;
+
+                img {
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    border: none !important;
+                    box-shadow: none !important;
+                    outline: none !important;
+                    padding: 0 !important;
+                    mix-blend-mode: multiply !important;
+                    filter: contrast(1.05) !important;
+                }
+
+                .fallbackLogoText {
+                    color: #0F172A !important;
+                }
+            }
+
+            .chartGraphic {
+                background: transparent !important;
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                opacity: 0.88 !important;
+            }
+        }
+        &.hasLightBg {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+
+            .logoWrapper {
+                img {
+                    mix-blend-mode: multiply;
+                    filter: contrast(1.05);
+                }
+
+                .fallbackLogoText {
+                    color: #0F172A !important;
+                }
+            }
+
+            .chartGraphic {
+                opacity: 0.88;
+            }
+        }
+        height: 88px;
+        background: linear-gradient(135deg, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, rgba(4, 6, 5, 0.6) 100%), #0B120F;
+        border-radius: 12px;
         padding: 14px 16px;
         position: relative;
         overflow: hidden;
         display: flex;
         align-items: center;
         margin-bottom: 14px;
-        border: 1px solid rgba(24, 201, 139, 0.25);
+        border: none;
+
 
         .logoWrapper {
             z-index: 2;
-            height: 36px;
-            display: flex;
+            height: 44px;
+            max-width: 170px;
+            display: inline-flex;
             align-items: center;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
 
             img {
-                max-height: 34px;
-                max-width: 130px;
+                max-height: 38px;
+                max-width: 100%;
                 object-fit: contain;
-                filter: brightness(1.2);
+                filter: none;
+            }
+
+            .fallbackLogoText {
+                color: #FFFFFF;
+                font-weight: 800;
+                font-size: 16px;
+                font-family: "Euclid-Bold", sans-serif;
+                letter-spacing: -0.2px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
 
@@ -82,10 +165,10 @@ $success: #34D399;
         margin-bottom: 12px;
 
         .cardTitle {
-            font-size: 17px;
+            font-size: 16.5px;
             font-weight: 700;
             color: #FFFFFF;
-            margin: 0 0 2px 0;
+            margin: 0 0 3px 0;
             line-height: 1.25;
             font-family: "Euclid-Bold", sans-serif;
         }
@@ -99,11 +182,11 @@ $success: #34D399;
         }
 
         .cardDescription {
-            font-size: 12.5px;
+            font-size: 12px;
             line-height: 1.5;
             color: rgba(255, 255, 255, 0.65);
             margin: 0;
-            min-height: 54px;
+            min-height: 52px;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
@@ -122,13 +205,19 @@ $success: #34D399;
             align-items: center;
             gap: 10px;
             padding: 8px 12px;
-            background: #0D0E13;
-            border: 1px solid rgba(24, 201, 139, 0.18);
+            background: rgba(24, 201, 139, 0.04);
+            border: 1px solid rgba(24, 201, 139, 0.12);
             border-radius: 10px;
+            transition: all 0.2s ease;
+
+            &:hover {
+                background: rgba(24, 201, 139, 0.08);
+                border-color: rgba(24, 201, 139, 0.25);
+            }
 
             .iconBox {
-                width: 28px;
-                height: 28px;
+                width: 26px;
+                height: 26px;
                 border-radius: 6px;
                 background: rgba(24, 201, 139, 0.12);
                 border: 1px solid rgba(24, 201, 139, 0.25);
@@ -136,6 +225,11 @@ $success: #34D399;
                 align-items: center;
                 justify-content: center;
                 flex-shrink: 0;
+
+                svg {
+                    width: 14px;
+                    height: 14px;
+                }
             }
 
             .highlightText {
@@ -143,6 +237,7 @@ $success: #34D399;
                 flex-direction: column;
                 gap: 1px;
                 min-width: 0;
+                flex: 1;
 
                 .hlTitle {
                     font-size: 12px;
@@ -175,10 +270,10 @@ $success: #34D399;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            background: rgba(22, 19, 14, 0.95);
-            border: 1px solid rgba(24, 201, 139, 0.4);
+            background: rgba(24, 201, 139, 0.08);
+            border: 1px solid rgba(24, 201, 139, 0.3);
             border-radius: 9999px;
-            padding: 9px 16px;
+            padding: 9px 14px;
             color: #18C98B;
             font-size: 12.5px;
             font-weight: 600;
@@ -201,7 +296,7 @@ $success: #34D399;
             background: #18C98B;
             border: 1px solid #18C98B;
             border-radius: 9999px;
-            padding: 9px 18px;
+            padding: 9px 16px;
             color: #040605;
             font-size: 12.5px;
             font-weight: 700;
@@ -218,50 +313,137 @@ $success: #34D399;
             }
         }
     }
-}
 
-/* Specific Light Mode Rules for Broker Card */
-:global(html.light) .brokerCard {
-    background: #FFFFFF !important;
-    border-color: rgba(15, 23, 42, 0.09) !important;
-    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
-
-    &:hover {
-        box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.09) !important;
-    }
-
-    .bannerHeader {
-        background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%) !important;
-        border-color: rgba(15, 23, 42, 0.08) !important;
-
-        .logoWrapper img {
-            filter: none !important;
-        }
-    }
-
-    .cardTitle,
-    .hlMain {
-        color: #0F172A !important;
-    }
-
-    .ratingScore,
-    .hlSub {
-        color: #475569 !important;
-    }
-
-    .highlightItem {
-        background: #F8FAFC !important;
-        border-color: rgba(15, 23, 42, 0.08) !important;
-    }
-
-    .visitSiteBtn {
+    /* Specific Light Mode Rules for Broker Card */
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    &.isLightCard {
         background: #FFFFFF !important;
-        border-color: rgba(15, 23, 42, 0.15) !important;
-        color: #0F172A !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06) !important;
 
         &:hover {
-            background: #F1F5F9 !important;
-            color: #059669 !important;
+            box-shadow: 0 12px 32px rgba(24, 201, 139, 0.18), 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+            border-color: rgba(24, 201, 139, 0.35) !important;
+        }
+
+        .bannerHeader {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%) !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
+
+            &::before,
+            &::after {
+                display: none !important;
+                content: none !important;
+            }
+
+            .logoWrapper {
+                background: transparent !important;
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                outline: none !important;
+                padding: 0 !important;
+
+                img {
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    border: none !important;
+                    box-shadow: none !important;
+                    outline: none !important;
+                    padding: 0 !important;
+                    mix-blend-mode: multiply !important;
+                    filter: contrast(1.05) !important;
+                }
+
+                .fallbackLogoText {
+                    color: #0F172A !important;
+                }
+            }
+
+            .chartGraphic {
+                background: transparent !important;
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                opacity: 0.88 !important;
+            }
+        }
+
+        .cardBody {
+            .cardTitle {
+                color: #0F172A !important;
+            }
+
+            .subtitleTag {
+                color: #059669 !important;
+            }
+
+            .cardDescription {
+                color: #475569 !important;
+            }
+        }
+
+        .highlightsGrid {
+            .highlightItem {
+                background: #F1F5F9 !important;
+                border: none !important;
+                box-shadow: none !important;
+
+                .iconBox {
+                    background: rgba(24, 201, 139, 0.14) !important;
+                    border: 1px solid rgba(24, 201, 139, 0.3) !important;
+
+                    svg {
+                        stroke: #059669 !important;
+                    }
+                }
+
+                .highlightText {
+                    .hlTitle {
+                        color: #0F172A !important;
+                    }
+
+                    .hlSub {
+                        color: #475569 !important;
+                    }
+                }
+            }
+        }
+
+        .cardFooter {
+            border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+            .visitSiteBtn {
+                background: #F1F5F9 !important;
+                color: #334155 !important;
+                border: 1px solid rgba(15, 23, 42, 0.1) !important;
+
+                svg {
+                    stroke: #334155 !important;
+                }
+
+                &:hover {
+                    background: #E2E8F0 !important;
+                    color: #0F172A !important;
+                    border-color: rgba(15, 23, 42, 0.2) !important;
+                }
+            }
+
+            .viewDetailsBtn {
+                background: #18C98B !important;
+                border-color: #18C98B !important;
+                color: #040605 !important;
+                box-shadow: 0 4px 14px rgba(24, 201, 139, 0.3) !important;
+
+                &:hover {
+                    background: #15b77e !important;
+                    border-color: #15b77e !important;
+                    box-shadow: 0 6px 18px rgba(24, 201, 139, 0.45) !important;
+                }
+            }
         }
     }
-}
+}

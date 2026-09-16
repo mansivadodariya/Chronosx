@@ -14,11 +14,15 @@ export const ROUTE_TAB_MAP = {
   '/chart-scanner': 'AI Chart Scanner',
   '/ai-chart-scanner': 'AI Chart Scanner',
 
-  // AI Trade Advisor
-  '/trade-audit': 'AI Trade Advisor',
-  '/ai-trade-audit': 'AI Trade Advisor',
-  '/trade-advisor': 'AI Trade Advisor',
-  '/ai-trade-advisor': 'AI Trade Advisor',
+  // AI Past Trade Analyzer
+  '/trade-audit': 'AI Past Trade Analyzer',
+  '/ai-trade-audit': 'AI Past Trade Analyzer',
+  '/trade-advisor': 'AI Past Trade Analyzer',
+  '/ai-trade-advisor': 'AI Past Trade Analyzer',
+
+  // AI Bot Builder
+  '/strategy-studio': 'AI Bot Builder',
+  '/ai-strategy-studio': 'AI Bot Builder',
 
   // AI Market Assistant
   '/market-assistant': 'AI Market Assistant',
@@ -29,11 +33,13 @@ export const ROUTE_TAB_MAP = {
   '/live-market-scanner': 'Signal Terminal',
   '/signal-terminal': 'Signal Terminal',
 
-  // AI Strategy Core
-  '/strategy-hub': 'AI Strategy Core',
-  '/ai-strategy-hub': 'AI Strategy Core',
-  '/strategy-core': 'AI Strategy Core',
-  '/ai-strategy-core': 'AI Strategy Core',
+  // AI Trading Signal
+  '/trading-signal': 'AI Trading Signal',
+  '/ai-trading-signal': 'AI Trading Signal',
+  '/strategy-hub': 'AI Trading Signal',
+  '/ai-strategy-hub': 'AI Trading Signal',
+  '/strategy-core': 'AI Trading Signal',
+  '/ai-strategy-core': 'AI Trading Signal',
   '/strategy-hub/live': 'Signal Terminal',
   '/strategy-hub/strategy': 'Strategy Signal',
   '/strategy-signal': 'Strategy Signal',

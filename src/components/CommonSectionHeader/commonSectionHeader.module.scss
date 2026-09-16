@@ -13,7 +13,7 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
     border: none;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     padding: 13px 20px;
     width: 100%;
     margin-bottom: 10px;
@@ -146,6 +146,8 @@
     align-items: center;
     gap: 8px;
     margin-left: auto;
+    position: relative;
+    z-index: 50;
 }
 
 .headerMainRow {

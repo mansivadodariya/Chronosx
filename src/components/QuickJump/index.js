@@ -19,6 +19,7 @@ import {
     CrownIcon,
     AiTradeAnalysisIcon,
     AffiliateIcon,
+    BotBuilderIcon,
 } from '@/icons/sidebarIcons';
 
 const HomeIcon = () => (
@@ -97,10 +98,10 @@ const getQuickJumpSections = (t) => [
                 icon: <LiveAnalysisIcon />,
             },
             {
-                id: 'strategy-core',
-                title: t('nav.strategyHub', 'AI Strategy Core'),
+                id: 'trading-signal',
+                title: t('nav.strategyHub', 'AI Trading Signal'),
                 subtitle: t('quickJump.strategyHubSub', 'Automated strategy signals & quantitative algorithms'),
-                href: '/strategy-core',
+                href: '/trading-signal',
                 keywords: ['signals', 'strategy', 'core', 'bot', 'algo', 'supertrend', 'ema', 'automated', 'engine', 'playbooks', 'hub'],
                 icon: <AiStrategyIcon />,
             },
@@ -114,11 +115,19 @@ const getQuickJumpSections = (t) => [
             },
             {
                 id: 'trade-advisor',
-                title: t('nav.tradeAudit', 'AI Trade Advisor'),
+                title: t('nav.tradeAudit', 'AI Past Trade Analyzer'),
                 subtitle: t('quickJump.tradeAuditSub', 'Statement audit, behavioral flaws & trade ledger review'),
                 href: '/trade-advisor',
-                keywords: ['advisor', 'audit', 'past', 'history', 'statement', 'analysis', 'fomo', 'report', 'ledger', 'csv'],
+                keywords: ['past trade', 'analyzer', 'advisor', 'audit', 'past', 'history', 'statement', 'analysis', 'fomo', 'report', 'ledger', 'csv'],
                 icon: <AiTradeAnalysisIcon />,
+            },
+            {
+                id: 'strategy-studio',
+                title: t('nav.strategyStudio', 'AI Bot Builder'),
+                subtitle: t('quickJump.strategyStudioSub', 'Interactive AI strategy and algorithmic bot builder'),
+                href: '/strategy-studio',
+                keywords: ['bot', 'builder', 'strategy', 'studio', 'algo', 'automation', 'create', 'prompt'],
+                icon: <BotBuilderIcon />,
             },
         ],
     },
@@ -164,6 +173,15 @@ const getQuickJumpSections = (t) => [
                 keywords: ['news', 'market', 'headlines', 'fx', 'sentiment', 'central bank'],
                 icon: <SubNewsIcon />,
             },
+            {
+                id: 'education',
+                title: t('nav.education', 'Education'),
+                subtitle: t('quickJump.educationSub', 'Master trading fundamentals, psychology & markets at Edufins'),
+                href: 'https://edufins.com',
+                isExternal: true,
+                keywords: ['education', 'learn', 'courses', 'edufins', 'academy', 'trading guide'],
+                icon: <SubCalculatorIcon />,
+            },
         ],
     },
     {
@@ -188,9 +206,9 @@ const getQuickJumpSections = (t) => [
             },
             {
                 id: 'broker',
-                title: t('nav.broker', 'Broker Integration'),
+                title: t('nav.broker', 'Associated Brokers'),
                 subtitle: t('quickJump.brokerSub', 'Connect MT4/MT5 accounts, broker API & credentials'),
-                href: '/broker',
+                href: '/brokers',
                 keywords: ['broker', 'mt5', 'mt4', 'metatrader', 'account', 'deposit', 'credentials'],
                 icon: <BrokerBankIcon />,
             },
@@ -359,7 +377,11 @@ export default function QuickJump({ isCollapsed = false }) {
 
     const handleNavigate = (href) => {
         handleClose();
-        router.push(href);
+        if (typeof href === 'string' && (href.startsWith('http://') || href.startsWith('https://'))) {
+            window.open(href, '_blank', 'noopener,noreferrer');
+        } else {
+            router.push(href);
+        }
     };
 
     // Modal portal content

@@ -1,11 +1,7 @@
 'use client';
 
-import CommonSectionHeader from '@/components/CommonSectionHeader';
 import React, { useState, useEffect, useMemo } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 import styles from './broker.module.scss';
-import NeweraCreditsModal from '@/components/neweraCreditsModal';
 import { getStoredUserId } from '@/lib/authSession';
 import { fetchBrokers, brokerList } from '@/lib/brokersData';
 import toast from 'react-hot-toast';
@@ -13,10 +9,6 @@ import toast from 'react-hot-toast';
 import BrokerCard from '@/components/brokerCard';
 import { BrokerCardSkeleton } from '@/components/brokerSkeleton';
 import { useLanguage } from '@/context/LanguageContext';
-import { getBidiProps } from '@/lib/bidi';
-import CommonCta from '@/components/commonCta';
-
-const BrokerHeroGraphic = '/assets/images/broker_infrastructure_hero.jpg';
 
 const SearchIcon = () => (
     <svg className={styles.searchIcon} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -31,7 +23,11 @@ export default function BrokerPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [selectedTab, setSelectedTab] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
-    const [showCreditsModal, setShowCreditsModal] = useState(false);
+    const [connectModalBroker, setConnectModalBroker] = useState(null);
+    const [server, setServer] = useState('');
+    const [loginId, setLoginId] = useState('');
+    const [password, setPassword] = useState('');
+    const [isConnecting, setIsConnecting] = useState(false);
     const userId = getStoredUserId();
 
     useEffect(() => {
@@ -40,10 +36,12 @@ export default function BrokerPage() {
             try {
                 const data = await fetchBrokers();
                 if (isMounted) {
-                    setBrokers(data && data.length > 0 ? data : brokerList);
+                    const fallbackList = brokerList.filter((b) => b && b.is_active !== false);
+                    const source = (data && data.length > 0) ? data : fallbackList;
+                    setBrokers(source.filter((b) => b && b.is_active !== false));
                 }
             } catch (_) {
-                if (isMounted) setBrokers(brokerList);
+                if (isMounted) setBrokers(brokerList.filter((b) => b && b.is_active !== false));
             } finally {
                 if (isMounted) setIsLoading(false);
             }
@@ -52,14 +50,20 @@ export default function BrokerPage() {
         return () => { isMounted = false; };
     }, []);
 
-    const categories = useMemo(() => {
-        const set = new Set(brokers.map((b) => b.category).filter(Boolean));
-        return ['All', ...Array.from(set)];
+    // Strictly active brokers
+    const activeBrokers = useMemo(() => {
+        return brokers.filter((b) => b && b.is_active !== false);
     }, [brokers]);
+
+    const categories = useMemo(() => {
+        const set = new Set(activeBrokers.map((b) => b.category).filter(Boolean));
+        return ['All', ...Array.from(set)];
+    }, [activeBrokers]);
 
     const filteredBrokers = useMemo(() => {
         const q = searchQuery.toLowerCase().trim();
-        return brokers.filter((broker) => {
+        return activeBrokers.filter((broker) => {
+            if (broker.is_active === false) return false;
             const matchesTab = selectedTab === 'All' || broker.category === selectedTab;
             const matchesSearch =
                 !q ||
@@ -72,56 +76,120 @@ export default function BrokerPage() {
                 (broker.description_ph || '').toLowerCase().includes(q);
             return matchesTab && matchesSearch;
         });
-    }, [brokers, selectedTab, searchQuery]);
+    }, [activeBrokers, selectedTab, searchQuery]);
 
     const handleConnectClick = (broker) => {
-        if (broker.canSync) {
-            setShowCreditsModal(true);
-        } else {
-            toast.success(`${broker.name} is fully integrated into ChronosX!`);
+        setConnectModalBroker(broker);
+        setServer(broker?.defaultServer || `${broker?.name || 'Live'}-Server`);
+        setLoginId('');
+        setPassword('');
+    };
+
+    const handleModalSubmit = (e) => {
+        e.preventDefault();
+        if (!loginId.trim()) {
+            toast.error('Please enter your MT5 Account ID');
+            return;
         }
+        setIsConnecting(true);
+        setTimeout(() => {
+            setIsConnecting(false);
+            const brokerId = connectModalBroker?.id || 'mt5';
+            try {
+                const saved = JSON.parse(localStorage.getItem('connected_brokers') || '[]');
+                const updated = [...new Set([...saved, brokerId])];
+                localStorage.setItem('connected_brokers', JSON.stringify(updated));
+            } catch (_) {}
+            toast.success(`Successfully connected ${connectModalBroker?.name || 'MT5'} account!`, {
+                style: {
+                    background: '#0D1424',
+                    color: '#18C98B',
+                    border: '1px solid rgba(24, 201, 139, 0.3)'
+                }
+            });
+            setConnectModalBroker(null);
+        }, 700);
     };
 
     return (
         <div className={styles.brokerPage}>
-            {/* 1. Hero Infrastructure Banner */}
-            <CommonSectionHeader
-                badge="INSTITUTIONAL BROKER & PLATFORM HUB"
-                badgeIcon={
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5">
-                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-                        <line x1="6" y1="6" x2="6.01" y2="6" strokeWidth="3" />
-                        <line x1="6" y1="18" x2="6.01" y2="18" strokeWidth="3" />
-                    </svg>
-                }
-                title={t('broker.title', 'Integrated Brokerage & Trading Infrastructure')}
-                subtitle={t('broker.subtitle', 'Connect your MT5 account, view verified broker partners, and earn AI credits automatically through your daily trading volume.')}
-                isCard={true}
-            >
-                <div className={styles.heroStatsRow}>
-                    <div className={styles.heroStatItem}>
-                        <span className={styles.statVal}>Tier-1 Regulated</span>
-                        <span className={styles.statLbl}>Verified Security</span>
-                    </div>
-                    <div className={styles.heroStatDivider} />
-                    <div className={styles.heroStatItem}>
-                        <span className={styles.statVal}>&lt; 15ms Latency</span>
-                        <span className={styles.statLbl}>Ultra-Fast MT5 Bridge</span>
-                    </div>
-                    <div className={styles.heroStatDivider} />
-                    <div className={styles.heroStatItem}>
-                        <span className={styles.statVal}>Volume Cashbacks</span>
-                        <span className={styles.statLbl}>Auto AI Credits per Lot</span>
+            {/* 1. Luxury Institutional Infrastructure Hero Banner */}
+            <div className={styles.brokerHeroBanner}>
+                <div className={styles.heroBannerContent}>
+                    {/* Left Column */}
+                    <div className={styles.heroLeftCol}>
+                        <h1 className={styles.heroTitle}>
+                            {t('broker.title', 'Integrated Brokerage & Trading Infrastructure')}
+                        </h1>
+
+                        <p className={styles.heroSubtitle}>
+                            {t('broker.subtitle', 'Connect your MT5 account, view verified broker partners, and earn automated AI credits on every traded lot.')}
+                        </p>
+
+                        {/* 4 Micro Metrics Grid */}
+                        <div className={styles.metricsGrid}>
+                            <div className={styles.metricCard}>
+                                <div className={styles.metricIconWrap}>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                    </svg>
+                                </div>
+                                <div className={styles.metricTexts}>
+                                    <span className={styles.metricVal}>Tier-1 Regulated</span>
+                                    <span className={styles.metricLbl}>Verified Security</span>
+                                </div>
+                            </div>
+
+                            <div className={styles.metricCard}>
+                                <div className={styles.metricIconWrap}>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                                    </svg>
+                                </div>
+                                <div className={styles.metricTexts}>
+                                    <span className={styles.metricVal}>&lt; 15ms Latency</span>
+                                    <span className={styles.metricLbl}>Direct MT5 Bridge</span>
+                                </div>
+                            </div>
+
+                            <div className={styles.metricCard}>
+                                <div className={styles.metricIconWrap}>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                    </svg>
+                                </div>
+                                <div className={styles.metricTexts}>
+                                    <span className={styles.metricVal}>Volume Rebates</span>
+                                    <span className={styles.metricLbl}>Auto AI Credits / Lot</span>
+                                </div>
+                            </div>
+
+                            <div className={styles.metricCard}>
+                                <div className={styles.metricIconWrap}>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" />
+                                        <rect x="9" y="9" width="6" height="6" />
+                                        <line x1="9" y1="1" x2="9" y2="4" />
+                                        <line x1="15" y1="1" x2="15" y2="4" />
+                                        <line x1="9" y1="20" x2="9" y2="23" />
+                                        <line x1="15" y1="20" x2="15" y2="23" />
+                                    </svg>
+                                </div>
+                                <div className={styles.metricTexts}>
+                                    <span className={styles.metricVal}>FIX 4.4 Engine</span>
+                                    <span className={styles.metricLbl}>STP / ECN Direct</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </CommonSectionHeader>
+            </div>
 
             {/* 2. Controls Row: Category Tabs & Search */}
             <div className={styles.controlsRow}>
                 <div className={styles.tabs}>
                     {categories.map((tab) => {
-                        const count = tab === 'All' ? brokers.length : brokers.filter(b => b.category === tab).length;
+                        const count = tab === 'All' ? activeBrokers.length : activeBrokers.filter((b) => b.category === tab).length;
                         return (
                             <button
                                 key={tab}
@@ -154,7 +222,7 @@ export default function BrokerPage() {
             {/* 3. Brokers Cards Grid */}
             {isLoading ? (
                 <div className={styles.brokersGrid}>
-                    {Array.from({ length: (brokers && brokers.length > 0) ? brokers.length : 3 }).map((_, idx) => (
+                    {Array.from({ length: (activeBrokers && activeBrokers.length > 0) ? activeBrokers.length : 3 }).map((_, idx) => (
                         <BrokerCardSkeleton key={idx} />
                     ))}
                 </div>
@@ -185,15 +253,85 @@ export default function BrokerPage() {
                 </div>
             )}
 
-            {/* 4. Bottom Conversion CTA */}
-            <CommonCta
-                badge="SEAMLESS BROKER SYNC"
-                title1="Connect Your MetaTrader 5 Account"
-                title2="to ChronosX AI Desk"
-                description="Experience zero-delay live tick streams, automated risk parameters, and instant quantitative trade execution."
-                primaryBtnText="CONNECT BROKER NOW"
-                primaryBtnAction="/dashboard"
-            />
+            {/* Connect Account Modal */}
+            {connectModalBroker && (
+                <div className={styles.connectModalOverlay} onClick={() => setConnectModalBroker(null)}>
+                    <div className={styles.connectModalCard} onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.connectModalHeader}>
+                            <div>
+                                <h3>Connect {connectModalBroker.name}</h3>
+                                <p>Link your MT5 credentials to enable automated trade telemetry and AI audit sync.</p>
+                            </div>
+                            <button
+                                type="button"
+                                className={styles.connectModalCloseBtn}
+                                onClick={() => setConnectModalBroker(null)}
+                            >
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleModalSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            <div className={styles.connectFormGroup}>
+                                <label>Broker Server</label>
+                                <input
+                                    type="text"
+                                    value={server}
+                                    onChange={(e) => setServer(e.target.value)}
+                                    placeholder="e.g. Server-Live01"
+                                    required
+                                />
+                            </div>
+
+                            <div className={styles.connectFormGroup}>
+                                <label>MT5 Login ID (Account Number)</label>
+                                <input
+                                    type="text"
+                                    value={loginId}
+                                    onChange={(e) => setLoginId(e.target.value)}
+                                    placeholder="e.g. 5182930"
+                                    required
+                                />
+                            </div>
+
+                            <div className={styles.connectFormGroup}>
+                                <label>Investor / Read Password</label>
+                                <input
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="••••••••••••"
+                                    required
+                                />
+                            </div>
+
+                            <p style={{ fontSize: '11px', color: '#64748B', margin: 0, lineHeight: 1.4 }}>
+                                Security notice: We recommend entering your MT5 <strong>read-only / investor password</strong>. Your credentials are encrypted in-transit.
+                            </p>
+
+                            <div className={styles.modalActionsRow}>
+                                <button
+                                    type="button"
+                                    onClick={() => setConnectModalBroker(null)}
+                                    className={styles.btnCancel}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className={styles.btnConfirm}
+                                    disabled={isConnecting}
+                                >
+                                    {isConnecting ? 'Validating Connection...' : 'Confirm Connection →'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

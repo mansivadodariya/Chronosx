@@ -72,7 +72,7 @@ const HELP_OPTIONS = [
     },
     {
         id: 'build_strategies',
-        title: 'AI Strategy Core',
+        title: 'AI Trading Signal',
         desc: 'Design, configure, and automate rule-based confluence triggers across multi-timeframe cascades.',
         icon: BrainIcon,
         tag: 'Algorithmic Rules',
@@ -86,7 +86,7 @@ const HELP_OPTIONS = [
     },
     {
         id: 'leak_detection',
-        title: 'AI Trade Advisor',
+        title: 'AI Past Trade Analyzer',
         desc: 'Analyze closed trading journals to pinpoint psychological leaks, revenge trading, and expectancy drag.',
         icon: ShieldLeakIcon,
         tag: 'Behavioral Diagnostics',
