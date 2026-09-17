@@ -1,52 +1,50 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
+import { supabase } from '@/lib/supabaseClient';
 import styles from '../dashboard.module.scss';
 
 export default function DashboardToolsGrid() {
     const { t } = useLanguage();
+    const [visibleTabNames, setVisibleTabNames] = useState(null);
 
-    const tools = [
-        // {
-        //     id: 'scanner',
-        //     title: t('dashboard.toolScanner', 'AI Chart Scanner'),
-        //     desc: t('dashboard.scannerDesc', 'Neural pattern recognition & OCR chart vision'),
-        //     badge: 'AI VISION',
-        //     cta: t('dashboard.launchScanner', 'Launch Scanner'),
-        //     href: '/chart-scanner',
-        //     icon: (
-        //         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        //             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-        //             <circle cx="12" cy="13" r="4" />
-        //         </svg>
-        //     )
-        // },
-        // {
-        //     id: 'assistant',
-        //     title: t('dashboard.toolAssistant', 'AI Market Assistant'),
-        //     desc: t('dashboard.assistantDesc', '24/7 neural market & real-time trade copilot'),
-        //     badge: '24/7 COPILOT',
-        //     cta: t('dashboard.startChatting', 'Start Chatting'),
-        //     href: '/market-assistant',
-        //     icon: (
-        //         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        //             <rect x="3" y="8" width="18" height="12" rx="4" />
-        //             <path d="M12 2v6" />
-        //             <circle cx="8.5" cy="13.5" r="1.5" fill="currentColor" />
-        //             <circle cx="15.5" cy="13.5" r="1.5" fill="currentColor" />
-        //             <path d="M9 17h6" />
-        //         </svg>
-        //     )
-        // },
+    useEffect(() => {
+        try {
+            if (typeof window !== 'undefined') {
+                const cached = sessionStorage.getItem('visible_tab_names');
+                if (cached) {
+                    setVisibleTabNames(new Set(JSON.parse(cached)));
+                }
+            }
+        } catch (e) { /* ignore */ }
+    }, []);
+
+    useEffect(() => {
+        async function loadVisibleTabs() {
+            if (!supabase) return;
+            try {
+                const { data, error } = await supabase.rpc('get_visible_dashboard_tabs');
+                if (!error && Array.isArray(data)) {
+                    const arr = data.map(t => (t.name || '').toLowerCase().trim());
+                    setVisibleTabNames(new Set(arr));
+                }
+            } catch (e) {
+                console.warn('Failed to load visible tabs in DashboardToolsGrid:', e);
+            }
+        }
+        loadVisibleTabs();
+    }, []);
+
+    const tools = useMemo(() => [
         {
             id: 'strategyStudio',
             title: t('dashboard.toolStrategyStudio', 'AI Bot Builder'),
             desc: t('dashboard.strategyStudioDesc', 'Conversational strategy builder & algorithmic backtester'),
             badge: 'QUANT LAB',
             cta: t('dashboard.launchStudio', 'Launch Builder'),
-            href: '/strategy-studio',
+            href: '/ai-bot-builder',
             icon: (
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
@@ -135,7 +133,32 @@ export default function DashboardToolsGrid() {
                 </svg>
             )
         }
-    ];
+    ], [t]);
+
+    const displayedTools = useMemo(() => {
+        if (!visibleTabNames || visibleTabNames.size === 0) return tools;
+        return tools.filter(tool => {
+            if (tool.id === 'strategyStudio' || tool.href === '/ai-bot-builder') {
+                return visibleTabNames.has('ai bot builder') || visibleTabNames.has('bot builder') || visibleTabNames.has('custom bot builder');
+            }
+            if (tool.id === 'terminal' || tool.href === '/signal-terminal') {
+                return visibleTabNames.has('signal terminal') || visibleTabNames.has('live market scanner');
+            }
+            if (tool.id === 'strategySignal' || tool.href === '/strategy-signal') {
+                return visibleTabNames.has('strategy signal') || visibleTabNames.has('strategy playbooks') || visibleTabNames.has('strategy hub') || visibleTabNames.has('ai trading signal');
+            }
+            if (tool.id === 'advisor' || tool.href === '/trade-advisor') {
+                return visibleTabNames.has('ai trade audit') || visibleTabNames.has('ai past trade analyzer') || visibleTabNames.has('ai trade advisor') || visibleTabNames.has('trade audit') || visibleTabNames.has('trade advisor');
+            }
+            if (tool.id === 'calculators' || tool.href === '/calculator') {
+                return visibleTabNames.has('forex calculator') || visibleTabNames.has('calculator');
+            }
+            if (tool.id === 'calendar' || tool.href === '/calendar') {
+                return visibleTabNames.has('economic calendar') || visibleTabNames.has('calendar');
+            }
+            return true;
+        });
+    }, [tools, visibleTabNames]);
 
     return (
         <div className={styles.quickHubColumn}>
@@ -151,7 +174,7 @@ export default function DashboardToolsGrid() {
             </div>
 
             <div className={styles.toolsGrid2x3}>
-                {tools.map((tool) => (
+                {displayedTools.map((tool) => (
                     <Link key={tool.id} href={tool.href} className={styles.modernToolCard}>
                         {/* Top: Icon + Badge */}
                         <div className={styles.toolCardTop}>

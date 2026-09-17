@@ -61,7 +61,7 @@ const getNavSections = (t) => [
           { label: t('nav.strategySignal', 'Strategy Signal'), href: "/strategy-signal", icon: StrategyIcon },
         ]
       },
-      { label: t('nav.strategyStudio', 'AI Bot Builder'), href: "/strategy-studio", icon: BotBuilderIcon },
+      { label: t('nav.strategyStudio', 'AI Bot Builder'), href: "/ai-bot-builder", icon: BotBuilderIcon },
     ]
   },
   {
@@ -323,7 +323,6 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
         const cached = sessionStorage.getItem('visible_tab_names');
         if (cached) {
           const names = new Set(JSON.parse(cached));
-          names.add('ai bot builder');
           setVisibleTabNames(names);
         }
       }
@@ -341,7 +340,6 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
         if (!error && Array.isArray(data)) {
           const arr = data.map(t => (t.name || '').toLowerCase());
           const names = new Set(arr);
-          names.add('ai bot builder');
           setVisibleTabNames(names);
           if (typeof window !== 'undefined') {
             sessionStorage.setItem('visible_tab_names', JSON.stringify([...names]));
@@ -418,6 +416,8 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
     '/ai-trade-audit': 'AI Past Trade Analyzer',
     '/trade-advisor': 'AI Past Trade Analyzer',
     '/ai-trade-advisor': 'AI Past Trade Analyzer',
+    '/ai-bot-builder': 'AI Bot Builder',
+    '/bot-builder': 'AI Bot Builder',
     '/strategy-studio': 'AI Bot Builder',
     '/ai-strategy-studio': 'AI Bot Builder',
     '/market-assistant': 'AI Market Assistant',
@@ -457,43 +457,73 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
     if (!visibleTabNames || visibleTabNames.size === 0) return rawSections;
 
     const checkTabVisible = (tabLabel, routeHref) => {
-      const lowerLabel = (tabLabel || '').toLowerCase();
-      const mapped = (ROUTE_TAB_MAP[routeHref] || '').toLowerCase();
+      const lowerLabel = (tabLabel || '').toLowerCase().trim();
+      const mapped = (ROUTE_TAB_MAP[routeHref] || '').toLowerCase().trim();
+
+      // Affiliate & Edufins external link are always accessible
       if (lowerLabel.includes('affiliate') || mapped === 'affiliate' || lowerLabel.includes('education') || lowerLabel.includes('edufins') || routeHref?.includes('edufins')) return true;
-      return (
-        visibleTabNames.has(lowerLabel) ||
-        visibleTabNames.has(mapped) ||
-        ((lowerLabel.includes('chart scanner') || lowerLabel.includes('market snapshot') || mapped.includes('chart scanner')) &&
-          (visibleTabNames.has('ai chart scanner') || visibleTabNames.has('chart-scanner') || visibleTabNames.has('ai trade') || visibleTabNames.has('ai-trade') || visibleTabNames.has('trade-snap') || visibleTabNames.has('trade snap'))) ||
-        ((lowerLabel.includes('past trade') || lowerLabel.includes('trade audit') || lowerLabel.includes('trade advisor') || lowerLabel.includes('trade analysis') || mapped.includes('past trade') || mapped.includes('trade audit') || mapped.includes('trade advisor')) &&
-          (visibleTabNames.has('ai past trade analyzer') || visibleTabNames.has('past trade analyzer') || visibleTabNames.has('ai trade advisor') || visibleTabNames.has('trade advisor') || visibleTabNames.has('ai trade audit') || visibleTabNames.has('trade-audit') || visibleTabNames.has('ai trade analysis') || visibleTabNames.has('trade-analysis') || visibleTabNames.has('trade analysis') || visibleTabNames.has('ai-trade-analysis') || visibleTabNames.has('ai-past-trade-analyzer') || visibleTabNames.has('ai trade'))) ||
-        ((lowerLabel.includes('bot') || lowerLabel.includes('builder') || lowerLabel.includes('strategy studio') || mapped.includes('bot') || mapped.includes('builder')) &&
-          (visibleTabNames.has('ai bot builder') || visibleTabNames.has('bot builder') || visibleTabNames.has('ai strategy builder') || visibleTabNames.has('strategy studio') || visibleTabNames.has('strategy-studio'))) ||
-        ((lowerLabel.includes('market assistant') || lowerLabel.includes('trading advisor') || mapped.includes('market assistant')) &&
-          (visibleTabNames.has('ai market assistant') || visibleTabNames.has('market-assistant') || visibleTabNames.has('ai chat') || visibleTabNames.has('ai-chat') || visibleTabNames.has('ai assistant') || visibleTabNames.has('ai-assistant'))) ||
-        ((lowerLabel.includes('strategy') || mapped.includes('strategy')) &&
-          (visibleTabNames.has('ai trading signal') || visibleTabNames.has('trading signal') || visibleTabNames.has('ai strategy core') || visibleTabNames.has('strategy core') || visibleTabNames.has('strategy hub') || visibleTabNames.has('strategy-hub') || visibleTabNames.has('ai strategy') || visibleTabNames.has('ai-strategy') || visibleTabNames.has('strategy') || visibleTabNames.has('strategy signal') || visibleTabNames.has('strategy playbooks'))) ||
-        ((lowerLabel.includes('live') || lowerLabel.includes('terminal') || lowerLabel.includes('signal') || mapped.includes('live') || mapped.includes('terminal')) &&
-          (visibleTabNames.has('signal terminal') || visibleTabNames.has('live market scanner') || visibleTabNames.has('live-scanner') || visibleTabNames.has('live analysis') || visibleTabNames.has('ai strategy') || visibleTabNames.has('strategy hub'))) ||
-        ((lowerLabel.includes('tool') || mapped.includes('tool') || lowerLabel.includes('calendar') || lowerLabel.includes('calculator') || lowerLabel.includes('news')) &&
-          (visibleTabNames.has('tools') || visibleTabNames.has('economic calendar') || visibleTabNames.has('forex calculator') || visibleTabNames.has('market news') || visibleTabNames.has('calendar') || visibleTabNames.has('calculator') || visibleTabNames.has('news'))) ||
-        ((lowerLabel.includes('broker') || mapped.includes('broker')) &&
-          (visibleTabNames.has('associated brokers') || visibleTabNames.has('associated broker') || visibleTabNames.has('broker') || visibleTabNames.has('brokers'))
-      ));
+      if (lowerLabel === 'profile' || lowerLabel === 'settings' || mapped === 'profile') return true;
+      if (lowerLabel === 'dashboard' || mapped === 'dashboard') return true;
+
+      // Exact checks per feature
+      if (mapped === 'ai chart scanner' || lowerLabel.includes('chart scanner')) {
+        return visibleTabNames.has('ai chart scanner') || visibleTabNames.has('chart scanner');
+      }
+      if (mapped === 'ai past trade analyzer' || lowerLabel.includes('past trade') || lowerLabel.includes('trade audit') || lowerLabel.includes('trade advisor')) {
+        return visibleTabNames.has('ai trade audit') || visibleTabNames.has('ai past trade analyzer') || visibleTabNames.has('ai trade advisor') || visibleTabNames.has('trade audit') || visibleTabNames.has('trade advisor') || visibleTabNames.has('past trade analyzer');
+      }
+      if (mapped === 'ai bot builder' || lowerLabel.includes('bot builder') || lowerLabel.includes('strategy studio')) {
+        return visibleTabNames.has('ai bot builder') || visibleTabNames.has('bot builder') || visibleTabNames.has('custom bot builder');
+      }
+      if (mapped === 'ai market assistant' || lowerLabel.includes('market assistant')) {
+        return visibleTabNames.has('ai market assistant') || visibleTabNames.has('market assistant');
+      }
+      if (mapped === 'signal terminal' || lowerLabel.includes('signal terminal') || lowerLabel.includes('live scanner')) {
+        return visibleTabNames.has('signal terminal') || visibleTabNames.has('live market scanner');
+      }
+      if (mapped === 'strategy signal' || lowerLabel.includes('strategy signal')) {
+        return visibleTabNames.has('strategy signal') || visibleTabNames.has('strategy playbooks') || visibleTabNames.has('strategy hub') || visibleTabNames.has('ai trading signal');
+      }
+      if (mapped === 'ai trading signal' || lowerLabel.includes('trading signal') || lowerLabel.includes('strategy hub')) {
+        return visibleTabNames.has('strategy hub') || visibleTabNames.has('ai trading signal') || visibleTabNames.has('trading signal') || visibleTabNames.has('ai strategy core');
+      }
+      if (mapped === 'economic calendar' || lowerLabel.includes('economic calendar') || lowerLabel === 'calendar') {
+        return visibleTabNames.has('economic calendar') || visibleTabNames.has('calendar');
+      }
+      if (mapped === 'forex calculator' || lowerLabel.includes('forex calculator') || lowerLabel === 'calculator') {
+        return visibleTabNames.has('forex calculator') || visibleTabNames.has('calculator');
+      }
+      if (mapped === 'market news' || lowerLabel.includes('market news') || lowerLabel === 'news') {
+        return visibleTabNames.has('market news') || visibleTabNames.has('news');
+      }
+      if (mapped === 'tools' || lowerLabel === 'tools') {
+        return visibleTabNames.has('tools') || visibleTabNames.has('economic calendar') || visibleTabNames.has('forex calculator') || visibleTabNames.has('market news') || visibleTabNames.has('calendar') || visibleTabNames.has('calculator') || visibleTabNames.has('news');
+      }
+      if (mapped === 'subscription plans' || lowerLabel.includes('subscription') || lowerLabel.includes('plans')) {
+        return visibleTabNames.has('subscription plans') || visibleTabNames.has('plans') || visibleTabNames.has('subscription_plans');
+      }
+      if (mapped === 'associated brokers' || lowerLabel.includes('broker')) {
+        return visibleTabNames.has('broker') || visibleTabNames.has('brokers') || visibleTabNames.has('associated brokers') || visibleTabNames.has('associated broker');
+      }
+      if (mapped === 'credit history' || lowerLabel.includes('credit')) {
+        return visibleTabNames.has('credit history') || visibleTabNames.has('credit_history');
+      }
+
+      return visibleTabNames.has(lowerLabel) || visibleTabNames.has(mapped);
     };
 
     return rawSections.map(section => {
       const filteredItems = section.items.map(item => {
         const parentTabName = (ROUTE_TAB_MAP[item.href] || item.label || '').toLowerCase();
 
-        // If item has sub-items (Tools, AI Strategy), filter sub-items based on Supabase permissions
+        // If item has sub-items (Tools, AI Strategy), filter sub-items individually
         if (item.subItems && item.subItems.length > 0) {
-          const filteredSubItems = item.subItems.filter(sub => checkTabVisible(sub.label, sub.href) || checkTabVisible(item.label, item.href));
+          const filteredSubItems = item.subItems.filter(sub => checkTabVisible(sub.label, sub.href));
 
           if (filteredSubItems.length > 0) {
             return { ...item, subItems: filteredSubItems };
           }
-          return checkTabVisible(item.label, item.href) ? item : null;
+          return null;
         }
 
         // Settings/Profile is always accessible

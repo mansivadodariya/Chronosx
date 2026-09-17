@@ -1,0 +1,139 @@
+@use '../../../scss/main.scss' as *;
+@use '../../../scss/breakpoints/breakpoints.scss' as *;
+
+/* ── Continuous Moving Smoky Cyber Waves Background ── */
+.smokyWavesWrapper {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.ambientRadialTopRight {
+    position: absolute;
+    top: -10%;
+    right: -10%;
+    width: 65%;
+    height: 65%;
+    background: radial-gradient(circle, rgba(24, 201, 139, 0.22) 0%, rgba(0, 242, 254, 0.07) 50%, transparent 70%);
+    filter: blur(60px);
+    pointer-events: none;
+    animation: ambientGlow1 16s ease-in-out infinite alternate;
+    will-change: transform, opacity;
+}
+
+.ambientRadialBottomLeft {
+    position: absolute;
+    bottom: -15%;
+    left: -10%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, rgba(24, 201, 139, 0.06) 50%, transparent 70%);
+    filter: blur(60px);
+    pointer-events: none;
+    animation: ambientGlow2 18s ease-in-out infinite alternate;
+    will-change: transform, opacity;
+}
+
+.ambientRadialCenter {
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(24, 201, 139, 0.12) 0%, transparent 65%);
+    filter: blur(50px);
+    pointer-events: none;
+    animation: ambientGlow3 14s ease-in-out infinite alternate;
+    will-change: transform, opacity;
+}
+
+.smokyWavesSvg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.waveGroupRight {
+    animation: waveFloatRight 18s ease-in-out infinite alternate;
+    transform-origin: 80% 20%;
+    will-change: transform, opacity;
+}
+
+.waveGroupLeft {
+    animation: waveFloatLeft 22s ease-in-out infinite alternate;
+    transform-origin: 20% 80%;
+    will-change: transform, opacity;
+}
+
+.waveGroupBottom {
+    animation: waveFloatBottom 20s ease-in-out infinite alternate;
+    transform-origin: 50% 90%;
+    will-change: transform, opacity;
+}
+
+.floatingCurve1 {
+    animation: floatingCurveMove1 24s ease-in-out infinite alternate;
+    transform-origin: 30% 70%;
+    will-change: transform, opacity;
+}
+
+.floatingCurve2 {
+    animation: floatingCurveMove2 26s ease-in-out infinite alternate;
+    transform-origin: 75% 25%;
+    will-change: transform, opacity;
+}
+
+/* ── Smooth Continuous Loop Light Movements & Vector Drifts ── */
+@keyframes ambientGlow1 {
+    0% { transform: scale(1) translate3d(0, 0, 0); opacity: 0.8; }
+    50% { transform: scale(1.12) translate3d(-20px, 15px, 0); opacity: 1; }
+    100% { transform: scale(0.95) translate3d(15px, -10px, 0); opacity: 0.75; }
+}
+
+@keyframes ambientGlow2 {
+    0% { transform: scale(1) translate3d(0, 0, 0); opacity: 0.75; }
+    50% { transform: scale(1.15) translate3d(25px, -15px, 0); opacity: 0.95; }
+    100% { transform: scale(0.92) translate3d(-15px, 20px, 0); opacity: 0.7; }
+}
+
+@keyframes ambientGlow3 {
+    0% { transform: scale(1) translate3d(0, 0, 0); opacity: 0.6; }
+    50% { transform: scale(1.2) translate3d(10px, 15px, 0); opacity: 0.9; }
+    100% { transform: scale(0.9) translate3d(-10px, -15px, 0); opacity: 0.55; }
+}
+
+@keyframes waveFloatRight {
+    0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); opacity: 0.9; }
+    50% { transform: translate3d(-22px, 16px, 0) rotate(1.4deg) scale(1.03); opacity: 1; }
+    100% { transform: translate3d(14px, -22px, 0) rotate(-1.2deg) scale(0.97); opacity: 0.85; }
+}
+
+@keyframes waveFloatLeft {
+    0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); opacity: 0.9; }
+    50% { transform: translate3d(24px, -18px, 0) rotate(-1.8deg) scale(1.04); opacity: 1; }
+    100% { transform: translate3d(-15px, 20px, 0) rotate(1.4deg) scale(0.96); opacity: 0.85; }
+}
+
+@keyframes waveFloatBottom {
+    0% { transform: translate3d(0, 0, 0) scaleY(1); opacity: 0.85; }
+    50% { transform: translate3d(-18px, -16px, 0) scaleY(1.05); opacity: 1; }
+    100% { transform: translate3d(22px, 12px, 0) scaleY(0.95); opacity: 0.8; }
+}
+
+@keyframes floatingCurveMove1 {
+    0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0.35; }
+    50% { transform: translate3d(-30px, 22px, 0) rotate(2.5deg); opacity: 0.65; }
+    100% { transform: translate3d(22px, -18px, 0) rotate(-2deg); opacity: 0.28; }
+}
+
+@keyframes floatingCurveMove2 {
+    0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0.3; }
+    50% { transform: translate3d(28px, -24px, 0) rotate(-3deg); opacity: 0.6; }
+    100% { transform: translate3d(-20px, 18px, 0) rotate(2deg); opacity: 0.25; }
+}

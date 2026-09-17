@@ -88,11 +88,13 @@
       "id": "strategy-studio",
       "name": "AI Bot Builder",
       "shortName": "AI Bot Builder",
-      "outerRoute": "/ai-strategy-studio",
-      "innerRoute": "/strategy-studio",
+      "outerRoute": "/ai-bot-builder",
+      "innerRoute": "/ai-bot-builder",
       "description": "Conversational algorithmic bot builder & backtester",
       "badge": "QUANT LAB",
       "legacyRoutes": [
+        "/ai-bot-builder",
+        "/bot-builder",
         "/strategy-studio",
         "/ai-strategy-studio"
       ]

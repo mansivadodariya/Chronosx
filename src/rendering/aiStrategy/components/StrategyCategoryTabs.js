@@ -2,10 +2,10 @@
 
 import React, { useMemo } from 'react';
 import styles from '../aiStrategy.module.scss';
-import { STRATEGY_CATEGORIES, PRESET_STRATEGIES } from '../constants/strategyCategories';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function StrategyCategoryTabs({
+    strategies = [],
     selectedStrategyId,
     onSelectStrategyId,
     activeCategory,
@@ -13,34 +13,39 @@ export default function StrategyCategoryTabs({
 }) {
     const { t } = useLanguage();
 
-    // Determine current active category based on activeCategory prop or selectedStrategyId
-    const currentActiveCategory = useMemo(() => {
-        if (activeCategory) return activeCategory;
-        if (!selectedStrategyId) return 'all';
-
-        const matchedStrategy = PRESET_STRATEGIES.find(
-            s => s.id === selectedStrategyId || s.name?.toLowerCase() === selectedStrategyId?.toLowerCase()
-        );
-        return matchedStrategy ? matchedStrategy.category : 'all';
-    }, [activeCategory, selectedStrategyId]);
-
-    const handleCategoryClick = (category) => {
-        if (onSelectCategory) {
-            onSelectCategory(category.id);
+    // Dynamically build category / strategy tabs from the API response
+    const dynamicTabs = useMemo(() => {
+        const tabs = [{ id: 'all', label: t('aiStrategy.allStrategies', 'All Strategies') }];
+        if (Array.isArray(strategies) && strategies.length > 0) {
+            strategies.forEach(st => {
+                const id = st.id || st.strategy_id;
+                const label = st.name || st.title || st.description || 'EMA Pullback';
+                tabs.push({ id, label });
+            });
+        } else {
+            tabs.push({ id: '3e8d2b78-0e86-4fdf-9759-338276db1742', label: 'EMA Pullback' });
         }
+        return tabs;
+    }, [strategies, t]);
 
-        if (category.id === 'all') {
-            const defaultStrategy = PRESET_STRATEGIES[0];
-            if (onSelectStrategyId && defaultStrategy) {
-                onSelectStrategyId(defaultStrategy.id);
+    const isTabActive = (tabId) => {
+        if (tabId === 'all') {
+            return activeCategory === 'all' || !selectedStrategyId;
+        }
+        return selectedStrategyId === tabId || activeCategory === tabId;
+    };
+
+    const handleTabClick = (tab) => {
+        if (tab.id === 'all') {
+            if (onSelectCategory) onSelectCategory('all');
+            if (strategies.length > 0 && onSelectStrategyId) {
+                onSelectStrategyId(strategies[0].id || strategies[0].strategy_id);
             }
             return;
         }
 
-        const targetStrategy = PRESET_STRATEGIES.find(s => s.category === category.id);
-        if (targetStrategy && onSelectStrategyId) {
-            onSelectStrategyId(targetStrategy.id);
-        }
+        if (onSelectCategory) onSelectCategory(tab.id);
+        if (onSelectStrategyId) onSelectStrategyId(tab.id);
     };
 
     return (
@@ -60,23 +65,23 @@ export default function StrategyCategoryTabs({
                 >
                     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
                 </svg>
-                <span>{t('aiStrategy.filterByCategory', 'Filter by Category')}</span>
+                <span>{t('aiStrategy.filterByCategory', 'Filter by Strategy')}</span>
             </div>
 
             {/* Category Pills Track */}
             <div className={styles.categoryPillsTrack}>
-                {STRATEGY_CATEGORIES.map((cat) => {
-                    const isActive = currentActiveCategory === cat.id;
+                {dynamicTabs.map((tab) => {
+                    const isActive = isTabActive(tab.id);
 
                     return (
                         <button
-                            key={cat.id}
+                            key={tab.id}
                             type="button"
                             className={`${styles.categoryPill} ${isActive ? styles.activeCategoryPill : ''}`}
-                            onClick={() => handleCategoryClick(cat)}
+                            onClick={() => handleTabClick(tab)}
                             aria-pressed={isActive}
                         >
-                            {cat.label}
+                            {tab.label}
                         </button>
                     );
                 })}
@@ -84,3 +89,4 @@ export default function StrategyCategoryTabs({
         </div>
     );
 }
+

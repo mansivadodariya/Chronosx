@@ -9,25 +9,25 @@ const stepsData = [
   {
     step: '01',
     title: 'Track the Key Level.',
-    desc: 'ChronosX continuously maps key multi-day resistance and liquidity pools. Real-time telemetry detects when price approaches major decision zones (e.g. PLTR approaching $86.20).',
-    ticker: 'PLTR · 1M +5.12%',
-    status: 'APPROACHING RESISTANCE $86.20',
+    desc: 'ChronosX continuously maps key multi-day resistance and liquidity pools. Real-time telemetry detects when price approaches major decision zones.',
+    ticker: 'XAU/USD · Bullish Momentum',
+    status: 'APPROACHING RESISTANCE',
     stage: 1
   },
   {
     step: '02',
     title: 'Institutional Volume Break.',
-    desc: 'When price breaks $86.20 backed by a +2.8x institutional volume surge, the AI confirms order-flow strength and elevates the conviction score to 91% Bullish.',
-    ticker: 'PLTR · 1M +6.72%',
-    status: 'BREAKOUT CONFIRMED · CONVICTION 91%',
+    desc: 'When price breaks resistance backed by an institutional volume surge, the AI confirms order-flow strength and elevates the conviction score to High Bullish.',
+    ticker: 'XAU/USD · Breakout Confirmed',
+    status: 'BREAKOUT CONFIRMED · HIGH CONVICTION',
     stage: 2
   },
   {
     step: '03',
     title: 'Instant Signal Dispatch.',
     desc: 'A verified signal trigger hits your terminal and phone the exact millisecond the candle closes. By the time the rest of the market notices the news, you’re already in position.',
-    ticker: 'PLTR · 1M +6.72%',
-    status: 'BREAKOUT CONFIRMED · CONVICTION 91%',
+    ticker: 'XAU/USD · Signal Active',
+    status: 'BREAKOUT CONFIRMED · HIGH CONVICTION',
     stage: 3
   }
 ];
@@ -73,7 +73,6 @@ export default function BreakoutDetection() {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
 
   const handleStepClick = (index) => {
     setActiveStep(index);
@@ -151,7 +150,7 @@ export default function BreakoutDetection() {
                     <line x1="20" y1="240" x2="560" y2="240" stroke="rgba(24, 201, 139, 0.08)" strokeWidth="1" />
                     <line x1="20" y1="125" x2="560" y2="125" stroke="rgba(24, 201, 139, 0.08)" strokeWidth="1" />
 
-                    {/* Dashed Resistance Line (R • $86.20 / SUPPORT FLIP • $86.20) */}
+                    {/* Dashed Resistance Line */}
                     <g className={styles.resistanceLineGroup}>
                       <line 
                         x1="20" 
@@ -161,7 +160,7 @@ export default function BreakoutDetection() {
                         className={`${styles.resistanceLine} ${activeStep >= 1 ? styles.resistanceBroken : ''}`}
                       />
                       <text x="555" y="183" textAnchor="end" className={styles.resistanceLabel}>
-                        {activeStep >= 1 ? 'SUPPORT FLIP • $86.20' : 'R • $86.20'}
+                        {activeStep >= 1 ? 'SUPPORT FLIP' : 'KEY RESISTANCE'}
                       </text>
                     </g>
 
@@ -231,7 +230,6 @@ export default function BreakoutDetection() {
                     )}
                   </svg>
 
-
                   {/* Stage 3 Breakout Toast Alert Card */}
                   <AnimatePresence>
                     {activeStep === 2 && (
@@ -247,10 +245,10 @@ export default function BreakoutDetection() {
                           <span className={styles.toastTime}>JUST NOW</span>
                         </div>
                         <div className={styles.toastMainTitle}>
-                          PLTR · $88.41
+                          XAU/USD
                         </div>
                         <div className={styles.toastSubtitle}>
-                          +6.72% past $86.20
+                          Resistance Break Confirmed
                         </div>
                       </motion.div>
                     )}

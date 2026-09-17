@@ -154,18 +154,18 @@ export default function BackgroundCyberWaves() {
 
                 {/* Additional Ambient Floating Fluid Curves */}
                 <path
+                    className={styles.floatingCurve1}
                     d="M 120 920 C 340 760 620 640 820 480 C 1020 320 1140 160 1280 -40"
                     stroke="url(#strokeNeon1)"
-                    strokeWidth="1.2"
+                    strokeWidth="1.4"
                     strokeDasharray="8 12"
-                    opacity="0.35"
                 />
                 <path
+                    className={styles.floatingCurve2}
                     d="M 1120 -60 C 1260 160 1390 320 1440 540 C 1480 720 1280 840 1080 920"
                     stroke="url(#strokeNeon2)"
-                    strokeWidth="1"
+                    strokeWidth="1.2"
                     strokeDasharray="6 10"
-                    opacity="0.3"
                 />
             </svg>
         </div>
