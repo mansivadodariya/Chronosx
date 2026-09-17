@@ -873,14 +873,14 @@
         "badge": "人工智能审计"
       },
       "strategyCreate": {
-        "title": "策略（创建新）",
+        "title": "Custom Bot Builder",
         "desc": "自定义算法交易逻辑、参数调整和规则引擎",
-        "badge": "即将推出"
+        "badge": "AI BOT"
       },
       "backtesting": {
         "title": "回测",
         "desc": "高速历史模拟、胜率指标和夏普比率",
-        "badge": "即将推出"
+        "badge": "SIMULATOR"
       },
       "paperTrading": {
         "title": "模拟交易",

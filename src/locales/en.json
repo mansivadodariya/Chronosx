@@ -898,14 +898,14 @@
         "badge": "AI AUDIT"
       },
       "strategyCreate": {
-        "title": "Strategy (Create New)",
-        "desc": "Custom algorithmic trading logic, parameter tuning & rule engines",
-        "badge": "COMING SOON"
+        "title": "Custom Bot Builder",
+        "desc": "Build, backtest & automate custom trading bots & algorithmic strategies",
+        "badge": "AI BOT"
       },
       "backtesting": {
         "title": "Backtesting",
         "desc": "High-speed historical simulation, win-rate metrics & Sharpe ratio",
-        "badge": "COMING SOON"
+        "badge": "SIMULATOR"
       },
       "paperTrading": {
         "title": "Paper Trading",

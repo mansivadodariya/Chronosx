@@ -5,7 +5,7 @@ import Footer from '@/components/footer';
 
 export default function StaticLayout({ children }) {
     return (
-        <div style={{ background: '#000000', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             <Header />
             <main style={{ flex: 1 }}>
                 {children}

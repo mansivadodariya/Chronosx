@@ -873,14 +873,14 @@
         "badge": "KIỂM TOÁN AI"
       },
       "strategyCreate": {
-        "title": "Chiến lược (Tạo mới)",
+        "title": "Custom Bot Builder",
         "desc": "Logic giao dịch thuật toán tùy chỉnh, điều chỉnh tham số và công cụ quy tắc",
-        "badge": "SẮP RA MẮT"
+        "badge": "AI BOT"
       },
       "backtesting": {
         "title": "Kiểm tra lại",
         "desc": "Mô phỏng lịch sử tốc độ cao, chỉ số tỷ lệ thắng & tỷ lệ Sharpe",
-        "badge": "SẮP RA MẮT"
+        "badge": "SIMULATOR"
       },
       "paperTrading": {
         "title": "Kinh Doanh Giấy",

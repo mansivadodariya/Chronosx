@@ -873,14 +873,14 @@
         "badge": "AUDITORÍA DE IA"
       },
       "strategyCreate": {
-        "title": "Estrategia (Crear nueva)",
+        "title": "Custom Bot Builder",
         "desc": "Lógica comercial algorítmica personalizada, ajuste de parámetros y motores de reglas",
-        "badge": "PRÓXIMAMENTE"
+        "badge": "AI BOT"
       },
       "backtesting": {
         "title": "Pruebas retrospectivas",
         "desc": "Simulación histórica de alta velocidad, métricas de tasa de ganancias y relación de Sharpe",
-        "badge": "PRÓXIMAMENTE"
+        "badge": "SIMULATOR"
       },
       "paperTrading": {
         "title": "Comercio de papel",

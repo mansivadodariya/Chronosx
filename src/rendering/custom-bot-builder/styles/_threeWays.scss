@@ -1,0 +1,214 @@
+.threeWaysSection {
+  padding: 90px 0;
+  position: relative;
+  background: rgba(11, 19, 25, 0.45);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+
+  @media (max-width: 992px) {
+    padding: 70px 0;
+  }
+
+  @media (max-width: 576px) {
+    padding: 50px 0;
+  }
+
+  :global(html.light) & {
+    background: #FFFFFF;
+    border-top-color: #E2E8F0;
+    border-bottom-color: #E2E8F0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  }
+}
+
+.threeWaysGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 52px;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 36px;
+  }
+
+  @media (max-width: 576px) {
+    gap: 18px;
+    margin-top: 28px;
+  }
+}
+
+.wayCard {
+  position: relative;
+  background: rgba(13, 22, 28, 0.8);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (max-width: 768px) {
+    padding: 32px 24px;
+  }
+
+  @media (max-width: 576px) {
+    padding: 24px 18px;
+    border-radius: 16px;
+  }
+
+  &.featuredCard {
+    border-color: rgba(24, 201, 139, 0.5);
+    background: linear-gradient(180deg, rgba(24, 201, 139, 0.12) 0%, rgba(13, 22, 28, 0.9) 100%);
+    box-shadow: 0 10px 30px rgba(24, 201, 139, 0.1);
+  }
+
+  &:hover {
+    transform: translateY(-8px);
+    border-color: rgba(24, 201, 139, 0.6);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45), 0 0 25px rgba(24, 201, 139, 0.2);
+  }
+
+  .featuredBadge {
+    position: absolute;
+    top: -14px;
+    right: 24px;
+    background: linear-gradient(135deg, #18C98B 0%, #059669 100%);
+    color: #FFFFFF;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 5px 14px;
+    border-radius: 99px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(24, 201, 139, 0.4);
+
+    @media (max-width: 576px) {
+      right: 16px;
+      font-size: 0.68rem;
+      padding: 4px 10px;
+    }
+  }
+
+  .cardIconHeader {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: rgba(24, 201, 139, 0.15);
+    border: 1px solid rgba(24, 201, 139, 0.25);
+    color: #18C98B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+
+    @media (max-width: 576px) {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 18px;
+    }
+  }
+
+  .cardHeaderTitle {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 6px;
+
+    @media (max-width: 576px) {
+      font-size: 1.25rem;
+    }
+  }
+
+  .cardTagline {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #18C98B;
+    margin-bottom: 16px;
+
+    @media (max-width: 576px) {
+      font-size: 0.88rem;
+      margin-bottom: 12px;
+    }
+  }
+
+  .cardBodyText {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 32px;
+    flex-grow: 1;
+
+    @media (max-width: 576px) {
+      font-size: 0.88rem;
+      margin-bottom: 24px;
+    }
+  }
+
+  .cardCtaButton {
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(24, 201, 139, 0.4);
+    background: rgba(24, 201, 139, 0.12);
+    color: #18C98B;
+    font-weight: 700;
+    font-size: 0.88rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+
+    @media (max-width: 576px) {
+      padding: 12px 16px;
+      font-size: 0.84rem;
+    }
+
+    &:hover {
+      background: #18C98B;
+      color: #FFFFFF;
+      box-shadow: 0 6px 20px rgba(24, 201, 139, 0.35);
+    }
+  }
+
+  :global(html.light) & {
+    background: #F8FAFC;
+    border-color: #E2E8F0;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+
+    &.featuredCard {
+      background: linear-gradient(180deg, rgba(24, 201, 139, 0.08) 0%, #F8FAFC 100%);
+      border-color: rgba(24, 201, 139, 0.4);
+    }
+
+    .cardHeaderTitle {
+      color: #0F172A;
+    }
+
+    .cardTagline {
+      color: #059669;
+    }
+
+    .cardBodyText {
+      color: #475569;
+    }
+
+    .cardCtaButton {
+      background: rgba(24, 201, 139, 0.1);
+      color: #059669;
+
+      &:hover {
+        background: #059669;
+        color: #FFFFFF;
+      }
+    }
+  }
+}

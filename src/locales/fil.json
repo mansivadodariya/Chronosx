@@ -876,14 +876,14 @@
         "badge": "AI AUDIT"
       },
       "strategyCreate": {
-        "title": "Diskarte (Lumikha ng Bago)",
+        "title": "Custom Bot Builder",
         "desc": "Pasadyang lohika ng algorithmic trading, parameter tuning at mga engine ng panuntunan",
-        "badge": "MALAPIT NA"
+        "badge": "AI BOT"
       },
       "backtesting": {
         "title": "Backtesting",
         "desc": "Mabilis na simulation sa kasaysayan, mga sukatan ng win-rate at Sharpe ratio",
-        "badge": "MALAPIT NA"
+        "badge": "SIMULATOR"
       },
       "paperTrading": {
         "title": "Paper Trading",

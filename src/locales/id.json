@@ -873,14 +873,14 @@
         "badge": "AUDIT AI"
       },
       "strategyCreate": {
-        "title": "Strategi (Buat Baru)",
+        "title": "Custom Bot Builder",
         "desc": "Logika perdagangan algoritmik khusus, penyetelan parameter & mesin aturan",
-        "badge": "SEGERA HADIR"
+        "badge": "AI BOT"
       },
       "backtesting": {
         "title": "Pengujian balik",
         "desc": "Simulasi historis berkecepatan tinggi, metrik tingkat kemenangan & rasio Sharpe",
-        "badge": "SEGERA HADIR"
+        "badge": "SIMULATOR"
       },
       "paperTrading": {
         "title": "Perdagangan Kertas",

@@ -1,0 +1,418 @@
+.aiBuilderSection {
+  padding: 90px 0;
+  position: relative;
+  background: rgba(11, 20, 26, 0.75);
+  border-top: 1px solid rgba(24, 201, 139, 0.15);
+  border-bottom: 1px solid rgba(24, 201, 139, 0.15);
+  backdrop-filter: blur(12px);
+
+  @media (max-width: 992px) {
+    padding: 70px 0;
+  }
+
+  @media (max-width: 576px) {
+    padding: 50px 0;
+  }
+
+  :global(html.light) & {
+    background: #FFFFFF;
+    border-top-color: #E2E8F0;
+    border-bottom-color: #E2E8F0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  }
+}
+
+.aiChatGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  margin-top: 52px;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-top: 36px;
+  }
+
+  @media (max-width: 576px) {
+    gap: 20px;
+    margin-top: 28px;
+  }
+}
+
+.aiProcessCards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+}
+
+.aiProcessCard {
+  background: rgba(13, 22, 28, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 22px;
+  transition: border-color 0.25s ease;
+
+  @media (max-width: 576px) {
+    padding: 18px 14px;
+  }
+
+  &:hover {
+    border-color: rgba(24, 201, 139, 0.35);
+  }
+
+  .stepNum {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: #18C98B;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .stepTitle {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 6px;
+
+    @media (max-width: 576px) {
+      font-size: 0.96rem;
+    }
+  }
+
+  .stepDesc {
+    font-size: 0.88rem;
+    line-height: 1.48;
+    color: rgba(255, 255, 255, 0.68);
+    margin: 0;
+
+    @media (max-width: 576px) {
+      font-size: 0.82rem;
+    }
+  }
+
+  :global(html.light) & {
+    background: #F8FAFC;
+    border-color: #E2E8F0;
+
+    .stepTitle {
+      color: #0F172A;
+    }
+
+    .stepDesc {
+      color: #64748B;
+    }
+  }
+}
+
+.aiCapabilitiesBox {
+  background: rgba(13, 22, 28, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 28px;
+
+  @media (max-width: 576px) {
+    padding: 20px 16px;
+  }
+
+  .boxTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 18px;
+
+    @media (max-width: 576px) {
+      font-size: 1rem;
+      margin-bottom: 14px;
+    }
+  }
+
+  .capabilitiesList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+
+    @media (max-width: 576px) {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .capItem {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.82);
+
+      @media (max-width: 576px) {
+        font-size: 0.84rem;
+      }
+
+      .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #18C98B;
+        box-shadow: 0 0 6px #18C98B;
+      }
+    }
+  }
+
+  :global(html.light) & {
+    background: #F8FAFC;
+    border-color: #E2E8F0;
+
+    .boxTitle {
+      color: #0F172A;
+    }
+
+    .capabilitiesList .capItem {
+      color: #334155;
+    }
+  }
+}
+
+.aiChatSimulator {
+  background: rgba(6, 11, 14, 0.95);
+  border: 1px solid rgba(24, 201, 139, 0.35);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55), 0 0 35px rgba(24, 201, 139, 0.12);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 540px;
+
+  @media (max-width: 576px) {
+    min-height: 420px;
+    border-radius: 18px;
+  }
+
+  :global(html.light) & {
+    background: #FFFFFF;
+    border-color: #CBD5E1;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+  }
+}
+
+.chatHeader {
+  padding: 18px 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (max-width: 576px) {
+    padding: 14px 16px;
+  }
+
+  .botIdentity {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    .botAvatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #18C98B 0%, #059669 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      box-shadow: 0 0 15px rgba(24, 201, 139, 0.3);
+
+      @media (max-width: 576px) {
+        width: 34px;
+        height: 34px;
+      }
+    }
+
+    .botInfo {
+      .name {
+        font-weight: 700;
+        font-size: 0.98rem;
+        color: #FFFFFF;
+
+        @media (max-width: 576px) {
+          font-size: 0.9rem;
+        }
+      }
+      .status {
+        font-size: 0.78rem;
+        color: #18C98B;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+    }
+  }
+
+  :global(html.light) & {
+    background: #F8FAFC;
+    border-bottom-color: #E2E8F0;
+
+    .botInfo .name {
+      color: #0F172A;
+    }
+  }
+}
+
+.chatMessagesBody {
+  flex-grow: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+  max-height: 400px;
+
+  @media (max-width: 576px) {
+    padding: 16px;
+    gap: 14px;
+    max-height: 320px;
+  }
+}
+
+.chatBubble {
+  max-width: 85%;
+  padding: 16px 20px;
+  border-radius: 16px;
+  font-size: 0.92rem;
+  line-height: 1.55;
+
+  @media (max-width: 576px) {
+    max-width: 92%;
+    padding: 12px 14px;
+    font-size: 0.86rem;
+  }
+
+  &.userBubble {
+    align-self: flex-end;
+    background: rgba(24, 201, 139, 0.18);
+    border: 1px solid rgba(24, 201, 139, 0.35);
+    color: #FFFFFF;
+    border-bottom-right-radius: 4px;
+
+    :global(html.light) & {
+      background: #059669;
+      color: #FFFFFF;
+    }
+  }
+
+  &.aiBubble {
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.92);
+    border-bottom-left-radius: 4px;
+
+    :global(html.light) & {
+      background: #F1F5F9;
+      border-color: #E2E8F0;
+      color: #1E293B;
+    }
+  }
+
+  .configPreviewCard {
+    margin-top: 12px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(24, 201, 139, 0.35);
+    border-radius: 10px;
+    padding: 14px;
+    font-family: 'Fira Code', monospace, monospace;
+    font-size: 0.82rem;
+    color: #34D399;
+
+    @media (max-width: 576px) {
+      padding: 10px;
+      font-size: 0.78rem;
+    }
+
+    .configRow {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    :global(html.light) & {
+      background: #0F172A;
+      color: #6EE7B7;
+    }
+  }
+}
+
+.chatInputBar {
+  padding: 18px 24px;
+  background: rgba(255, 255, 255, 0.025);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  gap: 12px;
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+    padding: 14px;
+    gap: 8px;
+  }
+
+  input {
+    flex-grow: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 14px 18px;
+    color: #FFFFFF;
+    font-size: 0.92rem;
+    outline: none;
+
+    @media (max-width: 576px) {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 0.88rem;
+    }
+
+    &:focus {
+      border-color: #18C98B;
+    }
+
+    :global(html.light) & {
+      background: #F8FAFC;
+      border-color: #CBD5E1;
+      color: #0F172A;
+    }
+  }
+
+  button {
+    padding: 14px 24px;
+    border-radius: 12px;
+    background: #18C98B;
+    border: none;
+    color: #FFFFFF;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+
+    @media (max-width: 576px) {
+      width: 100%;
+      padding: 12px 16px;
+    }
+
+    &:hover {
+      background: #059669;
+      box-shadow: 0 4px 15px rgba(24, 201, 139, 0.35);
+    }
+  }
+}
