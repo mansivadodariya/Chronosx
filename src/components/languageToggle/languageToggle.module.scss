@@ -140,7 +140,7 @@
   border: 1px solid transparent;
   border-radius: 8px;
   color: rgba(255, 255, 255, 0.88);
-  font-size: 12.5px;
+  font-size: 13px;
   font-family: "Euclid-Medium", sans-serif;
   cursor: pointer;
   transition: all 0.18s ease;
@@ -167,7 +167,7 @@
       .optionLabel {
         font-weight: 600;
         color: #FFFFFF;
-        font-size: 12.5px;
+        font-size: 13px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -184,7 +184,8 @@
       }
     }
   }
-&:hover {
+
+  &:hover {
     background: rgba(24, 201, 139, 0.12);
     border-color: rgba(24, 201, 139, 0.25);
     color: #18C98B;
@@ -251,6 +252,7 @@
       .optionLabel {
         color: #0F172A !important;
       }
+
       .optionSubLabel {
         color: #64748B !important;
       }

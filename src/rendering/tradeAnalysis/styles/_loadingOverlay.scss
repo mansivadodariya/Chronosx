@@ -102,7 +102,7 @@
         }
 
         p {
-            font-size: 12.5px;
+            font-size: 13px;
             color: #94A3B8;
             margin: 0;
             line-height: 1.5;
@@ -171,7 +171,7 @@
         }
 
         .progressPercentText {
-            font-size: 12.5px;
+            font-size: 13px;
             font-weight: 800;
             color: #18C98B;
             min-width: 36px;
@@ -291,6 +291,7 @@
         transform: scale(0.8);
         opacity: 0.9;
     }
+
     100% {
         transform: scale(2.2);
         opacity: 0;

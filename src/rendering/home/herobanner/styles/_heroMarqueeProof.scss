@@ -1,5 +1,3 @@
-
-
 .herobanner {
     .heroMarqueeWrapper {
         margin-top: 68px;
@@ -142,7 +140,7 @@
 
         .tickerPrice {
             font-family: monospace, sans-serif;
-            font-size: 12.5px;
+            font-size: 13px;
             font-weight: 800;
             color: #FFFFFF;
             letter-spacing: -0.3px;
@@ -186,6 +184,7 @@
         0% {
             transform: translate3d(0, 0, 0);
         }
+
         100% {
             transform: translate3d(-33.333%, 0, 0);
         }
@@ -275,21 +274,21 @@
 
                 .stars {
                     color: #18C98B;
-                    font-size: 12.5px;
+                    font-size: 13px;
                     letter-spacing: 1px;
                 }
 
                 .scoreText {
                     color: #FFFFFF;
                     font-family: "Euclid-Bold", sans-serif;
-                    font-size: 12.5px;
+                    font-size: 13px;
                     font-weight: 700;
                 }
             }
 
             .verifiedSub {
                 color: rgba(255, 255, 255, 0.6);
-                font-size: 11.5px;
+                font-size: 12px;
                 font-family: "Euclid-Regular", sans-serif;
             }
         }

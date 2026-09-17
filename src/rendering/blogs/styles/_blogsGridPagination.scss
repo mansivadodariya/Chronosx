@@ -135,7 +135,7 @@
             gap: 8px;
 
             .publishDate {
-                font-size: 11.5px;
+                font-size: 12px;
                 color: rgba(255, 255, 255, 0.5);
 
                 @include respond-to('sm') {
@@ -144,7 +144,7 @@
             }
 
             .readTime {
-                font-size: 11.5px;
+                font-size: 12px;
                 color: rgba(255, 255, 255, 0.45);
 
                 @include respond-to('sm') {
@@ -177,7 +177,7 @@
         }
 
         .cardExcerpt {
-            font-size: 12.5px;
+            font-size: 13px;
             line-height: 1.6;
             color: rgba(255, 255, 255, 0.65);
             margin: 0;

@@ -1,7 +1,7 @@
 /* 3. Right Column: Account Summary & Quick Actions */
 .rightSidebar,
 .rightSummaryColumn {
-    background: 
+    background:
         radial-gradient(ellipse 70% 80% at 100% 0%, rgba(24, 201, 139, 0.18) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 80%),
         radial-gradient(ellipse 70% 80% at 0% 100%, rgba(0, 242, 254, 0.1) 0%, transparent 75%),
         #121514;
@@ -23,9 +23,11 @@
     &::-webkit-scrollbar {
         width: 5px;
     }
+
     &::-webkit-scrollbar-track {
         background: transparent;
     }
+
     &::-webkit-scrollbar-thumb {
         background: rgba(24, 201, 139, 0.2);
         border-radius: 4px;
@@ -34,6 +36,7 @@
             background: rgba(24, 201, 139, 0.5);
         }
     }
+
     scrollbar-width: thin;
     scrollbar-color: rgba(24, 201, 139, 0.25) transparent;
 
@@ -137,7 +140,7 @@
                     cursor: pointer;
                     padding: 0;
                     color: #18C98B;
-                    font-size: 11.5px;
+                    font-size: 12px;
                     font-weight: 600;
                     transition: color 0.15s ease;
 
@@ -306,4 +309,3 @@
         }
     }
 }
-

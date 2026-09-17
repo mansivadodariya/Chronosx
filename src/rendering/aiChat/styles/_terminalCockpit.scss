@@ -89,7 +89,7 @@
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08);
     color: #9CA3AF;
-    font-size: 11.5px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -265,7 +265,7 @@
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.12);
     color: #D1D5DB;
-    font-size: 11.5px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -476,7 +476,7 @@
     }
 
     @include respond-to('sm') {
-        font-size: 12.5px;
+        font-size: 13px;
         flex-wrap: wrap;
         gap: 4px;
     }
@@ -558,7 +558,7 @@
 .calcItem {
     display: flex;
     justify-content: space-between;
-    font-size: 12.5px;
+    font-size: 13px;
     color: #D1D5DB;
 
     strong {
@@ -609,7 +609,7 @@
     background: rgba(239, 68, 68, 0.06);
     border: 1px solid rgba(239, 68, 68, 0.2);
     color: #FECACA;
-    font-size: 12.5px;
+    font-size: 13px;
     line-height: 1.5;
 
     .alertIconBox {

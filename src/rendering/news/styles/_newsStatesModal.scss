@@ -57,7 +57,7 @@
         margin: 0 0 16px;
 
         @include respond-to('sm') {
-            font-size: 12.5px;
+            font-size: 13px;
         }
     }
 
@@ -135,12 +135,12 @@
     }
 
     .countText {
-        font-size: 12.5px;
+        font-size: 13px;
         color: rgba(255, 255, 255, 0.5);
         text-align: center;
 
         @include respond-to('sm') {
-            font-size: 11.5px;
+            font-size: 12px;
         }
     }
 }
@@ -267,7 +267,7 @@
             }
 
             .source {
-                font-size: 11.5px;
+                font-size: 12px;
                 font-weight: 700;
                 color: #18C98B;
                 background: rgba(24, 201, 139, 0.12);
@@ -344,7 +344,7 @@
             margin: 0;
 
             @include respond-to('sm') {
-                font-size: 12.5px;
+                font-size: 13px;
                 line-height: 1.5;
             }
         }
@@ -360,7 +360,7 @@
             padding: 16px 18px;
 
             @include respond-to('sm') {
-                font-size: 12.5px;
+                font-size: 13px;
                 line-height: 1.55;
                 padding: 12px 14px;
             }
@@ -455,7 +455,7 @@
                 margin: 0;
 
                 @include respond-to('sm') {
-                    font-size: 11.5px;
+                    font-size: 12px;
                     line-height: 1.35;
                 }
             }

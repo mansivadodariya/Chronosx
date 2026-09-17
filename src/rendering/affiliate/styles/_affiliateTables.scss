@@ -1,4 +1,3 @@
-
 $primary: #18C98B;
 $primaryDark: #10B981;
 $bgDark: #040605;
@@ -12,6 +11,7 @@ $danger: #F87171;
 
 
 .affiliatePage {
+
     /* Tables */
     .tableWrapperCard {
         background: #040D09;
@@ -38,9 +38,10 @@ $danger: #F87171;
                     margin: 0;
                     font-family: "Euclid-Bold", sans-serif;
                 }
+
                 p {
                     color: rgba(255, 255, 255, 0.6);
-                    font-size: 12.5px;
+                    font-size: 13px;
                     margin: 0;
                 }
             }
@@ -109,7 +110,7 @@ $danger: #F87171;
 
                     .timeSub {
                         color: rgba(255, 255, 255, 0.45);
-                        font-size: 11.5px;
+                        font-size: 12px;
                         margin-left: 4px;
                     }
 
@@ -119,7 +120,7 @@ $danger: #F87171;
                         padding: 2px 8px;
                         border-radius: 4px;
                         font-weight: 700;
-                        font-size: 11.5px;
+                        font-size: 12px;
                     }
 
                     .commissionVal {
@@ -147,7 +148,7 @@ $danger: #F87171;
 
                     .networkSub {
                         color: rgba(255, 255, 255, 0.5);
-                        font-size: 11.5px;
+                        font-size: 12px;
                     }
 
                     .addressBox {
@@ -198,7 +199,8 @@ $danger: #F87171;
                     font-size: 11px;
                     font-weight: 700;
 
-                    &.statusCredited, &.statusApproved {
+                    &.statusCredited,
+                    &.statusApproved {
                         background: rgba(24, 201, 139, 0.15);
                         border: 1px solid rgba(24, 201, 139, 0.4);
                         color: #18C98B;
@@ -367,7 +369,7 @@ $danger: #F87171;
                     align-items: center;
                     gap: 8px;
                     color: rgba(255, 255, 255, 0.75);
-                    font-size: 12.5px;
+                    font-size: 13px;
                     line-height: 1.5;
 
                     .bulletIcon {
