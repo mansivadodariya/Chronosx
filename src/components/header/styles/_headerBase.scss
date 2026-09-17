@@ -7,6 +7,10 @@
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     box-sizing: border-box;
 
+    @include respond-to("xl") {
+        top: 10px;
+    }
+
     @include respond-to("md") {
         top: 0;
         left: 0;

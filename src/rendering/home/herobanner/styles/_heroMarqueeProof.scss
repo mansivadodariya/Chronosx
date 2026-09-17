@@ -9,13 +9,17 @@
         -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
         mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
 
+        @include respond-to("xl") {
+            margin-top: 0;
+        }
+
         @include respond-to("tab") {
             margin-top: 50px;
             padding: 12px 0;
         }
 
         @include respond-to("sm") {
-            margin-top: 36px;
+            margin-top: 0;
             padding: 10px 0;
         }
     }

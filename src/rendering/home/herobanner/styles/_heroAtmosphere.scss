@@ -2,7 +2,7 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
     padding: 140px 0 70px 0;
     overflow: hidden;
     background-color: #030805;
@@ -14,6 +14,8 @@
     background-size: cover;
     display: flex;
     align-items: center;
+
+
 
     :global(html.light) & {
         background-color: #F8FAFC !important;
@@ -126,9 +128,11 @@
                 .tickerCardName {
                     color: #0F172A !important;
                 }
+
                 .tickerCardSymbol {
                     color: #64748B !important;
                 }
+
                 .tickerSignalPill {
                     background: rgba(16, 185, 129, 0.12) !important;
                     color: #047857 !important;
@@ -174,9 +178,14 @@
         }
     }
 
+    @include respond-to("xl") {
+        padding: 160px 0 70px 0;
+
+    }
+
     @include respond-to("tab") {
         padding: 110px 0 60px 0;
-        min-height: auto;
+        height: auto;
     }
 
     @include respond-to("sm") {

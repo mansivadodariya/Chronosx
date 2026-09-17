@@ -157,6 +157,10 @@
         max-width: 680px;
         text-align: center;
 
+        @include respond-to("xl") {
+            margin: 0 auto 16px auto;
+        }
+
         @include respond-to("tab") {
             font-size: 15px;
             margin-bottom: 28px;
@@ -319,6 +323,11 @@
         background-color: transparent !important;
         border: none !important;
         box-shadow: none !important;
+
+        @include respond-to("xl") {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
 
         @include respond-to("tab") {
             grid-template-columns: 1fr;
