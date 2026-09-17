@@ -2,7 +2,7 @@
    UPLOADED REPORT SUCCESS BANNER CARD (MATCHING USER SCREENSHOT)
    ============================================================ */
 .reportSuccessBannerCard {
-    background: 
+    background:
         radial-gradient(ellipse 25% 85% at 0% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
         radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.12) 0%, rgba(110, 231, 183, 0.05) 50%, transparent 70%),
         radial-gradient(ellipse 25% 85% at 100% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
@@ -94,7 +94,7 @@
                 background: rgba(16, 185, 129, 0.12);
                 border: 1px solid rgba(16, 185, 129, 0.35);
                 color: #34D399;
-                font-size: 11.5px;
+                font-size: 12px;
                 font-weight: 700;
                 padding: 4px 12px;
                 border-radius: 12px;
@@ -180,7 +180,7 @@
                 color: $textWhite;
                 padding: 10px 20px;
                 border-radius: 9999px;
-                font-size: 12.5px;
+                font-size: 13px;
                 font-weight: 600;
                 cursor: pointer;
                 display: inline-flex;
@@ -225,13 +225,14 @@
         transform: translateY(0px) scale(1);
         filter: drop-shadow(0 0 22px rgba(24, 201, 139, 0.35));
     }
+
     50% {
         transform: translateY(-8px) scale(1.03);
         filter: drop-shadow(0 0 38px rgba(24, 201, 139, 0.65));
     }
+
     100% {
         transform: translateY(0px) scale(1);
         filter: drop-shadow(0 0 22px rgba(24, 201, 139, 0.35));
     }
 }
-

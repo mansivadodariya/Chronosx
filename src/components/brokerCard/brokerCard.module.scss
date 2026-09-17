@@ -12,29 +12,26 @@ $textMuted: rgba(255, 255, 255, 0.65);
 $success: #34D399;
 
 .brokerCard {
-    background:
-        radial-gradient(ellipse 70% 80% at 100% 0%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.03) 50%, transparent 80%),
-        radial-gradient(ellipse 60% 60% at 0% 100%, rgba(0, 242, 254, 0.06) 0%, transparent 70%),
-        #080B0A;
-    border: 1px solid rgba(24, 201, 139, 0.2);
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    background: #040605;
+    border: 1px solid $border;
+    border-radius: 18px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     padding: 16px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
 
     @include respond-to(sm) {
         padding: 14px;
-        border-radius: 14px;
+        border-radius: 16px;
     }
 
     &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 20px rgba(24, 201, 139, 0.16);
-        border-color: rgba(24, 201, 139, 0.45);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(24, 201, 139, 0.15);
+        border-color: rgba(24, 201, 139, 0.7);
 
         .bannerHeader .chartGraphic {
             opacity: 0.95;
@@ -43,72 +40,9 @@ $success: #34D399;
     }
 
     .bannerHeader {
-        &.isLightHeader {
-            background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%) !important;
-            border: 1px solid rgba(15, 23, 42, 0.08) !important;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
-
-            &::before,
-            &::after {
-                display: none !important;
-                content: none !important;
-            }
-
-            .logoWrapper {
-                background: transparent !important;
-                background-color: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
-                outline: none !important;
-                padding: 0 !important;
-
-                img {
-                    background: transparent !important;
-                    background-color: transparent !important;
-                    border: none !important;
-                    box-shadow: none !important;
-                    outline: none !important;
-                    padding: 0 !important;
-                    mix-blend-mode: multiply !important;
-                    filter: contrast(1.05) !important;
-                }
-
-                .fallbackLogoText {
-                    color: #0F172A !important;
-                }
-            }
-
-            .chartGraphic {
-                background: transparent !important;
-                background-color: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
-                opacity: 0.88 !important;
-            }
-        }
-        &.hasLightBg {
-            background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%) !important;
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-
-            .logoWrapper {
-                img {
-                    mix-blend-mode: multiply;
-                    filter: contrast(1.05);
-                }
-
-                .fallbackLogoText {
-                    color: #0F172A !important;
-                }
-            }
-
-            .chartGraphic {
-                opacity: 0.88;
-            }
-        }
-        height: 88px;
-        background: linear-gradient(135deg, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, rgba(4, 6, 5, 0.6) 100%), #0B120F;
-        border-radius: 12px;
+        height: 90px;
+        background: linear-gradient(135deg, #0C0B09 0%, #17130A 50%, #261D0C 100%);
+        border-radius: 14px;
         padding: 14px 16px;
         position: relative;
         overflow: hidden;

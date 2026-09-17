@@ -203,7 +203,7 @@ export default function ContactUs() {
         } catch (err) {
             console.error('Contact submission error:', err);
             setIsSubmitting(false);
-            toast.error(err?.message || 'Failed to send message. Please try again or email chronosx.support@gmail.com directly.');
+            toast.error(err?.message || 'Failed to send message. Please try again or email support@chronosx.com directly.');
         }
     };
 
@@ -295,15 +295,15 @@ export default function ContactUs() {
                                         </div>
                                         <div className={styles.infoContent}>
                                             <span className={styles.infoLabel}>{t('contactUs.labelEmail', 'EMAIL')}</span>
-                                            <a href="mailto:chronosx.support@gmail.com" className={styles.infoValue}>
-                                                chronosx.support@gmail.com
+                                            <a href="mailto:support@chronosx.com" className={styles.infoValue}>
+                                                support@chronosx.com
                                             </a>
                                             <span className={styles.infoHelper}>{t('contactUs.emailHelper', 'Average response time: < 15 mins')}</span>
                                         </div>
                                         <button
                                             type="button"
                                             className={styles.itemCopyBtn}
-                                            onClick={() => handleCopy('chronosx.support@gmail.com', 'Email')}
+                                            onClick={() => handleCopy('support@chronosx.com', 'Email')}
                                             title="Copy email"
                                             aria-label="Copy Email"
                                         >

@@ -51,7 +51,7 @@ export default function RiskDisclosure() {
                     <section>
                         <h2>8. Contact for Inquiries</h2>
                         <p>If you have any questions regarding this Risk Disclosure Statement, please reach out to our legal and compliance desk at:</p>
-                        <p><strong>Email:</strong> <a href="mailto:chronosx.support@gmail.com">chronosx.support@gmail.com</a></p>
+                        <p><strong>Email:</strong> <a href="mailto:support@chronosx.com">support@chronosx.com</a></p>
                     </section>
                 </div>
             </div>

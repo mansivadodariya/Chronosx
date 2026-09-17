@@ -535,7 +535,7 @@
         font-family: var(--font-inter, sans-serif);
 
         @include respond-to("sm") {
-            font-size: 11.5px;
+            font-size: 12px;
         }
     }
 

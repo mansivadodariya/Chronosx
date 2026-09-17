@@ -56,7 +56,7 @@
             padding: 4px 6px;
 
             .analyzingStatusText {
-                font-size: 12.5px;
+                font-size: 13px;
                 color: #94A3B8;
                 font-family: var(--font-plus-jakarta), sans-serif;
                 font-weight: 500;
@@ -179,10 +179,13 @@
 }
 
 @keyframes blinkTypewriter {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
         transform: scaleY(1);
     }
+
     50% {
         opacity: 0.15;
         transform: scaleY(0.75);
