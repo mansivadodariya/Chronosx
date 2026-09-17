@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { CandlestickSeries, LineSeries, AreaSeries, HistogramSeries } from 'lightweight-charts';
 import { fetchChartCandlesOnce, subscribeLiveCandles } from '@/lib/chartStore';
+import { unifiedSocket } from '@/lib/unifiedSocket';
 import { generateMockCandles, getSymbolPrecision, getDefaultSymbolBasePrice } from '../utils/indicatorCalculations';
 
 export default function useChartDataLoader({
@@ -214,7 +215,10 @@ export default function useChartDataLoader({
                     }
                 }
                 const last = formattedCandles[formattedCandles.length - 1];
-                if (last) setLatestCandle(last);
+                if (last) {
+                    setLatestCandle(last);
+                    unifiedSocket.setKnownPrice(activeSymbolClean, last.close);
+                }
                 try {
                     chartRef.current.timeScale().applyOptions({
                         barSpacing: 5.5,
@@ -267,23 +271,13 @@ export default function useChartDataLoader({
                     if (candlesDataRef.current && candlesDataRef.current.length > 0) {
                         const lastClose = candlesDataRef.current[candlesDataRef.current.length - 1].close;
                         const ratio = closePrice / lastClose;
-                        if (ratio > 1.15 || ratio < 0.85) {
-                            const shiftFactor = closePrice / lastClose;
-                            const { precision } = getSymbolPrecision(activeSymbolClean);
-                            const realigned = candlesDataRef.current.map(c => ({
-                                ...c,
-                                open: Number((c.open * shiftFactor).toFixed(precision)),
-                                high: Number((c.high * shiftFactor).toFixed(precision)),
-                                low: Number((c.low * shiftFactor).toFixed(precision)),
-                                close: Number((c.close * shiftFactor).toFixed(precision)),
-                                value: Number((c.close * shiftFactor).toFixed(precision)),
-                            }));
-                            candlesDataRef.current = realigned;
-                            if (seriesRef.current) {
-                                try { seriesRef.current.setData(realigned); } catch {}
-                            }
+                        if (ratio > 1.35 || ratio < 0.65) {
+                            // Ignore mismatched/corrupted packet without destroying historical candles
+                            return;
                         }
                     }
+
+                    unifiedSocket.setKnownPrice(activeSymbolClean, closePrice);
 
                     if (seriesRef.current) {
                         seriesRef.current.update(updatedBar);

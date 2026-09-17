@@ -37,22 +37,18 @@ export default function DashboardFeaturedBrokers() {
 
     return (
         <div className={styles.featuredBrokersSection}>
-            {/* Header: Title & Subtitle with SVG lightning bolt icon */}
+            {/* Header: Quick Action style Icon Badge + Title + View All Link */}
             <div className={styles.featuredBrokersHeader}>
                 <div className={styles.featuredBrokersHeaderLeft}>
-                    <h2 className={styles.featuredBrokersTitle}>
-                        {t('dashboard.featuredBrokers', 'Featured brokers')}
-                    </h2>
-                    <div className={styles.featuredBrokersSubtitle}>
-                        <span className={styles.boltIcon}>
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="#18C98B" stroke="#18C98B" strokeWidth="1">
-                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                            </svg>
-                        </span>
-                        <span>
-                            {t('dashboard.exclusiveIntegration', 'Exclusive integration — faster execution and a more reliable connection.')}
-                        </span>
+                    <div className={styles.featuredBrokersIcon}>
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M3 21h18M3 10h18M12 3l9 4.5H3L12 3z" />
+                            <path d="M6 10v7M10 10v7M14 10v7M18 10v7" />
+                        </svg>
                     </div>
+                    <h3 className={styles.featuredBrokersTitle}>
+                        {t('nav.broker', 'Associated Brokers')}
+                    </h3>
                 </div>
 
                 <Link href="/brokers" className={styles.viewAllBrokersLink}>
@@ -67,7 +63,7 @@ export default function DashboardFeaturedBrokers() {
             <div className={styles.featuredBrokersGrid}>
                 {isLoading ? (
                     Array.from({ length: 4 }).map((_, idx) => (
-                        <BrokerCardSkeleton key={idx} showHighlights={false} />
+                        <BrokerCardSkeleton key={idx} showHighlights={false} showDescription={true} />
                     ))
                 ) : (
                     brokers.slice(0, 4).map((b) => (
@@ -76,6 +72,7 @@ export default function DashboardFeaturedBrokers() {
                             broker={b}
                             detailHref={`/broker/${b.id}`}
                             showHighlights={false}
+                            showDescription={true}
                         />
                     ))
                 )}

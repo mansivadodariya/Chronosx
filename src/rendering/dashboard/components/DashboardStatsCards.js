@@ -46,7 +46,7 @@ export default function DashboardStatsCards({
                     </div>
 
                     <div className={styles.bigNumWrap}>
-                        {loading ? (
+                        {loading && !stats ? (
                             <span className={`${styles.skeletonPulse} ${styles.skeletonStatNum}`} />
                         ) : (
                             <span className={styles.statBigNum}>{stats?.total_analysis_history ?? 0}</span>
@@ -80,7 +80,7 @@ export default function DashboardStatsCards({
                     </div>
 
                     <div className={styles.bigNumWrap}>
-                        {loading ? (
+                        {loading && !stats ? (
                             <span className={`${styles.skeletonPulse} ${styles.skeletonStatNum}`} />
                         ) : (
                             <span className={styles.statBigNum}>{stats?.total_chat_history ?? 0}</span>
@@ -110,7 +110,7 @@ export default function DashboardStatsCards({
                     </div>
 
                     <div className={styles.bigNumWrap}>
-                        {loading ? (
+                        {loading && !stats ? (
                             <span className={`${styles.skeletonPulse} ${styles.skeletonStatNum}`} />
                         ) : (
                             <span className={styles.statBigNum}>{stats?.available_credits ?? 0}</span>
@@ -141,7 +141,7 @@ export default function DashboardStatsCards({
                     </div>
 
                     <div className={styles.bigNumWrap}>
-                        {loading ? (
+                        {loading && !stats ? (
                             <span className={`${styles.skeletonPulse} ${styles.skeletonStatNum}`} />
                         ) : (
                             <span className={styles.statBigNum}>{stats?.total_credits ?? totalAccountCredits ?? 0}</span>

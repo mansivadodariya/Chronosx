@@ -13,37 +13,29 @@ export default function StrategyCategoryTabs({
 }) {
     const { t } = useLanguage();
 
-    // Dynamically build category / strategy tabs from the API response
+    // Dynamically build category / strategy tabs from the API response (without 'All Strategies')
     const dynamicTabs = useMemo(() => {
-        const tabs = [{ id: 'all', label: t('aiStrategy.allStrategies', 'All Strategies') }];
+        const tabs = [];
         if (Array.isArray(strategies) && strategies.length > 0) {
             strategies.forEach(st => {
                 const id = st.id || st.strategy_id;
-                const label = st.name || st.title || st.description || 'EMA Pullback';
+                const label = st.name || st.title || st.strategy_name || st.description || 'EMA Pullback';
                 tabs.push({ id, label });
             });
         } else {
             tabs.push({ id: '3e8d2b78-0e86-4fdf-9759-338276db1742', label: 'EMA Pullback' });
         }
         return tabs;
-    }, [strategies, t]);
+    }, [strategies]);
 
-    const isTabActive = (tabId) => {
-        if (tabId === 'all') {
-            return activeCategory === 'all' || !selectedStrategyId;
+    const isTabActive = (tabId, index) => {
+        if (!selectedStrategyId && !activeCategory) {
+            return index === 0;
         }
         return selectedStrategyId === tabId || activeCategory === tabId;
     };
 
     const handleTabClick = (tab) => {
-        if (tab.id === 'all') {
-            if (onSelectCategory) onSelectCategory('all');
-            if (strategies.length > 0 && onSelectStrategyId) {
-                onSelectStrategyId(strategies[0].id || strategies[0].strategy_id);
-            }
-            return;
-        }
-
         if (onSelectCategory) onSelectCategory(tab.id);
         if (onSelectStrategyId) onSelectStrategyId(tab.id);
     };
@@ -70,8 +62,8 @@ export default function StrategyCategoryTabs({
 
             {/* Category Pills Track */}
             <div className={styles.categoryPillsTrack}>
-                {dynamicTabs.map((tab) => {
-                    const isActive = isTabActive(tab.id);
+                {dynamicTabs.map((tab, idx) => {
+                    const isActive = isTabActive(tab.id, idx);
 
                     return (
                         <button

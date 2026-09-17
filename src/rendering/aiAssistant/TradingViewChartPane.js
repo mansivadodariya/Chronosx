@@ -145,7 +145,7 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
     useEffect(() => {
         if (liveTickDirection) {
             setTickDirection(liveTickDirection);
-            const timer = setTimeout(() => setTickDirection(null), 800);
+            const timer = setTimeout(() => setTickDirection(null), 350);
             return () => clearTimeout(timer);
         }
     }, [liveTickDirection, priceData?.price]);
@@ -160,9 +160,9 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
 
         setLatestCandle((prev) => {
             if (!prev) return prev;
-            // Prevent cross-symbol price distortion or sudden giant spike (e.g. 4471 vs 2720)
+            // Prevent cross-symbol price distortion or sudden giant spike
             const ratio = newPrice / prev.close;
-            if (ratio > 1.15 || ratio < 0.85) {
+            if (ratio > 1.35 || ratio < 0.65) {
                 return prev;
             }
             const updated = {

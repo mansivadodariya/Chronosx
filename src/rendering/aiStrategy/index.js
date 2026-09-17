@@ -614,15 +614,13 @@ export default function AiStrategy({ initialTab = 'live' }) {
             />
 
             {/* Filter by Category / Strategy Tabs */}
-            {activeTab === 'live' && (
-                <StrategyCategoryTabs
-                    strategies={strategies}
-                    selectedStrategyId={selectedStrategyId}
-                    onSelectStrategyId={setSelectedStrategyId}
-                    activeCategory={activeCategory}
-                    onSelectCategory={setActiveCategory}
-                />
-            )}
+            <StrategyCategoryTabs
+                strategies={strategies}
+                selectedStrategyId={selectedStrategyId}
+                onSelectStrategyId={setSelectedStrategyId}
+                activeCategory={activeCategory}
+                onSelectCategory={setActiveCategory}
+            />
 
             <div className={styles.contentBody}>
                 <AnimatePresence mode="wait">
@@ -658,7 +656,10 @@ export default function AiStrategy({ initialTab = 'live' }) {
                             transition={{ duration: 0.2 }}
                             className={styles.tabContent}
                         >
-                            <StrategyExecutionView />
+                            <StrategyExecutionView
+                                selectedStrategyId={selectedStrategyId}
+                                strategies={strategies}
+                            />
                         </motion.div>
                     )}
                 </AnimatePresence>

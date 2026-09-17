@@ -114,6 +114,7 @@ export default function Profile() {
     const canViewPlans = () => {
         if (!visibleTabNames) return true;
         return (
+            visibleTabNames.has('subscription plans') ||
             visibleTabNames.has('subscription_plans') ||
             visibleTabNames.has('plans') ||
             visibleTabNames.has('subscription') ||

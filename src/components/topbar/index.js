@@ -37,6 +37,7 @@ const ROUTE_TITLE_MAP = {
   '/strategy-hub/live': 'nav.liveMarketScanner|Signal Terminal',
   '/strategy-hub/strategy': 'nav.strategyPlaybooks|Strategy Signal',
   '/strategy-signal': 'nav.strategyPlaybooks|Strategy Signal',
+  '/predefined-strategies': 'nav.predefinedStrategies|Predefined Strategies',
   '/tools': 'nav.tools|Tools',
   '/calendar': 'nav.economicCalendar|Economic Calendar',
   '/economic-calendar': 'nav.economicCalendar|Economic Calendar',

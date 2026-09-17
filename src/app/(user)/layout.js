@@ -36,6 +36,7 @@ const TOOL_ROUTES = [
     '/strategy-core',
     '/ai-strategy-core',
     '/strategy-signal',
+    '/predefined-strategies',
     '/strategy-studio',
     '/ai-strategy-studio',
     '/ai-bot-builder',
@@ -68,6 +69,7 @@ const ROUTE_TAB_MAP = {
     '/strategy-hub/live': 'Signal Terminal',
     '/strategy-hub/strategy': 'Strategy Signal',
     '/strategy-signal': 'Strategy Signal',
+    '/predefined-strategies': 'Predefined Strategies',
     '/tools': 'Tools',
     '/calendar': 'Economic Calendar',
     '/economic-calendar': 'Economic Calendar',
@@ -285,40 +287,7 @@ const layout = ({ children }) => {
                     const visibleNames = new Set(data.map(t => (t.name || '').toLowerCase().trim()));
                     const currentLower = (currentTabName || '').toLowerCase().trim();
 
-                    let isAllowed = false;
-
-                    if (currentLower === 'ai bot builder' || currentLower === 'ai strategy builder' || currentLower === 'strategy studio') {
-                        isAllowed = visibleNames.has('ai bot builder') || visibleNames.has('bot builder') || visibleNames.has('custom bot builder');
-                    } else if (currentLower === 'ai chart scanner') {
-                        isAllowed = visibleNames.has('ai chart scanner') || visibleNames.has('chart scanner');
-                    } else if (currentLower === 'ai past trade analyzer' || currentLower === 'ai trade advisor' || currentLower === 'ai trade audit') {
-                        isAllowed = visibleNames.has('ai trade audit') || visibleNames.has('ai past trade analyzer') || visibleNames.has('ai trade advisor') || visibleNames.has('trade audit') || visibleNames.has('trade advisor') || visibleNames.has('past trade analyzer');
-                    } else if (currentLower === 'ai market assistant') {
-                        isAllowed = visibleNames.has('ai market assistant') || visibleNames.has('market assistant');
-                    } else if (currentLower === 'signal terminal') {
-                        isAllowed = visibleNames.has('signal terminal') || visibleNames.has('live market scanner') || visibleNames.has('strategy hub') || visibleNames.has('ai trading signal');
-                    } else if (currentLower === 'strategy signal') {
-                        isAllowed = visibleNames.has('strategy signal') || visibleNames.has('strategy playbooks') || visibleNames.has('strategy hub') || visibleNames.has('ai trading signal');
-                    } else if (currentLower === 'ai trading signal' || currentLower === 'ai strategy core') {
-                        isAllowed = visibleNames.has('strategy hub') || visibleNames.has('ai trading signal') || visibleNames.has('trading signal') || visibleNames.has('ai strategy core');
-                    } else if (currentLower === 'economic calendar') {
-                        isAllowed = visibleNames.has('economic calendar') || visibleNames.has('calendar');
-                    } else if (currentLower === 'forex calculator') {
-                        isAllowed = visibleNames.has('forex calculator') || visibleNames.has('calculator');
-                    } else if (currentLower === 'market news') {
-                        isAllowed = visibleNames.has('market news') || visibleNames.has('news');
-                    } else if (currentLower === 'tools') {
-                        isAllowed = visibleNames.has('tools') || visibleNames.has('economic calendar') || visibleNames.has('forex calculator') || visibleNames.has('market news') || visibleNames.has('calendar') || visibleNames.has('calculator') || visibleNames.has('news');
-                    } else if (currentLower === 'credit history') {
-                        isAllowed = visibleNames.has('credit history') || visibleNames.has('credit_history');
-                    } else if (currentLower === 'subscription plans') {
-                        isAllowed = visibleNames.has('subscription plans') || visibleNames.has('plans') || visibleNames.has('subscription_plans');
-                    } else if (currentLower === 'broker' || currentLower === 'brokers' || currentLower === 'associated broker' || currentLower === 'associated brokers') {
-                        isAllowed = visibleNames.has('broker') || visibleNames.has('brokers') || visibleNames.has('associated brokers') || visibleNames.has('associated broker');
-                    } else {
-                        isAllowed = visibleNames.has(currentLower);
-                    }
-
+                    const isAllowed = visibleNames.has(currentLower);
                     setIsTabAllowed(isAllowed);
                 }
             } catch (e) {

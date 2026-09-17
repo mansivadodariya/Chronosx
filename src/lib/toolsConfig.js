@@ -45,6 +45,7 @@ export const ROUTE_TAB_MAP = {
   '/strategy-hub/live': 'Signal Terminal',
   '/strategy-hub/strategy': 'Strategy Signal',
   '/strategy-signal': 'Strategy Signal',
+  '/predefined-strategies': 'Predefined Strategies',
 
   // Utility Tools
   '/tools': 'Tools',
