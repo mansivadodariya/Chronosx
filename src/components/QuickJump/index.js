@@ -122,10 +122,10 @@ const getQuickJumpSections = (t) => [
                 icon: <AiTradeAnalysisIcon />,
             },
             {
-                id: 'strategy-studio',
+                id: 'ai-bot-builder',
                 title: t('nav.strategyStudio', 'AI Bot Builder'),
                 subtitle: t('quickJump.strategyStudioSub', 'Interactive AI strategy and algorithmic bot builder'),
-                href: '/strategy-studio',
+                href: '/ai-bot-builder',
                 keywords: ['bot', 'builder', 'strategy', 'studio', 'algo', 'automation', 'create', 'prompt'],
                 icon: <BotBuilderIcon />,
             },

@@ -84,6 +84,61 @@ export default function AiStrategy({ initialTab = 'live' }) {
     const [showPairSelector, setShowPairSelector] = useState(true);
     const [activeCategory, setActiveCategory] = useState('all');
     const [mounted, setMounted] = useState(false);
+    const [strategies, setStrategies] = useState([]);
+
+    useEffect(() => {
+        async function fetchStrategies() {
+            try {
+                const primaryBase = (process.env.NEXT_PUBLIC_BACKEND_URL || 'https://api.thetradermaster.com').replace(/\/+$/, '');
+                let res;
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 4000);
+                    res = await fetch(`${primaryBase}/api/v1/chart/strategies`, {
+                        signal: controller.signal,
+                        headers: { 
+                            'accept': 'application/json',
+                            'ngrok-skip-browser-warning': 'true'
+                        }
+                    });
+                    clearTimeout(timeoutId);
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                } catch (e) {
+                    try {
+                        res = await fetch('/api/v1/chart/strategies');
+                        if (!res.ok) throw new Error('Proxy failed');
+                    } catch (err2) {
+                        res = await fetch('https://api.thetradermaster.com/api/v1/chart/strategies', {
+                            headers: { 
+                                'accept': 'application/json',
+                                'ngrok-skip-browser-warning': 'true'
+                            }
+                        });
+                    }
+                }
+
+                if (!res.ok) throw new Error('Failed to fetch strategies');
+                const data = await res.json();
+                const list = Array.isArray(data) ? data : (data.strategies || data.data || []);
+                const effectiveList = list.length > 0 ? list : [
+                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback Strategy', description: 'Trend Following EMA Pullback' }
+                ];
+                setStrategies(effectiveList);
+                if (!selectedStrategyId && effectiveList.length > 0) {
+                    setSelectedStrategyId(effectiveList[0].id || effectiveList[0].strategy_id);
+                }
+            } catch (err) {
+                const fallbackList = [
+                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback Strategy', description: 'Trend Following EMA Pullback' }
+                ];
+                setStrategies(fallbackList);
+                if (!selectedStrategyId) {
+                    setSelectedStrategyId(fallbackList[0].id);
+                }
+            }
+        }
+        fetchStrategies();
+    }, []);
 
     useEffect(() => {
         setMounted(true);
@@ -548,15 +603,20 @@ export default function AiStrategy({ initialTab = 'live' }) {
                 rightAction={
                     activeTab === 'live' ? (
                         <div className={styles.headerDropdownCorner}>
-                            <StrategyDropdown onSelect={setSelectedStrategyId} />
+                            <StrategyDropdown 
+                                strategies={strategies}
+                                selectedStrategyId={selectedStrategyId}
+                                onSelect={setSelectedStrategyId} 
+                            />
                         </div>
                     ) : null
                 }
             />
 
-            {/* Filter by Category Tabs (All Strategies, Trend) */}
+            {/* Filter by Category / Strategy Tabs */}
             {activeTab === 'live' && (
                 <StrategyCategoryTabs
+                    strategies={strategies}
                     selectedStrategyId={selectedStrategyId}
                     onSelectStrategyId={setSelectedStrategyId}
                     activeCategory={activeCategory}

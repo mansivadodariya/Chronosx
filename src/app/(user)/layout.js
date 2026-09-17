@@ -14,6 +14,7 @@ import { captureUtmParameters } from '@/lib/utm';
 import { getStoredUserId } from '@/lib/authSession';
 import { dashboardApi, neweraApi } from '@/lib/api';
 import { supabase } from '@/lib/supabaseClient';
+import AccessDeniedScreen from '@/components/AccessDeniedScreen';
 import './layout.scss';
 
 const TOOL_ROUTES = [
@@ -37,6 +38,8 @@ const TOOL_ROUTES = [
     '/strategy-signal',
     '/strategy-studio',
     '/ai-strategy-studio',
+    '/ai-bot-builder',
+    '/bot-builder',
 ];
 
 const ROUTE_TAB_MAP = {
@@ -58,6 +61,8 @@ const ROUTE_TAB_MAP = {
     '/ai-strategy-hub': 'AI Trading Signal',
     '/strategy-core': 'AI Trading Signal',
     '/ai-strategy-core': 'AI Trading Signal',
+    '/ai-bot-builder': 'AI Bot Builder',
+    '/bot-builder': 'AI Bot Builder',
     '/strategy-studio': 'AI Bot Builder',
     '/ai-strategy-studio': 'AI Bot Builder',
     '/strategy-hub/live': 'Signal Terminal',
@@ -267,16 +272,6 @@ const layout = ({ children }) => {
             if (
                 !currentTabName ||
                 currentTabName === 'Dashboard' ||
-                currentTabName === 'Tools' ||
-                currentTabName === 'AI Bot Builder' ||
-                currentTabName === 'AI Strategy Builder' ||
-                currentTabName === 'Strategy Studio' ||
-                currentTabName === 'AI Past Trade Analyzer' ||
-                currentTabName === 'AI Trade Advisor' ||
-                currentTabName === 'Economic Calendar' ||
-                currentTabName === 'Forex Calculator' ||
-                currentTabName === 'Market News' ||
-                currentTabName === 'Credit History' ||
                 currentTabName === 'Affiliate' ||
                 currentTabName === 'Profile'
             ) {
@@ -287,21 +282,43 @@ const layout = ({ children }) => {
             try {
                 const { data, error } = await supabase.rpc('get_visible_dashboard_tabs');
                 if (!error && Array.isArray(data)) {
-                    const visibleNames = data.map(t => (t.name || '').toLowerCase());
-                    const currentLower = currentTabName.toLowerCase();
-                    const isAllowed = visibleNames.some(name => {
-                        if (name === currentLower) return true;
-                        if ((currentLower === 'ai bot builder' || currentLower === 'ai strategy builder' || currentLower === 'strategy studio') && (name.includes('bot') || name.includes('strategy') || name.includes('builder') || name.includes('studio') || name.includes('backtest') || name.includes('ai strategy') || name.includes('strategy hub'))) return true;
-                        if ((currentLower === 'ai past trade analyzer' || currentLower === 'ai trade advisor') && (name.includes('past trade') || name.includes('trade advisor') || name.includes('trade audit') || name.includes('trade analysis') || name.includes('trade-audit') || name.includes('trade-analysis') || name.includes('ai trade'))) return true;
-                        if (currentLower === 'signal terminal' && (name.includes('signal terminal') || name.includes('live market scanner') || name.includes('live-scanner') || name.includes('live analysis') || name.includes('strategy hub'))) return true;
-                        if ((currentLower === 'ai trading signal' || currentLower === 'ai strategy core' || currentLower === 'trading signal') && (name.includes('trading signal') || name.includes('ai strategy core') || name.includes('strategy core') || name.includes('strategy hub') || name.includes('strategy-hub') || name.includes('ai strategy') || name.includes('strategy'))) return true;
-                        if (currentLower === 'strategy signal' && (name.includes('strategy signal') || name.includes('strategy playbooks') || name.includes('strategy hub') || name.includes('ai strategy') || name.includes('strategy'))) return true;
-                        if (currentLower === 'ai chart scanner' && (name.includes('chart scanner') || name.includes('market snapshot') || name.includes('chart-scanner') || name.includes('ai trade'))) return true;
-                        if (currentLower === 'ai market assistant' && (name.includes('market assistant') || name.includes('trading advisor') || name.includes('ai chat') || name.includes('ai assistant'))) return true;
-                        if (currentLower === 'subscription plans' && name.includes('subscription plans')) return true;
-                        if ((currentLower === 'broker' || currentLower === 'brokers' || currentLower === 'associated broker' || currentLower === 'associated brokers') && (name.includes('broker') || name.includes('associated'))) return true;
-                        return false;
-                    });
+                    const visibleNames = new Set(data.map(t => (t.name || '').toLowerCase().trim()));
+                    const currentLower = (currentTabName || '').toLowerCase().trim();
+
+                    let isAllowed = false;
+
+                    if (currentLower === 'ai bot builder' || currentLower === 'ai strategy builder' || currentLower === 'strategy studio') {
+                        isAllowed = visibleNames.has('ai bot builder') || visibleNames.has('bot builder') || visibleNames.has('custom bot builder');
+                    } else if (currentLower === 'ai chart scanner') {
+                        isAllowed = visibleNames.has('ai chart scanner') || visibleNames.has('chart scanner');
+                    } else if (currentLower === 'ai past trade analyzer' || currentLower === 'ai trade advisor' || currentLower === 'ai trade audit') {
+                        isAllowed = visibleNames.has('ai trade audit') || visibleNames.has('ai past trade analyzer') || visibleNames.has('ai trade advisor') || visibleNames.has('trade audit') || visibleNames.has('trade advisor') || visibleNames.has('past trade analyzer');
+                    } else if (currentLower === 'ai market assistant') {
+                        isAllowed = visibleNames.has('ai market assistant') || visibleNames.has('market assistant');
+                    } else if (currentLower === 'signal terminal') {
+                        isAllowed = visibleNames.has('signal terminal') || visibleNames.has('live market scanner') || visibleNames.has('strategy hub') || visibleNames.has('ai trading signal');
+                    } else if (currentLower === 'strategy signal') {
+                        isAllowed = visibleNames.has('strategy signal') || visibleNames.has('strategy playbooks') || visibleNames.has('strategy hub') || visibleNames.has('ai trading signal');
+                    } else if (currentLower === 'ai trading signal' || currentLower === 'ai strategy core') {
+                        isAllowed = visibleNames.has('strategy hub') || visibleNames.has('ai trading signal') || visibleNames.has('trading signal') || visibleNames.has('ai strategy core');
+                    } else if (currentLower === 'economic calendar') {
+                        isAllowed = visibleNames.has('economic calendar') || visibleNames.has('calendar');
+                    } else if (currentLower === 'forex calculator') {
+                        isAllowed = visibleNames.has('forex calculator') || visibleNames.has('calculator');
+                    } else if (currentLower === 'market news') {
+                        isAllowed = visibleNames.has('market news') || visibleNames.has('news');
+                    } else if (currentLower === 'tools') {
+                        isAllowed = visibleNames.has('tools') || visibleNames.has('economic calendar') || visibleNames.has('forex calculator') || visibleNames.has('market news') || visibleNames.has('calendar') || visibleNames.has('calculator') || visibleNames.has('news');
+                    } else if (currentLower === 'credit history') {
+                        isAllowed = visibleNames.has('credit history') || visibleNames.has('credit_history');
+                    } else if (currentLower === 'subscription plans') {
+                        isAllowed = visibleNames.has('subscription plans') || visibleNames.has('plans') || visibleNames.has('subscription_plans');
+                    } else if (currentLower === 'broker' || currentLower === 'brokers' || currentLower === 'associated broker' || currentLower === 'associated brokers') {
+                        isAllowed = visibleNames.has('broker') || visibleNames.has('brokers') || visibleNames.has('associated brokers') || visibleNames.has('associated broker');
+                    } else {
+                        isAllowed = visibleNames.has(currentLower);
+                    }
+
                     setIsTabAllowed(isAllowed);
                 }
             } catch (e) {
@@ -317,14 +334,7 @@ const layout = ({ children }) => {
         return (
             <AuthGuard>
                 <ThemeProvider>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '80vh', textAlign: 'center', padding: '20px' }}>
-                        <h1 style={{ fontSize: '5rem', marginBottom: '0.5rem', color: '#ef4444', fontWeight: '800' }}>404</h1>
-                        <h2 style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>Tab Disabled / Access Denied</h2>
-                        <p style={{ color: '#9ca3af', marginBottom: '1.5rem' }}>This page has been turned off by administrator.</p>
-                        <a href="/dashboard" style={{ padding: '10px 24px', background: '#2563eb', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: '600' }}>
-                            Back to Dashboard
-                        </a>
-                    </div>
+                    <AccessDeniedScreen />
                 </ThemeProvider>
             </AuthGuard>
         );

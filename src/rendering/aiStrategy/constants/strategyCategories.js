@@ -1,6 +1,6 @@
 export const STRATEGY_CATEGORIES = [
     { id: 'all', label: 'All Strategies' },
-    { id: 'trend', label: 'Trend' }
+    { id: 'ema_pullback', label: 'EMA Pullback' }
 ];
 
 export const PRESET_STRATEGIES = [
@@ -8,7 +8,7 @@ export const PRESET_STRATEGIES = [
         id: '3e8d2b78-0e86-4fdf-9759-338276db1742', 
         name: 'EMA Pullback Strategy', 
         description: 'Trend Following EMA Pullback',
-        category: 'trend'
+        category: 'ema_pullback'
     },
     { 
         id: 'strat-breakout-master', 

@@ -19,6 +19,8 @@ const ROUTE_TITLE_MAP = {
   '/ai-trade-audit': 'nav.tradeAudit|AI Past Trade Analyzer',
   '/trade-advisor': 'nav.tradeAudit|AI Past Trade Analyzer',
   '/ai-trade-advisor': 'nav.tradeAudit|AI Past Trade Analyzer',
+  '/ai-bot-builder': 'nav.strategyStudio|AI Bot Builder',
+  '/bot-builder': 'nav.strategyStudio|AI Bot Builder',
   '/strategy-studio': 'nav.strategyStudio|AI Bot Builder',
   '/ai-strategy-studio': 'nav.strategyStudio|AI Bot Builder',
   '/market-assistant': 'nav.marketAssistant|AI Market Assistant',

@@ -21,6 +21,8 @@ export const ROUTE_TAB_MAP = {
   '/ai-trade-advisor': 'AI Past Trade Analyzer',
 
   // AI Bot Builder
+  '/ai-bot-builder': 'AI Bot Builder',
+  '/bot-builder': 'AI Bot Builder',
   '/strategy-studio': 'AI Bot Builder',
   '/ai-strategy-studio': 'AI Bot Builder',
 
