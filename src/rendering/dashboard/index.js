@@ -46,18 +46,35 @@ export default function Dashboard() {
         return () => window.removeEventListener('user:updated', syncUser);
     }, [getGreeting]);
 
+    const isInitialMount = React.useRef(true);
+
     // Single unified API fetch for user dashboard
-    const fetchDashboardData = useCallback(async (uid, tf = '7D') => {
+    const fetchDashboardData = useCallback(async (uid, tf = '7D', isInitial = false) => {
         if (!uid) {
             setLoading(false);
             return;
         }
-        setLoading(true);
+        if (isInitial) {
+            setLoading(true);
+        }
         try {
             const res = await dashboardApi.getStats(uid, tf);
             const payload = res?.data ?? res ?? null;
             if (payload) {
-                setStats(payload);
+                setStats((prev) => {
+                    if (!prev) return payload;
+                    return {
+                        ...prev,
+                        ...payload,
+                        // Side credit numbers & lifetime history counts must stay constant across graph timeframe changes
+                        available_credits: payload.available_credits ?? prev.available_credits,
+                        total_credits: payload.total_credits ?? prev.total_credits,
+                        total_analysis_history: prev.total_analysis_history ?? payload.total_analysis_history,
+                        total_chat_history: prev.total_chat_history ?? payload.total_chat_history,
+                        daily_usage: payload.daily_usage ?? prev.daily_usage,
+                        total_credits_used: payload.total_credits_used ?? prev.total_credits_used,
+                    };
+                });
             }
         } catch (err) {
             console.warn('Dashboard stats fetch error:', err);
@@ -67,14 +84,22 @@ export default function Dashboard() {
     }, []);
 
     useEffect(() => {
-        fetchDashboardData(userId, chartTimeframe);
+        if (!userId) return;
+        const isFirst = isInitialMount.current;
+        if (isFirst) {
+            isInitialMount.current = false;
+        }
+        fetchDashboardData(userId, chartTimeframe, isFirst);
     }, [userId, chartTimeframe, fetchDashboardData]);
 
     // Live update when credits are updated anywhere across the app
     useEffect(() => {
         if (!userId) return;
-        const refetchStats = () => {
-            fetchDashboardData(userId, chartTimeframe);
+        const refetchStats = (e) => {
+            if (e?.detail?.available_credits !== undefined) {
+                setStats(prev => prev ? { ...prev, available_credits: e.detail.available_credits } : prev);
+            }
+            fetchDashboardData(userId, chartTimeframe, false);
         };
         window.addEventListener(CREDITS_UPDATED_EVENT, refetchStats);
         return () => window.removeEventListener(CREDITS_UPDATED_EVENT, refetchStats);

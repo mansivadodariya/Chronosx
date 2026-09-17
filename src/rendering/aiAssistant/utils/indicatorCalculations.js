@@ -84,7 +84,7 @@ export function getDefaultSymbolBasePrice(symbolStr = 'XAUUSD', fallbackPrice = 
         return Number(fallbackPrice);
     }
     const s = (symbolStr || '').replace('/', '').toUpperCase();
-    if (s.includes('XAU') || s.includes('GOLD')) return 4457.58;
+    if (s.includes('XAU') || s.includes('GOLD')) return 4308.18;
     if (s.includes('BTC')) return 88500.00;
     if (s.includes('ETH')) return 2650.00;
     if (s.includes('JPY')) return 154.500;

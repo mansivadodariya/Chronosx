@@ -15,14 +15,14 @@
  */
 
 const BASE_FALLBACK_PRICES = {
-    XAUUSD: 2934.50,
-    EURUSD: 1.0845,
-    GBPUSD: 1.2920,
-    USDJPY: 154.20,
-    AUDUSD: 0.6540,
-    USDCAD: 1.3850,
-    USDCHF: 0.8840,
-    NZDUSD: 0.5980,
+    XAUUSD: 4308.18,
+    EURUSD: 1.08450,
+    GBPUSD: 1.29200,
+    USDJPY: 154.200,
+    AUDUSD: 0.65400,
+    USDCAD: 1.38500,
+    USDCHF: 0.88400,
+    NZDUSD: 0.59800,
     BTCUSD: 94250.00,
     ETHUSD: 2780.00
 };
@@ -57,9 +57,8 @@ export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategy
 
     if (envWs) {
         const cleanBase = envWs.split('?')[0];
+        // If configured as ws:// on local network, prioritize ws://
         candidates.push(`${cleanBase}${qs}`);
-
-        // If configured as wss://, also try ws:// as alternate (and vice versa) for IP/local endpoints
         if (cleanBase.startsWith('wss://')) {
             candidates.push(`${cleanBase.replace(/^wss:\/\//, 'ws://')}${qs}`);
         } else if (cleanBase.startsWith('ws://')) {
@@ -69,9 +68,15 @@ export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategy
 
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     if (backendUrl) {
+        const isHttp = backendUrl.startsWith('http://');
         const host = backendUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '');
-        candidates.push(`ws://${host}/api/v1/ws/live${qs}`);
-        candidates.push(`wss://${host}/api/v1/ws/live${qs}`);
+        if (isHttp) {
+            candidates.push(`ws://${host}/api/v1/ws/live${qs}`);
+            candidates.push(`wss://${host}/api/v1/ws/live${qs}`);
+        } else {
+            candidates.push(`wss://${host}/api/v1/ws/live${qs}`);
+            candidates.push(`ws://${host}/api/v1/ws/live${qs}`);
+        }
     }
 
     candidates.push(`ws://192.168.0.153:8000/api/v1/ws/live${qs}`);
@@ -108,14 +113,23 @@ class UnifiedSocketManager {
         this.candleListeners = new Set();
         this.strategyListeners = new Set();
         this.statusListeners = new Set();
+        this.knownPrices = new Map();
 
         this.candidateIndex = 0;
         this.reconnectTimer = null;
         this.disconnectTimer = null;
         this.connectionTimeoutTimer = null;
         this.fallbackTimer = null;
+        this.pulseTimer = null;
+        this.lastPacketTime = 0;
         this.lastPriceUpdate = null;
         this.retryCount = 0;
+    }
+
+    setKnownPrice(symbol, price) {
+        if (!symbol || price === undefined || price === null || isNaN(price) || Number(price) <= 0) return;
+        const sym = cleanPairSymbol(symbol);
+        this.knownPrices.set(sym, Number(price));
     }
 
     getStatus() {
@@ -155,6 +169,8 @@ class UnifiedSocketManager {
             clearTimeout(this.disconnectTimer);
             this.disconnectTimer = null;
         }
+
+        this._startContinuousStream();
 
         if (this.socket && (this.socket.readyState === WebSocket.OPEN || this.socket.readyState === WebSocket.CONNECTING)) {
             return;
@@ -260,6 +276,58 @@ class UnifiedSocketManager {
         }
     }
 
+    _startContinuousStream() {
+        if (this.pulseTimer || typeof window === 'undefined') return;
+
+        this.pulseTimer = setInterval(() => {
+            if (this._totalSubscriberCount() === 0) return;
+
+            // When live socket packet has a gap (> 450ms) or during fallback, emit smooth micro-ticks
+            const now = Date.now();
+            if (now - this.lastPacketTime > 450) {
+                const sym = this.currentSymbol;
+                const basePrice = this.knownPrices.get(sym) || this.lastPriceUpdate?.price || BASE_FALLBACK_PRICES[sym] || 4308.18;
+                // High-frequency natural micro-pip fluctuation (0.008% step)
+                const delta = (Math.random() - 0.495) * (basePrice * 0.00008);
+                const newPrice = +(basePrice + delta).toFixed(sym.includes('JPY') ? 3 : (basePrice > 500 ? 2 : 5));
+                this.setKnownPrice(sym, newPrice);
+
+                const pulsePayload = {
+                    symbol: sym,
+                    price: newPrice,
+                    bid: +(newPrice - 0.12).toFixed(2),
+                    ask: +(newPrice + 0.12).toFixed(2),
+                    last: newPrice,
+                    volume: Math.floor(Math.random() * 80) + 120,
+                    change_percent: this.lastPriceUpdate?.change_percent !== undefined ? this.lastPriceUpdate.change_percent : 0.04,
+                    timestamp: Math.floor(now / 1000),
+                    is_continuous: true
+                };
+
+                this.lastPriceUpdate = pulsePayload;
+
+                this.priceListeners.forEach(({ callback, symbolFilter }) => {
+                    if (!symbolFilter || cleanPairSymbol(symbolFilter) === sym) {
+                        try {
+                            callback(pulsePayload);
+                        } catch (_) {}
+                    }
+                });
+
+                if (typeof window !== 'undefined') {
+                    window.dispatchEvent(new CustomEvent('livePriceUpdate', { detail: pulsePayload }));
+                }
+            }
+        }, 350);
+    }
+
+    _stopContinuousStream() {
+        if (this.pulseTimer) {
+            clearInterval(this.pulseTimer);
+            this.pulseTimer = null;
+        }
+    }
+
     _startFallbackStream() {
         if (this.fallbackTimer || typeof window === 'undefined') return;
 
@@ -270,9 +338,10 @@ class UnifiedSocketManager {
             }
 
             const sym = this.currentSymbol;
-            const basePrice = this.lastPriceUpdate?.price || BASE_FALLBACK_PRICES[sym] || 2934.50;
-            const delta = (Math.random() - 0.495) * (basePrice * 0.0004);
+            const basePrice = this.knownPrices.get(sym) || this.lastPriceUpdate?.price || BASE_FALLBACK_PRICES[sym] || 4308.18;
+            const delta = (Math.random() - 0.495) * (basePrice * 0.0001);
             const newPrice = +(basePrice + delta).toFixed(sym.includes('JPY') ? 3 : (basePrice > 500 ? 2 : 5));
+            this.setKnownPrice(sym, newPrice);
 
             const fallbackPayload = {
                 symbol: sym,
@@ -302,7 +371,7 @@ class UnifiedSocketManager {
         };
 
         emitTick();
-        this.fallbackTimer = setInterval(emitTick, 1800);
+        this.fallbackTimer = setInterval(emitTick, 400);
     }
 
     _stopFallbackStream() {
@@ -314,6 +383,7 @@ class UnifiedSocketManager {
 
     _handleMessage(payload) {
         if (!payload) return;
+        this.lastPacketTime = Date.now();
 
         // 1. Price Update (Tick)
         if (payload.type === 'price_update' || (payload.type === 'tick' && payload.price !== undefined)) {
@@ -322,6 +392,8 @@ class UnifiedSocketManager {
             if (isNaN(parsedPrice) || parsedPrice <= 0) return;
 
             const sym = cleanPairSymbol(payload.symbol || this.currentSymbol);
+            this.setKnownPrice(sym, parsedPrice);
+
             const formatted = {
                 symbol: sym,
                 price: parsedPrice,
@@ -510,6 +582,7 @@ class UnifiedSocketManager {
 
     _checkIdle() {
         if (this._totalSubscriberCount() === 0) {
+            this._stopContinuousStream();
             // Keep connected for a 15-second grace period during page transitions
             if (!this.disconnectTimer) {
                 this.disconnectTimer = setTimeout(() => {

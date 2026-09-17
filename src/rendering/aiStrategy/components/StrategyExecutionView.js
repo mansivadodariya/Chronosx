@@ -19,9 +19,21 @@ const ensureDollarPrice = (val, shortPair = '') => {
     return `$${s}`;
 };
 
-export default function StrategyExecutionView() {
+export default function StrategyExecutionView({ selectedStrategyId, strategies = [] }) {
     const router = useRouter();
     const { setupsList, wsStatus, loading } = useStrategyStream();
+
+    const selectedStrategy = Array.isArray(strategies) ? strategies.find(s => (s.id || s.strategy_id) === selectedStrategyId) : null;
+    const selectedName = (selectedStrategy?.name || selectedStrategy?.title || '').toLowerCase();
+
+    const displayedSetups = (selectedName && setupsList.length > 0)
+        ? setupsList.filter(item => {
+            const itemStrat = (item.strategy_name || '').toLowerCase();
+            return itemStrat.includes(selectedName) || selectedName.includes(itemStrat);
+        })
+        : setupsList;
+
+    const finalSetups = displayedSetups.length > 0 ? displayedSetups : setupsList;
 
     const handleViewDetail = (item) => {
         if (typeof window !== 'undefined') {
@@ -50,10 +62,10 @@ export default function StrategyExecutionView() {
 
             {/* Dark Glassmorphism Grid of Strategy Cards (2 Columns per Row) */}
             <div className={styles.pairsGrid}>
-                {loading && setupsList.length === 0 ? (
+                {loading && finalSetups.length === 0 ? (
                     <StrategyGridSkeleton count={4} />
                 ) : (
-                    setupsList.map((item) => {
+                    finalSetups.map((item) => {
                     const meta = item.meta || { fullName: item.display_name || item.symbol, short: item.symbol, market: 'Forex' };
                     const sig = item.signal || {};
                     const isBuy = (sig.direction || 'BUY').toUpperCase() === 'BUY';

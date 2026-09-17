@@ -20,6 +20,7 @@ import {
   LiveAnalysisIcon,
   StrategyIcon,
   BotBuilderIcon,
+  PredefinedStrategyIcon,
   SubCalendarIcon,
   SubCalculatorIcon,
   EducationIcon,
@@ -57,8 +58,9 @@ const getNavSections = (t) => [
         href: "/trading-signal",
         icon: AiStrategyIcon,
         subItems: [
-          { label: t('nav.signalTerminal', 'Signal Terminal'), href: "/signal-terminal", icon: LiveAnalysisIcon },
           { label: t('nav.strategySignal', 'Strategy Signal'), href: "/strategy-signal", icon: StrategyIcon },
+          { label: t('nav.signalTerminal', 'Signal Terminal'), href: "/signal-terminal", icon: LiveAnalysisIcon },
+          { label: t('nav.predefinedStrategies', 'Predefined Strategies'), href: "/predefined-strategies", icon: PredefinedStrategyIcon },
         ]
       },
       { label: t('nav.strategyStudio', 'AI Bot Builder'), href: "/ai-bot-builder", icon: BotBuilderIcon },
@@ -431,6 +433,7 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
     '/strategy-hub/live': 'Signal Terminal',
     '/strategy-hub/strategy': 'Strategy Signal',
     '/strategy-signal': 'Strategy Signal',
+    '/predefined-strategies': 'Predefined Strategies',
     '/live-scanner': 'Signal Terminal',
     '/live-market-scanner': 'Signal Terminal',
     '/signal-terminal': 'Signal Terminal',
@@ -460,64 +463,25 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
       const lowerLabel = (tabLabel || '').toLowerCase().trim();
       const mapped = (ROUTE_TAB_MAP[routeHref] || '').toLowerCase().trim();
 
-      // Affiliate & Edufins external link are always accessible
-      if (lowerLabel.includes('affiliate') || mapped === 'affiliate' || lowerLabel.includes('education') || lowerLabel.includes('edufins') || routeHref?.includes('edufins')) return true;
+      // Affiliate & Education (Edufins external link) & Settings/Profile & Dashboard are always accessible
+      if (lowerLabel === 'affiliate' || mapped === 'affiliate') return true;
+      if (lowerLabel.includes('education') || lowerLabel.includes('edufins') || routeHref?.includes('edufins')) return true;
       if (lowerLabel === 'profile' || lowerLabel === 'settings' || mapped === 'profile') return true;
       if (lowerLabel === 'dashboard' || mapped === 'dashboard') return true;
 
-      // Exact checks per feature
-      if (mapped === 'ai chart scanner' || lowerLabel.includes('chart scanner')) {
-        return visibleTabNames.has('ai chart scanner') || visibleTabNames.has('chart scanner');
-      }
-      if (mapped === 'ai past trade analyzer' || lowerLabel.includes('past trade') || lowerLabel.includes('trade audit') || lowerLabel.includes('trade advisor')) {
-        return visibleTabNames.has('ai trade audit') || visibleTabNames.has('ai past trade analyzer') || visibleTabNames.has('ai trade advisor') || visibleTabNames.has('trade audit') || visibleTabNames.has('trade advisor') || visibleTabNames.has('past trade analyzer');
-      }
-      if (mapped === 'ai bot builder' || lowerLabel.includes('bot builder') || lowerLabel.includes('strategy studio')) {
-        return visibleTabNames.has('ai bot builder') || visibleTabNames.has('bot builder') || visibleTabNames.has('custom bot builder');
-      }
-      if (mapped === 'ai market assistant' || lowerLabel.includes('market assistant')) {
-        return visibleTabNames.has('ai market assistant') || visibleTabNames.has('market assistant');
-      }
-      if (mapped === 'signal terminal' || lowerLabel.includes('signal terminal') || lowerLabel.includes('live scanner')) {
-        return visibleTabNames.has('signal terminal') || visibleTabNames.has('live market scanner');
-      }
-      if (mapped === 'strategy signal' || lowerLabel.includes('strategy signal')) {
-        return visibleTabNames.has('strategy signal') || visibleTabNames.has('strategy playbooks') || visibleTabNames.has('strategy hub') || visibleTabNames.has('ai trading signal');
-      }
-      if (mapped === 'ai trading signal' || lowerLabel.includes('trading signal') || lowerLabel.includes('strategy hub')) {
-        return visibleTabNames.has('strategy hub') || visibleTabNames.has('ai trading signal') || visibleTabNames.has('trading signal') || visibleTabNames.has('ai strategy core');
-      }
-      if (mapped === 'economic calendar' || lowerLabel.includes('economic calendar') || lowerLabel === 'calendar') {
-        return visibleTabNames.has('economic calendar') || visibleTabNames.has('calendar');
-      }
-      if (mapped === 'forex calculator' || lowerLabel.includes('forex calculator') || lowerLabel === 'calculator') {
-        return visibleTabNames.has('forex calculator') || visibleTabNames.has('calculator');
-      }
-      if (mapped === 'market news' || lowerLabel.includes('market news') || lowerLabel === 'news') {
-        return visibleTabNames.has('market news') || visibleTabNames.has('news');
-      }
-      if (mapped === 'tools' || lowerLabel === 'tools') {
-        return visibleTabNames.has('tools') || visibleTabNames.has('economic calendar') || visibleTabNames.has('forex calculator') || visibleTabNames.has('market news') || visibleTabNames.has('calendar') || visibleTabNames.has('calculator') || visibleTabNames.has('news');
-      }
-      if (mapped === 'subscription plans' || lowerLabel.includes('subscription') || lowerLabel.includes('plans')) {
-        return visibleTabNames.has('subscription plans') || visibleTabNames.has('plans') || visibleTabNames.has('subscription_plans');
-      }
-      if (mapped === 'associated brokers' || lowerLabel.includes('broker')) {
-        return visibleTabNames.has('broker') || visibleTabNames.has('brokers') || visibleTabNames.has('associated brokers') || visibleTabNames.has('associated broker');
-      }
-      if (mapped === 'credit history' || lowerLabel.includes('credit')) {
-        return visibleTabNames.has('credit history') || visibleTabNames.has('credit_history');
-      }
-
-      return visibleTabNames.has(lowerLabel) || visibleTabNames.has(mapped);
+      // Exact 1-to-1 check against standardized dashboard_tabs permissions
+      return visibleTabNames.has(mapped) || visibleTabNames.has(lowerLabel);
     };
 
     return rawSections.map(section => {
       const filteredItems = section.items.map(item => {
         const parentTabName = (ROUTE_TAB_MAP[item.href] || item.label || '').toLowerCase();
 
-        // If item has sub-items (Tools, AI Strategy), filter sub-items individually
+        // If item has sub-items (Tools, AI Trading Signal), filter sub-items individually
         if (item.subItems && item.subItems.length > 0) {
+          const isParentGroupEnabled = checkTabVisible(item.label, item.href);
+          if (!isParentGroupEnabled) return null;
+
           const filteredSubItems = item.subItems.filter(sub => checkTabVisible(sub.label, sub.href));
 
           if (filteredSubItems.length > 0) {

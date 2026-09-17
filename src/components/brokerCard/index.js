@@ -44,7 +44,7 @@ const ShieldHighlightIcon = () => (
     </svg>
 );
 
-export default function BrokerCard({ broker, detailHref, showHighlights = true }) {
+export default function BrokerCard({ broker, detailHref, showHighlights = true, showDescription = true }) {
     const { t, tDynamic, language } = useLanguage();
     const { theme } = useTheme();
     const isLight = theme === 'light';
@@ -192,7 +192,7 @@ export default function BrokerCard({ broker, detailHref, showHighlights = true }
             <div className={styles.cardBody}>
                 {name && <h3 className={styles.cardTitle}>{name}</h3>}
                 {subtitle && <span className={styles.subtitleTag}>{subtitle}</span>}
-                {description && <p className={styles.cardDescription}>{description}</p>}
+                {showDescription && description && <p className={styles.cardDescription}>{description}</p>}
             </div>
 
             {/* Mini Highlights / Features Grid (Strictly 3 items) */}

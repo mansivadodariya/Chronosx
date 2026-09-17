@@ -139,22 +139,22 @@ export default function DashboardToolsGrid() {
         if (!visibleTabNames || visibleTabNames.size === 0) return tools;
         return tools.filter(tool => {
             if (tool.id === 'strategyStudio' || tool.href === '/ai-bot-builder') {
-                return visibleTabNames.has('ai bot builder') || visibleTabNames.has('bot builder') || visibleTabNames.has('custom bot builder');
+                return visibleTabNames.has('ai bot builder');
             }
             if (tool.id === 'terminal' || tool.href === '/signal-terminal') {
-                return visibleTabNames.has('signal terminal') || visibleTabNames.has('live market scanner');
+                return visibleTabNames.has('signal terminal');
             }
             if (tool.id === 'strategySignal' || tool.href === '/strategy-signal') {
-                return visibleTabNames.has('strategy signal') || visibleTabNames.has('strategy playbooks') || visibleTabNames.has('strategy hub') || visibleTabNames.has('ai trading signal');
+                return visibleTabNames.has('strategy signal');
             }
             if (tool.id === 'advisor' || tool.href === '/trade-advisor') {
-                return visibleTabNames.has('ai trade audit') || visibleTabNames.has('ai past trade analyzer') || visibleTabNames.has('ai trade advisor') || visibleTabNames.has('trade audit') || visibleTabNames.has('trade advisor');
+                return visibleTabNames.has('ai past trade analyzer');
             }
             if (tool.id === 'calculators' || tool.href === '/calculator') {
-                return visibleTabNames.has('forex calculator') || visibleTabNames.has('calculator');
+                return visibleTabNames.has('forex calculator');
             }
             if (tool.id === 'calendar' || tool.href === '/calendar') {
-                return visibleTabNames.has('economic calendar') || visibleTabNames.has('calendar');
+                return visibleTabNames.has('economic calendar');
             }
             return true;
         });
