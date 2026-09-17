@@ -1,9 +1,9 @@
 $primary: #18C98B;
 $primaryDark: #10B981;
 $bgDark: #040605;
-$cardDark: #040D09;
-$border: rgba(24, 201, 139, 0.35);
-$borderSubtle: rgba(24, 201, 139, 0.18);
+$cardDark: #0C0E0D;
+$border: transparent;
+$borderSubtle: rgba(255, 255, 255, 0.04);
 $text: #FFFFFF;
 $textMuted: rgba(255, 255, 255, 0.65);
 $amber: #F59E0B;
@@ -14,51 +14,65 @@ $danger: #F87171;
 
     /* Tables */
     .tableWrapperCard {
-        background: #040D09;
-        border: 1px solid $border;
+        background: #0B0E0D;
+        border: none;
         border-radius: 18px;
-        padding: 24px;
+        padding: 28px 30px;
+        margin-top: 4px;
         display: flex;
         flex-direction: column;
-        gap: 16px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        gap: 24px;
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+
+        @include respond-to('sm') {
+            padding: 20px 16px;
+            gap: 18px;
+        }
 
         .tableToolbar {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 16px;
+            padding-bottom: 4px;
 
             .tableTitleGroup {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+
                 h3 {
                     color: #FFFFFF;
-                    font-size: 18px;
+                    font-size: 19px;
                     font-weight: 700;
                     margin: 0;
                     font-family: "Euclid-Bold", sans-serif;
+                    letter-spacing: -0.2px;
                 }
 
                 p {
                     color: rgba(255, 255, 255, 0.6);
-                    font-size: 13px;
+                    font-size: 12.8px;
                     margin: 0;
+                    line-height: 1.45;
                 }
             }
 
             .searchBar {
                 input {
-                    background: #0D0E13;
-                    border: 1px solid $borderSubtle;
+                    background: #060807;
+                    border: none;
                     border-radius: 9999px;
-                    padding: 8px 18px;
+                    padding: 9px 20px;
                     color: #FFF;
                     font-size: 13px;
                     outline: none;
                     width: 260px;
+                    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
 
                     &:focus {
-                        border-color: #18C98B;
+                        box-shadow: 0 0 0 1px rgba(24, 201, 139, 0.5), inset 0 1px 3px rgba(0, 0, 0, 0.5);
                     }
                 }
             }
@@ -67,14 +81,15 @@ $danger: #F87171;
                 display: inline-flex;
                 align-items: center;
                 gap: 8px;
-                background: rgba(24, 201, 139, 0.15);
-                border: 1px solid rgba(24, 201, 139, 0.45);
+                background: rgba(24, 201, 139, 0.12);
+                border: none;
                 border-radius: 9999px;
-                padding: 8px 18px;
+                padding: 9px 20px;
                 color: #18C98B;
                 font-size: 13px;
                 font-weight: 700;
                 cursor: pointer;
+                transition: all 0.2s ease;
 
                 &:hover {
                     background: #18C98B;
@@ -94,19 +109,19 @@ $danger: #F87171;
 
                 th {
                     color: rgba(255, 255, 255, 0.6);
-                    font-size: 12px;
+                    font-size: 11.5px;
                     font-weight: 700;
                     text-transform: uppercase;
-                    letter-spacing: 0.5px;
-                    padding: 12px 16px;
-                    border-bottom: 1px solid rgba(24, 201, 139, 0.2);
+                    letter-spacing: 0.6px;
+                    padding: 14px 18px;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
                 }
 
                 td {
                     color: rgba(255, 255, 255, 0.85);
                     font-size: 13px;
-                    padding: 14px 16px;
-                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                    padding: 16px 18px;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 
                     .timeSub {
                         color: rgba(255, 255, 255, 0.45);

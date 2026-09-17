@@ -1,11 +1,20 @@
 @use '../../../scss/main.scss' as *;
 @use '../../../scss/breakpoints/breakpoints.scss' as *;
 
+$primary: #18C98B;
+$primaryDark: #10B981;
+$bgDark: #040605;
+$cardDark: #080B0A;
+$border: rgba(24, 201, 139, 0.22);
+$borderSubtle: rgba(24, 201, 139, 0.14);
+$text: #FFFFFF;
+$textMuted: rgba(255, 255, 255, 0.65);
+
 .brokerDetailPage {
     padding: 0 0 40px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
 
     &.publicContainer {
         max-width: 1200px;
@@ -26,40 +35,58 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #F3F4F6;
-            border: 1px solid #E5E7EB;
-            color: #4B5563;
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-size: 14px;
+            background: rgba(24, 201, 139, 0.08);
+            border: 1px solid rgba(24, 201, 139, 0.25);
+            color: #18C98B;
+            padding: 8px 18px;
+            border-radius: 9999px;
+            font-size: 13px;
             font-weight: 600;
+            font-family: "Euclid-Medium", sans-serif;
             cursor: pointer;
             text-decoration: none;
             transition: all 0.2s ease;
 
+            svg {
+                stroke: #18C98B;
+                transition: transform 0.2s ease;
+            }
+
             &:hover {
-                background: #0B56DB;
-                border-color: #0B56DB;
-                color: #FFFFFF;
+                background: #18C98B;
+                border-color: #18C98B;
+                color: #040605;
                 transform: translateX(-2px);
+
+                svg {
+                    stroke: #040605;
+                }
             }
         }
     }
 
     .heroBanner {
-        background: linear-gradient(135deg, #0e0f12 0%, #072a6b 100%);
+        background:
+            radial-gradient(ellipse 70% 80% at 100% 0%, rgba(24, 201, 139, 0.18) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 80%),
+            radial-gradient(ellipse 50% 60% at 0% 100%, rgba(0, 242, 254, 0.1) 0%, transparent 70%),
+            #070A09;
         border-radius: 20px;
-        padding: 36px 32px;
+        padding: 32px 36px;
         color: #FFFFFF;
-        box-shadow: 0 10px 30px rgba(6, 57, 149, 0.25);
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 10px 32px rgba(0, 0, 0, 0.6), 0 0 24px rgba(24, 201, 139, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(24, 201, 139, 0.28);
+
+        @include respond-to(md) {
+            padding: 24px 20px;
+            border-radius: 16px;
+        }
 
         .logoRow {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             flex-wrap: wrap;
 
             :global([dir="rtl"]) & {
@@ -67,12 +94,16 @@
             }
 
             .logoBox {
-                height: 52px;
-                display: flex;
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                height: 50px;
+                display: inline-flex;
                 align-items: center;
 
                 img {
-                    max-height: 48px;
+                    max-height: 44px;
                     max-width: 180px;
                     object-fit: contain;
                 }
@@ -84,24 +115,25 @@
                 gap: 10px;
 
                 .categoryBadge {
-                    background: rgba(255, 255, 255, 0.15);
-                    border: 1px solid rgba(255, 255, 255, 0.25);
-                    color: #FFFFFF;
+                    background: rgba(24, 201, 139, 0.14);
+                    border: 1px solid rgba(24, 201, 139, 0.35);
+                    color: #18C98B;
                     padding: 4px 14px;
-                    border-radius: 20px;
-                    font-size: 12px;
-                    font-weight: 600;
+                    border-radius: 9999px;
+                    font-size: 11.5px;
+                    font-weight: 700;
+                    font-family: "Euclid-Bold", sans-serif;
                     text-transform: uppercase;
                     letter-spacing: 0.5px;
                 }
 
                 .statusBadge {
-                    background: rgba(16, 185, 129, 0.25);
+                    background: rgba(16, 185, 129, 0.2);
                     color: #34D399;
                     border: 1px solid rgba(16, 185, 129, 0.4);
                     padding: 4px 14px;
-                    border-radius: 20px;
-                    font-size: 12px;
+                    border-radius: 9999px;
+                    font-size: 11.5px;
                     font-weight: 700;
                     text-transform: uppercase;
                     letter-spacing: 0.5px;
@@ -110,29 +142,30 @@
         }
 
         .title {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 700;
-            margin: 0 0 8px 0;
-            line-height: 1.2;
-            font-family: var(--font-plus-jakarta);
+            color: #FFFFFF;
+            margin: 0 0 6px 0;
+            line-height: 1.25;
+            font-family: "Euclid-Bold", sans-serif;
 
             @include respond-to(md) {
-                font-size: 26px;
+                font-size: 24px;
             }
         }
 
         .subtitle {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.85);
+            font-size: 14.5px;
+            color: rgba(255, 255, 255, 0.7);
             margin: 0;
-            font-weight: 500;
+            font-family: "Euclid-Regular", sans-serif;
         }
     }
 
     .contentGrid {
         display: grid;
         grid-template-columns: 1fr 340px;
-        gap: 24px;
+        gap: 20px;
 
         @include respond-to(md) {
             grid-template-columns: 1fr;
@@ -141,27 +174,36 @@
         .mainContent {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
 
             .cardSection {
-                background: #FFFFFF;
-                border: 1px solid #E5E7EB;
+                background:
+                    radial-gradient(ellipse 90% 90% at 100% 0%, rgba(24, 201, 139, 0.08) 0%, rgba(16, 185, 129, 0.02) 50%, transparent 80%),
+                    #080C0A;
+                border: 1px solid rgba(24, 201, 139, 0.18);
                 border-radius: 16px;
-                padding: 28px;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+                padding: 24px 28px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+                @include respond-to(sm) {
+                    padding: 18px 16px;
+                    border-radius: 14px;
+                }
 
                 h3 {
-                    font-size: 18px;
+                    font-size: 16.5px;
                     font-weight: 700;
-                    color: #111827;
-                    margin: 0 0 14px 0;
+                    color: #FFFFFF;
+                    margin: 0 0 12px 0;
+                    font-family: "Euclid-Bold", sans-serif;
                 }
 
                 .description {
-                    font-size: 15px;
-                    line-height: 1.65;
-                    color: #4B5563;
+                    font-size: 14px;
+                    line-height: 1.6;
+                    color: rgba(255, 255, 255, 0.65);
                     margin: 0;
+                    font-family: "Euclid-Regular", sans-serif;
                 }
 
                 .featureList {
@@ -170,25 +212,32 @@
                     margin: 0;
                     display: flex;
                     flex-direction: column;
-                    gap: 12px;
+                    gap: 10px;
 
                     .featureItem {
                         display: flex;
-                        align-items: flex-start;
+                        align-items: center;
                         gap: 12px;
-                        font-size: 15px;
-                        color: #1F2937;
+                        font-size: 14px;
+                        color: #FFFFFF;
                         font-weight: 500;
+                        font-family: "Euclid-Medium", sans-serif;
 
                         .checkIconBox {
                             display: flex;
                             align-items: center;
                             justify-content: center;
-                            background: rgba(16, 185, 129, 0.12);
+                            background: rgba(24, 201, 139, 0.14);
+                            border: 1px solid rgba(24, 201, 139, 0.3);
                             border-radius: 50%;
                             padding: 4px;
-                            margin-top: 2px;
                             flex-shrink: 0;
+                            color: #18C98B;
+
+                            svg {
+                                width: 14px;
+                                height: 14px;
+                            }
                         }
                     }
                 }
@@ -197,44 +246,53 @@
 
         .sidebar {
             .actionCard {
-                background: #FFFFFF;
-                border: 1px solid #E5E7EB;
+                background:
+                    radial-gradient(ellipse 90% 90% at 100% 0%, rgba(24, 201, 139, 0.1) 0%, rgba(16, 185, 129, 0.03) 50%, transparent 80%),
+                    #080C0A;
+                border: 1px solid rgba(24, 201, 139, 0.2);
                 border-radius: 16px;
                 padding: 24px;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
                 display: flex;
                 flex-direction: column;
-                gap: 16px;
+                gap: 14px;
                 position: sticky;
                 top: 24px;
 
                 h4 {
-                    font-size: 17px;
+                    font-size: 16px;
                     font-weight: 700;
-                    color: #111827;
+                    color: #FFFFFF;
                     margin: 0;
+                    font-family: "Euclid-Bold", sans-serif;
                 }
 
                 p {
-                    font-size: 14px;
-                    color: #6B7280;
+                    font-size: 13px;
+                    color: rgba(255, 255, 255, 0.6);
                     line-height: 1.5;
                     margin: 0;
+                    font-family: "Euclid-Regular", sans-serif;
                 }
 
                 .urlBox {
                     display: flex;
                     align-items: center;
                     gap: 10px;
-                    background: #F8FAFC;
-                    border: 1px solid #E2E8F0;
+                    background: #040605;
+                    border: 1px solid rgba(24, 201, 139, 0.22);
                     padding: 10px 14px;
                     border-radius: 10px;
-                    font-size: 13px;
-                    color: #0B56DB;
+                    font-size: 12.5px;
+                    color: #18C98B;
                     font-weight: 600;
                     word-break: break-all;
                     font-family: monospace;
+
+                    svg {
+                        stroke: #18C98B;
+                        flex-shrink: 0;
+                    }
 
                     :global([dir="rtl"]) & {
                         direction: ltr;
@@ -247,18 +305,21 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    gap: 10px;
-                    padding: 13px 24px;
+                    gap: 8px;
+                    padding: 12px 22px;
                     background: #18C98B;
                     color: #040605;
+                    border: 1px solid #18C98B;
                     border-radius: 9999px;
-                    font-size: 15px;
+                    font-size: 14px;
                     font-weight: 700;
+                    font-family: "Euclid-Bold", sans-serif;
                     text-decoration: none;
                     transition: all 0.2s ease;
                     box-shadow: 0 4px 14px rgba(24, 201, 139, 0.3);
 
                     svg {
+                        stroke: #040605;
                         :global([dir="rtl"]) & {
                             transform: scaleX(-1);
                         }
@@ -266,25 +327,9 @@
 
                     &:hover {
                         background: #15b77e;
+                        border-color: #15b77e;
                         transform: translateY(-2px);
-                        box-shadow: 0 6px 18px rgba(24, 201, 139, 0.45);
-                    }
-                }
-
-                .syncBtn {
-                    padding: 12px 24px;
-                    background: #0E1210;
-                    border: 1px solid rgba(24, 201, 139, 0.3);
-                    color: #18C98B;
-                    border-radius: 9999px;
-                    font-size: 14px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: all 0.2s ease;
-
-                    &:hover {
-                        background: rgba(24, 201, 139, 0.15);
-                        border-color: #18C98B;
+                        box-shadow: 0 6px 20px rgba(24, 201, 139, 0.45);
                     }
                 }
             }
@@ -295,15 +340,19 @@
 .notFound {
     padding: 60px 20px;
     text-align: center;
+    background: #080C0A;
+    border: 1px solid rgba(24, 201, 139, 0.2);
+    border-radius: 16px;
 
     h2 {
-        font-size: 26px;
-        color: #111827;
+        font-size: 24px;
+        color: #FFFFFF;
         margin: 0 0 8px 0;
+        font-family: "Euclid-Bold", sans-serif;
     }
 
     p {
-        color: #6B7280;
+        color: rgba(255, 255, 255, 0.6);
         margin: 0 0 20px 0;
     }
 
@@ -311,104 +360,158 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 10px 20px;
-        background: #0B56DB;
-        color: #FFFFFF;
-        border-radius: 10px;
+        padding: 10px 22px;
+        background: #18C98B;
+        color: #040605;
+        border-radius: 9999px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 700;
+        font-family: "Euclid-Bold", sans-serif;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: #15b77e;
+            transform: translateY(-2px);
+        }
     }
 }
 
-:global(.dark) {
+/* Light Theme Overrides */
+:global(html.light) {
     .brokerDetailPage {
-        .topNav {
-            .backLink {
-                background: #1A1A1E;
-                border-color: #2D2D34;
-                color: #E2E8F0;
+        .topNav .backLink {
+            background: #FFFFFF;
+            border-color: #CBD5E1;
+            color: #0F172A;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 
-                &:hover {
-                    background: #0B56DB;
-                    border-color: #0B56DB;
-                    color: #FFFFFF;
+            svg {
+                stroke: #0F172A;
+            }
+
+            &:hover {
+                background: #18C98B;
+                border-color: #18C98B;
+                color: #040605;
+
+                svg {
+                    stroke: #040605;
                 }
             }
         }
 
         .heroBanner {
-            border-color: #2D2D34;
+            background: linear-gradient(135deg, #F8FAFC 0%, #EDF8F3 100%);
+            border-color: rgba(24, 201, 139, 0.3);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+
+            .logoBox {
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+
+                img {
+                    background: transparent !important;
+                    border: none !important;
+                    box-shadow: none !important;
+                    mix-blend-mode: multiply !important;
+                    filter: none !important;
+                }
+            }
+
+            .badges {
+                .categoryBadge {
+                    background: rgba(24, 201, 139, 0.15) !important;
+                    border-color: rgba(24, 201, 139, 0.35) !important;
+                    color: #047857 !important;
+                }
+
+                .statusBadge {
+                    background: rgba(16, 185, 129, 0.15) !important;
+                    border-color: rgba(16, 185, 129, 0.35) !important;
+                    color: #047857 !important;
+                }
+            }
+
+            .title {
+                color: #0F172A;
+            }
+
+            .subtitle {
+                color: #475569;
+            }
         }
 
         .contentGrid {
-            .mainContent {
-                .cardSection {
-                    background: #1A1A1E;
-                    border-color: #2D2D34;
+            .mainContent .cardSection {
+                background: #FFFFFF;
+                border-color: #E2E8F0;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 
-                    h3 {
-                        color: #FFFFFF;
-                    }
+                h3 {
+                    color: #0F172A;
+                }
 
-                    .description {
-                        color: #9CA3AF;
-                    }
+                .description {
+                    color: #334155;
+                }
 
-                    .featureList .featureItem {
-                        color: #E2E8F0;
+                .featureList .featureItem {
+                    color: #0F172A;
 
-                        .checkIconBox {
-                            background: rgba(16, 185, 129, 0.2);
+                    .checkIconBox {
+                        background: rgba(24, 201, 139, 0.15);
+                        border-color: rgba(24, 201, 139, 0.3);
+                        color: #047857;
+
+                        svg {
+                            stroke: #047857;
                         }
                     }
                 }
             }
 
-            .sidebar {
-                .actionCard {
-                    background: #1A1A1E;
-                    border-color: #2D2D34;
+            .sidebar .actionCard {
+                background: #FFFFFF;
+                border-color: #E2E8F0;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 
-                    h4 {
-                        color: #FFFFFF;
+                h4 {
+                    color: #0F172A;
+                }
+
+                p {
+                    color: #475569;
+                }
+
+                .urlBox {
+                    background: #F8FAFC;
+                    border-color: #E2E8F0;
+                    color: #0F172A;
+
+                    span {
+                        color: #0F172A !important;
                     }
 
-                    p {
-                        color: #9CA3AF;
+                    svg {
+                        stroke: #047857;
                     }
+                }
 
-                    .urlBox {
-                        background: #0F172A;
-                        border-color: #1E293B;
-                        color: #60A5FA;
-                    }
+                .visitOfficialBtn {
+                    background: #18C98B;
+                    color: #040605;
+                    font-weight: 700;
+                    box-shadow: 0 4px 14px rgba(24, 201, 139, 0.3);
 
-                    .visitOfficialBtn {
-                        background: #0B56DB;
-                        color: #FFFFFF;
-
-                        &:hover {
-                            background: #2563EB;
-                        }
-                    }
-
-                    .syncBtn {
-                        background: linear-gradient(135deg, #0e0f12 0%, #072a6b 100%);
-                        border: 1px solid #2D2D34;
-                        color: #FFFFFF;
+                    &:hover {
+                        background: #15b77e;
+                        transform: translateY(-1px);
+                        box-shadow: 0 6px 18px rgba(24, 201, 139, 0.45);
                     }
                 }
             }
-        }
-    }
-
-    .notFound {
-        h2 {
-            color: #FFFFFF;
-        }
-
-        p {
-            color: #9CA3AF;
         }
     }
 }

@@ -52,7 +52,7 @@ export default function sitemap() {
             priority: 0.9,
         },
         {
-            url: `${baseUrl}/ai-strategy-core`,
+            url: `${baseUrl}/ai-trading-signal`,
             lastModified,
             changeFrequency: 'weekly',
             priority: 0.9,

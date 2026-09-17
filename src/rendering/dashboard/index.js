@@ -17,6 +17,7 @@ import DashboardStatsCards from './components/DashboardStatsCards';
 import DashboardMarketOverview from './components/DashboardMarketOverview';
 import DashboardRecentActivities from './components/DashboardRecentActivities';
 import DashboardToolsGrid from './components/DashboardToolsGrid';
+import DashboardFeaturedBrokers from './components/DashboardFeaturedBrokers';
 
 export default function Dashboard() {
     const router = useRouter();
@@ -46,14 +47,14 @@ export default function Dashboard() {
     }, [getGreeting]);
 
     // Single unified API fetch for user dashboard
-    const fetchDashboardData = useCallback(async (uid) => {
+    const fetchDashboardData = useCallback(async (uid, tf = '7D') => {
         if (!uid) {
             setLoading(false);
             return;
         }
         setLoading(true);
         try {
-            const res = await dashboardApi.getStats(uid);
+            const res = await dashboardApi.getStats(uid, tf);
             const payload = res?.data ?? res ?? null;
             if (payload) {
                 setStats(payload);
@@ -66,18 +67,18 @@ export default function Dashboard() {
     }, []);
 
     useEffect(() => {
-        fetchDashboardData(userId);
-    }, [userId, fetchDashboardData]);
+        fetchDashboardData(userId, chartTimeframe);
+    }, [userId, chartTimeframe, fetchDashboardData]);
 
     // Live update when credits are updated anywhere across the app
     useEffect(() => {
         if (!userId) return;
         const refetchStats = () => {
-            fetchDashboardData(userId);
+            fetchDashboardData(userId, chartTimeframe);
         };
         window.addEventListener(CREDITS_UPDATED_EVENT, refetchStats);
         return () => window.removeEventListener(CREDITS_UPDATED_EVENT, refetchStats);
-    }, [userId, fetchDashboardData]);
+    }, [userId, chartTimeframe, fetchDashboardData]);
 
     const handleExportPdf = () => {
         exportDashboardPdf({ name, stats });
@@ -149,9 +150,9 @@ export default function Dashboard() {
                 };
             });
         } else {
-            // 2. Fallback: Generate 7-day default baseline dates
+            // 2. Fallback: Generate timeframe-based baseline dates
             const today = new Date();
-            const numDays = 7;
+            const numDays = chartTimeframe === '90D' ? 90 : chartTimeframe === '30D' ? 30 : 7;
             for (let i = numDays - 1; i >= 0; i--) {
                 const d = new Date(today);
                 d.setDate(today.getDate() - i);
@@ -201,15 +202,23 @@ export default function Dashboard() {
         const pathArea = `${pathLine} L ${points[points.length - 1].x} 170 L ${points[0].x} 170 Z`;
         const totalUsed = stats?.total_credits_used ?? points.reduce((sum, p) => sum + p.credits, 0);
 
+        // Compute evenly distributed labels for x-axis so they don't crowd
+        const labelStep = totalPoints > 14 ? Math.ceil(totalPoints / 6) : 1;
+        const labels = points.filter((_, idx) => idx % labelStep === 0 || idx === totalPoints - 1);
+
+        // For data point markers on 30D/90D, display fewer markers so they don't overlap densely
+        const displayStep = totalPoints > 35 ? Math.ceil(totalPoints / 25) : 1;
+        const displayPoints = points.filter((_, idx) => idx % displayStep === 0 || idx === totalPoints - 1);
+
         return {
             points,
-            displayPoints: points,
-            labels: points,
+            displayPoints,
+            labels,
             pathLine,
             pathArea,
             totalUsed
         };
-    }, [stats?.daily_usage, stats?.total_credits_used, t]);
+    }, [stats?.daily_usage, stats?.total_credits_used, chartTimeframe, t]);
 
     return (
         <div className={styles.modernDashboard}>
@@ -233,6 +242,9 @@ export default function Dashboard() {
                     router={router}
                 />
             </div>
+
+            {/* Featured Brokers Row — Immediately visible without scrolling */}
+            <DashboardFeaturedBrokers />
 
             {/* 2. Full-Width Row: Quick Actions Hub (All cards in one row) */}
             <div className={styles.quickActionsRowFull}>

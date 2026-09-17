@@ -1,9 +1,9 @@
 $primary: #18C98B;
 $primaryDark: #10B981;
 $bgDark: #040605;
-$cardDark: #040D09;
-$border: rgba(24, 201, 139, 0.35);
-$borderSubtle: rgba(24, 201, 139, 0.18);
+$cardDark: #0C0E0D;
+$border: transparent;
+$borderSubtle: rgba(255, 255, 255, 0.04);
 $text: #FFFFFF;
 $textMuted: rgba(255, 255, 255, 0.65);
 $amber: #F59E0B;
@@ -47,27 +47,28 @@ $danger: #F87171;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 14px;
-        margin-top: 20px;
-        padding-top: 20px;
-        border-top: 1px solid rgba(24, 201, 139, 0.2);
+        margin-top: 18px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
 
         @include respond-to('sm') {
             grid-template-columns: 1fr;
         }
 
         .kpiCard {
-            background: rgba(13, 14, 19, 0.6);
-            border: 1px solid $borderSubtle;
+            background: #090B0A;
+            border: none;
             border-radius: 14px;
             padding: 16px 18px;
             display: flex;
             flex-direction: column;
             gap: 6px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.03);
             transition: all 0.2s ease;
 
             &:hover {
-                border-color: rgba(24, 201, 139, 0.4);
-                background: rgba(13, 14, 19, 0.85);
+                background: #0E1110;
+                transform: translateY(-1px);
             }
 
             .kpiTop {
@@ -83,30 +84,30 @@ $danger: #F87171;
                 }
 
                 .kpiBadge {
-                    background: rgba(24, 201, 139, 0.15);
-                    border: 1px solid rgba(24, 201, 139, 0.35);
+                    background: rgba(24, 201, 139, 0.12);
+                    border: none;
                     color: #18C98B;
-                    padding: 2px 7px;
+                    padding: 3px 8px;
                     border-radius: 99px;
                     font-size: 10px;
                     font-weight: 700;
                 }
 
                 .readyBadge {
-                    background: rgba(24, 201, 139, 0.2);
-                    border: 1px solid #18C98B;
+                    background: rgba(24, 201, 139, 0.16);
+                    border: none;
                     color: #18C98B;
-                    padding: 2px 7px;
+                    padding: 3px 8px;
                     border-radius: 99px;
                     font-size: 10px;
                     font-weight: 700;
                 }
 
                 .pendingBadge {
-                    background: rgba(245, 158, 11, 0.15);
-                    border: 1px solid rgba(245, 158, 11, 0.4);
+                    background: rgba(245, 158, 11, 0.12);
+                    border: none;
                     color: #F59E0B;
-                    padding: 2px 7px;
+                    padding: 3px 8px;
                     border-radius: 99px;
                     font-size: 10px;
                     font-weight: 700;
@@ -133,7 +134,6 @@ $danger: #F87171;
                 font-weight: 700;
                 font-family: "Euclid-Bold", sans-serif;
                 line-height: 1.2;
-                text-shadow: 0 0 16px rgba(24, 201, 139, 0.3);
             }
 
             .kpiValueAmber {
@@ -151,9 +151,9 @@ $danger: #F87171;
             }
 
             &.highlightCard {
-                background: linear-gradient(180deg, rgba(24, 201, 139, 0.12) 0%, rgba(4, 13, 9, 0.7) 100%);
-                border-color: rgba(24, 201, 139, 0.45);
-                box-shadow: 0 0 20px rgba(24, 201, 139, 0.12);
+                background: radial-gradient(ellipse 100% 100% at 50% 0%, rgba(24, 201, 139, 0.1) 0%, #090B0A 100%);
+                border: none;
+                box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(24, 201, 139, 0.15);
             }
         }
     }
@@ -168,18 +168,19 @@ $danger: #F87171;
         .tabNavRow {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: #0D0E13;
-            border: 1px solid $borderSubtle;
+            gap: 6px;
+            background: #090B0A;
+            border: none;
             border-radius: 9999px;
             padding: 4px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 
             .tabItem {
                 display: flex;
                 align-items: center;
                 gap: 8px;
                 background: transparent;
-                border: 1px solid transparent;
+                border: none;
                 border-radius: 9999px;
                 padding: 8px 18px;
                 color: rgba(255, 255, 255, 0.65);
@@ -204,24 +205,25 @@ $danger: #F87171;
                     line-height: 1;
                     background: rgba(255, 255, 255, 0.08);
                     color: rgba(255, 255, 255, 0.85);
-                    border: 1px solid rgba(255, 255, 255, 0.12);
+                    border: none;
                     transition: all 0.2s ease;
                 }
 
                 &:hover {
-                    color: #18C98B;
+                    color: #FFFFFF;
+                    background: rgba(255, 255, 255, 0.04);
                 }
 
                 &.tabActive {
-                    background: rgba(24, 201, 139, 0.16);
-                    border: 1px solid rgba(24, 201, 139, 0.45);
+                    background: rgba(24, 201, 139, 0.12);
+                    border: none;
                     color: #18C98B;
                     font-weight: 700;
 
                     .countBadge {
                         background: #18C98B;
                         color: #040300;
-                        border-color: #18C98B;
+                        border: none;
                     }
                 }
             }
@@ -240,14 +242,14 @@ $danger: #F87171;
 
         /* Tier Box Card */
         .tierBoxCard {
-            background: #040D09;
-            border: 1px solid $border;
+            background: #0B0E0D;
+            border: none;
             border-radius: 18px;
             padding: 24px;
             display: flex;
             flex-direction: column;
             gap: 18px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.03);
 
             .tierHeader {
                 display: flex;
@@ -265,8 +267,8 @@ $danger: #F87171;
                         display: inline-flex;
                         align-items: center;
                         gap: 6px;
-                        background: rgba(24, 201, 139, 0.15);
-                        border: 1px solid rgba(24, 201, 139, 0.5);
+                        background: rgba(24, 201, 139, 0.12);
+                        border: none;
                         color: #18C98B;
                         padding: 4px 12px;
                         border-radius: 6px;
@@ -308,17 +310,17 @@ $danger: #F87171;
 
                 .progressBarTrack {
                     width: 100%;
-                    height: 10px;
-                    background: rgba(255, 255, 255, 0.08);
+                    height: 8px;
+                    background: rgba(255, 255, 255, 0.05);
                     border-radius: 99px;
                     overflow: hidden;
-                    border: 1px solid rgba(24, 201, 139, 0.2);
+                    border: none;
 
                     .progressBarFill {
                         height: 100%;
                         background: linear-gradient(90deg, #10B981 0%, #18C98B 100%);
                         border-radius: 99px;
-                        box-shadow: 0 0 10px rgba(24, 201, 139, 0.5);
+                        box-shadow: 0 0 10px rgba(24, 201, 139, 0.4);
                         transition: width 0.4s ease;
                     }
                 }
@@ -345,8 +347,8 @@ $danger: #F87171;
                 }
 
                 .perkCard {
-                    background: rgba(255, 255, 255, 0.03);
-                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    background: rgba(255, 255, 255, 0.025);
+                    border: none;
                     border-radius: 12px;
                     padding: 14px;
                     display: flex;
@@ -397,13 +399,13 @@ $danger: #F87171;
                     }
 
                     &.currentPerk {
-                        border-color: rgba(24, 201, 139, 0.35);
-                        background: rgba(24, 201, 139, 0.04);
+                        border: none;
+                        background: rgba(24, 201, 139, 0.06);
                     }
 
                     &.vipPerk {
-                        border-color: rgba(245, 158, 11, 0.35);
-                        background: rgba(245, 158, 11, 0.04);
+                        border: none;
+                        background: rgba(245, 158, 11, 0.05);
 
                         .perkTitle {
                             color: #F59E0B;
@@ -419,14 +421,14 @@ $danger: #F87171;
 
         /* Share Box Card */
         .shareBoxCard {
-            background: #040D09;
-            border: 1px solid $border;
+            background: #0B0E0D;
+            border: none;
             border-radius: 18px;
             padding: 24px;
             display: flex;
             flex-direction: column;
             gap: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.03);
 
             .shareCardHeader {
                 display: flex;
@@ -453,15 +455,15 @@ $danger: #F87171;
                 display: flex;
                 align-items: center;
                 gap: 8px;
-                background: #0D0E13;
-                border: 1px solid rgba(24, 201, 139, 0.3);
+                background: #060807;
+                border: none;
                 border-radius: 12px;
                 padding: 6px 6px 6px 14px;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
                 transition: all 0.2s ease;
 
                 &:focus-within {
-                    border-color: #18C98B;
-                    box-shadow: 0 0 14px rgba(24, 201, 139, 0.2);
+                    box-shadow: 0 0 0 1px rgba(24, 201, 139, 0.5), inset 0 1px 3px rgba(0, 0, 0, 0.5);
                 }
 
                 .linkInput {
@@ -478,24 +480,26 @@ $danger: #F87171;
                     display: inline-flex;
                     align-items: center;
                     gap: 6px;
-                    background: rgba(24, 201, 139, 0.15);
-                    border: 1px solid rgba(24, 201, 139, 0.45);
-                    color: #18C98B;
+                    background: #18C98B;
+                    border: none;
+                    color: #040605;
                     padding: 8px 16px;
                     border-radius: 8px;
                     font-size: 13px;
                     font-weight: 700;
+                    font-family: "Euclid-Bold", sans-serif;
                     cursor: pointer;
                     white-space: nowrap;
                     transition: all 0.2s ease;
+                    box-shadow: 0 2px 10px rgba(24, 201, 139, 0.3);
 
                     &:hover {
-                        background: #18C98B;
-                        color: #040300;
+                        background: #2DE0A1;
+                        transform: translateY(-1px);
                     }
 
                     &.copied {
-                        background: rgba(24, 201, 139, 0.3);
+                        background: #10B981;
                     }
                 }
             }
@@ -518,8 +522,8 @@ $danger: #F87171;
                     }
 
                     .codeBadge {
-                        background: rgba(255, 255, 255, 0.08);
-                        border: 1px solid rgba(255, 255, 255, 0.15);
+                        background: rgba(255, 255, 255, 0.04);
+                        border: none;
                         padding: 4px 10px;
                         border-radius: 6px;
                         color: #18C98B;
@@ -547,17 +551,19 @@ $danger: #F87171;
                     display: inline-flex;
                     align-items: center;
                     gap: 6px;
-                    background: transparent;
-                    border: 1px solid rgba(255, 255, 255, 0.15);
+                    background: rgba(255, 255, 255, 0.04);
+                    border: none;
                     color: rgba(255, 255, 255, 0.75);
                     padding: 6px 12px;
                     border-radius: 8px;
                     font-size: 12px;
+                    font-weight: 600;
                     cursor: pointer;
+                    transition: all 0.2s ease;
 
                     &:hover {
-                        border-color: #18C98B;
-                        color: #18C98B;
+                        background: rgba(255, 255, 255, 0.08);
+                        color: #FFFFFF;
                     }
                 }
             }
@@ -567,7 +573,7 @@ $danger: #F87171;
                 flex-direction: column;
                 gap: 8px;
                 padding-top: 12px;
-                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                border-top: 1px solid rgba(255, 255, 255, 0.05);
 
                 .socialTitle {
                     color: rgba(255, 255, 255, 0.6);
@@ -594,13 +600,12 @@ $danger: #F87171;
                         font-size: 12px;
                         font-weight: 600;
                         cursor: pointer;
-                        border: 1px solid transparent;
+                        border: none;
                         transition: all 0.2s ease;
                     }
 
                     .socialBtnX {
-                        background: #111;
-                        border-color: #333;
+                        background: rgba(255, 255, 255, 0.05);
                         color: #FFF;
 
                         &:hover {
@@ -610,8 +615,7 @@ $danger: #F87171;
                     }
 
                     .socialBtnTg {
-                        background: rgba(36, 161, 222, 0.15);
-                        border-color: rgba(36, 161, 222, 0.4);
+                        background: rgba(36, 161, 222, 0.12);
                         color: #24A1DE;
 
                         &:hover {
@@ -621,8 +625,7 @@ $danger: #F87171;
                     }
 
                     .socialBtnWa {
-                        background: rgba(37, 211, 102, 0.15);
-                        border-color: rgba(37, 211, 102, 0.4);
+                        background: rgba(37, 211, 102, 0.12);
                         color: #25D366;
 
                         &:hover {
@@ -632,8 +635,7 @@ $danger: #F87171;
                     }
 
                     .socialBtnIn {
-                        background: rgba(10, 102, 194, 0.15);
-                        border-color: rgba(10, 102, 194, 0.4);
+                        background: rgba(10, 102, 194, 0.12);
                         color: #0A66C2;
 
                         &:hover {

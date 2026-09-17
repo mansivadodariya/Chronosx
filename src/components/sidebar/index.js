@@ -17,6 +17,14 @@ import {
   CrownIcon,
   AiTradeAnalysisIcon,
   AffiliateIcon,
+  LiveAnalysisIcon,
+  StrategyIcon,
+  BotBuilderIcon,
+  SubCalendarIcon,
+  SubCalculatorIcon,
+  EducationIcon,
+  ChevronLeftIcon,
+  LogoutIcon,
 } from '@/icons/sidebarIcons';
 import { clearAuthSession, getStoredUser, getStoredUserId, hydrateUserFromProfile } from '@/lib/authSession';
 import { useLanguage } from '@/context/LanguageContext';
@@ -30,67 +38,9 @@ const BrandDarkLogo = "/assets/logo/darklogo.png";
 const BrandLightLogo = "/assets/logo/logo.png";
 const SmallLogo = "/assets/logo/smallLogo.png";
 
-const LiveAnalysisIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-  </svg>
-);
-
-const StrategyIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-    <circle cx="12" cy="12" r="10" />
-    <circle cx="12" cy="12" r="6" />
-    <circle cx="12" cy="12" r="2" />
-  </svg>
-);
-
-const SubCalendarIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-    <rect x="3" y="4" width="18" height="17" rx="3" />
-    <path d="M16 2v4M8 2v4M3 9h18" />
-    <circle cx="8" cy="13" r="0.8" fill="currentColor" />
-    <circle cx="12" cy="13" r="0.8" fill="currentColor" />
-    <circle cx="16" cy="13" r="0.8" fill="currentColor" />
-    <circle cx="8" cy="17" r="0.8" fill="currentColor" />
-    <circle cx="12" cy="17" r="0.8" fill="currentColor" />
-  </svg>
-);
-
-const SubCalculatorIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-    <rect x="4" y="2" width="16" height="20" rx="2" />
-    <line x1="8" y1="6" x2="16" y2="6" />
-    <line x1="16" y1="14" x2="16" y2="18" />
-    <path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01" />
-  </svg>
-);
-
-const SubNewsIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-    <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
-    <path d="M18 14h-8" />
-    <path d="M15 18h-5" />
-    <path d="M10 6h8v4h-8V6Z" />
-  </svg>
-);
-
-const ChevronLeftIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="15 18 9 12 15 6" />
-  </svg>
-);
-
 const ChevronRightIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <polyline points="9 18 15 12 9 6" />
-  </svg>
-);
-
-const LogoutIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-    <polyline points="16 17 21 12 16 7" />
-    <line x1="21" y1="12" x2="9" y2="12" />
   </svg>
 );
 
@@ -101,16 +51,17 @@ const getNavSections = (t) => [
       { label: t('nav.dashboard', 'Dashboard'), href: "/dashboard", icon: DashboardGridIcon },
       { label: t('nav.marketAssistant', 'AI Market Assistant'), href: "/market-assistant", icon: AiChatBotIcon },
       { label: t('nav.chartScanner', 'AI Chart Scanner'), href: "/chart-scanner", icon: AiTradeSparkIcon },
-      { label: t('nav.tradeAudit', 'AI Trade Advisor'), href: "/trade-advisor", icon: AiTradeAnalysisIcon },
+      { label: t('nav.tradeAudit', 'AI Past Trade Analyzer'), href: "/trade-advisor", icon: AiTradeAnalysisIcon },
       {
-        label: t('nav.strategyHub', 'AI Strategy Core'),
-        href: "/strategy-core",
+        label: t('nav.strategyHub', 'AI Trading Signal'),
+        href: "/trading-signal",
         icon: AiStrategyIcon,
         subItems: [
           { label: t('nav.signalTerminal', 'Signal Terminal'), href: "/signal-terminal", icon: LiveAnalysisIcon },
           { label: t('nav.strategySignal', 'Strategy Signal'), href: "/strategy-signal", icon: StrategyIcon },
         ]
       },
+      { label: t('nav.strategyStudio', 'AI Bot Builder'), href: "/strategy-studio", icon: BotBuilderIcon },
     ]
   },
   {
@@ -123,10 +74,11 @@ const getNavSections = (t) => [
         subItems: [
           { label: t('nav.economicCalendar', 'Economic Calendar'), href: "/calendar", icon: SubCalendarIcon },
           { label: t('nav.forexCalculator', 'Forex Calculator'), href: "/calculator", icon: SubCalculatorIcon },
+          { label: t('nav.education', 'Education'), href: "https://edufins.com", icon: EducationIcon, isExternal: true },
         ]
       },
       { label: t('nav.plans', 'Subscription Plans'), href: "/subscription-plans", icon: CrownIcon },
-      { label: t('nav.broker', 'Broker'), href: "/broker", icon: BrokerBankIcon },
+      { label: t('nav.broker', 'Associated Brokers'), href: "/brokers", icon: BrokerBankIcon },
       { label: t('nav.affiliate', 'Affiliate'), href: "/affiliate", icon: AffiliateIcon },
       { label: t('nav.profile', 'Settings'), href: "/profile", icon: ProfileUserIcon },
     ]
@@ -163,10 +115,11 @@ const NavItem = ({ item, pathname, onNavigate, isCollapsed }) => {
             data-active={isActive ? 'true' : undefined}
             onClick={() => {
               if (item.subItems && item.subItems.length > 0) {
-                if (typeof window !== 'undefined' && pathname !== item.subItems[0].href) {
+                const targetHref = item.subItems.find(s => !s.isExternal)?.href || item.subItems[0].href;
+                if (typeof window !== 'undefined' && pathname !== targetHref) {
                   window.dispatchEvent(new CustomEvent('page:loading:start'));
                 }
-                router.push(item.subItems[0].href);
+                router.push(targetHref);
                 onNavigate?.();
               }
             }}
@@ -180,6 +133,26 @@ const NavItem = ({ item, pathname, onNavigate, isCollapsed }) => {
                 {item.subItems.map(sub => {
                   const isSubActive = isNavItemActive(pathname, sub.href);
                   const SubIcon = sub.icon;
+                  if (sub.isExternal) {
+                    return (
+                      <a
+                        key={sub.href}
+                        href={sub.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.flyoutLink}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onNavigate?.();
+                        }}
+                      >
+                        <div className={styles.subMenuIcon}>
+                          <SubIcon />
+                        </div>
+                        <span>{sub.label}</span>
+                      </a>
+                    );
+                  }
                   return (
                     <Link
                       key={sub.href}
@@ -212,9 +185,9 @@ const NavItem = ({ item, pathname, onNavigate, isCollapsed }) => {
           data-active={isActive ? 'true' : undefined}
           onClick={() => {
             if (item.subItems && item.subItems.length > 0) {
-              const targetHref = item.subItems[0].href;
+              const targetHref = item.subItems.find(s => !s.isExternal)?.href || item.subItems[0].href;
               if (!isAnySubActive && pathname !== targetHref) {
-                // If not currently on any subpage, open and navigate to first subitem
+                // If not currently on any subpage, open and navigate to first internal subitem
                 setIsOpen(true);
                 if (typeof window !== 'undefined') {
                   window.dispatchEvent(new CustomEvent('page:loading:start'));
@@ -249,6 +222,23 @@ const NavItem = ({ item, pathname, onNavigate, isCollapsed }) => {
             {item.subItems.map(sub => {
               const isSubActive = isNavItemActive(pathname, sub.href);
               const SubIcon = sub.icon;
+              if (sub.isExternal) {
+                return (
+                  <a
+                    key={sub.href}
+                    href={sub.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.subMenuLink}
+                    onClick={onNavigate}
+                  >
+                    <div className={styles.subMenuIcon}>
+                      <SubIcon />
+                    </div>
+                    <span>{sub.label}</span>
+                  </a>
+                );
+              }
               return (
                 <Link
                   key={sub.href}
@@ -332,7 +322,9 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
       if (typeof window !== 'undefined') {
         const cached = sessionStorage.getItem('visible_tab_names');
         if (cached) {
-          setVisibleTabNames(new Set(JSON.parse(cached)));
+          const names = new Set(JSON.parse(cached));
+          names.add('ai bot builder');
+          setVisibleTabNames(names);
         }
       }
     } catch (e) { /* ignore */ }
@@ -349,9 +341,10 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
         if (!error && Array.isArray(data)) {
           const arr = data.map(t => (t.name || '').toLowerCase());
           const names = new Set(arr);
+          names.add('ai bot builder');
           setVisibleTabNames(names);
           if (typeof window !== 'undefined') {
-            sessionStorage.setItem('visible_tab_names', JSON.stringify(arr));
+            sessionStorage.setItem('visible_tab_names', JSON.stringify([...names]));
           }
         }
       } catch (e) {
@@ -421,16 +414,20 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
     '/dashboard': 'Dashboard',
     '/chart-scanner': 'AI Chart Scanner',
     '/ai-chart-scanner': 'AI Chart Scanner',
-    '/trade-audit': 'AI Trade Advisor',
-    '/ai-trade-audit': 'AI Trade Advisor',
-    '/trade-advisor': 'AI Trade Advisor',
-    '/ai-trade-advisor': 'AI Trade Advisor',
+    '/trade-audit': 'AI Past Trade Analyzer',
+    '/ai-trade-audit': 'AI Past Trade Analyzer',
+    '/trade-advisor': 'AI Past Trade Analyzer',
+    '/ai-trade-advisor': 'AI Past Trade Analyzer',
+    '/strategy-studio': 'AI Bot Builder',
+    '/ai-strategy-studio': 'AI Bot Builder',
     '/market-assistant': 'AI Market Assistant',
     '/ai-market-assistant': 'AI Market Assistant',
-    '/strategy-hub': 'AI Strategy Core',
-    '/ai-strategy-hub': 'AI Strategy Core',
-    '/strategy-core': 'AI Strategy Core',
-    '/ai-strategy-core': 'AI Strategy Core',
+    '/trading-signal': 'AI Trading Signal',
+    '/ai-trading-signal': 'AI Trading Signal',
+    '/strategy-hub': 'AI Trading Signal',
+    '/ai-strategy-hub': 'AI Trading Signal',
+    '/strategy-core': 'AI Trading Signal',
+    '/ai-strategy-core': 'AI Trading Signal',
     '/strategy-hub/live': 'Signal Terminal',
     '/strategy-hub/strategy': 'Strategy Signal',
     '/strategy-signal': 'Strategy Signal',
@@ -447,8 +444,8 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
     '/credit-history': 'Credit History',
     '/plans': 'Subscription Plans',
     '/subscription-plans': 'Subscription Plans',
-    '/broker': 'Broker',
-    '/brokers': 'Broker',
+    '/broker': 'Associated Brokers',
+    '/brokers': 'Associated Brokers',
     '/affiliate': 'Affiliate',
     '/dashboard/affiliate': 'Affiliate',
     '/profile': 'Profile',
@@ -462,23 +459,27 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
     const checkTabVisible = (tabLabel, routeHref) => {
       const lowerLabel = (tabLabel || '').toLowerCase();
       const mapped = (ROUTE_TAB_MAP[routeHref] || '').toLowerCase();
-      if (lowerLabel.includes('affiliate') || mapped === 'affiliate') return true;
+      if (lowerLabel.includes('affiliate') || mapped === 'affiliate' || lowerLabel.includes('education') || lowerLabel.includes('edufins') || routeHref?.includes('edufins')) return true;
       return (
         visibleTabNames.has(lowerLabel) ||
         visibleTabNames.has(mapped) ||
         ((lowerLabel.includes('chart scanner') || lowerLabel.includes('market snapshot') || mapped.includes('chart scanner')) &&
           (visibleTabNames.has('ai chart scanner') || visibleTabNames.has('chart-scanner') || visibleTabNames.has('ai trade') || visibleTabNames.has('ai-trade') || visibleTabNames.has('trade-snap') || visibleTabNames.has('trade snap'))) ||
-        ((lowerLabel.includes('trade audit') || lowerLabel.includes('trade advisor') || lowerLabel.includes('trade analysis') || mapped.includes('trade audit') || mapped.includes('trade advisor')) &&
-          (visibleTabNames.has('ai trade advisor') || visibleTabNames.has('trade advisor') || visibleTabNames.has('ai trade audit') || visibleTabNames.has('trade-audit') || visibleTabNames.has('ai trade analysis') || visibleTabNames.has('trade-analysis') || visibleTabNames.has('trade analysis') || visibleTabNames.has('ai-trade-analysis') || visibleTabNames.has('ai-past-trade-analyzer') || visibleTabNames.has('ai trade'))) ||
+        ((lowerLabel.includes('past trade') || lowerLabel.includes('trade audit') || lowerLabel.includes('trade advisor') || lowerLabel.includes('trade analysis') || mapped.includes('past trade') || mapped.includes('trade audit') || mapped.includes('trade advisor')) &&
+          (visibleTabNames.has('ai past trade analyzer') || visibleTabNames.has('past trade analyzer') || visibleTabNames.has('ai trade advisor') || visibleTabNames.has('trade advisor') || visibleTabNames.has('ai trade audit') || visibleTabNames.has('trade-audit') || visibleTabNames.has('ai trade analysis') || visibleTabNames.has('trade-analysis') || visibleTabNames.has('trade analysis') || visibleTabNames.has('ai-trade-analysis') || visibleTabNames.has('ai-past-trade-analyzer') || visibleTabNames.has('ai trade'))) ||
+        ((lowerLabel.includes('bot') || lowerLabel.includes('builder') || lowerLabel.includes('strategy studio') || mapped.includes('bot') || mapped.includes('builder')) &&
+          (visibleTabNames.has('ai bot builder') || visibleTabNames.has('bot builder') || visibleTabNames.has('ai strategy builder') || visibleTabNames.has('strategy studio') || visibleTabNames.has('strategy-studio'))) ||
         ((lowerLabel.includes('market assistant') || lowerLabel.includes('trading advisor') || mapped.includes('market assistant')) &&
           (visibleTabNames.has('ai market assistant') || visibleTabNames.has('market-assistant') || visibleTabNames.has('ai chat') || visibleTabNames.has('ai-chat') || visibleTabNames.has('ai assistant') || visibleTabNames.has('ai-assistant'))) ||
         ((lowerLabel.includes('strategy') || mapped.includes('strategy')) &&
-          (visibleTabNames.has('ai strategy core') || visibleTabNames.has('strategy core') || visibleTabNames.has('strategy hub') || visibleTabNames.has('strategy-hub') || visibleTabNames.has('ai strategy') || visibleTabNames.has('ai-strategy') || visibleTabNames.has('strategy') || visibleTabNames.has('strategy signal') || visibleTabNames.has('strategy playbooks'))) ||
+          (visibleTabNames.has('ai trading signal') || visibleTabNames.has('trading signal') || visibleTabNames.has('ai strategy core') || visibleTabNames.has('strategy core') || visibleTabNames.has('strategy hub') || visibleTabNames.has('strategy-hub') || visibleTabNames.has('ai strategy') || visibleTabNames.has('ai-strategy') || visibleTabNames.has('strategy') || visibleTabNames.has('strategy signal') || visibleTabNames.has('strategy playbooks'))) ||
         ((lowerLabel.includes('live') || lowerLabel.includes('terminal') || lowerLabel.includes('signal') || mapped.includes('live') || mapped.includes('terminal')) &&
           (visibleTabNames.has('signal terminal') || visibleTabNames.has('live market scanner') || visibleTabNames.has('live-scanner') || visibleTabNames.has('live analysis') || visibleTabNames.has('ai strategy') || visibleTabNames.has('strategy hub'))) ||
         ((lowerLabel.includes('tool') || mapped.includes('tool') || lowerLabel.includes('calendar') || lowerLabel.includes('calculator') || lowerLabel.includes('news')) &&
-          (visibleTabNames.has('tools') || visibleTabNames.has('economic calendar') || visibleTabNames.has('forex calculator') || visibleTabNames.has('market news') || visibleTabNames.has('calendar') || visibleTabNames.has('calculator') || visibleTabNames.has('news')))
-      );
+          (visibleTabNames.has('tools') || visibleTabNames.has('economic calendar') || visibleTabNames.has('forex calculator') || visibleTabNames.has('market news') || visibleTabNames.has('calendar') || visibleTabNames.has('calculator') || visibleTabNames.has('news'))) ||
+        ((lowerLabel.includes('broker') || mapped.includes('broker')) &&
+          (visibleTabNames.has('associated brokers') || visibleTabNames.has('associated broker') || visibleTabNames.has('broker') || visibleTabNames.has('brokers'))
+      ));
     };
 
     return rawSections.map(section => {
@@ -520,7 +521,7 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
     : true;
 
   const hasBrokerPermission = visibleTabNames && visibleTabNames.size > 0
-    ? visibleTabNames.has('broker')
+    ? (visibleTabNames.has('associated brokers') || visibleTabNames.has('associated broker') || visibleTabNames.has('broker') || visibleTabNames.has('brokers'))
     : true;
 
   return (

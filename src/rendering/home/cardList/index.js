@@ -30,14 +30,14 @@ const gridData = [
     },
     {
         icon: '/assets/icons/strategy-builder.svg',
-        title: 'AI STRATEGY CORE',
+        title: 'AI TRADING SIGNAL',
         desc: 'Build, backtest, and deploy algorithmic trading playbooks with AI.',
-        publicPath: '/ai-strategy-core',
-        dashboardPath: '/strategy-core'
+        publicPath: '/ai-trading-signal',
+        dashboardPath: '/trading-signal'
     },
     {
         icon: '/assets/icons/analysis.svg',
-        title: 'AI TRADE ADVISOR',
+        title: 'AI PAST TRADE ANALYZER',
         desc: 'Deep algorithmic trade audit, performance review, and leak elimination.',
         publicPath: '/ai-trade-advisor',
         dashboardPath: '/trade-advisor'

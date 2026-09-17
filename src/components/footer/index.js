@@ -84,7 +84,7 @@ export default function Footer() {
             <ul>
               <li><Link href="/ai-chart-scanner">{t('header.products.chartScanner.title', 'AI Chart Scanner')}</Link></li>
               <li><Link href="/ai-market-assistant">{t('header.products.marketAssistant.title', 'AI Market Assistant')}</Link></li>
-              <li><Link href="/ai-strategy-core">{t('header.products.strategyHub.title', 'AI Strategy Core')}</Link></li>
+              <li><Link href="/ai-trading-signal">{t('header.products.strategyHub.title', 'AI Trading Signal')}</Link></li>
             </ul>
           </div>
 
@@ -92,7 +92,7 @@ export default function Footer() {
           <div className={styles.navCol}>
             <h4>{t('footer.tradingToolsTitle', 'TRADING TOOLS')}</h4>
             <ul>
-              <li><Link href="/ai-trade-advisor">{t('header.tradingTools.tradeAudit.title', 'AI Trade Advisor')}</Link></li>
+              <li><Link href="/ai-trade-advisor">{t('header.tradingTools.tradeAudit.title', 'AI Past Trade Analyzer')}</Link></li>
               <li><Link href={getAuthHref('/strategy-core')}>{t('footer.strategyBuilder', 'Strategy Builder')}</Link></li>
               <li><Link href={getAuthHref('/strategy-core')}>{t('footer.quantBacktesting', 'Quant Backtesting')}</Link></li>
               <li><Link href={getAuthHref('/dashboard')}>{t('footer.paperTradingDesk', 'Paper Trading Desk')}</Link></li>

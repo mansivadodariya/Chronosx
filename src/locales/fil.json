@@ -2,22 +2,22 @@
   "nav": {
     "home": "Tahanan",
     "chartScanner": "AI Chart Scanner",
-    "tradeAudit": "AI Trade Advisor",
+    "tradeAudit": "AI Past Trade Analyzer",
     "marketAssistant": "AI Market Assistant",
     "liveMarketScanner": "Signal Terminal",
-    "strategyHub": "AI Strategy Core",
+    "strategyHub": "AI Trading Signal",
     "strategyPlaybooks": "Strategy Signal",
     "marketSnapshot": "AI Chart Scanner",
     "aiTrade": "AI Chart Scanner",
     "aiTradingAdvisor": "AI Market Assistant",
     "aiChat": "AI Market Assistant",
-    "aiStrategy": "AI Strategy Core",
-    "aiStrategyHub": "AI Strategy Core",
+    "aiStrategy": "AI Trading Signal",
+    "aiStrategyHub": "AI Trading Signal",
     "aiStrategyDesc": "Bumuo, subukan at i-optimize ang mga diskarte sa pag-trade na pinapagana ng AI.",
     "liveAnalysis": "Signal Terminal",
     "liveMarketAnalysis": "Signal Terminal",
     "strategyEnginePlaybooks": "Strategy Signal",
-    "aiTradeAnalysis": "AI Trade Advisor",
+    "aiTradeAnalysis": "AI Past Trade Analyzer",
     "tools": "Mga tool",
     "economicCalendar": "Kalendaryong Pang-ekonomiya",
     "forexCalculator": "Forex Calculator",
@@ -28,11 +28,14 @@
     "plans": "Mga Plano sa Subscription",
     "broker": "Broker",
     "profile": "Settings",
+    "education": "Edukasyon",
     "edufins": "Edufins",
     "fundedMaster": "Funded Master",
     "getStarted": "Magsimula",
     "logout": "Mag-log out",
     "dashboard": "Dashboard",
+    "strategyStudio": "AI Bot Builder",
+    "customBotBuilder": "Custom Bot Builder",
     "affiliate": "Affiliate"
   },
   "topbar": {
@@ -581,7 +584,7 @@
     "startChatting": "Simulan ang Pakikipag-usap",
     "toolLiveScanner": "Signal Terminal",
     "openTerminal": "Buksan ang Terminal",
-    "toolTradeAudit": "AI Trade Advisor",
+    "toolTradeAudit": "AI Past Trade Analyzer",
     "auditStatements": "Suriin ang mga Pahayag",
     "toolForexRisk": "Forex at Risk Calculators",
     "openCalculators": "Buksan ang mga Calculator",
@@ -861,14 +864,14 @@
         "badge": "LIVE"
       },
       "strategyHub": {
-        "title": "AI Strategy Core",
+        "title": "AI Trading Signal",
         "desc": "Algorithmic backtesting, quantitative playbooks at mga signal ng diskarte",
         "badge": "QUANT"
       }
     },
     "tradingTools": {
       "tradeAudit": {
-        "title": "AI Trade Advisor",
+        "title": "AI Past Trade Analyzer",
         "desc": "Suriin ang data ng kalakalan sa kasaysayan upang suriin ang pagganap at mga rate ng panalo.",
         "badge": "AI AUDIT"
       },
@@ -1026,7 +1029,7 @@
       "card2Desc": "Natural na wika ng katalinuhan sa merkado at konteksto ng balita.",
       "card3Title": "SIGNAL TERMINAL",
       "card3Desc": "Real-time na pagtuklas ng breakout at live momentum radar.",
-      "card4Title": "AI STRATEGY CORE",
+      "card4Title": "AI TRADING SIGNAL",
       "card4Desc": "Algorithmic backtesting, quantitative playbooks, at custom na mga panuntunan."
     },
     "howItWorks": {

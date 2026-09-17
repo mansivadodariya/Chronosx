@@ -1,7 +1,7 @@
 import AiStrategy from '@/rendering/aiStrategy';
 
 export const metadata = {
-    title: 'Strategy Signal — AI Strategy Core | ChronosX',
+    title: 'Strategy Signal — AI Trading Signal | ChronosX',
     description: 'Explore, backtest, and deploy algorithmic trading strategies with institutional accuracy metrics on ChronosX.',
 };
 

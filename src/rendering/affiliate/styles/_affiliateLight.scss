@@ -77,7 +77,7 @@ $danger: #F87171;
     .tableWrapperCard,
     .marketingKitGrid .marketingPitchCard {
         background: #FFFFFF;
-        border-color: rgba(24, 201, 139, 0.3);
+        border: 1px solid #E2E8F0;
         box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
 
         h3,
@@ -106,13 +106,13 @@ $danger: #F87171;
 
             .progressBarTrack {
                 background: #E2E8F0;
-                border-color: rgba(24, 201, 139, 0.3);
+                border: none;
             }
         }
 
         .tierPerksGrid .perkCard {
             background: #F8FAFC;
-            border-color: #E2E8F0;
+            border: 1px solid #E2E8F0;
 
             .perkTitle {
                 color: #0F172A;
@@ -123,13 +123,13 @@ $danger: #F87171;
             }
 
             &.currentPerk {
-                border-color: rgba(24, 201, 139, 0.35);
-                background: rgba(24, 201, 139, 0.06);
+                border: 1px solid rgba(24, 201, 139, 0.25);
+                background: rgba(24, 201, 139, 0.05);
             }
 
             &.vipPerk {
-                border-color: rgba(245, 158, 11, 0.35);
-                background: rgba(245, 158, 11, 0.06);
+                border: 1px solid rgba(245, 158, 11, 0.25);
+                background: rgba(245, 158, 11, 0.05);
 
                 .perkTitle {
                     color: #D97706;

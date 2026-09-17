@@ -1,9 +1,8 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './aiStrategy.module.scss';
 import { useLanguage } from '@/context/LanguageContext';
-import { PRESET_STRATEGIES } from './constants/strategyCategories';
 
 function ChevronDownIcon({ className, ...props }) {
     return (
@@ -57,25 +56,43 @@ export default function StrategyDropdown({ strategies: propStrategies = [], sele
         async function fetchStrategies() {
             setLoading(true);
             try {
-                const backendUrl = (process.env.NEXT_PUBLIC_BACKEND_URL || 'https://api.thetradermaster.com').replace(/\/+$/, '');
-                const res = await fetch(`${backendUrl}/api/v1/chart/strategies`, {
-                    headers: { 
-                        'accept': 'application/json',
-                        'ngrok-skip-browser-warning': 'true'
+                const primaryBase = (process.env.NEXT_PUBLIC_BACKEND_URL || 'https://api.thetradermaster.com').replace(/\/+$/, '');
+                let res;
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 4000);
+                    res = await fetch(`${primaryBase}/api/v1/chart/strategies`, {
+                        signal: controller.signal,
+                        headers: { 
+                            'accept': 'application/json',
+                            'ngrok-skip-browser-warning': 'true'
+                        }
+                    });
+                    clearTimeout(timeoutId);
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                } catch (e) {
+                    // Fallback to internal proxy or direct fallback API
+                    try {
+                        res = await fetch('/api/v1/chart/strategies');
+                        if (!res.ok) throw new Error('Proxy failed');
+                    } catch (err2) {
+                        res = await fetch('https://api.thetradermaster.com/api/v1/chart/strategies', {
+                            headers: { 
+                                'accept': 'application/json',
+                                'ngrok-skip-browser-warning': 'true'
+                            }
+                        });
                     }
-                });
+                }
+
                 if (!res.ok) throw new Error('Failed to fetch strategies');
                 const data = await res.json();
                 
                 // Handle various response wrappers
                 const list = Array.isArray(data) ? data : (data.strategies || data.data || []);
-                
-                // Merge backend strategies with preset strategies ensuring all categories are represented
-                const strategyMap = new Map();
-                PRESET_STRATEGIES.forEach(s => strategyMap.set(s.id, s));
-                list.forEach(s => strategyMap.set(s.id || s.strategy_id, s));
-                
-                const effectiveList = Array.from(strategyMap.values());
+                const effectiveList = list.length > 0 ? list : [
+                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback Strategy', description: 'Trend Following EMA Pullback' }
+                ];
                 setStrategies(effectiveList);
                 if (effectiveList.length > 0) {
                     const firstId = effectiveList[0].id || effectiveList[0].strategy_id;
@@ -87,8 +104,11 @@ export default function StrategyDropdown({ strategies: propStrategies = [], sele
                 }
             } catch (err) {
                 console.error("Error fetching strategies:", err);
-                setStrategies(PRESET_STRATEGIES);
-                const firstId = PRESET_STRATEGIES[0].id;
+                const fallbackList = [
+                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback Strategy', description: 'Trend Following EMA Pullback' }
+                ];
+                setStrategies(fallbackList);
+                const firstId = fallbackList[0].id;
                 setSelectedId(prev => prev || firstId);
                 if (onSelect && !initialSelectFiredRef.current) {
                     initialSelectFiredRef.current = true;
@@ -161,7 +181,6 @@ export default function StrategyDropdown({ strategies: propStrategies = [], sele
                         })}
                     </div>
                 )}
-                
             </div>
         </div>
     );

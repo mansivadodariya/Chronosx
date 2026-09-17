@@ -10,6 +10,8 @@ const PROTECTED_PREFIXES = [
   "/signal-terminal",
   "/live-scanner",
   "/strategy-core",
+  "/trading-signal",
+  "/ai-trading-signal",
   "/strategy-signal",
   "/strategy-hub",
   "/calendar",
@@ -39,6 +41,14 @@ export function proxy(request) {
   const token = request.cookies.get("auth_token")?.value;
   const isLoggedIn = Boolean(token);
 
+  // Redirect /broker to /brokers
+  if (pathname === "/broker") {
+    return NextResponse.redirect(new URL("/brokers", request.url));
+  }
+  if (pathname.startsWith("/broker/")) {
+    return NextResponse.redirect(new URL(pathname.replace("/broker/", "/brokers/"), request.url));
+  }
+
   if (pathname === "/tools") {
     return NextResponse.redirect(new URL("/calculator", request.url));
   }
@@ -54,7 +64,10 @@ export function proxy(request) {
     return NextResponse.redirect(new URL(pathname.replace("/strategy-hub", "/strategy-core"), request.url));
   }
   if (pathname === "/ai-strategy-hub" || pathname.startsWith("/ai-strategy-hub/")) {
-    return NextResponse.redirect(new URL(pathname.replace("/ai-strategy-hub", "/ai-strategy-core"), request.url));
+    return NextResponse.redirect(new URL(pathname.replace("/ai-strategy-hub", "/ai-trading-signal"), request.url));
+  }
+  if (pathname === "/ai-strategy-core" || pathname.startsWith("/ai-strategy-core/")) {
+    return NextResponse.redirect(new URL(pathname.replace("/ai-strategy-core", "/ai-trading-signal"), request.url));
   }
   if (pathname === "/live-scanner" || pathname.startsWith("/live-scanner/")) {
     return NextResponse.redirect(new URL(pathname.replace("/live-scanner", "/signal-terminal"), request.url));
@@ -109,6 +122,8 @@ export const config = {
     "/strategy-core/:path*",
     "/strategy-signal/:path*",
     "/ai-strategy-core/:path*",
+    "/trading-signal/:path*",
+    "/ai-trading-signal/:path*",
     "/strategy-hub/:path*",
     "/ai-strategy-hub/:path*",
     "/calendar",

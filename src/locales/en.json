@@ -2,22 +2,22 @@
   "nav": {
     "home": "Home",
     "chartScanner": "AI Chart Scanner",
-    "tradeAudit": "AI Trade Advisor",
+    "tradeAudit": "AI Past Trade Analyzer",
     "marketAssistant": "AI Market Assistant",
     "liveMarketScanner": "Signal Terminal",
-    "strategyHub": "AI Strategy Core",
+    "strategyHub": "AI Trading Signal",
     "strategyPlaybooks": "Strategy Signal",
     "marketSnapshot": "AI Chart Scanner",
     "aiTrade": "AI Chart Scanner",
     "aiTradingAdvisor": "AI Market Assistant",
     "aiChat": "AI Market Assistant",
-    "aiStrategy": "AI Strategy Core",
-    "aiStrategyHub": "AI Strategy Core",
+    "aiStrategy": "AI Trading Signal",
+    "aiStrategyHub": "AI Trading Signal",
     "aiStrategyDesc": "Build, test and optimize AI-powered trading strategies.",
     "liveAnalysis": "Signal Terminal",
     "liveMarketAnalysis": "Signal Terminal",
     "strategyEnginePlaybooks": "Strategy Signal",
-    "aiTradeAnalysis": "AI Trade Advisor",
+    "aiTradeAnalysis": "AI Past Trade Analyzer",
     "tools": "Tools",
     "economicCalendar": "Economic Calendar",
     "forexCalculator": "Forex Calculator",
@@ -26,13 +26,16 @@
     "calculator": "Calculators",
     "creditHistory": "Credit History",
     "plans": "Subscription Plans",
-    "broker": "Broker",
+    "broker": "Associated Brokers",
     "profile": "Settings",
+    "education": "Education",
     "edufins": "Edufins",
     "fundedMaster": "Funded Master",
     "getStarted": "Get Started",
     "logout": "Logout",
     "dashboard": "Dashboard",
+    "strategyStudio": "AI Bot Builder",
+    "customBotBuilder": "Custom Bot Builder",
     "affiliate": "Affiliate"
   },
   "topbar": {
@@ -290,7 +293,7 @@
   "broker": {
     "hubBadge": "Broker & Platform Hub",
     "title": "Integrated Brokerage & Trading Infrastructure",
-    "subtitle": "Connect your MT5 account, view verified broker partners from our sliding marquee stack, and earn AI credits automatically through your daily trading volume.",
+    "subtitle": "Connect your MT5 account, link with verified institutional brokers, and earn automated AI credits on every traded lot.",
     "neweraTitle": "Newera Brokerage",
     "neweraSub": "Liquidity Gateway",
     "neweraDesc": "Native volume-to-credit integration engine powering your ChronosX AI usage credits directly through MT5 trading volume.",
@@ -582,7 +585,7 @@
     "startChatting": "Start Chatting",
     "toolLiveScanner": "Signal Terminal",
     "openTerminal": "Open Terminal",
-    "toolTradeAudit": "AI Trade Advisor",
+    "toolTradeAudit": "AI Past Trade Analyzer",
     "auditStatements": "Audit Statements",
     "toolForexRisk": "Forex & Risk Calculators",
     "openCalculators": "Open Calculators",
@@ -883,14 +886,14 @@
         "badge": "LIVE"
       },
       "strategyHub": {
-        "title": "AI Strategy Core",
+        "title": "AI Trading Signal",
         "desc": "Algorithmic backtesting, quantitative playbooks & strategy signals",
         "badge": "QUANT"
       }
     },
     "tradingTools": {
       "tradeAudit": {
-        "title": "AI Trade Advisor",
+        "title": "AI Past Trade Analyzer",
         "desc": "Review historical trading data to evaluate performance, pinpoint mistakes, and track win rates.",
         "badge": "AI AUDIT"
       },
@@ -1054,9 +1057,9 @@
       "card1Desc": "Instant market screening, technical pattern detection, and high-conviction chart vision.",
       "card2Title": "AI MARKET ASSISTANT",
       "card2Desc": "Ask questions, validate trade setups, and receive real-time institutional market insights.",
-      "card3Title": "AI STRATEGY CORE",
+      "card3Title": "AI TRADING SIGNAL",
       "card3Desc": "Execute live market intelligence and automate proven strategy playbooks.",
-      "card4Title": "AI TRADE ADVISOR",
+      "card4Title": "AI PAST TRADE ANALYZER",
       "card4Desc": "Audit win rates, profit factor, and max drawdown curves before putting capital at risk."
     },
     "howItWorks": {
@@ -1098,7 +1101,7 @@
       "tabs": {
         "patternVision": "Pattern Vision",
         "aiAssistant": "AI Assistant",
-        "strategyCore": "Strategy Core",
+        "strategyCore": "Trading Signal",
         "tradeAudit": "Trade Advisor"
       }
     },
@@ -1180,7 +1183,7 @@
     "featuresBadge": "POWERFUL ENGINE ARCHITECTURE",
     "featuresTitle1": "Architected for Quants.",
     "featuresTitle2": "Built for Every Trader.",
-    "featuresSubtitle": "Explore the core technological pillars powering the ChronosX AI Strategy Core.",
+    "featuresSubtitle": "Explore the core technological pillars powering the ChronosX AI Trading Signal.",
     "simulatorBadge": "INTERACTIVE SIMULATOR",
     "simulatorTitle1": "Interactive Strategy",
     "simulatorTitle2": "Telemetry & Backtester",

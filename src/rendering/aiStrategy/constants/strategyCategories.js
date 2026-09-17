@@ -1,14 +1,6 @@
 export const STRATEGY_CATEGORIES = [
     { id: 'all', label: 'All Strategies' },
-    { id: 'trend', label: 'Trend' },
-    { id: 'breakout', label: 'Breakout' },
-    { id: 'reversal', label: 'Reversal' },
-    { id: 'scalping', label: 'Scalping' },
-    { id: 'momentum', label: 'Momentum' },
-    { id: 'institutional', label: 'Institutional' },
-    { id: 'pattern', label: 'Pattern' },
-    { id: 'news', label: 'News' },
-    { id: 'confluence', label: 'Confluence' }
+    { id: 'trend', label: 'Trend' }
 ];
 
 export const PRESET_STRATEGIES = [

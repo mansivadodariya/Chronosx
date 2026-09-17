@@ -302,7 +302,7 @@ export default function TradeAnalysis() {
 
     return (
         <div className={styles.container}>
-            {/* 1. TOP PAGE HEADER WITH HISTORY BUTTON */}
+            {/* 1. TOP PAGE HEADER */}
             <CommonSectionHeader
                 badge="STATEMENT AUDIT & BEHAVIORAL QUANT"
                 badgeIcon={
@@ -315,16 +315,6 @@ export default function TradeAnalysis() {
                 title="AI Past Trade Analyzer"
                 subtitle="Upload your broker statement (MT4, MT5, cTrader, CSV) to reveal execution leaks, win-rate edge, and psychological biases."
                 isCard={true}
-                rightAction={
-                    <button
-                        type="button"
-                        className={styles.historyBtn}
-                        onClick={() => setShowHistoryModal(true)}
-                    >
-                        <HistoryIcon />
-                        <span>Analysis History</span>
-                    </button>
-                }
             />
 
             {/* LOADER OVERLAY WHILE INGESTING & ANALYZING */}

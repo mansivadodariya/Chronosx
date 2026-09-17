@@ -229,7 +229,7 @@ export async function generateInvoicePdf(item, index = 1) {
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(7.5);
         doc.setTextColor(100, 116, 139);
-        doc.text('Multi-Timeframe AI pattern scans, Chart OCR, AI Strategy Core', 22, y + 11);
+        doc.text('Multi-Timeframe AI pattern scans, Chart OCR, AI Trading Signal', 22, y + 11);
 
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(8.5);

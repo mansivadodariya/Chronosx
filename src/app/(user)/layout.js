@@ -8,6 +8,7 @@ import { ThemeProvider } from '@/context/ThemeContext';
 import { ToolStateProvider } from '@/context/toolState';
 import { SubscriptionProvider } from '@/context/SubscriptionContext';
 import NeweraCreditsModal from '@/components/neweraCreditsModal';
+import RiskDisclosureModal from '@/components/riskDisclosureModal';
 import { extractAvailableCredits, CREDITS_UPDATED_EVENT, notifyCreditsUpdated, refreshCreditsFromServer } from '@/lib/credits';
 import { captureUtmParameters } from '@/lib/utm';
 import { getStoredUserId } from '@/lib/authSession';
@@ -15,23 +16,50 @@ import { dashboardApi, neweraApi } from '@/lib/api';
 import { supabase } from '@/lib/supabaseClient';
 import './layout.scss';
 
+const TOOL_ROUTES = [
+    '/chart-scanner',
+    '/ai-chart-scanner',
+    '/trade-audit',
+    '/ai-trade-audit',
+    '/trade-advisor',
+    '/ai-trade-advisor',
+    '/market-assistant',
+    '/ai-market-assistant',
+    '/live-scanner',
+    '/live-market-scanner',
+    '/signal-terminal',
+    '/trading-signal',
+    '/ai-trading-signal',
+    '/strategy-hub',
+    '/ai-strategy-hub',
+    '/strategy-core',
+    '/ai-strategy-core',
+    '/strategy-signal',
+    '/strategy-studio',
+    '/ai-strategy-studio',
+];
+
 const ROUTE_TAB_MAP = {
     '/dashboard': 'Dashboard',
     '/chart-scanner': 'AI Chart Scanner',
     '/ai-chart-scanner': 'AI Chart Scanner',
-    '/trade-audit': 'AI Trade Advisor',
-    '/ai-trade-audit': 'AI Trade Advisor',
-    '/trade-advisor': 'AI Trade Advisor',
-    '/ai-trade-advisor': 'AI Trade Advisor',
+    '/trade-audit': 'AI Past Trade Analyzer',
+    '/ai-trade-audit': 'AI Past Trade Analyzer',
+    '/trade-advisor': 'AI Past Trade Analyzer',
+    '/ai-trade-advisor': 'AI Past Trade Analyzer',
     '/market-assistant': 'AI Market Assistant',
     '/ai-market-assistant': 'AI Market Assistant',
     '/live-scanner': 'Signal Terminal',
     '/live-market-scanner': 'Signal Terminal',
     '/signal-terminal': 'Signal Terminal',
-    '/strategy-hub': 'AI Strategy Core',
-    '/ai-strategy-hub': 'AI Strategy Core',
-    '/strategy-core': 'AI Strategy Core',
-    '/ai-strategy-core': 'AI Strategy Core',
+    '/trading-signal': 'AI Trading Signal',
+    '/ai-trading-signal': 'AI Trading Signal',
+    '/strategy-hub': 'AI Trading Signal',
+    '/ai-strategy-hub': 'AI Trading Signal',
+    '/strategy-core': 'AI Trading Signal',
+    '/ai-strategy-core': 'AI Trading Signal',
+    '/strategy-studio': 'AI Bot Builder',
+    '/ai-strategy-studio': 'AI Bot Builder',
     '/strategy-hub/live': 'Signal Terminal',
     '/strategy-hub/strategy': 'Strategy Signal',
     '/strategy-signal': 'Strategy Signal',
@@ -45,8 +73,8 @@ const ROUTE_TAB_MAP = {
     '/credit-history': 'Credit History',
     '/plans': 'Subscription Plans',
     '/subscription-plans': 'Subscription Plans',
-    '/broker': 'Broker',
-    '/brokers': 'Broker',
+    '/broker': 'Associated Brokers',
+    '/brokers': 'Associated Brokers',
     '/affiliate': 'Affiliate',
     '/dashboard/affiliate': 'Affiliate',
     '/profile': 'Profile',
@@ -60,8 +88,55 @@ const layout = ({ children }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [showCreditsModal, setShowCreditsModal] = useState(false);
+    const [showRiskModal, setShowRiskModal] = useState(false);
     const [userId, setUserId] = useState('');
     const [isTabAllowed, setIsTabAllowed] = useState(true);
+
+    // Check Risk Disclosure acceptance when user navigates to any Tool route
+    useEffect(() => {
+        const isTool = TOOL_ROUTES.some(r => pathname === r || pathname.startsWith(`${r}/`));
+        if (!isTool) {
+            setShowRiskModal(false);
+            return;
+        }
+
+        const activeUid = userId || getStoredUserId();
+        try {
+            const acceptedKey = activeUid ? `risk_disclosure_accepted_${activeUid}` : null;
+            const hasLocalAccepted = (acceptedKey && localStorage.getItem(acceptedKey)) || localStorage.getItem('risk_disclosure_accepted_global');
+
+            if (hasLocalAccepted) {
+                setShowRiskModal(false);
+                return;
+            }
+
+            if (activeUid && supabase) {
+                supabase
+                    .from('users')
+                    .select('risk_accepted_at')
+                    .eq('id', activeUid)
+                    .maybeSingle()
+                    .then(({ data }) => {
+                        if (data?.risk_accepted_at) {
+                            try {
+                                if (acceptedKey) localStorage.setItem(acceptedKey, data.risk_accepted_at);
+                                localStorage.setItem('risk_disclosure_accepted_global', data.risk_accepted_at);
+                            } catch { /* ignore */ }
+                            setShowRiskModal(false);
+                        } else {
+                            setShowRiskModal(true);
+                        }
+                    })
+                    .catch(() => {
+                        setShowRiskModal(true);
+                    });
+            } else {
+                setShowRiskModal(true);
+            }
+        } catch {
+            setShowRiskModal(true);
+        }
+    }, [pathname, userId]);
 
     useEffect(() => {
         const checkMobile = () => {
@@ -193,6 +268,11 @@ const layout = ({ children }) => {
                 !currentTabName ||
                 currentTabName === 'Dashboard' ||
                 currentTabName === 'Tools' ||
+                currentTabName === 'AI Bot Builder' ||
+                currentTabName === 'AI Strategy Builder' ||
+                currentTabName === 'Strategy Studio' ||
+                currentTabName === 'AI Past Trade Analyzer' ||
+                currentTabName === 'AI Trade Advisor' ||
                 currentTabName === 'Economic Calendar' ||
                 currentTabName === 'Forex Calculator' ||
                 currentTabName === 'Market News' ||
@@ -211,14 +291,15 @@ const layout = ({ children }) => {
                     const currentLower = currentTabName.toLowerCase();
                     const isAllowed = visibleNames.some(name => {
                         if (name === currentLower) return true;
-                        if (currentLower === 'ai trade advisor' && (name.includes('trade advisor') || name.includes('trade audit') || name.includes('trade analysis') || name.includes('trade-audit') || name.includes('trade-analysis') || name.includes('ai trade'))) return true;
+                        if ((currentLower === 'ai bot builder' || currentLower === 'ai strategy builder' || currentLower === 'strategy studio') && (name.includes('bot') || name.includes('strategy') || name.includes('builder') || name.includes('studio') || name.includes('backtest') || name.includes('ai strategy') || name.includes('strategy hub'))) return true;
+                        if ((currentLower === 'ai past trade analyzer' || currentLower === 'ai trade advisor') && (name.includes('past trade') || name.includes('trade advisor') || name.includes('trade audit') || name.includes('trade analysis') || name.includes('trade-audit') || name.includes('trade-analysis') || name.includes('ai trade'))) return true;
                         if (currentLower === 'signal terminal' && (name.includes('signal terminal') || name.includes('live market scanner') || name.includes('live-scanner') || name.includes('live analysis') || name.includes('strategy hub'))) return true;
-                        if (currentLower === 'ai strategy core' && (name.includes('ai strategy core') || name.includes('strategy core') || name.includes('strategy hub') || name.includes('strategy-hub') || name.includes('ai strategy') || name.includes('strategy'))) return true;
+                        if ((currentLower === 'ai trading signal' || currentLower === 'ai strategy core' || currentLower === 'trading signal') && (name.includes('trading signal') || name.includes('ai strategy core') || name.includes('strategy core') || name.includes('strategy hub') || name.includes('strategy-hub') || name.includes('ai strategy') || name.includes('strategy'))) return true;
                         if (currentLower === 'strategy signal' && (name.includes('strategy signal') || name.includes('strategy playbooks') || name.includes('strategy hub') || name.includes('ai strategy') || name.includes('strategy'))) return true;
                         if (currentLower === 'ai chart scanner' && (name.includes('chart scanner') || name.includes('market snapshot') || name.includes('chart-scanner') || name.includes('ai trade'))) return true;
                         if (currentLower === 'ai market assistant' && (name.includes('market assistant') || name.includes('trading advisor') || name.includes('ai chat') || name.includes('ai assistant'))) return true;
                         if (currentLower === 'subscription plans' && name.includes('subscription plans')) return true;
-                        if (currentLower === 'broker' && name.includes('broker')) return true;
+                        if ((currentLower === 'broker' || currentLower === 'brokers' || currentLower === 'associated broker' || currentLower === 'associated brokers') && (name.includes('broker') || name.includes('associated'))) return true;
                         return false;
                     });
                     setIsTabAllowed(isAllowed);
@@ -289,6 +370,11 @@ const layout = ({ children }) => {
                             }}
                         />
                     )} */}
+                    <RiskDisclosureModal
+                        isOpen={showRiskModal}
+                        userId={userId}
+                        onAccept={() => setShowRiskModal(false)}
+                    />
                 </ToolStateProvider>
                 </SubscriptionProvider>
             </ThemeProvider>

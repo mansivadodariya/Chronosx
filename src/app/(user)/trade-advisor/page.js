@@ -1,7 +1,7 @@
 import TradeAnalysis from '@/rendering/tradeAnalysis';
 
 export const metadata = {
-    title: 'AI Trade Advisor | ChronosX',
+    title: 'AI Past Trade Analyzer | ChronosX',
     description: 'Upload your trade history to receive deep AI performance audits, win-rate attribution, and behavioral risk detection.',
 };
 

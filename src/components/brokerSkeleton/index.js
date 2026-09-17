@@ -3,7 +3,7 @@
 import React from 'react';
 import styles from './brokerSkeleton.module.scss';
 
-export function BrokerCardSkeleton() {
+export function BrokerCardSkeleton({ showHighlights = true }) {
     return (
         <div className={styles.cardSkeleton}>
             <div className={styles.bannerHeader}>
@@ -15,11 +15,13 @@ export function BrokerCardSkeleton() {
                 <div className={`${styles.descLine1} ${styles.skeletonPulse}`} />
                 <div className={`${styles.descLine2} ${styles.skeletonPulse}`} />
             </div>
-            <div className={styles.highlightsGrid}>
-                <div className={`${styles.highlightItem} ${styles.skeletonPulse}`} />
-                <div className={`${styles.highlightItem} ${styles.skeletonPulse}`} />
-                <div className={`${styles.highlightItem} ${styles.skeletonPulse}`} />
-            </div>
+            {showHighlights && (
+                <div className={styles.highlightsGrid}>
+                    <div className={`${styles.highlightItem} ${styles.skeletonPulse}`} />
+                    <div className={`${styles.highlightItem} ${styles.skeletonPulse}`} />
+                    <div className={`${styles.highlightItem} ${styles.skeletonPulse}`} />
+                </div>
+            )}
             <div className={styles.cardFooter}>
                 <div className={`${styles.btnSkeleton} ${styles.skeletonPulse}`} />
                 <div className={`${styles.btnSkeleton} ${styles.skeletonPulse}`} />

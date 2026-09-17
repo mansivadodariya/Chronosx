@@ -19,11 +19,11 @@ export default function DashboardRecentActivities({
         <div className={styles.feedColumn}>
             <div className={styles.feedHeader}>
                 <div className={styles.feedTitleWrap}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.2">
                         <circle cx="12" cy="12" r="10" />
                         <polyline points="12 6 12 12 16 14" />
                     </svg>
-                    <h3>{t('dashboard.recentActivityTitle', 'Recent Activity & Scans Feed')}</h3>
+                    <h3>{t('dashboard.recentActivityTitle', 'Recent Activity Feed')}</h3>
                 </div>
 
                 <div className={styles.filterPills}>
@@ -39,23 +39,40 @@ export default function DashboardRecentActivities({
                         className={`${styles.filterTab} ${(activityFilter === 'analysis' || activityFilter === 'blog') ? styles.filterTabActive : ''}`}
                         onClick={() => setActivityFilter('analysis')}
                     >
-                        {t('dashboard.tabScanner', 'AI Chart Scanner')}
+                        {t('dashboard.tabScanner', 'Scanner')}
                     </button>
                     <button
                         type="button"
                         className={`${styles.filterTab} ${activityFilter === 'chat' ? styles.filterTabActive : ''}`}
                         onClick={() => setActivityFilter('chat')}
                     >
-                        {t('dashboard.tabAssistant', 'AI Market Assistant')}
+                        {t('dashboard.tabAssistant', 'Assistant')}
                     </button>
                 </div>
             </div>
 
             <div className={styles.feedCardContainer}>
                 {loading ? (
-                    <div className={styles.loadingBox}>
-                        <div className={styles.miniSpinner} />
-                        <span>{t('dashboard.loadingIntelligence', 'Loading intelligence history...')}</span>
+                    <div className={styles.activityItemsList}>
+                        {[1, 2, 3, 4, 5].map((idx) => (
+                            <div key={idx} className={`${styles.activityRowItem} ${styles.skeletonRow}`}>
+                                <div className={`${styles.actIndexBadge} ${styles.skeletonPulse}`}>
+                                    <span style={{ opacity: 0 }}>{idx}</span>
+                                </div>
+
+                                <div className={styles.actContent}>
+                                    <div className={styles.actHeaderRow}>
+                                        <div className={`${styles.skeletonBar} ${styles.skeletonTitleBar}`} />
+                                        <div className={`${styles.skeletonBar} ${styles.skeletonTagBar}`} />
+                                        <div className={`${styles.skeletonBar} ${styles.skeletonTimeBar}`} />
+                                    </div>
+
+                                    <div className={`${styles.skeletonBar} ${styles.skeletonDescBar}`} />
+                                </div>
+
+                                <div className={`${styles.skeletonBar} ${styles.skeletonActionBar}`} />
+                            </div>
+                        ))}
                     </div>
                 ) : recents.length === 0 ? (
                     <div className={styles.emptyFeed}>
@@ -72,7 +89,7 @@ export default function DashboardRecentActivities({
                     </div>
                 ) : (
                     <div className={styles.activityItemsList}>
-                        {recents.map((item) => {
+                        {recents.map((item, index) => {
                             const { title, description, signal } = formatRecentActivityItem(item);
                             const isScanner = item.type === 'analysis' || item.type === 'blog';
                             return (
@@ -81,21 +98,8 @@ export default function DashboardRecentActivities({
                                     className={styles.activityRowItem}
                                     onClick={() => openRecent(item)}
                                 >
-                                    <div className={styles.actTypeIcon}>
-                                        {isScanner ? (
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2">
-                                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                                                <circle cx="12" cy="13" r="4" />
-                                            </svg>
-                                        ) : (
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2">
-                                                <rect x="3" y="8" width="18" height="12" rx="4" />
-                                                <path d="M12 2v6" />
-                                                <circle cx="8.5" cy="13.5" r="1.5" fill="#18C98B" />
-                                                <circle cx="15.5" cy="13.5" r="1.5" fill="#18C98B" />
-                                                <path d="M9 17h6" />
-                                            </svg>
-                                        )}
+                                    <div className={styles.actIndexBadge}>
+                                        {index + 1}
                                     </div>
 
                                     <div className={styles.actContent}>

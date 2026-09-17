@@ -19,13 +19,13 @@
   border-radius: 6px;
 }
 
-/* Card Skeleton */
+/* 1. Card Skeleton */
 .cardSkeleton {
-  background: #040605;
-  border: 1px solid rgba(24, 201, 139, 0.3);
-  border-radius: 18px;
+  background: #080B0A;
+  border: 1px solid rgba(24, 201, 139, 0.2);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -33,45 +33,47 @@
 }
 
 .bannerHeader {
-  height: 90px;
-  background: linear-gradient(135deg, #0C0B09 0%, #17130A 50%, #261D0C 100%);
+  height: 88px;
+  background: #0B0E0D;
   position: relative;
   padding: 14px 16px;
-  border-bottom: 1px solid rgba(24, 201, 139, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
 }
 
 .logoCircle {
-  width: 90px;
-  height: 34px;
-  border-radius: 8px;
+  width: 110px;
+  height: 36px;
+  border-radius: 10px;
 }
 
 .cardBody {
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   flex: 1;
 }
 
 .titleLine {
-  width: 60%;
+  width: 55%;
   height: 20px;
 }
 
 .subtitleLine {
   width: 35%;
-  height: 14px;
+  height: 13px;
 }
 
 .descLine1 {
   width: 100%;
   height: 12px;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .descLine2 {
-  width: 80%;
+  width: 75%;
   height: 12px;
 }
 
@@ -79,25 +81,169 @@
   padding: 0 16px 14px 16px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .highlightItem {
   height: 38px;
-  border-radius: 8px;
-  background: #0D0E13;
-  border: 1px solid rgba(24, 201, 139, 0.15);
+  border-radius: 10px;
+  background: rgba(24, 201, 139, 0.04);
+  border: 1px solid rgba(24, 201, 139, 0.12);
 }
 
 .cardFooter {
   padding: 14px 16px;
-  border-top: 1px solid rgba(24, 201, 139, 0.15);
+  border-top: 1px solid rgba(24, 201, 139, 0.1);
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .btnSkeleton {
   flex: 1;
   height: 38px;
-  border-radius: 8px;
+  border-radius: 9999px;
+  background: rgba(24, 201, 139, 0.08);
+  border: 1px solid rgba(24, 201, 139, 0.2);
 }
+
+/* 2. Detail Skeleton */
+.detailSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.detailBanner {
+  background: #070A09;
+  border: 1px solid rgba(24, 201, 139, 0.28);
+  border-radius: 20px;
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.detailLogo {
+  width: 140px;
+  height: 48px;
+  border-radius: 12px;
+}
+
+.detailTitle {
+  width: 260px;
+  height: 32px;
+}
+
+.detailSub {
+  width: 180px;
+  height: 16px;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.detailCardSection {
+  background: #080B0A;
+  border: 1px solid rgba(24, 201, 139, 0.18);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.sectionTitle {
+  width: 180px;
+  height: 22px;
+  margin-bottom: 6px;
+}
+
+.paragraphLine {
+  width: 100%;
+  height: 14px;
+}
+
+.featureBox {
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(24, 201, 139, 0.04);
+  border: 1px solid rgba(24, 201, 139, 0.12);
+}
+
+/* ============================================================
+   LIGHT THEME OVERRIDES FOR SKELETON
+   ============================================================ */
+:global(html.light) {
+  .skeletonPulse {
+    background: linear-gradient(
+      90deg,
+      #E2E8F0 0%,
+      #F1F5F9 50%,
+      #E2E8F0 100%
+    ) !important;
+    background-size: 200% 100% !important;
+  }
+
+  .cardSkeleton {
+    background: #FFFFFF !important;
+    border-color: rgba(15, 23, 42, 0.09) !important;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  .bannerHeader {
+    background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%) !important;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+
+    .logoCircle {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(15, 23, 42, 0.09) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    }
+  }
+
+  .highlightItem {
+    background: #F8FAFC !important;
+    border-color: rgba(15, 23, 42, 0.08) !important;
+  }
+
+  .cardFooter {
+    border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+  }
+
+  .btnSkeleton {
+    background: #F1F5F9 !important;
+    border-color: #E2E8F0 !important;
+  }
+
+  .detailBanner {
+    background: linear-gradient(135deg, #F8FAFC 0%, #EDF8F3 100%) !important;
+    border-color: rgba(24, 201, 139, 0.25) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05) !important;
+
+    .detailLogo {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(15, 23, 42, 0.09) !important;
+    }
+  }
+
+  .detailCardSection {
+    background: #FFFFFF !important;
+    border-color: #E2E8F0 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+  }
+
+  .featureBox {
+    background: #F8FAFC !important;
+    border-color: #E2E8F0 !important;
+  }
+}
+
