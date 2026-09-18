@@ -39,34 +39,42 @@ export default function BreakoutDetection() {
   const stepRefs = useRef([]);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+      if (ticking) return;
+      ticking = true;
 
-      // 1. Initial Scroll Lock: If section is above or just entering the viewport, stay strictly on Step 01
-      const stickyThreshold = windowHeight * 0.15;
-      if (rect.top > stickyThreshold) {
-        setActiveStep(0);
-        return;
-      }
+      requestAnimationFrame(() => {
+        ticking = false;
+        if (!containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
 
-      // 2. Trigger point: Center of viewport
-      const triggerLine = windowHeight * 0.50;
+        // Skip if way offscreen
+        if (rect.bottom < 0 || rect.top > windowHeight) return;
 
-      const step2El = stepRefs.current[1];
-      const step3El = stepRefs.current[2];
+        // 1. Initial Scroll Lock: If section is above or just entering the viewport, stay strictly on Step 01
+        const stickyThreshold = windowHeight * 0.15;
+        if (rect.top > stickyThreshold) {
+          setActiveStep(0);
+          return;
+        }
 
-      if (step3El && step3El.getBoundingClientRect().top <= triggerLine) {
-        // Step 03 has scrolled into the center reading zone
-        setActiveStep(2);
-      } else if (step2El && step2El.getBoundingClientRect().top <= triggerLine) {
-        // Step 02 has scrolled into the center reading zone
-        setActiveStep(1);
-      } else {
-        // Step 01 remains firmly active until Step 02 reaches the center
-        setActiveStep(0);
-      }
+        // 2. Trigger point: Center of viewport
+        const triggerLine = windowHeight * 0.50;
+
+        const step2El = stepRefs.current[1];
+        const step3El = stepRefs.current[2];
+
+        if (step3El && step3El.getBoundingClientRect().top <= triggerLine) {
+          setActiveStep(2);
+        } else if (step2El && step2El.getBoundingClientRect().top <= triggerLine) {
+          setActiveStep(1);
+        } else {
+          setActiveStep(0);
+        }
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });

@@ -32,15 +32,30 @@ export default function Herobanner() {
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 60]);
   const bgOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0.25]);
 
+  const rafRef = useRef(null);
+
   const handleMouseMove = (e) => {
     if (!sectionRef.current) return;
-    const rect = sectionRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    setMousePos({ x, y, isHovered: true });
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+
+    if (rafRef.current) return;
+
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      if (!sectionRef.current) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const x = ((clientX - rect.left) / rect.width) * 100;
+      const y = ((clientY - rect.top) / rect.height) * 100;
+      setMousePos({ x, y, isHovered: true });
+    });
   };
 
   const handleMouseLeave = () => {
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
     setMousePos(prev => ({ ...prev, isHovered: false }));
   };
 

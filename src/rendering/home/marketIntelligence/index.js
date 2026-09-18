@@ -20,13 +20,14 @@ export default function MarketIntelligence() {
     if (!cv) return;
     const ctx = cv.getContext("2d");
     let animationId;
-    let visible = true;
+    let visible = false;
 
     function wave(x, a, f, p) {
       return Math.sin(x * f + p) * a;
     }
 
     function draw(t) {
+      if (!visible || document.hidden) return;
       const rect = cv.getBoundingClientRect();
       const W = rect.width || 352;
       const H = rect.height || 258;
@@ -96,8 +97,22 @@ export default function MarketIntelligence() {
       }
     }
 
-    animationId = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(animationId);
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) {
+        if (animationId) cancelAnimationFrame(animationId);
+        animationId = requestAnimationFrame(draw);
+      } else {
+        if (animationId) cancelAnimationFrame(animationId);
+      }
+    }, { threshold: 0.05 });
+
+    observer.observe(cv);
+
+    return () => {
+      observer.disconnect();
+      if (animationId) cancelAnimationFrame(animationId);
+    };
   }, []);
 
   // ----------------------------------------------------
@@ -108,7 +123,7 @@ export default function MarketIntelligence() {
     if (!cv) return;
     const ctx = cv.getContext("2d");
     let animationId;
-    let visible = true;
+    let visible = false;
 
     const N = 50;
     const candles = [];
@@ -136,6 +151,7 @@ export default function MarketIntelligence() {
     ];
 
     function draw(t) {
+      if (!visible || document.hidden) return;
       const rect = cv.getBoundingClientRect();
       const W = rect.width || 352;
       const H = rect.height || 258;
@@ -223,8 +239,22 @@ export default function MarketIntelligence() {
       }
     }
 
-    animationId = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(animationId);
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) {
+        if (animationId) cancelAnimationFrame(animationId);
+        animationId = requestAnimationFrame(draw);
+      } else {
+        if (animationId) cancelAnimationFrame(animationId);
+      }
+    }, { threshold: 0.05 });
+
+    observer.observe(cv);
+
+    return () => {
+      observer.disconnect();
+      if (animationId) cancelAnimationFrame(animationId);
+    };
   }, []);
 
   // ----------------------------------------------------
@@ -235,9 +265,10 @@ export default function MarketIntelligence() {
     if (!cv) return;
     const ctx = cv.getContext("2d");
     let animationId;
-    let visible = true;
+    let visible = false;
 
     function draw(t) {
+      if (!visible || document.hidden) return;
       const rect = cv.getBoundingClientRect();
       const W = rect.width || 352;
       const H = rect.height || 258;
@@ -351,8 +382,22 @@ export default function MarketIntelligence() {
       }
     }
 
-    animationId = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(animationId);
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) {
+        if (animationId) cancelAnimationFrame(animationId);
+        animationId = requestAnimationFrame(draw);
+      } else {
+        if (animationId) cancelAnimationFrame(animationId);
+      }
+    }, { threshold: 0.05 });
+
+    observer.observe(cv);
+
+    return () => {
+      observer.disconnect();
+      if (animationId) cancelAnimationFrame(animationId);
+    };
   }, []);
 
   return (

@@ -46,12 +46,21 @@ export default function Header() {
     }, [pathname]);
 
     useEffect(() => {
+        let ticking = false;
+        let isScrolledState = false;
+
         const handleScroll = () => {
-            if (window.scrollY > 20) {
-                setScrolled(true);
-            } else {
-                setScrolled(false);
-            }
+            if (ticking) return;
+            ticking = true;
+
+            requestAnimationFrame(() => {
+                ticking = false;
+                const isPastThreshold = window.scrollY > 20;
+                if (isPastThreshold !== isScrolledState) {
+                    isScrolledState = isPastThreshold;
+                    setScrolled(isPastThreshold);
+                }
+            });
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });

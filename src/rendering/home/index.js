@@ -1,22 +1,21 @@
 import React from 'react'
+import dynamic from 'next/dynamic'
 import styles from './home.module.scss'
 import Herobanner from './herobanner'
-import AiCockpit from './aiCockpit'
-import MetricsSection from './metricsSection'
-import CardList from './cardList'
-import Platform from './platform'
 import Capabilities from './capabilities'
-import AiAssistant from './aiAssistant'
-import HowitWorks from './howitWorks'
-import ChartAnalysis from './chartAnalysis'
-import BreakoutDetection from './breakoutDetection'
-import AiAnalyst from './aiAnalyst'
-import BeforeAfterComparison from './beforeAfterComparison'
-import MarketIntelligence from './marketIntelligence'
-import TeamUp from './teamUp'
-import Testimonials from './testimonials'
-import GlobalNetworkMap from './globalNetworkMap'
-import ReadytoPut from './readytoPut'
+
+// Dynamically split below-the-fold components for blazing fast initial page load
+const MetricsSection = dynamic(() => import('./metricsSection'))
+const AiCockpit = dynamic(() => import('./aiCockpit'))
+const AiAnalyst = dynamic(() => import('./aiAnalyst'))
+const BeforeAfterComparison = dynamic(() => import('./beforeAfterComparison'))
+const HowitWorks = dynamic(() => import('./howitWorks'))
+const MarketIntelligence = dynamic(() => import('./marketIntelligence'))
+const BreakoutDetection = dynamic(() => import('./breakoutDetection'))
+const TeamUp = dynamic(() => import('./teamUp'))
+const GlobalNetworkMap = dynamic(() => import('./globalNetworkMap'))
+const Testimonials = dynamic(() => import('./testimonials'))
+const ReadytoPut = dynamic(() => import('./readytoPut'))
 
 export default function HomePage() {
     return (

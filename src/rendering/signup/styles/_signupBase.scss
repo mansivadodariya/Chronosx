@@ -1,8 +1,8 @@
 .signuppage {
     position: relative;
-    width: 100vw;
-    height: 100vh;
-    max-height: 100vh;
+    width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
     display: flex;
     background: #000000;
     overflow: hidden;
@@ -11,7 +11,7 @@
 
     @include respond-to('md') {
         height: auto;
-        min-height: 100vh;
+        min-height: 100dvh;
         max-height: none;
         overflow-y: auto;
         padding: 12px;
@@ -705,5 +705,3 @@
             0 0 28px rgba(24, 201, 139, 0.55);
     }
 }
-
-

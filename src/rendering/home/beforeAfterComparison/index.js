@@ -24,7 +24,7 @@ const candlesData = [
   { open: 430, high: 465, low: 422, close: 458 },
   { open: 458, high: 472, low: 445, close: 450 },
   { open: 450, high: 468, low: 438, close: 462 }, // Candle 16 - Sell Signal Pullback
-  { open: 462, high: 470, low: 418, close: 424 }, 
+  { open: 462, high: 470, low: 418, close: 424 },
   { open: 424, high: 445, low: 420, close: 438 },
   { open: 438, high: 448, low: 430, close: 434 },
   { open: 434, high: 442, low: 422, close: 428 },
@@ -75,7 +75,6 @@ export default function BeforeAfterComparison() {
   const isDraggingRef = useRef(false);
   const containerRef = useRef(null);
   const rafId = useRef(null);
-
   // Handle Drag / Touch Move to update slider position smoothly with 0ms delay
   const updatePosition = useCallback((clientX) => {
     if (!containerRef.current) return;
@@ -94,8 +93,23 @@ export default function BeforeAfterComparison() {
     isDraggingRef.current = true;
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
-    } catch (_) {}
+    } catch (_) { }
     updatePosition(e.clientX);
+
+    const onWinMove = (moveEvt) => {
+      if (isDraggingRef.current) {
+        updatePosition(moveEvt.clientX);
+      }
+    };
+
+    const onWinUp = () => {
+      isDraggingRef.current = false;
+      window.removeEventListener('pointermove', onWinMove);
+      window.removeEventListener('pointerup', onWinUp);
+    };
+
+    window.addEventListener('pointermove', onWinMove, { passive: true });
+    window.addEventListener('pointerup', onWinUp, { passive: true });
   };
 
   const onPointerMove = (e) => {
@@ -110,26 +124,14 @@ export default function BeforeAfterComparison() {
       if (e?.currentTarget && e.currentTarget.hasPointerCapture(e.pointerId)) {
         e.currentTarget.releasePointerCapture(e.pointerId);
       }
-    } catch (_) {}
+    } catch (_) { }
   };
 
   useEffect(() => {
-    const handleWindowPointerMove = (e) => {
-      if (isDraggingRef.current) updatePosition(e.clientX);
-    };
-    const handleWindowPointerUp = () => {
-      isDraggingRef.current = false;
-    };
-
-    window.addEventListener('pointermove', handleWindowPointerMove, { passive: true });
-    window.addEventListener('pointerup', handleWindowPointerUp, { passive: true });
-
     return () => {
       if (rafId.current) cancelAnimationFrame(rafId.current);
-      window.removeEventListener('pointermove', handleWindowPointerMove);
-      window.removeEventListener('pointerup', handleWindowPointerUp);
     };
-  }, [updatePosition]);
+  }, []);
 
   // Chart dimensions & scaling
   const width = 960;
@@ -156,7 +158,7 @@ export default function BeforeAfterComparison() {
   return (
     <section className={styles.comparisonSection} aria-label="Before vs After Algorithm Comparison">
       <div className="container">
-        
+
         {/* Standardized Header */}
         <SectionHeader
           badge="ALGORITHM COMPARISON"
@@ -166,8 +168,8 @@ export default function BeforeAfterComparison() {
         />
 
         {/* Interactive Comparison Card Container */}
-        <div 
-          className={styles.comparisonCard} 
+        <div
+          className={styles.comparisonCard}
           ref={containerRef}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
@@ -177,7 +179,7 @@ export default function BeforeAfterComparison() {
           {/* LAYER 1: BEFORE (Raw Candlestick Chart ONLY) */}
           <div className={styles.layerBefore}>
             <div className={styles.badgeBefore}>BEFORE</div>
-            
+
             <svg viewBox={`0 0 ${width} ${height}`} className={styles.svgChart} preserveAspectRatio="none">
               {/* Background Fine Grid Lines */}
               {verticalGridLines.map((x, i) => (
@@ -213,7 +215,7 @@ export default function BeforeAfterComparison() {
           </div>
 
           {/* LAYER 2: AFTER CHRONOSX ALGO (Full Signals Revealed Across Entire Chart Width) */}
-          <div 
+          <div
             className={styles.layerAfter}
             style={{ clipPath: `polygon(${sliderPos}% 0, 100% 0, 100% 100%, ${sliderPos}% 100%)` }}
           >
@@ -418,14 +420,14 @@ export default function BeforeAfterComparison() {
           </div>
 
           {/* Central Draggable Slider Bar & Handle */}
-          <div 
-            className={styles.sliderLine} 
+          <div
+            className={styles.sliderLine}
             style={{ left: `${sliderPos}%` }}
           >
             <div className={styles.sliderHandle}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 8L22 12L18 16" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M6 8L2 12L6 16" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M18 8L22 12L18 16" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M6 8L2 12L6 16" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
           </div>

@@ -99,6 +99,8 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
   // Micro-tick price engine
   useEffect(() => {
     const tickInterval = setInterval(() => {
+      if (document.hidden) return;
+
       setLivePrice((prev) => {
         const randomJump = (Math.random() - 0.48) * 0.85;
         const newClose = Number((prev + randomJump).toFixed(2));
