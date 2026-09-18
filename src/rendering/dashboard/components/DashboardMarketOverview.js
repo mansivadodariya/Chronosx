@@ -316,16 +316,13 @@ export default function DashboardMarketOverview({ initialItems = [], userId = ''
                         ? (changeNum >= 0 ? `+${changeNum.toFixed(2)}%` : `${changeNum.toFixed(2)}%`)
                         : item.change_24h_display;
 
-                    const updatedTrend = Array.isArray(item.trend) && item.trend.length > 0
-                        ? [...item.trend.slice(1), newPrice]
-                        : [newPrice];
-
                     return {
                         ...item,
                         price: newPrice,
                         change_24h: typeof changeNum === 'number' ? changeNum : item.change_24h,
                         change_24h_display: changeDisplay,
-                        trend: updatedTrend
+                        // Preserve 24-Hour / 4-Hour historical trend array intact from backend
+                        trend: item.trend
                     };
                 }
                 return item;
@@ -338,7 +335,15 @@ export default function DashboardMarketOverview({ initialItems = [], userId = ''
         if (Array.isArray(initialItems) && initialItems.length > 0) {
             setItems((prev) => {
                 const map = new Map(initialItems.map(i => [cleanPairSymbol(i.symbol), i]));
-                return prev.map(p => map.get(cleanPairSymbol(p.symbol)) || p);
+                return prev.map(p => {
+                    const found = map.get(cleanPairSymbol(p.symbol));
+                    if (!found) return p;
+                    return {
+                        ...p,
+                        ...found,
+                        trend: (found.trend && found.trend.length > 0) ? found.trend : (found.sparkline && found.sparkline.length > 0 ? found.sparkline : p.trend)
+                    };
+                });
             });
         }
     }, [initialItems]);
@@ -378,10 +383,13 @@ export default function DashboardMarketOverview({ initialItems = [], userId = ''
                                     return prev.map(oldItem => {
                                         const found = updateMap.get(cleanPairSymbol(oldItem.symbol));
                                         if (found) {
+                                            const newTrend = (Array.isArray(found.trend) && found.trend.length > 0)
+                                                ? found.trend
+                                                : ((Array.isArray(found.sparkline) && found.sparkline.length > 0) ? found.sparkline : oldItem.trend);
                                             return {
                                                 ...oldItem,
                                                 ...found,
-                                                trend: found.trend || found.sparkline || oldItem.trend
+                                                trend: newTrend
                                             };
                                         }
                                         return oldItem;

@@ -81,7 +81,7 @@ const getNavSections = (t) => [
       },
       { label: t('nav.plans', 'Subscription Plans'), href: "/subscription-plans", icon: CrownIcon },
       { label: t('nav.broker', 'Associated Brokers'), href: "/brokers", icon: BrokerBankIcon },
-      { label: t('nav.affiliate', 'Affiliate'), href: "/affiliate", icon: AffiliateIcon },
+      { label: t('nav.affiliate', 'Affiliate Program'), href: "/affiliate", icon: AffiliateIcon },
       { label: t('nav.profile', 'Settings'), href: "/profile", icon: ProfileUserIcon },
     ]
   }
@@ -464,7 +464,7 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
       const mapped = (ROUTE_TAB_MAP[routeHref] || '').toLowerCase().trim();
 
       // Affiliate & Education (Edufins external link) & Settings/Profile & Dashboard are always accessible
-      if (lowerLabel === 'affiliate' || mapped === 'affiliate') return true;
+      if (lowerLabel.includes('affiliate') || mapped.includes('affiliate')) return true;
       if (lowerLabel.includes('education') || lowerLabel.includes('edufins') || routeHref?.includes('edufins')) return true;
       if (lowerLabel === 'profile' || lowerLabel === 'settings' || mapped === 'profile') return true;
       if (lowerLabel === 'dashboard' || mapped === 'dashboard') return true;
@@ -492,9 +492,9 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
 
         // Settings/Profile is always accessible
         if (
-          parentTabName === 'profile' ||
-          parentTabName === 'settings' ||
-          parentTabName === 'affiliate' ||
+          parentTabName.includes('profile') ||
+          parentTabName.includes('settings') ||
+          parentTabName.includes('affiliate') ||
           item.href === '/affiliate' ||
           item.href === '/dashboard/affiliate'
         ) return item;

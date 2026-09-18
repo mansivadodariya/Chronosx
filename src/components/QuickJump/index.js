@@ -190,7 +190,7 @@ const getQuickJumpSections = (t) => [
         items: [
             {
                 id: 'affiliate',
-                title: t('nav.affiliate', 'Affiliate'),
+                title: t('nav.affiliate', 'Affiliate Program'),
                 subtitle: t('quickJump.affiliateSub', 'Referral tracking, tier commissions & crypto withdrawals'),
                 href: '/affiliate',
                 keywords: ['affiliate', 'referral', 'commission', 'withdraw', 'crypto', 'usdt', 'earn', 'invite', 'partner'],

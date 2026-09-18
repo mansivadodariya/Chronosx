@@ -64,16 +64,12 @@ const BarChartIcon = () => (
     </svg>
 );
 
-const ArrowRightIcon = () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="5" y1="12" x2="19" y2="12" />
-        <polyline points="12 5 19 12 12 19" />
-    </svg>
-);
-
-const CheckIcon = () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="20 6 9 17 4 12" />
+const RocketIcon = () => (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+        <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
     </svg>
 );
 
@@ -319,26 +315,16 @@ export default function PredefinedStrategyCard({ strategy, isLight: isLightProp,
                 </div>
             </div>
 
-            {/* 6. Enclosed "Copy strategy →" Button Footer */}
-            <div className={styles.actionFooter}>
+            {/* 6. "Run Backtest" Button Footer (Disabled for now) */}
+            <div className={`${styles.actionFooter} ${styles.actionFooterDisabled}`}>
                 <button
                     type="button"
-                    className={`${styles.btnCopyStrategy} ${copied ? styles.btnCopied : ''}`}
-                    onClick={handleCopy}
+                    className={`${styles.btnRunBacktest} ${styles.btnDisabled}`}
+                    disabled
+                    title="Disabled for now"
                 >
-                    {copied ? (
-                        <>
-                            <CheckIcon />
-                            <span>Strategy Copied!</span>
-                        </>
-                    ) : (
-                        <>
-                            <span>Copy strategy</span>
-                            <span className={styles.btnArrow}>
-                                <ArrowRightIcon />
-                            </span>
-                        </>
-                    )}
+                    <RocketIcon />
+                    <span>Run Backtest</span>
                 </button>
             </div>
         </div>

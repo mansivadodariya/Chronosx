@@ -14,6 +14,7 @@ import AiAnalyst from './aiAnalyst'
 import BeforeAfterComparison from './beforeAfterComparison'
 import MarketIntelligence from './marketIntelligence'
 import TeamUp from './teamUp'
+import BrokersSection from './brokersSection'
 import Testimonials from './testimonials'
 import GlobalNetworkMap from './globalNetworkMap'
 import ReadytoPut from './readytoPut'
@@ -32,6 +33,7 @@ export default function HomePage() {
                 <MarketIntelligence />
                 <BreakoutDetection />
                 <TeamUp />
+                <BrokersSection />
                 <GlobalNetworkMap />
                 <Testimonials />
                 <ReadytoPut />

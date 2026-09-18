@@ -93,21 +93,10 @@ export default function ProfileOnboardingSurveyCard({ onboardingData, t }) {
                     <div className={styles.surveyHeaderTexts}>
                         <div className={styles.surveyTitleBadgeRow}>
                             <h3>{t('profile.onboardingSurveyTitle', 'Trader Onboarding Survey & Strategy Profile')}</h3>
-                            <span className={styles.calibratedBadge}>
-                                <span className={styles.greenBeacon} />
-                                {hasData ? t('profile.surveyCalibrated', 'CALIBRATED ✓') : t('profile.surveyPending', 'PENDING')}
-                            </span>
                         </div>
                         <p>{t('profile.onboardingSurveyDesc', 'Your trading methodology, risk parameters, and AI engine calibration preferences.')}</p>
                     </div>
                 </div>
-
-                <Link href="/onboarding" className={styles.recalibrateBtn}>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-                    </svg>
-                    <span>{hasData ? t('profile.retakeSurvey', 'Re-calibrate Profile') : t('profile.takeSurvey', 'Take Survey')}</span>
-                </Link>
             </div>
 
             {/* Content Body */}
