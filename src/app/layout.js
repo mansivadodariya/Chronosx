@@ -1,13 +1,10 @@
 import { Anton, Plus_Jakarta_Sans, Roboto } from "next/font/google";
-import dynamic from "next/dynamic";
 import "./globals.css";
 import { ToastProvider } from "@/components/toast";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import SmoothScrollProvider from "@/components/smoothScroll";
-
-const PageLoader = dynamic(() => import("@/components/pageLoader"), { ssr: false });
-const WhatsappButton = dynamic(() => import("@/components/whatsappButton"), { ssr: false });
+import ClientOnlyWidgets from "@/components/ClientOnlyWidgets";
 
 const antonSans = Anton({
   variable: "--font-anton",
@@ -139,8 +136,7 @@ export default function RootLayout({ children }) {
             <ToastProvider>
               <SmoothScrollProvider>
                 {children}
-                <PageLoader />
-                <WhatsappButton />
+                <ClientOnlyWidgets />
               </SmoothScrollProvider>
             </ToastProvider>
           </LanguageProvider>
