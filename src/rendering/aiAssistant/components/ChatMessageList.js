@@ -167,19 +167,7 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                             {/* 2. Structured Deep Analysis or Markdown Content */}
                                             {(msg.response_format === "deep_analysis" || isDeepAnalysis) && msg.fullReport ? (
                                                 <div className={styles.deepAnalysisCardWrapper}>
-                                                    {/* TOP SECTION: SHORT EXECUTIVE BULLETS */}
-                                                    {displayContent && displayContent.trim() !== (msg.fullReport || "").trim() && (
-                                                        <div className={styles.executiveSummaryCard}>
-                                                            <RenderMarkdownWithWidgets
-                                                                content={displayContent}
-                                                                visualData={msg.visualData}
-                                                                defaultSymbol={msg.detected_pair || selectedPair}
-                                                                isStreaming={Boolean(msg.isNewlyGenerated)}
-                                                            />
-                                                        </div>
-                                                    )}
-
-                                                    {/* BOTTOM SECTION: ANALYSIS CENTER */}
+                                                    {/* ANALYSIS CENTER */}
                                                     <div className={styles.analysisCenterCard}>
                                                         <div className={styles.analysisCenterHeader}>
                                                             <span className={styles.analysisCenterIcon}>
