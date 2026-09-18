@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 
@@ -20,7 +20,11 @@ export function checkIsDarkLogoFallback(broker) {
     const logo = String(broker.logo || '');
 
     // Known dark logo brokers
-    if (id.includes('avatrade') || name.includes('avatrade') || id.includes('blueberry') || name.includes('blueberry')) {
+    if (
+        id.includes('avatrade') || name.includes('avatrade') ||
+        id.includes('blueberry') || name.includes('blueberry') ||
+        id.includes('multibank') || name.includes('multibank')
+    ) {
         return true;
     }
 

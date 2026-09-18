@@ -7,6 +7,8 @@
  * @property {string} fallbackText
  */
 
+import { formatTechnicalProse, isTechnicalJsonPayload } from './formatTechnicalProse.js';
+
 /**
  * Parses raw chat message text and extracts disclaimer header, footer,
  * embedded JSON analysis report, and clean fallback text.
@@ -85,13 +87,25 @@ export function parseChatMessage(rawText, fullReport) {
     // Remove code fences ```json ... ```
     cleanText = cleanText.replace(/```(?:json)?[\s\S]*?```/gi, '');
 
-    // Only strip pure JSON object if the message was predominantly a JSON envelope
+    // Only strip pure JSON object if the message was predominantly a vision JSON envelope
     if (/^\s*\{[\s\S]*\"(?:overall_trend|market_structure|chart_sections|is_valid_chart)\"[\s\S]*\}\s*$/i.test(cleanText.trim())) {
       cleanText = '';
+    } else if (isTechnicalJsonPayload(result.jsonData)) {
+      cleanText = formatTechnicalProse(result.jsonData);
     }
   }
 
   cleanText = cleanText.trim();
+
+  // If cleanText is still raw JSON (e.g. indicator dump), format it
+  if (cleanText && cleanText.startsWith('{') && cleanText.endsWith('}')) {
+    try {
+      const parsedObj = JSON.parse(cleanText);
+      if (isTechnicalJsonPayload(parsedObj)) {
+        cleanText = formatTechnicalProse(parsedObj);
+      }
+    } catch (_) {}
+  }
 
   // If cleanText was completely wiped but sourceText had content (and not raw JSON envelope)
   if (!cleanText && sourceText && !/^\s*\{[\s\S]*\}\s*$/.test(sourceText.trim())) {

@@ -86,10 +86,10 @@ export default function MetricsSection() {
       <div className="container">
         {/* Section Header */}
         <SectionHeader
-          badge="PLATFORM METRICS"
-          title1="Numbers That Prove"
-          title2="the Edge."
-          description="High-frequency neural pattern recognition operating across global markets with ultra-low latency."
+          badge={t('homeSections.metrics.badge', 'PLATFORM METRICS')}
+          title1={t('homeSections.metrics.title1', 'Numbers That Prove')}
+          title2={t('homeSections.metrics.title2', 'the Edge.')}
+          description={t('homeSections.metrics.description', 'High-frequency neural pattern recognition operating across global markets with ultra-low latency.')}
         />
 
         {/* Centered Brick Wall Grid with Localized Green Laser Border Spotlight & Staggered Entry Motions */}
@@ -145,8 +145,8 @@ export default function MetricsSection() {
                   <CountUp to={1000} duration={2.0} />
                   <span className={styles.suffixGreen}>+</span>
                 </div>
-                <div className={styles.tileLabel}>Market Pairs Scanned</div>
-                <div className={styles.tileDesc}>Live Forex, Indices &amp; Metals telemetry</div>
+                <div className={styles.tileLabel}>{t('homeSections.metrics.tile1Label', 'Market Pairs Scanned')}</div>
+                <div className={styles.tileDesc}>{t('homeSections.metrics.tile1Desc', 'Live Forex, Indices & Metals telemetry')}</div>
               </div>
             </motion.div>
 
@@ -157,11 +157,11 @@ export default function MetricsSection() {
               <div className={styles.tileBody}>
                 <div className={styles.bigNumber}>
                   <span className={styles.suffixGreen}>&lt; </span>
-                  <CountUp to={300} duration={2.0} />
+                  <CountUp to={50} duration={2.0} />
                   <span className={styles.suffixGreen}>ms</span>
                 </div>
-                <div className={styles.tileLabel}>AI Processing Speed</div>
-                <div className={styles.tileDesc}>Sub-second neural pattern analysis</div>
+                <div className={styles.tileLabel}>{t('homeSections.metrics.tile2Label', 'AI Processing Speed')}</div>
+                <div className={styles.tileDesc}>{t('homeSections.metrics.tile2Desc', 'Sub-second neural pattern analysis')}</div>
               </div>
             </motion.div>
 
@@ -181,8 +181,8 @@ export default function MetricsSection() {
                   <CountUp to={6} duration={2.0} />
                   <span className={styles.suffixGreen}> Timeframes</span>
                 </div>
-                <div className={styles.tileLabel}>Multi-TF Confluence</div>
-                <div className={styles.tileDesc}>From 1-minute scalping to daily swing setups</div>
+                <div className={styles.tileLabel}>{t('homeSections.metrics.tile3Label', 'Timeframes Multi-TF Confluence')}</div>
+                <div className={styles.tileDesc}>{t('homeSections.metrics.tile3Desc', 'From 1-minute scalping to daily swings')}</div>
               </div>
             </motion.div>
 
@@ -202,8 +202,8 @@ export default function MetricsSection() {
                   <CountUp to={99.9} decimals={1} duration={2.0} />
                   <span className={styles.suffixGreen}>%</span>
                 </div>
-                <div className={styles.tileLabel}>Platform Availability</div>
-                <div className={styles.tileDesc}>24/7 continuous real-time market telemetry</div>
+                <div className={styles.tileLabel}>{t('homeSections.metrics.tile4Label', 'Platform Availability')}</div>
+                <div className={styles.tileDesc}>{t('homeSections.metrics.tile4Desc', '24/7 continuous market telemetry')}</div>
               </div>
             </motion.div>
 

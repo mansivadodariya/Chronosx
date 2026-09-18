@@ -66,7 +66,7 @@ export default function HowitWorks() {
               badge="MT5 BROKER INTEGRATION"
               title1="Trade Your Edge."
               title2="Earn Credits. Never Pay for AI."
-              description="Connect your MT5 account to unlock perpetual AI intelligence. Every trade you execute automatically refills your AI analysis credits—giving you unlimited access to institutional market scans, signals, and strategy playbooks for free."
+              description="Every trade you execute automatically refills your AI analysis credits—giving you unlimited access to institutional market scans, signals, and strategy playbooks for free."
             />
 
             <Link href="/signup" className={styles.cta}>

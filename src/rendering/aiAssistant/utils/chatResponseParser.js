@@ -1,4 +1,5 @@
 import { parseChatMessage } from '@/utils/chatParser';
+import { formatTechnicalProse, isTechnicalJsonPayload } from '@/utils/formatTechnicalProse';
 
 export const parseAssistantResponse = (raw) => {
     let envelope = raw?.data || raw;
@@ -41,14 +42,31 @@ export const parseAssistantResponse = (raw) => {
     let disclaimer_footer = parsed.disclaimerFooter || null;
 
     if (parsed.jsonData) {
-        chart_sections = parsed.jsonData.chart_sections || parsed.jsonData;
-        response_format = 'vision_analysis';
-        if (!detected_pair && parsed.jsonData.detected_pair) detected_pair = parsed.jsonData.detected_pair;
-        if (!detected_timeframe && parsed.jsonData.detected_timeframe) detected_timeframe = parsed.jsonData.detected_timeframe;
-        if (parsed.jsonData.is_valid_chart !== undefined) is_valid_chart = parsed.jsonData.is_valid_chart;
-        if (!image_warning && parsed.jsonData.image_warning) image_warning = parsed.jsonData.image_warning;
-        if (!shortContent && parsed.jsonData.overall_summary) {
-            shortContent = parsed.jsonData.overall_summary;
+        const isVision = Boolean(
+            parsed.jsonData.overall_trend ||
+            parsed.jsonData.market_structure ||
+            parsed.jsonData.chart_sections ||
+            parsed.jsonData.is_valid_chart !== undefined
+        );
+
+        if (isVision) {
+            chart_sections = parsed.jsonData.chart_sections || parsed.jsonData;
+            response_format = 'vision_analysis';
+            if (!detected_pair && parsed.jsonData.detected_pair) detected_pair = parsed.jsonData.detected_pair;
+            if (!detected_timeframe && parsed.jsonData.detected_timeframe) detected_timeframe = parsed.jsonData.detected_timeframe;
+            if (parsed.jsonData.is_valid_chart !== undefined) is_valid_chart = parsed.jsonData.is_valid_chart;
+            if (!image_warning && parsed.jsonData.image_warning) image_warning = parsed.jsonData.image_warning;
+            if (!shortContent && parsed.jsonData.overall_summary) {
+                shortContent = parsed.jsonData.overall_summary;
+            }
+        } else if (isTechnicalJsonPayload(parsed.jsonData)) {
+            if (!detected_pair && (parsed.jsonData.symbol || parsed.jsonData.analysis_results?.symbol)) {
+                detected_pair = parsed.jsonData.symbol || parsed.jsonData.analysis_results?.symbol;
+            }
+            shortContent = formatTechnicalProse(parsed.jsonData, detected_pair);
+            if (fullReport) {
+                response_format = 'deep_analysis';
+            }
         }
     }
 
@@ -74,8 +92,29 @@ export const parseAssistantResponse = (raw) => {
         shortContent = "";
     }
 
+    // Ensure shortContent is never a raw JSON dump
+    if (!shortContent) {
+        if (isTechnicalJsonPayload(payload)) {
+            shortContent = formatTechnicalProse(payload, detected_pair);
+        } else if (typeof payload === 'string' && payload.trim().startsWith('{')) {
+            try {
+                const parsedP = JSON.parse(payload);
+                if (isTechnicalJsonPayload(parsedP)) {
+                    shortContent = formatTechnicalProse(parsedP, detected_pair);
+                }
+            } catch (_) {}
+        }
+    } else if (typeof shortContent === 'string' && shortContent.trim().startsWith('{') && shortContent.trim().endsWith('}')) {
+        try {
+            const parsedS = JSON.parse(shortContent);
+            if (isTechnicalJsonPayload(parsedS)) {
+                shortContent = formatTechnicalProse(parsedS, detected_pair);
+            }
+        } catch (_) {}
+    }
+
     return {
-        shortContent: shortContent || (typeof payload === 'string' ? payload : JSON.stringify(payload)),
+        shortContent: shortContent || (typeof payload === 'string' && !payload.trim().startsWith('{') ? payload : ''),
         fullReport: fullReport,
         visualData,
         detected_pair,

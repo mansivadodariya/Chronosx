@@ -11,6 +11,7 @@ import ClarificationOptionButtons from './ClarificationOptionButtons';
 import RenderMarkdownWithWidgets from './MarkdownWidgetRenderer';
 import VisionAnalysisAccordions from './VisionAnalysisAccordions';
 import { WarningIcon, ChatIcon, AnalyticsIcon, DownloadIcon } from '@/icons/visionIcons';
+import { formatTechnicalProse, isTechnicalJsonPayload } from '@/utils/formatTechnicalProse';
 import styles from '../aiAssistant.module.scss';
 
 const ANALYZING_ASSISTANT_PHRASES = [
@@ -20,7 +21,7 @@ const ANALYZING_ASSISTANT_PHRASES = [
     'Synthesizing multi-timeframe trade outlook...',
 ];
 
-export default function ChatMessageList({
+const ChatMessageList = React.memo(function ChatMessageList({
     chatMessages,
     isLoadingChat,
     pendingRequest,
@@ -101,7 +102,17 @@ export default function ChatMessageList({
                                     const sections = msg.chart_sections || (parsed.jsonData ? (parsed.jsonData.chart_sections || parsed.jsonData) : null);
                                     const disclaimerHeader = msg.disclaimer_header || parsed.disclaimerHeader;
                                     const disclaimerFooter = msg.disclaimer_footer || parsed.disclaimerFooter;
-                                    const contentText = parsed.fallbackText || (typeof msg.content === 'string' && !msg.content.trim().startsWith('{') ? msg.content : (msg.content || ''));
+                                    let contentText = parsed.fallbackText || (typeof msg.content === 'string' && !msg.content.trim().startsWith('{') ? msg.content : '');
+
+                                    // If contentText is still raw JSON (e.g. from historical sessions in DB), format it cleanly
+                                    if ((!contentText || contentText.trim().startsWith('{')) && (msg.content || parsed.jsonData)) {
+                                        try {
+                                            const rawObj = parsed.jsonData || (typeof msg.content === 'string' && msg.content.trim().startsWith('{') ? JSON.parse(msg.content) : msg.content);
+                                            if (rawObj && typeof rawObj === 'object' && isTechnicalJsonPayload(rawObj)) {
+                                                contentText = formatTechnicalProse(rawObj, msg.detected_pair || selectedPair);
+                                            }
+                                        } catch (_) {}
+                                    }
 
                                     const isVisionAnalysis = Boolean(
                                         msg.response_format === 'vision_analysis' ||
@@ -135,6 +146,8 @@ export default function ChatMessageList({
                                         );
                                     }
 
+                                    const displayContent = contentText || (typeof msg.content === 'string' && msg.content.trim().startsWith('{') ? formatTechnicalProse(msg.content, msg.detected_pair || selectedPair) : (msg.content || ''));
+
                                     return (
                                         <>
                                             {/* 1. Disclaimer Banner if present on plain message */}
@@ -155,10 +168,10 @@ export default function ChatMessageList({
                                             {(msg.response_format === "deep_analysis" || isDeepAnalysis) && msg.fullReport ? (
                                                 <div className={styles.deepAnalysisCardWrapper}>
                                                     {/* TOP SECTION: SHORT EXECUTIVE BULLETS */}
-                                                    {(contentText || msg.content) && (contentText || msg.content).trim() !== (msg.fullReport || "").trim() && (
+                                                    {displayContent && displayContent.trim() !== (msg.fullReport || "").trim() && (
                                                         <div className={styles.executiveSummaryCard}>
                                                             <RenderMarkdownWithWidgets
-                                                                content={contentText || msg.content}
+                                                                content={displayContent}
                                                                 visualData={msg.visualData}
                                                                 defaultSymbol={msg.detected_pair || selectedPair}
                                                                 isStreaming={Boolean(msg.isNewlyGenerated)}
@@ -198,7 +211,7 @@ export default function ChatMessageList({
                                                 </div>
                                             ) : (
                                                 <RenderMarkdownWithWidgets
-                                                    content={contentText || msg.content}
+                                                    content={displayContent}
                                                     visualData={msg.visualData}
                                                     defaultSymbol={msg.detected_pair || selectedPair}
                                                     isStreaming={Boolean(msg.isNewlyGenerated)}
@@ -260,4 +273,6 @@ export default function ChatMessageList({
             <div ref={chatEndRef} />
         </div>
     );
-}
+});
+
+export default ChatMessageList;

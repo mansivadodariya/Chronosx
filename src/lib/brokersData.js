@@ -72,6 +72,7 @@ export const brokerList = [
     },
     {
         id: 'multibank',
+        isDarkLogo: true,
         name: 'MultiBank Group',
         subtitle: 'Global Forex & CFD Broker',
         logo: 'https://multibankfx.com/favicon.ico',
@@ -182,7 +183,7 @@ export function formatBroker(item) {
         subtitle_ar: item.subtitle_ar || item.subtitle || '',
         subtitle_ph: item.subtitle_ph || item.subtitle || '',
         logo: item.logo || '',
-        isDarkLogo: Boolean(item.is_dark_logo || item.isDarkLogo || item.dark_logo || item.darkLogo || (item.id && ['avatrade', 'blueberry', 'blueberrymarkets'].includes(String(item.id).toLowerCase()))),
+        isDarkLogo: Boolean(item.is_dark_logo || item.isDarkLogo || item.dark_logo || item.darkLogo || (item.id && ['avatrade', 'blueberry', 'blueberrymarkets', 'multibank', 'multibankfx'].includes(String(item.id).toLowerCase()))),
         category: item.category || 'Brokers',
         description: item.description || '',
         description_ar: item.description_ar || item.description || '',

@@ -214,9 +214,12 @@ function renderBadgeContent(code, cx, cy, r) {
   if (c === 'XAU' || c === 'GOLD') {
     return (
       <g key={idPrefix}>
-        <circle cx={cx} cy={cy} r={r} fill="#18C98B" />
-        <path d={`M${cx - 6} ${cy - 2}L${cx} ${cy - 5}L${cx + 6} ${cy - 2}L${cx + 4} ${cy + 3}H${cx - 4}L${cx - 6} ${cy - 2}Z`} fill="#FFFFFF" opacity="0.95" />
-        <path d={`M${cx - 4} ${cy + 3}L${cx} ${cy + 1}L${cx + 4} ${cy + 3}L${cx + 2} ${cy + 6}H${cx - 2}L${cx - 4} ${cy + 3}Z`} fill="#A7F3D0" />
+        <circle cx={cx} cy={cy} r={r} fill="#D97706" />
+        <circle cx={cx} cy={cy} r={r * 0.88} fill="#F59E0B" />
+        <path d={`M${cx - 4.5} ${cy + 3}L${cx - 2.5} ${cy - 0.5}H${cx + 2.5}L${cx + 0.5} ${cy + 3}H${cx - 4.5}Z`} fill="#FFF9C4" />
+        <path d={`M${cx + 0.5} ${cy + 3}L${cx + 2.5} ${cy - 0.5}L${cx + 4.2} ${cy + 3}H${cx + 0.5}Z`} fill="#B45309" />
+        <path d={`M${cx - 2.5} ${cy - 1}L${cx - 0.5} ${cy - 4}H${cx + 4.5}L${cx + 2.5} ${cy - 1}H${cx - 2.5}Z`} fill="#FFF9C4" />
+        <path d={`M${cx + 2.5} ${cy - 1}L${cx + 4.5} ${cy - 4}L${cx + 6.2} ${cy - 1}H${cx + 2.5}Z`} fill="#B45309" />
       </g>
     );
   }
@@ -279,6 +282,25 @@ function renderBadgeContent(code, cx, cy, r) {
       <g key={idPrefix}>
         <circle cx={cx} cy={cy} r={r} fill="#374151" />
         <text x={cx} y={cy + 3.8} fontSize="8" fontWeight="bold" fill="#38BDF8" textAnchor="middle" fontFamily="sans-serif">OIL</text>
+      </g>
+    );
+  }
+
+  // 16. Gold / XAU / Precious Metals
+  if (c === 'XAU' || c === 'GOLD') {
+    return (
+      <g key={idPrefix}>
+        <defs>
+          <linearGradient id={`goldGrad-${idPrefix}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FDE68A" />
+            <stop offset="50%" stopColor="#F59E0B" />
+            <stop offset="100%" stopColor="#92400E" />
+          </linearGradient>
+        </defs>
+        <circle cx={cx} cy={cy} r={r} fill={`url(#goldGrad-${idPrefix})`} />
+        <text x={cx} y={cy + 3.5} fontSize="9" fontWeight="900" fill="#451A03" textAnchor="middle" fontFamily="system-ui, sans-serif">
+          Au
+        </text>
       </g>
     );
   }

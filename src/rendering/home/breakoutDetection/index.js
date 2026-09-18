@@ -168,7 +168,7 @@ export default function BreakoutDetection() {
                         className={`${styles.resistanceLine} ${activeStep >= 1 ? styles.resistanceBroken : ''}`}
                       />
                       <text x="555" y="183" textAnchor="end" className={styles.resistanceLabel}>
-                        {activeStep >= 1 ? 'SUPPORT FLIP' : 'KEY RESISTANCE'}
+                        {activeStep >= 1 ? 'SUPPORT' : 'KEY RESISTANCE'}
                       </text>
                     </g>
 

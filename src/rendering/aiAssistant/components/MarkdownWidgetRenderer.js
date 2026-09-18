@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -51,11 +51,9 @@ const calculateSupportResistance = (candles) => {
     const highs = candles.map(c => Number(c.high));
     const lows = candles.map(c => Number(c.low));
     const closes = candles.map(c => Number(c.close));
-    const total = candles.length;
 
     const atrValues = ATR.calculate({ period: 14, high: highs, low: lows, close: closes });
     const atrThreshold = atrValues.length ? atrValues[atrValues.length - 1] * 0.7 : 0.0008;
-    const touchThreshold = atrThreshold * 0.2;
 
     const minMove = atrThreshold * 1.5;
     const pivotHighs = [];
@@ -88,133 +86,180 @@ const calculateSupportResistance = (candles) => {
     };
 };
 
+// Seeded deterministic pseudo-random generator so mock candles NEVER change across re-renders
+function pseudoRandom(seed) {
+    let s = seed % 2147483647;
+    if (s <= 0) s += 2147483646;
+    return function() {
+        s = (s * 16807) % 2147483647;
+        return (s - 1) / 2147483646;
+    };
+}
+
+function getSymbolSeed(symbol = 'XAUUSD') {
+    let hash = 0;
+    const str = String(symbol).toUpperCase();
+    for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0;
+    }
+    return Math.abs(hash) || 12345;
+}
+
+// Global cache for mock candles so candles remain 100% stable across renders
+const MOCK_CANDLES_CACHE = new Map();
+
 const generateMockCandles = (symbol = 'XAUUSD', count = 40) => {
-    const base = symbol.includes('BTC') ? 92000 : symbol.includes('XAU') ? 2720 : 1.085;
-    const now = Math.floor(Date.now() / 1000);
+    const cleanSym = String(symbol).replace('/', '').toUpperCase();
+    const cacheKey = `${cleanSym}_${count}`;
+    if (MOCK_CANDLES_CACHE.has(cacheKey)) {
+        return MOCK_CANDLES_CACHE.get(cacheKey);
+    }
+
+    const rand = pseudoRandom(getSymbolSeed(cleanSym));
+    const base = cleanSym.includes('BTC') ? 92000 : cleanSym.includes('XAU') ? 2720 : cleanSym.includes('JPY') ? 154.5 : 1.085;
+    
+    // Stable reference timestamp so candle dates on X-axis do not drift or change
+    const baseTime = 1726650000;
     const candles = [];
     let cur = base;
+
     for (let i = count; i >= 0; i--) {
-        const t = now - (i * 3600);
-        const change = (Math.random() - 0.49) * (base * 0.004);
+        const t = baseTime - (i * 3600);
+        const change = (rand() - 0.49) * (base * 0.004);
         const open = cur;
         const close = open + change;
-        const high = Math.max(open, close) + Math.random() * (base * 0.002);
-        const low = Math.min(open, close) - Math.random() * (base * 0.002);
+        const high = Math.max(open, close) + rand() * (base * 0.002);
+        const low = Math.min(open, close) - rand() * (base * 0.002);
         cur = close;
         candles.push({ timestamp: new Date(t * 1000).toISOString(), open, high, low, close });
     }
+
+    MOCK_CANDLES_CACHE.set(cacheKey, candles);
     return candles;
 };
 
 // ─── 1. Candlestick Price Chart Widget ─────────────────────────────────────────
-export const InlineCandlestickWidget = ({ symbol = 'XAUUSD', visualData, isDark = true }) => {
+export const InlineCandlestickWidget = React.memo(function InlineCandlestickWidget({ symbol = 'XAUUSD', visualData, isDark = true }) {
     const [showSR, setShowSR] = useState(true);
-    const assetData = getAssetData(visualData, symbol);
-    const rawOhlc = assetData?.ohlc_data?.ohlc_1h || assetData?.candles || generateMockCandles(symbol, 40);
+    const assetData = useMemo(() => getAssetData(visualData, symbol), [visualData, symbol]);
+
+    const rawOhlc = useMemo(() => {
+        return assetData?.ohlc_data?.ohlc_1h || assetData?.candles || generateMockCandles(symbol, 40);
+    }, [assetData, symbol]);
 
     const rawSupport = assetData?.horizontal_levels?.supports ?? assetData?.horizontal_levels?.support ?? assetData?.support;
     const rawResistance = assetData?.horizontal_levels?.resistances ?? assetData?.horizontal_levels?.resistance ?? assetData?.resistance;
 
-    const backendSupport = normalizeBackendLevels(rawSupport);
-    const backendResistance = normalizeBackendLevels(rawResistance);
+    const backendSupport = useMemo(() => normalizeBackendLevels(rawSupport), [rawSupport]);
+    const backendResistance = useMemo(() => normalizeBackendLevels(rawResistance), [rawResistance]);
 
-    const supportLevels = backendSupport !== null ? backendSupport : calculateSupportResistance(rawOhlc).support;
-    const resistanceLevels = backendResistance !== null ? backendResistance : calculateSupportResistance(rawOhlc).resistance;
+    const supportLevels = useMemo(() => {
+        return backendSupport !== null ? backendSupport : calculateSupportResistance(rawOhlc).support;
+    }, [backendSupport, rawOhlc]);
 
-    const candleSeries = {
-        name: 'Candles',
-        type: 'candlestick',
-        data: rawOhlc.map((d) => ({
-            x: new Date(d.timestamp || d.time * 1000 || Date.now()),
-            y: [parseFloat(d.open), parseFloat(d.high), parseFloat(d.low), parseFloat(d.close)]
-        }))
-    };
+    const resistanceLevels = useMemo(() => {
+        return backendResistance !== null ? backendResistance : calculateSupportResistance(rawOhlc).resistance;
+    }, [backendResistance, rawOhlc]);
 
-    const createLevelLine = ({ price, strength }, rank, type) => ({
-        name: `${type === 'support' ? 'S' : 'R'}${rank + 1} ${strengthStars(strength)}`,
-        type: 'line',
-        data: [
-            { x: new Date(rawOhlc[0]?.timestamp || Date.now() - 40 * 3600000), y: price },
-            { x: new Date(rawOhlc[rawOhlc.length - 1]?.timestamp || Date.now()), y: price }
-        ]
-    });
-
-    const supportSeriesArr = supportLevels.map((z, i) => createLevelLine(z, i, 'support'));
-    const resistanceSeriesArr = resistanceLevels.map((z, i) => createLevelLine(z, i, 'resistance'));
-
-    const series = [candleSeries, ...(showSR ? [...supportSeriesArr, ...resistanceSeriesArr] : [])];
-
-    const yAxisAnnotations = showSR ? [
-        ...supportLevels.map(({ price, strength }) => ({
-            y: price,
-            borderColor: '#10b981',
-            strokeDashArray: 4,
-            label: {
-                borderColor: '#10b981',
-                style: { color: '#fff', background: '#10b981', fontSize: '10px' },
-                text: `S ${price.toFixed(price > 100 ? 2 : 4)}`
-            }
-        })),
-        ...resistanceLevels.map(({ price, strength }) => ({
-            y: price,
-            borderColor: '#ef4444',
-            strokeDashArray: 4,
-            label: {
-                borderColor: '#ef4444',
-                style: { color: '#fff', background: '#ef4444', fontSize: '10px' },
-                text: `R ${price.toFixed(price > 100 ? 2 : 4)}`
-            }
-        }))
-    ] : [];
-
-    const seriesColors = showSR
-        ? ['transparent', ...supportLevels.map(() => '#10b981'), ...resistanceLevels.map(() => '#ef4444')]
-        : ['transparent'];
-    const strokeWidths = showSR ? [1, ...supportLevels.map(() => 1.5), ...resistanceLevels.map(() => 1.5)] : [1];
-    const dashArrays = showSR ? [0, ...supportLevels.map(() => 4), ...resistanceLevels.map(() => 4)] : [0];
-
-    const options = {
-        chart: {
+    const series = useMemo(() => {
+        const candleSeries = {
+            name: 'Candles',
             type: 'candlestick',
-            background: 'transparent',
-            toolbar: { show: true, tools: { download: false, selection: true, zoom: true, zoomin: true, zoomout: true, pan: true } },
-            animations: { enabled: true, speed: 600 }
-        },
-        title: {
-            text: `${symbol} Price Action & Key Levels`,
-            align: 'left',
-            margin: 10,
-            style: { color: '#18C98B', fontSize: '13px', fontWeight: 700 }
-        },
-        legend: {
-            show: true,
-            position: 'top',
-            horizontalAlign: 'right',
-            labels: { colors: '#FFFFFF' }
-        },
-        theme: { mode: isDark ? 'dark' : 'light' },
-        xaxis: {
-            type: 'datetime',
-            labels: { style: { colors: 'rgba(255, 255, 255, 0.65)' } },
-            axisBorder: { show: false },
-            axisTicks: { show: false }
-        },
-        yaxis: {
-            tooltip: { enabled: true },
-            labels: {
-                style: { colors: 'rgba(255, 255, 255, 0.65)' },
-                formatter: (val) => val?.toFixed(val > 100 ? 2 : 4) ?? val
-            }
-        },
-        grid: { borderColor: 'rgba(24, 201, 139, 0.15)', strokeDashArray: 4 },
-        annotations: { yaxis: yAxisAnnotations },
-        stroke: { width: strokeWidths, curve: 'straight', dashArray: dashArrays },
-        colors: seriesColors,
-        plotOptions: {
-            candlestick: { colors: { upward: '#10b981', downward: '#ef4444' }, wick: { useFillColor: true } }
-        },
-        tooltip: { theme: isDark ? 'dark' : 'light', x: { format: 'dd MMM HH:mm' } }
-    };
+            data: rawOhlc.map((d) => ({
+                x: new Date(d.timestamp || (d.time ? d.time * 1000 : 0)),
+                y: [parseFloat(d.open), parseFloat(d.high), parseFloat(d.low), parseFloat(d.close)]
+            }))
+        };
+
+        const createLevelLine = ({ price, strength }, rank, type) => ({
+            name: `${type === 'support' ? 'S' : 'R'}${rank + 1} ${strengthStars(strength)}`,
+            type: 'line',
+            data: [
+                { x: new Date(rawOhlc[0]?.timestamp || (rawOhlc[0]?.time ? rawOhlc[0].time * 1000 : 0)), y: price },
+                { x: new Date(rawOhlc[rawOhlc.length - 1]?.timestamp || (rawOhlc[rawOhlc.length - 1]?.time ? rawOhlc[rawOhlc.length - 1].time * 1000 : 0)), y: price }
+            ]
+        });
+
+        const supportSeriesArr = supportLevels.map((z, i) => createLevelLine(z, i, 'support'));
+        const resistanceSeriesArr = resistanceLevels.map((z, i) => createLevelLine(z, i, 'resistance'));
+
+        return [candleSeries, ...(showSR ? [...supportSeriesArr, ...resistanceSeriesArr] : [])];
+    }, [rawOhlc, supportLevels, resistanceLevels, showSR]);
+
+    const options = useMemo(() => {
+        const yAxisAnnotations = showSR ? [
+            ...supportLevels.map(({ price, strength }) => ({
+                y: price,
+                borderColor: '#10b981',
+                strokeDashArray: 4,
+                label: {
+                    borderColor: '#10b981',
+                    style: { color: '#fff', background: '#10b981', fontSize: '10px' },
+                    text: `S ${price.toFixed(price > 100 ? 2 : 4)}`
+                }
+            })),
+            ...resistanceLevels.map(({ price, strength }) => ({
+                y: price,
+                borderColor: '#ef4444',
+                strokeDashArray: 4,
+                label: {
+                    borderColor: '#ef4444',
+                    style: { color: '#fff', background: '#ef4444', fontSize: '10px' },
+                    text: `R ${price.toFixed(price > 100 ? 2 : 4)}`
+                }
+            }))
+        ] : [];
+
+        const seriesColors = showSR
+            ? ['transparent', ...supportLevels.map(() => '#10b981'), ...resistanceLevels.map(() => '#ef4444')]
+            : ['transparent'];
+        const strokeWidths = showSR ? [1, ...supportLevels.map(() => 1.5), ...resistanceLevels.map(() => 1.5)] : [1];
+        const dashArrays = showSR ? [0, ...supportLevels.map(() => 4), ...resistanceLevels.map(() => 4)] : [0];
+
+        return {
+            chart: {
+                type: 'candlestick',
+                background: 'transparent',
+                toolbar: { show: true, tools: { download: false, selection: true, zoom: true, zoomin: true, zoomout: true, pan: true } },
+                animations: { enabled: false, dynamicAnimation: { enabled: false } }
+            },
+            title: {
+                text: `${symbol} Price Action & Key Levels`,
+                align: 'left',
+                margin: 10,
+                style: { color: '#18C98B', fontSize: '13px', fontWeight: 700 }
+            },
+            legend: {
+                show: true,
+                position: 'top',
+                horizontalAlign: 'right',
+                labels: { colors: '#FFFFFF' }
+            },
+            theme: { mode: isDark ? 'dark' : 'light' },
+            xaxis: {
+                type: 'datetime',
+                labels: { style: { colors: 'rgba(255, 255, 255, 0.65)' } },
+                axisBorder: { show: false },
+                axisTicks: { show: false }
+            },
+            yaxis: {
+                tooltip: { enabled: true },
+                labels: {
+                    style: { colors: 'rgba(255, 255, 255, 0.65)' },
+                    formatter: (val) => val?.toFixed(val > 100 ? 2 : 4) ?? val
+                }
+            },
+            grid: { borderColor: 'rgba(24, 201, 139, 0.15)', strokeDashArray: 4 },
+            annotations: { yaxis: yAxisAnnotations },
+            stroke: { width: strokeWidths, curve: 'straight', dashArray: dashArrays },
+            colors: seriesColors,
+            plotOptions: {
+                candlestick: { colors: { upward: '#10b981', downward: '#ef4444' }, wick: { useFillColor: true } }
+            },
+            tooltip: { theme: isDark ? 'dark' : 'light', x: { format: 'dd MMM HH:mm' } }
+        };
+    }, [symbol, isDark, showSR, supportLevels, resistanceLevels]);
 
     return (
         <div className={styles.inlineWidgetCard}>
@@ -231,12 +276,14 @@ export const InlineCandlestickWidget = ({ symbol = 'XAUUSD', visualData, isDark 
             <Chart options={options} series={series} type="candlestick" height={320} />
         </div>
     );
-};
+});
 
 // ─── 2. Sentiment Radar Widget ────────────────────────────────────────────────
-export const InlineSentimentRadarWidget = ({ symbol = 'XAUUSD', visualData, isDark = true }) => {
-    const assetData = getAssetData(visualData, symbol);
-    const scores = assetData?.sentiment_scores || assetData?.indicators?.voting_scores || assetData?.indicators?.['4H']?.voting_scores || {};
+export const InlineSentimentRadarWidget = React.memo(function InlineSentimentRadarWidget({ symbol = 'XAUUSD', visualData, isDark = true }) {
+    const assetData = useMemo(() => getAssetData(visualData, symbol), [visualData, symbol]);
+    const scores = useMemo(() => {
+        return assetData?.sentiment_scores || assetData?.indicators?.voting_scores || assetData?.indicators?.['4H']?.voting_scores || {};
+    }, [assetData]);
 
     const normalizeScore = (val, fallback = 70) => {
         if (typeof val === 'number') {
@@ -246,7 +293,7 @@ export const InlineSentimentRadarWidget = ({ symbol = 'XAUUSD', visualData, isDa
         return fallback;
     };
 
-    const series = [{
+    const series = useMemo(() => [{
         name: 'Market Sentiment',
         data: [
             normalizeScore(scores.trend ?? scores.trend_score, 80),
@@ -254,14 +301,14 @@ export const InlineSentimentRadarWidget = ({ symbol = 'XAUUSD', visualData, isDa
             normalizeScore(scores.volatility ?? scores.volatility_score, 50),
             normalizeScore(scores.overall ?? scores.overall_score, 72)
         ]
-    }];
+    }], [scores]);
 
-    const options = {
+    const options = useMemo(() => ({
         chart: {
             type: 'radar',
             background: 'transparent',
             toolbar: { show: false },
-            animations: { enabled: true, speed: 600 }
+            animations: { enabled: false }
         },
         theme: { mode: isDark ? 'dark' : 'light' },
         labels: ['Trend', 'Momentum', 'Volatility', 'Overall'],
@@ -292,7 +339,7 @@ export const InlineSentimentRadarWidget = ({ symbol = 'XAUUSD', visualData, isDa
             }
         },
         tooltip: { theme: isDark ? 'dark' : 'light' }
-    };
+    }), [isDark]);
 
     return (
         <div className={styles.inlineWidgetCard}>
@@ -304,10 +351,10 @@ export const InlineSentimentRadarWidget = ({ symbol = 'XAUUSD', visualData, isDa
             </div>
         </div>
     );
-};
+});
 
 // ─── 3. Main Widget-Aware Markdown Renderer ───────────────────────────────────
-export default function RenderMarkdownWithWidgets({ 
+const RenderMarkdownWithWidgets = React.memo(function RenderMarkdownWithWidgets({ 
     content = '', 
     visualData = null, 
     defaultSymbol = 'XAUUSD',
@@ -342,7 +389,6 @@ export default function RenderMarkdownWithWidgets({
 
         let currentIdx = 0;
         const intervalId = setInterval(() => {
-            // Slower, smooth and deliberate word-by-word streaming
             const step = words.length > 400 ? 2 : 1;
             currentIdx = Math.min(words.length, currentIdx + step);
             setRevealedWordCount(currentIdx);
@@ -374,10 +420,10 @@ export default function RenderMarkdownWithWidgets({
                     const symbol = widgetMatch[2] ? normalizeAssetSymbol(widgetMatch[2]) : normalizeAssetSymbol(defaultSymbol);
 
                     if (widgetType === 'SENTIMENT_RADAR') {
-                        return <InlineSentimentRadarWidget key={`widget-${index}`} symbol={symbol} visualData={visualData} isDark={isDark} />;
+                        return <InlineSentimentRadarWidget key={`widget-${index}-${symbol}`} symbol={symbol} visualData={visualData} isDark={isDark} />;
                     }
                     if (widgetType === 'CANDLESTICK') {
-                        return <InlineCandlestickWidget key={`widget-${index}`} symbol={symbol} visualData={visualData} isDark={isDark} />;
+                        return <InlineCandlestickWidget key={`widget-${index}-${symbol}`} symbol={symbol} visualData={visualData} isDark={isDark} />;
                     }
                 }
 
@@ -399,4 +445,6 @@ export default function RenderMarkdownWithWidgets({
             )}
         </div>
     );
-}
+});
+
+export default RenderMarkdownWithWidgets;

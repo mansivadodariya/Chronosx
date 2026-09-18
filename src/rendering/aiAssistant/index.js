@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './aiAssistant.module.scss';
 import HistoryButton from '@/components/historyButton';
 import { toast } from '@/components/toast';
@@ -74,7 +74,7 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
     const textareaRef = useRef(null);
 
     // Quick Action Chip & Mode Tab Handlers
-    const handleGenerateFromImageClick = () => {
+    const handleGenerateFromImageClick = useCallback(() => {
         let draft = null;
         if (chartPaneRef.current) {
             const dataUrl = chartPaneRef.current.getScreenshotDataUrl();
@@ -89,17 +89,17 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
         }
         setActiveAnalysisMode('image');
         setTimeout(() => textareaRef.current?.focus(), 60);
-    };
+    }, [selectedPair, setAttachmentDraft, setActiveAnalysisMode]);
 
-    const handleDeepAnalysisClick = () => {
+    const handleDeepAnalysisClick = useCallback(() => {
         setActiveAnalysisMode(prev => prev === 'deep' ? null : 'deep');
         setTimeout(() => textareaRef.current?.focus(), 60);
-    };
+    }, [setActiveAnalysisMode]);
 
-    const handleMacroNewsClick = () => {
+    const handleMacroNewsClick = useCallback(() => {
         setActiveAnalysisMode(prev => prev === 'news' ? null : 'news');
         setTimeout(() => textareaRef.current?.focus(), 60);
-    };
+    }, [setActiveAnalysisMode]);
 
     const handleFileSelect = (e) => {
         const file = e.target.files?.[0];
@@ -232,10 +232,10 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
         if (found) handleSelectChat(found);
     }, [initialOpenId, chatHistory, handleSelectChat]);
 
-    const handleOptionClick = (optionLabel) => {
+    const handleOptionClick = useCallback((optionLabel) => {
         setChatInput(optionLabel);
         setTimeout(() => handleSendChatMessage(optionLabel), 50);
-    };
+    }, [setChatInput, handleSendChatMessage]);
 
     const openDeleteConfirm = (e, type, index, item) => {
         e.stopPropagation();
@@ -248,9 +248,9 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
         setConfirmDeleteOpen(false);
     };
 
-    const handleDownloadFullReport = (reportContent, visualData, symbol) => {
+    const handleDownloadFullReport = useCallback((reportContent, visualData, symbol) => {
         setExportData({ fullReport: reportContent, visualData, symbol: symbol || selectedPair });
-    };
+    }, [setExportData, selectedPair]);
 
     useEffect(() => {
         if (!exportData) return;

@@ -116,7 +116,7 @@ export async function exportDashboardPdf({ name, stats }) {
             { label: 'AI Chart Scans Performed', value: String(stats?.total_analysis_history ?? 0), desc: 'Automated pattern recognition & OCR scans' },
             { label: 'AI Market Assistant Sessions', value: String(stats?.total_chat_history ?? 0), desc: '24/7 neural market & trade assistant' },
             { label: 'Available AI Credits', value: String(stats?.available_credits ?? 0), desc: 'Ready for real-time AI strategy execution' },
-            { label: 'Total Account Credits', value: String(stats?.total_credits ?? 100), desc: 'Total lifetime credits processed on platform' },
+            { label: 'Withdrawable Balance', value: String(stats?.wallet?.withdrawable_balance ?? stats?.withdrawable_balance ?? 0), desc: 'Affiliate earnings available for withdrawal' },
         ];
 
         items.forEach((item) => {

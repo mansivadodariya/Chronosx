@@ -27,12 +27,12 @@ export default function HomePage() {
                 <MetricsSection />
                 <AiCockpit isHero={false} showHeader={true} />
                 <AiAnalyst />
+                <BrokersSection />
                 <BeforeAfterComparison />
                 <HowitWorks />
                 <MarketIntelligence />
                 <BreakoutDetection />
                 <TeamUp />
-                <BrokersSection />
                 <GlobalNetworkMap />
                 <Testimonials />
                 <ReadytoPut />

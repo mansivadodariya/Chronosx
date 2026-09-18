@@ -134,10 +134,12 @@ export default function BrokerCard({ broker, detailHref, showHighlights = true, 
     const displayItems = combinedItems;
 
     return (
-        <div className={`${styles.brokerCard} ${isLight ? styles.isLightCard : ''}`}>
+        <div
+            className={`${styles.brokerCard} ${isLight ? styles.isLightCard : ''}`}
+            data-component="broker-card"
+        >
 
-            {/* Top Banner Header with Luxury Cyber Graphic */}
-            <div className={`${styles.bannerHeader} ${isLight ? styles.isLightHeader : (isDarkLogo ? styles.hasLightBg : '')}`}>
+            <div className={`${styles.bannerHeader} ${isDarkLogo ? styles.hasLightBg : styles.hasDarkBg}`}>
                 {broker.logo ? (
                     <div className={styles.logoWrapper}>
                         <img src={broker.logo} alt={name || 'Broker Logo'} />

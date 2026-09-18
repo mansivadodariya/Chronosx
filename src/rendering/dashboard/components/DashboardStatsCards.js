@@ -125,17 +125,18 @@ export default function DashboardStatsCards({
                     </div>
                 </div>
 
-                {/* Box 4: Account Tier */}
-                <div className={styles.statPillRow} onClick={() => router.push('/credit-history')}>
+                {/* Box 4: Withdrawable Balance */}
+                <div className={styles.statPillRow} onClick={() => router.push('/affiliate')}>
                     <div className={styles.rowTopHeader}>
                         <div className={styles.rowTitleWrap}>
-                            <span className={styles.rowTitle}>{t('dashboard.accountCredits', 'Account Credits')}</span>
-                            <span className={styles.rowDesc}>{t('dashboard.accountCreditsDesc', 'Total lifetime credits processed on platform')}</span>
+                            <span className={styles.rowTitle}>{t('dashboard.withdrawableBalance', 'Withdrawable Balance')}</span>
+                            <span className={styles.rowDesc}>{t('dashboard.withdrawableBalanceDesc', 'Affiliate earnings available for withdrawal')}</span>
                         </div>
                         <div className={`${styles.rowIconWrap} ${styles.greenIcon}`}>
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z" fill="currentColor" fillOpacity="0.25" />
-                                <circle cx="12" cy="19" r="1.5" fill="currentColor" />
+                                <rect x="2" y="6" width="20" height="13" rx="2" fill="currentColor" fillOpacity="0.2" />
+                                <path d="M16 12.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" fill="currentColor" />
+                                <path d="M6 6V4a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v2" />
                             </svg>
                         </div>
                     </div>
@@ -144,12 +145,19 @@ export default function DashboardStatsCards({
                         {loading && !stats ? (
                             <span className={`${styles.skeletonPulse} ${styles.skeletonStatNum}`} />
                         ) : (
-                            <span className={styles.statBigNum}>{stats?.total_credits ?? totalAccountCredits ?? 0}</span>
+                                <span className={styles.statBigNum}>
+                                    $
+                                    {Number(
+                                        stats?.wallet?.withdrawable_balance ??
+                                        stats?.withdrawable_balance ??
+                                        0
+                                    ).toFixed(2)}
+                                </span>
                         )}
                     </div>
 
                     <div className={styles.rowCtaLink}>
-                        <span>{t('dashboard.viewCreditHistory', 'View Credit History')}</span>
+                        <span>{t('dashboard.viewWallet', 'View Wallet')}</span>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>

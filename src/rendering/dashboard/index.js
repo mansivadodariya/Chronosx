@@ -73,6 +73,7 @@ export default function Dashboard() {
                         total_chat_history: prev.total_chat_history ?? payload.total_chat_history,
                         daily_usage: payload.daily_usage ?? prev.daily_usage,
                         total_credits_used: payload.total_credits_used ?? prev.total_credits_used,
+                        wallet: payload.wallet ?? prev.wallet,
                     };
                 });
             }

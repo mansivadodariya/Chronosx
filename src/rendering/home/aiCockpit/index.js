@@ -5,9 +5,12 @@ import SectionHeader from '@/components/sectionHeader';
 import { useLivePrice } from '@/lib/useLivePrice';
 import AiCockpitIntelDeck from './components/AiCockpitIntelDeck';
 import AiCockpitLiveChart from './components/AiCockpitLiveChart';
+import GoldIcon from '@/icons/goldIcon';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './aiCockpit.module.scss';
 
 export default function AiCockpit({ isHero = false, showHeader = true }) {
+  const { t } = useLanguage();
   const [activeTimeframe, setActiveTimeframe] = useState('1H');
   const [livePrice, setLivePrice] = useState(2894.50);
   const [priceChangeText, setPriceChangeText] = useState('+$14.20 (+0.52%)');
@@ -165,14 +168,13 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
                     <span className={styles.dotGreen} />
                   </div>
 
-                  {/* Fixed XAU/USD Gold Pill */}
+                  {/* Fixed XAU/USD Gold Asset Header */}
                   <div className={styles.goldAssetPill}>
                     <span className={styles.goldIconLetter}>
-                      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M6 3h12l4 6-10 12L2 9l4-6z" />
-                      </svg>
+                      <GoldIcon size={19} />
                     </span>
                     <span className={styles.dropdownSymbol}>XAU/USD</span>
+                    <span className={styles.assetPairSub}>Gold Spot</span>
                   </div>
 
                 </div>
@@ -217,12 +219,7 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
               <div className={styles.assetHeaderRow}>
                 <div className={styles.identityLeft}>
                   <div className={styles.logoGold}>
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <polygon points="6 3 18 3 22 9 12 21 2 9 6 3" fill="currentColor" fillOpacity="0.15" />
-                      <line x1="2" y1="9" x2="22" y2="9" />
-                      <line x1="12" y1="21" x2="8" y2="9" />
-                      <line x1="12" y1="21" x2="16" y2="9" />
-                    </svg>
+                    <GoldIcon size={24} />
                   </div>
                   
                   <div className={styles.titleAndSub}>
@@ -262,49 +259,62 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
                 setHoveredIntelCard={setHoveredIntelCard}
               />
 
-              {/* Bottom 3-Column Luxury Intelligence Matrix - Clean Single-Line Layout */}
+              {/* Bottom 3-Column Luxury Intelligence Matrix - Real Institutional Analysis, No Cheap Badges */}
               <div className={styles.metaMatrixGrid}>
                 <div className={styles.metaCol}>
                   <div className={styles.metaTopRow}>
-                    <span className={styles.metaLabel}>MARKET CAP</span>
-                    <span className={styles.metaBadgeGold}>#1 ASSET</span>
+                    <span className={styles.metaLabel}>
+                      {t('homeSections.aiCockpit.col1Label', 'KEY DEMAND LEVEL')}
+                    </span>
                   </div>
-                  <span className={styles.metaVal}>$17.8T</span>
-                  <span className={styles.metaSub}>World Valuation</span>
+                  <span className={styles.metaVal}>
+                    {t('homeSections.aiCockpit.col1Val', 'Support Retained')}
+                  </span>
+                  <span className={styles.metaSub}>
+                    {t('homeSections.aiCockpit.col1Sub', 'Fair Value Gap Protected · $4,342')}
+                  </span>
                 </div>
 
                 <div className={styles.metaCol}>
                   <div className={styles.metaTopRow}>
-                    <span className={styles.metaLabel}>24H VOLUME</span>
-                    <span className={styles.metaBadgeGreen}>+27.4%</span>
+                    <span className={styles.metaLabel}>
+                      {t('homeSections.aiCockpit.col2Label', 'INSTITUTIONAL EXECUTION')}
+                    </span>
                   </div>
-                  <span className={styles.metaVal}>$24.85B</span>
-                  <span className={styles.metaSub}>Avg $19.50B</span>
+                  <span className={styles.metaVal}>
+                    {t('homeSections.aiCockpit.col2Val', 'Direct MT5 Routing')}
+                  </span>
+                  <span className={styles.metaSub}>
+                    {t('homeSections.aiCockpit.col2Sub', 'Raw 0.0 Pip Spread · Ultra-Low Latency')}
+                  </span>
                 </div>
 
                 <div className={styles.metaCol}>
                   <div className={styles.metaTopRow}>
-                    <span className={styles.metaLabel}>AI SIGNAL</span>
-                    <span className={styles.metaBadgeLive}>97% CONF.</span>
+                    <span className={styles.metaLabel}>
+                      {t('homeSections.aiCockpit.col3Label', 'DIRECTIONAL CONFLUENCE')}
+                    </span>
                   </div>
                   <div className={styles.signalBadgeGreen}>
                     <span className={styles.signalDot} />
-                    <span>Strong Buy</span>
+                    <span>
+                      {t('homeSections.aiCockpit.col3Val', 'Trend Continuation')}
+                    </span>
                   </div>
-                  <span className={styles.metaSub}>Trend Confirmed</span>
+                  <span className={styles.metaSub}>
+                    {t('homeSections.aiCockpit.col3Sub', 'Multi-Timeframe Momentum Aligned')}
+                  </span>
                 </div>
               </div>
-
-
 
               {/* Live WebSocket Footer */}
               <div className={styles.cockpitFooterBar}>
                 <div className={styles.footerLeft}>
                   <span className={styles.liveGreenDotSmall} />
-                  <span>UPDATED {lastUpdatedSec}S AGO · WEBSOCKET LIVE</span>
+                  <span>{t('homeSections.aiCockpit.footerLive', 'AI STREAM ACTIVE · REAL-TIME WEBSOCKET')}</span>
                 </div>
                 <div className={styles.footerRight}>
-                  <span>CHRONOSX AI LIVE FEED · 12MS LATENCY</span>
+                  <span>{t('homeSections.aiCockpit.footerFeed', 'CHRONOSX AI TERMINAL · ZERO-LATENCY')}</span>
                 </div>
               </div>
 
