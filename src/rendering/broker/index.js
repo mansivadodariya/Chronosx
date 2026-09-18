@@ -17,7 +17,7 @@ const SearchIcon = () => (
     </svg>
 );
 
-export default function BrokerPage() {
+export default function BrokerPage({ isPublic = false }) {
     const { t } = useLanguage();
     const [brokers, setBrokers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -112,7 +112,7 @@ export default function BrokerPage() {
     };
 
     return (
-        <div className={styles.brokerPage}>
+        <div className={`${styles.brokerPage} ${isPublic ? styles.publicContainer : ''}`}>
             {/* 1. Luxury Institutional Infrastructure Hero Banner */}
             <div className={styles.brokerHeroBanner}>
                 <div className={styles.heroBannerContent}>

@@ -31,6 +31,7 @@ export default function HomePage() {
                 <MarketIntelligence />
                 <BreakoutDetection />
                 <TeamUp />
+                <BrokersSection />
                 <GlobalNetworkMap />
                 <Testimonials />
                 <ReadytoPut />

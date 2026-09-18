@@ -20,6 +20,17 @@ $danger: #F87171;
     max-width: 100%;
     padding-bottom: 24px;
 
+    &.publicContainer {
+        max-width: 1200px;
+        margin: 125px auto 80px;
+        padding: 0 24px 80px;
+
+        @include respond-to(sm) {
+            margin: 95px auto 50px;
+            padding: 0 16px 50px;
+        }
+    }
+
     @import './styles/brokerHeroBanner';
 
 

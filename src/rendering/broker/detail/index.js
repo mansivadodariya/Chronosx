@@ -131,11 +131,10 @@ export default function BrokerDetailPage({ brokerId, isPublicLanding = false }) 
             </div>
 
             {/* Main Header Banner */}
-            <div className={styles.heroBanner}>
+            <div className={`${styles.heroBanner} ${isDarkLogo ? styles.hasWhiteHeader : styles.hasBlackHeader}`}>
                 <div className={styles.logoRow}>
                     {broker.logo && (
-                        <div className={`${styles.logoBox} ${isDarkLogo ? styles.hasLightBg : ''}`}>
-                            {/* Dynamic white background applied when logo is dark */}
+                        <div className={styles.logoBox}>
                             <img src={broker.logo} alt={name || 'Broker Logo'} />
                         </div>
                     )}
