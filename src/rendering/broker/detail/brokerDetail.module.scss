@@ -141,6 +141,94 @@ $textMuted: rgba(255, 255, 255, 0.65);
             }
         }
 
+        &.hasWhiteHeader {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%) !important;
+            border: 1px solid rgba(15, 23, 42, 0.12) !important;
+            box-shadow: 0 10px 32px rgba(0, 0, 0, 0.18), 0 0 20px rgba(24, 201, 139, 0.08) !important;
+            color: #0F172A !important;
+
+            .logoBox {
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+
+                img {
+                    background: transparent !important;
+                    border: none !important;
+                    box-shadow: none !important;
+                    mix-blend-mode: multiply !important;
+                    filter: contrast(1.05) !important;
+                }
+            }
+
+            .badges {
+                .categoryBadge {
+                    background: rgba(24, 201, 139, 0.15) !important;
+                    border-color: rgba(24, 201, 139, 0.35) !important;
+                    color: #047857 !important;
+                }
+
+                .statusBadge {
+                    background: rgba(16, 185, 129, 0.15) !important;
+                    border-color: rgba(16, 185, 129, 0.35) !important;
+                    color: #047857 !important;
+                }
+            }
+
+            .title {
+                color: #0F172A !important;
+            }
+
+            .subtitle {
+                color: #475569 !important;
+            }
+        }
+
+        &.hasBlackHeader {
+            background:
+                radial-gradient(ellipse 70% 80% at 100% 0%, rgba(24, 201, 139, 0.18) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 80%),
+                radial-gradient(ellipse 50% 60% at 0% 100%, rgba(0, 242, 254, 0.1) 0%, transparent 70%),
+                #070A09 !important;
+            border: 1px solid rgba(24, 201, 139, 0.28) !important;
+            box-shadow: 0 10px 32px rgba(0, 0, 0, 0.6), 0 0 24px rgba(24, 201, 139, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+            color: #FFFFFF !important;
+
+            .logoBox {
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+
+                img {
+                    mix-blend-mode: normal !important;
+                    filter: none !important;
+                }
+            }
+
+            .badges {
+                .categoryBadge {
+                    background: rgba(24, 201, 139, 0.14) !important;
+                    border: 1px solid rgba(24, 201, 139, 0.35) !important;
+                    color: #18C98B !important;
+                }
+
+                .statusBadge {
+                    background: rgba(16, 185, 129, 0.2) !important;
+                    color: #34D399 !important;
+                    border: 1px solid rgba(16, 185, 129, 0.4) !important;
+                }
+            }
+
+            .title {
+                color: #FFFFFF !important;
+            }
+
+            .subtitle {
+                color: rgba(255, 255, 255, 0.7) !important;
+            }
+        }
+
         .title {
             font-size: 30px;
             font-weight: 700;

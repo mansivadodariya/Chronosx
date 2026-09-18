@@ -37,10 +37,10 @@ export default function BrokersSection() {
         return () => { isMounted = false; };
     }, []);
 
-    const displayedBrokers = brokers.slice(0, 4);
+    const displayedBrokers = brokers.slice(0, 3);
 
     return (
-        <section className={styles.brokersSection} aria-label="Supported Broker Ecosystem">
+        <section id="ecosystem" className={styles.brokersSection} aria-label="Supported Broker Ecosystem">
             <div className={styles.ambientGlow} aria-hidden="true" />
             
             <div className="container">
@@ -62,7 +62,7 @@ export default function BrokersSection() {
                 {/* Brokers Grid */}
                 <div className={styles.brokersGrid}>
                     {isLoading ? (
-                        Array.from({ length: 4 }).map((_, idx) => (
+                        Array.from({ length: 3 }).map((_, idx) => (
                             <BrokerCardSkeleton key={idx} showHighlights={true} showDescription={true} />
                         ))
                     ) : (

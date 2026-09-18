@@ -7,5 +7,5 @@ export const metadata = {
 
 export default async function Page({ params }) {
     const resolvedParams = await params;
-    return <BrokerDetailPage brokerId={resolvedParams?.id} />;
+    return <BrokerDetailPage brokerId={resolvedParams?.id} isPublicLanding={true} />;
 }
