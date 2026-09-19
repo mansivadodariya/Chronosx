@@ -65,6 +65,7 @@ export default function Profile() {
     const [referralCount, setReferralCount] = useState(0);
     const [visibleTabNames, setVisibleTabNames] = useState(null);
     const [onboardingData, setOnboardingData] = useState(null);
+    const [isPhoneVerified, setIsPhoneVerified] = useState(false);
 
     // Modals
     const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -128,6 +129,7 @@ export default function Profile() {
         const id = user.id || user.user_id || '';
         setUserId(id);
         setInitialPhone(user.phone_number || '');
+        setIsPhoneVerified(user.is_phone_verified === true);
 
         if (user.created_at) {
             try {
@@ -179,11 +181,14 @@ export default function Profile() {
                 try {
                     const { data } = await supabase
                         .from('users')
-                        .select('first_name, last_name, email, phone_number, referral_code, last_logins, created_at, experience_level, trading_styles, help_goals, preferred_markets, onboarding_completed, onboarding_completed_at')
+                        .select('first_name, last_name, email, phone_number, is_phone_verified, referral_code, last_logins, created_at, experience_level, trading_styles, help_goals, preferred_markets, onboarding_completed, onboarding_completed_at')
                         .eq('id', id)
                         .maybeSingle();
 
                     if (data) {
+                        if (typeof data.is_phone_verified === 'boolean') {
+                            setIsPhoneVerified(data.is_phone_verified);
+                        }
                         const parsedDbLogins = parseLogins(data.last_logins);
                         if (parsedDbLogins.length > 0) {
                             setLastLogins(parsedDbLogins.slice(-5));
@@ -372,6 +377,7 @@ export default function Profile() {
             };
             localStorage.setItem('user', JSON.stringify(updated));
             setInitialPhone(form.phone_number);
+            setIsPhoneVerified(true);
             setIsEditing(false);
             window.dispatchEvent(new Event('user:updated'));
 
@@ -564,6 +570,8 @@ export default function Profile() {
                     setShowPasswordModal={setShowPasswordModal}
                     setActiveTab={setActiveTab}
                     setShowLogoutConfirm={setShowLogoutConfirm}
+                    isPhoneVerified={isPhoneVerified}
+                    onVerifyPhoneClick={() => setShowOtpModal(true)}
                     t={t}
                 />
             </div>

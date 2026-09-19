@@ -54,9 +54,10 @@ export default function useSubPaneCharts({
             const isVis = indicatorVisibility.rsi;
             if (!rsiChartObjRef.current) {
                 const rChart = createChart(rsiContainerRef.current, {
-                    height: 125,
+                    height: rsiContainerRef.current.clientHeight || 115,
                     width: rsiContainerRef.current.clientWidth,
-                    layout: { background: { color: subBg }, textColor: subTxt, fontFamily: 'Inter, sans-serif' },
+                    attributionLogo: false,
+                    layout: { background: { color: subBg }, textColor: subTxt, fontFamily: 'Inter, sans-serif', attributionLogo: false },
                     grid: { vertLines: { color: subGridVert }, horzLines: { color: subGridHorz } },
                     timeScale: { visible: true, borderColor: subBorder },
                     rightPriceScale: { borderColor: subBorder },
@@ -70,7 +71,7 @@ export default function useSubPaneCharts({
                 rsiChartObjRef.current = { chart: rChart, series: rSeries, line70, line30 };
             } else {
                 rsiChartObjRef.current.chart.applyOptions({
-                    layout: { background: { color: subBg }, textColor: subTxt },
+                    layout: { background: { color: subBg }, textColor: subTxt, attributionLogo: false },
                     grid: { vertLines: { color: subGridVert }, horzLines: { color: subGridHorz } },
                     timeScale: { borderColor: subBorder },
                     rightPriceScale: { borderColor: subBorder }
@@ -98,9 +99,10 @@ export default function useSubPaneCharts({
             const isVis = indicatorVisibility.macd;
             if (!macdChartObjRef.current) {
                 const mChart = createChart(macdContainerRef.current, {
-                    height: 125,
+                    height: macdContainerRef.current.clientHeight || 115,
                     width: macdContainerRef.current.clientWidth,
-                    layout: { background: { color: subBg }, textColor: subTxt, fontFamily: 'Inter, sans-serif' },
+                    attributionLogo: false,
+                    layout: { background: { color: subBg }, textColor: subTxt, fontFamily: 'Inter, sans-serif', attributionLogo: false },
                     grid: { vertLines: { color: subGridVert }, horzLines: { color: subGridHorz } },
                     timeScale: { visible: true, borderColor: subBorder },
                     rightPriceScale: { borderColor: subBorder },
@@ -114,7 +116,7 @@ export default function useSubPaneCharts({
                 macdChartObjRef.current = { chart: mChart, histSeries, macdSeries, signalSeries };
             } else {
                 macdChartObjRef.current.chart.applyOptions({
-                    layout: { background: { color: subBg }, textColor: subTxt },
+                    layout: { background: { color: subBg }, textColor: subTxt, attributionLogo: false },
                     grid: { vertLines: { color: subGridVert }, horzLines: { color: subGridHorz } },
                     timeScale: { borderColor: subBorder },
                     rightPriceScale: { borderColor: subBorder }
@@ -123,10 +125,10 @@ export default function useSubPaneCharts({
                 macdChartObjRef.current.macdSeries.applyOptions({ color: cfg.macdColor, lineWidth: cfg.lineWidth, visible: isVis });
                 macdChartObjRef.current.signalSeries.applyOptions({ color: cfg.signalColor, lineWidth: cfg.lineWidth, visible: isVis });
             }
-            const { macdLine, signalLine, histogram } = calculateMACD(candles, cfg.fastPeriod, cfg.slowPeriod, cfg.signalPeriod);
-            macdChartObjRef.current.macdSeries.setData(macdLine);
-            macdChartObjRef.current.signalSeries.setData(signalLine);
-            macdChartObjRef.current.histSeries.setData(histogram);
+            const { macd, macdLine, signal, signalLine, histogram } = calculateMACD(candles, cfg.fastPeriod, cfg.slowPeriod, cfg.signalPeriod);
+            macdChartObjRef.current.macdSeries.setData(macd || macdLine || []);
+            macdChartObjRef.current.signalSeries.setData(signal || signalLine || []);
+            macdChartObjRef.current.histSeries.setData(histogram || []);
         } else if (macdChartObjRef.current) {
             try { macdChartObjRef.current.chart.remove(); } catch {}
             macdChartObjRef.current = null;
@@ -138,9 +140,10 @@ export default function useSubPaneCharts({
             const isVis = indicatorVisibility.stochastic;
             if (!stochChartObjRef.current) {
                 const sChart = createChart(stochContainerRef.current, {
-                    height: 125,
+                    height: stochContainerRef.current.clientHeight || 115,
                     width: stochContainerRef.current.clientWidth,
-                    layout: { background: { color: subBg }, textColor: subTxt, fontFamily: 'Inter, sans-serif' },
+                    attributionLogo: false,
+                    layout: { background: { color: subBg }, textColor: subTxt, fontFamily: 'Inter, sans-serif', attributionLogo: false },
                     grid: { vertLines: { color: subGridVert }, horzLines: { color: subGridHorz } },
                     timeScale: { visible: true, borderColor: subBorder },
                     rightPriceScale: { borderColor: subBorder },
@@ -155,7 +158,7 @@ export default function useSubPaneCharts({
                 stochChartObjRef.current = { chart: sChart, kSeries, dSeries, line80, line20 };
             } else {
                 stochChartObjRef.current.chart.applyOptions({
-                    layout: { background: { color: subBg }, textColor: subTxt },
+                    layout: { background: { color: subBg }, textColor: subTxt, attributionLogo: false },
                     grid: { vertLines: { color: subGridVert }, horzLines: { color: subGridHorz } },
                     timeScale: { borderColor: subBorder },
                     rightPriceScale: { borderColor: subBorder }
@@ -166,9 +169,9 @@ export default function useSubPaneCharts({
                 stochChartObjRef.current.line20.applyOptions({ visible: isVis });
             }
             const { k, d } = calculateStochastic(candles, cfg.kPeriod, cfg.dPeriod, cfg.smooth);
-            stochChartObjRef.current.kSeries.setData(k);
-            stochChartObjRef.current.dSeries.setData(d);
-            if (k.length > 0) {
+            stochChartObjRef.current.kSeries.setData(k || []);
+            stochChartObjRef.current.dSeries.setData(d || []);
+            if (k && k.length > 0) {
                 const first = k[0].time;
                 const last = k[k.length - 1].time;
                 stochChartObjRef.current.line80.setData([{ time: first, value: 80 }, { time: last, value: 80 }]);
@@ -204,6 +207,48 @@ export default function useSubPaneCharts({
             try { stochChartObjRef.current.chart.applyOptions(subOptions); } catch {}
         }
     }, [theme, isDark]);
+
+    // Observe size changes on sub-pane containers
+    useEffect(() => {
+        const handleResizeSubPanes = () => {
+            if (rsiChartObjRef.current?.chart && rsiContainerRef.current) {
+                try {
+                    rsiChartObjRef.current.chart.applyOptions({
+                        width: rsiContainerRef.current.clientWidth,
+                        height: rsiContainerRef.current.clientHeight || 120,
+                    });
+                } catch {}
+            }
+            if (macdChartObjRef.current?.chart && macdContainerRef.current) {
+                try {
+                    macdChartObjRef.current.chart.applyOptions({
+                        width: macdContainerRef.current.clientWidth,
+                        height: macdContainerRef.current.clientHeight || 120,
+                    });
+                } catch {}
+            }
+            if (stochChartObjRef.current?.chart && stochContainerRef.current) {
+                try {
+                    stochChartObjRef.current.chart.applyOptions({
+                        width: stochContainerRef.current.clientWidth,
+                        height: stochContainerRef.current.clientHeight || 120,
+                    });
+                } catch {}
+            }
+        };
+
+        const ro = new ResizeObserver(() => {
+            handleResizeSubPanes();
+        });
+
+        if (rsiContainerRef.current) ro.observe(rsiContainerRef.current);
+        if (macdContainerRef.current) ro.observe(macdContainerRef.current);
+        if (stochContainerRef.current) ro.observe(stochContainerRef.current);
+
+        return () => {
+            ro.disconnect();
+        };
+    }, [activeIndicators]);
 
     return {
         rsiChartObjRef,

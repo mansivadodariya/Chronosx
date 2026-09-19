@@ -72,11 +72,15 @@
         }
     }
 
-    .chartSidePanel {
+    .chartSidePanel,
+    .chartSingleBody {
         display: flex;
         flex-direction: column;
         height: 100%;
-        min-height: 480px;
+        min-height: 0;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
 
         @include respond-to('md') {
             height: 500px !important;

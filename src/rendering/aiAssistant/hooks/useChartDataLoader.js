@@ -254,41 +254,65 @@ export default function useChartDataLoader({
                         timeVal = Number(timeVal);
                     }
 
-                    const openPrice = parseFloat(bar.open);
-                    const closePrice = parseFloat(bar.close);
+                    if (isNaN(timeVal) || timeVal <= 0 || isNaN(closePrice)) return;
+
+                    const openPrice = isNaN(parseFloat(bar.open)) ? closePrice : parseFloat(bar.open);
+                    const highPrice = isNaN(parseFloat(bar.high)) ? Math.max(openPrice, closePrice) : parseFloat(bar.high);
+                    const lowPrice = isNaN(parseFloat(bar.low)) ? Math.min(openPrice, closePrice) : parseFloat(bar.low);
                     const volumeVal = parseFloat(bar.volume || bar.tick_volume || bar.vol || 0);
 
                     const updatedBar = {
                         time: timeVal,
                         open: openPrice,
-                        high: parseFloat(bar.high),
-                        low: parseFloat(bar.low),
+                        high: highPrice,
+                        low: lowPrice,
                         close: closePrice,
                         value: closePrice,
                     };
 
-                    // Prevent cross-symbol price distortion or sudden giant spikes
                     if (candlesDataRef.current && candlesDataRef.current.length > 0) {
-                        const lastClose = candlesDataRef.current[candlesDataRef.current.length - 1].close;
+                        const lastIndex = candlesDataRef.current.length - 1;
+                        const lastCandle = candlesDataRef.current[lastIndex];
+
+                        // Prevent cross-symbol price distortion or sudden giant spikes
+                        const lastClose = lastCandle.close;
                         const ratio = closePrice / lastClose;
                         if (ratio > 1.35 || ratio < 0.65) {
-                            // Ignore mismatched/corrupted packet without destroying historical candles
                             return;
+                        }
+
+                        // Lightweight Charts requires time >= last bar time
+                        if (timeVal < lastCandle.time) {
+                            return;
+                        }
+
+                        if (timeVal === lastCandle.time) {
+                            candlesDataRef.current[lastIndex] = updatedBar;
+                        } else {
+                            candlesDataRef.current.push(updatedBar);
                         }
                     }
 
                     unifiedSocket.setKnownPrice(activeSymbolClean, closePrice);
 
-                    if (seriesRef.current) {
-                        seriesRef.current.update(updatedBar);
+                    try {
+                        if (seriesRef.current) {
+                            seriesRef.current.update(updatedBar);
+                        }
+                    } catch (err) {
+                        console.warn('Series update warning:', err);
                     }
-                    if (volumeSeriesRef.current) {
-                        volumeSeriesRef.current.update({
-                            time: timeVal,
-                            value: volumeVal || Math.floor(Math.random() * 2000) + 500,
-                            color: closePrice >= openPrice ? 'rgba(38, 166, 154, 0.7)' : 'rgba(239, 83, 80, 0.7)',
-                        });
-                    }
+
+                    try {
+                        if (volumeSeriesRef.current) {
+                            volumeSeriesRef.current.update({
+                                time: timeVal,
+                                value: volumeVal || Math.floor(Math.random() * 2000) + 500,
+                                color: closePrice >= openPrice ? 'rgba(38, 166, 154, 0.7)' : 'rgba(239, 83, 80, 0.7)',
+                            });
+                        }
+                    } catch {}
+
                     setLatestCandle(updatedBar);
                 });
             } catch {

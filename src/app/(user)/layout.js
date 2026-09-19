@@ -9,6 +9,7 @@ import { ToolStateProvider } from '@/context/toolState';
 import { SubscriptionProvider } from '@/context/SubscriptionContext';
 import NeweraCreditsModal from '@/components/neweraCreditsModal';
 import RiskDisclosureModal from '@/components/riskDisclosureModal';
+import FirebasePhoneModal from '@/components/firebasePhoneModal';
 import { extractAvailableCredits, CREDITS_UPDATED_EVENT, notifyCreditsUpdated, refreshCreditsFromServer } from '@/lib/credits';
 import { captureUtmParameters } from '@/lib/utm';
 import { getStoredUserId } from '@/lib/authSession';
@@ -98,6 +99,8 @@ const layout = ({ children }) => {
     const [showRiskModal, setShowRiskModal] = useState(false);
     const [userId, setUserId] = useState('');
     const [isTabAllowed, setIsTabAllowed] = useState(true);
+    const [showPhoneVerifyModal, setShowPhoneVerifyModal] = useState(false);
+    const [userPhoneNumber, setUserPhoneNumber] = useState('');
 
     // Check Risk Disclosure acceptance when user navigates to any Tool route
     useEffect(() => {
@@ -225,6 +228,26 @@ const layout = ({ children }) => {
             };
             syncUtmToDb();
 
+            const checkPhoneStatus = async () => {
+                if (!supabase || !uid) return;
+                try {
+                    const { data: dbUser } = await supabase
+                        .from('users')
+                        .select('phone_number, is_phone_verified')
+                        .eq('id', uid)
+                        .maybeSingle();
+
+                    if (dbUser) {
+                        const isVerified = dbUser.is_phone_verified === true;
+                        setUserPhoneNumber(dbUser.phone_number || '');
+                        setShowPhoneVerifyModal(!isVerified);
+                    }
+                } catch (err) {
+                    console.warn("Failed to check user phone verification:", err);
+                }
+            };
+            checkPhoneStatus();
+
             dashboardApi.getStats(uid)
                 .then((res) => {
                     const currentCredits = res?.data?.available_credits;
@@ -263,6 +286,21 @@ const layout = ({ children }) => {
             document.removeEventListener('visibilitychange', handleTabVisibilityChange);
         };
     }, []);
+
+    const handlePhoneVerifySuccess = (verifiedPhone) => {
+        setShowPhoneVerifyModal(false);
+        setUserPhoneNumber(verifiedPhone);
+        if (typeof window !== 'undefined') {
+            try {
+                const parsed = JSON.parse(localStorage.getItem('user') || '{}');
+                parsed.phone_number = verifiedPhone;
+                parsed.is_phone_verified = true;
+                localStorage.setItem('user', JSON.stringify(parsed));
+                document.cookie = 'has_phone=true; path=/; SameSite=Lax';
+                window.dispatchEvent(new CustomEvent('user:updated'));
+            } catch (_) {}
+        }
+    };
 
     useEffect(() => {
         const checkPermission = async () => {
@@ -353,6 +391,12 @@ const layout = ({ children }) => {
                         isOpen={showRiskModal}
                         userId={userId}
                         onAccept={() => setShowRiskModal(false)}
+                    />
+                    <FirebasePhoneModal
+                        isOpen={showPhoneVerifyModal}
+                        phoneNumber={userPhoneNumber}
+                        autoTriggerSend={false}
+                        onSuccess={handlePhoneVerifySuccess}
                     />
                 </ToolStateProvider>
                 </SubscriptionProvider>

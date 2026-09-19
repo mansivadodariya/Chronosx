@@ -1,6 +1,6 @@
 "use client";
 import { useLanguage } from '@/context/LanguageContext';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { authNavigate, navigateFeature } from '@/lib/authRedirect';
@@ -228,45 +228,17 @@ const row2Assets = [
 export default function FavoriteCoins() {
   const { t } = useLanguage();
   const router = useRouter();
-  const [livePrices, setLivePrices] = useState({});
-
-  useEffect(() => {
-    let isMounted = true;
-    const fetchLiveTickers = async () => {
-      try {
-        const res = await fetch('/api/v1/market/tickers');
-        if (res.ok) {
-          const json = await res.json();
-          if (json?.data && isMounted) {
-            setLivePrices(json.data);
-          }
-        }
-      } catch {
-        // Fallback silently to baseline prices
-      }
-    };
-
-    fetchLiveTickers();
-    const interval = setInterval(fetchLiveTickers, 20000);
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
-  }, []);
 
   // Duplicate arrays 3x for seamless infinite marquee loop
   const marqueeRow1 = [...row1Assets, ...row1Assets, ...row1Assets];
   const marqueeRow2 = [...row2Assets, ...row2Assets, ...row2Assets];
 
-  const getAssetData = (item) => {
-    const live = livePrices[item.symbol];
-    return {
-      price: live?.price || item.price,
-      change: live?.change || item.change,
-      isUp: live !== undefined ? live.isUp : item.isUp,
-      signal: live?.signal || item.signal
-    };
-  };
+  const getAssetData = (item) => ({
+    price: item.price,
+    change: item.change,
+    isUp: item.isUp,
+    signal: item.signal
+  });
 
   return (
     <section className={styles.favoriteCoinsSection} aria-label="TradingView Verified Asset Markets">

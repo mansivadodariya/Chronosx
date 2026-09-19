@@ -131,6 +131,13 @@ const ContinueWithGoogle = ({ redirectTo = '/dashboard', onPendingPhone }) => {
 
                 const status = await fetchUserOnboardingStatus(uid, email);
 
+                const isPhoneVerified = status.is_phone_verified === true || status.user?.is_phone_verified === true;
+                if (status.user && !isPhoneVerified) {
+                    setPhoneNumber(status.user.phone_number || '');
+                    setShowPhoneModal(true);
+                    return;
+                }
+
                 let target = redirectRef.current || '/dashboard';
                 if (!target || target === '/onboarding' || target === '/steper' || target.startsWith('/onboarding') || target.startsWith('/steper')) {
                     target = '/dashboard';

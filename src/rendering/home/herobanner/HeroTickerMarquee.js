@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { navigateFeature } from '@/lib/authRedirect';
 import styles from './herobanner.module.scss';
@@ -145,44 +145,16 @@ function TickerCardLogo({ logoUrl, name, color, fallbackChar }) {
 
 export default function HeroTickerMarquee() {
   const router = useRouter();
-  const [livePrices, setLivePrices] = useState({});
-
-  useEffect(() => {
-    let isMounted = true;
-    const fetchLiveTickers = async () => {
-      try {
-        const res = await fetch('/api/v1/market/tickers');
-        if (res.ok) {
-          const json = await res.json();
-          if (json?.data && isMounted) {
-            setLivePrices(json.data);
-          }
-        }
-      } catch {
-        // Fallback silently to static values
-      }
-    };
-
-    fetchLiveTickers();
-    const interval = setInterval(fetchLiveTickers, 20000);
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
-  }, []);
 
   // Duplicate items 3x for infinite seamless scroll
   const marqueeItems = [...TICKER_ASSETS, ...TICKER_ASSETS, ...TICKER_ASSETS];
 
-  const getAssetData = (item) => {
-    const live = livePrices[item.symbol];
-    return {
-      price: live?.price || item.price,
-      change: live?.change || item.change,
-      isUp: live !== undefined ? live.isUp : item.isUp,
-      signal: live?.signal || item.signal
-    };
-  };
+  const getAssetData = (item) => ({
+    price: item.price,
+    change: item.change,
+    isUp: item.isUp,
+    signal: item.signal
+  });
 
   return (
     <div className={styles.heroMarqueeWrapper} aria-label="Live Market Assets Ticker">

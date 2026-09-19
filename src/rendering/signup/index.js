@@ -181,6 +181,14 @@ const Signup = () => {
                         return;
                     }
 
+                    const isPhoneVerified = status.is_phone_verified === true || status.user?.is_phone_verified === true;
+                    if (status.user && !isPhoneVerified) {
+                        setPendingPhoneUserId(status.user.id || uid);
+                        setPhoneNumber(status.user.phone_number || '');
+                        setShowOtpModal(true);
+                        return;
+                    }
+
                     let destination = redirectTo;
                     if (!destination || destination === '/onboarding' || destination === '/steper' || destination.startsWith('/onboarding') || destination.startsWith('/steper')) {
                         destination = '/dashboard';

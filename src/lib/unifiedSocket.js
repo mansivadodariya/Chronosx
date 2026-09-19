@@ -52,17 +52,22 @@ export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategy
     const stratId = strategyId || 'default';
     const qs = `?symbol=${cleanSym}&timeframe=${normTf}&strategy_id=${stratId}`;
 
+    const isHttps = typeof window !== 'undefined' && window.location?.protocol === 'https:';
     const candidates = [];
     const envWs = process.env.NEXT_PUBLIC_WS_URL || process.env.NEXT_PUBLIC_WS_LIVE_URL;
 
     if (envWs) {
-        const cleanBase = envWs.split('?')[0];
-        // If configured as ws:// on local network, prioritize ws://
+        let cleanBase = envWs.split('?')[0];
+        if (isHttps && cleanBase.startsWith('ws://')) {
+            cleanBase = cleanBase.replace(/^ws:\/\//, 'wss://');
+        }
         candidates.push(`${cleanBase}${qs}`);
-        if (cleanBase.startsWith('wss://')) {
-            candidates.push(`${cleanBase.replace(/^wss:\/\//, 'ws://')}${qs}`);
-        } else if (cleanBase.startsWith('ws://')) {
-            candidates.push(`${cleanBase.replace(/^ws:\/\//, 'wss://')}${qs}`);
+        if (!isHttps) {
+            if (cleanBase.startsWith('wss://')) {
+                candidates.push(`${cleanBase.replace(/^wss:\/\//, 'ws://')}${qs}`);
+            } else if (cleanBase.startsWith('ws://')) {
+                candidates.push(`${cleanBase.replace(/^ws:\/\//, 'wss://')}${qs}`);
+            }
         }
     }
 
@@ -70,35 +75,48 @@ export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategy
     if (backendUrl) {
         const isHttp = backendUrl.startsWith('http://');
         const host = backendUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '');
-        if (isHttp) {
-            candidates.push(`ws://${host}/api/v1/ws/live${qs}`);
+        if (isHttps || !isHttp) {
             candidates.push(`wss://${host}/api/v1/ws/live${qs}`);
+            if (!isHttps) {
+                candidates.push(`ws://${host}/api/v1/ws/live${qs}`);
+            }
         } else {
-            candidates.push(`wss://${host}/api/v1/ws/live${qs}`);
             candidates.push(`ws://${host}/api/v1/ws/live${qs}`);
+            candidates.push(`wss://${host}/api/v1/ws/live${qs}`);
         }
     }
 
-    candidates.push(`ws://192.168.0.153:8000/api/v1/ws/live${qs}`);
-    candidates.push(`wss://192.168.0.153:8000/api/v1/ws/live${qs}`);
+    if (!isHttps) {
+        candidates.push(`ws://192.168.0.153:8000/api/v1/ws/live${qs}`);
+        candidates.push(`wss://192.168.0.153:8000/api/v1/ws/live${qs}`);
 
-    if (typeof window !== 'undefined' && window.location) {
-        const host = window.location.hostname || '127.0.0.1';
-        if (host !== '192.168.0.153') {
-            candidates.push(`ws://${host}:8000/api/v1/ws/live${qs}`);
-            candidates.push(`wss://${host}:8000/api/v1/ws/live${qs}`);
+        if (typeof window !== 'undefined' && window.location) {
+            const host = window.location.hostname || '127.0.0.1';
+            if (host !== '192.168.0.153') {
+                candidates.push(`ws://${host}:8000/api/v1/ws/live${qs}`);
+                candidates.push(`wss://${host}:8000/api/v1/ws/live${qs}`);
+            }
         }
-    }
 
-    candidates.push(`ws://127.0.0.1:8000/api/v1/ws/live${qs}`);
+        candidates.push(`ws://127.0.0.1:8000/api/v1/ws/live${qs}`);
+    } else if (typeof window !== 'undefined' && window.location) {
+        const host = window.location.host;
+        candidates.push(`wss://${host}/api/v1/ws/live${qs}`);
+    }
 
     // Remove duplicates while preserving order
-    return Array.from(new Set(candidates));
+    const unique = Array.from(new Set(candidates));
+    if (isHttps) {
+        // Strict HTTPS protection: filter out any insecure ws:// to avoid mixed content errors
+        return unique.filter((u) => u.startsWith('wss://'));
+    }
+    return unique;
 }
 
 export function getWsEndpointUrl(symbol = 'XAUUSD', timeframe = 'H1', strategyId = 'default') {
     const list = getWsCandidateUrls(symbol, timeframe, strategyId);
-    return list[0] || `ws://127.0.0.1:8000/api/v1/ws/live?symbol=${cleanPairSymbol(symbol)}&timeframe=${normalizeTimeframe(timeframe)}&strategy_id=${strategyId || 'default'}`;
+    const defaultProto = typeof window !== 'undefined' && window.location?.protocol === 'https:' ? 'wss' : 'ws';
+    return list[0] || `${defaultProto}://127.0.0.1:8000/api/v1/ws/live?symbol=${cleanPairSymbol(symbol)}&timeframe=${normalizeTimeframe(timeframe)}&strategy_id=${strategyId || 'default'}`;
 }
 
 class UnifiedSocketManager {

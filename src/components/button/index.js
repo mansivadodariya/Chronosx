@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import styles from './button.module.scss';
 import classNames from 'classnames';
 
-export default function Button({ text, icon, iconPosition = "right", onClick, btnmd, type = "button" }) {
+export default function Button({ text, icon, iconPosition = "right", onClick, btnmd, type = "button", disabled = false, fullWidth = false }) {
     const renderIcon = () => {
         if (!icon) return null;
         if (typeof icon === 'string') {
@@ -21,15 +21,16 @@ export default function Button({ text, icon, iconPosition = "right", onClick, bt
     };
 
     return (
-        <div className={classNames(styles.button, btnmd ? styles.btnmd : "")}>
+        <div className={classNames(styles.button, btnmd ? styles.btnmd : "", fullWidth ? styles.fullWidth : "")}>
             <motion.button
                 type={type}
-                onClick={onClick}
+                onClick={disabled ? undefined : onClick}
+                disabled={disabled}
                 aria-label={text}
-                whileHover="hover"
-                whileTap="tap"
+                whileHover={disabled ? undefined : "hover"}
+                whileTap={disabled ? undefined : "tap"}
                 initial="rest"
-                variants={{
+                variants={disabled ? undefined : {
                     rest: { scale: 1, boxShadow: "0 4px 20px rgba(24, 201, 139, 0.35)" },
                     hover: {
                         scale: 1.04,
