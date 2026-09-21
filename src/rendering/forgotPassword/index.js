@@ -83,7 +83,7 @@ const ForgotPassword = () => {
                         </div>
                     ) : (
                         <>
-                            <form onSubmit={handleSubmit} noValidate autoComplete="off">
+                            <form onSubmit={handleSubmit} noValidate>
                                 <div className={styles.spacingGrid}>
                                     <Input
                                         label={t('auth.emailLabel', 'EMAIL')}
@@ -95,7 +95,7 @@ const ForgotPassword = () => {
                                         onChange={handleEmailChange}
                                         error={emailError}
                                         maxLength={100}
-                                        autoComplete="off"
+                                        autoComplete="email"
                                     />
                                     <Button
                                         type="submit"

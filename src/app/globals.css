@@ -1,5 +1,6 @@
 @import './styles/globalsBase.css';
 @import './styles/globalsLightTheme.css';
+@import './styles/globalsAutofill.css';
 
 /* Remove Google reCAPTCHA floating side badge */
 .grecaptcha-badge {

@@ -453,7 +453,7 @@ const Login = () => {
                                     </div>
 
 
-                                    <form onSubmit={handleSubmit} noValidate autoComplete="off">
+                                    <form onSubmit={handleSubmit} noValidate>
                                         <div className={styles.spacingGrid}>
                                             <Input
                                                 label="Email or Username"
@@ -465,7 +465,7 @@ const Login = () => {
                                                 onChange={set('email')}
                                                 error={errors.email}
                                                 maxLength={100}
-                                                autoComplete="off"
+                                                autoComplete="username"
                                             />
 
                                             <div>

@@ -13,6 +13,7 @@ import {
 import { toast } from 'react-hot-toast';
 import { strategyStudioApi } from './utils/strategyApi';
 import { parseRoundTrips } from './utils/backtestEngine';
+import { getStoredUser, getStoredUserId, hydrateUserFromProfile } from '@/lib/authSession';
 
 // Category presets configuration matching Tradezee
 const CATEGORY_DATA = {
@@ -89,14 +90,22 @@ export default function StrategyStudio() {
         else if (hour < 17) setGreetingWord('Good afternoon');
         else setGreetingWord('Good evening');
 
-        try {
-            const rawUser = localStorage.getItem('auth_user') || sessionStorage.getItem('auth_user');
-            if (rawUser) {
-                const parsed = JSON.parse(rawUser);
-                const name = parsed?.first_name || parsed?.name || parsed?.email?.split('@')[0];
+        const syncUser = async () => {
+            try {
+                let user = getStoredUser();
+                const userId = getStoredUserId();
+                if (userId && (!user?.first_name && !user?.name)) {
+                    user = await hydrateUserFromProfile(userId, user);
+                }
+                const name = user?.first_name || user?.name || (user?.email ? user.email.split('@')[0] : '') || 'Trader';
                 if (name) setUserName(name);
-            }
-        } catch (e) { /* ignore */ }
+            } catch (e) { /* ignore */ }
+        };
+
+        syncUser();
+        if (typeof window !== 'undefined') {
+            window.addEventListener('user:updated', syncUser);
+        }
 
         setMessages([
             {
@@ -110,6 +119,11 @@ export default function StrategyStudio() {
                 ]
             }
         ]);
+        return () => {
+            if (typeof window !== 'undefined') {
+                window.removeEventListener('user:updated', syncUser);
+            }
+        };
     }, []);
 
     // Auto-scroll on new message

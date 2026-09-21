@@ -14,6 +14,7 @@ import { refreshCreditsFromServer } from '@/lib/credits';
 import { useLanguage } from '@/context/LanguageContext';
 import toast from 'react-hot-toast';
 import CommonCta from '@/components/commonCta';
+import { useTabPermission } from '@/lib/useTabPermission';
 
 import ActiveSubscriptionCard from './components/ActiveSubscriptionCard';
 import PaymentSummaryModal from './components/PaymentSummaryModal';
@@ -103,6 +104,13 @@ export default function SubscriptionPlansView() {
     const isDashboard = Boolean(pathname?.includes('subscription-plans'));
     const isOutside = !isDashboard;
     const { t, language } = useLanguage();
+    const hasPlansPermission = useTabPermission('Subscription Plans');
+
+    useEffect(() => {
+        if (hasPlansPermission === false && isOutside) {
+            router.replace('/');
+        }
+    }, [hasPlansPermission, isOutside, router]);
 
     const { subscription, hasActivePlan, evaluatePlanAction, refreshSubscription } = useSubscription();
 
@@ -292,6 +300,10 @@ export default function SubscriptionPlansView() {
     const toggleFaq = (idx) => {
         setOpenFaq(prev => (prev === idx ? null : idx));
     };
+
+    if (hasPlansPermission === false && isOutside) {
+        return null;
+    }
 
     return (
         <div className={`${styles.plansPage} ${isDashboard ? styles.dashboardPlansPage : styles.outsidePage} ${styles[`lang_${language}`] || ''}`}>

@@ -35,8 +35,12 @@
     "getStarted": "ابدأ الآن",
     "logout": "تسجيل الخروج",
     "dashboard": "لوحة التحكم",
-    "strategyStudio": "منشئ البوتات بالذكاء الاصطناعي (AI Bot Builder)",
+    "aiTradingBot": "بوت التداول بالذكاء الاصطناعي (AI Trading Bot)",
+    "myBots": "بوتاتي (My Bots)",
+    "aiBotBuilder": "منشئ البوتات بالذكاء الاصطناعي (AI Bot Builder)",
     "customBotBuilder": "منشئ البوتات المخصص (Custom Bot Builder)",
+    "botLibrary": "مكتبة البوتات (Browse Bots Library)",
+    "strategyStudio": "منشئ البوتات بالذكاء الاصطناعي (AI Bot Builder)",
     "affiliate": "برنامج الشركاء (Affiliate)"
   },
   "topbar": {

@@ -21,6 +21,10 @@ import {
   StrategyIcon,
   BotBuilderIcon,
   PredefinedStrategyIcon,
+  MyBotsIcon,
+  AiBotSparkIcon,
+  CustomBotIcon,
+  BotLibraryIcon,
   SubCalendarIcon,
   SubCalculatorIcon,
   EducationIcon,
@@ -63,7 +67,17 @@ const getNavSections = (t) => [
           { label: t('nav.predefinedStrategies', 'Predefined Strategies'), href: "/predefined-strategies", icon: PredefinedStrategyIcon },
         ]
       },
-      { label: t('nav.strategyStudio', 'AI Bot Builder'), href: "/ai-bot-builder", icon: BotBuilderIcon },
+      {
+        label: t('nav.aiTradingBot', 'AI Trading Bot'),
+        href: "/my-bots",
+        icon: BotBuilderIcon,
+        subItems: [
+          { label: t('nav.myBots', 'My Bots'), href: "/my-bots", icon: MyBotsIcon },
+          { label: t('nav.aiBotBuilder', 'AI Bot Builder'), href: "/ai-bot-builder", icon: AiBotSparkIcon },
+          { label: t('nav.customBotBuilder', 'Custom Bot Builder'), href: "/manual-bot-builder", icon: CustomBotIcon },
+          { label: t('nav.botLibrary', 'Browse Bots Library'), href: "/bot-library", icon: BotLibraryIcon },
+        ]
+      },
     ]
   },
   {
@@ -318,6 +332,7 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
   const [visibleTabNames, setVisibleTabNames] = useState(null);
   const [tabsLoading, setTabsLoading] = useState(false);
   const profileRef = useRef(null);
+  const sidebarMenuRef = useRef(null);
 
   useEffect(() => {
     try {
@@ -418,7 +433,12 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
     '/ai-trade-audit': 'AI Past Trade Analyzer',
     '/trade-advisor': 'AI Past Trade Analyzer',
     '/ai-trade-advisor': 'AI Past Trade Analyzer',
+    '/my-bots': 'My Bots',
     '/ai-bot-builder': 'AI Bot Builder',
+    '/manual-bot-builder': 'Custom Bot Builder',
+    '/custom-bot-builder': 'Custom Bot Builder',
+    '/bot-library': 'Browse Bots Library',
+    '/browse-bots': 'Browse Bots Library',
     '/bot-builder': 'AI Bot Builder',
     '/strategy-studio': 'AI Bot Builder',
     '/ai-strategy-studio': 'AI Bot Builder',
@@ -467,7 +487,10 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
       if (lowerLabel.includes('affiliate') || mapped.includes('affiliate')) return true;
       if (lowerLabel.includes('education') || lowerLabel.includes('edufins') || routeHref?.includes('edufins')) return true;
       if (lowerLabel === 'profile' || lowerLabel === 'settings' || mapped === 'profile') return true;
-      if (lowerLabel === 'dashboard' || mapped === 'dashboard') return true;
+      // Group parent container check: "AI Trading Bot" is shown if the parent tab itself is enabled, or if any of its sub-items is enabled
+      if (lowerLabel === 'ai trading bot' || mapped === 'ai trading bot') {
+        return visibleTabNames.has('ai trading bot') || visibleTabNames.has('my bots') || visibleTabNames.has('ai bot builder') || visibleTabNames.has('custom bot builder') || visibleTabNames.has('browse bots library');
+      }
 
       // Exact 1-to-1 check against standardized dashboard_tabs permissions
       return visibleTabNames.has(mapped) || visibleTabNames.has(lowerLabel);
@@ -520,7 +543,15 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
 
   return (
     <>
-      <aside className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''}`}>
+      <aside 
+        className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''}`}
+        data-lenis-prevent="true"
+        onWheel={(e) => {
+          if (sidebarMenuRef.current) {
+            sidebarMenuRef.current.scrollTop += e.deltaY;
+          }
+        }}
+      >
         {/* Brand Logo Header */}
         <div className={styles.logoHeader}>
           {!isCollapsed ? (
@@ -557,7 +588,14 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
         </div>
 
         {/* Navigation Menu List */}
-        <div className={styles.sidebarmenu}>
+        <div 
+          className={styles.sidebarmenu} 
+          ref={sidebarMenuRef}
+          data-lenis-prevent="true"
+          onWheel={(e) => {
+            e.stopPropagation();
+          }}
+        >
           {tabsLoading && !visibleTabNames ? (
             <NavSkeleton count={8} isCollapsed={isCollapsed} />
           ) : (

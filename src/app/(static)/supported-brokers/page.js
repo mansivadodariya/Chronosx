@@ -5,6 +5,6 @@ export const metadata = {
     description: 'Explore verified broker partners with Tier-1 liquidity, zero-latency MT5 bridges, and raw spreads.',
 };
 
-export default function Page() {
+export default function SupportedBrokersPage() {
     return <BrokerPage isPublic={true} />;
 }

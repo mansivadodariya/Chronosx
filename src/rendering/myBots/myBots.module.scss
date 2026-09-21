@@ -1,0 +1,696 @@
+/* ============================================================
+   MY BOTS DASHBOARD & EMPTY STATE 2-HERO-CARDS
+   Rich cyberpunk glassmorphism & responsive layout
+   ============================================================ */
+
+.container {
+    width: 100%;
+    min-height: calc(100vh - 120px);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 40px;
+}
+
+.createBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #18C98B 0%, #10B981 100%);
+    color: #04100A;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 9px 18px;
+    border-radius: 9px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(24, 201, 139, 0.35);
+    transition: all 0.2s ease;
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(24, 201, 139, 0.45);
+    }
+}
+
+/* Empty State */
+.emptyStateSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.emptyStateHeader {
+    text-align: center;
+    max-width: 620px;
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.emptyIconBadge {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: radial-gradient(circle at center, rgba(24, 201, 139, 0.16) 0%, rgba(24, 201, 139, 0.03) 70%);
+    border: 1px solid rgba(24, 201, 139, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 24px rgba(24, 201, 139, 0.15);
+}
+
+.emptyTitle {
+    font-size: 24px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.4px;
+
+    :global(html.light) & {
+        color: #0F172A;
+    }
+}
+
+.emptySubtitle {
+    font-size: 14px;
+    color: #94A3B8;
+    line-height: 1.5;
+    margin: 0;
+
+    :global(html.light) & {
+        color: #64748B;
+    }
+}
+
+/* 2 Big Hero Cards Grid */
+.twoCardsGrid {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 24px;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto 32px auto;
+
+    .creationHeroCard {
+        flex: 1 1 420px;
+        max-width: 520px;
+        width: 100%;
+
+        &:only-child {
+            max-width: 560px !important;
+            flex: 0 1 560px !important;
+            margin: 0 auto !important;
+        }
+    }
+
+    &.singleCardGrid,
+    &:has(> :only-child) {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        max-width: 560px !important;
+        margin: 0 auto 32px auto !important;
+
+        .creationHeroCard {
+            width: 100% !important;
+            max-width: 560px !important;
+            flex: 0 1 560px !important;
+            margin: 0 auto !important;
+        }
+    }
+}
+
+.creationHeroCard {
+    position: relative;
+    background: rgba(12, 17, 14, 0.72);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border-radius: 22px;
+    padding: 34px 30px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid rgba(24, 201, 139, 0.16);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.09);
+    background-image: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.07) 0%, transparent 65%);
+
+    &:hover {
+        transform: translateY(-6px);
+        border-color: rgba(24, 201, 139, 0.45);
+        box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.7), 0 0 35px -5px rgba(24, 201, 139, 0.2), inset 0 1px 1px 0 rgba(255, 255, 255, 0.18);
+        background-image: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.14) 0%, transparent 70%);
+
+        .cardIconBox {
+            transform: scale(1.05);
+            border-color: rgba(24, 201, 139, 0.5);
+            background: rgba(24, 201, 139, 0.14);
+            box-shadow: 0 0 24px rgba(24, 201, 139, 0.25);
+        }
+
+        .checkIcon {
+            background: rgba(24, 201, 139, 0.22);
+            border-color: rgba(24, 201, 139, 0.45);
+        }
+
+        .primaryActionBtn {
+            box-shadow: 0 8px 26px rgba(24, 201, 139, 0.45);
+
+            svg {
+                transform: translateX(4px);
+            }
+        }
+
+        .cardGlowOverlay {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+    }
+
+    :global(html.light) & {
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid rgba(24, 201, 139, 0.22);
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
+        background-image: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.05) 0%, transparent 70%);
+
+        &:hover {
+            border-color: rgba(24, 201, 139, 0.55);
+            box-shadow: 0 22px 48px rgba(15, 23, 42, 0.12), 0 0 28px rgba(24, 201, 139, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 1);
+            background-image: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.1) 0%, transparent 70%);
+        }
+    }
+}
+
+.cardGlowOverlay {
+    position: absolute;
+    top: -20%;
+    right: -20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(24, 201, 139, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+    transition: all 0.4s ease;
+    opacity: 0.65;
+}
+
+.cardTopRow {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 24px;
+}
+
+.cardIconBox {
+    width: 62px;
+    height: 62px;
+    border-radius: 16px;
+    background: rgba(24, 201, 139, 0.08);
+    border: 1px solid rgba(24, 201, 139, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+
+    :global(html.light) & {
+        background: rgba(24, 201, 139, 0.1);
+        border-color: rgba(24, 201, 139, 0.3);
+    }
+}
+
+.cardBody {
+    margin-bottom: 28px;
+}
+
+.cardTitle {
+    font-size: 22px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.3px;
+
+    :global(html.light) & {
+        color: #0F172A;
+    }
+}
+
+.cardDescription {
+    font-size: 13.5px;
+    color: #94A3B8;
+    line-height: 1.55;
+    margin: 0 0 22px 0;
+
+    :global(html.light) & {
+        color: #64748B;
+    }
+}
+
+.featureList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.featureItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12.5px;
+    color: #CBD5E1;
+
+    :global(html.light) & {
+        color: #475569;
+    }
+}
+
+.checkIcon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(24, 201, 139, 0.12);
+    border: 1px solid rgba(24, 201, 139, 0.25);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #18C98B;
+    flex-shrink: 0;
+    transition: all 0.25s ease;
+}
+
+.cardFooter {
+    width: 100%;
+}
+
+.primaryActionBtn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 13px 20px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #18C98B 0%, #10B981 100%);
+    color: #04100A;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(24, 201, 139, 0.3);
+    transition: all 0.25s ease;
+
+    svg {
+        transition: transform 0.25s ease;
+    }
+
+    &:hover {
+        box-shadow: 0 6px 24px rgba(24, 201, 139, 0.45);
+        transform: translateY(-1px);
+    }
+}
+
+/* Library Banner */
+.libraryBanner {
+    width: 100%;
+    max-width: 1100px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    :global(html.light) & {
+        background: #F8FAFC;
+        border-color: rgba(0, 0, 0, 0.08);
+    }
+}
+
+.libraryBannerContent {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    h4 {
+        font-size: 14px;
+        font-weight: 700;
+        color: #FFFFFF;
+        margin: 0 0 2px 0;
+
+        :global(html.light) & {
+            color: #0F172A;
+        }
+    }
+
+    p {
+        font-size: 12px;
+        color: #94A3B8;
+        margin: 0;
+
+        :global(html.light) & {
+            color: #64748B;
+        }
+    }
+}
+
+.libraryIcon {
+    font-size: 24px;
+}
+
+.libraryLinkBtn {
+    background: transparent;
+    border: 1px solid rgba(24, 201, 139, 0.35);
+    color: #18C98B;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(24, 201, 139, 0.1);
+        border-color: #18C98B;
+    }
+}
+
+/* Dashboard Section (Active Bots) */
+.dashboardSection {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.statsBar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.statBox {
+    background: #0C100E;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    :global(html.light) & {
+        background: #FFFFFF;
+        border-color: rgba(0, 0, 0, 0.08);
+    }
+}
+
+.statLabel {
+    font-size: 11px;
+    font-weight: 700;
+    color: #94A3B8;
+    letter-spacing: 0.5px;
+}
+
+.statVal {
+    font-size: 22px;
+    font-weight: 700;
+    color: #FFFFFF;
+
+    :global(html.light) & {
+        color: #0F172A;
+    }
+}
+
+.activeColor {
+    color: #18C98B;
+}
+
+.posColor {
+    color: #10B981;
+}
+
+.negColor {
+    color: #EF4444;
+}
+
+.controlRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.filterPills {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filterPill {
+    background: #0C100E;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: #94A3B8;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        color: #FFFFFF;
+    }
+
+    :global(html.light) & {
+        background: #F8FAFC;
+        border-color: rgba(0, 0, 0, 0.08);
+        color: #64748B;
+    }
+}
+
+.activePill {
+    background: rgba(24, 201, 139, 0.12) !important;
+    border-color: rgba(24, 201, 139, 0.3) !important;
+    color: #18C98B !important;
+}
+
+.searchBox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #0C100E;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 8px 14px;
+    min-width: 280px;
+    color: #94A3B8;
+
+    input {
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #FFFFFF;
+        font-size: 13px;
+        width: 100%;
+
+        &::placeholder {
+            color: #64748B;
+        }
+
+        :global(html.light) & {
+            color: #0F172A;
+        }
+    }
+
+    :global(html.light) & {
+        background: #FFFFFF;
+        border-color: rgba(0, 0, 0, 0.08);
+    }
+}
+
+.botsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 18px;
+}
+
+.botCard {
+    background: #0C100E;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: rgba(24, 201, 139, 0.3);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    :global(html.light) & {
+        background: #FFFFFF;
+        border-color: rgba(0, 0, 0, 0.08);
+    }
+}
+
+.botCardHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.botMetaRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.symbolBadge {
+    font-size: 11px;
+    font-weight: 700;
+    color: #18C98B;
+    background: rgba(24, 201, 139, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.timeframeBadge {
+    font-size: 10px;
+    font-weight: 600;
+    color: #94A3B8;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+.typeBadge {
+    font-size: 10px;
+    font-weight: 600;
+    color: #00F2FE;
+    background: rgba(0, 242, 254, 0.1);
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+.botName {
+    font-size: 16px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0;
+
+    :global(html.light) & {
+        color: #0F172A;
+    }
+}
+
+.statusToggle {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+}
+
+.statusActive {
+    background: rgba(24, 201, 139, 0.15);
+    color: #18C98B;
+}
+
+.statusPaused {
+    background: rgba(255, 255, 255, 0.08);
+    color: #94A3B8;
+}
+
+.botStatsRow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    padding: 10px 12px;
+}
+
+.statMiniLabel {
+    display: block;
+    font-size: 10px;
+    color: #94A3B8;
+}
+
+.statMiniVal {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #FFFFFF;
+
+    :global(html.light) & {
+        color: #0F172A;
+    }
+}
+
+.botCardActions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.botActionBtn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #CBD5E1;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(24, 201, 139, 0.15);
+        color: #18C98B;
+        border-color: rgba(24, 201, 139, 0.3);
+    }
+}
+
+.deleteAction {
+    flex: 0 0 auto;
+    color: #EF4444;
+
+    &:hover {
+        background: rgba(239, 68, 68, 0.12);
+        color: #EF4444;
+        border-color: rgba(239, 68, 68, 0.3);
+    }
+}
+
+@import './styles/myBotsModal';
+
+@media (max-width: 900px) {
+    .twoCardsGrid {
+        flex-direction: column;
+        align-items: center;
+    }
+    .libraryBanner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .modalCards {
+        grid-template-columns: 1fr;
+    }
+}

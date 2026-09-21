@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getAuthHref } from '@/lib/authRedirect';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
+import { useTabPermission } from '@/lib/useTabPermission';
 
 const DarkLogo = '/assets/logo/logo.png';
 const LightLogo = '/assets/logo/darklogo.png';
@@ -20,6 +21,7 @@ const socialLinks = [
 export default function Footer() {
   const { t } = useLanguage();
   const { theme } = useTheme();
+  const hasPlansPermission = useTabPermission('Subscription Plans');
   const activeLogo = theme === 'light' ? LightLogo : DarkLogo;
   const containerRef = useRef(null);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -104,7 +106,9 @@ export default function Footer() {
             <h4>{t('footer.companyTitle', 'COMPANY')}</h4>
             <ul>
               <li><Link href="/about-us">{t('header.company.aboutUs.title', 'About Us')}</Link></li>
-              <li><Link href="/plans">{t('footer.pricingPlans', 'Pricing Plans')}</Link></li>
+              {hasPlansPermission && (
+                <li><Link href="/plans">{t('footer.pricingPlans', 'Pricing Plans')}</Link></li>
+              )}
               <li><Link href="/blogs">{t('footer.researchBlogs', 'Research & Blogs')}</Link></li>
               <li><Link href="/market-news">{t('header.company.news.title', 'Market News')}</Link></li>
               <li><Link href="/forex-calculator">{t('header.company.forexCalculator.title', 'Forex Calculator')}</Link></li>

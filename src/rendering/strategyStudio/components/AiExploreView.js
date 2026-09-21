@@ -25,9 +25,13 @@ export default function AiExploreView({
             {/* Center Hero: Greeting + Floating Input Card + Interactive Category Dropdown / Pills */}
             <div className={styles.centerHeroArea}>
                 <h1 className={styles.greetingTitle}>
-                    <span>{greetingWord}, friend</span>
-                    <span>•</span>
-                    <span className={styles.greetingNameMuted}>{userName}</span>
+                    <span>{greetingWord}</span>
+                    {userName && userName.toLowerCase() !== 'trader' && (
+                        <>
+                            <span>•</span>
+                            <span className={styles.greetingNameMuted}>{userName || 'Trader'}</span>
+                        </>
+                    )}
                 </h1>
 
                 {/* Floating Dark Glass Input Card */}

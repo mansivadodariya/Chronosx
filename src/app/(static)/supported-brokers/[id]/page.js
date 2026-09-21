@@ -5,7 +5,7 @@ export const metadata = {
     description: 'Explore full features, liquidity specs, and official links for verified trading partners.',
 };
 
-export default async function Page({ params }) {
+export default async function SupportedBrokerDetailPage({ params }) {
     const resolvedParams = await params;
     return <BrokerDetailPage brokerId={resolvedParams?.id} isPublicLanding={true} />;
 }

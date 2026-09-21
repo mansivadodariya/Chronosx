@@ -35,8 +35,12 @@
     "getStarted": "Magsimula",
     "logout": "Mag-log out",
     "dashboard": "Dashboard",
-    "strategyStudio": "AI Bot Builder",
+    "aiTradingBot": "AI Trading Bot",
+    "myBots": "My Bots",
+    "aiBotBuilder": "AI Bot Builder",
     "customBotBuilder": "Custom Bot Builder",
+    "botLibrary": "Browse Bots Library",
+    "strategyStudio": "AI Bot Builder",
     "affiliate": "Affiliate"
   },
   "topbar": {

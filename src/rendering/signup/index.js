@@ -492,7 +492,7 @@ const Signup = () => {
                                         <p className={styles.formSubtitle}>Enter your personal data to create your account.</p>
                                     </div>
 
-                                    <form onSubmit={handleSubmit} noValidate autoComplete="off">
+                                    <form onSubmit={handleSubmit} noValidate>
                                         <div className={styles.spacingGrid}>
                                             {/* First Name & Last Name in 2 columns */}
                                             <div className={styles.twoCol}>
@@ -505,7 +505,7 @@ const Signup = () => {
                                                     onChange={set('first_name')}
                                                     error={errors.first_name}
                                                     maxLength={50}
-                                                    autoComplete="off"
+                                                    autoComplete="given-name"
                                                 />
                                                 <Input
                                                     label="Last Name"
@@ -516,7 +516,7 @@ const Signup = () => {
                                                     onChange={set('last_name')}
                                                     error={errors.last_name}
                                                     maxLength={50}
-                                                    autoComplete="off"
+                                                    autoComplete="family-name"
                                                 />
                                             </div>
 
@@ -530,7 +530,7 @@ const Signup = () => {
                                                 onChange={set('email')}
                                                 error={errors.email}
                                                 maxLength={100}
-                                                autoComplete="off"
+                                                autoComplete="email"
                                             />
 
                                             <PhoneInput
