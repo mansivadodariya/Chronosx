@@ -61,6 +61,14 @@
     justify-content: center;
     margin-bottom: 16px;
     box-shadow: 0 8px 24px rgba(24, 201, 139, 0.15);
+
+    :global(html.light) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        background: linear-gradient(135deg, rgba(24, 201, 139, 0.18) 0%, rgba(167, 243, 208, 0.35) 100%);
+        border-color: rgba(24, 201, 139, 0.38);
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15);
+    }
 }
 
 .emptyTitle {
@@ -86,241 +94,13 @@
     }
 }
 
-/* 2 Big Hero Cards Grid */
-.twoCardsGrid {
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    flex-wrap: wrap;
-    gap: 24px;
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto 32px auto;
+@import './styles/myBotsHeroCards';
 
-    .creationHeroCard {
-        flex: 1 1 420px;
-        max-width: 520px;
-        width: 100%;
-
-        &:only-child {
-            max-width: 560px !important;
-            flex: 0 1 560px !important;
-            margin: 0 auto !important;
-        }
-    }
-
-    &.singleCardGrid,
-    &:has(> :only-child) {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        width: 100% !important;
-        max-width: 560px !important;
-        margin: 0 auto 32px auto !important;
-
-        .creationHeroCard {
-            width: 100% !important;
-            max-width: 560px !important;
-            flex: 0 1 560px !important;
-            margin: 0 auto !important;
-        }
-    }
-}
-
-.creationHeroCard {
-    position: relative;
-    background: rgba(12, 17, 14, 0.72);
-    backdrop-filter: blur(24px) saturate(160%);
-    -webkit-backdrop-filter: blur(24px) saturate(160%);
-    border-radius: 22px;
-    padding: 34px 30px;
-    overflow: hidden;
-    cursor: pointer;
-    border: 1px solid rgba(24, 201, 139, 0.16);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.09);
-    background-image: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.07) 0%, transparent 65%);
-
-    &:hover {
-        transform: translateY(-6px);
-        border-color: rgba(24, 201, 139, 0.45);
-        box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.7), 0 0 35px -5px rgba(24, 201, 139, 0.2), inset 0 1px 1px 0 rgba(255, 255, 255, 0.18);
-        background-image: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.14) 0%, transparent 70%);
-
-        .cardIconBox {
-            transform: scale(1.05);
-            border-color: rgba(24, 201, 139, 0.5);
-            background: rgba(24, 201, 139, 0.14);
-            box-shadow: 0 0 24px rgba(24, 201, 139, 0.25);
-        }
-
-        .checkIcon {
-            background: rgba(24, 201, 139, 0.22);
-            border-color: rgba(24, 201, 139, 0.45);
-        }
-
-        .primaryActionBtn {
-            box-shadow: 0 8px 26px rgba(24, 201, 139, 0.45);
-
-            svg {
-                transform: translateX(4px);
-            }
-        }
-
-        .cardGlowOverlay {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-    }
-
-    :global(html.light) & {
-        background: rgba(255, 255, 255, 0.85);
-        border: 1px solid rgba(24, 201, 139, 0.22);
-        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
-        background-image: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.05) 0%, transparent 70%);
-
-        &:hover {
-            border-color: rgba(24, 201, 139, 0.55);
-            box-shadow: 0 22px 48px rgba(15, 23, 42, 0.12), 0 0 28px rgba(24, 201, 139, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 1);
-            background-image: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.1) 0%, transparent 70%);
-        }
-    }
-}
-
-.cardGlowOverlay {
-    position: absolute;
-    top: -20%;
-    right: -20%;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(24, 201, 139, 0.15) 0%, transparent 70%);
-    pointer-events: none;
-    transition: all 0.4s ease;
-    opacity: 0.65;
-}
-
-.cardTopRow {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 24px;
-}
-
-.cardIconBox {
-    width: 62px;
-    height: 62px;
-    border-radius: 16px;
-    background: rgba(24, 201, 139, 0.08);
-    border: 1px solid rgba(24, 201, 139, 0.25);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-
-    :global(html.light) & {
-        background: rgba(24, 201, 139, 0.1);
-        border-color: rgba(24, 201, 139, 0.3);
-    }
-}
-
-.cardBody {
-    margin-bottom: 28px;
-}
-
-.cardTitle {
-    font-size: 22px;
-    font-weight: 700;
-    color: #FFFFFF;
-    margin: 0 0 10px 0;
-    letter-spacing: -0.3px;
-
-    :global(html.light) & {
-        color: #0F172A;
-    }
-}
-
-.cardDescription {
-    font-size: 13.5px;
-    color: #94A3B8;
-    line-height: 1.55;
-    margin: 0 0 22px 0;
-
-    :global(html.light) & {
-        color: #64748B;
-    }
-}
-
-.featureList {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.featureItem {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 12.5px;
-    color: #CBD5E1;
-
-    :global(html.light) & {
-        color: #475569;
-    }
-}
-
-.checkIcon {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: rgba(24, 201, 139, 0.12);
-    border: 1px solid rgba(24, 201, 139, 0.25);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #18C98B;
-    flex-shrink: 0;
-    transition: all 0.25s ease;
-}
-
-.cardFooter {
-    width: 100%;
-}
-
-.primaryActionBtn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 13px 20px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #18C98B 0%, #10B981 100%);
-    color: #04100A;
-    font-size: 14px;
-    font-weight: 700;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(24, 201, 139, 0.3);
-    transition: all 0.25s ease;
-
-    svg {
-        transition: transform 0.25s ease;
-    }
-
-    &:hover {
-        box-shadow: 0 6px 24px rgba(24, 201, 139, 0.45);
-        transform: translateY(-1px);
-    }
-}
 
 /* Library Banner */
 .libraryBanner {
     width: 100%;
-    max-width: 1100px;
+    max-width: 1320px;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 14px;

@@ -194,6 +194,9 @@ export default function PhoneInput({
     placeholder = 'Phone number',
     disabled = false,
     defaultCountry = 'AE',
+    maxLength = 20,
+    limitMaxLength = true,
+    numberInputProps,
     ...rest
 }) {
     const [country, setCountry] = useState(defaultCountry || 'AE');
@@ -222,6 +225,7 @@ export default function PhoneInput({
             >
                 <PhoneInputLib
                     international
+                    limitMaxLength={limitMaxLength}
                     defaultCountry={defaultCountry}
                     country={country}
                     onCountryChange={(c) => {
@@ -235,6 +239,10 @@ export default function PhoneInput({
                     disabled={disabled}
                     className={styles.phoneInput}
                     countrySelectComponent={CustomCountrySelect}
+                    numberInputProps={{
+                        maxLength,
+                        ...numberInputProps,
+                    }}
                     {...rest}
                 />
             </div>

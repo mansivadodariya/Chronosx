@@ -285,6 +285,7 @@ export default function FirebasePhoneModal({
                                 <div className={styles.phoneInputContainer}>
                                     <PhoneInput
                                         international
+                                        limitMaxLength
                                         defaultCountry="US"
                                         value={phone}
                                         onChange={(val) => {
@@ -299,6 +300,9 @@ export default function FirebasePhoneModal({
                                             }
                                         }}
                                         placeholder={t('profile.phoneLabel', 'Enter phone number')}
+                                        numberInputProps={{
+                                            maxLength: 20
+                                        }}
                                         className={`${styles.customPhoneInput} ${hasTyped && phone ? (isPhoneValid ? styles.isValid : styles.isInvalid) : ''}`}
                                     />
                                 </div>

@@ -101,7 +101,7 @@ export default function MyBotsView() {
     });
 
     const hasAiBotPermission = visibleTabNames ? visibleTabNames.has('ai bot builder') : true;
-    const hasCustomBotPermission = visibleTabNames ? visibleTabNames.has('custom bot builder') : false;
+    const hasCustomBotPermission = visibleTabNames ? visibleTabNames.has('custom bot builder') : true;
     const hasLibraryPermission = visibleTabNames ? visibleTabNames.has('browse bots library') : false;
     const isSingleCard = (hasAiBotPermission ? 1 : 0) + (hasCustomBotPermission ? 1 : 0) === 1;
 
@@ -137,7 +137,7 @@ export default function MyBotsView() {
             {bots.length === 0 ? (
                 <div className={styles.emptyStateSection}>
                     <div className={styles.emptyStateHeader}>
-                        <h2 className={styles.emptyTitle}>You haven&apos;t created any trading bots yet</h2>
+                        <h2 className={styles.emptyTitle}>Ready to automate? Create your first trading bot.</h2>
                         <p className={styles.emptySubtitle}>
                             Get started in seconds. Choose whether you want to generate a bot automatically using AI or design custom rules step-by-step.
                         </p>
@@ -152,18 +152,27 @@ export default function MyBotsView() {
                                 onClick={() => handleNavigate('/ai-bot-builder')}
                             >
                                 <div className={styles.cardGlowOverlay} />
+
+                                {/* 3D Illustration Graphic in Card BG on Right */}
+                                <div className={styles.cardIllustrationBg}>
+                                    <img 
+                                        src="/assets/images/botai.png" 
+                                        alt="AI Bot Builder" 
+                                        className={styles.cardIllustrationImg} 
+                                    />
+                                </div>
                                 
-                                <div className={styles.cardTopRow}>
+                                <div className={styles.cardHeaderRow}>
                                     <div className={styles.cardIconBox}>
-                                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
                                             <path d="M5 3v4M3 5h4M19 17v4M17 19h4" />
                                         </svg>
                                     </div>
+                                    <h3 className={styles.cardTitle}>AI Bot Builder</h3>
                                 </div>
 
                                 <div className={styles.cardBody}>
-                                    <h3 className={styles.cardTitle}>AI Bot Builder</h3>
                                     <p className={styles.cardDescription}>
                                         Describe your trading strategy concept or archetype in plain English. ChronosX AI handles quantitative parameter formulas, indicator conditions, and backtest simulations instantly.
                                     </p>
@@ -216,9 +225,18 @@ export default function MyBotsView() {
                             >
                                 <div className={styles.cardGlowOverlay} />
 
-                                <div className={styles.cardTopRow}>
+                                {/* 3D Illustration Graphic in Card BG on Right */}
+                                <div className={styles.cardIllustrationBg}>
+                                    <img 
+                                        src="/assets/images/botcutom.png" 
+                                        alt="Custom Bot Builder" 
+                                        className={styles.cardIllustrationImg} 
+                                    />
+                                </div>
+
+                                <div className={styles.cardHeaderRow}>
                                     <div className={styles.cardIconBox}>
-                                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                             <line x1="4" y1="21" x2="4" y2="14" />
                                             <line x1="4" y1="10" x2="4" y2="3" />
                                             <line x1="12" y1="21" x2="12" y2="12" />
@@ -230,10 +248,10 @@ export default function MyBotsView() {
                                             <line x1="17" y1="16" x2="23" y2="16" />
                                         </svg>
                                     </div>
+                                    <h3 className={styles.cardTitle}>Custom Bot Builder</h3>
                                 </div>
 
                                 <div className={styles.cardBody}>
-                                    <h3 className={styles.cardTitle}>Custom Bot Builder</h3>
                                     <p className={styles.cardDescription}>
                                         Assemble technical indicators (RSI, EMA, MACD, Bollinger Bands, Order Blocks), define deterministic entry/exit triggers, position sizing, and risk-reward ratios step-by-step.
                                     </p>
@@ -445,9 +463,7 @@ export default function MyBotsView() {
                         <div className={styles.modalCards}>
                             <div className={styles.modalCardOption} onClick={() => handleNavigate('/ai-bot-builder')}>
                                 <span className={styles.modalIcon}>
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-                                    </svg>
+                                    <img src="/assets/images/botai.png" alt="AI Bot" style={{ width: 28, height: 28, objectFit: 'contain' }} />
                                 </span>
                                 <h4>AI Bot Builder</h4>
                                 <p>Prompt-driven algorithmic strategy builder with AI Copilot.</p>
@@ -455,17 +471,7 @@ export default function MyBotsView() {
                             {hasCustomBotPermission && (
                                 <div className={styles.modalCardOption} onClick={() => handleNavigate('/manual-bot-builder')}>
                                     <span className={styles.modalIcon}>
-                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00F2FE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <line x1="4" y1="21" x2="4" y2="14" />
-                                            <line x1="4" y1="10" x2="4" y2="3" />
-                                            <line x1="12" y1="21" x2="12" y2="12" />
-                                            <line x1="12" y1="8" x2="12" y2="3" />
-                                            <line x1="20" y1="21" x2="20" y2="16" />
-                                            <line x1="20" y1="12" x2="20" y2="3" />
-                                            <line x1="1" y1="14" x2="7" y2="14" />
-                                            <line x1="9" y1="8" x2="15" y2="8" />
-                                            <line x1="17" y1="16" x2="23" y2="16" />
-                                        </svg>
+                                        <img src="/assets/images/botcutom.png" alt="Custom Bot" style={{ width: 28, height: 28, objectFit: 'contain' }} />
                                     </span>
                                     <h4>Custom Bot Builder</h4>
                                     <p>Visual rule & indicator configuration with complete manual control.</p>

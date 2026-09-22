@@ -50,6 +50,8 @@ const CATEGORY_DATA = {
     }
 };
 
+const createMsgId = (prefix = 'msg') => `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+
 export default function StrategyStudio() {
     // Mode State: 'explore' (Tradezee single starting screen) vs 'chat' (active conversation stream)
     const [viewMode, setViewMode] = useState('explore');
@@ -83,7 +85,10 @@ export default function StrategyStudio() {
     const chatContainerRef = useRef(null);
 
     useEffect(() => {
-        setSessionId('sess_' + Math.random().toString(36).substring(2, 9));
+        const initialSessionId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+            ? crypto.randomUUID()
+            : 'sess_' + Math.random().toString(36).substring(2, 9);
+        setSessionId(initialSessionId);
         
         const hour = new Date().getHours();
         if (hour < 12) setGreetingWord('Good morning');
@@ -107,18 +112,6 @@ export default function StrategyStudio() {
             window.addEventListener('user:updated', syncUser);
         }
 
-        setMessages([
-            {
-                role: 'ai',
-                text: "Hello! I am your AI Strategy Copilot. Describe any market hypothesis or archetype (Donchian breakout, EMA pullbacks, Bollinger squeezes), and I'll generate the quantitative rules and run simulation backtests for you.",
-                suggestions: [
-                    'Build a Donchian breakout on XAUUSD',
-                    'Design an EMA 20/50 crossover setup',
-                    'Bollinger mean reversion strategy',
-                    'Liquidity sweep & ICT scalp model'
-                ]
-            }
-        ]);
         return () => {
             if (typeof window !== 'undefined') {
                 window.removeEventListener('user:updated', syncUser);
@@ -126,14 +119,17 @@ export default function StrategyStudio() {
         };
     }, []);
 
-    // Auto-scroll on new message
+    // Auto-scroll fallback on new message
     useEffect(() => {
         if (viewMode === 'chat' && chatScrollRef.current) {
-            chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
+            chatScrollRef.current.scrollTo({
+                top: chatScrollRef.current.scrollHeight,
+                behavior: 'smooth'
+            });
         }
     }, [messages, advisorLoading, viewMode]);
 
-    // Handle smooth wheel scrolling in chat mode
+    // Manage Lenis in chat mode
     useEffect(() => {
         if (viewMode !== 'chat') return;
 
@@ -142,35 +138,10 @@ export default function StrategyStudio() {
             window.lenis.stop();
         }
 
-        const scrollEl = chatScrollRef.current;
-        const container = chatContainerRef.current;
-
-        const handleWheel = (e) => {
-            if (!scrollEl) return;
-            const target = e.target;
-            if (target && target.tagName === 'TEXTAREA' && target.scrollHeight > target.clientHeight) {
-                return;
-            }
-            scrollEl.scrollTop += e.deltaY;
-            e.preventDefault();
-            e.stopPropagation();
-        };
-
-        if (container) {
-            container.addEventListener('wheel', handleWheel, { passive: false });
-        } else if (scrollEl) {
-            scrollEl.addEventListener('wheel', handleWheel, { passive: false });
-        }
-
         return () => {
             document.body.style.overflow = originalOverflow;
             if (typeof window !== 'undefined' && window.lenis) {
                 window.lenis.start();
-            }
-            if (container) {
-                container.removeEventListener('wheel', handleWheel);
-            } else if (scrollEl) {
-                scrollEl.removeEventListener('wheel', handleWheel);
             }
         };
     }, [viewMode]);
@@ -185,7 +156,12 @@ export default function StrategyStudio() {
         });
     };
 
-    // Chat with AI Advisor
+    /**
+     * Chat with AI Advisor — handles all input cases from reference HTML:
+     * 1. "run backtest" / "backtest" / "start backtest" / "run" → trigger backtest
+     * 2. "view strategy json" / "strategy json" / "show json" → show JSON info
+     * 3. Otherwise → send to /wizard/chat API with streaming response
+     */
     const handleSendMessage = async (textToSend) => {
         const text = textToSend || (viewMode === 'explore' ? homeQuery : chatInput);
         if (!text || !text.trim() || advisorLoading) return;
@@ -196,48 +172,127 @@ export default function StrategyStudio() {
         setSelectedCategory(null);
 
         const lower = text.toLowerCase();
-        if (lower.includes('run backtest') || lower.includes('backtest now') || lower === 'run') {
-            setMessages((prev) => [...prev, { role: 'user', text }]);
+
+        // Case 1: Backtest trigger commands (from reference handleSend)
+        if (
+            lower.includes('run backtest') ||
+            lower === 'backtest' ||
+            lower.includes('start backtest') ||
+            lower === 'run' ||
+            lower.includes('backtest now')
+        ) {
+            setMessages((prev) => [
+                ...prev,
+                { id: createMsgId('usr'), role: 'user', text },
+                {
+                    id: createMsgId('ai'),
+                    role: 'ai',
+                    text: '🚀 Launching backtest simulation on historical candle data now...',
+                    isStreaming: true
+                }
+            ]);
             handleRunBacktest();
             return;
         }
 
-        const newMsg = { role: 'user', text };
+        // Case 2: Strategy JSON viewing (from reference handleSend)
+        if (
+            lower.includes('view strategy json') ||
+            lower.includes('strategy json') ||
+            lower.includes('show json') ||
+            lower.includes('view json')
+        ) {
+            setMessages((prev) => [
+                ...prev,
+                { id: createMsgId('usr'), role: 'user', text },
+                {
+                    id: createMsgId('ai'),
+                    role: 'ai',
+                    text: currentStrategy
+                        ? `Here is your current strategy specification:\n\n${JSON.stringify(currentStrategy, null, 2)}`
+                        : 'No strategy has been generated yet. Describe your trading idea and I\'ll build one for you!',
+                    suggestions: currentStrategy
+                        ? ['🚀 Run Backtest Now', 'Modify Strategy', 'New Strategy']
+                        : ['Trend Following', 'Donchian Breakout', 'EMA Crossover'],
+                    isStreaming: true
+                }
+            ]);
+            return;
+        }
+
+        // Case 3: Regular message → send to Strategy Advisor
+        const newMsg = { id: createMsgId('usr'), role: 'user', text };
         setMessages((prev) => [...prev, newMsg]);
         setAdvisorLoading(true);
 
         try {
-            const res = await strategyStudioApi.chatWithAdvisor({ sessionId, message: text });
-            if (res.status === 'success' && res.data) {
+            const res = await strategyStudioApi.chatWithAdvisor({
+                sessionId,
+                message: text
+            });
+
+            if (res.status === 'success' || res.success || res.data) {
+                const replyText = res.data?.reply || res.reply || 'I am ready to help you formulate a strategy.';
+                const suggestions = res.data?.suggestions || res.suggestions || [];
+                const draft = res.data?.draft || res.draft || null;
+
+                const aiMsg = {
+                    id: createMsgId('ai'),
+                    role: 'ai',
+                    text: replyText,
+                    suggestions,
+                    draft: draft,
+                    isStreaming: true
+                };
+
+                if (draft) {
+                    if (draft.instrument) setSymbol(draft.instrument);
+                    if (draft.timeframe) setInterval(draft.timeframe);
+                    setCurrentDraft(draft);
+                }
+
+                setMessages((prev) => [...prev, aiMsg]);
+            } else {
                 setMessages((prev) => [
                     ...prev,
                     {
+                        id: createMsgId('ai_err'),
                         role: 'ai',
-                        text: res.data.reply,
-                        suggestions: res.data.suggestions || [],
-                        draft: res.data.draft || null
+                        text: res.error || "Something went wrong. Let's try again!",
+                        suggestions: ['Trend Following', 'Donchian Breakout', 'EMA Crossover'],
+                        isStreaming: true
                     }
                 ]);
-
-                if (res.data.draft) {
-                    setCurrentDraft(res.data.draft);
-                    if (res.data.draft.instrument) setSymbol(res.data.draft.instrument);
-                    if (res.data.draft.timeframe) setInterval(res.data.draft.timeframe);
-                }
             }
         } catch (err) {
             setMessages((prev) => [
                 ...prev,
-                { role: 'ai', text: 'Error communicating with strategy advisor. Please try again.' }
+                {
+                    id: createMsgId('ai_err'),
+                    role: 'ai',
+                    text: "Could not reach the strategy advisor backend. Make sure the server is running.",
+                    suggestions: ['Try Again', 'Donchian Breakout', 'EMA Crossover'],
+                    isStreaming: true
+                }
             ]);
         } finally {
             setAdvisorLoading(false);
         }
     };
 
-    // Generate Strategy JSON from AI draft
+    /**
+     * Generate Strategy JSON from AI draft
+     * Shows progress steps during generation, then streams the result message
+     */
     const handleGenerateStrategy = async (draft) => {
         setGeneratingStrategy(true);
+
+        // Add progress steps message
+        setMessages((prev) => [
+            ...prev,
+            { role: 'ai', progressType: 'generating', isActive: true }
+        ]);
+
         try {
             const res = await strategyStudioApi.generateStrategy({ sessionId, draft: draft || currentDraft });
             if (res.status === 'success' && res.strategies?.length > 0) {
@@ -250,27 +305,76 @@ export default function StrategyStudio() {
                 }
                 if (strat.interval) setInterval(strat.interval);
 
-                setMessages((prev) => [
-                    ...prev,
-                    {
-                        role: 'ai',
-                        text: 'Strategy JSON generated and verified against schema. Click "Run Backtest" below to simulate historical performance on candle data.',
-                        suggestions: ['Run Backtest Now', 'View Strategy JSON']
+                // Mark progress as done and add result message
+                setMessages((prev) => {
+                    const updated = [...prev];
+                    // Deactivate progress
+                    const progressIdx = updated.findLastIndex((m) => m.progressType === 'generating');
+                    if (progressIdx >= 0) {
+                        updated[progressIdx] = { ...updated[progressIdx], isActive: false };
                     }
-                ]);
+                    // Add success message with streaming
+                    updated.push({
+                        id: createMsgId('ai_strat'),
+                        role: 'ai',
+                        text: `Your strategy JSON has been generated and validated! You can click "🚀 Run Backtest Now" below to simulate it immediately, or review the JSON specification.`,
+                        suggestions: ['🚀 Run Backtest Now', 'View Strategy JSON'],
+                        isStreaming: true
+                    });
+                    return updated;
+                });
                 handleToast('Strategy JSON generated successfully!');
+            } else {
+                setMessages((prev) => {
+                    const updated = [...prev];
+                    const progressIdx = updated.findLastIndex((m) => m.progressType === 'generating');
+                    if (progressIdx >= 0) {
+                        updated[progressIdx] = { ...updated[progressIdx], isActive: false };
+                    }
+                    updated.push({
+                        id: createMsgId('ai_err'),
+                        role: 'ai',
+                        text: 'Failed to generate strategy. Please try describing your strategy again.',
+                        suggestions: ['Trend Following', 'Donchian Breakout', 'EMA Crossover'],
+                        isStreaming: true
+                    });
+                    return updated;
+                });
             }
         } catch (err) {
             handleToast('Failed to generate strategy JSON');
+            setMessages((prev) => {
+                const updated = [...prev];
+                const progressIdx = updated.findLastIndex((m) => m.progressType === 'generating');
+                if (progressIdx >= 0) {
+                    updated[progressIdx] = { ...updated[progressIdx], isActive: false };
+                }
+                updated.push({
+                    id: createMsgId('ai_err'),
+                    role: 'ai',
+                    text: 'Connection error while generating strategy. Please try again.',
+                    isStreaming: true
+                });
+                return updated;
+            });
         } finally {
             setGeneratingStrategy(false);
         }
     };
 
-    // Run Backtest Simulation
+    /**
+     * Run Backtest Simulation
+     * Shows progress steps during execution, then renders results
+     */
     const handleRunBacktest = async (customStrategy = null) => {
         setSimulationLoading(true);
         const activeStrat = customStrategy || currentStrategy;
+
+        // Add progress steps message for backtesting
+        setMessages((prev) => [
+            ...prev,
+            { id: createMsgId('prog_backtest'), role: 'ai', progressType: 'backtesting', isActive: true }
+        ]);
 
         let entryConditions = activeStrat?.entry_conditions || {
             entry_start_time: '00:00',
@@ -278,33 +382,23 @@ export default function StrategyStudio() {
             condition_type: 'all',
             rules: [
                 {
-                    indicator1: 'close',
-                    indicator1_params: {},
-                    comparator: '>',
-                    indicator2: 'donchian',
-                    indicator2_params: { window: 20, band: 'upper' }
+                    indicator1: { name: 'close', parameters: {} },
+                    operator: 'crossover',
+                    indicator2: { name: 'donchian_upper', parameters: { length: 20, offset: 0 } }
                 }
             ]
         };
 
         let exitConditions = activeStrat?.exit_conditions || {
-            exit_time: '23:45',
-            target_pips: activeStrat?.target_pips || 50,
-            stoploss_pips: activeStrat?.stoploss_pips || 25,
-            condition_type: 'any',
-            rules: [
-                {
-                    indicator1: 'close',
-                    indicator1_params: {},
-                    comparator: '<',
-                    indicator2: 'donchian',
-                    indicator2_params: { window: 20, band: 'lower' }
-                }
-            ]
+            target: currentDraft?.target_pips || 50,
+            target_type: 'points',
+            stoploss: currentDraft?.stoploss_pips || 25,
+            stoploss_type: 'points',
+            condition_type: 'all',
+            rules: []
         };
 
         const payload = {
-            strategy_name: activeStrat?.strategy_name || 'Quantitative Strategy Simulation',
             stock_name: [symbol],
             from_date: fromDate || '2024-01-01',
             to_date: toDate || '2024-03-01',
@@ -321,16 +415,64 @@ export default function StrategyStudio() {
 
         try {
             const res = await strategyStudioApi.runBacktest(payload);
+
+            // Deactivate progress steps
+            setMessages((prev) => {
+                const updated = [...prev];
+                const progressIdx = updated.findLastIndex((m) => m.progressType === 'backtesting');
+                if (progressIdx >= 0) {
+                    updated[progressIdx] = { ...updated[progressIdx], isActive: false };
+                }
+                return updated;
+            });
+
             if (res.success && res.data?.length > 0) {
                 const stockResult = res.data[0];
                 const trips = parseRoundTrips(stockResult.trades || [], capital, quantity);
                 setResults(stockResult);
                 setRoundTrips(trips);
+
+                // Add completion message with streaming
+                setMessages((prev) => [
+                    ...prev,
+                    {
+                        id: createMsgId('ai_backtest_res'),
+                        role: 'ai',
+                        text: `✓ Backtest simulation complete! Results are displayed below. ${trips.length} round-trip trades were executed across the selected period.`,
+                        suggestions: ['Run Another Backtest', 'Modify Strategy', 'New Strategy'],
+                        isStreaming: true
+                    }
+                ]);
                 handleToast('Backtest simulation completed successfully!');
             } else {
+                setMessages((prev) => [
+                    ...prev,
+                    {
+                        id: createMsgId('ai_backtest_empty'),
+                        role: 'ai',
+                        text: 'Simulation returned no data for selected parameters. Try adjusting the date range or strategy rules.',
+                        suggestions: ['Try Different Dates', 'Change Symbol', 'New Strategy'],
+                        isStreaming: true
+                    }
+                ]);
                 handleToast('Simulation returned no data for selected parameters');
             }
         } catch (err) {
+            // Deactivate progress steps on error
+            setMessages((prev) => {
+                const updated = [...prev];
+                const progressIdx = updated.findLastIndex((m) => m.progressType === 'backtesting');
+                if (progressIdx >= 0) {
+                    updated[progressIdx] = { ...updated[progressIdx], isActive: false };
+                }
+                updated.push({
+                    id: createMsgId('ai_err'),
+                    role: 'ai',
+                    text: 'Could not connect to backtest engine. Make sure the backend server is running.',
+                    isStreaming: true
+                });
+                return updated;
+            });
             handleToast('Simulation execution error');
         } finally {
             setSimulationLoading(false);
@@ -338,19 +480,17 @@ export default function StrategyStudio() {
     };
 
     const handleResetSession = () => {
-        setSessionId('sess_' + Math.random().toString(36).substring(2, 9));
+        const newId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+            ? crypto.randomUUID()
+            : 'sess_' + Math.random().toString(36).substring(2, 9);
+        setSessionId(newId);
         setCurrentDraft(null);
         setCurrentStrategy(null);
         setResults(null);
         setRoundTrips([]);
         setSelectedCategory(null);
-        setMessages([
-            {
-                role: 'ai',
-                text: "Session reset. I am ready to craft your next trading strategy!",
-                suggestions: ['Donchian Breakout', 'EMA Crossover', 'RSI Reversal', 'Bollinger Bands']
-            }
-        ]);
+        setMessages([]);
+        setViewMode('explore');
         handleToast('Session reset completed!');
     };
 

@@ -1,0 +1,583 @@
+/* 2 Big Hero Cards Grid */
+.twoCardsGrid {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 28px;
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto 36px auto;
+
+    .creationHeroCard {
+        flex: 1 1 500px;
+        max-width: 635px;
+        width: 100%;
+
+        &:only-child {
+            max-width: 700px !important;
+            flex: 0 1 700px !important;
+            margin: 0 auto !important;
+        }
+    }
+
+    &.singleCardGrid,
+    &:has(> :only-child) {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        max-width: 700px !important;
+        margin: 0 auto 36px auto !important;
+
+        .creationHeroCard {
+            width: 100% !important;
+            max-width: 700px !important;
+            flex: 0 1 700px !important;
+            margin: 0 auto !important;
+        }
+    }
+}
+
+.creationHeroCard {
+    position: relative;
+    background: rgba(12, 17, 14, 0.76);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border-radius: 26px;
+    padding: 38px 36px;
+    min-height: 480px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid rgba(24, 201, 139, 0.18);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.55), inset 0 1px 1px 0 rgba(255, 255, 255, 0.09);
+    background-image: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.08) 0%, transparent 65%);
+
+    &:hover {
+        transform: translateY(-6px);
+        border-color: rgba(24, 201, 139, 0.45);
+        box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.7), 0 0 35px -5px rgba(24, 201, 139, 0.2), inset 0 1px 1px 0 rgba(255, 255, 255, 0.18);
+        background-image: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.14) 0%, transparent 70%);
+
+        .cardIconBox {
+            transform: scale(1.06);
+            border-color: rgba(24, 201, 139, 0.5);
+            background: rgba(24, 201, 139, 0.14);
+            box-shadow: 0 0 24px rgba(24, 201, 139, 0.25);
+        }
+
+        .cardIllustrationBg,
+        .cardIllustrationBox {
+            transform: translateY(-6px) scale(1.06);
+        }
+
+        .cardIllustrationImg {
+            filter: drop-shadow(0 20px 42px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 32px rgba(24, 201, 139, 0.45));
+        }
+
+        .checkIcon {
+            background: rgba(24, 201, 139, 0.22);
+            border-color: rgba(24, 201, 139, 0.45);
+        }
+
+        .primaryActionBtn {
+            box-shadow: 0 8px 26px rgba(24, 201, 139, 0.45);
+
+            svg {
+                transform: translateX(4px);
+            }
+        }
+
+        .cardGlowOverlay {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+    }
+
+    :global(html.light) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        background-color: #FFFFFF;
+        background-image: 
+            radial-gradient(circle at 85% 48%, rgba(24, 201, 139, 0.22) 0%, rgba(167, 243, 208, 0.32) 36%, rgba(240, 253, 244, 0.45) 60%, transparent 75%),
+            linear-gradient(145deg, #FFFFFF 0%, #F5FCF8 45%, #EAFBF2 100%),
+            linear-gradient(to right, rgba(24, 201, 139, 0.07) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(24, 201, 139, 0.07) 1px, transparent 1px);
+        background-size: 100% 100%, 100% 100%, 24px 24px, 24px 24px;
+        background-position: 0 0, 0 0, 0 0, 0 0;
+        border: 1.5px solid rgba(24, 201, 139, 0.35);
+        box-shadow: 0 16px 40px rgba(16, 185, 129, 0.1), 0 4px 14px rgba(15, 23, 42, 0.04), inset 0 1px 2px 0 #FFFFFF;
+
+        &:hover {
+            border-color: rgba(24, 201, 139, 0.7);
+            box-shadow: 0 24px 54px rgba(16, 185, 129, 0.2), 0 0 32px rgba(24, 201, 139, 0.22), inset 0 1px 2px 0 #FFFFFF;
+            background-image: 
+                radial-gradient(circle at 85% 48%, rgba(24, 201, 139, 0.3) 0%, rgba(167, 243, 208, 0.42) 38%, rgba(240, 253, 244, 0.55) 65%, transparent 78%),
+                linear-gradient(145deg, #FFFFFF 0%, #EFFDF5 45%, #E2F9EE 100%),
+                linear-gradient(to right, rgba(24, 201, 139, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(24, 201, 139, 0.1) 1px, transparent 1px);
+        }
+    }
+
+    /* Card 1 Specific: AI Bot Builder (Vibrant Neon Emerald Green) */
+    &.aiCard {
+        border-color: rgba(24, 201, 139, 0.2);
+        background-image: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.09) 0%, transparent 65%);
+
+        &:hover {
+            border-color: rgba(24, 201, 139, 0.55);
+            box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.7), 0 0 35px -5px rgba(24, 201, 139, 0.26), inset 0 1px 1px 0 rgba(255, 255, 255, 0.18);
+            background-image: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.16) 0%, transparent 70%);
+
+            .cardIconBox {
+                border-color: rgba(24, 201, 139, 0.55);
+                box-shadow: 0 0 24px rgba(24, 201, 139, 0.3);
+            }
+
+            .primaryActionBtn {
+                box-shadow: 0 8px 26px rgba(24, 201, 139, 0.5);
+            }
+        }
+
+        .cardIconBox {
+            color: #18C98B;
+            border-color: rgba(24, 201, 139, 0.3);
+            background: rgba(24, 201, 139, 0.09);
+        }
+
+        .checkIcon {
+            color: #18C98B;
+            border-color: rgba(24, 201, 139, 0.25);
+            background: rgba(24, 201, 139, 0.12);
+        }
+
+        .primaryActionBtn {
+            background: linear-gradient(90deg, #2EF2A0 0%, #18C98B 48%, #057A55 100%);
+            box-shadow: 0 4px 18px rgba(24, 201, 139, 0.38), inset 0 1px 1px 0 rgba(255, 255, 255, 0.35);
+            color: #03140D;
+
+            &:hover {
+                background: linear-gradient(90deg, #4CF5AD 0%, #2EF2A0 48%, #047857 100%);
+                box-shadow: 0 8px 28px rgba(24, 201, 139, 0.55), inset 0 1px 1px 0 rgba(255, 255, 255, 0.45);
+            }
+        }
+
+        :global(html.light) &,
+        :global([data-theme='light']) &,
+        [data-theme='light'] & {
+            background-image: 
+                radial-gradient(circle at 85% 48%, rgba(24, 201, 139, 0.24) 0%, rgba(167, 243, 208, 0.34) 36%, rgba(240, 253, 244, 0.45) 60%, transparent 75%),
+                linear-gradient(145deg, #FFFFFF 0%, #F5FCF8 45%, #EAFBF2 100%),
+                linear-gradient(to right, rgba(24, 201, 139, 0.07) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(24, 201, 139, 0.07) 1px, transparent 1px);
+            border-color: rgba(24, 201, 139, 0.35);
+
+            &:hover {
+                border-color: rgba(24, 201, 139, 0.72);
+                box-shadow: 0 24px 54px rgba(16, 185, 129, 0.2), 0 0 32px rgba(24, 201, 139, 0.22), inset 0 1px 2px 0 #FFFFFF;
+            }
+
+            .primaryActionBtn {
+                background: linear-gradient(90deg, #10B981 0%, #059669 48%, #047857 100%);
+                color: #FFFFFF;
+                box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3);
+
+                &:hover {
+                    background: linear-gradient(90deg, #059669 0%, #047857 50%, #064E3B 100%);
+                    box-shadow: 0 8px 26px rgba(16, 185, 129, 0.45);
+                }
+            }
+        }
+    }
+
+    /* Card 2 Specific: Custom Bot Builder (Teal-Emerald / Aqua-Mint Green nuance) */
+    &.customCard {
+        border-color: rgba(0, 210, 180, 0.2);
+        background-image: radial-gradient(circle at 50% 0%, rgba(0, 210, 180, 0.09) 0%, transparent 65%);
+
+        &:hover {
+            border-color: rgba(0, 210, 180, 0.55);
+            box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.7), 0 0 35px -5px rgba(0, 210, 180, 0.26), inset 0 1px 1px 0 rgba(255, 255, 255, 0.18);
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 210, 180, 0.16) 0%, transparent 70%);
+
+            .cardIconBox {
+                border-color: rgba(0, 210, 180, 0.55);
+                box-shadow: 0 0 24px rgba(0, 210, 180, 0.3);
+            }
+
+            .cardIllustrationBg::after {
+                background: radial-gradient(circle, rgba(0, 210, 180, 0.45) 0%, rgba(0, 210, 180, 0.12) 50%, transparent 72%);
+            }
+
+            .cardIllustrationImg {
+                filter: drop-shadow(0 20px 42px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 32px rgba(0, 210, 180, 0.45));
+            }
+
+            .checkIcon {
+                background: rgba(0, 210, 180, 0.22);
+                border-color: rgba(0, 210, 180, 0.45);
+            }
+
+            .primaryActionBtn {
+                box-shadow: 0 8px 26px rgba(0, 210, 180, 0.5);
+            }
+        }
+
+        .cardGlowOverlay {
+            background: radial-gradient(circle, rgba(0, 210, 180, 0.16) 0%, transparent 70%);
+        }
+
+        .cardIllustrationBg::after {
+            background: radial-gradient(circle, rgba(0, 210, 180, 0.34) 0%, rgba(0, 210, 180, 0.08) 50%, transparent 72%);
+        }
+
+        .cardIllustrationImg {
+            filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 24px rgba(0, 210, 180, 0.28));
+        }
+
+        .cardIconBox {
+            color: #00D2B4;
+            border-color: rgba(0, 210, 180, 0.3);
+            background: rgba(0, 210, 180, 0.09);
+        }
+
+        .checkIcon {
+            color: #00D2B4;
+            border-color: rgba(0, 210, 180, 0.25);
+            background: rgba(0, 210, 180, 0.12);
+        }
+
+        .primaryActionBtn {
+            background: linear-gradient(90deg, #2BE5C9 0%, #00D2B4 48%, #0D6960 100%);
+            box-shadow: 0 4px 18px rgba(0, 210, 180, 0.38), inset 0 1px 1px 0 rgba(255, 255, 255, 0.35);
+            color: #011D18;
+
+            &:hover {
+                background: linear-gradient(90deg, #4FF0D7 0%, #2BE5C9 48%, #0A554E 100%);
+                box-shadow: 0 8px 28px rgba(0, 210, 180, 0.55), inset 0 1px 1px 0 rgba(255, 255, 255, 0.45);
+            }
+        }
+
+        :global(html.light) &,
+        :global([data-theme='light']) &,
+        [data-theme='light'] & {
+            background-image: 
+                radial-gradient(circle at 85% 48%, rgba(0, 210, 180, 0.24) 0%, rgba(153, 246, 228, 0.34) 36%, rgba(240, 253, 250, 0.45) 60%, transparent 75%),
+                linear-gradient(145deg, #FFFFFF 0%, #F0FDFA 45%, #CCFBF1 100%),
+                linear-gradient(to right, rgba(0, 210, 180, 0.07) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 210, 180, 0.07) 1px, transparent 1px);
+            border-color: rgba(0, 210, 180, 0.35);
+
+            &:hover {
+                border-color: rgba(0, 210, 180, 0.72);
+                box-shadow: 0 24px 54px rgba(13, 148, 136, 0.2), 0 0 32px rgba(0, 210, 180, 0.22), inset 0 1px 2px 0 #FFFFFF;
+                background-image: 
+                    radial-gradient(circle at 85% 48%, rgba(0, 210, 180, 0.32) 0%, rgba(153, 246, 228, 0.45) 38%, rgba(240, 253, 250, 0.55) 65%, transparent 78%),
+                    linear-gradient(145deg, #FFFFFF 0%, #E6FFFA 45%, #B2F5EA 100%),
+                    linear-gradient(to right, rgba(0, 210, 180, 0.1) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0, 210, 180, 0.1) 1px, transparent 1px);
+            }
+
+            .cardIllustrationBg::after {
+                background: radial-gradient(circle, rgba(0, 210, 180, 0.4) 0%, rgba(153, 246, 228, 0.55) 45%, rgba(45, 212, 191, 0.2) 65%, transparent 75%);
+            }
+
+            .cardIllustrationImg {
+                filter: drop-shadow(0 18px 34px rgba(13, 148, 136, 0.32)) drop-shadow(0 6px 14px rgba(15, 23, 42, 0.08));
+            }
+
+            .cardIconBox {
+                color: #0D9488;
+                border-color: rgba(0, 210, 180, 0.4);
+                background: linear-gradient(135deg, rgba(0, 210, 180, 0.14) 0%, rgba(153, 246, 228, 0.28) 100%);
+                box-shadow: 0 4px 14px rgba(13, 148, 136, 0.15);
+            }
+
+            .checkIcon {
+                color: #0D9488;
+                border-color: rgba(0, 210, 180, 0.45);
+                background: rgba(0, 210, 180, 0.18);
+            }
+
+            .primaryActionBtn {
+                background: linear-gradient(90deg, #14B8A6 0%, #0D9488 48%, #0F766E 100%);
+                color: #FFFFFF;
+                box-shadow: 0 6px 20px rgba(20, 184, 166, 0.35), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3);
+
+                &:hover {
+                    background: linear-gradient(90deg, #0D9488 0%, #0F766E 50%, #115E59 100%);
+                    box-shadow: 0 8px 26px rgba(20, 184, 166, 0.45);
+                }
+            }
+        }
+    }
+}
+
+.cardGlowOverlay {
+    position: absolute;
+    top: -20%;
+    right: -20%;
+    width: 340px;
+    height: 340px;
+    background: radial-gradient(circle, rgba(24, 201, 139, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+    transition: all 0.4s ease;
+    opacity: 0.65;
+}
+
+.cardHeaderRow,
+.cardTopRow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+    max-width: 58%;
+}
+
+.cardIconBox {
+    width: 52px;
+    height: 52px;
+    border-radius: 15px;
+    background: rgba(24, 201, 139, 0.08);
+    border: 1px solid rgba(24, 201, 139, 0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 0 12px rgba(24, 201, 139, 0.12);
+    flex-shrink: 0;
+
+    :global(html.light) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        background: linear-gradient(135deg, rgba(24, 201, 139, 0.15) 0%, rgba(167, 243, 208, 0.28) 100%);
+        border-color: rgba(24, 201, 139, 0.4);
+        box-shadow: 0 4px 14px rgba(16, 185, 129, 0.15);
+        color: #059669;
+    }
+}
+
+/* 3D Illustration Graphic in Card BG on Right */
+.cardIllustrationBg,
+.cardIllustrationBox {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    margin-top: -135px;
+    width: 270px;
+    height: 270px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 1;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &::after {
+        content: '';
+        position: absolute;
+        width: 210px;
+        height: 210px;
+        background: radial-gradient(circle, rgba(24, 201, 139, 0.32) 0%, rgba(24, 201, 139, 0.08) 50%, transparent 72%);
+        border-radius: 50%;
+        filter: blur(30px);
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    :global(html.light) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        &::after {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(24, 201, 139, 0.4) 0%, rgba(167, 243, 208, 0.55) 45%, rgba(52, 211, 153, 0.2) 65%, transparent 75%);
+            filter: blur(28px);
+        }
+    }
+}
+
+.cardIllustrationImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 24px rgba(24, 201, 139, 0.28));
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+
+    :global(html.light) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        filter: drop-shadow(0 18px 34px rgba(16, 185, 129, 0.32)) drop-shadow(0 6px 14px rgba(15, 23, 42, 0.08));
+    }
+}
+
+.cardBody {
+    position: relative;
+    z-index: 2;
+    max-width: 58%;
+    margin-bottom: 28px;
+}
+
+.cardTitle {
+    font-size: 24px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0;
+    letter-spacing: -0.3px;
+    line-height: 1.25;
+
+    :global(html.light) & {
+        color: #0F172A;
+    }
+}
+
+.cardDescription {
+    font-size: 13.5px;
+    color: #94A3B8;
+    line-height: 1.55;
+    margin: 0 0 20px 0;
+
+    :global(html.light) & {
+        color: #64748B;
+    }
+}
+
+.featureList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.featureItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12.5px;
+    color: #CBD5E1;
+
+    :global(html.light) & {
+        color: #475569;
+    }
+}
+
+.checkIcon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(24, 201, 139, 0.12);
+    border: 1px solid rgba(24, 201, 139, 0.25);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #18C98B;
+    flex-shrink: 0;
+    transition: all 0.25s ease;
+
+    :global(html.light) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        background: rgba(24, 201, 139, 0.18);
+        border-color: rgba(24, 201, 139, 0.45);
+        color: #059669;
+    }
+}
+
+.cardFooter {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+.primaryActionBtn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 22px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #2EF2A0 0%, #18C98B 48%, #057A55 100%);
+    color: #03140D;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 18px rgba(24, 201, 139, 0.35), inset 0 1px 1px 0 rgba(255, 255, 255, 0.35);
+    transition: all 0.25s ease;
+
+    svg {
+        transition: transform 0.25s ease;
+    }
+
+    &:hover {
+        box-shadow: 0 8px 28px rgba(24, 201, 139, 0.52), inset 0 1px 1px 0 rgba(255, 255, 255, 0.45);
+        transform: translateY(-1px);
+    }
+
+    :global(html.light) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        color: #FFFFFF;
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+
+        &:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            box-shadow: 0 8px 26px rgba(16, 185, 129, 0.45);
+        }
+    }
+}
+
+@media (max-width: 1200px) {
+    .twoCardsGrid {
+        max-width: 100%;
+        padding: 0 16px;
+    }
+    .cardIllustrationBg,
+    .cardIllustrationBox {
+        width: 220px;
+        height: 220px;
+        margin-top: -110px;
+        right: 14px;
+    }
+    .cardBody {
+        max-width: 58%;
+    }
+}
+
+@media (max-width: 900px) {
+    .twoCardsGrid {
+        flex-direction: column;
+        align-items: center;
+    }
+    .creationHeroCard {
+        max-width: 635px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .creationHeroCard {
+        padding: 28px 20px;
+        min-height: auto;
+    }
+    .cardIllustrationBg,
+    .cardIllustrationBox {
+        width: 150px;
+        height: 150px;
+        margin-top: -75px;
+        right: 10px;
+        opacity: 0.35;
+    }
+    .cardBody {
+        max-width: 100%;
+    }
+}

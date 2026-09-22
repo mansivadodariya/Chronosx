@@ -3,15 +3,34 @@
  */
 import { generateSimulatedBacktest } from './backtestEngine';
 
-const API_BASE = process.env.NEXT_PUBLIC_BACKTEST_API_URL || 'http://localhost:7009/backtest/v1';
+/**
+ * Resolves the Backtest & Wizard API base URL dynamically from environment variables.
+ * Priority:
+ * 1. process.env.NEXT_PUBLIC_BACKTEST_API_URL
+ * 2. process.env.NEXT_PUBLIC_BACKEND_URL (appended with /backtest/v1 if not present)
+ * 3. process.env.NEXT_PUBLIC_API_URL
+ * 4. Fallback relative path '/backtest/v1'
+ */
+export const getApiBase = () => {
+
+    const backend = (process.env.NEXT_PUBLIC_BACKEND_URL).replace(/\/+$/, '');
+    if (backend) {
+        if (backend.endsWith('/backtest/v1')) {
+            return backend;
+        }
+        return `${backend}/backtest/v1`;
+    }
+    return '/backtest/v1';
+};
 
 export const strategyStudioApi = {
     /**
-     * Chat with AI Strategy Advisor Alex
+     * Chat with AI Strategy Advisor
      */
     chatWithAdvisor: async ({ sessionId, message }) => {
         try {
-            const res = await fetch(`${API_BASE}/wizard/chat`, {
+            const apiBase = getApiBase();
+            const res = await fetch(`${apiBase}/wizard/chat`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ session_id: sessionId, message })
@@ -104,7 +123,8 @@ export const strategyStudioApi = {
      */
     generateStrategy: async ({ sessionId, draft }) => {
         try {
-            const res = await fetch(`${API_BASE}/wizard/generate`, {
+            const apiBase = getApiBase();
+            const res = await fetch(`${apiBase}/wizard/generate`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ session_id: sessionId, strategy_name: "AI Strategy" })
@@ -169,7 +189,8 @@ export const strategyStudioApi = {
      */
     runBacktest: async (payload) => {
         try {
-            const res = await fetch(API_BASE, {
+            const apiBase = getApiBase();
+            const res = await fetch(apiBase, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
@@ -185,7 +206,8 @@ export const strategyStudioApi = {
         }
 
         // Fallback simulation with realistic trades & metrics
-        await new Promise((resolve) => setTimeout(resolve, 600)); // Smooth realistic simulation animation
+        await new Promise((resolve) => setTimeout(resolve, 600));
         return generateSimulatedBacktest(payload);
     }
 };
+
