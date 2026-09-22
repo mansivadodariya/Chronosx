@@ -1,23 +1,10 @@
-﻿import en from './en.json';
-import ar from './ar.json';
-import ary from './ary.json';
-import es from './es.json';
-import ru from './ru.json';
-import zh from './zh.json';
-import vi from './vi.json';
-import id from './id.json';
-import fil from './fil.json';
+import en from './en.json';
 
+/**
+ * In-memory cache for loaded language dictionaries. 'en' is bundled as base fallback
+ */
 export const translations = {
   en,
-  ar,
-  ary,
-  es,
-  ru,
-  zh,
-  vi,
-  id,
-  fil,
 };
 
 /** All supported locale codes */
@@ -25,6 +12,42 @@ export const SUPPORTED_LOCALES = ['en', 'ar', 'ary', 'es', 'ru', 'zh', 'vi', 'id
 
 /** RTL locale codes */
 export const RTL_LOCALES = ['ar', 'ary'];
+
+/**
+ * Dynamic loader map for non-English locales to prevent bundling ~750KB on initial load
+ */
+const localeLoaders = {
+  ar: () => import('./ar.json'),
+  ary: () => import('./ary.json'),
+  es: () => import('./es.json'),
+  ru: () => import('./ru.json'),
+  zh: () => import('./zh.json'),
+  vi: () => import('./vi.json'),
+  id: () => import('./id.json'),
+  fil: () => import('./fil.json'),
+};
+
+/**
+ * Dynamically load dictionary for a given locale if not yet cached.
+ *
+ * @param {string} lang - Locale code
+ * @returns {Promise<Object>}
+ */
+export async function loadLocaleData(lang) {
+  if (!lang || lang === 'en' || translations[lang]) {
+    return translations[lang] || translations.en;
+  }
+  if (localeLoaders[lang]) {
+    try {
+      const module = await localeLoaders[lang]();
+      translations[lang] = module.default || module;
+      return translations[lang];
+    } catch (e) {
+      console.warn('[Locales] Could not dynamically load locale "' + lang + '":', e);
+    }
+  }
+  return translations.en;
+}
 
 /**
  * Resolve a nested key like "nav.home" from a translations dict.
@@ -67,11 +90,11 @@ function interpolate(template, variables) {
 export const getTranslation = (lang, key, fallback = '', variables = null) => {
   if (!key) return fallback;
 
-  // 1. Try the selected language
+  // 1. Try the selected language if loaded
   const currentDict = translations[lang];
   let result = resolveKey(currentDict, key);
 
-  // 2. Fallback to English if missing
+  // 2. Fallback to English if missing or not yet loaded
   if (result === undefined || result === null || result === '') {
     result = resolveKey(translations.en, key);
   }

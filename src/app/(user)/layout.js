@@ -2,21 +2,23 @@
 import Sidebar from '@/components/sidebar';
 import Topbar from '@/components/topbar';
 import AuthGuard from '@/components/authGuard';
+import dynamic from 'next/dynamic';
 import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { ToolStateProvider } from '@/context/toolState';
 import { SubscriptionProvider } from '@/context/SubscriptionContext';
-import NeweraCreditsModal from '@/components/neweraCreditsModal';
-import RiskDisclosureModal from '@/components/riskDisclosureModal';
-import FirebasePhoneModal from '@/components/firebasePhoneModal';
 import { extractAvailableCredits, CREDITS_UPDATED_EVENT, notifyCreditsUpdated, refreshCreditsFromServer } from '@/lib/credits';
 import { captureUtmParameters } from '@/lib/utm';
 import { getStoredUserId } from '@/lib/authSession';
 import { dashboardApi, neweraApi } from '@/lib/api';
 import { supabase } from '@/lib/supabaseClient';
-import AccessDeniedScreen from '@/components/AccessDeniedScreen';
 import './layout.scss';
+
+const NeweraCreditsModal = dynamic(() => import('@/components/neweraCreditsModal'), { ssr: false });
+const RiskDisclosureModal = dynamic(() => import('@/components/riskDisclosureModal'), { ssr: false });
+const FirebasePhoneModal = dynamic(() => import('@/components/firebasePhoneModal'), { ssr: false });
+const AccessDeniedScreen = dynamic(() => import('@/components/AccessDeniedScreen'), { ssr: false });
 
 const TOOL_ROUTES = [
     '/chart-scanner',

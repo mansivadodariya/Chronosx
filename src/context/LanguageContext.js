@@ -1,8 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { getTranslation, SUPPORTED_LOCALES, RTL_LOCALES } from '@/locales';
+import { getTranslation, loadLocaleData, SUPPORTED_LOCALES, RTL_LOCALES, translations } from '@/locales';
 
 const LanguageContext = createContext({
   language: 'en',
@@ -17,6 +16,7 @@ const LanguageContext = createContext({
 
 export const LanguageProvider = ({ children }) => {
   const [language, setLanguageState] = useState('en');
+  const [, setLoadedVersion] = useState(0);
 
   useEffect(() => {
     try {
@@ -32,6 +32,12 @@ export const LanguageProvider = ({ children }) => {
         const isRtl = RTL_LOCALES.includes(storedLang);
         document.documentElement.setAttribute('lang', storedLang);
         document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+
+        if (storedLang !== 'en' && !translations[storedLang]) {
+          loadLocaleData(storedLang).then(() => {
+            setLoadedVersion((v) => v + 1);
+          });
+        }
       } else {
         document.documentElement.setAttribute('lang', 'en');
         document.documentElement.setAttribute('dir', 'ltr');
@@ -53,6 +59,12 @@ export const LanguageProvider = ({ children }) => {
       const isRtl = RTL_LOCALES.includes(lang);
       document.documentElement.setAttribute('lang', lang);
       document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+    }
+
+    if (lang !== 'en' && !translations[lang]) {
+      loadLocaleData(lang).then(() => {
+        setLoadedVersion((v) => v + 1);
+      });
     }
   }, []);
 
@@ -84,15 +96,7 @@ export const LanguageProvider = ({ children }) => {
 
   return (
     <LanguageContext.Provider value={{ language, dir, isRTL, isPending: false, setLanguage, toggleLanguage, t, tDynamic }}>
-      <motion.div
-        key={language}
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1.0] }}
-        style={{ width: '100%', minHeight: '100%' }}
-      >
-        {children}
-      </motion.div>
+      {children}
     </LanguageContext.Provider>
   );
 };

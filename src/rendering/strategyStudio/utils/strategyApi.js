@@ -12,15 +12,17 @@ import { generateSimulatedBacktest } from './backtestEngine';
  * 4. Fallback relative path '/backtest/v1'
  */
 export const getApiBase = () => {
+    const backtestUrl = (process.env.NEXT_PUBLIC_BACKTEST_API_URL || '').replace(/\/+$/, '');
+    if (backtestUrl) return backtestUrl;
 
-    const backend = (process.env.NEXT_PUBLIC_BACKEND_URL).replace(/\/+$/, '');
+    const backend = (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || '').replace(/\/+$/, '');
     if (backend) {
         if (backend.endsWith('/backtest/v1')) {
             return backend;
         }
         return `${backend}/backtest/v1`;
     }
-    return '/backtest/v1';
+    return 'http://localhost:7009/backtest/v1';
 };
 
 export const strategyStudioApi = {
