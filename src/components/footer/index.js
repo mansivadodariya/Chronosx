@@ -95,7 +95,6 @@ export default function Footer() {
               <li><Link href="/ai-trade-advisor">{t('header.tradingTools.tradeAudit.title', 'AI Past Trade Analyzer')}</Link></li>
               <li><Link href={getAuthHref('/strategy-core')}>{t('footer.strategyBuilder', 'Strategy Builder')}</Link></li>
               <li><Link href={getAuthHref('/strategy-core')}>{t('footer.quantBacktesting', 'Quant Backtesting')}</Link></li>
-              <li><Link href={getAuthHref('/dashboard')}>{t('footer.paperTradingDesk', 'Paper Trading Desk')}</Link></li>
             </ul>
           </div>
 
@@ -104,6 +103,7 @@ export default function Footer() {
             <h4>{t('footer.companyTitle', 'COMPANY')}</h4>
             <ul>
               <li><Link href="/about-us">{t('header.company.aboutUs.title', 'About Us')}</Link></li>
+              {/* Affiliate Program */}
               <li><Link href="/plans">{t('footer.pricingPlans', 'Pricing Plans')}</Link></li>
               <li><Link href="/blogs">{t('footer.researchBlogs', 'Research & Blogs')}</Link></li>
               <li><Link href="/market-news">{t('header.company.news.title', 'Market News')}</Link></li>
@@ -120,6 +120,8 @@ export default function Footer() {
               <li><Link href="/privacy-policy">{t('footer.privacyPolicy', 'Privacy Policy')}</Link></li>
               <li><Link href="/terms-and-conditions">{t('footer.termsAndConditions', 'Terms & Conditions')}</Link></li>
               <li><Link href="/risk-disclosure">{t('footer.riskDisclosure', 'Risk Disclosure')}</Link></li>
+              {/* No Refund Policy */}
+              <li><Link href="/no-refund-policy">{t('footer.noRefundPolicy', 'No Refund Policy')}</Link></li>
             </ul>
           </div>
         </div>

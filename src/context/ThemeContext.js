@@ -4,8 +4,8 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext({
     theme: 'dark',
-    toggleTheme: () => {},
-    setTheme: () => {},
+    toggleTheme: () => { },
+    setTheme: () => { },
 });
 
 export const ThemeProvider = ({ children }) => {

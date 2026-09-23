@@ -9,6 +9,23 @@ import GoldIcon from '@/icons/goldIcon';
 import { useLanguage } from '@/context/LanguageContext';
 import styles from './aiCockpit.module.scss';
 
+const LiveETClock = React.memo(function LiveETClock({ className }) {
+  const [timeText, setTimeText] = useState('');
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      setTimeText(`${hours}:${minutes}:${seconds} ET`);
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+  return <span className={className}>{timeText}</span>;
+});
+
 export default function AiCockpit({ isHero = false, showHeader = true }) {
   const { t } = useLanguage();
   const [activeTimeframe, setActiveTimeframe] = useState('1H');
@@ -20,7 +37,6 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
   const [lastUpdatedSec, setLastUpdatedSec] = useState(1.1);
   const [cockpitSubTab, setCockpitSubTab] = useState('overview');
   const [hoveredIntelCard, setHoveredIntelCard] = useState(null);
-  const [currentTimeET, setCurrentTimeET] = useState('');
 
   const tickCounterRef = useRef(0);
   const cockpitSectionRef = useRef(null);
@@ -36,20 +52,6 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
   const scale = useTransform(scrollYProgress, [0, 1], [0.82, 1]);
   const translateY = useTransform(scrollYProgress, [0, 1], [75, 0]);
   const opacity = useTransform(scrollYProgress, [0, 0.4, 1], [0.6, 0.88, 1]);
-
-  // ET Clock Timer
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      setCurrentTimeET(`${hours}:${minutes}:${seconds} ET`);
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   // Connect directly to our backend MT5 WebSocket stream for XAUUSD
   const { priceData, tickDirection } = useLivePrice('XAUUSD');
@@ -104,18 +106,17 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
     const tickInterval = setInterval(() => {
       if (document.hidden) return;
 
-      setLivePrice((prev) => {
-        const randomJump = (Math.random() - 0.48) * 0.85;
-        const newClose = Number((prev + randomJump).toFixed(2));
-        setPriceFlash(randomJump >= 0 ? 'up' : 'down');
-        setTimeout(() => setPriceFlash(null), 400);
+      const randomJump = (Math.random() - 0.48) * 0.85;
+      const isUp = randomJump >= 0;
+      setPriceFlash(isUp ? 'up' : 'down');
+      const flashTimer = setTimeout(() => setPriceFlash(null), 400);
 
-        tickCounterRef.current += 1;
-        if (tickCounterRef.current % 4 === 0) {
-          setLastUpdatedSec(Number((Math.random() * 0.8 + 0.3).toFixed(1)));
-        }
-        return newClose;
-      });
+      setLivePrice((prev) => Number((prev + randomJump).toFixed(2)));
+
+      tickCounterRef.current += 1;
+      if (tickCounterRef.current % 4 === 0) {
+        setLastUpdatedSec(Number((Math.random() * 0.8 + 0.3).toFixed(1)));
+      }
     }, 2200);
 
     return () => clearInterval(tickInterval);
@@ -247,7 +248,7 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
                     <span className={styles.upArrow}>{isPositiveChange ? '↑' : '↓'}</span>
                     {priceChangeText}
                   </span>
-                  <span className={styles.liveClockET}>{currentTimeET}</span>
+                  <LiveETClock className={styles.liveClockET} />
                 </div>
               </div>
 

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import styles from '../aiCockpit.module.scss';
 
-export default function AiCockpitIntelDeck({
+export default React.memo(function AiCockpitIntelDeck({
   cockpitSubTab,
   setCockpitSubTab,
   hoveredIntelCard,
@@ -88,9 +88,9 @@ export default function AiCockpitIntelDeck({
                 animate={{
                   width: hoveredIntelCard === 'score' ? '96%' : '84%',
                   background: hoveredIntelCard === 'score'
-                    ? 'linear-gradient(90deg, #10B981 0%, #34D399 65%, #6EE7B7 100%)'
+                    ? 'linear-gradient(90deg, var(--accent-bullish) 0%, var(--primary-green) 65%, #6EE7B7 100%)'
                     : 'rgba(255, 255, 255, 0.18)',
-                  boxShadow: hoveredIntelCard === 'score' ? '0 0 16px rgba(52, 211, 153, 0.85)' : 'none'
+                  boxShadow: hoveredIntelCard === 'score' ? '0 0 16px var(--primary-green-glow)' : 'none'
                 }}
                 transition={{ duration: 0.45, ease: "easeOut" }}
               >
@@ -98,8 +98,8 @@ export default function AiCockpitIntelDeck({
                   className={styles.sliderKnob}
                   animate={{
                     scale: hoveredIntelCard === 'score' ? 1.35 : 1,
-                    borderColor: hoveredIntelCard === 'score' ? '#6EE7B7' : '#10B981',
-                    boxShadow: hoveredIntelCard === 'score' ? '0 0 12px #6EE7B7' : '0 0 8px #34D399'
+                    borderColor: hoveredIntelCard === 'score' ? '#6EE7B7' : 'var(--accent-bullish)',
+                    boxShadow: hoveredIntelCard === 'score' ? '0 0 12px #6EE7B7' : '0 0 8px var(--primary-green)'
                   }}
                   transition={{ duration: 0.3 }}
                 />
@@ -132,9 +132,9 @@ export default function AiCockpitIntelDeck({
             <svg viewBox="0 0 220 54" className={styles.sparklineSvg} preserveAspectRatio="none">
               <defs>
                 <linearGradient id="eqGlowGradGoldCockpit" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#18c98b" stopOpacity="0.45" />
-                  <stop offset="60%" stopColor="#18c98b" stopOpacity="0.12" />
-                  <stop offset="100%" stopColor="#18c98b" stopOpacity="0" />
+                  <stop offset="0%" stopColor="var(--primary-green)" stopOpacity="0.45" />
+                  <stop offset="60%" stopColor="var(--primary-green)" stopOpacity="0.12" />
+                  <stop offset="100%" stopColor="var(--primary-green)" stopOpacity="0" />
                 </linearGradient>
               </defs>
 
@@ -153,13 +153,13 @@ export default function AiCockpitIntelDeck({
                   <motion.path
                     d="M 6 46 Q 40 44 80 38 T 130 26 T 175 18 T 205 12"
                     fill="none"
-                    stroke="#6EE7B7"
+                    stroke="var(--primary-green)"
                     strokeWidth="3.2"
                     strokeLinecap="round"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
                     transition={{ duration: 0.65, ease: "easeOut" }}
-                    filter="drop-shadow(0 0 10px rgba(24, 201, 139, 0.95))"
+                    filter="drop-shadow(0 0 10px var(--primary-green-glow))"
                   />
 
                   {/* Peak Tip Dot at Top */}
@@ -167,7 +167,7 @@ export default function AiCockpitIntelDeck({
                     cx="205"
                     cy="12"
                     r="5"
-                    fill="#FFFFFF"
+                    fill="var(--text-white)"
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.3, delay: 0.55 }}
@@ -180,7 +180,7 @@ export default function AiCockpitIntelDeck({
                     cy="12"
                     r="8"
                     fill="none"
-                    stroke="#6EE7B7"
+                    stroke="var(--primary-green)"
                     strokeWidth="1.5"
                     initial={{ scale: 0.8, opacity: 0.9 }}
                     animate={{ scale: 1.6, opacity: 0 }}
@@ -192,11 +192,11 @@ export default function AiCockpitIntelDeck({
                   <path
                     d="M 6 46 Q 40 44 80 38 T 130 26"
                     fill="none"
-                    stroke="rgba(255, 255, 255, 0.22)"
+                    stroke="var(--border-subtle)"
                     strokeWidth="2"
                     strokeLinecap="round"
                   />
-                  <circle cx="130" cy="26" r="3" fill="rgba(255, 255, 255, 0.4)" />
+                  <circle cx="130" cy="26" r="3" fill="var(--text-muted)" />
                 </g>
               )}
             </svg>
@@ -206,4 +206,4 @@ export default function AiCockpitIntelDeck({
       </div>
     </>
   );
-}
+});

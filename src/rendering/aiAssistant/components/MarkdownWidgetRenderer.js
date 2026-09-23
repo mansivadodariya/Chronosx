@@ -389,7 +389,7 @@ const RenderMarkdownWithWidgets = React.memo(function RenderMarkdownWithWidgets(
 
         let currentIdx = 0;
         const intervalId = setInterval(() => {
-            const step = words.length > 400 ? 2 : 1;
+            const step = words.length > 300 ? 6 : words.length > 100 ? 3 : 1;
             currentIdx = Math.min(words.length, currentIdx + step);
             setRevealedWordCount(currentIdx);
 
@@ -398,18 +398,22 @@ const RenderMarkdownWithWidgets = React.memo(function RenderMarkdownWithWidgets(
                 setIsStreamingFinished(true);
                 if (onComplete) onComplete();
             }
-        }, 32);
+        }, 45);
 
         return () => clearInterval(intervalId);
-    }, [content, isStreaming, words.length]);
+    }, [content, isStreaming, words.length, onComplete]);
+
+    const displayContent = useMemo(() => {
+        if (isStreamingFinished) return content;
+        return words.slice(0, revealedWordCount).join(' ');
+    }, [isStreamingFinished, content, words, revealedWordCount]);
+
+    const parts = useMemo(() => {
+        if (!displayContent) return [];
+        return displayContent.split(WIDGET_REGEX);
+    }, [displayContent]);
 
     if (!content) return null;
-
-    const displayContent = isStreamingFinished 
-        ? content 
-        : words.slice(0, revealedWordCount).join(' ');
-
-    const parts = displayContent.split(WIDGET_REGEX);
 
     return (
         <div className={styles.chatMarkdown}>

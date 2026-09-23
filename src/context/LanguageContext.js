@@ -1,7 +1,6 @@
-'use client';
+  'use client';
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { getTranslation, SUPPORTED_LOCALES, RTL_LOCALES } from '@/locales';
 
 const LanguageContext = createContext({
@@ -82,17 +81,22 @@ export const LanguageProvider = ({ children }) => {
   const isRTL = RTL_LOCALES.includes(language);
   const dir = isRTL ? 'rtl' : 'ltr';
 
+  const value = useMemo(() => ({
+    language,
+    dir,
+    isRTL,
+    isPending: false,
+    setLanguage,
+    toggleLanguage,
+    t,
+    tDynamic
+  }), [language, dir, isRTL, setLanguage, toggleLanguage, t, tDynamic]);
+
   return (
-    <LanguageContext.Provider value={{ language, dir, isRTL, isPending: false, setLanguage, toggleLanguage, t, tDynamic }}>
-      <motion.div
-        key={language}
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1.0] }}
-        style={{ width: '100%', minHeight: '100%' }}
-      >
+    <LanguageContext.Provider value={value}>
+      <div style={{ width: '100%', minHeight: '100%' }}>
         {children}
-      </motion.div>
+      </div>
     </LanguageContext.Provider>
   );
 };

@@ -132,6 +132,8 @@ function TickerCardLogo({ logoUrl, name, color, fallbackChar }) {
           src={logoUrl}
           alt={name}
           className={styles.tickerLogoImg}
+          loading="lazy"
+          decoding="async"
           onError={() => setImgError(true)}
         />
       ) : (

@@ -22,6 +22,7 @@ export default function AssistantModals({
     getQuestionText,
     t
 }) {
+
     return (
         <>
             <Modal

@@ -1,9 +1,33 @@
-:root {
+:root,
+html.dark,
+html[data-theme="dark"] {
+  
   --bg-global: #040605;
+  --bg-surface: #0a0e0b;
+
+  --bg-surface-elevated: #0d120f;
+  --bg-card: rgba(10, 14, 11, 0.75);
+  --bg-card-solid: #0d120f;
+  --bg-hover: rgba(24, 201, 139, 0.08);
+  --text-white: #ffffff;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-dark: #0f172a;
   --primary-green: #18c98b;
+  
   --primary-green-glow: rgba(24, 201, 139, 0.4);
   --primary-green-light: rgba(24, 201, 139, 0.12);
-  --text-white: #ffffff;
+  --accent-bullish: #10b981;
+  --accent-bearish: #f43f5e;
+  --accent-gold: #f59e0b;
+  --border-color: rgba(24, 201, 139, 0.18);
+  
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-focus: #18c98b;
+  --color-scheme: dark;
+
 }
 
 body,
@@ -16,8 +40,8 @@ textarea {
 
 body {
   margin: 0;
-  background: #040605;
-  color: #ffffff;
+  background: var(--bg-global);
+  color: var(--text-primary);
   overflow-x: hidden;
   padding: 0;
 }
@@ -39,7 +63,7 @@ h5,
 h6,
 p {
   margin: 0;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 a {
@@ -47,7 +71,7 @@ a {
 }
 
 html {
-  background-color: #040605;
+  background-color: var(--bg-global);
 }
 
 html.lenis,
@@ -183,6 +207,7 @@ html.light .children-wrapper {
 }
 
 @media (max-width: 1024px) {
+
   .children-wrapper,
   .sidebar-wrapper.collapsed~.children-wrapper,
   .user-layout.collapsed .children-wrapper {
@@ -601,184 +626,4 @@ html.light [class*="quickLinkItem"] {
   border-color: rgba(24, 201, 139, 0.22) !important;
   color: #0F172A !important;
   box-shadow: none !important;
-}
-
-/* Light Mode Input & Select Dropdowns - No Dark Boxes */
-html.light input:not([type="checkbox"]):not([type="radio"]),
-html.light select,
-html.light textarea,
-html.light [class*="inputWrapper"],
-html.light [class*="selectWrapper"],
-html.light [class*="textareaWrapper"],
-html.light [class*="phoneInputWrapper"],
-html.light [class*="searchBox"],
-html.light [class*="searchInput"] {
-  background: #FFFFFF !important;
-  background-color: #FFFFFF !important;
-  border-color: rgba(24, 201, 139, 0.28) !important;
-  color: #0F172A !important;
-  box-shadow: none !important;
-}
-
-html.light input::placeholder,
-html.light textarea::placeholder {
-  color: #94A3B8 !important;
-}
-
-html.light select option {
-  background-color: #FFFFFF !important;
-  color: #0F172A !important;
-}
-
-/* Light Mode Modals & Dropdown Popups */
-html.light [class*="modalContent"],
-html.light [class*="modalBox"],
-html.light [class*="dialog"],
-html.light [class*="popover"],
-html.light [class*="dropdownMenu"],
-html.light [class*="dropdownList"],
-html.light [class*="menuList"],
-html.light [class*="drawer"] {
-  background: #FFFFFF !important;
-  border: 1px solid rgba(24, 201, 139, 0.28) !important;
-  color: #0F172A !important;
-  box-shadow: none !important;
-}
-
-/* Light Mode Table Styling */
-html.light table,
-html.light thead,
-html.light tbody,
-html.light tr {
-  background: transparent !important;
-}
-
-html.light th {
-  background: #F1F5F9 !important;
-  color: #475569 !important;
-  border-bottom: 1px solid rgba(24, 201, 139, 0.2) !important;
-}
-
-html.light td {
-  background: #FFFFFF !important;
-  color: #0F172A !important;
-  border-bottom: 1px solid #F1F5F9 !important;
-}
-
-/* Light Mode Secondary, Outline & Ghost Buttons */
-html.light [class*="secondaryBtn"],
-html.light [class*="SecondaryBtn"],
-html.light [class*="outlineBtn"],
-html.light [class*="ghostBtn"],
-html.light [class*="resetBtn"],
-html.light [class*="navBtn"] {
-  background: #FFFFFF !important;
-  border-color: rgba(24, 201, 139, 0.35) !important;
-  color: #047857 !important;
-  box-shadow: none !important;
-}
-
-html.light [class*="secondaryBtn"]:hover,
-html.light [class*="SecondaryBtn"]:hover,
-html.light [class*="outlineBtn"]:hover,
-html.light [class*="ghostBtn"]:hover,
-html.light [class*="resetBtn"]:hover,
-html.light [class*="navBtn"]:hover {
-  background: rgba(24, 201, 139, 0.1) !important;
-  border-color: #10B981 !important;
-  color: #047857 !important;
-  box-shadow: none !important;
-}
-
-/* Form Controls & Inputs */
-html.light input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
-html.light textarea,
-html.light select,
-html.light [class*="inputField"],
-html.light [class*="inputWrapper"] input,
-html.light [class*="searchInput"]:not([class*="watchlistSearchInput"]):not([class*="tickerSearchInput"]):not([class*="indicatorsSearchInput"]),
-html.light [class*="customInput"],
-html.light [class*="formControl"],
-html.light [class*="phoneInput"] input {
-  background-color: transparent !important;
-  border-right-color: rgba(24, 201, 139, 0.2) !important;
-  box-shadow: none !important;
-}
-
-html.light input::placeholder,
-html.light textarea::placeholder,
-html.light [class*="inputField"]::placeholder,
-html.light [class*="searchInput"]::placeholder {
-  color: #94A3B8 !important;
-  opacity: 1 !important;
-}
-
-html.light input:focus,
-html.light textarea:focus,
-html.light select:focus,
-html.light [class*="inputField"]:focus {
-  border-color: #18C98B !important;
-  outline: none !important;
-  box-shadow: 0 0 0 3px rgba(24, 201, 139, 0.22) !important;
-}
-
-/* Light Theme: Calendar Header & Live Countdown Badge Protection */
-html.light [class*="calendarHeaderStrip"],
-html.light [class*="calendarHeaderStrip"] *,
-html.light [class*="liveIndicator"],
-html.light [class*="liveText"],
-html.light [class*="calendarBadge"],
-html.light span[class*="calendarBadge"] {
-  color: #FFFFFF !important;
-  -webkit-text-fill-color: #FFFFFF !important;
-}
-
-/* Light Theme: Modals Close Button Visibility */
-html.light [class*="modalCard"] [class*="closeBtn"],
-html.light [class*="modalBox"] [class*="closeBtn"],
-html.light [class*="modalContent"] [class*="closeBtn"],
-html.light button[class*="closeBtn"] {
-  color: #0F172A !important;
-}
-html.light [class*="modalCard"] [class*="closeBtn"] svg,
-html.light [class*="modalBox"] [class*="closeBtn"] svg,
-html.light [class*="modalContent"] [class*="closeBtn"] svg,
-html.light button[class*="closeBtn"] svg {
-  stroke: #0F172A !important;
-  color: #0F172A !important;
-}
-
-/* Light Theme: Sidebar Subscription Green Widget Protection */
-html.light [class*="widgetCard"] [class*="daysBadge"],
-html.light [class*="widgetCard"] [class*="daysBadge"] * {
-  color: #FFFFFF !important;
-  -webkit-text-fill-color: #FFFFFF !important;
-  background: rgba(0, 0, 0, 0.25) !important;
-}
-
-html.light [class*="widgetCard"] [class*="footerRow"],
-html.light [class*="widgetCard"] [class*="statusText"],
-html.light [class*="widgetCard"] [class*="cycleText"] {
-  background: transparent !important;
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  color: #FFFFFF !important;
-  -webkit-text-fill-color: #FFFFFF !important;
-}
-
-/* Custom Pointer / Futuristic Cursor Global Rules */
-@media (hover: hover) and (pointer: fine) {
-  html.custom-cursor-enabled,
-  html.custom-cursor-enabled body,
-  html.custom-cursor-enabled a,
-  html.custom-cursor-enabled button,
-  html.custom-cursor-enabled input,
-  html.custom-cursor-enabled select,
-  html.custom-cursor-enabled textarea,
-  html.custom-cursor-enabled label,
-  html.custom-cursor-enabled [role="button"],
-  html.custom-cursor-enabled [data-cursor] {
-    cursor: none !important;
-  }
 }

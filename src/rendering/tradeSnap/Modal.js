@@ -4,7 +4,8 @@ import styles from './tradeSnap.module.scss';
 import { getBidiProps } from '@/lib/bidi';
 
 export default function Modal({ open, onClose, title, description, children, footer, size = 'default' }) {
-    useEffect(() => {
+
+    useEffect(() => { 
         if (!open) return;
         const originalOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';

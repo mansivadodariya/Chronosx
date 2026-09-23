@@ -12,12 +12,7 @@ export default function HeroFeatureCards() {
   const { t } = useLanguage();
 
   return (
-    <motion.div
-      className={styles.heroCardsRow}
-      initial={{ opacity: 0, y: 35 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.85, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-    >
+    <div className={styles.heroCardsRow}>
       {/* 1. Left Card: AI Chart Scanner */}
       <div
         className={`${styles.featureCard} ${styles.cardNormal}`}
@@ -58,7 +53,7 @@ export default function HeroFeatureCards() {
             <h3 className={styles.cardTitle}>
               {t('header.products.strategyHub.title', 'AI Trading Signal')}
             </h3>
-            <span className={styles.cardMiniBadge}>ALGO</span>
+            <span className={styles.cardMiniBadge}>Platform</span>
           </div>
           <p className={styles.cardDesc}>
             {t('homeSections.hero.cards.strategyDesc', 'Execute live market intelligence, algorithmic playbooks, and quant signals.')}
@@ -89,6 +84,6 @@ export default function HeroFeatureCards() {
           </p>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
