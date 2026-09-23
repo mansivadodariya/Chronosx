@@ -4,8 +4,29 @@ import React, { useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import styles from '../styles/strategyStudio.module.scss';
 import { useTheme } from '@/context/ThemeContext';
+import { AreaChartIcon, PieChartIcon } from './StudioIcons';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
+
+const formatShortDate = (dateStr) => {
+    if (!dateStr || dateStr === 'Start') return 'Start';
+    try {
+        const d = new Date(dateStr);
+        if (isNaN(d.getTime())) {
+            // If date string is like "2026-08-04", try manual parse
+            const parts = dateStr.split('-');
+            if (parts.length === 3) {
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                const monthIdx = parseInt(parts[1], 10) - 1;
+                return `${months[monthIdx] || parts[1]} ${parseInt(parts[2], 10)}`;
+            }
+            return dateStr;
+        }
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    } catch {
+        return dateStr;
+    }
+};
 
 export default function BacktestCharts({
     roundTrips = [],
@@ -18,9 +39,10 @@ export default function BacktestCharts({
 
     // Equity Curve Data
     const equityData = useMemo(() => {
-        const labels = ['Start', ...roundTrips.map(t => (t.exitDate ? t.exitDate.split(' ')[0] : `T${t.index}`))];
+        const rawDates = ['Start', ...roundTrips.map(t => (t.exitDate ? t.exitDate.split(' ')[0] : `T${t.index}`))];
+        const formattedLabels = rawDates.map(d => formatShortDate(d));
         const balances = [initialCapital, ...roundTrips.map(t => t.runningBalance)];
-        return { labels, balances };
+        return { rawDates, labels: formattedLabels, balances };
     }, [roundTrips, initialCapital]);
 
     const isProfitable = equityData.balances[equityData.balances.length - 1] >= initialCapital;
@@ -47,7 +69,7 @@ export default function BacktestCharts({
                 opacityTo: 0.02,
                 stops: [0, 95, 100],
                 colorStops: [
-                    { offset: 0, color: primaryColor, opacity: 0.4 },
+                    { offset: 0, color: primaryColor, opacity: 0.38 },
                     { offset: 100, color: primaryColor, opacity: 0.0 }
                 ]
             }
@@ -55,27 +77,34 @@ export default function BacktestCharts({
         dataLabels: { enabled: false },
         xaxis: {
             categories: equityData.labels,
+            tickAmount: 6,
             labels: {
-                style: { colors: isDark ? '#64748B' : '#94A3B8', fontSize: '10px' },
+                style: { colors: isDark ? '#94A3B8' : '#64748B', fontSize: '10px', fontWeight: 500 },
                 rotate: 0,
                 hideOverlappingLabels: true,
-                maxHeight: 40
+                maxHeight: 32
             },
             axisBorder: { show: false },
             axisTicks: { show: false }
         },
         yaxis: {
             labels: {
-                style: { colors: isDark ? '#64748B' : '#94A3B8', fontSize: '10px' },
+                style: { colors: isDark ? '#94A3B8' : '#64748B', fontSize: '10px', fontWeight: 500 },
                 formatter: (val) => `$${Number(val).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
             }
         },
         grid: {
-            borderColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+            borderColor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)',
             strokeDashArray: 3
         },
         tooltip: {
             theme: isDark ? 'dark' : 'light',
+            x: {
+                formatter: (val, opts) => {
+                    const raw = equityData.rawDates[opts?.dataPointIndex];
+                    return raw ? `Date: ${raw}` : `Point: ${val}`;
+                }
+            },
             y: {
                 formatter: (val) => `$${Number(val).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
             }
@@ -90,31 +119,58 @@ export default function BacktestCharts({
     ];
 
     // Outcome Doughnut Chart Data
+    const totalTrades = wins + losses;
+    const winPercent = totalTrades > 0 ? ((wins / totalTrades) * 100).toFixed(1) : '0';
+
     const outcomeChartOptions = {
         chart: {
             type: 'donut',
-            height: 240,
-            background: 'transparent'
+            height: 250,
+            background: 'transparent',
+            animations: {
+                enabled: true,
+                easing: 'easeinout',
+                speed: 600,
+                animateGradually: { enabled: true, delay: 150 },
+                dynamicAnimation: { enabled: true, speed: 350 }
+            }
         },
         labels: ['Winning Trades', 'Losing Trades'],
-        colors: ['#18C98B', '#F43F5E'],
+        colors: ['#18C98B', '#FF4D6D'],
         stroke: {
-            colors: [isDark ? '#0B100E' : '#FFFFFF'],
-            width: 3
+            show: false,
+            width: 0
         },
         dataLabels: { enabled: false },
         plotOptions: {
             pie: {
+                expandOnClick: false,
                 donut: {
                     size: '72%',
                     labels: {
                         show: true,
+                        name: {
+                            show: true,
+                            fontSize: '11px',
+                            fontWeight: 600,
+                            color: isDark ? '#94A3B8' : '#64748B',
+                            offsetY: -6
+                        },
+                        value: {
+                            show: true,
+                            fontSize: '26px',
+                            fontWeight: 800,
+                            color: isDark ? '#FFFFFF' : '#0F172A',
+                            offsetY: 2,
+                            formatter: (val) => val
+                        },
                         total: {
                             show: true,
-                            label: 'Total Trades',
+                            label: 'TOTAL TRADES',
                             color: isDark ? '#94A3B8' : '#64748B',
-                            fontSize: '11px',
-                            formatter: () => `${wins + losses}`
+                            fontSize: '10px',
+                            fontWeight: 700,
+                            formatter: () => `${totalTrades}`
                         }
                     }
                 }
@@ -122,13 +178,40 @@ export default function BacktestCharts({
         },
         legend: {
             position: 'bottom',
+            horizontalAlign: 'center',
             labels: {
-                colors: isDark ? '#CBD5E1' : '#475569'
+                colors: isDark ? '#E2E8F0' : '#334155'
             },
-            fontSize: '11px'
+            fontSize: '11px',
+            fontWeight: 600,
+            markers: {
+                width: 9,
+                height: 9,
+                radius: 10
+            },
+            formatter: (seriesName, opts) => {
+                const count = opts.w.globals.series[opts.seriesIndex];
+                const pct = totalTrades > 0 ? ((count / totalTrades) * 100).toFixed(0) : 0;
+                return `${seriesName}: ${count} (${pct}%)`;
+            },
+            itemMargin: {
+                horizontal: 10,
+                vertical: 2
+            }
         },
         tooltip: {
-            theme: isDark ? 'dark' : 'light'
+            theme: isDark ? 'dark' : 'light',
+            y: {
+                formatter: (val) => `${val} trades (${totalTrades > 0 ? ((val / totalTrades) * 100).toFixed(1) : 0}%)`
+            }
+        },
+        states: {
+            hover: {
+                filter: { type: 'darken', value: 0.1 }
+            },
+            active: {
+                filter: { type: 'none' }
+            }
         }
     };
 
@@ -138,7 +221,7 @@ export default function BacktestCharts({
         <div className={styles.chartsGrid}>
             <div className={styles.chartCard}>
                 <div className={styles.chartHeader}>
-                    <h3>📈 Cumulative Equity Curve ($)</h3>
+                    <h3><AreaChartIcon size={15} color="#18C98B" /> Cumulative Equity Curve ($)</h3>
                     <span style={{ fontSize: '11px', color: '#94A3B8' }}>Portfolio Progression</span>
                 </div>
                 <div style={{ minHeight: '240px' }}>
@@ -153,18 +236,19 @@ export default function BacktestCharts({
 
             <div className={styles.chartCard}>
                 <div className={styles.chartHeader}>
-                    <h3>📊 Trade Outcome Distribution</h3>
-                    <span style={{ fontSize: '11px', color: '#94A3B8' }}>Wins vs Losses</span>
+                    <h3><PieChartIcon size={15} color="#18C98B" /> Trade Outcome Distribution</h3>
+                    <span style={{ fontSize: '11px', color: '#94A3B8' }}>Win Rate: {winPercent}%</span>
                 </div>
-                <div style={{ minHeight: '240px' }}>
+                <div style={{ minHeight: '250px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <ReactApexChart
                         options={outcomeChartOptions}
                         series={outcomeSeries}
                         type="donut"
-                        height={240}
+                        height={250}
                     />
                 </div>
             </div>
         </div>
     );
 }
+

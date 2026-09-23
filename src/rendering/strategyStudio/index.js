@@ -1,67 +1,32 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from './styles/strategyStudio.module.scss';
 import BackgroundCyberWaves from './components/BackgroundCyberWaves';
-import AiExploreView from './components/AiExploreView';
-import AiChatStreamView from './components/AiChatStreamView';
+import StudioToolbar from './components/StudioToolbar';
+import AdvisorChatView from './components/AdvisorChatView';
+import BacktestResultsView from './components/BacktestResultsView';
+import SimulationProgressLoader from './components/SimulationProgressLoader';
 import {
-    ChartTrendIcon,
+    BotBrainIcon,
+    RefreshResetIcon,
+    AiBotSparkIcon,
+    SlidersTuneIcon,
     ShieldCheckIcon,
-    CpuChipIcon
+    RocketRunIcon
 } from './components/StudioIcons';
 import { toast } from 'react-hot-toast';
 import { strategyStudioApi } from './utils/strategyApi';
 import { parseRoundTrips } from './utils/backtestEngine';
-import { getStoredUser, getStoredUserId, hydrateUserFromProfile } from '@/lib/authSession';
 
-// Category presets configuration matching Tradezee
-const CATEGORY_DATA = {
-    strategy: {
-        title: 'Strategy',
-        icon: <CpuChipIcon size={14} color="#18C98B" />,
-        options: [
-            'Build a DCA strategy on BTC',
-            'Build a grid trading strategy',
-            'Backtest my last strategy',
-            'Improve my running strategy',
-            'Build a momentum strategy from scratch'
-        ]
-    },
-    analyse: {
-        title: 'Analyse',
-        icon: <ChartTrendIcon size={14} color="#18C98B" />,
-        options: [
-            'Analyse recent price action on Gold (XAUUSD)',
-            'Detect liquidity sweeps & order blocks',
-            'Multi-timeframe trend confluence scan',
-            'Check current volatility & key support/resistance'
-        ]
-    },
-    auditor: {
-        title: 'Account Auditor',
-        icon: <ShieldCheckIcon size={14} color="#18C98B" />,
-        options: [
-            'Audit my account risk exposure & max drawdown',
-            'Calculate optimal lot size for 1% risk',
-            'Analyze profit factor & win rate history',
-            'Check risk-to-reward on open positions'
-        ]
-    }
+const INITIAL_ALEX_MESSAGE = {
+    role: 'ai',
+    text: "Hey! I'm Alex, your forex strategy advisor 🤖\n\nTell me what you have in mind - whether it's a trend-following Donchian setup, an EMA crossover, or a volatility breakout. What are you thinking?",
+    suggestions: ['Trend Following', 'Donchian Breakout', 'EMA Crossover', 'Bollinger Breakout', 'Scalping']
 };
 
-const createMsgId = (prefix = 'msg') => `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-
 export default function StrategyStudio() {
-    // Mode State: 'explore' (Tradezee single starting screen) vs 'chat' (active conversation stream)
-    const [viewMode, setViewMode] = useState('explore');
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const [homeQuery, setHomeQuery] = useState('');
-    const [chatInput, setChatInput] = useState('');
-    const [userName, setUserName] = useState('Trader');
-    const [greetingWord, setGreetingWord] = useState('Good afternoon');
-
-    // Strategy parameters & session
+    // Strategy Parameters (Toolbar & Execution)
     const [symbol, setSymbol] = useState('XAUUSD');
     const [interval, setInterval] = useState('15min');
     const [fromDate, setFromDate] = useState('');
@@ -69,84 +34,40 @@ export default function StrategyStudio() {
     const [capital, setCapital] = useState(10000);
     const [quantity, setQuantity] = useState(1);
 
+    // AI Advisor Chat States
     const [sessionId, setSessionId] = useState('');
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([INITIAL_ALEX_MESSAGE]);
+    const [chatInput, setChatInput] = useState('');
     const [advisorLoading, setAdvisorLoading] = useState(false);
     const [currentDraft, setCurrentDraft] = useState(null);
     const [currentStrategy, setCurrentStrategy] = useState(null);
     const [generatingStrategy, setGeneratingStrategy] = useState(false);
+    const [isJsonModalOpen, setIsJsonModalOpen] = useState(false);
 
-    // Results
+    // Backtest Simulation Results
     const [simulationLoading, setSimulationLoading] = useState(false);
     const [results, setResults] = useState(null);
     const [roundTrips, setRoundTrips] = useState([]);
 
-    const chatScrollRef = useRef(null);
-    const chatContainerRef = useRef(null);
-
+    // Initialize session ID and date ranges on mount
     useEffect(() => {
-        const initialSessionId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+        const newId = (typeof crypto !== 'undefined' && crypto.randomUUID)
             ? crypto.randomUUID()
             : 'sess_' + Math.random().toString(36).substring(2, 9);
-        setSessionId(initialSessionId);
-        
-        const hour = new Date().getHours();
-        if (hour < 12) setGreetingWord('Good morning');
-        else if (hour < 17) setGreetingWord('Good afternoon');
-        else setGreetingWord('Good evening');
+        setSessionId(newId);
 
-        const syncUser = async () => {
-            try {
-                let user = getStoredUser();
-                const userId = getStoredUserId();
-                if (userId && (!user?.first_name && !user?.name)) {
-                    user = await hydrateUserFromProfile(userId, user);
-                }
-                const name = user?.first_name || user?.name || (user?.email ? user.email.split('@')[0] : '') || 'Trader';
-                if (name) setUserName(name);
-            } catch (e) { /* ignore */ }
-        };
+        // Default 60-day window ending yesterday
+        const today = new Date();
+        const yest = new Date(today);
+        yest.setDate(yest.getDate() - 1);
+        const sixtyDaysAgo = new Date(today);
+        sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 61);
 
-        syncUser();
-        if (typeof window !== 'undefined') {
-            window.addEventListener('user:updated', syncUser);
-        }
-
-        return () => {
-            if (typeof window !== 'undefined') {
-                window.removeEventListener('user:updated', syncUser);
-            }
-        };
+        setFromDate(sixtyDaysAgo.toISOString().split('T')[0]);
+        setToDate(yest.toISOString().split('T')[0]);
     }, []);
 
-    // Auto-scroll fallback on new message
-    useEffect(() => {
-        if (viewMode === 'chat' && chatScrollRef.current) {
-            chatScrollRef.current.scrollTo({
-                top: chatScrollRef.current.scrollHeight,
-                behavior: 'smooth'
-            });
-        }
-    }, [messages, advisorLoading, viewMode]);
-
-    // Manage Lenis in chat mode
-    useEffect(() => {
-        if (viewMode !== 'chat') return;
-
-        const originalOverflow = document.body.style.overflow;
-        if (typeof window !== 'undefined' && window.lenis) {
-            window.lenis.stop();
-        }
-
-        return () => {
-            document.body.style.overflow = originalOverflow;
-            if (typeof window !== 'undefined' && window.lenis) {
-                window.lenis.start();
-            }
-        };
-    }, [viewMode]);
-
-    const handleToast = (msg) => {
+    const handleToast = useCallback((msg) => {
         toast.success(msg, {
             style: {
                 background: '#0D1424',
@@ -154,26 +75,38 @@ export default function StrategyStudio() {
                 border: '1px solid rgba(24, 201, 139, 0.3)'
             }
         });
-    };
+    }, []);
 
     /**
-     * Chat with AI Advisor — handles all input cases from reference HTML:
-     * 1. "run backtest" / "backtest" / "start backtest" / "run" → trigger backtest
-     * 2. "view strategy json" / "strategy json" / "show json" → show JSON info
-     * 3. Otherwise → send to /wizard/chat API with streaming response
+     * Synchronize top toolbar parameters when a strategy is selected or generated
+     */
+    const syncToolbarFromStrategy = useCallback((strat) => {
+        if (!strat) return;
+        if (strat.stock_name) {
+            const sym = Array.isArray(strat.stock_name) ? strat.stock_name[0] : strat.stock_name;
+            if (sym) setSymbol(sym.toUpperCase());
+        }
+        if (strat.interval) {
+            const intv = ['1min', '3min', '10min'].includes(strat.interval) ? '5min' : strat.interval;
+            setInterval(intv);
+        }
+        if (strat.from_date) setFromDate(strat.from_date);
+        if (strat.to_date) setToDate(strat.to_date);
+        if (strat.inital_capital) setCapital(strat.inital_capital);
+        if (strat.quantity) setQuantity(strat.quantity);
+    }, []);
+
+    /**
+     * Send message to Strategy Advisor (/wizard/chat)
      */
     const handleSendMessage = async (textToSend) => {
-        const text = textToSend || (viewMode === 'explore' ? homeQuery : chatInput);
+        const text = textToSend || chatInput;
         if (!text || !text.trim() || advisorLoading) return;
 
-        setViewMode('chat');
-        setHomeQuery('');
         setChatInput('');
-        setSelectedCategory(null);
+        const lower = text.toLowerCase().trim();
 
-        const lower = text.toLowerCase();
-
-        // Case 1: Backtest trigger commands (from reference handleSend)
+        // 1. Backtest trigger commands
         if (
             lower.includes('run backtest') ||
             lower === 'backtest' ||
@@ -183,46 +116,15 @@ export default function StrategyStudio() {
         ) {
             setMessages((prev) => [
                 ...prev,
-                { id: createMsgId('usr'), role: 'user', text },
-                {
-                    id: createMsgId('ai'),
-                    role: 'ai',
-                    text: '🚀 Launching backtest simulation on historical candle data now...',
-                    isStreaming: true
-                }
+                { role: 'user', text },
+                { role: 'ai', text: '🚀 Launching backtest simulation on historical candle data now...' }
             ]);
             handleRunBacktest();
             return;
         }
 
-        // Case 2: Strategy JSON viewing (from reference handleSend)
-        if (
-            lower.includes('view strategy json') ||
-            lower.includes('strategy json') ||
-            lower.includes('show json') ||
-            lower.includes('view json')
-        ) {
-            setMessages((prev) => [
-                ...prev,
-                { id: createMsgId('usr'), role: 'user', text },
-                {
-                    id: createMsgId('ai'),
-                    role: 'ai',
-                    text: currentStrategy
-                        ? `Here is your current strategy specification:\n\n${JSON.stringify(currentStrategy, null, 2)}`
-                        : 'No strategy has been generated yet. Describe your trading idea and I\'ll build one for you!',
-                    suggestions: currentStrategy
-                        ? ['🚀 Run Backtest Now', 'Modify Strategy', 'New Strategy']
-                        : ['Trend Following', 'Donchian Breakout', 'EMA Crossover'],
-                    isStreaming: true
-                }
-            ]);
-            return;
-        }
-
-        // Case 3: Regular message → send to Strategy Advisor
-        const newMsg = { id: createMsgId('usr'), role: 'user', text };
-        setMessages((prev) => [...prev, newMsg]);
+        // 2. Regular chat message
+        setMessages((prev) => [...prev, { role: 'user', text }]);
         setAdvisorLoading(true);
 
         try {
@@ -232,35 +134,33 @@ export default function StrategyStudio() {
             });
 
             if (res.status === 'success' || res.success || res.data) {
-                const replyText = res.data?.reply || res.reply || 'I am ready to help you formulate a strategy.';
-                const suggestions = res.data?.suggestions || res.suggestions || [];
-                const draft = res.data?.draft || res.draft || null;
-
-                const aiMsg = {
-                    id: createMsgId('ai'),
-                    role: 'ai',
-                    text: replyText,
-                    suggestions,
-                    draft: draft,
-                    isStreaming: true
-                };
+                const resultData = res.data || res;
+                const reply = resultData.reply || res.reply || 'I have analyzed your request and updated the strategy model.';
+                const suggestions = resultData.suggestions || res.suggestions || [];
+                const draft = resultData.draft || res.draft || null;
 
                 if (draft) {
-                    if (draft.instrument) setSymbol(draft.instrument);
-                    if (draft.timeframe) setInterval(draft.timeframe);
                     setCurrentDraft(draft);
+                    if (draft.instrument) setSymbol(draft.instrument.toUpperCase());
+                    if (draft.timeframe) setInterval(draft.timeframe);
                 }
 
-                setMessages((prev) => [...prev, aiMsg]);
+                setMessages((prev) => [
+                    ...prev,
+                    {
+                        role: 'ai',
+                        text: reply,
+                        suggestions,
+                        draft
+                    }
+                ]);
             } else {
                 setMessages((prev) => [
                     ...prev,
                     {
-                        id: createMsgId('ai_err'),
                         role: 'ai',
                         text: res.error || "Something went wrong. Let's try again!",
-                        suggestions: ['Trend Following', 'Donchian Breakout', 'EMA Crossover'],
-                        isStreaming: true
+                        suggestions: ['Trend Following', 'Donchian Breakout', 'EMA Crossover']
                     }
                 ]);
             }
@@ -268,11 +168,9 @@ export default function StrategyStudio() {
             setMessages((prev) => [
                 ...prev,
                 {
-                    id: createMsgId('ai_err'),
                     role: 'ai',
-                    text: "Could not reach the strategy advisor backend. Make sure the server is running.",
-                    suggestions: ['Try Again', 'Donchian Breakout', 'EMA Crossover'],
-                    isStreaming: true
+                    text: 'Could not reach backend. Make sure the server is running on port 7009.',
+                    suggestions: ['Trend Following', 'Donchian Breakout', 'EMA Crossover']
                 }
             ]);
         } finally {
@@ -281,204 +179,166 @@ export default function StrategyStudio() {
     };
 
     /**
-     * Generate Strategy JSON from AI draft
-     * Shows progress steps during generation, then streams the result message
+     * Generate specification from Draft Blueprint
      */
-    const handleGenerateStrategy = async (draft) => {
+    const handleGenerateFromDraft = async (draft) => {
         setGeneratingStrategy(true);
-
-        // Add progress steps message
-        setMessages((prev) => [
-            ...prev,
-            { role: 'ai', progressType: 'generating', isActive: true }
-        ]);
-
         try {
-            const res = await strategyStudioApi.generateStrategy({ sessionId, draft: draft || currentDraft });
+            const res = await strategyStudioApi.generateStrategy({
+                sessionId,
+                draft: draft || currentDraft
+            });
+
             if (res.status === 'success' && res.strategies?.length > 0) {
                 const strat = res.strategies[0];
                 setCurrentStrategy(strat);
+                syncToolbarFromStrategy(strat);
 
-                if (strat.stock_name) {
-                    const sym = Array.isArray(strat.stock_name) ? strat.stock_name[0] : strat.stock_name;
-                    if (sym) setSymbol(sym);
-                }
-                if (strat.interval) setInterval(strat.interval);
-
-                // Mark progress as done and add result message
-                setMessages((prev) => {
-                    const updated = [...prev];
-                    // Deactivate progress
-                    const progressIdx = updated.findLastIndex((m) => m.progressType === 'generating');
-                    if (progressIdx >= 0) {
-                        updated[progressIdx] = { ...updated[progressIdx], isActive: false };
-                    }
-                    // Add success message with streaming
-                    updated.push({
-                        id: createMsgId('ai_strat'),
+                setMessages((prev) => [
+                    ...prev,
+                    {
                         role: 'ai',
-                        text: `Your strategy JSON has been generated and validated! You can click "🚀 Run Backtest Now" below to simulate it immediately, or review the JSON specification.`,
-                        suggestions: ['🚀 Run Backtest Now', 'View Strategy JSON'],
-                        isStreaming: true
-                    });
-                    return updated;
-                });
-                handleToast('Strategy JSON generated successfully!');
+                        text: 'Your strategy model has been generated and validated! You can click "🚀 Run Backtest Now" below to simulate it immediately.',
+                        suggestions: ['🚀 Run Backtest Now', 'Tighten Stop Loss', 'EMA Crossover']
+                    }
+                ]);
+                handleToast('Strategy model configured successfully!');
             } else {
-                setMessages((prev) => {
-                    const updated = [...prev];
-                    const progressIdx = updated.findLastIndex((m) => m.progressType === 'generating');
-                    if (progressIdx >= 0) {
-                        updated[progressIdx] = { ...updated[progressIdx], isActive: false };
-                    }
-                    updated.push({
-                        id: createMsgId('ai_err'),
+                setMessages((prev) => [
+                    ...prev,
+                    {
                         role: 'ai',
-                        text: 'Failed to generate strategy. Please try describing your strategy again.',
-                        suggestions: ['Trend Following', 'Donchian Breakout', 'EMA Crossover'],
-                        isStreaming: true
-                    });
-                    return updated;
-                });
+                        text: 'Failed to generate strategy: ' + (res.error || 'Unknown error'),
+                        suggestions: ['Retry Generation', 'Donchian Breakout', 'EMA Crossover']
+                    }
+                ]);
             }
         } catch (err) {
-            handleToast('Failed to generate strategy JSON');
-            setMessages((prev) => {
-                const updated = [...prev];
-                const progressIdx = updated.findLastIndex((m) => m.progressType === 'generating');
-                if (progressIdx >= 0) {
-                    updated[progressIdx] = { ...updated[progressIdx], isActive: false };
-                }
-                updated.push({
-                    id: createMsgId('ai_err'),
+            handleToast('Connection error while generating strategy.');
+            setMessages((prev) => [
+                ...prev,
+                {
                     role: 'ai',
-                    text: 'Connection error while generating strategy. Please try again.',
-                    isStreaming: true
-                });
-                return updated;
-            });
+                    text: 'Connection error while generating strategy.',
+                    suggestions: ['Retry Generation', 'Donchian Breakout']
+                }
+            ]);
         } finally {
             setGeneratingStrategy(false);
         }
     };
 
     /**
-     * Run Backtest Simulation
-     * Shows progress steps during execution, then renders results
+     * Execute Backtest Simulation
      */
     const handleRunBacktest = async (customStrategy = null) => {
         setSimulationLoading(true);
+
         const activeStrat = customStrategy || currentStrategy;
+        if (customStrategy) {
+            setCurrentStrategy(customStrategy);
+            syncToolbarFromStrategy(customStrategy);
+        }
 
-        // Add progress steps message for backtesting
-        setMessages((prev) => [
-            ...prev,
-            { id: createMsgId('prog_backtest'), role: 'ai', progressType: 'backtesting', isActive: true }
-        ]);
-
-        let entryConditions = activeStrat?.entry_conditions || {
-            entry_start_time: '00:00',
-            entry_end_time: '23:45',
-            condition_type: 'all',
-            rules: [
-                {
-                    indicator1: { name: 'close', parameters: {} },
-                    operator: 'crossover',
-                    indicator2: { name: 'donchian_upper', parameters: { length: 20, offset: 0 } }
-                }
-            ]
-        };
-
-        let exitConditions = activeStrat?.exit_conditions || {
-            target: currentDraft?.target_pips || 50,
-            target_type: 'points',
-            stoploss: currentDraft?.stoploss_pips || 25,
-            stoploss_type: 'points',
-            condition_type: 'all',
-            rules: []
-        };
-
-        const payload = {
-            stock_name: [symbol],
-            from_date: fromDate || '2024-01-01',
-            to_date: toDate || '2024-03-01',
-            interval: interval || '15min',
-            is_mis: activeStrat?.is_mis ?? true,
-            entry_type: activeStrat?.entry_type ?? 0,
-            quantity: quantity || 1,
-            inital_capital: capital || 10000,
-            data_provider: 'DB',
-            include_plot: true,
-            entry_conditions: entryConditions,
-            exit_conditions: exitConditions
-        };
+        const targetSymbol = activeStrat?.stock_name
+            ? (Array.isArray(activeStrat.stock_name) ? activeStrat.stock_name[0] : activeStrat.stock_name)
+            : symbol;
+        const targetInterval = activeStrat?.interval || interval;
 
         try {
+            let entryConditions = activeStrat?.entry_conditions;
+            let exitConditions = activeStrat?.exit_conditions;
+            let entryType = activeStrat?.entry_type ?? 0;
+            let isMis = activeStrat?.is_mis ?? true;
+
+            if (!entryConditions) {
+                entryConditions = {
+                    entry_start_time: '00:00',
+                    entry_end_time: '23:45',
+                    condition_type: 'all',
+                    rules: [
+                        {
+                            indicator1: { name: 'close', parameters: {} },
+                            operator: 'crossover',
+                            indicator2: { name: 'donchian_upper', parameters: { length: 20, offset: 0 } }
+                        }
+                    ]
+                };
+            }
+
+            if (!exitConditions) {
+                exitConditions = {
+                    target: currentDraft?.target_pips || 50,
+                    target_type: 'points',
+                    stoploss: currentDraft?.stoploss_pips || 25,
+                    stoploss_type: 'points',
+                    condition_type: 'all',
+                    rules: []
+                };
+            }
+
+            const payload = {
+                stock_name: [targetSymbol || 'XAUUSD'],
+                from_date: fromDate || '2024-01-01',
+                to_date: toDate || '2024-03-01',
+                interval: targetInterval || '15min',
+                is_mis: isMis,
+                entry_type: entryType,
+                quantity: parseInt(quantity, 10) || 1,
+                inital_capital: parseFloat(capital) || 10000,
+                data_provider: 'DB',
+                include_plot: true,
+                entry_conditions: entryConditions,
+                exit_conditions: exitConditions
+            };
+
             const res = await strategyStudioApi.runBacktest(payload);
 
-            // Deactivate progress steps
-            setMessages((prev) => {
-                const updated = [...prev];
-                const progressIdx = updated.findLastIndex((m) => m.progressType === 'backtesting');
-                if (progressIdx >= 0) {
-                    updated[progressIdx] = { ...updated[progressIdx], isActive: false };
-                }
-                return updated;
-            });
-
-            if (res.success && res.data?.length > 0) {
-                const stockResult = res.data[0];
-                const trips = parseRoundTrips(stockResult.trades || [], capital, quantity);
-                setResults(stockResult);
+            if (res.success && res.data && res.data.length > 0) {
+                const stockRes = res.data[0];
+                setResults(stockRes);
+                const trips = parseRoundTrips(stockRes, parseFloat(capital) || 10000, parseInt(quantity, 10) || 1);
                 setRoundTrips(trips);
 
-                // Add completion message with streaming
                 setMessages((prev) => [
                     ...prev,
                     {
-                        id: createMsgId('ai_backtest_res'),
                         role: 'ai',
-                        text: `✓ Backtest simulation complete! Results are displayed below. ${trips.length} round-trip trades were executed across the selected period.`,
-                        suggestions: ['Run Another Backtest', 'Modify Strategy', 'New Strategy'],
-                        isStreaming: true
+                        text: `✓ Backtest simulation complete! ${trips.length} round-trip trades were executed across the selected historical period. Performance metrics and charts are rendered in the studio.`,
+                        suggestions: ['Run Another Backtest', 'Modify Strategy', 'New Strategy']
                     }
                 ]);
-                handleToast('Backtest simulation completed successfully!');
+                handleToast('Backtest simulation complete!');
             } else {
+                setResults(null);
+                setRoundTrips([]);
                 setMessages((prev) => [
                     ...prev,
                     {
-                        id: createMsgId('ai_backtest_empty'),
                         role: 'ai',
-                        text: 'Simulation returned no data for selected parameters. Try adjusting the date range or strategy rules.',
-                        suggestions: ['Try Different Dates', 'Change Symbol', 'New Strategy'],
-                        isStreaming: true
+                        text: res.error || 'Backtest executed but returned no trade signals for the chosen parameters.',
+                        suggestions: ['Adjust Timeframe', 'Test on XAUUSD', 'Try EMA Setup']
                     }
                 ]);
-                handleToast('Simulation returned no data for selected parameters');
             }
         } catch (err) {
-            // Deactivate progress steps on error
-            setMessages((prev) => {
-                const updated = [...prev];
-                const progressIdx = updated.findLastIndex((m) => m.progressType === 'backtesting');
-                if (progressIdx >= 0) {
-                    updated[progressIdx] = { ...updated[progressIdx], isActive: false };
-                }
-                updated.push({
-                    id: createMsgId('ai_err'),
-                    role: 'ai',
-                    text: 'Could not connect to backtest engine. Make sure the backend server is running.',
-                    isStreaming: true
-                });
-                return updated;
-            });
             handleToast('Simulation execution error');
+            setMessages((prev) => [
+                ...prev,
+                {
+                    role: 'ai',
+                    text: 'Could not connect to backtest engine. Make sure the backend server is running on port 7009.',
+                    suggestions: ['Try Again', 'Donchian Breakout', 'EMA Crossover']
+                }
+            ]);
         } finally {
             setSimulationLoading(false);
         }
     };
 
+    /**
+     * Reset the active session and chat history
+     */
     const handleResetSession = () => {
         const newId = (typeof crypto !== 'undefined' && crypto.randomUUID)
             ? crypto.randomUUID()
@@ -488,53 +348,141 @@ export default function StrategyStudio() {
         setCurrentStrategy(null);
         setResults(null);
         setRoundTrips([]);
-        setSelectedCategory(null);
-        setMessages([]);
-        setViewMode('explore');
-        handleToast('Session reset completed!');
+        setMessages([INITIAL_ALEX_MESSAGE]);
+        handleToast('New session started!');
     };
 
     return (
         <div className={styles.studioContainer} data-lenis-prevent="true">
-            {/* Continuous Moving Smoky Cyber Waves Across Entire Background */}
-            <BackgroundCyberWaves />
+            {/* Main 2-Panel Workspace Layout */}
+            <div className={styles.activeBodyGrid}>
+                {/* ── LEFT PANEL: AI Strategy Advisor Chat ── */}
+                <div className={styles.activeChat}>
+                    {/* Left Panel Header */}
+                    <div className={styles.sideHeader}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
+                            <div className={styles.headerIconWrap}>
+                                <BotBrainIcon size={16} color="#18C98B" />
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <span className={styles.title}>
+                                    AI Strategy Advisor
+                                </span>
+                                <div className={styles.statusPillSmall}>
+                                    <span className={styles.statusDot} />
+                                    <span>Online</span>
+                                </div>
+                            </div>
+                        </div>
 
-            {/* AI Bot Builder Views: Explore vs Chat */}
-            {viewMode === 'explore' ? (
-                <AiExploreView
-                    greetingWord={greetingWord}
-                    userName={userName}
-                    homeQuery={homeQuery}
-                    setHomeQuery={setHomeQuery}
-                    selectedCategory={selectedCategory}
-                    setSelectedCategory={setSelectedCategory}
-                    categoryData={CATEGORY_DATA}
-                    symbol={symbol}
-                    onSendMessage={handleSendMessage}
-                />
-            ) : (
-                <AiChatStreamView
-                    chatContainerRef={chatContainerRef}
-                    chatScrollRef={chatScrollRef}
-                    messages={messages}
-                    advisorLoading={advisorLoading}
-                    currentDraft={currentDraft}
-                    symbol={symbol}
-                    interval={interval}
-                    capital={capital}
-                    results={results}
-                    roundTrips={roundTrips}
-                    generatingStrategy={generatingStrategy}
-                    simulationLoading={simulationLoading}
-                    chatInput={chatInput}
-                    setChatInput={setChatInput}
-                    onSendMessage={handleSendMessage}
-                    onGenerateStrategy={handleGenerateStrategy}
-                    onRunBacktest={handleRunBacktest}
-                    onResetSession={handleResetSession}
-                    onBackToExplore={() => setViewMode('explore')}
-                />
-            )}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            {currentDraft && (
+                                <span className={styles.panelBadge}>
+                                    Blueprint Ready
+                                </span>
+                            )}
+                            <button
+                                type="button"
+                                className={styles.btnHeaderNewSession}
+                                onClick={handleResetSession}
+                                title="Start New Strategy Session"
+                            >
+                                <RefreshResetIcon size={13} />
+                                <span>New Session</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Advisor Chat View */}
+                    <AdvisorChatView
+                        messages={messages}
+                        input={chatInput}
+                        setInput={setChatInput}
+                        onSend={handleSendMessage}
+                        loading={advisorLoading}
+                        currentDraft={currentDraft}
+                        onGenerateFromDraft={handleGenerateFromDraft}
+                        generatingStrategy={generatingStrategy}
+                        onChipClick={handleSendMessage}
+                        onRunBacktestFromCard={() => handleRunBacktest()}
+                    />
+                </div>
+
+                {/* ── RIGHT PANEL: Backtest Command Studio & Results ── */}
+                <div className={styles.activeResultsCard}>
+                    {/* Continuous Moving Smoky Cyber Waves Inside Right Studio Side Box */}
+                    <BackgroundCyberWaves />
+
+                    {/* Top Parameter Command Toolbar */}
+                    <StudioToolbar
+                        symbol={symbol}
+                        setSymbol={setSymbol}
+                        interval={interval}
+                        setInterval={setInterval}
+                        fromDate={fromDate}
+                        setFromDate={setFromDate}
+                        toDate={toDate}
+                        setToDate={setToDate}
+                        capital={capital}
+                        setCapital={setCapital}
+                        quantity={quantity}
+                        setQuantity={setQuantity}
+                        onManualClick={() => setIsJsonModalOpen(true)}
+                        onRunBacktest={() => handleRunBacktest()}
+                        loading={simulationLoading}
+                    />
+
+                    {/* Right Panel Main Content Area */}
+                    <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+                        {simulationLoading ? (
+                            <div className={styles.loadingOverlay}>
+                                <SimulationProgressLoader symbol={symbol} interval={interval} />
+                            </div>
+                        ) : results && roundTrips.length > 0 ? (
+                            <BacktestResultsView
+                                results={results}
+                                roundTrips={roundTrips}
+                                initialCapital={parseFloat(capital) || 10000}
+                            />
+                        ) : (
+                            /* Empty State Screen */
+                            <div className={styles.emptyState}>
+                                <div className={styles.emptyIllustration}>
+                                    <AiBotSparkIcon size={44} color="#18C98B" />
+                                </div>
+                                <h2>Algorithmic Strategy Backtester</h2>
+                                <p>
+                                    Formulate your trading hypothesis on the left using the AI Advisor. Once formulated, run backtest simulation to inspect performance curves, win rates, and individual round-trip trades.
+                                </p>
+                                <div className={styles.flowSteps}>
+                                    <div className={styles.stepBox}>
+                                        <div className={styles.stepIconWrap}>
+                                            <SlidersTuneIcon size={16} color="#18C98B" />
+                                        </div>
+                                        <h4>Formulate Strategy</h4>
+                                        <p>Use AI Advisor chat to configure entry rules and indicators.</p>
+                                    </div>
+                                    <div className={styles.stepBox}>
+                                        <div className={styles.stepIconWrap}>
+                                            <ShieldCheckIcon size={16} color="#18C98B" />
+                                        </div>
+                                        <h4>Validate & Inspect</h4>
+                                        <p>Review entry rules, stop loss, and target conditions.</p>
+                                    </div>
+                                    <div className={styles.stepBox}>
+                                        <div className={styles.stepIconWrap}>
+                                            <RocketRunIcon size={16} color="#18C98B" />
+                                        </div>
+                                        <h4>Simulate & Audit</h4>
+                                        <p>Run backtest across historical candles with 1-click execution.</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

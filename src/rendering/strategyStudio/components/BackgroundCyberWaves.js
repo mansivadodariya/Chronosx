@@ -9,6 +9,7 @@ export default function BackgroundCyberWaves() {
             {/* Ambient Deep Radial Glows */}
             <div className={styles.ambientRadialTopRight} />
             <div className={styles.ambientRadialBottomLeft} />
+            <div className={styles.ambientRadialBottomRight} />
             <div className={styles.ambientRadialCenter} />
 
             {/* High-Fidelity Silky Cyber Waves SVG */}
@@ -37,8 +38,8 @@ export default function BackgroundCyberWaves() {
 
                     <linearGradient id="cyberRibbonGrad3" x1="0%" y1="80%" x2="100%" y2="20%">
                         <stop offset="0%" stopColor="#18C98B" stopOpacity="0.26" />
-                        <stop offset="45%" stopColor="#10B981" stopOpacity="0.14" />
-                        <stop offset="80%" stopColor="#059669" stopOpacity="0.04" />
+                        <stop offset="45%" stopColor="#10B981" stopOpacity="0.16" />
+                        <stop offset="80%" stopColor="#059669" stopOpacity="0.06" />
                         <stop offset="100%" stopColor="#030806" stopOpacity="0" />
                     </linearGradient>
 
@@ -83,23 +84,23 @@ export default function BackgroundCyberWaves() {
                 {/* Primary Top-Right Sweeping Wave Ribbons */}
                 <g className={styles.waveGroupRight}>
                     <path
-                        d="M 850 -80 C 1040 140 1280 200 1440 380 C 1560 520 1400 700 1180 820 C 980 910 760 880 580 940 L 1520 940 L 1520 -80 Z"
+                        d="M 850 -80 C 1040 140 1280 200 1440 380 C 1560 520 1400 700 1180 820 C 980 910 760 880 580 940 L 1520 1100 L 1520 -80 Z"
                         fill="url(#cyberRibbonGrad1)"
                     />
                     <path
-                        d="M 920 -60 C 1080 160 1320 240 1420 420 C 1500 560 1340 720 1120 830 C 940 910 740 880 560 930"
+                        d="M 920 -60 C 1080 160 1320 240 1420 420 C 1500 560 1340 720 1120 830 C 940 910 740 880 560 960"
                         stroke="url(#strokeNeon1)"
                         strokeWidth="2.8"
                         filter="url(#waveGlowFilter)"
                     />
                     <path
-                        d="M 980 -40 C 1120 180 1340 260 1440 440 C 1510 570 1330 730 1140 820"
+                        d="M 980 -40 C 1120 180 1340 260 1440 440 C 1510 570 1330 730 1140 840"
                         stroke="url(#strokeNeon1)"
                         strokeWidth="1.2"
                         opacity="0.8"
                     />
                     <path
-                        d="M 1040 -20 C 1180 200 1380 300 1460 480 C 1520 600 1320 740 1150 810"
+                        d="M 1040 -20 C 1180 200 1380 300 1460 480 C 1520 600 1320 740 1150 830"
                         stroke="url(#strokeNeon1)"
                         strokeWidth="0.8"
                         opacity="0.45"
@@ -109,60 +110,60 @@ export default function BackgroundCyberWaves() {
                 {/* Primary Left Sweeping Wave Ribbons */}
                 <g className={styles.waveGroupLeft}>
                     <path
-                        d="M -100 680 C 120 640 260 520 340 340 C 420 160 340 10 240 -90 L -100 -90 Z"
+                        d="M -100 720 C 120 660 260 520 340 340 C 420 160 340 10 240 -90 L -100 -90 Z"
                         fill="url(#cyberRibbonGrad2)"
                     />
                     <path
-                        d="M -70 800 C 140 730 300 560 360 360 C 420 170 330 20 220 -70"
+                        d="M -70 880 C 140 770 300 560 360 360 C 420 170 330 20 220 -70"
                         stroke="url(#strokeNeon2)"
                         strokeWidth="2.6"
                         filter="url(#waveGlowFilter)"
                     />
                     <path
-                        d="M -50 820 C 160 750 310 570 370 370 C 430 180 340 30 230 -60"
+                        d="M -50 900 C 160 790 310 570 370 370 C 430 180 340 30 230 -60"
                         stroke="url(#strokeNeon2)"
                         strokeWidth="1.2"
                         opacity="0.75"
                     />
                     <path
-                        d="M -30 840 C 180 770 320 590 380 390 C 440 200 350 40 240 -50"
+                        d="M -30 920 C 180 810 320 590 380 390 C 440 200 350 40 240 -50"
                         stroke="url(#strokeNeon2)"
                         strokeWidth="0.8"
                         opacity="0.4"
                     />
                 </g>
 
-                {/* Bottom Center Wave Ribbons */}
+                {/* Bottom Extended Full-Bleed Wave Ribbons */}
                 <g className={styles.waveGroupBottom}>
                     <path
-                        d="M -60 880 C 320 710 680 820 1040 730 C 1280 670 1420 760 1520 880 L -60 880 Z"
+                        d="M -100 820 C 260 640 640 780 1000 680 C 1240 610 1380 720 1540 820 L 1540 1100 L -100 1100 Z"
                         fill="url(#cyberRibbonGrad3)"
                     />
                     <path
-                        d="M -50 860 C 330 690 690 800 1050 720 C 1260 660 1400 740 1500 850"
+                        d="M -100 800 C 270 620 650 760 1010 660 C 1220 600 1360 700 1540 790"
                         stroke="url(#strokeNeon3)"
-                        strokeWidth="2.2"
+                        strokeWidth="2.4"
                         filter="url(#waveGlowFilter)"
                     />
                     <path
-                        d="M -40 840 C 340 680 700 790 1060 710 C 1240 650 1380 730 1480 830"
+                        d="M -100 780 C 280 600 660 740 1020 640 C 1200 580 1340 680 1540 770"
                         stroke="url(#strokeNeon3)"
-                        strokeWidth="1"
-                        opacity="0.65"
+                        strokeWidth="1.2"
+                        opacity="0.75"
                     />
                 </g>
 
                 {/* Additional Ambient Floating Fluid Curves */}
                 <path
                     className={styles.floatingCurve1}
-                    d="M 120 920 C 340 760 620 640 820 480 C 1020 320 1140 160 1280 -40"
+                    d="M 120 960 C 340 780 620 640 820 480 C 1020 320 1140 160 1280 -40"
                     stroke="url(#strokeNeon1)"
                     strokeWidth="1.4"
                     strokeDasharray="8 12"
                 />
                 <path
                     className={styles.floatingCurve2}
-                    d="M 1120 -60 C 1260 160 1390 320 1440 540 C 1480 720 1280 840 1080 920"
+                    d="M 1120 -60 C 1260 160 1390 320 1440 540 C 1480 720 1280 860 1080 960"
                     stroke="url(#strokeNeon2)"
                     strokeWidth="1.2"
                     strokeDasharray="6 10"

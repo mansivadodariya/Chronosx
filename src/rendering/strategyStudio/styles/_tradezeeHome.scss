@@ -148,13 +148,14 @@
     }
 
     [data-theme='light'] & {
-        background: #F0FDF4;
-        border-color: rgba(24, 201, 139, 0.45);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        background: #FFFFFF;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 
         &:focus-within {
-            border-color: #10B981;
-            box-shadow: 0 0 24px rgba(16, 185, 129, 0.15), 0 20px 40px rgba(0, 0, 0, 0.12);
+            background: #FFFFFF;
+            border-color: #059669;
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12), 0 12px 32px rgba(0, 0, 0, 0.08);
         }
     }
 }
