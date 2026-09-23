@@ -11,6 +11,8 @@ export default function ProfileRightSidebar({
     setShowPasswordModal,
     setActiveTab,
     setShowLogoutConfirm,
+    isPhoneVerified,
+    onVerifyPhoneClick,
     t
 }) {
     return (
@@ -55,15 +57,46 @@ export default function ProfileRightSidebar({
             <div className={styles.rightCard}>
                 <h4 className={styles.rightCardTitle}>{t('profile.verificationStatus', 'Verification Status')}</h4>
                 <div className={styles.verificationList}>
+                    {/* Email Verification */}
                     <div className={styles.verifItem}>
                         <div className={styles.verifLeft}>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5">
                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
                                 <polyline points="22 4 12 14.01 9 11.01" />
                             </svg>
-                            <span>Email Verification</span>
+                            <span>{t('profile.emailVerification', 'Email Verification')}</span>
                         </div>
                         <span className={styles.verifStatusGreen}>Verified ✓</span>
+                    </div>
+
+                    {/* Phone Number Verification */}
+                    <div className={styles.verifItem}>
+                        <div className={styles.verifLeft}>
+                            {isPhoneVerified ? (
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                    <polyline points="22 4 12 14.01 9 11.01" />
+                                </svg>
+                            ) : (
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2.5">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <line x1="12" y1="8" x2="12" y2="12" />
+                                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                                </svg>
+                            )}
+                            <span>{t('profile.phoneVerification', 'Phone Verification')}</span>
+                        </div>
+                        {isPhoneVerified ? (
+                            <span className={styles.verifStatusGreen}>Verified ✓</span>
+                        ) : (
+                            <button
+                                type="button"
+                                className={styles.verifActionBtn}
+                                onClick={onVerifyPhoneClick}
+                            >
+                                Verify Now →
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

@@ -131,7 +131,7 @@ export default function UploadSection({
                         </button>
                     </div>
 
-                    <span className={styles.dragDropText}>Supported formats: PDF, CSV, Excel (XLSX, XLS), HTML & TXT</span>
+                    <span className={styles.dragDropText}>Supported format: Excel (XLSX)</span>
 
                     <div className={styles.securityNotice}>
                         <LockIcon />

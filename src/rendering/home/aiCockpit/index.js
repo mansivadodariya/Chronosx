@@ -77,29 +77,7 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
     }
   }, [priceData, tickDirection]);
 
-  // Seed baseline from market tickers if socket is connecting
-  useEffect(() => {
-    let isMounted = true;
-    const fetchInitialGold = async () => {
-      try {
-        const res = await fetch('/api/v1/market/tickers');
-        if (res.ok) {
-          const json = await res.json();
-          const goldData = json?.data?.XAUUSD || json?.data?.GOLD;
-          if (goldData && isMounted && (!priceData || !priceData.price)) {
-            const rawP = parseFloat(goldData.rawPrice);
-            if (rawP > 0) {
-              setLivePrice(rawP);
-              setIsPositiveChange(goldData.isUp);
-              setPriceChangeText(goldData.change);
-            }
-          }
-        }
-      } catch {}
-    };
-    fetchInitialGold();
-    return () => { isMounted = false; };
-  }, [priceData]);
+
 
   // Micro-tick price engine
   useEffect(() => {

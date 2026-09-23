@@ -104,6 +104,71 @@
     }
 }
 
+.headerLayoutRow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+
+    @media (max-width: 640px) {
+        gap: 12px;
+    }
+}
+
+.bigIconBox {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    border-radius: 14px;
+    background: rgba(24, 201, 139, 0.08);
+    border: 1px solid rgba(24, 201, 139, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #18C98B;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+    transition: all 0.25s ease;
+
+    svg {
+        display: block;
+        color: #18C98B;
+        stroke: #18C98B;
+    }
+
+    @media (max-width: 640px) {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        border-radius: 12px;
+
+        svg {
+            width: 22px !important;
+            height: 22px !important;
+        }
+    }
+
+    :global(html.light) & {
+        background: rgba(5, 150, 105, 0.08);
+        border-color: rgba(5, 150, 105, 0.3);
+        color: #059669;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+
+        svg {
+            color: #059669;
+            stroke: #059669;
+        }
+    }
+}
+
+.headerContentCol {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+}
+
 .headerTopRow {
     display: flex;
     align-items: center;

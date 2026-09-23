@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styles from '../styles/strategyStudio.module.scss';
+import QuoteTicker from './QuoteTicker';
 import {
     ArrowUpIcon,
     ArrowUpRightIcon,
@@ -22,12 +23,19 @@ export default function AiExploreView({
 }) {
     return (
         <div className={styles.tradezeeHomeWrapper}>
-            {/* Center Hero: Greeting + Floating Input Card + Interactive Category Dropdown / Pills */}
+            {/* Center Hero: Rotating Quotes Ticker + Greeting + Floating Input Card + Interactive Category Dropdown / Pills */}
             <div className={styles.centerHeroArea}>
+                {/* 5 Rotating Trading Quotes Banner */}
+                <QuoteTicker />
+
                 <h1 className={styles.greetingTitle}>
-                    <span>{greetingWord}, friend</span>
-                    <span>•</span>
-                    <span className={styles.greetingNameMuted}>{userName}</span>
+                    <span>{greetingWord}</span>
+                    {userName && userName.toLowerCase() !== 'trader' && (
+                        <>
+                            <span>•</span>
+                            <span className={styles.greetingNameMuted}>{userName || 'Trader'}</span>
+                        </>
+                    )}
                 </h1>
 
                 {/* Floating Dark Glass Input Card */}

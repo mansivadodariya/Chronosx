@@ -15,6 +15,11 @@ const PROTECTED_PREFIXES = [
   "/strategy-signal",
   "/predefined-strategies",
   "/strategy-hub",
+  "/my-bots",
+  "/ai-bot-builder",
+  "/manual-bot-builder",
+  "/bot-library",
+  "/browse-bots",
   "/calendar",
   "/calculator",
   "/news",
@@ -37,10 +42,73 @@ const AUTH_ROUTES = [
   "/verify-email",
 ];
 
+// Routes excluded from maintenance mode
+const MAINTENANCE_EXCLUDED_PREFIXES = [
+  "/_next",
+  "/assets",
+  "/favicon",
+  "/icon",
+  "/api/health",
+  "/maintenance",
+];
+
 export function proxy(request) {
-  const { pathname } = request.nextUrl;
+  const { pathname, searchParams } = request.nextUrl;
   const token = request.cookies.get("auth_token")?.value;
   const isLoggedIn = Boolean(token);
+
+  // --- Dynamic Maintenance Mode Check ---
+  const isMaintenanceEnv =
+    process.env.MAINTENANCE_MODE === "true" ||
+    process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
+  const forceMaintenanceCookie = request.cookies.get("chronosx_maintenance")?.value === "true";
+  const forceMaintenanceQuery = searchParams.get("force_maintenance") === "true";
+  const isMaintenanceActive = isMaintenanceEnv || forceMaintenanceCookie || forceMaintenanceQuery;
+
+  // Check Developer / Admin Bypass Key
+  const bypassParam = searchParams.get("bypass_maintenance");
+  const bypassCookie = request.cookies.get("maintenance_bypass")?.value;
+  const validBypassSecret = process.env.MAINTENANCE_BYPASS_KEY || "chronosx-secret";
+  const isBypassed =
+    bypassCookie === "true" ||
+    bypassCookie === validBypassSecret ||
+    bypassParam === validBypassSecret ||
+    bypassParam === "true";
+
+  const isExcludedFromMaintenance = MAINTENANCE_EXCLUDED_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`) || pathname.startsWith(prefix)
+  );
+
+  // If site is in maintenance mode and not bypassed
+  if (isMaintenanceActive && !isBypassed && !isExcludedFromMaintenance) {
+    // Return 503 for API routes
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json(
+        {
+          error: "Service Temporarily Unavailable",
+          status: "maintenance",
+          retryAfter: 120,
+        },
+        {
+          status: 503,
+          headers: {
+            "Retry-After": "120",
+            "Cache-Control": "no-store, no-cache, must-revalidate",
+          },
+        }
+      );
+    }
+
+    // Rewrite page requests to /maintenance with 503 status code for SEO safety
+    const maintenanceUrl = new URL("/maintenance", request.url);
+    return NextResponse.rewrite(maintenanceUrl, {
+      status: 503,
+      headers: {
+        "Retry-After": "120",
+        "Cache-Control": "no-store, no-cache, must-revalidate",
+      },
+    });
+  }
 
   // Redirect /broker to /brokers
   if (pathname === "/broker") {
@@ -108,49 +176,10 @@ export function proxy(request) {
   return NextResponse.next();
 }
 
+export const middleware = proxy;
+
 export const config = {
   matcher: [
-    "/dashboard/:path*",
-    "/chart-scanner/:path*",
-    "/trade-audit/:path*",
-    "/trade-advisor/:path*",
-    "/ai-trade-audit/:path*",
-    "/ai-trade-advisor/:path*",
-    "/market-assistant/:path*",
-    "/live-scanner/:path*",
-    "/live-market-scanner/:path*",
-    "/signal-terminal/:path*",
-    "/strategy-core/:path*",
-    "/strategy-signal/:path*",
-    "/predefined-strategies/:path*",
-    "/ai-strategy-core/:path*",
-    "/trading-signal/:path*",
-    "/calendar/:path*",
-    "/economic-calendar",
-    "/economic-calendar/:path*",
-    "/calculator",
-    "/calculator/:path*",
-    "/forex-calculator",
-    "/forex-calculator/:path*",
-    "/news",
-    "/news/:path*",
-    "/market-news",
-    "/market-news/:path*",
-    "/tools",
-    "/tools/:path*",
-    "/credit-history/:path*",
-    "/broker/:path*",
-    "/brokers/:path*",
-    "/profile/:path*",
-    "/settings/:path*",
-    "/onboarding",
-    "/onboarding/:path*",
-    "/steper",
-    "/steper/:path*",
-    "/login",
-    "/signup",
-    "/forgot-password",
-    "/reset-password",
-    "/verify-email",
+    "/((?!_next/static|_next/image|favicon.ico|favicon.png|favicon.svg|assets).*)",
   ],
 };

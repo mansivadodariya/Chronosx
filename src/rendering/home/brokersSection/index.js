@@ -76,9 +76,10 @@ export default function BrokersSection() {
                             >
                                 <BrokerCard
                                     broker={broker}
-                                    detailHref={`/broker/${broker.id}`}
+                                    detailHref={`/supported-brokers/${broker.id}`}
                                     showHighlights={true}
                                     showDescription={true}
+                                    isPublic={true}
                                 />
                             </motion.div>
                         ))
@@ -93,7 +94,7 @@ export default function BrokersSection() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                    <Link href="/brokers" className={styles.viewAllBtn}>
+                    <Link href="/supported-brokers" className={styles.viewAllBtn}>
                         <span>{t('homeSections.brokers.viewAll', 'Explore All Supported Brokers')}</span>
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12" />

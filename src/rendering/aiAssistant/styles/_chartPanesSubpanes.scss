@@ -149,18 +149,22 @@
 .mainChartContainer {
     position: relative;
     width: 100%;
-    flex: 1;
+    flex: 1 1 auto;
     min-height: 0;
     transition: all 0.2s ease;
 
     &.hasSubPanes {
-        flex: 1 1 65%;
+        flex: 1 1 55%;
+        min-height: 180px;
     }
 }
 
 .subPanesWrapper {
     width: 100%;
-    flex: 0 0 auto;
+    flex: 0 1 auto;
+    max-height: 52%;
+    overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     background: #FFFFFF;
@@ -172,12 +176,28 @@
         border-top: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
     }
+
+    /* Hide TradingView attribution logo/watermark */
+    :global(a[href*="tradingview"]),
+    :global(#tv-attr-logo),
+    :global([class*="attributionLogo"]),
+    :global(.tv-lightweight-charts a),
+    :global([class*="tv-lightweight-charts"] a) {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
 }
 
 .subPaneItem {
     position: relative;
     width: 100%;
-    height: 125px;
+    height: clamp(80px, 13.5vh, 110px);
+    min-height: 75px;
+    flex: 1 0 auto;
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 
     &:last-child {

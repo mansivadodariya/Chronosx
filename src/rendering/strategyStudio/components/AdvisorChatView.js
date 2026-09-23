@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import styles from '../styles/strategyStudio.module.scss';
+import { useStreamingText } from '../utils/streamingRenderer';
 import {
     BotBrainIcon,
     LightningIcon,
@@ -43,6 +44,131 @@ const STRATEGY_STARTERS = [
     }
 ];
 
+const DYNAMIC_LOADING_STAGES = [
+    'Formulating strategy rules and quantitative constraints...',
+    'Synthesizing indicators & technical signals...',
+    'Optimizing entry triggers and risk parameters (SL/TP)...',
+    'Compiling algorithmic trading blueprint...'
+];
+
+function DynamicChatLoader() {
+    const [stageIdx, setStageIdx] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setStageIdx((prev) => (prev + 1) % DYNAMIC_LOADING_STAGES.length);
+        }, 2000);
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <div className={styles.dynamicChatLoader}>
+            <div className={styles.loaderPulseWrap}>
+                <span className={styles.loaderDot} />
+                <span className={styles.loaderDot} />
+                <span className={styles.loaderDot} />
+            </div>
+            <span key={stageIdx} className={styles.loaderText}>
+                {DYNAMIC_LOADING_STAGES[stageIdx]}
+            </span>
+        </div>
+    );
+}
+
+/**
+ * Parses markdown inline tokens (**bold**, `code`, *italic*) and line breaks into formatted elements
+ */
+function renderFormattedMarkdown(text) {
+    if (!text) return null;
+
+    const lines = text.split('\n');
+
+    return lines.map((line, lineIdx) => {
+        if (!line.trim()) {
+            return <div key={lineIdx} style={{ height: '6px' }} />;
+        }
+
+        const parts = [];
+        const tokenRegex = /(\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*)/g;
+        let lastIndex = 0;
+        let match;
+        let key = 0;
+
+        while ((match = tokenRegex.exec(line)) !== null) {
+            if (match.index > lastIndex) {
+                parts.push(line.substring(lastIndex, match.index));
+            }
+            const token = match[0];
+            if (token.startsWith('**') && token.endsWith('**')) {
+                parts.push(
+                    <strong key={`b_${key++}`}>
+                        {token.slice(2, -2)}
+                    </strong>
+                );
+            } else if (token.startsWith('`') && token.endsWith('`')) {
+                parts.push(
+                    <code
+                        key={`c_${key++}`}
+                        style={{
+                            background: 'rgba(24, 201, 139, 0.15)',
+                            color: '#18C98B',
+                            padding: '1px 5px',
+                            borderRadius: '4px',
+                            fontSize: '0.9em',
+                            fontFamily: 'monospace'
+                        }}
+                    >
+                        {token.slice(1, -1)}
+                    </code>
+                );
+            } else if (token.startsWith('*') && token.endsWith('*')) {
+                parts.push(
+                    <em key={`i_${key++}`}>
+                        {token.slice(1, -1)}
+                    </em>
+                );
+            }
+            lastIndex = match.index + token.length;
+        }
+
+        if (lastIndex < line.length) {
+            parts.push(line.substring(lastIndex));
+        }
+
+        return (
+            <div key={lineIdx} style={{ margin: '2px 0', lineHeight: 1.55 }}>
+                {parts.length > 0 ? parts : line}
+            </div>
+        );
+    });
+}
+
+/**
+ * StreamingAiBubble — Renders an AI message with fluid typewriter character streaming
+ */
+function StreamingAiBubble({ text, shouldStream, onStreamComplete, onStreamProgress }) {
+    const { displayedText, isStreaming, skipToEnd } = useStreamingText(text, {
+        msPerChar: 14,
+        enabled: shouldStream,
+        onComplete: onStreamComplete,
+        onProgress: onStreamProgress
+    });
+
+    const activeText = shouldStream ? displayedText : text;
+
+    return (
+        <div
+            className={`${styles.bubble} ${styles.aiBubble}`}
+            onClick={isStreaming ? skipToEnd : undefined}
+            style={{ cursor: isStreaming ? 'pointer' : 'default' }}
+            title={isStreaming ? 'Click to reveal immediately' : undefined}
+        >
+            {renderFormattedMarkdown(activeText)}
+            {isStreaming && <span className={styles.streamingCursorChar}>▌</span>}
+        </div>
+    );
+}
+
 export default function AdvisorChatView({
     messages,
     input,
@@ -55,12 +181,33 @@ export default function AdvisorChatView({
     onChipClick,
     onRunBacktestFromCard
 }) {
-    const chatEndRef = useRef(null);
+    const chatScrollContainerRef = useRef(null);
     const textareaRef = useRef(null);
+    const completedStreamsRef = useRef(new Set());
+    const [, forceUpdate] = useState(0);
+
+    const scrollToBottom = useCallback((smooth = true) => {
+        if (chatScrollContainerRef.current) {
+            if (smooth) {
+                chatScrollContainerRef.current.scrollTo({
+                    top: chatScrollContainerRef.current.scrollHeight,
+                    behavior: 'smooth'
+                });
+            } else {
+                chatScrollContainerRef.current.scrollTop = chatScrollContainerRef.current.scrollHeight;
+            }
+        }
+    }, []);
+
+    const handleStreamProgress = useCallback(() => {
+        if (chatScrollContainerRef.current) {
+            chatScrollContainerRef.current.scrollTop = chatScrollContainerRef.current.scrollHeight;
+        }
+    }, []);
 
     useEffect(() => {
-        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages, loading]);
+        scrollToBottom(true);
+    }, [messages, loading, scrollToBottom]);
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -73,7 +220,7 @@ export default function AdvisorChatView({
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
-            <div className={styles.chatMessagesArea}>
+            <div className={styles.chatMessagesArea} ref={chatScrollContainerRef}>
                 {isInitialStartingView ? (
                     <div className={styles.welcomeStarterWrap}>
                         <div className={styles.welcomeHero}>
@@ -123,19 +270,35 @@ export default function AdvisorChatView({
                 ) : (
                     messages.map((msg, index) => {
                         const isUser = msg.role === 'user';
+                        const isLatestAi = !isUser && index === messages.length - 1;
+                        const msgKey = `msg_${index}_${(msg.text || '').slice(0, 15)}`;
+                        const hasCompleted = completedStreamsRef.current.has(msgKey);
+                        const shouldStream = isLatestAi && !hasCompleted && index > 0;
+                        const showActionOptions = isUser || !isLatestAi || hasCompleted || !shouldStream;
+
                         return (
                             <React.Fragment key={index}>
                                 <div className={`${styles.messageRow} ${isUser ? styles.userRow : ''}`}>
-                                    <div className={`${styles.avatar} ${isUser ? styles.userAvatar : styles.aiAvatar}`}>
-                                        {isUser ? 'Y' : <BotBrainIcon size={14} color="#040605" />}
-                                    </div>
-                                    <div className={`${styles.bubble} ${isUser ? styles.userBubble : styles.aiBubble}`}>
-                                        {msg.text}
-                                    </div>
+                                    {isUser ? (
+                                        <div className={`${styles.bubble} ${styles.userBubble}`}>
+                                            {renderFormattedMarkdown(msg.text)}
+                                        </div>
+                                    ) : (
+                                        <StreamingAiBubble
+                                            text={msg.text}
+                                            shouldStream={shouldStream}
+                                            onStreamProgress={handleStreamProgress}
+                                            onStreamComplete={() => {
+                                                completedStreamsRef.current.add(msgKey);
+                                                forceUpdate((n) => n + 1);
+                                                setTimeout(() => scrollToBottom(true), 60);
+                                            }}
+                                        />
+                                    )}
                                 </div>
 
-                                {/* Suggestions Chips Row */}
-                                {!isUser && msg.suggestions?.length > 0 && (
+                                {/* Suggestions Chips Row (Only visible after streaming finishes) */}
+                                {showActionOptions && !isUser && msg.suggestions?.length > 0 && (
                                     <div className={styles.chipsContainer}>
                                         {msg.suggestions.map((chip, chipIdx) => (
                                             <button
@@ -150,8 +313,8 @@ export default function AdvisorChatView({
                                     </div>
                                 )}
 
-                                {/* Blueprint Draft Card if present */}
-                                {!isUser && msg.draft && (
+                                {/* Blueprint Draft Card (Only visible after streaming finishes) */}
+                                {showActionOptions && !isUser && msg.draft && (
                                     <div className={styles.draftCard}>
                                         <div className={styles.draftHeader}>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -181,17 +344,16 @@ export default function AdvisorChatView({
                                             <button
                                                 type="button"
                                                 className={styles.btnNeonRunBacktest}
-                                                style={{ fontSize: '11px', padding: '6px 12px' }}
+                                                style={{ fontSize: '11px', height: '30px', padding: '0 12px' }}
                                                 onClick={() => onGenerateFromDraft(msg.draft)}
                                                 disabled={generatingStrategy}
                                             >
                                                 <LightningIcon size={13} color="#040605" />
-                                                <span>{generatingStrategy ? 'Generating Spec...' : 'Generate Strategy JSON'}</span>
+                                                <span>{generatingStrategy ? 'Generating...' : 'Apply Blueprint'}</span>
                                             </button>
                                             <button
                                                 type="button"
-                                                className={styles.btnToolbarManual}
-                                                style={{ fontSize: '11px', padding: '6px 12px' }}
+                                                className={styles.btnDraftSecondary}
                                                 onClick={onRunBacktestFromCard}
                                             >
                                                 <RocketRunIcon size={13} />
@@ -207,15 +369,9 @@ export default function AdvisorChatView({
 
                 {loading && (
                     <div className={styles.messageRow}>
-                        <div className={`${styles.avatar} ${styles.aiAvatar}`}>
-                            <BotBrainIcon size={14} color="#040605" />
-                        </div>
-                        <div className={`${styles.bubble} ${styles.aiBubble}`} style={{ color: '#18C98B' }}>
-                            <span>Formulating strategy rules and quantitative constraints...</span>
-                        </div>
+                        <DynamicChatLoader />
                     </div>
                 )}
-                <div ref={chatEndRef} />
             </div>
 
             <div className={styles.chatInputBar}>

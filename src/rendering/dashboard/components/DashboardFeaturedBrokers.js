@@ -70,7 +70,7 @@ export default function DashboardFeaturedBrokers() {
                         <BrokerCard
                             key={b.id}
                             broker={b}
-                            detailHref={`/broker/${b.id}`}
+                            detailHref={`/brokers/${b.id}`}
                             showHighlights={false}
                             showDescription={true}
                         />

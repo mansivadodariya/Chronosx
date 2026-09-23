@@ -13,6 +13,15 @@ import {
     DocumentJsonIcon
 } from './StudioIcons';
 
+const SYMBOL_OPTIONS = [
+    { value: 'XAUUSD', label: 'XAUUSD' },
+    { value: 'EURJPY', label: 'EURJPY' },
+    { value: 'EURUSD', label: 'EURUSD' },
+    { value: 'GBPJPY', label: 'GBPJPY' },
+    { value: 'GBPUSD', label: 'GBPUSD' },
+    { value: 'USDCAD', label: 'USDCAD' }
+];
+
 const INTERVAL_OPTIONS = [
     { value: '5min', label: '5min' },
     { value: '15min', label: '15min' },
@@ -48,12 +57,11 @@ export default function StudioToolbar({
                         <span>Symbol</span>
                     </div>
                     <div className={styles.paramControlWrap}>
-                        <input
-                            type="text"
+                        <CustomSelect
                             value={symbol}
-                            onChange={(e) => setSymbol(e.target.value.toUpperCase())}
-                            style={{ width: '95px', textTransform: 'uppercase', paddingLeft: '8px' }}
-                            placeholder="XAUUSD"
+                            onChange={setSymbol}
+                            options={SYMBOL_OPTIONS}
+                            width="105px"
                         />
                     </div>
                 </div>
@@ -64,12 +72,14 @@ export default function StudioToolbar({
                         <ClockIntervalIcon size={12} />
                         <span>Interval</span>
                     </div>
-                    <CustomSelect
-                        value={interval}
-                        onChange={setInterval}
-                        options={INTERVAL_OPTIONS}
-                        width="92px"
-                    />
+                    <div className={styles.paramControlWrap}>
+                        <CustomSelect
+                            value={interval}
+                            onChange={setInterval}
+                            options={INTERVAL_OPTIONS}
+                            width="92px"
+                        />
+                    </div>
                 </div>
 
                 {/* 3. From Date */}
@@ -139,16 +149,6 @@ export default function StudioToolbar({
 
             {/* Actions */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <button
-                    type="button"
-                    className={styles.btnToolbarManual}
-                    onClick={onManualClick}
-                    title="Provide or edit custom strategy JSON"
-                >
-                    <DocumentJsonIcon size={15} />
-                    <span>Manual JSON</span>
-                </button>
-
                 <button
                     type="button"
                     className={styles.btnNeonRunBacktest}

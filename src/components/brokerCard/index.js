@@ -44,14 +44,14 @@ const ShieldHighlightIcon = () => (
     </svg>
 );
 
-export default function BrokerCard({ broker, detailHref, showHighlights = true, showDescription = true }) {
+export default function BrokerCard({ broker, detailHref, showHighlights = true, showDescription = true, isPublic = false }) {
     const { t, tDynamic, language } = useLanguage();
     const { theme } = useTheme();
     const isLight = theme === 'light';
     const isDarkLogo = useLogoLuminance(broker);
     if (!broker) return null;
 
-    const href = detailHref || `/broker/${broker.id}`;
+    const href = detailHref || (isPublic ? `/supported-brokers/${broker.id}` : `/brokers/${broker.id}`);
 
     const renderHighlightIcon = (type, index) => {
         if (type === 'server' || index === 1) return <ServerHighlightIcon />;

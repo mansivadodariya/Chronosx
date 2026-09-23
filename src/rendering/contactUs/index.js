@@ -510,6 +510,7 @@ export default function ContactUs() {
                                                     <div className={styles.phoneInputWrapper}>
                                                         <PhoneInputLib
                                                             international
+                                                            limitMaxLength
                                                             defaultCountry="AE"
                                                             value={formData.phone}
                                                             onChange={handlePhoneChange}
@@ -518,7 +519,8 @@ export default function ContactUs() {
                                                             numberInputProps={{
                                                                 id: 'phone',
                                                                 required: true,
-                                                                autoComplete: 'tel'
+                                                                autoComplete: 'tel',
+                                                                maxLength: 20
                                                             }}
                                                         />
                                                     </div>

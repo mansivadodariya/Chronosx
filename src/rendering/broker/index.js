@@ -232,7 +232,8 @@ export default function BrokerPage({ isPublic = false }) {
                         <BrokerCard
                             key={broker.id}
                             broker={broker}
-                            detailHref={`/broker/${broker.id}`}
+                            detailHref={isPublic ? `/supported-brokers/${broker.id}` : `/brokers/${broker.id}`}
+                            isPublic={isPublic}
                             onConnect={handleConnectClick}
                         />
                     ))}

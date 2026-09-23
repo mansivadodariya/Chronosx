@@ -1,10 +1,11 @@
 'use client';
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import styles from './footer.module.scss';
 import Link from 'next/link';
 import { getAuthHref } from '@/lib/authRedirect';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
+import { useTabPermission } from '@/lib/useTabPermission';
 
 const DarkLogo = '/assets/logo/logo.png';
 const LightLogo = '/assets/logo/darklogo.png';
@@ -20,17 +21,43 @@ const socialLinks = [
 export default function Footer() {
   const { t } = useLanguage();
   const { theme } = useTheme();
+  const hasPlansPermission = useTabPermission('Subscription Plans');
   const activeLogo = theme === 'light' ? LightLogo : DarkLogo;
   const containerRef = useRef(null);
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
+  const spotlightRef = useRef(null);
+  const rafRef = useRef(null);
 
   const handleMouseMove = (e) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    setCoords({ x, y });
+    if (!containerRef.current || !spotlightRef.current) return;
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+
+    if (rafRef.current) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      if (!containerRef.current || !spotlightRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+      spotlightRef.current.style.setProperty('--cursor-x', `${x}px`);
+      spotlightRef.current.style.setProperty('--cursor-y', `${y}px`);
+    });
+  };
+
+  const handleMouseEnter = () => {
+    if (spotlightRef.current) {
+      spotlightRef.current.style.setProperty('--hover-opacity', '1');
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    if (spotlightRef.current) {
+      spotlightRef.current.style.setProperty('--hover-opacity', '0');
+    }
   };
 
   return (
@@ -41,20 +68,16 @@ export default function Footer() {
           ref={containerRef}
           className={styles.brandSignatureSection}
           onMouseMove={handleMouseMove}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           <h2 className={`${styles.signatureTypography} ${styles.baseLayer}`} aria-hidden="true">
             ChronosX
           </h2>
 
           <h2
+            ref={spotlightRef}
             className={`${styles.signatureTypography} ${styles.spotlightLayer}`}
-            style={{
-              '--cursor-x': `${coords.x}px`,
-              '--cursor-y': `${coords.y}px`,
-              '--hover-opacity': isHovered ? 1 : 0,
-            }}
           >
             ChronosX
           </h2>
@@ -65,7 +88,7 @@ export default function Footer() {
           {/* Brand Info */}
           <div className={styles.brandCol}>
             <div className={styles.brandLogo}>
-              <Link href="/" aria-label="ChronosX Home">
+              <Link href="/" aria-label="ChronosX FrontPage">
                 <img src={activeLogo} alt='ChronosX Logo' />
               </Link>
             </div>
@@ -92,7 +115,7 @@ export default function Footer() {
           <div className={styles.navCol}>
             <h4>{t('footer.tradingToolsTitle', 'TRADING TOOLS')}</h4>
             <ul>
-              <li><Link href="/ai-trade-advisor">{t('header.tradingTools.tradeAudit.title', 'AI Past Trade Analyzer')}</Link></li>
+              <li><Link href="/ai-trade-advisor">{t('header.tradingTools.tradeAudit.title', 'AI Trade Advisor')}</Link></li>
               <li><Link href={getAuthHref('/strategy-core')}>{t('footer.strategyBuilder', 'Strategy Builder')}</Link></li>
               <li><Link href={getAuthHref('/strategy-core')}>{t('footer.quantBacktesting', 'Quant Backtesting')}</Link></li>
             </ul>
@@ -103,8 +126,9 @@ export default function Footer() {
             <h4>{t('footer.companyTitle', 'COMPANY')}</h4>
             <ul>
               <li><Link href="/about-us">{t('header.company.aboutUs.title', 'About Us')}</Link></li>
-              {/* Affiliate Program */}
-              <li><Link href="/plans">{t('footer.pricingPlans', 'Pricing Plans')}</Link></li>
+              {hasPlansPermission && (
+                <li><Link href="/plans">{t('footer.pricingPlans', 'Pricing Plans')}</Link></li>
+              )}
               <li><Link href="/blogs">{t('footer.researchBlogs', 'Research & Blogs')}</Link></li>
               <li><Link href="/market-news">{t('header.company.news.title', 'Market News')}</Link></li>
               <li><Link href="/forex-calculator">{t('header.company.forexCalculator.title', 'Forex Calculator')}</Link></li>

@@ -243,15 +243,31 @@ export const authApi = {
         });
     },
 
-    verifyPhoneFirebase: (id_token, userId = '') =>
-        request('/auth/verify-phone-firebase', {
+    verifyPhoneFirebase: async (id_token, userId = '') => {
+        const headers = {
+            'Content-Type': 'application/json',
+            ...getAuthHeaders(),
+            ...(userId ? { 'X-User-Id': userId } : {}),
+        };
+        const body = JSON.stringify({ id_token, user_id: userId });
+
+        try {
+            const res = await fetch('/api/v1/auth/verify-phone-firebase', {
+                method: 'POST',
+                headers,
+                body,
+            });
+            if (res.ok) {
+                return await res.json();
+            }
+        } catch (_) {}
+
+        return request('/auth/verify-phone-firebase', {
             method: 'POST',
-            headers: {
-                ...getAuthHeaders(),
-                ...(userId ? { 'X-User-Id': userId } : {}),
-            },
-            body: JSON.stringify({ id_token, user_id: userId }),
-        }),
+            headers,
+            body,
+        });
+    },
 };
 
 function getAuthHeaders() {

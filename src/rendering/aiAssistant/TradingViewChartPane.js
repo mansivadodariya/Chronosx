@@ -328,6 +328,7 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
                 background: { color: initialBg },
                 textColor: initialTxt,
                 fontFamily: 'Inter, system-ui, sans-serif',
+                attributionLogo: false,
             },
             grid: {
                 vertLines: { color: initialGrid },
@@ -455,14 +456,14 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
 
     const hasSubPanes = Boolean(activeIndicators.rsi || activeIndicators.macd || activeIndicators.stochastic);
 
-    // Dynamically adjust scaleMargins when subpanes are active
+    // Dynamically adjust scaleMargins and dimensions when subpanes are active
     useEffect(() => {
         if (!chartRef.current) return;
         chartRef.current.applyOptions({
             rightPriceScale: {
                 scaleMargins: {
                     top: 0.08,
-                    bottom: hasSubPanes ? 0.28 : 0.20,
+                    bottom: hasSubPanes ? 0.22 : 0.20,
                 },
             },
         });
@@ -475,12 +476,22 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
             });
         } catch {}
 
-        if (containerRef.current) {
-            chartRef.current.applyOptions({
-                width: containerRef.current.clientWidth,
-                height: containerRef.current.clientHeight,
-            });
-        }
+        const updateDimensions = () => {
+            if (containerRef.current && chartRef.current) {
+                chartRef.current.applyOptions({
+                    width: containerRef.current.clientWidth,
+                    height: containerRef.current.clientHeight,
+                });
+            }
+        };
+
+        updateDimensions();
+        const raf = requestAnimationFrame(updateDimensions);
+        const timer = setTimeout(updateDimensions, 220);
+        return () => {
+            cancelAnimationFrame(raf);
+            clearTimeout(timer);
+        };
     }, [hasSubPanes]);
 
     // Update Series colors when bullish/bearish picker changes in Settings Modal

@@ -11,6 +11,7 @@ import styles from './header.module.scss';
 import Button from '../button';
 import ThemeToggle from '../themeToggle';
 import LanguageToggle from '../languageToggle';
+import { useTabPermission } from '@/lib/useTabPermission';
 
 const DarkLogo = '/assets/logo/logo.png';
 const LightLogo = '/assets/logo/darklogo.png';
@@ -22,6 +23,7 @@ export default function Header() {
     const activeLogo = theme === 'light' ? LightLogo : DarkLogo;
     const router = useRouter();
     const pathname = usePathname();
+    const hasPlansPermission = useTabPermission('Subscription Plans');
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState(null);
@@ -260,34 +262,43 @@ export default function Header() {
 
     ], [t]);
 
-    const navItems = useMemo(() => [
-        {
-            label: t('header.productsTab', 'Products'),
-            href: getAuthHref('/'),
-            hasDropdown: true,
-            dropdownTag: t('header.aiTradingEcosystem', 'AI TRADING ECOSYSTEM'),
-            dropdownFooter: t('header.aiTradingEcosystemDesc', 'Powered by ChronosX Real-Time Neural Engines'),
-            dropdownItems: productDropdownItems
-        },
-        {
-            label: t('header.tradingToolsTab', 'Trading Tools'),
-            href: getAuthHref('/'),
-            hasDropdown: true,
-            dropdownTag: t('header.quantExecutionSuite', 'QUANTITATIVE EXECUTION SUITE'),
-            dropdownFooter: t('header.quantExecutionSuiteDesc', 'Multi-Broker Execution & Zero-Latency Routing'),
-            dropdownItems: tradingToolsDropdownItems
-        },
-        {
-            label: t('header.companyTab', 'Company'),
-            href: '/about-us',
-            hasDropdown: true,
-            dropdownTag: t('header.companyResources', 'COMPANY & RESOURCES'),
-            dropdownFooter: t('header.companyResourcesDesc', 'ChronosX Global Financial Intelligence Network'),
-            dropdownItems: companyDropdownItems
-        },
-        { label: t('header.pricingTab', 'Pricing'), href: '/plans' },
-        { label: t('header.contactUsTab', 'Contact Us'), href: '/contact-us' },
-    ], [t, productDropdownItems, tradingToolsDropdownItems, companyDropdownItems]);
+    const navItems = useMemo(() => {
+        const items = [
+            {
+                label: t('header.productsTab', 'Products'),
+                href: getAuthHref('/'),
+                hasDropdown: true,
+                dropdownTag: t('header.aiTradingEcosystem', 'AI TRADING ECOSYSTEM'),
+                dropdownFooter: t('header.aiTradingEcosystemDesc', 'Powered by ChronosX Real-Time Neural Engines'),
+                dropdownItems: productDropdownItems
+            },
+            {
+                label: t('header.tradingToolsTab', 'Trading Tools'),
+                href: getAuthHref('/'),
+                hasDropdown: true,
+                dropdownTag: t('header.quantExecutionSuite', 'QUANTITATIVE EXECUTION SUITE'),
+                dropdownFooter: t('header.quantExecutionSuiteDesc', 'Multi-Broker Execution & Zero-Latency Routing'),
+                dropdownItems: tradingToolsDropdownItems
+            },
+            {
+                label: t('header.companyTab', 'Company'),
+                href: '/about-us',
+                hasDropdown: true,
+                twoColumns: true,
+                dropdownTag: t('header.companyResources', 'COMPANY & RESOURCES'),
+                dropdownFooter: t('header.companyResourcesDesc', 'ChronosX Global Financial Intelligence Network'),
+                dropdownItems: companyDropdownItems
+            },
+        ];
+
+        if (hasPlansPermission) {
+            items.push({ label: t('header.pricingTab', 'Pricing'), href: '/plans' });
+        }
+
+        items.push({ label: t('header.contactUsTab', 'Contact Us'), href: '/contact-us' });
+
+        return items;
+    }, [t, productDropdownItems, tradingToolsDropdownItems, companyDropdownItems, hasPlansPermission]);
 
     const isLinkActive = (item) => {
         if (!pathname) return false;
@@ -361,13 +372,13 @@ export default function Header() {
                                             </button>
 
                                             {/* Hover Dropdown Menu */}
-                                            <div className={styles.dropdownMenu}>
+                                            <div className={`${styles.dropdownMenu} ${item.twoColumns ? styles.twoColMenu : ''}`}>
                                                 <div className={styles.dropdownCard}>
                                                     <div className={styles.dropdownHeaderTag}>
                                                         <span>{item.dropdownTag}</span>
                                                     </div>
 
-                                                    <div className={styles.dropdownGrid}>
+                                                    <div className={`${styles.dropdownGrid} ${item.twoColumns ? styles.twoColGrid : ''}`}>
                                                         {item.dropdownItems.map((subItem) => (
                                                             <Link
                                                                 key={subItem.label}

@@ -210,7 +210,7 @@ html.light [class*="glow"] {
 html.light [class*="eyebrowBadge"],
 html.light [class*="sectionTag"],
 html.light [class*="statusBadge"],
-html.light [class*="chip"],
+
 html.light span[class*="badge"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="Label"]):not([class*="label"]):not([class*="headerLivePriceBadge"]):not([class*="days"]):not([class*="Days"]):not([class*="calendar"]):not([class*="Calendar"]),
 html.light span[class*="Badge"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="Label"]):not([class*="label"]):not([class*="headerLivePriceBadge"]):not([class*="days"]):not([class*="Days"]):not([class*="calendar"]):not([class*="Calendar"]),
 html.light span[class*="tag"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="pill"]):not([class*="Pill"]):not([class*="faq"]):not([class*="Faq"]):not([class*="Label"]):not([class*="label"]):not([class*="subtitle"]):not([class*="Subtitle"]),

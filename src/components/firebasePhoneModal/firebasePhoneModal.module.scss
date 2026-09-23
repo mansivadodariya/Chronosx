@@ -7,8 +7,9 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -17,46 +18,75 @@
 }
 
 .modalCard {
-    background: radial-gradient(130% 100% at 50% 0%, #171510 0%, #0A0A0D 100%);
+    background: radial-gradient(130% 120% at 50% 0%, #171511 0%, #0c0d10 55%, #070709 100%);
     border: 1px solid rgba(24, 201, 139, 0.35);
-    border-radius: 20px;
+    border-radius: 22px;
     width: 100%;
-    max-width: 460px;
-    padding: 36px 28px 32px;
+    max-width: 530px;
+    padding: 44px 38px 38px;
     position: relative;
-    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.95), 0 0 32px rgba(24, 201, 139, 0.08);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.95), 0 0 48px rgba(24, 201, 139, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     color: #FFFFFF;
     overflow: hidden;
 
     @include respond-to('sm') {
-        border-radius: 14px;
-        padding: 28px 18px 24px;
+        border-radius: 16px;
+        padding: 32px 20px 26px;
+        max-width: 100%;
     }
 }
 
 .topGlowLayer {
     border-radius: 442px;
     background: #18C98B;
-    filter: blur(36px);
-    width: 80%;
-    height: 14px;
+    filter: blur(40px);
+    width: 85%;
+    height: 18px;
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    opacity: 0.25;
+    opacity: 0.3;
     pointer-events: none;
+}
+
+.brandLogoHeader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 22px;
+    position: relative;
+    z-index: 2;
+}
+
+.brandLogoImg {
+    height: 38px;
+    width: auto;
+    max-width: 190px;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 2px 14px rgba(24, 201, 139, 0.25));
+    transition: transform 0.25s ease;
+
+    &:hover {
+        transform: scale(1.03);
+    }
+
+    @include respond-to('sm') {
+        height: 30px;
+        max-width: 155px;
+    }
 }
 
 .closeBtn {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: 18px;
+    right: 18px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(24, 201, 139, 0.25);
     color: rgba(255, 255, 255, 0.7);
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -70,7 +100,7 @@
         background: rgba(24, 201, 139, 0.15);
         color: #18C98B;
         border-color: #18C98B;
-        transform: scale(1.05);
+        transform: scale(1.06);
     }
 }
 
@@ -84,38 +114,54 @@
 }
 
 .successIconWrapper {
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     background: rgba(16, 185, 129, 0.15);
     border: 2px solid rgba(16, 185, 129, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     color: #10B981;
 }
 
 .title {
-    font-size: 22px;
-    font-weight: 700;
+    font-size: 26px;
+    font-weight: 800;
     color: #FFFFFF;
-    margin: 0 0 8px;
-    letter-spacing: -0.3px;
+    margin: 0 0 10px;
+    letter-spacing: -0.4px;
     font-family: "Euclid-Bold", sans-serif;
+    line-height: 1.25;
 
     @include respond-to('sm') {
-        font-size: 20px;
+        font-size: 22px;
     }
 }
 
 .subtitle {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.65);
-    line-height: 1.5;
-    margin: 0 0 20px;
-    max-width: 380px;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.55;
+    margin: 0 0 24px;
+    max-width: 440px;
     font-family: "Euclid-Regular", sans-serif;
+
+    .verifyFirstNotice {
+        display: block;
+        color: #18C98B;
+        font-weight: 700;
+        font-size: 16px;
+        letter-spacing: -0.2px;
+        margin-bottom: 4px;
+    }
+
+    .enterPhoneLine {
+        display: block;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 14px;
+    }
 
     strong {
         color: #18C98B;
@@ -125,7 +171,7 @@
 
 .phoneInputContainer {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
     text-align: left;
 }
 
@@ -133,9 +179,9 @@
     display: flex;
     align-items: center;
     background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(24, 201, 139, 0.25);
-    border-radius: 8px;
-    padding: 10px 14px;
+    border: 1px solid rgba(24, 201, 139, 0.28);
+    border-radius: 12px;
+    padding: 13px 18px;
     color: #FFFFFF;
     transition: all 0.2s ease;
 
@@ -145,19 +191,32 @@
         background: rgba(255, 255, 255, 0.07);
     }
 
+    &.isInvalid {
+        border-color: rgba(239, 68, 68, 0.6);
+        box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.2);
+    }
+
+    &.isValid {
+        border-color: rgba(24, 201, 139, 0.6);
+    }
+
     :global(.PhoneInputInput) {
         background: transparent;
         border: none;
         outline: none;
         color: #FFFFFF;
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 500;
         width: 100%;
-        margin-left: 8px;
+        margin-left: 10px;
 
         &::placeholder {
             color: rgba(255, 255, 255, 0.4);
         }
+    }
+
+    :global(.PhoneInputCountry) {
+        margin-right: 6px;
     }
 
     :global(.PhoneInputCountrySelect) {
@@ -166,22 +225,33 @@
     }
 }
 
+.phoneHintError {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #F87171;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    text-align: left;
+}
+
 .otpInputsRow {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     width: 100%;
 }
 
 .otpBox {
-    width: 48px;
-    height: 52px;
-    border-radius: 8px;
+    width: 52px;
+    height: 58px;
+    border-radius: 10px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(24, 201, 139, 0.25);
     color: #FFFFFF;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     text-align: center;
     outline: none;
@@ -240,3 +310,22 @@
         text-decoration: underline;
     }
 }
+
+.changePhoneLink {
+    background: none;
+    border: none;
+    color: #18C98B;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 6px;
+    padding: 0;
+    text-decoration: underline;
+
+    &:hover {
+        color: #34e0a4;
+    }
+}
+
+
+

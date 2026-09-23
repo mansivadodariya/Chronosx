@@ -255,7 +255,7 @@ export function calculateMACD(candles, fastPeriod = 12, slowPeriod = 26, signalP
         }
     }
 
-    if (macdLine.length < signalPeriod) return { macd: [], signal: [], histogram: [] };
+    if (macdLine.length < signalPeriod) return { macd: [], macdLine: [], signal: [], signalLine: [], histogram: [] };
     const k = 2 / (signalPeriod + 1);
     let signalEma = macdLine.slice(0, signalPeriod).reduce((sum, item) => sum + item.value, 0) / signalPeriod;
     const signalLine = [{ time: macdLine[signalPeriod - 1].time, value: signalEma }];
@@ -277,7 +277,7 @@ export function calculateMACD(candles, fastPeriod = 12, slowPeriod = 26, signalP
         });
     }
 
-    return { macd: macdLine, signal: signalLine, histogram };
+    return { macd: macdLine, macdLine, signal: signalLine, signalLine, histogram };
 }
 
 export function calculateStochastic(candles, period = 14, kSmooth = 3, dSmooth = 3) {

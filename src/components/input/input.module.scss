@@ -20,6 +20,7 @@
         align-items: center;
         width: 100%;
         background: #071a13;
+        border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 8px;
         height: 52px;
         overflow: hidden;
@@ -27,6 +28,12 @@
 
         &:focus-within {
             border-color: #18C98B;
+            box-shadow: 0 0 0 1px #18C98B;
+        }
+
+        &:has(input:-webkit-autofill),
+        &:has(input:autofill) {
+            background: #071a13 !important;
         }
 
         &:has(input:disabled) {
@@ -88,24 +95,22 @@
                 opacity: 1;
             }
 
-            /* Remove browser autofill white background */
+            /* Standards-compliant browser autofill fix */
             &:-webkit-autofill,
             &:-webkit-autofill:hover,
             &:-webkit-autofill:focus,
-            &:-webkit-autofill:active {
-                -webkit-box-shadow: 0 0 0 1000px #08080A inset !important;
-                box-shadow: 0 0 0 1000px #08080A inset !important;
+            &:-webkit-autofill:active,
+            &:autofill,
+            &:autofill:hover,
+            &:autofill:focus,
+            &:autofill:active {
+                -webkit-box-shadow: 0 0 0 1000px #071a13 inset !important;
+                box-shadow: 0 0 0 1000px #071a13 inset !important;
                 -webkit-text-fill-color: #FFFFFF !important;
-                caret-color: #FFFFFF !important;
-                border-radius: 7px !important;
-                transition: background-color 50000s ease-in-out 0s, color 50000s ease-in-out 0s !important;
-            }
-
-            &:autofill {
-                background-color: #08080A !important;
                 color: #FFFFFF !important;
-                -webkit-text-fill-color: #FFFFFF !important;
+                caret-color: #18C98B !important;
                 border-radius: 7px !important;
+                transition: background-color 9999999s ease-in-out 0s, color 9999999s ease-in-out 0s !important;
             }
         }
 
@@ -208,17 +213,17 @@
             &:-webkit-autofill,
             &:-webkit-autofill:hover,
             &:-webkit-autofill:focus,
-            &:-webkit-autofill:active {
+            &:-webkit-autofill:active,
+            &:autofill,
+            &:autofill:hover,
+            &:autofill:focus,
+            &:autofill:active {
                 -webkit-box-shadow: 0 0 0 1000px #F1F5F9 inset !important;
                 box-shadow: 0 0 0 1000px #F1F5F9 inset !important;
                 -webkit-text-fill-color: #0F172A !important;
-                caret-color: #0F172A !important;
-            }
-
-            &:autofill {
-                background-color: #F1F5F9 !important;
                 color: #0F172A !important;
-                -webkit-text-fill-color: #0F172A !important;
+                caret-color: #059669 !important;
+                transition: background-color 9999999s ease-in-out 0s, color 9999999s ease-in-out 0s !important;
             }
         }
 

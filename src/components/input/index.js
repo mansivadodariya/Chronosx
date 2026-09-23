@@ -56,7 +56,7 @@ const Input = ({ label, placeholder, type = 'text', value, onChange, name, icon,
                     placeholder={placeholder}
                     value={value}
                     onChange={handleChange}
-                    autoComplete="off"
+                    autoComplete={autoComplete}
                     aria-invalid={!!error}
                     aria-describedby={error ? `${name}-error` : undefined}
                     className={`${styles.inputField} ${icon ? styles.hasIconLeft : ''} ${isPassword ? styles.hasEyeBtn : ''}`}

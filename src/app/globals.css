@@ -1,4 +1,13 @@
 @import './styles/globalsBase.css';
 @import './styles/globalsUtilities.css';
 @import './styles/globalsLightTheme.css';
+@import './styles/globalsAutofill.css';
 
+/* Remove Google reCAPTCHA floating side badge */
+.grecaptcha-badge {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: scale(0) !important;
+  z-index: -9999 !important;
+}

@@ -328,9 +328,11 @@ export async function fetchUserOnboardingStatus(userId, email) {
 
         const isCompleted = data.onboarding_completed === true;
         const isActive = data.is_active !== false;
+        const isPhoneVerified = data.is_phone_verified === true;
 
         return {
             exists: true,
+            is_phone_verified: isPhoneVerified,
             onboarding_completed: isCompleted,
             is_active: isActive,
             user: data,

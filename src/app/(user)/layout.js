@@ -2,20 +2,23 @@
 import Sidebar from '@/components/sidebar';
 import Topbar from '@/components/topbar';
 import AuthGuard from '@/components/authGuard';
+import dynamic from 'next/dynamic';
 import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { ToolStateProvider } from '@/context/toolState';
 import { SubscriptionProvider } from '@/context/SubscriptionContext';
-import NeweraCreditsModal from '@/components/neweraCreditsModal';
-import RiskDisclosureModal from '@/components/riskDisclosureModal';
 import { extractAvailableCredits, CREDITS_UPDATED_EVENT, notifyCreditsUpdated, refreshCreditsFromServer } from '@/lib/credits';
 import { captureUtmParameters } from '@/lib/utm';
 import { getStoredUserId } from '@/lib/authSession';
 import { dashboardApi, neweraApi } from '@/lib/api';
 import { supabase } from '@/lib/supabaseClient';
-import AccessDeniedScreen from '@/components/AccessDeniedScreen';
 import './layout.scss';
+
+const NeweraCreditsModal = dynamic(() => import('@/components/neweraCreditsModal'), { ssr: false });
+const RiskDisclosureModal = dynamic(() => import('@/components/riskDisclosureModal'), { ssr: false });
+const FirebasePhoneModal = dynamic(() => import('@/components/firebasePhoneModal'), { ssr: false });
+const AccessDeniedScreen = dynamic(() => import('@/components/AccessDeniedScreen'), { ssr: false });
 
 const TOOL_ROUTES = [
     '/chart-scanner',
@@ -62,7 +65,12 @@ const ROUTE_TAB_MAP = {
     '/ai-strategy-hub': 'AI Trading Signal',
     '/strategy-core': 'AI Trading Signal',
     '/ai-strategy-core': 'AI Trading Signal',
+    '/my-bots': 'My Bots',
     '/ai-bot-builder': 'AI Bot Builder',
+    '/manual-bot-builder': 'Custom Bot Builder',
+    '/custom-bot-builder': 'Custom Bot Builder',
+    '/bot-library': 'Browse Bots Library',
+    '/browse-bots': 'Browse Bots Library',
     '/bot-builder': 'AI Bot Builder',
     '/strategy-studio': 'AI Bot Builder',
     '/ai-strategy-studio': 'AI Bot Builder',
@@ -98,6 +106,8 @@ const layout = ({ children }) => {
     const [showRiskModal, setShowRiskModal] = useState(false);
     const [userId, setUserId] = useState('');
     const [isTabAllowed, setIsTabAllowed] = useState(true);
+    const [showPhoneVerifyModal, setShowPhoneVerifyModal] = useState(false);
+    const [userPhoneNumber, setUserPhoneNumber] = useState('');
 
     // Check Risk Disclosure acceptance when user navigates to any Tool route
     useEffect(() => {
@@ -225,6 +235,26 @@ const layout = ({ children }) => {
             };
             syncUtmToDb();
 
+            const checkPhoneStatus = async () => {
+                if (!supabase || !uid) return;
+                try {
+                    const { data: dbUser } = await supabase
+                        .from('users')
+                        .select('phone_number, is_phone_verified')
+                        .eq('id', uid)
+                        .maybeSingle();
+
+                    if (dbUser) {
+                        const isVerified = dbUser.is_phone_verified === true;
+                        setUserPhoneNumber(dbUser.phone_number || '');
+                        setShowPhoneVerifyModal(!isVerified);
+                    }
+                } catch (err) {
+                    console.warn("Failed to check user phone verification:", err);
+                }
+            };
+            checkPhoneStatus();
+
             dashboardApi.getStats(uid)
                 .then((res) => {
                     const currentCredits = res?.data?.available_credits;
@@ -263,6 +293,21 @@ const layout = ({ children }) => {
             document.removeEventListener('visibilitychange', handleTabVisibilityChange);
         };
     }, []);
+
+    const handlePhoneVerifySuccess = (verifiedPhone) => {
+        setShowPhoneVerifyModal(false);
+        setUserPhoneNumber(verifiedPhone);
+        if (typeof window !== 'undefined') {
+            try {
+                const parsed = JSON.parse(localStorage.getItem('user') || '{}');
+                parsed.phone_number = verifiedPhone;
+                parsed.is_phone_verified = true;
+                localStorage.setItem('user', JSON.stringify(parsed));
+                document.cookie = 'has_phone=true; path=/; SameSite=Lax';
+                window.dispatchEvent(new CustomEvent('user:updated'));
+            } catch (_) {}
+        }
+    };
 
     useEffect(() => {
         const checkPermission = async () => {
@@ -353,6 +398,12 @@ const layout = ({ children }) => {
                         isOpen={showRiskModal}
                         userId={userId}
                         onAccept={() => setShowRiskModal(false)}
+                    />
+                    <FirebasePhoneModal
+                        isOpen={showPhoneVerifyModal}
+                        phoneNumber={userPhoneNumber}
+                        autoTriggerSend={false}
+                        onSuccess={handlePhoneVerifySuccess}
                     />
                 </ToolStateProvider>
                 </SubscriptionProvider>

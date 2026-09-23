@@ -208,12 +208,61 @@ export function validateStrategyInput(jsonString) {
 /**
  * Parse raw trade records into clean round-trip trades
  */
-export function parseRoundTrips(trades, initialCapital, quantity) {
+export function parseRoundTrips(tradesInput, initialCapital, quantity) {
+    if (!tradesInput) return [];
+    
+    // Extract trades array from various possible wrapper structures
+    let trades = [];
+    if (Array.isArray(tradesInput)) {
+        trades = tradesInput;
+    } else if (Array.isArray(tradesInput?.trades)) {
+        trades = tradesInput.trades;
+    } else if (Array.isArray(tradesInput?.round_trips)) {
+        trades = tradesInput.round_trips;
+    } else if (Array.isArray(tradesInput?.roundTrips)) {
+        trades = tradesInput.roundTrips;
+    } else if (Array.isArray(tradesInput?.data?.[0]?.trades)) {
+        trades = tradesInput.data[0].trades;
+    }
+
     if (!Array.isArray(trades) || trades.length === 0) return [];
+
+    const initCap = Number(initialCapital) || 10000;
+    const qty = Number(quantity) || 1;
+
+    // Check if trades are already parsed round-trip objects
+    const firstTrade = trades[0];
+    if (firstTrade && (firstTrade.pnl !== undefined || (firstTrade.entryPrice !== undefined && firstTrade.exitPrice !== undefined))) {
+        let runningBalance = initCap;
+        return trades.map((t, idx) => {
+            const entryPrice = Number(t.entryPrice || t.entry_price || t.Price || 0);
+            const exitPrice = Number(t.exitPrice || t.exit_date_price || t.exit_price || 0);
+            const side = (t.side || t.buy_sell_label || t.action || "BUY").toUpperCase();
+            const isBuy = side === "BUY";
+            let pnl = t.pnl !== undefined ? Number(t.pnl) : (isBuy ? (exitPrice - entryPrice) * qty : (entryPrice - exitPrice) * qty);
+            pnl = parseFloat(pnl.toFixed(2));
+            const pnlPercent = t.pnlPercent !== undefined ? Number(t.pnlPercent) : (entryPrice > 0 ? parseFloat(((pnl / (entryPrice * qty)) * 100).toFixed(2)) : 0);
+            runningBalance += pnl;
+
+            return {
+                index: t.index || idx + 1,
+                entryDate: (t.entryDate || t.entry_date || t.Date || "2024-01-05 10:00").replace(" IST", ""),
+                entryPrice: entryPrice,
+                exitDate: (t.exitDate || t.exit_date || t.date || "2024-01-05 14:30").replace(" IST", ""),
+                exitPrice: exitPrice,
+                side: side,
+                trigger: t.trigger || (pnl > 0 ? "TARGET" : "STOPLOSS"),
+                pnl: pnl,
+                pnlPercent: pnlPercent,
+                runningBalance: t.runningBalance !== undefined ? Number(t.runningBalance) : parseFloat(runningBalance.toFixed(2))
+            };
+        });
+    }
+
+    // Otherwise parse alternating ENTRY/EXIT trade events
     const roundTrips = [];
     let currentEntry = null;
-    let runningBalance = Number(initialCapital) || 10000;
-    const qty = Number(quantity) || 1;
+    let runningBalance = initCap;
 
     for (let i = 0; i < trades.length; i++) {
         const t = trades[i];

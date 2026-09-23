@@ -140,6 +140,14 @@ const Login = () => {
                         return;
                     }
 
+                    const isPhoneVerified = status.is_phone_verified === true || status.user?.is_phone_verified === true;
+                    if (status.user && !isPhoneVerified) {
+                        setPendingPhoneUserId(status.user.id || uid);
+                        setPhoneNumber(status.user.phone_number || '');
+                        setShowOtpModal(true);
+                        return;
+                    }
+
                     let destination = redirectTo;
                     if (!destination || destination === '/onboarding' || destination === '/steper' || destination.startsWith('/onboarding') || destination.startsWith('/steper')) {
                         destination = '/dashboard';
@@ -194,6 +202,14 @@ const Login = () => {
             if (status.exists && !status.is_active) {
                 clearAuthSession();
                 toast.error('Your account is inactive. Please contact admin.');
+                return;
+            }
+
+            const isPhoneVerified = status.is_phone_verified === true || status.user?.is_phone_verified === true;
+            if (status.user && !isPhoneVerified) {
+                setPendingPhoneUserId(status.user.id || uid);
+                setPhoneNumber(status.user.phone_number || '');
+                setShowOtpModal(true);
                 return;
             }
 
@@ -437,7 +453,7 @@ const Login = () => {
                                     </div>
 
 
-                                    <form onSubmit={handleSubmit} noValidate autoComplete="off">
+                                    <form onSubmit={handleSubmit} noValidate>
                                         <div className={styles.spacingGrid}>
                                             <Input
                                                 label="Email or Username"
@@ -449,7 +465,7 @@ const Login = () => {
                                                 onChange={set('email')}
                                                 error={errors.email}
                                                 maxLength={100}
-                                                autoComplete="off"
+                                                autoComplete="username"
                                             />
 
                                             <div>
