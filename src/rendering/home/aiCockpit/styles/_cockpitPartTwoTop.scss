@@ -2,15 +2,15 @@
   overflow: hidden;
 
   .partTwoCockpit {
-    background: radial-gradient(circle at 50% 0%, rgba(24, 201, 139, 0.04) 0%, transparent 70%), #06080E;
-    border: 1px solid rgba(24, 201, 139, 0.14);
+    background: radial-gradient(circle at 50% 0%, var(--primary-green-light) 0%, transparent 70%), var(--bg-surface);
+    border: 1px solid var(--border-color);
     border-radius: 18px;
     padding: 22px 24px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     gap: 16px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), inset 0 1px 0 var(--border-subtle);
     width: 100%;
     max-width: 100%;
     min-width: 0;

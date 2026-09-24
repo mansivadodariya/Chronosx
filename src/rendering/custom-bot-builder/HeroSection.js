@@ -47,44 +47,24 @@ export default function HeroSection({ onStartClick, onMarketplaceClick }) {
     <section className={styles.heroSection}>
       <div className="container">
         {/* Top Tag Badge */}
-        <motion.div
-          className={styles.heroBadge}
-          initial={{ opacity: 0, y: -15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <div className={styles.heroBadge}>
           <span className={styles.pulseDot} />
           AI CUSTOM BOT BUILDER
-        </motion.div>
+        </div>
 
         {/* Hero Title */}
-        <motion.h1
-          className={styles.heroTitle}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
+        <h1 className={styles.heroTitle}>
           Build Your Trading Bot <br />
           <span className={styles.highlight}>With AI</span>
-        </motion.h1>
+        </h1>
 
-        {/* Hero Subtext */}
-        <motion.p
-          className={styles.heroSubtext}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
+        {/* Hero Subtext (Primary LCP Element) */}
+        <p className={styles.heroSubtext}>
           Discover trading bots in our marketplace, create your own bot with AI chat, or build step-by-step with full control. Turn your trading ideas into structured bot configurations and take them from creation to backtesting — all in one place.
-        </motion.p>
+        </p>
 
         {/* Hero CTAs */}
-        <motion.div
-          className={styles.heroCtaGroup}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
+        <div className={styles.heroCtaGroup}>
           <button className={styles.heroPrimaryBtn} onClick={onStartClick}>
             START BUILDING
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -95,7 +75,7 @@ export default function HeroSection({ onStartClick, onMarketplaceClick }) {
           <button className={styles.heroSecondaryBtn} onClick={onMarketplaceClick}>
             EXPLORE BOT MARKETPLACE
           </button>
-        </motion.div>
+        </div>
 
         {/* Hero Highlights Grid */}
         <div className={styles.heroHighlightsGrid}>

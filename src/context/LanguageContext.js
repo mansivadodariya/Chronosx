@@ -1,4 +1,4 @@
-'use client';
+  'use client';
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { getTranslation, loadLocaleData, SUPPORTED_LOCALES, RTL_LOCALES, translations } from '@/locales';
@@ -93,6 +93,17 @@ export const LanguageProvider = ({ children }) => {
 
   const isRTL = RTL_LOCALES.includes(language);
   const dir = isRTL ? 'rtl' : 'ltr';
+
+  const value = useMemo(() => ({
+    language,
+    dir,
+    isRTL,
+    isPending: false,
+    setLanguage,
+    toggleLanguage,
+    t,
+    tDynamic
+  }), [language, dir, isRTL, setLanguage, toggleLanguage, t, tDynamic]);
 
   return (
     <LanguageContext.Provider value={{ language, dir, isRTL, isPending: false, setLanguage, toggleLanguage, t, tDynamic }}>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { subscriptionApi, PLAN_TIERS } from '@/lib/subscriptionApi';
 import { getStoredUser } from '@/lib/authSession';
 
@@ -113,16 +113,16 @@ export function SubscriptionProvider({ children }) {
         };
     }, [subscription, hasActivePlan]);
 
+    const value = useMemo(() => ({
+        subscription,
+        hasActivePlan,
+        loading,
+        refreshSubscription: loadSubscription,
+        evaluatePlanAction,
+    }), [subscription, hasActivePlan, loading, loadSubscription, evaluatePlanAction]);
+
     return (
-        <SubscriptionContext.Provider
-            value={{
-                subscription,
-                hasActivePlan,
-                loading,
-                refreshSubscription: loadSubscription,
-                evaluatePlanAction,
-            }}
-        >
+        <SubscriptionContext.Provider value={value}>
             {children}
         </SubscriptionContext.Provider>
     );

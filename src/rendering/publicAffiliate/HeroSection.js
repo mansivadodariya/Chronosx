@@ -48,41 +48,21 @@ export default function HeroSection({ onJoinClick, onHowItWorksClick }) {
   return (
     <section className={styles.heroSection}>
       <div className="container">
-        <motion.div
-          className={styles.heroBadge}
-          initial={{ opacity: 0, y: -15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <div className={styles.heroBadge}>
           <span className={styles.pulseDot} />
-          CHRONOSX AFFILIATE PROGRAM
-        </motion.div>
+          ChronosX Affiliate Program
+        </div>
 
-        <motion.h1
-          className={styles.heroTitle}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
+        <h1 className={styles.heroTitle}>
           Earn More with <br />
           <span className={styles.highlight}>ChronosX Affiliate Program</span>
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          className={styles.heroSubtext}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
+        <p className={styles.heroSubtext}>
           Share ChronosX with your audience and earn recurring commissions from qualifying referral activity. It's simple, transparent, and built to help you grow your network.
-        </motion.p>
+        </p> 
 
-        <motion.div
-          className={styles.heroCtaGroup}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
+        <div className={styles.heroCtaGroup}>
           <button className={styles.heroPrimaryBtn} onClick={onJoinClick}>
             JOIN NOW
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -93,7 +73,7 @@ export default function HeroSection({ onJoinClick, onHowItWorksClick }) {
           <button className={styles.heroSecondaryBtn} onClick={onHowItWorksClick}>
             HOW IT WORKS
           </button>
-        </motion.div>
+        </div>
 
         <div className={styles.heroHighlightsGrid}>
           {HIGHLIGHTS.map((item, index) => (

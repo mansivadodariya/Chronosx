@@ -113,26 +113,16 @@ export default function Herobanner() {
       >
         <div className={styles.heroCenterCol}>
           {/* 1. Top Pill Badge */}
-          <motion.div
-            className={styles.topBadgeRow}
-            initial={{ opacity: 0, y: -20, scale: 0.94 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.65, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-          >
+          <div className={styles.topBadgeRow}>
             <div className={styles.badge} onClick={() => authNavigate(router, '/dashboard')}>
               <span className={styles.badgeText}>
-                {t('homeSections.hero.badge', 'Next–Gen AI Algorithmic Trading Terminal')}
+                {t('homeSections.hero.badge', 'Next–Gen AI  Trading Analysis')}
               </span>
             </div>
-          </motion.div>
+          </div>
 
           {/* 2. Centered Headline with Candlesticks Icon Inline */}
-          <motion.h1
-            className={styles.heroTitle}
-            initial={{ opacity: 0, y: 30, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.85, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          >
+          <h1 className={styles.heroTitle}>
             <span className={styles.titleLine1}>
               {t('homeSections.hero.titleLine1', 'TRADE SMARTER')}
             </span>
@@ -143,25 +133,15 @@ export default function Herobanner() {
               </span>
               <span>{t('homeSections.hero.titleLine3', 'NEVER SLEEP')}</span>
             </span>
-          </motion.h1>
+          </h1>
 
-          {/* Centered Subheadline */}
-          <motion.p
-            className={styles.heroDesc}
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          >
+          {/* Centered Subheadline (Primary LCP Element) */}
+          <p className={styles.heroDesc}>
             {t('homeSections.hero.description', 'Get real-time AI trading signals, market insights, and trade recommendations across Forex, Crypto, Stocks, and Commodities.')}
-          </motion.p>
+          </p>
 
           {/* Centered Actions Group (Button + Cyber Bracket Trust Badge) */}
-          <motion.div
-            className={styles.actionsGroup}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
-          >
+          <div className={styles.actionsGroup}>
             <Button
               text={t('homeSections.hero.getStarted', 'GET STARTED')}
               icon={RightArrow}
@@ -177,7 +157,14 @@ export default function Herobanner() {
 
               <div className={styles.avatarsGroup}>
                 {['a1', 'a2', 'a3'].map((img) => (
-                  <img key={img} src={`/assets/images/${img}.png`} alt="Trader User" className={styles.avatarItem} />
+                  <img
+                    key={img}
+                    src={`/assets/images/${img}.png`}
+                    alt="Trader User"
+                    className={styles.avatarItem}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 ))}
               </div>
 
@@ -186,7 +173,7 @@ export default function Herobanner() {
                 <span className={styles.trustSub}>{t('homeSections.hero.trustSub', 'people in the world')}</span>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* 3 Bottom Feature Cards */}
           <HeroFeatureCards />
