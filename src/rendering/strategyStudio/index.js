@@ -97,6 +97,35 @@ export default function StrategyStudio() {
         if (strat.quantity) setQuantity(strat.quantity);
     }, []);
 
+    // Check if strategy was selected from My Bots dashboard
+    useEffect(() => {
+        try {
+            if (typeof window !== 'undefined') {
+                const saved = sessionStorage.getItem('active_selected_strategy');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    sessionStorage.removeItem('active_selected_strategy');
+                    if (parsed) {
+                        const strat = parsed.config || parsed.blueprint || parsed;
+                        setCurrentStrategy(strat);
+                        syncToolbarFromStrategy(strat);
+                        const name = parsed.strategy_name || parsed.name || 'AI Strategy';
+                        const sym = parsed.symbol || (Array.isArray(parsed.stock_name) ? parsed.stock_name[0] : parsed.stock_name) || 'BTCUSD';
+                        const tf = parsed.timeframe || parsed.interval || '15min';
+                        setMessages([
+                            {
+                                role: 'ai',
+                                text: `Loaded quantitative strategy **"${name}"** on **${sym} (${tf})**.\n\n` +
+                                    (parsed.trade_reasoning?.rationale ? `> **Rationale:** ${parsed.trade_reasoning.rationale}\n\n` : '') +
+                                    `Parameters and indicator rules have been calibrated. You can ask me to refine any parameters, or click **"Run Backtest"** to simulate historical performance.`
+                            }
+                        ]);
+                    }
+                }
+            }
+        } catch (_) { }
+    }, [syncToolbarFromStrategy]);
+
     /**
      * Send message to Strategy Advisor (/wizard/chat)
      */
@@ -106,19 +135,23 @@ export default function StrategyStudio() {
 
         setChatInput('');
         const lower = text.toLowerCase().trim();
-
-        // 1. Backtest trigger commands -> open side backtest panel and run
-        if (
-            lower.includes('run backtest') ||
-            lower === 'backtest' ||
-            lower.includes('start backtest') ||
+        // 1. Backtest trigger commands -> open side backtest panel and run real /backtest/v1
+        const qaAnswers = (extraData?.qaList || []).map(qa => `${qa.answer || ''} ${qa.label || ''} ${qa.question || ''}`.toLowerCase());
+        const isBacktestCommand =
+            lower.includes('backtest') ||
+            lower.includes('simulate') ||
             lower === 'run' ||
-            lower.includes('backtest now')
-        ) {
+            lower === 'start' ||
+            lower.includes('historical candle') ||
+            qaAnswers.some(ans => ans.includes('backtest') || ans.includes('simulate'));
+
+        if (isBacktestCommand) {
+            const cleanAnswer = extraData?.qaList?.[0]?.answer || extraData?.qaList?.[0]?.label;
+            const displayUserText = cleanAnswer || (text.includes('\n') ? text.split('\n').pop() : text);
             setMessages((prev) => [
                 ...prev,
-                { role: 'user', text },
-                { role: 'ai', text: 'Launching backtest simulation on historical candle data now...' }
+                { role: 'user', text: displayUserText },
+                { role: 'ai', text: `Launching backtest simulation for **${symbol}** (${interval}) across historical candle data...` }
             ]);
             setIsBacktestPanelOpen(true);
             handleRunBacktest();
@@ -286,23 +319,59 @@ export default function StrategyStudio() {
 
         const activeStrat = customStrategy || currentStrategy;
 
+        const defaultFrom = () => {
+            const d = new Date();
+            d.setDate(d.getDate() - 61);
+            return d.toISOString().split('T')[0];
+        };
+        const defaultTo = () => {
+            const d = new Date();
+            d.setDate(d.getDate() - 1);
+            return d.toISOString().split('T')[0];
+        };
+
+        const activeFrom = fromDate || defaultFrom();
+        const activeTo = toDate || defaultTo();
+
+        const entryConditions = activeStrat?.entry_conditions || {
+            entry_start_time: '00:00',
+            entry_end_time: '23:45',
+            condition_type: 'all',
+            rules: [
+                {
+                    indicator1: { name: 'ema', parameters: { length: 20 } },
+                    operator: 'crossover',
+                    indicator2: { name: 'ema', parameters: { length: 50 } }
+                }
+            ]
+        };
+
+        const exitConditions = activeStrat?.exit_conditions || {
+            target: activeStrat?.target || activeStrat?.target_pips || 50,
+            target_type: 'points',
+            stoploss: activeStrat?.stoploss || activeStrat?.stoploss_pips || 25,
+            stoploss_type: 'points',
+            condition_type: 'all',
+            rules: []
+        };
+
         const payload = {
-            stock_name: [symbol],
-            interval: interval,
-            from_date: fromDate,
-            to_date: toDate,
-            inital_capital: parseFloat(capital) || 10000,
+            stock_name: [symbol || 'EURUSD'],
+            from_date: activeFrom,
+            to_date: activeTo,
+            interval: interval || '15min',
+            is_mis: true,
+            entry_type: 0,
             quantity: parseFloat(quantity) || 0.01,
+            inital_capital: parseFloat(capital) || 10000,
+            data_provider: 'DB',
+            include_plot: true,
             strategy_name: activeStrat?.strategy_name || activeStrat?.name || `Strategy_${symbol}_${interval}`,
             strategy: activeStrat?.strategy || activeStrat?.code || null,
-            entry_conditions: activeStrat?.entry_conditions || [
-                { indicator: 'EMA_9', operator: 'crosses_above', value: 'EMA_21' }
-            ],
-            exit_conditions: activeStrat?.exit_conditions || [
-                { indicator: 'EMA_9', operator: 'crosses_below', value: 'EMA_21' }
-            ],
-            stoploss: activeStrat?.stoploss || activeStrat?.stoploss_pips || 20,
-            target: activeStrat?.target || activeStrat?.target_pips || 40,
+            entry_conditions: entryConditions,
+            exit_conditions: exitConditions,
+            stoploss: activeStrat?.stoploss || activeStrat?.stoploss_pips || 25,
+            target: activeStrat?.target || activeStrat?.target_pips || 50,
             risk_reward_ratio: activeStrat?.risk_reward_ratio || 2.0
         };
 
@@ -383,8 +452,8 @@ export default function StrategyStudio() {
     const isStartingExplore = messages.length <= 1;
 
     return (
-        <div 
-            className={styles.studioContainer} 
+        <div
+            className={styles.studioContainer}
             data-lenis-prevent="true"
             onMouseMove={handleMouseMove}
         >

@@ -2,11 +2,16 @@
 
 import React, { useState, useMemo } from 'react';
 import styles from '../calculator.module.scss';
+import { PAIRS_CONFIG } from '../config';
+import CustomDropdown from './CustomDropdown';
 
 export default function FibonacciCalculator() {
+    const pairOptions = Object.keys(PAIRS_CONFIG);
+    const defaultP = PAIRS_CONFIG['XAU/USD']?.defaultPrice || 4308.18;
+    const [fibPair, setFibPair] = useState('XAU/USD');
     const [fibTrend, setFibTrend] = useState('up'); // 'up' (Bullish) | 'down' (Bearish)
-    const [fibHigh, setFibHigh] = useState('1.0950');
-    const [fibLow, setFibLow] = useState('1.0800');
+    const [fibHigh, setFibHigh] = useState(String((defaultP * 1.01).toFixed(2)));
+    const [fibLow, setFibLow] = useState(String((defaultP * 0.99).toFixed(2)));
 
     const fibResult = useMemo(() => {
         const high = parseFloat(fibHigh) || 0;
@@ -60,6 +65,22 @@ export default function FibonacciCalculator() {
                 </div>
 
                 <div className={styles.inputsGrid}>
+                    <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+                        <label>Instrument / Asset Preset</label>
+                        <CustomDropdown
+                            options={pairOptions}
+                            value={fibPair}
+                            onChange={(val) => {
+                                setFibPair(val);
+                                const pairData = PAIRS_CONFIG[val] || PAIRS_CONFIG['EUR/USD'];
+                                const p = pairData?.defaultPrice || 1.08450;
+                                const decimals = (pairData?.type === 'crypto' || pairData?.type === 'metal' || pairData?.type === 'jpy') ? 2 : 5;
+                                setFibHigh(String((p * 1.01).toFixed(decimals)));
+                                setFibLow(String((p * 0.99).toFixed(decimals)));
+                            }}
+                        />
+                    </div>
+
                     <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
                         <label>Trend Direction</label>
                         <div className={styles.toggleSwitchRow}>

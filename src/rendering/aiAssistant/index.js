@@ -248,14 +248,18 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
         setConfirmDeleteOpen(false);
     };
 
+    const [isExportingPdf, setIsExportingPdf] = useState(false);
+
     const handleDownloadFullReport = useCallback((reportContent, visualData, symbol) => {
+        if (isExportingPdf || exportData) return;
         setExportData({ fullReport: reportContent, visualData, symbol: symbol || selectedPair });
-    }, [setExportData, selectedPair]);
+    }, [isExportingPdf, exportData, setExportData, selectedPair]);
 
     useEffect(() => {
         if (!exportData) return;
 
         const generatePdf = async () => {
+            setIsExportingPdf(true);
             try {
                 toast('Preparing PDF download with market charts & figures...');
                 const html2pdf = (await import('html2pdf.js')).default;
@@ -268,15 +272,16 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
                     ? exportData.symbol.replace(/[^A-Z0-9]/g, '').toUpperCase()
                     : 'MARKET';
 
+                const dateStr = new Date().toISOString().split('T')[0];
                 const opt = {
-                    margin: [10, 10, 10, 10],
-                    filename: `${cleanPair}_Trade_Analysis_Report.pdf`,
+                    margin: [8, 8, 8, 8],
+                    filename: `ChronosX_Trading_Report_${cleanPair}_${dateStr}.pdf`,
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: {
                         scale: 2,
                         useCORS: true,
                         allowTaint: true,
-                        backgroundColor: '#0b0f17',
+                        backgroundColor: '#FFFFFF',
                         scrollX: 0,
                         scrollY: 0,
                         windowWidth: 800,
@@ -326,6 +331,7 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
                 }
             } finally {
                 setExportData(null);
+                setIsExportingPdf(false);
             }
         };
 
@@ -475,14 +481,15 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
                         left: '0px',
                         top: '0px',
                         width: '800px',
-                        background: '#0b0f17',
+                        background: '#FFFFFF',
+                        backgroundColor: '#FFFFFF',
                         zIndex: -99999,
                         opacity: 1,
                         pointerEvents: 'none',
                         overflow: 'visible'
                     }}
                 >
-                    <div ref={exportRef} className={styles.pdfExporting}>
+                    <div ref={exportRef} className={`${styles.pdfExporting} ${styles.isLight} pdfExporting`}>
                         <ReportPanel
                             inline
                             fullReport={exportData.fullReport}

@@ -4,14 +4,15 @@ import React, { useState, useMemo } from 'react';
 import styles from '../calculator.module.scss';
 import { PAIRS_CONFIG, CURRENCIES, RATES_TO_USD } from '../config';
 import CustomDropdown from './CustomDropdown';
-
 export default function ProfitCalculator({ onCopy, copied }) {
-    const [profitPair, setProfitPair] = useState('EUR/USD');
+    const defaultPairData = PAIRS_CONFIG['XAU/USD'] || {};
+    const defaultP = defaultPairData.defaultPrice || 4308.18;
+    const [profitPair, setProfitPair] = useState('XAU/USD');
     const [profitOrderType, setProfitOrderType] = useState('buy'); // 'buy' | 'sell'
     const [profitLots, setProfitLots] = useState('1.0');
-    const [profitOpenPrice, setProfitOpenPrice] = useState('1.0850');
-    const [profitClosePrice, setProfitClosePrice] = useState('1.0900');
-    const [profitStopLoss, setProfitStopLoss] = useState('1.0820');
+    const [profitOpenPrice, setProfitOpenPrice] = useState(String(defaultP));
+    const [profitClosePrice, setProfitClosePrice] = useState(String((defaultP * 1.005).toFixed(2)));
+    const [profitStopLoss, setProfitStopLoss] = useState(String((defaultP * 0.997).toFixed(2)));
     const [profitCurrency, setProfitCurrency] = useState('USD');
 
     const pairOptions = Object.keys(PAIRS_CONFIG);
@@ -87,9 +88,12 @@ export default function ProfitCalculator({ onCopy, copied }) {
                             value={profitPair}
                             onChange={(val) => {
                                 setProfitPair(val);
-                                const p = PAIRS_CONFIG[val]?.defaultPrice || 1.0850;
+                                const pairData = PAIRS_CONFIG[val] || PAIRS_CONFIG['EUR/USD'];
+                                const p = pairData?.defaultPrice || 1.08450;
+                                const decimals = (pairData?.type === 'crypto' || pairData?.type === 'metal' || pairData?.type === 'jpy') ? 2 : 5;
                                 setProfitOpenPrice(String(p));
-                                setProfitClosePrice(String(profitOrderType === 'buy' ? (p * 1.005).toFixed(4) : (p * 0.995).toFixed(4)));
+                                setProfitClosePrice(String(profitOrderType === 'buy' ? (p * 1.005).toFixed(decimals) : (p * 0.995).toFixed(decimals)));
+                                setProfitStopLoss(String(profitOrderType === 'buy' ? (p * 0.997).toFixed(decimals) : (p * 1.003).toFixed(decimals)));
                             }}
                         />
                     </div>

@@ -1,6 +1,6 @@
   'use client';
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { getTranslation, loadLocaleData, SUPPORTED_LOCALES, RTL_LOCALES, translations } from '@/locales';
 
 const LanguageContext = createContext({

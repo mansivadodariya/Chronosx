@@ -6,11 +6,11 @@ import { PAIRS_CONFIG, CURRENCIES, LEVERAGES, RATES_TO_USD } from '../config';
 import CustomDropdown from './CustomDropdown';
 
 export default function MarginCalculator({ onCopy, copied }) {
-    const [marginPair, setMarginPair] = useState('EUR/USD');
+    const [marginPair, setMarginPair] = useState('XAU/USD');
     const [marginLots, setMarginLots] = useState('1.0');
     const [marginLeverage, setMarginLeverage] = useState(100);
     const [marginCurrency, setMarginCurrency] = useState('USD');
-    const [marginPrice, setMarginPrice] = useState('1.0850');
+    const [marginPrice, setMarginPrice] = useState(String(PAIRS_CONFIG['XAU/USD']?.defaultPrice || '4308.18'));
 
     const pairOptions = Object.keys(PAIRS_CONFIG);
 

@@ -7,6 +7,7 @@ export function useTradeSnapExport() {
     const [isExporting, setIsExporting] = useState(false);
 
     const exportToPdf = useCallback(async (element, symbol = 'MARKET', timeframe = 'M15') => {
+        if (isExporting) return;
         if (!element) {
             toast.error('Unable to find report to download.');
             return;
@@ -16,18 +17,18 @@ export function useTradeSnapExport() {
             setIsExporting(true);
             const cleanSymbol = String(symbol || 'MARKET').replace(/[^A-Z0-9]/gi, '').toUpperCase() || 'CHART_SCAN';
             const cleanTf = String(timeframe || 'M15').replace(/[^A-Z0-9]/gi, '').toUpperCase();
+            const dateStr = new Date().toISOString().split('T')[0];
             toast(`Generating PDF report for ${cleanSymbol}...`);
 
-            // Apply light theme classes for crisp white-mode PDF export
+            // Apply light theme classes on the report element for crisp white-mode PDF export
             element.classList.add('pdfExportLight');
-            document.documentElement.classList.add('pdfExporting');
 
             const html2pdf = (await import('html2pdf.js')).default;
             await new Promise((resolve) => setTimeout(resolve, 800));
 
             const opt = {
                 margin: [8, 8, 8, 8],
-                filename: `${cleanSymbol}_${cleanTf}_AI_Chart_Scan_Report.pdf`,
+                filename: `ChronosX_Chart_Scan_${cleanSymbol}_${cleanTf}_${dateStr}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: {
                     scale: 2,
@@ -71,7 +72,6 @@ export function useTradeSnapExport() {
             if (element) {
                 element.classList.remove('pdfExportLight');
             }
-            document.documentElement.classList.remove('pdfExporting');
             setIsExporting(false);
         }
     }, []);

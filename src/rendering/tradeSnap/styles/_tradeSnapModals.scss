@@ -182,3 +182,63 @@
     background: rgba(0, 0, 0, 0.2);
 }
 
+// Global Light Theme Overrides for TradeSnap Modals
+:global([data-theme="light"]),
+:global(.light),
+:global(html.light),
+:global(body.light-theme) {
+    .modalBox {
+        background: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+        box-shadow: 0 24px 64px rgba(15, 23, 42, 0.12), 0 0 1px rgba(15, 23, 42, 0.1) !important;
+        color: #0F172A !important;
+
+        scrollbar-color: #10B981 #F1F5F9;
+
+        &::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #10B981;
+        }
+    }
+
+    .modalHeader {
+        background: #F8FAFC !important;
+        border-bottom: 1px solid #E2E8F0 !important;
+
+        h2, h3 {
+            color: #0F172A !important;
+        }
+
+        p {
+            color: #64748B !important;
+        }
+    }
+
+    .modalClose {
+        background: #F1F5F9 !important;
+        border: 1px solid #CBD5E1 !important;
+        color: #0F172A !important;
+        font-weight: 700 !important;
+
+        &:hover {
+            background: #E2E8F0 !important;
+            color: #047857 !important;
+            border-color: #10B981 !important;
+        }
+    }
+
+    .modalBody {
+        color: #1E293B !important;
+        background: #FFFFFF !important;
+    }
+
+    .modalFooter {
+        background: #F8FAFC !important;
+        border-top: 1px solid #E2E8F0 !important;
+    }
+}
+
+

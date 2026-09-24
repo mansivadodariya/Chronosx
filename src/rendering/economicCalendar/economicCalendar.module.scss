@@ -45,19 +45,14 @@
 
   .widgetCard {
     width: 100%;
-    background: #040605;
-    border: 1px solid rgba(24, 201, 139, 0.35);
+    background: #0D0E13;
+    border: 1px solid rgba(24, 201, 139, 0.3);
     border-radius: 16px;
-    padding: 20px;
+    padding: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     position: relative;
-
-    :global(html.light) & {
-      background: #FFFFFF !important;
-      border-color: rgba(15, 23, 42, 0.09) !important;
-      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
-    }
+    color-scheme: dark;
 
     @include respond-to("md") {
       padding: 12px;
@@ -73,29 +68,31 @@
         min-height: 720px;
       }
 
+      :global(iframe) {
+        width: 100% !important;
+        height: 720px !important;
+        border: none !important;
+        border-radius: 10px;
+        color-scheme: dark;
+      }
+
       :global(.tradingview-widget-copyright) {
         display: none !important;
       }
     }
-  }
 
-  :global(html.light) & {
-    .header {
-      .titleArea {
-        h1 {
-          color: #0F172A;
-        }
+    :global(html.light) &,
+    :global(html[data-theme='light']) & {
+      background: #FFFFFF !important;
+      border-color: rgba(15, 23, 42, 0.1) !important;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+      color-scheme: light;
 
-        p {
-          color: #475569;
+      :global(.tradingview-widget-container) {
+        :global(iframe) {
+          color-scheme: light;
         }
       }
-    }
-
-    .widgetCard {
-      background: #FFFFFF;
-      border-color: rgba(24, 201, 139, 0.25);
-      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
     }
   }
 }

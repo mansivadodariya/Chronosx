@@ -19,7 +19,7 @@ function parseTimestamp(dateVal) {
         const str = String(dateVal).trim().replace(' IST', '').replace(' UTC', '');
         let d = new Date(str);
         if (!isNaN(d.getTime())) return d.getTime();
-        
+
         d = new Date(str.replace(' ', 'T'));
         if (!isNaN(d.getTime())) return d.getTime();
 
@@ -45,20 +45,28 @@ function parseTimestamp(dateVal) {
  */
 function buildCandlestickData(results, roundTrips, symbol = 'EURUSD', interval = '15min') {
     // 1. Check if backend returned explicit candles / ohlc in any nested property
-    const rawCandles = results?.candles 
-        || results?.stock_data 
-        || results?.market_data 
-        || results?.ohlc 
-        || results?.historical_candles 
-        || results?.bars 
-        || results?.data?.stock_data 
+    const rawCandles = results?.candles
+        || results?.plot
+        || results?.stats?.plot
+        || results?.stats?.candles
+        || (Array.isArray(results?.data) && (results.data[0]?.candles || results.data[0]?.plot || results.data[0]?.stats?.plot || results.data[0]?.stock_data))
+        || results?.data?.candles
+        || results?.data?.plot
+        || results?.data?.stats?.plot
+        || results?.data?.stock_data
         || results?.data?.[0]?.stock_data
-        || results?.raw?.stock_data 
+        || results?.stock_data
+        || results?.market_data
+        || results?.ohlc
+        || results?.historical_candles
+        || results?.bars
+        || results?.raw?.data?.[0]?.stats?.plot
+        || results?.raw?.stock_data
         || results?.raw?.data?.[0]?.stock_data;
 
     if (Array.isArray(rawCandles) && rawCandles.length > 0) {
         const parsed = rawCandles.map(c => {
-            const timeVal = c.time || c.Date || c.date || c.timestamp || c.datetime;
+            const timeVal = c.time || c.Date || c.date || c.timestamp || c.datetime || c.Time;
             const ts = parseTimestamp(timeVal);
             const open = Number(c.open ?? c.Open ?? 0);
             const high = Number(c.high ?? c.High ?? open);
@@ -71,7 +79,36 @@ function buildCandlestickData(results, roundTrips, symbol = 'EURUSD', interval =
         }).filter(item => !isNaN(item.x) && item.y.every(val => !isNaN(val) && val > 0));
 
         if (parsed.length > 0) {
-            return parsed;
+            if (parsed.length <= 250) {
+                return parsed;
+            }
+            // Intelligent OHLC bucket downsampling for instantaneous 60 FPS chart rendering
+            const targetPoints = 220;
+            const bucketSize = Math.ceil(parsed.length / targetPoints);
+            const downsampled = [];
+
+            for (let i = 0; i < parsed.length; i += bucketSize) {
+                const chunk = parsed.slice(i, i + bucketSize);
+                if (chunk.length === 0) continue;
+
+                const x = chunk[0].x;
+                const open = chunk[0].y[0];
+                let high = chunk[0].y[1];
+                let low = chunk[0].y[2];
+                const close = chunk[chunk.length - 1].y[3];
+
+                for (let j = 1; j < chunk.length; j++) {
+                    if (chunk[j].y[1] > high) high = chunk[j].y[1];
+                    if (chunk[j].y[2] < low) low = chunk[j].y[2];
+                }
+
+                downsampled.push({
+                    x,
+                    y: [open, high, low, close]
+                });
+            }
+
+            return downsampled;
         }
     }
 
@@ -123,18 +160,18 @@ function buildCandlestickData(results, roundTrips, symbol = 'EURUSD', interval =
 
     tradePoints.sort((a, b) => a.time - b.time);
 
-    const startTime = tradePoints.length > 0 
-        ? tradePoints[0].time - (12 * 3600 * 1000) 
+    const startTime = tradePoints.length > 0
+        ? tradePoints[0].time - (12 * 3600 * 1000)
         : Date.now() - (60 * 24 * 3600 * 1000);
-    const endTime = tradePoints.length > 0 
-        ? tradePoints[tradePoints.length - 1].time + (12 * 3600 * 1000) 
+    const endTime = tradePoints.length > 0
+        ? tradePoints[tradePoints.length - 1].time + (12 * 3600 * 1000)
         : Date.now();
 
-    const intervalMs = interval === '5min' ? 5 * 60 * 1000 
-        : interval === '15min' ? 15 * 60 * 1000 
-        : interval === '30min' ? 30 * 60 * 1000 
-        : interval === '60min' ? 60 * 60 * 1000 
-        : 24 * 3600 * 1000;
+    const intervalMs = interval === '5min' ? 5 * 60 * 1000
+        : interval === '15min' ? 15 * 60 * 1000
+            : interval === '30min' ? 30 * 60 * 1000
+                : interval === '60min' ? 60 * 60 * 1000
+                    : 24 * 3600 * 1000;
 
     const totalSteps = Math.min(120, Math.max(50, Math.floor((endTime - startTime) / intervalMs)));
     const stepTime = (endTime - startTime) / totalSteps;
@@ -191,49 +228,59 @@ export default function BacktestCandlestickChart({
         return buildCandlestickData(results, roundTrips, symbol, interval);
     }, [results, roundTrips, symbol, interval]);
 
+    // Pre-index trades with parsed timestamps for lightning-fast O(1) lookup
+    const parsedTrips = useMemo(() => {
+        const safeTrips = Array.isArray(roundTrips) ? roundTrips : [];
+        return safeTrips.map(t => ({
+            ...t,
+            entryTs: t.entryDate ? parseTimestamp(t.entryDate) : null,
+            exitTs: t.exitDate ? parseTimestamp(t.exitDate) : null,
+            pnlNum: Number(t.pnl) || 0
+        }));
+    }, [roundTrips]);
+
     // Build Annotations (Trade Entry/Exit Markers)
     const annotations = useMemo(() => {
         const points = [];
-        const safeTrips = Array.isArray(roundTrips) ? roundTrips : [];
+        const maxAnnotated = 40;
+        const step = parsedTrips.length > maxAnnotated ? Math.ceil(parsedTrips.length / maxAnnotated) : 1;
 
-        safeTrips.forEach((t, idx) => {
-            if (t.entryDate && t.entryPrice) {
-                const entryTime = parseTimestamp(t.entryDate);
+        for (let i = 0; i < parsedTrips.length; i += step) {
+            const t = parsedTrips[i];
+            if (t.entryTs && t.entryPrice) {
                 points.push({
-                    x: entryTime,
+                    x: t.entryTs,
                     y: Number(t.entryPrice),
                     marker: {
-                        size: 5,
+                        size: 4.5,
                         fillColor: '#10B981',
                         strokeColor: '#064E3B',
-                        strokeWidth: 2,
+                        strokeWidth: 1.5,
                         shape: 'circle',
                         radius: 2
                     }
                 });
             }
 
-            if (t.exitDate && t.exitPrice) {
-                const exitTime = parseTimestamp(t.exitDate);
-                const pnlNum = Number(t.pnl) || 0;
-                const isWin = pnlNum > 0;
+            if (t.exitTs && t.exitPrice) {
+                const isWin = t.pnlNum > 0;
                 points.push({
-                    x: exitTime,
+                    x: t.exitTs,
                     y: Number(t.exitPrice),
                     marker: {
-                        size: 5,
+                        size: 4.5,
                         fillColor: isWin ? '#F59E0B' : '#EF4444',
                         strokeColor: isWin ? '#78350F' : '#7F1D1D',
-                        strokeWidth: 2,
+                        strokeWidth: 1.5,
                         shape: 'circle',
                         radius: 2
                     }
                 });
             }
-        });
+        }
 
         return { points };
-    }, [roundTrips]);
+    }, [parsedTrips]);
 
     const chartOptions = {
         chart: {
@@ -254,9 +301,7 @@ export default function BacktestCandlestickChart({
                 autoSelected: 'zoom'
             },
             animations: {
-                enabled: true,
-                easing: 'easeinout',
-                speed: 500
+                enabled: false
             }
         },
         plotOptions: {
@@ -299,7 +344,10 @@ export default function BacktestCandlestickChart({
                     fontSize: '10px',
                     fontWeight: 500
                 },
-                formatter: (val) => Number(val).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })
+                formatter: (val) => {
+                    if (typeof val !== 'number' || isNaN(val)) return '';
+                    return val >= 100 ? val.toFixed(2) : val.toFixed(5);
+                }
             }
         },
         grid: {
@@ -309,7 +357,7 @@ export default function BacktestCandlestickChart({
         annotations: annotations,
         tooltip: {
             theme: isDark ? 'dark' : 'light',
-            custom: function({ seriesIndex, dataPointIndex, w }) {
+            custom: function ({ seriesIndex, dataPointIndex, w }) {
                 const o = w.globals.seriesCandleO[seriesIndex][dataPointIndex];
                 const h = w.globals.seriesCandleH[seriesIndex][dataPointIndex];
                 const l = w.globals.seriesCandleL[seriesIndex][dataPointIndex];
@@ -318,24 +366,25 @@ export default function BacktestCandlestickChart({
                 const date = new Date(candleTs).toLocaleString();
                 const isGreen = c >= o;
                 const changePct = o > 0 ? (((c - o) / o) * 100).toFixed(2) : '0.00';
+                const fmt = (v) => typeof v === 'number' ? (v >= 100 ? v.toFixed(2) : v.toFixed(5)) : v;
 
-                // Check for trades on this candle
-                const matchingEntry = roundTrips.find(t => Math.abs(parseTimestamp(t.entryDate) - candleTs) < 3600 * 1000 * 4);
-                const matchingExit = roundTrips.find(t => Math.abs(parseTimestamp(t.exitDate) - candleTs) < 3600 * 1000 * 4);
+                // Fast proximity trade lookup (within 4 hours window)
+                const matchingEntry = parsedTrips.find(t => t.entryTs && Math.abs(t.entryTs - candleTs) < 3600 * 1000 * 4);
+                const matchingExit = parsedTrips.find(t => t.exitTs && Math.abs(t.exitTs - candleTs) < 3600 * 1000 * 4);
 
                 let tradeBadgeHtml = '';
                 if (matchingEntry) {
                     tradeBadgeHtml += `
                         <div style="margin-top: 6px; padding: 4px 8px; background: rgba(16, 185, 129, 0.2); border-radius: 4px; color: #10b981; font-weight: 700; font-size: 10px;">
-                            🟢 BUY Entry #${matchingEntry.index || ''} @ ${matchingEntry.entryPrice}
+                            🟢 BUY Entry #${matchingEntry.index || ''} @ ${fmt(matchingEntry.entryPrice)}
                         </div>
                     `;
                 }
                 if (matchingExit) {
-                    const win = (Number(matchingExit.pnl) || 0) > 0;
+                    const win = matchingExit.pnlNum > 0;
                     tradeBadgeHtml += `
                         <div style="margin-top: 4px; padding: 4px 8px; background: ${win ? 'rgba(245, 158, 11, 0.2)' : 'rgba(239, 68, 68, 0.2)'}; border-radius: 4px; color: ${win ? '#f59e0b' : '#ef4444'}; font-weight: 700; font-size: 10px;">
-                            ${win ? '🟠' : '🔴'} ${matchingExit.trigger || (win ? 'TARGET' : 'STOPLOSS')} Exit @ ${matchingExit.exitPrice} (${win ? '+' : ''}$${Number(matchingExit.pnl).toFixed(2)})
+                            ${win ? '🟠' : '🔴'} ${matchingExit.trigger || (win ? 'TARGET' : 'STOPLOSS')} Exit @ ${fmt(matchingExit.exitPrice)} (${win ? '+' : ''}$${matchingExit.pnlNum.toFixed(2)})
                         </div>
                     `;
                 }
@@ -344,10 +393,10 @@ export default function BacktestCandlestickChart({
                     <div style="padding: 10px 14px; background: ${isDark ? '#0b130f' : '#ffffff'}; border: 1px solid ${isDark ? 'rgba(24, 201, 139, 0.25)' : 'rgba(0, 0, 0, 0.12)'}; border-radius: 8px; font-family: inherit; font-size: 11px; box-shadow: 0 8px 24px rgba(0,0,0,0.35);">
                         <div style="color: #94a3b8; font-weight: 600; margin-bottom: 6px;">${date}</div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; margin-bottom: 4px;">
-                            <div><span style="color: #64748b;">Open:</span> <strong style="color: ${isDark ? '#fff' : '#0f172a'}">${o}</strong></div>
-                            <div><span style="color: #64748b;">High:</span> <strong style="color: #10b981">${h}</strong></div>
-                            <div><span style="color: #64748b;">Low:</span> <strong style="color: #ef4444">${l}</strong></div>
-                            <div><span style="color: #64748b;">Close:</span> <strong style="color: ${isGreen ? '#10b981' : '#ef4444'}">${c} (${isGreen ? '+' : ''}${changePct}%)</strong></div>
+                            <div><span style="color: #64748b;">Open:</span> <strong style="color: ${isDark ? '#fff' : '#0f172a'}">${fmt(o)}</strong></div>
+                            <div><span style="color: #64748b;">High:</span> <strong style="color: #10b981">${fmt(h)}</strong></div>
+                            <div><span style="color: #64748b;">Low:</span> <strong style="color: #ef4444">${fmt(l)}</strong></div>
+                            <div><span style="color: #64748b;">Close:</span> <strong style="color: ${isGreen ? '#10b981' : '#ef4444'}">${fmt(c)} (${isGreen ? '+' : ''}${changePct}%)</strong></div>
                         </div>
                         ${tradeBadgeHtml}
                     </div>

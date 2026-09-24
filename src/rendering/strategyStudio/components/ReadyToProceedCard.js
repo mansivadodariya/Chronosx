@@ -11,6 +11,18 @@ function CheckmarkSvg() {
     );
 }
 
+function computeDynamicStrategyName(draft) {
+    if (!draft) return 'EMA Crossover EURUSD Strategy';
+    if (draft.name && !draft.name.toLowerCase().includes('momentum scalping')) {
+        return draft.name;
+    }
+    if (draft.strategy_name) return draft.strategy_name;
+
+    const sym = (draft.instrument || draft.symbol || (Array.isArray(draft.stock_name) ? draft.stock_name[0] : draft.stock_name) || 'EURUSD').toUpperCase();
+    const type = draft.strategy_type || draft.category || draft.pattern || 'EMA Crossover';
+    return `${type} ${sym} Strategy`;
+}
+
 /**
  * ReadyToProceedCard — Displays the Strategy Name input & actions (Screenshot 1 Top)
  * and the 3-step animated generation progress bar (Screenshot 1 Bottom)
@@ -22,15 +34,15 @@ export default function ReadyToProceedCard({
     onModifyStrategy,
     generatingStrategy
 }) {
-    const defaultName = draft?.name || `${draft?.instrument || 'EUR/USD'} Momentum Scalping`;
+    const defaultName = computeDynamicStrategyName(draft);
     const [strategyName, setStrategyName] = useState(defaultName);
     const [generationStage, setGenerationStage] = useState(1);
 
     useEffect(() => {
-        if (draft?.name || draft?.instrument) {
-            setStrategyName(draft?.name || `${draft?.instrument || 'EUR/USD'} Momentum Scalping`);
+        if (draft) {
+            setStrategyName(computeDynamicStrategyName(draft));
         }
-    }, [draft?.name, draft?.instrument]);
+    }, [draft]);
 
     // Animate the 3-step generation progression when generatingStrategy is true
     useEffect(() => {

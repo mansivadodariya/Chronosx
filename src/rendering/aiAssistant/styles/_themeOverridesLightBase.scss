@@ -394,6 +394,40 @@
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
         box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
+        color: #0f172a !important;
+
+        p, span, li, label, div {
+            color: #1e293b !important;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #047857 !important;
+        }
+
+        strong, b {
+            color: #0f172a !important;
+        }
+
+        table {
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+
+            th {
+                background: #f8fafc !important;
+                color: #0f172a !important;
+                border: 1px solid #e2e8f0 !important;
+            }
+
+            td {
+                background: #ffffff !important;
+                color: #1e293b !important;
+                border: 1px solid #e2e8f0 !important;
+            }
+
+            tr:nth-child(even) td {
+                background: #f8fafc !important;
+            }
+        }
     }
 
     .analysisCenterHeader,
@@ -403,6 +437,10 @@
         .analysisCenterTitle,
         .inlineWidgetTitle {
             color: #0f172a !important;
+        }
+
+        .analysisCenterIcon {
+            color: #047857 !important;
         }
     }
 

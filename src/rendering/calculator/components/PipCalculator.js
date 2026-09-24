@@ -6,7 +6,7 @@ import { PAIRS_CONFIG, CURRENCIES, RATES_TO_USD } from '../config';
 import CustomDropdown from './CustomDropdown';
 
 export default function PipCalculator({ onCopy, copied }) {
-    const [pipPair, setPipPair] = useState('EUR/USD');
+    const [pipPair, setPipPair] = useState('XAU/USD');
     const [pipAmount, setPipAmount] = useState('10');
     const [pipLots, setPipLots] = useState('1.0');
     const [pipCurrency, setPipCurrency] = useState('USD');

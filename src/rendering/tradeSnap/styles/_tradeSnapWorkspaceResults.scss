@@ -111,13 +111,36 @@ $success: #10b981;
         touch-action: pan-y;
         -webkit-overflow-scrolling: touch;
 
+        scrollbar-width: thin;
+        scrollbar-color: #18C98B rgba(255, 255, 255, 0.05);
+
         &::-webkit-scrollbar {
             width: 6px;
         }
 
+        &::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 999px;
+        }
+
         &::-webkit-scrollbar-thumb {
-            background: rgba(24, 201, 139, 0.2);
-            border-radius: 3px;
+            background: rgba(24, 201, 139, 0.5);
+            border-radius: 999px;
+        }
+
+        :global(html[data-theme='light']) &,
+        :global([data-theme='light']) &,
+        :global(html.light) &,
+        :global(.light) & {
+            scrollbar-color: #10B981 #F1F5F9;
+
+            &::-webkit-scrollbar-track {
+                background: #F1F5F9 !important;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: #10B981 !important;
+            }
         }
     }
 
@@ -292,6 +315,40 @@ $success: #10b981;
         100% {
             transform: scale(1.15);
             opacity: 1;
+        }
+    }
+
+    :global(.pdfExporting) & {
+        .resultsPanel {
+            max-height: none !important;
+            overflow: visible !important;
+            background: #FFFFFF !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .resultsBody {
+            max-height: none !important;
+            overflow: visible !important;
+            padding: 0 !important;
+        }
+
+        .analysesListContainer {
+            background: #FFFFFF !important;
+            overflow: visible !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .historyGroup {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+
+        .historyTime {
+            background: #F1F5F9 !important;
+            border: 1px solid #CBD5E1 !important;
+            color: #047857 !important;
         }
     }
 

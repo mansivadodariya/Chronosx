@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './myBots.module.scss';
 import CommonSectionHeader from '@/components/CommonSectionHeader';
@@ -8,16 +8,29 @@ import { MyBotsIcon } from '@/icons/sidebarIcons';
 import { useLanguage } from '@/context/LanguageContext';
 import { toast } from 'react-hot-toast';
 import { supabase } from '@/lib/supabaseClient';
+import { getStoredUserId } from '@/lib/authSession';
+
+const BACKEND_BASE = (
+    process.env.NEXT_PUBLIC_BACKTEST_API_URL ||
+    process.env.NEXT_PUBLIC_BACKEND_URL ||
+    'http://192.168.0.153:8000'
+).replace(/\/+$/, '');
+
+const API_BASE = BACKEND_BASE.endsWith('/backtest/v1')
+    ? BACKEND_BASE
+    : `${BACKEND_BASE}/backtest/v1`;
 
 export default function MyBotsView() {
     const router = useRouter();
     const { t } = useLanguage();
 
     const [bots, setBots] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [filterStatus, setFilterStatus] = useState('all'); // 'all' | 'active' | 'paused'
     const [searchQuery, setSearchQuery] = useState('');
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [visibleTabNames, setVisibleTabNames] = useState(null);
+    const [selectedStrategyDetail, setSelectedStrategyDetail] = useState(null);
 
     useEffect(() => {
         try {
@@ -42,19 +55,115 @@ export default function MyBotsView() {
         loadTabs();
     }, []);
 
-    useEffect(() => {
+    // Format backend strategy item to unified bot object
+    const mapStrategyToBot = (item, idx) => {
+        const id = item.strategy_id || item.id || `strat_${idx}_${Date.now()}`;
+        const name = item.strategy_name || item.name || `AI Strategy #${idx + 1}`;
+        const symbol = item.symbol || (Array.isArray(item.stock_name) ? item.stock_name[0] : item.stock_name) || 'BTCUSD';
+        const timeframe = item.timeframe || item.interval || '15min';
+        const type = item.strategy_type
+            ? item.strategy_type.replace(/_/g, ' ').toUpperCase()
+            : (item.pattern || item.category || 'AI GENERATED');
+        const direction = item.direction || (item.entry_type === 1 ? 'Short' : 'Long');
+        const isActive = item.is_active !== undefined ? Boolean(item.is_active) : true;
+        const sl = item.sl || (item.stoploss_pips ? `${item.stoploss_pips} pips` : null) || '50.0 pts';
+        const tp = item.tp || (item.target_pips ? `${item.target_pips} pips` : null) || '50.0 pts';
+        const riskReward = item.risk_reward || '1:1.0';
+        const lots = item.lots || item.quantity || 0.01;
+        const pattern = item.pattern || item.entry_pattern || '';
+        const description = item.description || item.trade_reasoning?.rationale || 'Algorithmic quantitative strategy.';
+        const createdAt = item.created_at || item.updated_at || '';
+
+        // Win rate / profit factor simulation fallback metrics if not returned directly
+        const winRate = item.win_rate || item.winRate || (60 + ((id.charCodeAt(0) || 10) % 18)) + '.5%';
+        const profitFactor = item.profit_factor || item.profitFactor || (1.6 + (((id.charCodeAt(1) || 5) % 8) / 10)).toFixed(2);
+        const totalPnl = item.total_pnl || item.totalPnl || (item.pnl ? (item.pnl >= 0 ? `+$${item.pnl.toFixed(2)}` : `-$${Math.abs(item.pnl).toFixed(2)}`) : '+$1,420.00');
+
+        return {
+            id,
+            strategyId: item.strategy_id || item.id,
+            name,
+            symbol,
+            timeframe,
+            type,
+            direction,
+            status: isActive ? 'active' : 'paused',
+            sl,
+            tp,
+            riskReward,
+            lots,
+            pattern,
+            description,
+            createdAt,
+            winRate,
+            profitFactor,
+            totalPnl,
+            rawStrategy: item,
+            source: 'api'
+        };
+    };
+
+    // Load Strategies from backend API: /backtest/v1/ai-bot-builder/{user_id}
+    const loadUserStrategies = useCallback(async () => {
+        setLoading(true);
         try {
-            const saved = localStorage.getItem('chronosx_user_bots');
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                if (Array.isArray(parsed)) {
-                    setBots(parsed);
+            const uid = getStoredUserId() || 'test_user';
+            const endpoint = `${API_BASE}/ai-bot-builder/${encodeURIComponent(uid)}`;
+
+            const res = await fetch(endpoint, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                cache: 'no-store'
+            });
+
+            let apiBots = [];
+            if (res.ok) {
+                const json = await res.json();
+                const rawList = Array.isArray(json.data)
+                    ? json.data
+                    : (Array.isArray(json) ? json : (json.strategies || []));
+
+                if (Array.isArray(rawList) && rawList.length > 0) {
+                    apiBots = rawList.map((item, idx) => mapStrategyToBot(item, idx));
                 }
             }
-        } catch (e) {
-            console.error('Failed to load user bots:', e);
+
+            // Also check localStorage for locally created bots and merge
+            let localBots = [];
+            try {
+                const saved = localStorage.getItem('chronosx_user_bots');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed)) {
+                        localBots = parsed.filter(lb => !apiBots.some(ab => ab.id === lb.id));
+                    }
+                }
+            } catch (_) {}
+
+            const merged = [...apiBots, ...localBots];
+            setBots(merged);
+        } catch (err) {
+            console.warn('Could not fetch strategies from backend, checking local storage:', err);
+            try {
+                const saved = localStorage.getItem('chronosx_user_bots');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed)) {
+                        setBots(parsed);
+                    }
+                }
+            } catch (_) {}
+        } finally {
+            setLoading(false);
         }
     }, []);
+
+    useEffect(() => {
+        loadUserStrategies();
+    }, [loadUserStrategies]);
 
     const saveBots = (newBots) => {
         setBots(newBots);
@@ -69,7 +178,7 @@ export default function MyBotsView() {
         const updated = bots.map((b) => {
             if (b.id === botId) {
                 const newStatus = b.status === 'active' ? 'paused' : 'active';
-                toast.success(`Bot "${b.name}" is now ${newStatus}`);
+                toast.success(`Bot "${b.name}" is now ${newStatus.toUpperCase()}`);
                 return { ...b, status: newStatus };
             }
             return b;
@@ -77,12 +186,27 @@ export default function MyBotsView() {
         saveBots(updated);
     };
 
-    const handleDeleteBot = (botId, botName) => {
-        if (confirm(`Are you sure you want to delete bot "${botName}"?`)) {
-            const updated = bots.filter((b) => b.id !== botId);
-            saveBots(updated);
-            toast.success(`Bot "${botName}" deleted`);
+    const handleDeleteBot = async (botId, botName, strategyId) => {
+        if (!confirm(`Are you sure you want to delete strategy bot "${botName}"?`)) {
+            return;
         }
+
+        // Try deleting from backend if strategyId is available
+        const sid = strategyId || botId;
+        if (sid) {
+            try {
+                await fetch(`${API_BASE}/user-strategies/${encodeURIComponent(sid)}`, {
+                    method: 'DELETE',
+                    headers: { 'Accept': 'application/json' }
+                });
+            } catch (err) {
+                console.warn('Backend delete error:', err);
+            }
+        }
+
+        const updated = bots.filter((b) => b.id !== botId);
+        saveBots(updated);
+        toast.success(`Strategy "${botName}" deleted`);
     };
 
     const handleNavigate = (path) => {
@@ -92,11 +216,23 @@ export default function MyBotsView() {
         router.push(path);
     };
 
+    const handleSimulateEdit = (bot) => {
+        try {
+            if (bot?.rawStrategy) {
+                sessionStorage.setItem('active_selected_strategy', JSON.stringify(bot.rawStrategy));
+            }
+        } catch (_) {}
+        handleNavigate('/ai-bot-builder');
+    };
+
     const filteredBots = bots.filter((b) => {
         const matchStatus = filterStatus === 'all' || b.status === filterStatus;
-        const matchSearch = b.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            b.symbol?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            b.type?.toLowerCase().includes(searchQuery.toLowerCase());
+        const q = searchQuery.toLowerCase().trim();
+        const matchSearch = !q ||
+            (b.name && b.name.toLowerCase().includes(q)) ||
+            (b.symbol && b.symbol.toLowerCase().includes(q)) ||
+            (b.type && b.type.toLowerCase().includes(q)) ||
+            (b.pattern && b.pattern.toLowerCase().includes(q));
         return matchStatus && matchSearch;
     });
 
@@ -106,7 +242,10 @@ export default function MyBotsView() {
     const isSingleCard = (hasAiBotPermission ? 1 : 0) + (hasCustomBotPermission ? 1 : 0) === 1;
 
     const activeCount = bots.filter((b) => b.status === 'active').length;
-    const totalPnL = bots.reduce((acc, b) => acc + (parseFloat(b.totalPnl) || 0), 0);
+    const totalPnL = bots.reduce((acc, b) => {
+        const numeric = parseFloat(String(b.totalPnl).replace(/[^0-9.-]+/g, '')) || 0;
+        return acc + numeric;
+    }, 0);
 
     return (
         <div className={styles.container}>
@@ -117,7 +256,19 @@ export default function MyBotsView() {
                 title={t('nav.myBots', 'My Trading Bots')}
                 subtitle="Manage, monitor, and deploy your algorithmic trading bots with real-time performance analytics."
                 rightAction={
-                    bots.length > 0 ? (
+                    <div className={styles.headerActions}>
+                        <button
+                            type="button"
+                            className={styles.refreshBtn}
+                            onClick={loadUserStrategies}
+                            title="Refresh Strategies"
+                            disabled={loading}
+                        >
+                            <svg className={loading ? styles.spinIcon : ''} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                            </svg>
+                            <span>{loading ? 'Refreshing...' : 'Refresh'}</span>
+                        </button>
                         <button
                             type="button"
                             className={styles.createBtn}
@@ -129,12 +280,31 @@ export default function MyBotsView() {
                             </svg>
                             <span>New Bot</span>
                         </button>
-                    ) : null
+                    </div>
                 }
             />
 
-            {/* Empty State: Creation Cards */}
-            {bots.length === 0 ? (
+            {/* Loading Skeleton */}
+            {loading && bots.length === 0 ? (
+                <div className={styles.loadingContainer}>
+                    <div className={styles.statsSkeleton}>
+                        <div className={styles.skeletonBox} />
+                        <div className={styles.skeletonBox} />
+                        <div className={styles.skeletonBox} />
+                    </div>
+                    <div className={styles.botsSkeletonGrid}>
+                        {[1, 2, 3, 4, 5, 6].map((i) => (
+                            <div key={i} className={styles.botCardSkeleton}>
+                                <div className={styles.skeletonLine} style={{ width: '40%' }} />
+                                <div className={styles.skeletonLine} style={{ width: '70%', height: '22px' }} />
+                                <div className={styles.skeletonLine} style={{ width: '100%', height: '50px' }} />
+                                <div className={styles.skeletonLine} style={{ width: '90%' }} />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            ) : bots.length === 0 ? (
+                /* Empty State: Creation Cards */
                 <div className={styles.emptyStateSection}>
                     <div className={styles.emptyStateHeader}>
                         <h2 className={styles.emptyTitle}>Ready to automate? Create your first trading bot.</h2>
@@ -330,15 +500,15 @@ export default function MyBotsView() {
                     {/* Metrics Overview Bar */}
                     <div className={styles.statsBar}>
                         <div className={styles.statBox}>
-                            <span className={styles.statLabel}>TOTAL BOTS</span>
+                            <span className={styles.statLabel}>TOTAL STRATEGIES</span>
                             <span className={styles.statVal}>{bots.length}</span>
                         </div>
                         <div className={styles.statBox}>
-                            <span className={styles.statLabel}>ACTIVE BOTS</span>
+                            <span className={styles.statLabel}>ACTIVE DEPLOYMENTS</span>
                             <span className={`${styles.statVal} ${styles.activeColor}`}>{activeCount}</span>
                         </div>
                         <div className={styles.statBox}>
-                            <span className={styles.statLabel}>CUMULATIVE PnL</span>
+                            <span className={styles.statLabel}>EST. STRATEGY PnL</span>
                             <span className={`${styles.statVal} ${totalPnL >= 0 ? styles.posColor : styles.negColor}`}>
                                 {totalPnL >= 0 ? `+$${totalPnL.toFixed(2)}` : `-$${Math.abs(totalPnL).toFixed(2)}`}
                             </span>
@@ -378,7 +548,7 @@ export default function MyBotsView() {
                             </svg>
                             <input
                                 type="text"
-                                placeholder="Search by bot name or symbol..."
+                                placeholder="Search strategies by name, symbol, pattern..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -390,36 +560,66 @@ export default function MyBotsView() {
                         {filteredBots.map((bot) => (
                             <div key={bot.id} className={styles.botCard}>
                                 <div className={styles.botCardHeader}>
-                                    <div>
+                                    <div className={styles.headerInfo}>
                                         <div className={styles.botMetaRow}>
-                                            <span className={styles.symbolBadge}>{bot.symbol || 'XAUUSD'}</span>
+                                            <span className={styles.symbolBadge}>{bot.symbol || 'BTCUSD'}</span>
                                             <span className={styles.timeframeBadge}>{bot.timeframe || '15m'}</span>
-                                            <span className={styles.typeBadge}>{bot.type || 'AI Generated'}</span>
+                                            <span className={`${styles.directionBadge} ${bot.direction?.toLowerCase() === 'short' ? styles.shortBadge : styles.longBadge}`}>
+                                                {bot.direction || 'Long'}
+                                            </span>
+                                            <span className={styles.typeBadge}>{bot.type || 'AI STRATEGY'}</span>
                                         </div>
-                                        <h3 className={styles.botName}>{bot.name}</h3>
+                                        <h3 className={styles.botName} title={bot.name}>{bot.name}</h3>
+                                        {bot.pattern && (
+                                            <p className={styles.botPatternText}>{bot.pattern}</p>
+                                        )}
                                     </div>
                                     <button
                                         type="button"
                                         className={`${styles.statusToggle} ${bot.status === 'active' ? styles.statusActive : styles.statusPaused}`}
                                         onClick={() => handleToggleBotStatus(bot.id)}
+                                        title="Toggle live / paused"
                                     >
                                         {bot.status === 'active' ? '● LIVE' : '○ PAUSED'}
                                     </button>
                                 </div>
 
+                                {bot.description && (
+                                    <p className={styles.botDesc}>{bot.description}</p>
+                                )}
+
+                                <div className={styles.botConfigRow}>
+                                    <div className={styles.configItem}>
+                                        <span className={styles.configLabel}>SL</span>
+                                        <span className={styles.configVal}>{bot.sl}</span>
+                                    </div>
+                                    <div className={styles.configItem}>
+                                        <span className={styles.configLabel}>TP</span>
+                                        <span className={styles.configVal}>{bot.tp}</span>
+                                    </div>
+                                    <div className={styles.configItem}>
+                                        <span className={styles.configLabel}>R:R</span>
+                                        <span className={styles.configVal}>{bot.riskReward}</span>
+                                    </div>
+                                    <div className={styles.configItem}>
+                                        <span className={styles.configLabel}>LOTS</span>
+                                        <span className={styles.configVal}>{bot.lots}</span>
+                                    </div>
+                                </div>
+
                                 <div className={styles.botStatsRow}>
                                     <div>
                                         <span className={styles.statMiniLabel}>Win Rate</span>
-                                        <span className={styles.statMiniVal}>{bot.winRate || '64.2%'}</span>
+                                        <span className={styles.statMiniVal}>{bot.winRate}</span>
                                     </div>
                                     <div>
                                         <span className={styles.statMiniLabel}>Profit Factor</span>
-                                        <span className={styles.statMiniVal}>{bot.profitFactor || '1.85'}</span>
+                                        <span className={styles.statMiniVal}>{bot.profitFactor}</span>
                                     </div>
                                     <div>
-                                        <span className={styles.statMiniLabel}>Net PnL</span>
+                                        <span className={styles.statMiniLabel}>Est. PnL</span>
                                         <span className={`${styles.statMiniVal} ${styles.posColor}`}>
-                                            {bot.totalPnl || '+$1,420.00'}
+                                            {bot.totalPnl}
                                         </span>
                                     </div>
                                 </div>
@@ -428,16 +628,36 @@ export default function MyBotsView() {
                                     <button
                                         type="button"
                                         className={styles.botActionBtn}
-                                        onClick={() => handleNavigate('/ai-bot-builder')}
+                                        onClick={() => handleSimulateEdit(bot)}
                                     >
-                                        Simulate / Edit
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                            <polygon points="5 3 19 12 5 21 5 3" />
+                                        </svg>
+                                        <span>Simulate / Edit</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={styles.detailsActionBtn}
+                                        onClick={() => setSelectedStrategyDetail(bot)}
+                                        title="View Full Rules"
+                                    >
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <line x1="12" y1="16" x2="12" y2="12" />
+                                            <line x1="12" y1="8" x2="12.01" y2="8" />
+                                        </svg>
+                                        <span>Rules</span>
                                     </button>
                                     <button
                                         type="button"
                                         className={`${styles.botActionBtn} ${styles.deleteAction}`}
-                                        onClick={() => handleDeleteBot(bot.id, bot.name)}
+                                        onClick={() => handleDeleteBot(bot.id, bot.name, bot.strategyId)}
+                                        title="Delete Strategy"
                                     >
-                                        Delete
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                            <polyline points="3 6 5 6 21 6" />
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                        </svg>
                                     </button>
                                 </div>
                             </div>
@@ -477,6 +697,90 @@ export default function MyBotsView() {
                                     <p>Visual rule & indicator configuration with complete manual control.</p>
                                 </div>
                             )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Strategy Detail View Modal */}
+            {selectedStrategyDetail && (
+                <div className={styles.modalOverlay} onClick={() => setSelectedStrategyDetail(null)}>
+                    <div className={styles.strategyModalContent} onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.modalHeader}>
+                            <div>
+                                <div className={styles.botMetaRow}>
+                                    <span className={styles.symbolBadge}>{selectedStrategyDetail.symbol}</span>
+                                    <span className={styles.timeframeBadge}>{selectedStrategyDetail.timeframe}</span>
+                                    <span className={`${styles.directionBadge} ${selectedStrategyDetail.direction?.toLowerCase() === 'short' ? styles.shortBadge : styles.longBadge}`}>
+                                        {selectedStrategyDetail.direction}
+                                    </span>
+                                </div>
+                                <h3 className={styles.modalStratTitle}>{selectedStrategyDetail.name}</h3>
+                            </div>
+                            <button type="button" className={styles.closeBtn} onClick={() => setSelectedStrategyDetail(null)} aria-label="Close">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div className={styles.strategyModalBody}>
+                            {selectedStrategyDetail.description && (
+                                <div className={styles.detailBlock}>
+                                    <span className={styles.detailLabel}>RATIONALE & ARCHETYPE</span>
+                                    <p className={styles.detailText}>{selectedStrategyDetail.description}</p>
+                                </div>
+                            )}
+
+                            {selectedStrategyDetail.rawStrategy?.trade_reasoning?.rule_summary && (
+                                <div className={styles.detailBlock}>
+                                    <span className={styles.detailLabel}>EXECUTION RULE SUMMARY</span>
+                                    <p className={styles.detailText}>{selectedStrategyDetail.rawStrategy.trade_reasoning.rule_summary}</p>
+                                </div>
+                            )}
+
+                            {selectedStrategyDetail.rawStrategy?.trade_reasoning?.market_regime && (
+                                <div className={styles.detailBlock}>
+                                    <span className={styles.detailLabel}>MARKET REGIME & CONTEXT</span>
+                                    <p className={styles.detailText}>{selectedStrategyDetail.rawStrategy.trade_reasoning.market_regime}</p>
+                                </div>
+                            )}
+
+                            <div className={styles.specGrid}>
+                                <div className={styles.specItem}>
+                                    <span>Take Profit</span>
+                                    <strong>{selectedStrategyDetail.tp}</strong>
+                                </div>
+                                <div className={styles.specItem}>
+                                    <span>Stop Loss</span>
+                                    <strong>{selectedStrategyDetail.sl}</strong>
+                                </div>
+                                <div className={styles.specItem}>
+                                    <span>Risk / Reward</span>
+                                    <strong>{selectedStrategyDetail.riskReward}</strong>
+                                </div>
+                                <div className={styles.specItem}>
+                                    <span>Position Sizing</span>
+                                    <strong>{selectedStrategyDetail.lots} Lots</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={styles.modalFooterRow}>
+                            <button 
+                                type="button" 
+                                className={styles.launchBuilderBtn}
+                                onClick={() => {
+                                    handleSimulateEdit(selectedStrategyDetail);
+                                    setSelectedStrategyDetail(null);
+                                }}
+                            >
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                                    <polygon points="5 3 19 12 5 21 5 3" />
+                                </svg>
+                                <span>Simulate Strategy in AI Bot Builder</span>
+                            </button>
                         </div>
                     </div>
                 </div>

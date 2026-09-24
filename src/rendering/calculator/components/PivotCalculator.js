@@ -2,14 +2,18 @@
 
 import React, { useState, useMemo } from 'react';
 import styles from '../calculator.module.scss';
+import { PAIRS_CONFIG } from '../config';
 import CustomDropdown from './CustomDropdown';
 
 export default function PivotCalculator() {
+    const pairOptions = Object.keys(PAIRS_CONFIG);
+    const defaultP = PAIRS_CONFIG['XAU/USD']?.defaultPrice || 4308.18;
+    const [pivotPair, setPivotPair] = useState('XAU/USD');
     const [pivotType, setPivotType] = useState('standard'); // 'standard' | 'fibonacci' | 'camarilla' | 'woodie'
-    const [pivotHigh, setPivotHigh] = useState('1.0920');
-    const [pivotLow, setPivotLow] = useState('1.0830');
-    const [pivotClose, setPivotClose] = useState('1.0875');
-    const [pivotOpen, setPivotOpen] = useState('1.0850');
+    const [pivotHigh, setPivotHigh] = useState(String((defaultP * 1.008).toFixed(2)));
+    const [pivotLow, setPivotLow] = useState(String((defaultP * 0.992).toFixed(2)));
+    const [pivotClose, setPivotClose] = useState(String((defaultP * 1.002).toFixed(2)));
+    const [pivotOpen, setPivotOpen] = useState(String(defaultP.toFixed(2)));
 
     const PIVOT_MODELS = [
         { value: 'standard', label: 'Standard Floor Pivot' },
@@ -86,6 +90,24 @@ export default function PivotCalculator() {
                 </div>
 
                 <div className={styles.inputsGrid}>
+                    <div className={styles.inputGroup}>
+                        <label>Instrument / Asset Preset</label>
+                        <CustomDropdown
+                            options={pairOptions}
+                            value={pivotPair}
+                            onChange={(val) => {
+                                setPivotPair(val);
+                                const pairData = PAIRS_CONFIG[val] || PAIRS_CONFIG['EUR/USD'];
+                                const p = pairData?.defaultPrice || 1.08450;
+                                const decimals = (pairData?.type === 'crypto' || pairData?.type === 'metal' || pairData?.type === 'jpy') ? 2 : 5;
+                                setPivotHigh(String((p * 1.008).toFixed(decimals)));
+                                setPivotLow(String((p * 0.992).toFixed(decimals)));
+                                setPivotClose(String((p * 1.002).toFixed(decimals)));
+                                setPivotOpen(String(p.toFixed ? p.toFixed(decimals) : p));
+                            }}
+                        />
+                    </div>
+
                     <div className={styles.inputGroup}>
                         <label>Pivot Calculation Model</label>
                         <CustomDropdown

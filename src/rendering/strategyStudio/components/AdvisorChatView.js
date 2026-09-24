@@ -8,6 +8,7 @@ import { renderFormattedMarkdown } from '../utils/markdownRenderer';
 import { getStoredUser, getStoredUserId, hydrateUserFromProfile } from '@/lib/authSession';
 import InteractiveQuestionWizard from './InteractiveQuestionWizard';
 import ReadyToProceedCard from './ReadyToProceedCard';
+import { getDynamicStepInfo, DYNAMIC_LOADING_STAGES } from '../utils/chatUiHelpers';
 import {
     BotBrainIcon,
     LightningIcon,
@@ -30,11 +31,7 @@ import {
 } from './StudioIcons';
 
 const STRATEGY_EXPLORE_OPTIONS = [
-    'Build a DCA strategy on BTC',
-    'Build a grid trading strategy',
-    'Backtest my last strategy',
-    'Improve my running strategy',
-    'Build a momentum strategy from scratch'
+    'Build an EMA crossover strategy'
 ];
 
 const EXPLORE_TAGLINES = [
@@ -45,67 +42,7 @@ const EXPLORE_TAGLINES = [
     'Analyze. Automate. Adapt. Repeat.'
 ];
 
-const DYNAMIC_LOADING_STAGES = [
-    'Formulating quantitative trading blueprint...',
-    'Synthesizing indicators & technical signals...',
-    'Optimizing entry triggers and risk parameters (SL/TP)...',
-    'Compiling algorithmic strategy rules...'
-];
 
-const STEP_TITLES = [
-    'Market & Timeframe',
-    'Strategy Requirements',
-    'Risk & Execution',
-    'Strategy Blueprint'
-];
-
-function getDynamicStepInfo(msg, allMessages, defaultCurrentStep = 2, defaultTotalSteps = 4) {
-    if (msg.step_badge) {
-        const match = msg.step_badge.match(/Step\s*(\d+)/i);
-        const stepNum = match ? parseInt(match[1], 10) : defaultCurrentStep;
-        const title = msg.step_title || msg.step_badge.replace(/^Step\s*\d+:\s*/i, '') || STEP_TITLES[stepNum - 1] || 'Strategy Configuration';
-        const total = msg.total_steps || defaultTotalSteps;
-        const progress = Math.min(100, Math.max(12, Math.round((stepNum / total) * 100)));
-        return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
-    }
-
-    if (msg.draft) {
-        return {
-            stepNum: 4,
-            total: 4,
-            title: 'Strategy Blueprint Ready',
-            badgeText: 'Step 4: Strategy Blueprint Ready',
-            progress: 100
-        };
-    }
-
-    if (msg.current_question?.question_number && msg.current_question?.total_questions) {
-        const qNum = msg.current_question.question_number;
-        const qTotal = msg.current_question.total_questions;
-        const total = 4;
-        const stepNum = Math.min(4, Math.max(1, Math.ceil((qNum / qTotal) * 4)));
-        const title = msg.step_title || STEP_TITLES[stepNum - 1] || 'Strategy Requirements';
-        const progress = Math.min(100, Math.max(15, Math.round((qNum / qTotal) * 100)));
-        return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
-    }
-
-    if (msg.step || msg.step_number) {
-        const stepNum = parseInt(msg.step || msg.step_number, 10);
-        const total = msg.total_steps || defaultTotalSteps;
-        const title = msg.step_title || STEP_TITLES[stepNum - 1] || 'Strategy Requirements';
-        const progress = Math.min(100, Math.max(15, Math.round((stepNum / total) * 100)));
-        return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
-    }
-
-    const aiMessages = (allMessages || []).filter((m) => m.role === 'ai');
-    const aiIndex = aiMessages.indexOf(msg);
-    const stepNum = Math.min(4, Math.max(1, aiIndex >= 0 ? aiIndex + 1 : defaultCurrentStep));
-    const total = 4;
-    const title = STEP_TITLES[stepNum - 1] || 'Strategy Requirements';
-    const progress = Math.min(100, Math.max(25, Math.round((stepNum / total) * 100)));
-
-    return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
-}
 
 function DynamicChatLoader() {
     const [stageIdx, setStageIdx] = useState(0);
@@ -178,6 +115,7 @@ export default function AdvisorChatView({
 }) {
     const chatScrollContainerRef = useRef(null);
     const textareaRef = useRef(null);
+    const exploreTextareaRef = useRef(null);
     const completedStreamsRef = useRef(new Set());
     const [, forceUpdate] = useState(0);
 
@@ -185,6 +123,18 @@ export default function AdvisorChatView({
     const [isStrategyMenuOpen, setIsStrategyMenuOpen] = useState(false);
     const [isOptionBoxDismissed, setIsOptionBoxDismissed] = useState(false);
     const [user, setUser] = useState(null);
+
+    // As-you-type suggestion dropdown
+    const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(0);
+    const typedSuggestions = useMemo(() => {
+        const trimmed = input.trim().toLowerCase();
+        if (!trimmed) return [];
+        return STRATEGY_EXPLORE_OPTIONS.filter((opt) => {
+            const optLower = opt.toLowerCase();
+            return optLower.includes(trimmed) && optLower !== trimmed;
+        });
+    }, [input]);
+    const showTypedSuggestions = typedSuggestions.length > 0;
 
     useEffect(() => {
         if (messages.length === 0) {
@@ -248,10 +198,36 @@ export default function AdvisorChatView({
     }, [onSend]);
 
     const handleKeyDown = (e) => {
+        if (showTypedSuggestions) {
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                setActiveSuggestionIndex((prev) => (prev + 1) % typedSuggestions.length);
+                return;
+            }
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                setActiveSuggestionIndex((prev) => (prev - 1 + typedSuggestions.length) % typedSuggestions.length);
+                return;
+            }
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const chosen = typedSuggestions[activeSuggestionIndex] || typedSuggestions[0];
+                if (chosen) {
+                    setInput(chosen);
+                    setActiveSuggestionIndex(0);
+                }
+                return;
+            }
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                setActiveSuggestionIndex(0);
+                return;
+            }
+        }
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             if (input.trim() && !loading) {
-                handleSend();
+                handleSend(input);
             }
         }
     };
@@ -351,13 +327,38 @@ export default function AdvisorChatView({
                         {/* Centered Explore Input Card */}
                         <div className={styles.exploreInputCard}>
                             <textarea
+                                ref={exploreTextareaRef}
                                 className={styles.explorePromptTextarea}
                                 placeholder="What would you like to explore?"
                                 value={input}
-                                onChange={(e) => setInput(e.target.value)}
+                                onChange={(e) => { setInput(e.target.value); setActiveSuggestionIndex(0); }}
                                 onKeyDown={handleKeyDown}
                                 rows={2}
                             />
+                            {/* As-you-type suggestion dropdown (Out of box floating card) */}
+                            {showTypedSuggestions && (
+                                <div className={styles.typedSuggestionDropdown}>
+                                    {typedSuggestions.map((sug, i) => (
+                                        <button
+                                            key={i}
+                                            type="button"
+                                            className={`${styles.typedSuggestionItem} ${i === activeSuggestionIndex ? styles.typedSuggestionActive : ''}`}
+                                            onMouseEnter={() => setActiveSuggestionIndex(i)}
+                                            onClick={() => {
+                                                setInput(sug);
+                                                setActiveSuggestionIndex(0);
+                                                if (exploreTextareaRef.current) exploreTextareaRef.current.focus();
+                                            }}
+                                        >
+                                            <div className={styles.suggestionIconWrap}>
+                                                <SparklesMiniIcon size={14} color="currentColor" />
+                                            </div>
+                                            <span className={styles.suggestionText}>{sug}</span>
+                                            <span className={styles.suggestionHintBadge}>Tab</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                             <div className={styles.exploreCardBottom}>
                                 <button
                                     type="button"
@@ -371,7 +372,7 @@ export default function AdvisorChatView({
                                 <button
                                     type="button"
                                     className={`${styles.circularSubmitBtn} ${input.trim() ? styles.activeBtn : ''}`}
-                                    onClick={onSend}
+                                    onClick={() => handleSend(input)}
                                     disabled={loading || !input.trim()}
                                     title="Send Message"
                                 >
@@ -381,7 +382,7 @@ export default function AdvisorChatView({
                         </div>
 
                         {/* Category Chips Underneath Input Card */}
-                        <div className={styles.categoryChipsRow}>                   
+                        <div className={styles.categoryChipsRow}>
                             <button
                                 type="button"
                                 className={`${styles.categoryChipBtn} ${isStrategyMenuOpen ? styles.activeChip : ''}`}
@@ -522,30 +523,72 @@ export default function AdvisorChatView({
                                         )}
                                     </div>
 
-                                    {/* Ready to Proceed Card matching Screenshot */}
-                                    {showActionOptions && !isUser && msg.draft && (
-                                        <ReadyToProceedCard
-                                            draft={msg.draft}
-                                            onCreateStrategy={(name) => onGenerateFromDraft(msg.draft, name)}
-                                            onEnhance={(name) => onSend(`Enhance and optimize strategy rules for ${name}`)}
-                                            onModifyStrategy={(name) => onSend(`Modify strategy parameters for ${name}`)}
-                                            generatingStrategy={generatingStrategy}
-                                        />
-                                    )}
+                                    {/* Ready to Proceed Card — Appears BEFORE strategy generation at the review/confirm question step */}
+                                    {(() => {
+                                        const isAlreadyGenerated = Boolean(
+                                            (msg.text || '').toLowerCase().includes('generated successfully') ||
+                                            (msg.text || '').toLowerCase().includes('configured and calibrated') ||
+                                            (msg.text || '').toLowerCase().includes('strategy ready') ||
+                                            (msg.text || '').toLowerCase().includes("what's next? run a backtest") ||
+                                            msg.isGeneratedStrategy ||
+                                            msg.step === 5 ||
+                                            msg.step_number === 5 ||
+                                            (msg.step_title || '').toLowerCase().includes('strategy ready') ||
+                                            (msg.step_badge || '').toLowerCase().includes('step 5')
+                                        );
+
+                                        const isReviewOrConfirmStage = !isAlreadyGenerated && Boolean(
+                                            msg.draft ||
+                                            (msg.text || '').toLowerCase().includes('confirm to proceed') ||
+                                            (msg.text || '').toLowerCase().includes('chart elements? just let me know') ||
+                                            (msg.text || '').toLowerCase().includes('ready to proceed') ||
+                                            (msg.step_title || '').toLowerCase().includes('review') ||
+                                            (msg.step_title || '').toLowerCase().includes('confirm')
+                                        );
+
+                                        const hasSubsequentCreation = messages.slice(index + 1).some((m) =>
+                                            (m.text || '').toLowerCase().includes('create strategy') ||
+                                            (m.text || '').toLowerCase().includes('generated successfully')
+                                        );
+
+                                        const showReadyToProceedCard = showActionOptions &&
+                                            !isUser &&
+                                            isReviewOrConfirmStage &&
+                                            !hasSubsequentCreation &&
+                                            !generatingStrategy;
+
+                                        if (!showReadyToProceedCard) return null;
+
+                                        const effectiveDraft = msg.draft || currentDraft || {
+                                            name: 'EMA Crossover Strategy',
+                                            instrument: 'XAUUSD',
+                                            strategy_type: 'EMA Crossover'
+                                        };
+
+                                        return (
+                                            <ReadyToProceedCard
+                                                draft={effectiveDraft}
+                                                onCreateStrategy={(name) => onGenerateFromDraft(effectiveDraft, name)}
+                                                onEnhance={(name) => onSend(`Enhance and optimize strategy rules for ${name}`)}
+                                                onModifyStrategy={(name) => onSend(`Modify strategy parameters for ${name}`)}
+                                                generatingStrategy={false}
+                                            />
+                                        );
+                                    })()}
                                 </React.Fragment>
                             );
                         })}
 
-                        {/* Active Strategy Generation Stepper Card (Screenshot Bottom) */}
+                        {/* Active Strategy Generation Stepper Card (Bottom of Chat) */}
                         {generatingStrategy && (
                             <div className={styles.messageRow}>
                                 <ReadyToProceedCard generatingStrategy={true} />
                             </div>
                         )}
 
-                        {loading && !generatingStrategy && (                            <div className={styles.messageRow}>
-                                <DynamicChatLoader />
-                            </div>
+                        {loading && !generatingStrategy && (<div className={styles.messageRow}>
+                            <DynamicChatLoader />
+                        </div>
                         )}
                     </div>
 
@@ -571,10 +614,34 @@ export default function AdvisorChatView({
                                 className={styles.chatTextarea}
                                 placeholder="What would you like to explore?"
                                 value={input}
-                                onChange={(e) => setInput(e.target.value)}
+                                onChange={(e) => { setInput(e.target.value); setActiveSuggestionIndex(0); }}
                                 onKeyDown={handleKeyDown}
                                 rows={2}
                             />
+                            {/* As-you-type suggestion dropdown (Out of box floating card above input) */}
+                            {showTypedSuggestions && (
+                                <div className={`${styles.typedSuggestionDropdown} ${styles.typedSuggestionDropdownAbove}`}>
+                                    {typedSuggestions.map((sug, i) => (
+                                        <button
+                                            key={i}
+                                            type="button"
+                                            className={`${styles.typedSuggestionItem} ${i === activeSuggestionIndex ? styles.typedSuggestionActive : ''}`}
+                                            onMouseEnter={() => setActiveSuggestionIndex(i)}
+                                            onClick={() => {
+                                                setInput(sug);
+                                                setActiveSuggestionIndex(0);
+                                                if (textareaRef.current) textareaRef.current.focus();
+                                            }}
+                                        >
+                                            <div className={styles.suggestionIconWrap}>
+                                                <SparklesMiniIcon size={14} color="currentColor" />
+                                            </div>
+                                            <span className={styles.suggestionText}>{sug}</span>
+                                            <span className={styles.suggestionHintBadge}>Tab</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                             <div className={styles.chatCardBottom}>
                                 <button
                                     type="button"

@@ -255,6 +255,9 @@ export const strategyStudioApi = {
                         raw: json
                     };
                 }
+            } else {
+                const errText = await res.text().catch(() => '');
+                console.warn(`[strategyApi] /backtest/v1 returned HTTP ${res.status}:`, errText);
             }
         } catch (err) {
             console.warn("Backend backtest server unreachable, simulating backtest with historical pricing model:", err.message);

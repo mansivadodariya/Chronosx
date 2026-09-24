@@ -37,11 +37,26 @@ export default function BacktestCharts({
     const { theme } = useTheme();
     const isDark = theme !== 'light';
 
-    // Equity Curve Data
+    // Equity Curve Data (Optimized for instant loading)
     const equityData = useMemo(() => {
-        const rawDates = ['Start', ...roundTrips.map(t => (t.exitDate ? t.exitDate.split(' ')[0] : `T${t.index}`))];
+        const safeTrips = Array.isArray(roundTrips) ? roundTrips : [];
+        const rawPoints = [{ date: 'Start', balance: initialCapital }, ...safeTrips.map(t => ({
+            date: t.exitDate ? t.exitDate.split(' ')[0] : `T${t.index}`,
+            balance: Number(t.runningBalance) || initialCapital
+        }))];
+
+        // Downsample if over 150 points for instant 60 FPS rendering
+        const maxPoints = 120;
+        let sampled = rawPoints;
+        if (rawPoints.length > maxPoints) {
+            const step = Math.ceil(rawPoints.length / maxPoints);
+            sampled = rawPoints.filter((_, idx) => idx === 0 || idx === rawPoints.length - 1 || idx % step === 0);
+        }
+
+        const rawDates = sampled.map(p => p.date);
         const formattedLabels = rawDates.map(d => formatShortDate(d));
-        const balances = [initialCapital, ...roundTrips.map(t => t.runningBalance)];
+        const balances = sampled.map(p => p.balance);
+
         return { rawDates, labels: formattedLabels, balances };
     }, [roundTrips, initialCapital]);
 
@@ -54,7 +69,7 @@ export default function BacktestCharts({
             height: 240,
             toolbar: { show: false },
             background: 'transparent',
-            animations: { enabled: true, easing: 'easeinout', speed: 600 }
+            animations: { enabled: true, easing: 'easeinout', speed: 350, dynamicAnimation: { enabled: false } }
         },
         stroke: {
             curve: 'smooth',

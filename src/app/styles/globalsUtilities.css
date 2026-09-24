@@ -30,6 +30,41 @@
   scrollbar-color: #18c98b #040605;
 }
 
+html.light ::-webkit-scrollbar-track,
+html[data-theme="light"] ::-webkit-scrollbar-track,
+.light ::-webkit-scrollbar-track,
+html.light *::-webkit-scrollbar-track,
+html[data-theme="light"] *::-webkit-scrollbar-track,
+.light *::-webkit-scrollbar-track {
+  background: #F1F5F9 !important;
+}
+
+html.light ::-webkit-scrollbar-thumb,
+html[data-theme="light"] ::-webkit-scrollbar-thumb,
+.light ::-webkit-scrollbar-thumb,
+html.light *::-webkit-scrollbar-thumb,
+html[data-theme="light"] *::-webkit-scrollbar-thumb,
+.light *::-webkit-scrollbar-thumb {
+  background: #10B981 !important;
+  box-shadow: none !important;
+}
+
+html.light ::-webkit-scrollbar-thumb:hover,
+html[data-theme="light"] ::-webkit-scrollbar-thumb:hover,
+.light ::-webkit-scrollbar-thumb:hover,
+html.light *::-webkit-scrollbar-thumb:hover,
+html[data-theme="light"] *::-webkit-scrollbar-thumb:hover,
+.light *::-webkit-scrollbar-thumb:hover {
+  background: #059669 !important;
+}
+
+html.light *,
+html[data-theme="light"] *,
+.light * {
+  scrollbar-width: thin !important;
+  scrollbar-color: #10B981 #F1F5F9 !important;
+}
+
 /* Responsive Table Wrappers & Touch Scrolling */
 .table-responsive,
 [class*="tableWrapper"],

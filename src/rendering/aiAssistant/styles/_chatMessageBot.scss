@@ -161,12 +161,12 @@
                     }
 
                     .analysisCenterCard {
-                        background: #080808 !important;
-                        border: 1px solid rgba(24, 201, 139, 0.28) !important;
-                        border-radius: 14px !important;
-                        padding: 20px 24px !important;
-                        color: #E2E8F0 !important;
-                        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(24, 201, 139, 0.1) !important;
+                        background: #FFFFFF;
+                        border: 1px solid #E2E8F0;
+                        border-radius: 14px;
+                        padding: 20px 24px;
+                        color: #0F172A;
+                        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
 
                         .analysisCenterHeader {
                             display: flex;
@@ -174,10 +174,10 @@
                             gap: 10px;
                             padding-bottom: 12px;
                             margin-bottom: 16px;
-                            border-bottom: 1px solid rgba(24, 201, 139, 0.2);
+                            border-bottom: 1px solid #E2E8F0;
 
                             .analysisCenterIcon {
-                                color: #18C98B;
+                                color: #047857;
                                 display: flex;
                                 align-items: center;
                             }
@@ -186,7 +186,7 @@
                                 font-family: var(--font-syne), "Syne", sans-serif;
                                 font-size: 15px;
                                 font-weight: 700;
-                                color: #18C98B;
+                                color: #0F172A;
                                 letter-spacing: 0.4px;
                             }
                         }
@@ -194,7 +194,7 @@
                         p,
                         span,
                         li {
-                            color: #CBD5E1 !important;
+                            color: #1E293B;
                         }
 
                         h1,
@@ -203,7 +203,7 @@
                         h4,
                         h5,
                         h6 {
-                            color: #18C98B !important;
+                            color: #047857;
                             margin-top: 16px;
                             margin-bottom: 8px;
                             font-weight: 700;
@@ -211,19 +211,40 @@
 
                         strong,
                         b {
-                            color: #FFFFFF !important;
+                            color: #0F172A;
                         }
 
                         hr {
                             border: none;
-                            border-top: 1px solid rgba(24, 201, 139, 0.18);
+                            border-top: 1px solid #E2E8F0;
                             margin: 16px 0;
+                        }
+
+                        table {
+                            background: #FFFFFF;
+                            border: 1px solid #E2E8F0;
+
+                            th {
+                                background: #F8FAFC;
+                                color: #0F172A;
+                                border: 1px solid #E2E8F0;
+                            }
+
+                            td {
+                                background: #FFFFFF;
+                                color: #1E293B;
+                                border: 1px solid #E2E8F0;
+                            }
+
+                            tr:nth-child(even) td {
+                                background: #F8FAFC;
+                            }
                         }
 
                         .downloadReportRow {
                             margin-top: 18px;
                             padding-top: 14px;
-                            border-top: 1px solid rgba(24, 201, 139, 0.18);
+                            border-top: 1px solid #E2E8F0;
                             display: flex;
                             justify-content: flex-end;
 
@@ -231,9 +252,9 @@
                                 display: inline-flex;
                                 align-items: center;
                                 gap: 8px;
-                                background: rgba(24, 201, 139, 0.12);
-                                border: 1px solid rgba(24, 201, 139, 0.35);
-                                color: #18C98B;
+                                background: #10B981;
+                                border: none;
+                                color: #FFFFFF;
                                 padding: 8px 16px;
                                 border-radius: 8px;
                                 font-size: 12px;
@@ -242,11 +263,79 @@
                                 transition: all 0.2s ease;
 
                                 &:hover {
-                                    background: rgba(24, 201, 139, 0.25);
-                                    border-color: #18C98B;
-                                    color: #FFFFFF;
+                                    background: #059669;
                                     transform: translateY(-1px);
-                                    box-shadow: 0 4px 14px rgba(24, 201, 139, 0.2);
+                                    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+                                }
+                            }
+                        }
+                    }
+
+                    :global(.isDark) &,
+                    :global(.dark) & {
+                        .analysisCenterCard {
+                            background: #080808 !important;
+                            border: 1px solid rgba(24, 201, 139, 0.28) !important;
+                            color: #E2E8F0 !important;
+                            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(24, 201, 139, 0.1) !important;
+
+                            .analysisCenterHeader {
+                                border-bottom: 1px solid rgba(24, 201, 139, 0.2) !important;
+
+                                .analysisCenterIcon {
+                                    color: #18C98B !important;
+                                }
+
+                                .analysisCenterTitle {
+                                    color: #18C98B !important;
+                                }
+                            }
+
+                            p, span, li {
+                                color: #CBD5E1 !important;
+                            }
+
+                            h1, h2, h3, h4, h5, h6 {
+                                color: #18C98B !important;
+                            }
+
+                            strong, b {
+                                color: #FFFFFF !important;
+                            }
+
+                            hr {
+                                border-top-color: rgba(24, 201, 139, 0.18) !important;
+                            }
+
+                            table {
+                                background: #0D0E13 !important;
+                                border-color: rgba(24, 201, 139, 0.25) !important;
+
+                                th {
+                                    background: #121318 !important;
+                                    color: #18C98B !important;
+                                    border-color: rgba(24, 201, 139, 0.15) !important;
+                                }
+
+                                td {
+                                    background: #000000 !important;
+                                    color: #F1F5F9 !important;
+                                    border-color: rgba(24, 201, 139, 0.15) !important;
+                                }
+                            }
+
+                            .downloadReportRow {
+                                border-top-color: rgba(24, 201, 139, 0.18) !important;
+
+                                .downloadFullReportBtn {
+                                    background: rgba(24, 201, 139, 0.12) !important;
+                                    border: 1px solid rgba(24, 201, 139, 0.35) !important;
+                                    color: #18C98B !important;
+
+                                    &:hover {
+                                        background: rgba(24, 201, 139, 0.25) !important;
+                                        color: #FFFFFF !important;
+                                    }
                                 }
                             }
                         }
