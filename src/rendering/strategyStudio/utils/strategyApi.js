@@ -29,13 +29,20 @@ export const strategyStudioApi = {
     /**
      * Chat with AI Strategy Advisor
      */
-    chatWithAdvisor: async ({ sessionId, message }) => {
+    chatWithAdvisor: async ({ sessionId, message, answers }) => {
         try {
             const apiBase = getApiBase();
+            const payload = {
+                session_id: sessionId,
+                message
+            };
+            if (answers && Array.isArray(answers) && answers.length > 0) {
+                payload.answers = answers;
+            }
             const res = await fetch(`${apiBase}/wizard/chat`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ session_id: sessionId, message })
+                body: JSON.stringify(payload)
             });
             if (res.ok) {
                 const json = await res.json();
@@ -49,34 +56,20 @@ export const strategyStudioApi = {
         const msg = (message || "").toLowerCase();
         let reply = "";
         let suggestions = [];
+        let options = [];
+        let question = "Do you have specific trading conditions in mind, or would you like us to design the best strategy for you?";
         let draft = null;
         let complete = false;
 
-        if (msg.includes("donchian") || msg.includes("trend")) {
-            reply = "Great choice! A Donchian Channel Breakout is an exceptional trend-following system for trending instruments like Gold (XAUUSD) or major FX pairs. I've set up a 20-period upper channel crossover with a 50-pip target and 25-pip stop loss.";
-            suggestions = ["🚀 Run Backtest Now", "Change to 30min timeframe", "Tighten Stop Loss"];
-            draft = {
-                instrument: "XAUUSD",
-                timeframe: "15min",
-                entry_pattern: "Donchian Breakout",
-                target_pips: 50,
-                stoploss_pips: 25
-            };
-            complete = true;
-        } else if (msg.includes("bollinger") || msg.includes("volatility")) {
-            reply = "Bollinger Bands Breakouts capture explosive momentum when volatility expands. I configured a 20-period 2-std band breakout on GBPUSD 15m with 15-pip target and 8-pip stop loss.";
-            suggestions = ["🚀 Run Backtest Now", "Increase Target to 25 pts", "Test on EURUSD"];
-            draft = {
-                instrument: "GBPUSD",
-                timeframe: "15min",
-                entry_pattern: "Bollinger Breakout",
-                target_pips: 15,
-                stoploss_pips: 8
-            };
-            complete = true;
-        } else if (msg.includes("ema") || msg.includes("moving average")) {
+        if (msg.includes("ema") || msg.includes("moving average") || msg.includes("cross")) {
             reply = "A 9 EMA crossing over 21 EMA provides clear directional momentum signals on 30m charts. I've calibrated a EURUSD setup with 20-pip TP and 10-pip SL.";
-            suggestions = ["🚀 Run Backtest Now", "Switch to 1hr timeframe", "Add RSI Filter"];
+            suggestions = ["Run Backtest Now", "Switch to 1hr timeframe", "Add RSI Filter"];
+            options = [
+                { title: "Run Backtest Now", description: "Simulate strategy performance across 60-day historical candles." },
+                { title: "Design for me", description: "We'll optimize indicators and SL/TP risk parameters automatically." },
+                { title: "I have my own conditions", description: "Define custom moving average periods and filters." }
+            ];
+            question = "Would you like to run backtest simulation immediately or fine-tune indicators?";
             draft = {
                 instrument: "EURUSD",
                 timeframe: "30min",
@@ -85,20 +78,48 @@ export const strategyStudioApi = {
                 stoploss_pips: 10
             };
             complete = true;
-        } else if (msg.includes("rsi") || msg.includes("reversal") || msg.includes("mean")) {
-            reply = "RSI oversold reversal triggers when the 14-period RSI dips below 30 and hooks upward. Setup ready for USDJPY 15m with 25-pip target and 15-pip stop loss.";
-            suggestions = ["🚀 Run Backtest Now", "Adjust RSI to 20", "Run Backtest"];
+        } else if (msg.includes("dca") || msg.includes("btc") || msg.includes("grid")) {
+            reply = "Dynamic Dollar-Cost Averaging (DCA) with grid scaling accumulates positions at systematic intervals. Configured with 5 grid tiers on 15m intervals with 1.5% profit rebalance targets.";
+            suggestions = ["Run Backtest Now", "Tighten Grid Spacing", "Adjust Tier Volume"];
+            options = [
+                { title: "Run Backtest Now", description: "Simulate DCA grid execution on historical pricing." },
+                { title: "Design for me", description: "Automatically calculate optimal step distance and take profit." },
+                { title: "I have my own conditions", description: "Customize base order size, safety orders, and scale." }
+            ];
+            question = "Do you want to test this DCA configuration with 10,000 capital?";
             draft = {
-                instrument: "USDJPY",
+                instrument: "BTCUSD",
                 timeframe: "15min",
-                entry_pattern: "RSI Reversal",
-                target_pips: 25,
-                stoploss_pips: 15
+                entry_pattern: "DCA Grid Accumulation",
+                target_pips: 45,
+                stoploss_pips: 25
+            };
+            complete = true;
+        } else if (msg.includes("backtest") || msg.includes("last")) {
+            reply = "Loaded your last formulated quantitative strategy (EMA 20/50 Trend Confluence on XAUUSD 15m). Prepared for historical candle execution.";
+            suggestions = ["Run Backtest Now", "Change Timeframe to 30m", "Adjust Stop Loss"];
+            options = [
+                { title: "Run Backtest Now", description: "Execute simulation on 60 days of historical M15 candle bars." },
+                { title: "Design for me", description: "Calibrate risk/reward ratio to 1:2.5 before testing." },
+                { title: "I have my own conditions", description: "Specify start date, stoploss pips, and capital." }
+            ];
+            question = "Ready to simulate this strategy across historical market candles?";
+            draft = {
+                instrument: "XAUUSD",
+                timeframe: "15min",
+                entry_pattern: "EMA Trend Confluence",
+                target_pips: 40,
+                stoploss_pips: 20
             };
             complete = true;
         } else {
-            reply = `Understood! I'm configuring an algorithmic strategy blueprint for "${message}". What primary market or timeframe do you prefer (e.g. XAUUSD 15m, EURUSD 1h, GBPUSD 15m)?`;
+            reply = `Understood! I'm configuring an algorithmic strategy blueprint for "${message}". What primary market or timeframe do you prefer?`;
             suggestions = ["XAUUSD 15min", "EURUSD 1hr", "GBPUSD 15min", "Trend Following", "Scalping"];
+            options = [
+                { title: "Design for me", description: "We'll create a tailored trading strategy for you." },
+                { title: "I have my own conditions", description: "You define your own entry and exit rules." }
+            ];
+            question = "Do you have specific trading conditions in mind, or would you like us to design the best strategy for you?";
             draft = {
                 instrument: "XAUUSD",
                 timeframe: "15min",
@@ -114,6 +135,8 @@ export const strategyStudioApi = {
             data: {
                 reply,
                 suggestions,
+                options,
+                question,
                 draft,
                 complete
             }
@@ -121,24 +144,37 @@ export const strategyStudioApi = {
     },
 
     /**
-     * Generate Strategy JSON from AI Draft
+     * Generate Strategy JSON from AI Draft via /backtest/v1/wizard/generate
      */
-    generateStrategy: async ({ sessionId, draft }) => {
+    generateStrategy: async ({ sessionId, draft, strategyName }) => {
+        const stratName = strategyName || draft?.name || "AI Strategy";
         try {
             const apiBase = getApiBase();
+            const payload = {
+                session_id: sessionId,
+                strategy_name: stratName,
+                draft: draft || {}
+            };
             const res = await fetch(`${apiBase}/wizard/generate`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ session_id: sessionId, strategy_name: "AI Strategy" })
+                body: JSON.stringify(payload)
             });
             if (res.ok) {
                 const json = await res.json();
-                if (json.status === "success" && json.strategies?.length > 0) {
-                    return json;
+                if ((json.status === "success" || json.success === true) && (json.strategies?.length > 0 || json.data)) {
+                    const firstStrat = json.strategies?.[0] || json.data?.strategy || (Array.isArray(json.data) ? json.data[0] : json.data);
+                    return {
+                        status: "success",
+                        success: true,
+                        strategy: firstStrat,
+                        strategies: json.strategies || (firstStrat ? [firstStrat] : []),
+                        data: json.data || { strategy: firstStrat }
+                    };
                 }
             }
         } catch (err) {
-            console.warn("Backend /wizard/generate unreachable, using local specification builder");
+            console.warn("Backend /wizard/generate unreachable, using local specification builder:", err.message);
         }
 
         const sym = draft?.instrument || "XAUUSD";
@@ -149,6 +185,7 @@ export const strategyStudioApi = {
 
         const generated = {
             stock_name: [sym],
+            strategy_name: stratName,
             from_date: "2024-01-01",
             to_date: "2024-03-01",
             interval: timeframe,
@@ -182,8 +219,18 @@ export const strategyStudioApi = {
 
         return {
             status: "success",
-            strategies: [generated]
+            success: true,
+            strategy: generated,
+            strategies: [generated],
+            data: { strategy: generated }
         };
+    },
+
+    /**
+     * Alias for generateStrategy
+     */
+    generateStrategyFromDraft: async function (params) {
+        return this.generateStrategy(params);
     },
 
     /**
@@ -199,8 +246,14 @@ export const strategyStudioApi = {
             });
             if (res.ok) {
                 const json = await res.json();
-                if (json.success && json.data && json.data.length > 0) {
-                    return json;
+                if ((json.success || json.status === 'success') && json.data) {
+                    const dataItem = Array.isArray(json.data) ? json.data[0] : json.data;
+                    return {
+                        status: "success",
+                        success: true,
+                        data: dataItem,
+                        raw: json
+                    };
                 }
             }
         } catch (err) {

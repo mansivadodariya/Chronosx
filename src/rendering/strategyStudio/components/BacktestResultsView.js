@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styles from '../styles/strategyStudio.module.scss';
+import BacktestCandlestickChart from './BacktestCandlestickChart';
 import BacktestCharts from './BacktestCharts';
 import TradesTable from './TradesTable';
 import {
@@ -15,7 +16,10 @@ import {
 export default function BacktestResultsView({
     results,
     roundTrips,
-    initialCapital
+    initialCapital,
+    symbol = 'EURUSD',
+    interval = '15min',
+    quantity = 0.01
 }) {
     if (!results || !roundTrips) return null;
 
@@ -99,7 +103,17 @@ export default function BacktestResultsView({
                 </div>
             </div>
 
-            {/* Row 2: Performance Charts */}
+            {/* Row 2: Market Data & Executions (Candlestick Chart with Entry/Exit Markers) */}
+            <BacktestCandlestickChart
+                results={results}
+                roundTrips={roundTrips}
+                symbol={symbol}
+                interval={interval}
+                quantity={quantity}
+                capital={initialCapital}
+            />
+
+            {/* Row 3: Performance Charts */}
             <BacktestCharts
                 roundTrips={roundTrips}
                 initialCapital={initialCapital}
@@ -107,7 +121,7 @@ export default function BacktestResultsView({
                 losses={losses}
             />
 
-            {/* Row 3: Trades Table */}
+            {/* Row 4: Trades Table */}
             <TradesTable roundTrips={roundTrips} />
         </div>
     );

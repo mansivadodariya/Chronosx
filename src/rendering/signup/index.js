@@ -18,6 +18,7 @@ import {
     clearOnboardingInSession
 } from '@/lib/authSession';
 import { authApi, profileApi } from '@/lib/api';
+import { trackUserSignup } from '@/lib/gtag';
 import { validateSignup } from '@/lib/validation';
 import { toast } from '@/components/toast';
 import { supabase } from '@/lib/supabaseClient';
@@ -234,6 +235,7 @@ const Signup = () => {
             const utm = getUtmParameters();
             const signupPayload = { ...form, ...utm };
             await authApi.signup(signupPayload);
+            trackUserSignup('email', { email: form.email, name: form.name });
             setSuccess(true);
         } catch (err) {
             toast.dismiss();

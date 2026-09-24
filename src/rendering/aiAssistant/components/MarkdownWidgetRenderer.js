@@ -273,7 +273,7 @@ export const InlineCandlestickWidget = React.memo(function InlineCandlestickWidg
                     S/R Levels
                 </button>
             </div>
-            <Chart options={options} series={series} type="candlestick" height={320} />
+            <Chart options={options} series={series} type="candlestick" height={320} width="100%" />
         </div>
     );
 });

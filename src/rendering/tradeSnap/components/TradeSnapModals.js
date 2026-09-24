@@ -1,10 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import Modal from '../Modal';
 import Loader from '@/components/loader';
 import AnalysisResultItem from '../AnalysisResultItem';
 import AiSnapDashboard from './AiSnapDashboard';
+import { DownloadIcon } from '@/icons/aiSnapIcons';
+import { useTradeSnapExport } from '../hooks/useTradeSnapExport';
 import styles from '../tradeSnap.module.scss';
 
 export default function TradeSnapModals({
@@ -22,6 +24,16 @@ export default function TradeSnapModals({
     confirmDeleteHistoryItem,
     t
 }) {
+    const modalDashboardRef = useRef(null);
+    const { exportToPdf, isExporting } = useTradeSnapExport();
+
+    const handleDownloadModalPdf = () => {
+        const analysis = selectedAnalysis?.analysis || selectedAnalysis || {};
+        const symbol = analysis.symbol || analysis.Symbol || selectedAnalysis?.symbol || 'XAUUSD';
+        const timeframe = analysis.timeframe || analysis.Timeframe || selectedAnalysis?.timeframe || 'M15';
+        exportToPdf(modalDashboardRef.current, symbol, timeframe);
+    };
+
     return (
         <>
             <Modal
@@ -30,9 +42,23 @@ export default function TradeSnapModals({
                 size="large"
                 title="AI Snap Technical Analysis Dashboard"
                 description="State-of-the-art AI market diagnosis and trade signal setup"
+                headerActions={
+                    <button
+                        type="button"
+                        className={styles.modalDownloadBtn}
+                        onClick={handleDownloadModalPdf}
+                        disabled={isExporting}
+                        title="Download Complete AI Analysis Report (PDF)"
+                    >
+                        <DownloadIcon size={14} />
+                        <span>{isExporting ? 'Exporting...' : 'Download PDF'}</span>
+                    </button>
+                }
             >
                 {selectedAnalysis && (
-                    <AiSnapDashboard rawData={selectedAnalysis} />
+                    <div ref={modalDashboardRef}>
+                        <AiSnapDashboard rawData={selectedAnalysis} />
+                    </div>
                 )}
             </Modal>
 

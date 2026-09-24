@@ -3,10 +3,12 @@
     z-index: 2;
     display: flex;
     flex-direction: column;
-    padding: 18px;
+    padding: 18px 18px 60px 18px;
     gap: 18px;
     flex: 1;
     min-height: 0;
+    width: 100%;
+    box-sizing: border-box;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(24, 201, 139, 0.35) transparent;
@@ -56,15 +58,16 @@
 .kpiCard {
     position: relative;
     z-index: 2;
-    background: rgba(14, 26, 20, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(10, 20, 16, 0.45);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(24, 201, 139, 0.16);
     border-radius: 12px;
     padding: 14px;
     display: flex;
     flex-direction: column;
     gap: 4px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 
     .kpiLabel {
         display: flex;
@@ -96,9 +99,9 @@
     }
 
     [data-theme='light'] & {
-        background: #FFFFFF;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(0, 0, 0, 0.08);
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
     }
@@ -117,20 +120,21 @@
 .chartCard {
     position: relative;
     z-index: 2;
-    background: rgba(14, 26, 20, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(10, 20, 16, 0.45);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(24, 201, 139, 0.16);
     border-radius: 12px;
     padding: 16px;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 
     [data-theme='light'] & {
-        background: #FFFFFF;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(0, 0, 0, 0.08);
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
     }
@@ -159,17 +163,22 @@
 .tableCard {
     position: relative;
     z-index: 2;
-    background: rgba(14, 26, 20, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(10, 20, 16, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(24, 201, 139, 0.2);
     border-radius: 12px;
     overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    min-height: 280px;
+    flex-shrink: 0;
+    margin-bottom: 24px;
 
     [data-theme='light'] & {
-        background: #FFFFFF;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(0, 0, 0, 0.08);
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
     }
@@ -181,7 +190,7 @@
     align-items: center;
     padding: 14px 18px;
     background: rgba(10, 18, 14, 0.95);
-    border-bottom: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 
     h3 {
         font-size: 13px;
@@ -196,6 +205,7 @@
 
     [data-theme='light'] & {
         background: #F8FAFC;
+        border-bottom-color: rgba(0, 0, 0, 0.06);
     }
 }
 
@@ -234,7 +244,8 @@
 }
 
 .tableWrapper {
-    max-height: 380px;
+    max-height: 480px;
+    min-height: 220px;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(24, 201, 139, 0.35) transparent;
@@ -423,4 +434,210 @@
     [data-theme='light'] & {
         background: #F8FAFC;
     }
+}
+
+/* ── Position Sizing Summary Ribbon (matching reference) ── */
+.positionSizingRibbon {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 10px 14px;
+    background: rgba(8, 14, 11, 0.65);
+    border: 1px solid rgba(24, 201, 139, 0.2);
+    border-radius: 8px;
+    font-size: 11px;
+    color: #94A3B8;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+
+    [data-theme='light'] & {
+        background: #F8FAFC;
+        border-color: rgba(0, 0, 0, 0.08);
+        color: #64748B;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+}
+
+.sizingTag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 800;
+    color: #18C98B;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+
+    [data-theme='light'] & {
+        color: #059669;
+    }
+}
+
+.sizingDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #18C98B;
+    box-shadow: 0 0 6px rgba(24, 201, 139, 0.8);
+
+    [data-theme='light'] & {
+        background: #059669;
+    }
+}
+
+.badgeSymbolSmall {
+    background: rgba(24, 201, 139, 0.15);
+    border: 1px solid rgba(24, 201, 139, 0.3);
+    color: #18C98B;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+
+    [data-theme='light'] & {
+        background: #ECFDF5;
+        border-color: rgba(5, 150, 105, 0.25);
+        color: #059669;
+    }
+}
+
+.sizingItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+
+    strong {
+        color: #FFFFFF;
+        font-weight: 700;
+
+        [data-theme='light'] & {
+            color: #0F172A;
+        }
+    }
+}
+
+.sizingDivider {
+    width: 1px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.12);
+
+    [data-theme='light'] & {
+        background: rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* ── Candlestick Chart Card ── */
+.candlestickChartCard {
+    position: relative;
+    z-index: 2;
+    background: rgba(10, 20, 16, 0.45);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(24, 201, 139, 0.16);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+
+    [data-theme='light'] & {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+}
+
+.chartCardHeaderRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chartTitleGroup {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    h3 {
+        font-size: 13px;
+        font-weight: 700;
+        margin: 0;
+        color: #FFFFFF;
+
+        [data-theme='light'] & {
+            color: #0F172A;
+        }
+    }
+}
+
+.liveIndicatorPulse {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #18C98B;
+    box-shadow: 0 0 8px #18C98B;
+    animation: simPulse 2s infinite ease-in-out;
+}
+
+.chartSubBadge {
+    font-size: 11px;
+    color: #94A3B8;
+    font-weight: 500;
+}
+
+.chartLegendFilterRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.legendItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10.5px;
+    color: #94A3B8;
+    font-weight: 600;
+
+    [data-theme='light'] & {
+        color: #64748B;
+    }
+}
+
+.legendDotGreen {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10B981;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+
+.legendDotYellow {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #F59E0B;
+    box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+}
+
+.legendDotRed {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #EF4444;
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+}
+
+.candlestickCanvasWrap {
+    min-height: 360px;
+    width: 100%;
 }

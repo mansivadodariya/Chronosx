@@ -74,6 +74,8 @@ const ROUTE_TAB_MAP = {
     '/bot-builder': 'AI Bot Builder',
     '/strategy-studio': 'AI Bot Builder',
     '/ai-strategy-studio': 'AI Bot Builder',
+    '/backtest': 'Backtest',
+    '/backtesting': 'Backtest',
     '/strategy-hub/live': 'Signal Terminal',
     '/strategy-hub/strategy': 'Strategy Signal',
     '/strategy-signal': 'Strategy Signal',
@@ -332,7 +334,9 @@ const layout = ({ children }) => {
                     const visibleNames = new Set(data.map(t => (t.name || '').toLowerCase().trim()));
                     const currentLower = (currentTabName || '').toLowerCase().trim();
 
-                    const isAllowed = visibleNames.has(currentLower);
+                    const isAllowed =
+                        visibleNames.has(currentLower) ||
+                        (currentLower === 'backtest' && visibleNames.has('ai bot builder'));
                     setIsTabAllowed(isAllowed);
                 }
             } catch (e) {

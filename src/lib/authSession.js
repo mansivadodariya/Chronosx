@@ -73,6 +73,7 @@ export function getStoredUser() {
 }
 
 import { supabase } from '@/lib/supabaseClient';
+import { trackUserLogin } from '@/lib/gtag';
 
 /**
  * Hydrate missing user identity fields (first_name, last_name, email, profile_picture)
@@ -246,6 +247,7 @@ export function persistAuthSession(payload) {
     }
 
     localStorage.setItem('user', JSON.stringify(sessionUser));
+    trackUserLogin('auth_session', sessionUser);
     window.dispatchEvent(new CustomEvent('user:updated'));
 
     // If sessionUser is missing identity info, trigger async profile hydration

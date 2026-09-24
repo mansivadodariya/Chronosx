@@ -30,6 +30,14 @@ const INTERVAL_OPTIONS = [
     { value: '1day', label: '1day' }
 ];
 
+const LOTS_OPTIONS = [
+    { value: 0.01, label: '0.01 Micro' },
+    { value: 0.05, label: '0.05' },
+    { value: 0.1, label: '0.10 Mini' },
+    { value: 0.5, label: '0.50' },
+    { value: 1, label: '1.00 Std' }
+];
+
 export default function StudioToolbar({
     symbol,
     setSymbol,
@@ -130,18 +138,21 @@ export default function StudioToolbar({
                     </div>
                 </div>
 
-                {/* 6. Quantity */}
+                {/* 6. Volume (Lots) */}
                 <div className={styles.paramGroup}>
                     <div className={styles.paramLabelRow}>
                         <QuantityHashIcon size={12} />
-                        <span>Quantity</span>
+                        <span>Volume (Lots)</span>
+                        <span style={{ color: '#10b981', fontWeight: '700', fontSize: '11px', marginLeft: '3px' }}>
+                            {quantity}
+                        </span>
                     </div>
                     <div className={styles.paramControlWrap}>
-                        <input
-                            type="number"
+                        <CustomSelect
                             value={quantity}
-                            onChange={(e) => setQuantity(Number(e.target.value))}
-                            style={{ width: '65px' }}
+                            onChange={(val) => setQuantity(parseFloat(val) || 0.01)}
+                            options={LOTS_OPTIONS}
+                            width="112px"
                         />
                     </div>
                 </div>

@@ -1,55 +1,111 @@
 'use client';
 
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import styles from '../styles/strategyStudio.module.scss';
 import { useStreamingText } from '../utils/streamingRenderer';
+import { sanitizeRawJsonText } from '../utils/chatTextFormatter';
+import { renderFormattedMarkdown } from '../utils/markdownRenderer';
+import { getStoredUser, getStoredUserId, hydrateUserFromProfile } from '@/lib/authSession';
+import InteractiveQuestionWizard from './InteractiveQuestionWizard';
+import ReadyToProceedCard from './ReadyToProceedCard';
 import {
     BotBrainIcon,
     LightningIcon,
     RocketRunIcon,
     ShieldCheckIcon,
     SendPaperAirplaneIcon,
-    ChartTrendIcon,
-    SlidersTuneIcon
+    SlidersTuneIcon,
+    LockOutlineIcon,
+    ArrowUpIcon,
+    CloseXIcon,
+    CpuChipIcon,
+    SparklesMiniIcon,
+    AreaChartIcon,
+    HomeBreadcrumbIcon,
+    ChevronRightMiniIcon,
+    InfoCircleIcon,
+    RightArrowSelectedIcon,
+    PlusIcon,
+    TacticalRouteIcon
 } from './StudioIcons';
 
-const STRATEGY_STARTERS = [
-    {
-        id: 'donchian',
-        title: 'Donchian Breakout Model',
-        desc: 'Multi-timeframe channel high/low breakout with ATR trailing stoploss rules.',
-        icon: <ChartTrendIcon size={16} />,
-        prompt: 'Design a trend following Donchian channel breakout strategy on XAUUSD 15min with ATR risk management.'
-    },
-    {
-        id: 'ema-cross',
-        title: 'EMA 20/50 Trend Confluence',
-        desc: 'Exponential moving average crossovers with RSI volume filter & pullback entries.',
-        icon: <SlidersTuneIcon size={16} />,
-        prompt: 'Create an EMA 20 and 50 crossover strategy on EURUSD with RSI confirmation and 1:2 risk reward.'
-    },
-    {
-        id: 'bollinger',
-        title: 'Bollinger Mean Reversion',
-        desc: 'Standard deviation envelope rejection & oversold/overbought bounce signals.',
-        icon: <LightningIcon size={16} />,
-        prompt: 'Build a Bollinger Bands mean reversion setup for BTCUSD scalping with strict stop losses.'
-    },
-    {
-        id: 'liquidity',
-        title: 'Liquidity Sweep & ICT Scalp',
-        desc: 'Institutional order block absorption & tight risk:reward session breakout setups.',
-        icon: <BotBrainIcon size={16} />,
-        prompt: 'Formulate an institutional liquidity sweep strategy with order blocks and breakout validation on GBPUSD.'
-    }
+const STRATEGY_EXPLORE_OPTIONS = [
+    'Build a DCA strategy on BTC',
+    'Build a grid trading strategy',
+    'Backtest my last strategy',
+    'Improve my running strategy',
+    'Build a momentum strategy from scratch'
+];
+
+const EXPLORE_TAGLINES = [
+    'Trade with data. Execute with discipline.',
+    'Build smarter strategies. Trade with confidence.',
+    'Every great trade starts with a clear plan.',
+    'Turn your strategy into an intelligent trading bot.',
+    'Analyze. Automate. Adapt. Repeat.'
 ];
 
 const DYNAMIC_LOADING_STAGES = [
-    'Formulating strategy rules and quantitative constraints...',
+    'Formulating quantitative trading blueprint...',
     'Synthesizing indicators & technical signals...',
     'Optimizing entry triggers and risk parameters (SL/TP)...',
-    'Compiling algorithmic trading blueprint...'
+    'Compiling algorithmic strategy rules...'
 ];
+
+const STEP_TITLES = [
+    'Market & Timeframe',
+    'Strategy Requirements',
+    'Risk & Execution',
+    'Strategy Blueprint'
+];
+
+function getDynamicStepInfo(msg, allMessages, defaultCurrentStep = 2, defaultTotalSteps = 4) {
+    if (msg.step_badge) {
+        const match = msg.step_badge.match(/Step\s*(\d+)/i);
+        const stepNum = match ? parseInt(match[1], 10) : defaultCurrentStep;
+        const title = msg.step_title || msg.step_badge.replace(/^Step\s*\d+:\s*/i, '') || STEP_TITLES[stepNum - 1] || 'Strategy Configuration';
+        const total = msg.total_steps || defaultTotalSteps;
+        const progress = Math.min(100, Math.max(12, Math.round((stepNum / total) * 100)));
+        return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
+    }
+
+    if (msg.draft) {
+        return {
+            stepNum: 4,
+            total: 4,
+            title: 'Strategy Blueprint Ready',
+            badgeText: 'Step 4: Strategy Blueprint Ready',
+            progress: 100
+        };
+    }
+
+    if (msg.current_question?.question_number && msg.current_question?.total_questions) {
+        const qNum = msg.current_question.question_number;
+        const qTotal = msg.current_question.total_questions;
+        const total = 4;
+        const stepNum = Math.min(4, Math.max(1, Math.ceil((qNum / qTotal) * 4)));
+        const title = msg.step_title || STEP_TITLES[stepNum - 1] || 'Strategy Requirements';
+        const progress = Math.min(100, Math.max(15, Math.round((qNum / qTotal) * 100)));
+        return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
+    }
+
+    if (msg.step || msg.step_number) {
+        const stepNum = parseInt(msg.step || msg.step_number, 10);
+        const total = msg.total_steps || defaultTotalSteps;
+        const title = msg.step_title || STEP_TITLES[stepNum - 1] || 'Strategy Requirements';
+        const progress = Math.min(100, Math.max(15, Math.round((stepNum / total) * 100)));
+        return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
+    }
+
+    const aiMessages = (allMessages || []).filter((m) => m.role === 'ai');
+    const aiIndex = aiMessages.indexOf(msg);
+    const stepNum = Math.min(4, Math.max(1, aiIndex >= 0 ? aiIndex + 1 : defaultCurrentStep));
+    const total = 4;
+    const title = STEP_TITLES[stepNum - 1] || 'Strategy Requirements';
+    const progress = Math.min(100, Math.max(25, Math.round((stepNum / total) * 100)));
+
+    return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
+}
 
 function DynamicChatLoader() {
     const [stageIdx, setStageIdx] = useState(0);
@@ -76,85 +132,19 @@ function DynamicChatLoader() {
 }
 
 /**
- * Parses markdown inline tokens (**bold**, `code`, *italic*) and line breaks into formatted elements
- */
-function renderFormattedMarkdown(text) {
-    if (!text) return null;
-
-    const lines = text.split('\n');
-
-    return lines.map((line, lineIdx) => {
-        if (!line.trim()) {
-            return <div key={lineIdx} style={{ height: '6px' }} />;
-        }
-
-        const parts = [];
-        const tokenRegex = /(\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*)/g;
-        let lastIndex = 0;
-        let match;
-        let key = 0;
-
-        while ((match = tokenRegex.exec(line)) !== null) {
-            if (match.index > lastIndex) {
-                parts.push(line.substring(lastIndex, match.index));
-            }
-            const token = match[0];
-            if (token.startsWith('**') && token.endsWith('**')) {
-                parts.push(
-                    <strong key={`b_${key++}`}>
-                        {token.slice(2, -2)}
-                    </strong>
-                );
-            } else if (token.startsWith('`') && token.endsWith('`')) {
-                parts.push(
-                    <code
-                        key={`c_${key++}`}
-                        style={{
-                            background: 'rgba(24, 201, 139, 0.15)',
-                            color: '#18C98B',
-                            padding: '1px 5px',
-                            borderRadius: '4px',
-                            fontSize: '0.9em',
-                            fontFamily: 'monospace'
-                        }}
-                    >
-                        {token.slice(1, -1)}
-                    </code>
-                );
-            } else if (token.startsWith('*') && token.endsWith('*')) {
-                parts.push(
-                    <em key={`i_${key++}`}>
-                        {token.slice(1, -1)}
-                    </em>
-                );
-            }
-            lastIndex = match.index + token.length;
-        }
-
-        if (lastIndex < line.length) {
-            parts.push(line.substring(lastIndex));
-        }
-
-        return (
-            <div key={lineIdx} style={{ margin: '2px 0', lineHeight: 1.55 }}>
-                {parts.length > 0 ? parts : line}
-            </div>
-        );
-    });
-}
-
-/**
- * StreamingAiBubble — Renders an AI message with fluid typewriter character streaming
+ * StreamingAiBubble — Renders an AI message with fluid character typewriter effect
  */
 function StreamingAiBubble({ text, shouldStream, onStreamComplete, onStreamProgress }) {
-    const { displayedText, isStreaming, skipToEnd } = useStreamingText(text, {
+    const cleanText = useMemo(() => sanitizeRawJsonText(text), [text]);
+
+    const { displayedText, isStreaming, skipToEnd } = useStreamingText(cleanText, {
         msPerChar: 14,
         enabled: shouldStream,
         onComplete: onStreamComplete,
         onProgress: onStreamProgress
     });
 
-    const activeText = shouldStream ? displayedText : text;
+    const activeText = shouldStream ? displayedText : cleanText;
 
     return (
         <div
@@ -174,17 +164,60 @@ export default function AdvisorChatView({
     input,
     setInput,
     onSend,
+    onNewChat,
     loading,
     currentDraft,
     onGenerateFromDraft,
     generatingStrategy,
     onChipClick,
-    onRunBacktestFromCard
+    onRunBacktestFromCard,
+    marketMode = 'Forex',
+    setMarketMode,
+    currentStep = 2,
+    totalSteps = 4
 }) {
     const chatScrollContainerRef = useRef(null);
     const textareaRef = useRef(null);
     const completedStreamsRef = useRef(new Set());
     const [, forceUpdate] = useState(0);
+
+    // Explore / Strategy popup states
+    const [isStrategyMenuOpen, setIsStrategyMenuOpen] = useState(false);
+    const [isOptionBoxDismissed, setIsOptionBoxDismissed] = useState(false);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        if (messages.length === 0) {
+            completedStreamsRef.current.clear();
+            setIsOptionBoxDismissed(false);
+            setIsStrategyMenuOpen(false);
+        }
+    }, [messages.length]);
+
+    useEffect(() => {
+        async function loadUser() {
+            const stored = getStoredUser();
+            if (stored) setUser(stored);
+
+            const uid = getStoredUserId();
+            if (uid && (!stored?.first_name && !stored?.last_name && !stored?.name)) {
+                const hydrated = await hydrateUserFromProfile(uid, stored);
+                if (hydrated) setUser(hydrated);
+            }
+        }
+        loadUser();
+
+        window.addEventListener('user:updated', loadUser);
+        return () => window.removeEventListener('user:updated', loadUser);
+    }, []);
+
+    // Retrieve user's display name
+    const userName = useMemo(() => {
+        const firstName = user?.first_name || '';
+        const lastName = user?.last_name || '';
+        const fullName = [firstName, lastName].filter(Boolean).join(' ');
+        return fullName || user?.name || user?.full_name || user?.email?.split('@')[0] || 'Trader';
+    }, [user]);
 
     const scrollToBottom = useCallback((smooth = true) => {
         if (chatScrollContainerRef.current) {
@@ -209,199 +242,363 @@ export default function AdvisorChatView({
         scrollToBottom(true);
     }, [messages, loading, scrollToBottom]);
 
+    const handleSend = useCallback((textToSend, extraData) => {
+        setIsOptionBoxDismissed(true);
+        onSend(textToSend, extraData);
+    }, [onSend]);
+
     const handleKeyDown = (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            onSend();
+            if (input.trim() && !loading) {
+                handleSend();
+            }
         }
     };
 
-    const isInitialStartingView = messages.length <= 1;
+    const isInitialStartingView = messages.length === 0;
+    const isLatestAiMessage = messages.length > 0 && messages[messages.length - 1]?.role === 'ai';
+    const latestAiMsgIndex = isLatestAiMessage ? messages.length - 1 : -1;
+    const latestAiMessage = isLatestAiMessage ? messages[latestAiMsgIndex] : null;
+
+    const latestAiMsgKey = latestAiMsgIndex >= 0
+        ? `msg_${latestAiMsgIndex}_${(messages[latestAiMsgIndex].text || '').slice(0, 15)}`
+        : null;
+
+    const isLatestAiStreamCompleted = Boolean(
+        latestAiMsgKey && completedStreamsRef.current.has(latestAiMsgKey)
+    );
+
+    // Rotating Taglines at top of explore screen
+    const [taglineIndex, setTaglineIndex] = useState(0);
+    const [taglineFading, setTaglineFading] = useState(false);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTaglineFading(true);
+            setTimeout(() => {
+                setTaglineIndex((prev) => (prev + 1) % EXPLORE_TAGLINES.length);
+                setTaglineFading(false);
+            }, 300);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, []);
+
+    // Render User Message: Format as Image 2 structured Q&A or standard markdown
+    const renderUserBubbleContent = (msg) => {
+        if (msg.qaList && Array.isArray(msg.qaList) && msg.qaList.length > 0) {
+            return (
+                <div className={styles.qaListBlock}>
+                    {msg.qaList.map((item, idx) => (
+                        <div key={idx} className={styles.qaPairItem}>
+                            <div className={styles.qaQuestionLabel}>{item.question}</div>
+                            <div className={styles.qaAnswerValue}>{item.answer || item.label}</div>
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+
+        if (typeof msg.text === 'string' && msg.text.includes('\n') && msg.text.includes('?')) {
+            const blocks = msg.text.split(/\n\s*\n/);
+            const hasStructuredQa = blocks.some((b) => b.includes('?') && b.includes('\n'));
+            if (hasStructuredQa) {
+                return (
+                    <div className={styles.qaListBlock}>
+                        {blocks.map((block, bIdx) => {
+                            const lines = block.trim().split('\n');
+                            if (lines.length >= 2) {
+                                const questionLine = lines[0].trim();
+                                const answerLine = lines.slice(1).join(' ').trim();
+                                return (
+                                    <div key={bIdx} className={styles.qaPairItem}>
+                                        <div className={styles.qaQuestionLabel}>{questionLine}</div>
+                                        <div className={styles.qaAnswerValue}>{answerLine}</div>
+                                    </div>
+                                );
+                            }
+                            return <div key={bIdx}>{block}</div>;
+                        })}
+                    </div>
+                );
+            }
+        }
+
+        return renderFormattedMarkdown(msg.text);
+    };
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
-            <div className={styles.chatMessagesArea} ref={chatScrollContainerRef}>
-                {isInitialStartingView ? (
-                    <div className={styles.welcomeStarterWrap}>
-                        <div className={styles.welcomeHero}>
-                            <h2>
-                                What strategy do you want to <span className={styles.titleLime}>build?</span>
-                            </h2>
-                            <p>Select a quantitative model archetype or describe your trading hypothesis below</p>
+            {isInitialStartingView ? (
+                /* ── INITIAL EXPLORE HOME SCREEN (IMAGE 1 & 2) ── */
+                <div className={styles.studioHomeWrapper}>
+                    <div className={styles.exploreHeroArea}>
+                        {/* Rotating Tagline Header */}
+                        <div className={styles.rotatingTaglineWrap}>
+                            <div className={`${styles.taglineText} ${taglineFading ? styles.taglineFadeOut : styles.taglineFadeIn}`}>
+                                {EXPLORE_TAGLINES[taglineIndex]}
+                            </div>
                         </div>
 
-                        <div className={styles.welcomeCardsGrid}>
-                            {STRATEGY_STARTERS.map((starter) => (
+                        {/* Greeting Hero */}
+                        <h1 className={styles.greetingTitleLarge}>
+                            Good morning, trader •
+                        </h1>
+                        <div className={styles.greetingSubName}>
+                            {userName}
+                        </div>
+
+                        {/* Centered Explore Input Card */}
+                        <div className={styles.exploreInputCard}>
+                            <textarea
+                                className={styles.explorePromptTextarea}
+                                placeholder="What would you like to explore?"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                rows={2}
+                            />
+                            <div className={styles.exploreCardBottom}>
                                 <button
-                                    key={starter.id}
                                     type="button"
-                                    className={styles.starterCard}
-                                    onClick={() => onChipClick(starter.prompt)}
+                                    className={styles.btnNewChat}
+                                    onClick={onNewChat}
+                                    title="Start a new chat session"
                                 >
-                                    <div className={styles.cardIconWrap}>
-                                        {starter.icon}
-                                    </div>
-                                    <div className={styles.cardTextWrap}>
-                                        <span className={styles.cardTitle}>{starter.title}</span>
-                                        <span className={styles.cardSubtitle}>{starter.desc}</span>
-                                    </div>
-                                    <div className={styles.cardArrow}>
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                            <path d="m9 18 6-6-6-6" />
-                                        </svg>
-                                    </div>
+                                    <PlusIcon size={14} />
+                                    <span>New Chat</span>
                                 </button>
-                            ))}
-                        </div>
-
-                        <div className={styles.chipsContainer} style={{ marginLeft: 0, marginTop: 4 }}>
-                            {['Trend Following', 'Donchian Breakout', 'EMA Crossover', 'Bollinger Breakout', 'Scalping'].map((chip, chipIdx) => (
                                 <button
-                                    key={chipIdx}
                                     type="button"
-                                    className={styles.chipBtn}
-                                    onClick={() => onChipClick(chip)}
+                                    className={`${styles.circularSubmitBtn} ${input.trim() ? styles.activeBtn : ''}`}
+                                    onClick={onSend}
+                                    disabled={loading || !input.trim()}
+                                    title="Send Message"
                                 >
-                                    {chip}
+                                    <ArrowUpIcon size={20} />
                                 </button>
-                            ))}
+                            </div>
                         </div>
-                    </div>
-                ) : (
-                    messages.map((msg, index) => {
-                        const isUser = msg.role === 'user';
-                        const isLatestAi = !isUser && index === messages.length - 1;
-                        const msgKey = `msg_${index}_${(msg.text || '').slice(0, 15)}`;
-                        const hasCompleted = completedStreamsRef.current.has(msgKey);
-                        const shouldStream = isLatestAi && !hasCompleted && index > 0;
-                        const showActionOptions = isUser || !isLatestAi || hasCompleted || !shouldStream;
 
-                        return (
-                            <React.Fragment key={index}>
-                                <div className={`${styles.messageRow} ${isUser ? styles.userRow : ''}`}>
-                                    {isUser ? (
-                                        <div className={`${styles.bubble} ${styles.userBubble}`}>
-                                            {renderFormattedMarkdown(msg.text)}
-                                        </div>
-                                    ) : (
-                                        <StreamingAiBubble
-                                            text={msg.text}
-                                            shouldStream={shouldStream}
-                                            onStreamProgress={handleStreamProgress}
-                                            onStreamComplete={() => {
-                                                completedStreamsRef.current.add(msgKey);
-                                                forceUpdate((n) => n + 1);
-                                                setTimeout(() => scrollToBottom(true), 60);
+                        {/* Category Chips Underneath Input Card */}
+                        <div className={styles.categoryChipsRow}>                   
+                            <button
+                                type="button"
+                                className={`${styles.categoryChipBtn} ${isStrategyMenuOpen ? styles.activeChip : ''}`}
+                                onClick={() => setIsStrategyMenuOpen((prev) => !prev)}
+                            >
+                                <CpuChipIcon size={13} color="#18C98B" />
+                                <span>Strategy</span>
+                            </button>
+                        </div>
+
+                        {/* Strategy Options Popup (IMAGE 2) */}
+                        {isStrategyMenuOpen && (
+                            <div className={styles.strategyMenuPopup}>
+                                <div className={styles.popupHeader}>
+                                    <div className={styles.popupHeaderTitle}>
+                                        <CpuChipIcon size={15} color="#18C98B" />
+                                        <span>Strategy</span>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        className={styles.popupCloseBtn}
+                                        onClick={() => setIsStrategyMenuOpen(false)}
+                                        title="Close"
+                                    >
+                                        <CloseXIcon size={14} />
+                                    </button>
+                                </div>
+                                <div className={styles.popupOptionsList}>
+                                    {STRATEGY_EXPLORE_OPTIONS.map((opt, optIdx) => (
+                                        <button
+                                            key={optIdx}
+                                            type="button"
+                                            className={styles.popupOptionItem}
+                                            onClick={() => {
+                                                setIsStrategyMenuOpen(false);
+                                                onChipClick(opt);
                                             }}
+                                        >
+                                            <SparklesMiniIcon size={14} color="#18C98B" />
+                                            <span>{opt}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            ) : (
+                /* ── ACTIVE CONVERSATION CHAT VIEW (IMAGE 3) ── */
+                <div className={styles.activeChatInnerContainer}>
+                    <div className={styles.chatMessagesArea} ref={chatScrollContainerRef}>
+                        {messages.map((msg, index) => {
+                            const isUser = msg.role === 'user';
+                            const isLatestAi = !isUser && index === messages.length - 1;
+                            const isFirstAiResponse = !isUser && messages.findIndex((m) => m.role === 'ai') === index;
+                            const msgKey = `msg_${index}_${(msg.text || '').slice(0, 15)}`;
+                            const hasCompleted = completedStreamsRef.current.has(msgKey);
+                            const shouldStream = isLatestAi && !hasCompleted;
+                            const showActionOptions = isUser || !isLatestAi || hasCompleted || !shouldStream;
+
+                            return (
+                                <React.Fragment key={index}>
+                                    {/* Futuristic Circuit Strategy Divider on First AI Message Only */}
+                                    {isFirstAiResponse && (
+                                        <div className={styles.circuitStrategyDivider}>
+                                            <div className={styles.circuitLineLeft}>
+                                                <svg className={styles.circuitSvg} viewBox="0 0 160 18" fill="none">
+                                                    <path d="M 4 15 L 38 6 L 160 6" stroke="url(#circuitGradGreenLeft)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                                                    <circle cx="4" cy="15" r="2.5" fill="#18C98B" />
+                                                    <defs>
+                                                        <linearGradient id="circuitGradGreenLeft" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                            <stop offset="0%" stopColor="#18C98B" stopOpacity="0.8" />
+                                                            <stop offset="40%" stopColor="#18C98B" stopOpacity="0.9" />
+                                                            <stop offset="100%" stopColor="#18C98B" stopOpacity="1" />
+                                                        </linearGradient>
+                                                    </defs>
+                                                </svg>
+                                            </div>
+                                            <div className={styles.circuitBadge}>
+                                                <span>Strategy</span>
+                                            </div>
+                                            <div className={styles.circuitLineRight}>
+                                                <svg className={styles.circuitSvg} viewBox="0 0 160 18" fill="none">
+                                                    <path d="M 0 6 L 122 6 L 156 1" stroke="url(#circuitGradGreenRight)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                                                    <circle cx="156" cy="1" r="2.5" fill="#18C98B" />
+                                                    <defs>
+                                                        <linearGradient id="circuitGradGreenRight" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                            <stop offset="0%" stopColor="#18C98B" stopOpacity="1" />
+                                                            <stop offset="60%" stopColor="#18C98B" stopOpacity="0.9" />
+                                                            <stop offset="100%" stopColor="#18C98B" stopOpacity="0.8" />
+                                                        </linearGradient>
+                                                    </defs>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <div className={`${styles.messageRow} ${isUser ? styles.userRow : ''}`}>
+                                        {isUser ? (
+                                            <div className={`${styles.bubble} ${styles.userBubble}`}>
+                                                {renderUserBubbleContent(msg)}
+                                            </div>
+                                        ) : (
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxWidth: '86%' }}>
+                                                <StreamingAiBubble
+                                                    text={msg.text}
+                                                    shouldStream={shouldStream}
+                                                    onStreamProgress={handleStreamProgress}
+                                                    onStreamComplete={() => {
+                                                        completedStreamsRef.current.add(msgKey);
+                                                        setIsOptionBoxDismissed(false);
+                                                        forceUpdate((n) => n + 1);
+                                                        setTimeout(() => scrollToBottom(true), 60);
+                                                    }}
+                                                />
+
+                                                {/* Dynamic Step Indicator Badge */}
+                                                {(() => {
+                                                    const stepInfo = getDynamicStepInfo(msg, messages, currentStep, totalSteps);
+                                                    return (
+                                                        <div className={styles.stepIndicatorPill}>
+                                                            <div className={styles.stepIndicatorLeft}>
+                                                                <span className={styles.stepMiniDot} />
+                                                                <span>{stepInfo.badgeText}</span>
+                                                            </div>
+                                                            <div className={styles.stepMiniBar}>
+                                                                <span style={{ width: `${stepInfo.progress}%` }} />
+                                                            </div>
+                                                            <div className={styles.stepIndicatorRight}>
+                                                                <span title={`Step ${stepInfo.stepNum} of ${stepInfo.total} (${stepInfo.progress}% completed)`}>
+                                                                    <InfoCircleIcon size={13} color="#94A3B8" />
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })()}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Ready to Proceed Card matching Screenshot */}
+                                    {showActionOptions && !isUser && msg.draft && (
+                                        <ReadyToProceedCard
+                                            draft={msg.draft}
+                                            onCreateStrategy={(name) => onGenerateFromDraft(msg.draft, name)}
+                                            onEnhance={(name) => onSend(`Enhance and optimize strategy rules for ${name}`)}
+                                            onModifyStrategy={(name) => onSend(`Modify strategy parameters for ${name}`)}
+                                            generatingStrategy={generatingStrategy}
                                         />
                                     )}
-                                </div>
+                                </React.Fragment>
+                            );
+                        })}
 
-                                {/* Suggestions Chips Row (Only visible after streaming finishes) */}
-                                {showActionOptions && !isUser && msg.suggestions?.length > 0 && (
-                                    <div className={styles.chipsContainer}>
-                                        {msg.suggestions.map((chip, chipIdx) => (
-                                            <button
-                                                key={chipIdx}
-                                                type="button"
-                                                className={`${styles.chipBtn} ${index < messages.length - 1 ? styles.disabledChip : ''}`}
-                                                onClick={() => onChipClick(chip)}
-                                            >
-                                                {chip}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
+                        {/* Active Strategy Generation Stepper Card (Screenshot Bottom) */}
+                        {generatingStrategy && (
+                            <div className={styles.messageRow}>
+                                <ReadyToProceedCard generatingStrategy={true} />
+                            </div>
+                        )}
 
-                                {/* Blueprint Draft Card (Only visible after streaming finishes) */}
-                                {showActionOptions && !isUser && msg.draft && (
-                                    <div className={styles.draftCard}>
-                                        <div className={styles.draftHeader}>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                                <ShieldCheckIcon size={16} color="#18C98B" />
-                                                <span>Strategy Blueprint Ready</span>
-                                            </div>
-                                            <span className={styles.panelBadge}>Validated</span>
-                                        </div>
-                                        <div className={styles.draftBadgesGrid}>
-                                            <div className={styles.draftBadge}>
-                                                Asset: <strong>{msg.draft.instrument || 'XAUUSD'}</strong>
-                                            </div>
-                                            <div className={styles.draftBadge}>
-                                                Interval: <strong>{msg.draft.timeframe || '15min'}</strong>
-                                            </div>
-                                            <div className={styles.draftBadge}>
-                                                Pattern: <strong>{msg.draft.entry_pattern || 'Breakout'}</strong>
-                                            </div>
-                                            <div className={styles.draftBadge}>
-                                                TP: <strong>{msg.draft.target_pips} pts</strong>
-                                            </div>
-                                            <div className={styles.draftBadge}>
-                                                SL: <strong>{msg.draft.stoploss_pips} pts</strong>
-                                            </div>
-                                        </div>
-                                        <div className={styles.draftActionRow}>
-                                            <button
-                                                type="button"
-                                                className={styles.btnNeonRunBacktest}
-                                                style={{ fontSize: '11px', height: '30px', padding: '0 12px' }}
-                                                onClick={() => onGenerateFromDraft(msg.draft)}
-                                                disabled={generatingStrategy}
-                                            >
-                                                <LightningIcon size={13} color="#040605" />
-                                                <span>{generatingStrategy ? 'Generating...' : 'Apply Blueprint'}</span>
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className={styles.btnDraftSecondary}
-                                                onClick={onRunBacktestFromCard}
-                                            >
-                                                <RocketRunIcon size={13} />
-                                                <span>Run Backtest Now</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
-                            </React.Fragment>
-                        );
-                    })
-                )}
-
-                {loading && (
-                    <div className={styles.messageRow}>
-                        <DynamicChatLoader />
+                        {loading && !generatingStrategy && (                            <div className={styles.messageRow}>
+                                <DynamicChatLoader />
+                            </div>
+                        )}
                     </div>
-                )}
-            </div>
 
-            <div className={styles.chatInputBar}>
-                <div className={styles.chatInputWrapper}>
-                    <textarea
-                        ref={textareaRef}
-                        className={styles.chatTextarea}
-                        placeholder="Describe your strategy idea (e.g., Donchian on XAUUSD, EMA Crossover)..."
-                        value={input}
-                        onChange={(e) => {
-                            setInput(e.target.value);
-                            if (textareaRef.current) {
-                                textareaRef.current.style.height = 'auto';
-                                textareaRef.current.style.height = `${Math.max(42, Math.min(textareaRef.current.scrollHeight, 110))}px`;
-                            }
-                        }}
-                        onKeyDown={handleKeyDown}
-                        rows={2}
-                    />
-                    <button
-                        type="button"
-                        className={styles.sendBtn}
-                        onClick={onSend}
-                        disabled={loading || !input.trim()}
-                        title="Send Message"
-                    >
-                        <SendPaperAirplaneIcon size={15} color="#040605" />
-                    </button>
+                    {/* ── BOTTOM CHAT BAR WITH DOCKED INTERACTIVE QUESTION WIZARD (IMAGE 1 & 2) ── */}
+                    <div className={styles.bottomChatInputBar}>
+                        {/* Interactive Step-by-Step Question Wizard Docked Above Input Field */}
+                        {!isOptionBoxDismissed && !loading && isLatestAiMessage && isLatestAiStreamCompleted && (
+                            <InteractiveQuestionWizard
+                                latestAiMessage={latestAiMessage}
+                                messages={messages}
+                                onComplete={(summaryText, qaList) => {
+                                    handleSend(summaryText, { qaList });
+                                }}
+                                onDismiss={() => setIsOptionBoxDismissed(true)}
+                                loading={loading}
+                            />
+                        )}
+
+                        {/* Bottom Textarea + Send Button (Card Layout Matching Image 2) */}
+                        <div className={styles.chatInputWrapper}>
+                            <textarea
+                                ref={textareaRef}
+                                className={styles.chatTextarea}
+                                placeholder="What would you like to explore?"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                rows={2}
+                            />
+                            <div className={styles.chatCardBottom}>
+                                <button
+                                    type="button"
+                                    className={styles.btnNewChat}
+                                    onClick={onNewChat}
+                                    title="Start a new chat session"
+                                >
+                                    <PlusIcon size={14} />
+                                    <span>New Chat</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`${styles.circularSubmitBtn} ${input.trim() ? styles.activeBtn : ''}`}
+                                    onClick={() => handleSend()}
+                                    disabled={loading || !input.trim()}
+                                    title="Send Message"
+                                >
+                                    <ArrowUpIcon size={20} />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }

@@ -114,11 +114,13 @@ export default function IndicatorPivotTabs({ trendIndicators, momentumIndicators
     return (
         <div className={styles.indicatorPivotSection}>
             <div className={styles.sectionHeaderRow}>
-                <ActivityIcon size={18} className={styles.sectionTitleIcon} />
-                <h3>Technical Indicators & Pivot Point Breakdown</h3>
+                <div className={styles.sectionTitleWrap}>
+                    <ActivityIcon size={18} className={styles.sectionTitleIcon} />
+                    <h3>Technical Indicators & Pivot Point Breakdown</h3>
+                </div>
             </div>
 
-            {/* Tab Navigation */}
+            {/* Tab Navigation (Visible on screen) */}
             <div className={styles.tabNavRow}>
                 <button
                     type="button"
@@ -150,12 +152,32 @@ export default function IndicatorPivotTabs({ trendIndicators, momentumIndicators
                 </button>
             </div>
 
-            {/* Tab Body */}
+            {/* Tab Body (Interactive Single Tab on screen) */}
             <div className={styles.tabContentCard}>
                 {activeTab === 'trend' && renderIndicatorTable(defaultTrend)}
                 {activeTab === 'momentum' && renderIndicatorTable(defaultMomentum)}
                 {activeTab === 'volatility' && renderIndicatorTable(defaultVolatility)}
                 {activeTab === 'pivots' && renderPivotTable(defaultPivots)}
+            </div>
+
+            {/* PDF Full Breakdown (Shows all 4 indicator & pivot tables sequentially in PDF export) */}
+            <div className={styles.pdfFullBreakdown}>
+                <div className={styles.pdfBreakdownBlock}>
+                    <div className={styles.pdfSubHeading}>1. Trend Indicators</div>
+                    <div className={styles.tabContentCard}>{renderIndicatorTable(defaultTrend)}</div>
+                </div>
+                <div className={styles.pdfBreakdownBlock}>
+                    <div className={styles.pdfSubHeading}>2. Momentum Indicators</div>
+                    <div className={styles.tabContentCard}>{renderIndicatorTable(defaultMomentum)}</div>
+                </div>
+                <div className={styles.pdfBreakdownBlock}>
+                    <div className={styles.pdfSubHeading}>3. Volatility Indicators</div>
+                    <div className={styles.tabContentCard}>{renderIndicatorTable(defaultVolatility)}</div>
+                </div>
+                <div className={styles.pdfBreakdownBlock}>
+                    <div className={styles.pdfSubHeading}>4. Pivot Points Breakdown</div>
+                    <div className={styles.tabContentCard}>{renderPivotTable(defaultPivots)}</div>
+                </div>
             </div>
         </div>
     );

@@ -238,6 +238,9 @@
     font-size: 13px;
     color: var(--text-muted);
     margin: 4px 0 0 0;
+    text-align: justify;
+    text-justify: inter-word;
+    line-height: 1.6;
 }
 
 .bannerRight {
@@ -658,8 +661,10 @@
     .rationaleText {
         font-size: 13px;
         color: var(--text-primary);
-        line-height: 1.5;
+        line-height: 1.6;
         margin: 0;
+        text-align: justify;
+        text-justify: inter-word;
     }
 }
 

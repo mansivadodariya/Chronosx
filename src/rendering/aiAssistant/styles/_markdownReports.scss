@@ -17,6 +17,8 @@
 .mdPara {
     margin: 0;
     line-height: 1.6;
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 .mdList {
@@ -103,6 +105,8 @@
     :global(p) {
         margin: 0 0 8px;
         color: #E2E8F0;
+        text-align: justify;
+        text-justify: inter-word;
     }
 
     :global(h1),
@@ -137,6 +141,8 @@
         :global(li) {
             color: #CBD5E1;
             margin-bottom: 4px;
+            text-align: justify;
+            text-justify: inter-word;
 
             &::marker {
                 color: #18C98B;
@@ -298,12 +304,19 @@
 
     :global(p) {
         margin: 0 0 10px;
+        text-align: justify;
+        text-justify: inter-word;
     }
 
     :global(ul),
     :global(ol) {
         margin: 0 0 12px;
         padding-left: 22px;
+
+        :global(li) {
+            text-align: justify;
+            text-justify: inter-word;
+        }
     }
 
     :global(table) {

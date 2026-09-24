@@ -257,9 +257,9 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
 
         const generatePdf = async () => {
             try {
-                toast('Preparing PDF download with market charts...');
+                toast('Preparing PDF download with market charts & figures...');
                 const html2pdf = (await import('html2pdf.js')).default;
-                await new Promise((resolve) => setTimeout(resolve, 1000));
+                await new Promise((resolve) => setTimeout(resolve, 1200));
 
                 const element = exportRef.current;
                 if (!element) throw new Error("Export element not found");
@@ -272,9 +272,41 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
                     margin: [10, 10, 10, 10],
                     filename: `${cleanPair}_Trade_Analysis_Report.pdf`,
                     image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true, allowTaint: true, backgroundColor: '#0b0f17', windowWidth: 800, width: 800 },
+                    html2canvas: {
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        backgroundColor: '#0b0f17',
+                        scrollX: 0,
+                        scrollY: 0,
+                        windowWidth: 800,
+                        width: 800,
+                        logging: false
+                    },
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                    pagebreak: {
+                        mode: ['avoid-all', 'css', 'legacy'],
+                        avoid: [
+                            '.inlineWidgetCard',
+                            '.chartCanvas',
+                            '.chartContainer',
+                            '.reportWidget',
+                            '.reportGauge',
+                            '.reportRadar',
+                            'canvas',
+                            'svg',
+                            'table',
+                            'tr',
+                            'figure',
+                            'img',
+                            'h1',
+                            'h2',
+                            'h3',
+                            'blockquote',
+                            '.deepAnalysisCardWrapper',
+                            '.analysisCenterCard'
+                        ]
+                    }
                 };
 
                 await html2pdf().set(opt).from(element).save();
@@ -439,12 +471,15 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
             {exportData && (
                 <div
                     style={{
-                        position: 'absolute',
-                        left: '-9999px',
-                        top: '-9999px',
+                        position: 'fixed',
+                        left: '0px',
+                        top: '0px',
                         width: '800px',
                         background: '#0b0f17',
-                        zIndex: -1000
+                        zIndex: -99999,
+                        opacity: 1,
+                        pointerEvents: 'none',
+                        overflow: 'visible'
                     }}
                 >
                     <div ref={exportRef} className={styles.pdfExporting}>

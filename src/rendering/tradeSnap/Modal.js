@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import styles from './tradeSnap.module.scss';
 import { getBidiProps } from '@/lib/bidi';
 
-export default function Modal({ open, onClose, title, description, children, footer, size = 'default' }) {
+export default function Modal({ open, onClose, title, description, children, footer, headerActions, size = 'default' }) {
     useEffect(() => {
         if (!open) return;
         const originalOverflow = document.body.style.overflow;
@@ -36,11 +36,16 @@ export default function Modal({ open, onClose, title, description, children, foo
                 data-lenis-prevent="true"
             >
                 <div className={styles.modalHeader}>
-                    {title && <h2 {...getBidiProps(title)}>{title}</h2>}
-                    {description && <p {...getBidiProps(description)}>{description}</p>}
-                    <button type="button" className={styles.modalClose} onClick={onClose} aria-label="Close">
-                        ✕
-                    </button>
+                    <div className={styles.modalHeaderContent}>
+                        {title && <h2 {...getBidiProps(title)}>{title}</h2>}
+                        {description && <p {...getBidiProps(description)}>{description}</p>}
+                    </div>
+                    <div className={styles.modalHeaderRight}>
+                        {headerActions}
+                        <button type="button" className={styles.modalClose} onClick={onClose} aria-label="Close">
+                            ✕
+                        </button>
+                    </div>
                 </div>
                 <div className={styles.modalBody}>{children}</div>
                 {footer && <div className={styles.modalFooter}>{footer}</div>}

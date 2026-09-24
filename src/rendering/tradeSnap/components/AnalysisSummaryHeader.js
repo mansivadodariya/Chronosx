@@ -3,7 +3,7 @@ import React from 'react';
 import styles from '../aiSnapDashboard.module.scss';
 import { ClockIcon, TrendingUpIcon, TrendingDownIcon, ActivityIcon, CheckCircle2Icon } from '@/icons/aiSnapIcons';
 
-export default function AnalysisSummaryHeader({ symbol, timeframe, currentPrice, volume, change, isChartValid, onOpenTimeframeModal }) {
+export default function AnalysisSummaryHeader({ symbol, timeframe, currentPrice, volume, change, isChartValid, onOpenTimeframeModal, onDownloadPdf, isExporting }) {
     const isChangePositive = typeof change === 'string' ? !change.startsWith('-') : change >= 0;
     const formattedPrice = currentPrice ? (typeof currentPrice === 'number' ? `$${currentPrice.toFixed(4)}` : currentPrice) : '$0.8010';
 

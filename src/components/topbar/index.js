@@ -27,6 +27,7 @@ const ROUTE_TITLE_MAP = {
   '/bot-builder': 'nav.aiBotBuilder|AI Bot Builder',
   '/strategy-studio': 'nav.aiBotBuilder|AI Bot Builder',
   '/ai-strategy-studio': 'nav.aiBotBuilder|AI Bot Builder',
+  '/backtest': 'nav.backtest|Backtest',
   '/market-assistant': 'nav.marketAssistant|AI Market Assistant',
   '/ai-market-assistant': 'nav.marketAssistant|AI Market Assistant',
   '/live-scanner': 'nav.liveMarketScanner|Signal Terminal',

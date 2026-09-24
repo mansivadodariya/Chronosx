@@ -50,6 +50,8 @@
                 p {
                     margin: 0;
                     color: #E2E8F0 !important;
+                    text-align: justify;
+                    text-justify: inter-word;
                 }
 
                 .formattedList {
@@ -260,6 +262,8 @@
                     p {
                         margin: 0 0 10px 0;
                         color: #E2E8F0;
+                        text-align: justify;
+                        text-justify: inter-word;
 
                         &:last-child {
                             margin-bottom: 0;
@@ -289,6 +293,8 @@
                         li {
                             color: #CBD5E1;
                             line-height: 1.55;
+                            text-align: justify;
+                            text-justify: inter-word;
                         }
                     }
 

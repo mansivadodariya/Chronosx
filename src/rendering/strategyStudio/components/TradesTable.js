@@ -3,40 +3,63 @@
 import React, { useState, useMemo } from 'react';
 import styles from '../styles/strategyStudio.module.scss';
 
+const formatPrice = (val) => {
+    if (val === undefined || val === null || isNaN(Number(val))) return '—';
+    const num = Number(val);
+    return num.toFixed(4).replace(/0+$/, '').replace(/\.$/, '.00');
+};
+
+const formatPnL = (val) => {
+    if (val === undefined || val === null || isNaN(Number(val))) return '$0.00';
+    const num = Number(val);
+    const sign = num > 0 ? '+' : '';
+    return `${sign}$${num.toFixed(2)}`;
+};
+
+const formatBalance = (val) => {
+    if (val === undefined || val === null || isNaN(Number(val))) return '$10,000.00';
+    return `$${Number(val).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+};
+
 export default function TradesTable({ roundTrips = [] }) {
     const [filter, setFilter] = useState('all');
 
+    const safeRoundTrips = Array.isArray(roundTrips) ? roundTrips : [];
+
     const filteredTrades = useMemo(() => {
-        if (filter === 'win') return roundTrips.filter(t => t.pnl > 0);
-        if (filter === 'loss') return roundTrips.filter(t => t.pnl <= 0);
-        return roundTrips;
-    }, [roundTrips, filter]);
+        if (filter === 'win') return safeRoundTrips.filter(t => (Number(t?.pnl) || 0) > 0);
+        if (filter === 'loss') return safeRoundTrips.filter(t => (Number(t?.pnl) || 0) <= 0);
+        return safeRoundTrips;
+    }, [safeRoundTrips, filter]);
+
+    const winCount = safeRoundTrips.filter(t => (Number(t?.pnl) || 0) > 0).length;
+    const lossCount = safeRoundTrips.filter(t => (Number(t?.pnl) || 0) <= 0).length;
 
     return (
         <div className={styles.tableCard}>
             <div className={styles.tableHeader}>
-                <h3>Detailed Trades Execution Log ({roundTrips.length})</h3>
+                <h3>Detailed Trades Execution Log ({safeRoundTrips.length})</h3>
                 <div className={styles.filterPills}>
                     <button
                         type="button"
                         className={`${styles.filterBtn} ${filter === 'all' ? styles.active : ''}`}
                         onClick={() => setFilter('all')}
                     >
-                        All Trades ({roundTrips.length})
+                        All Trades ({safeRoundTrips.length})
                     </button>
                     <button
                         type="button"
                         className={`${styles.filterBtn} ${filter === 'win' ? styles.active : ''}`}
                         onClick={() => setFilter('win')}
                     >
-                        Wins ({roundTrips.filter(t => t.pnl > 0).length})
+                        Wins ({winCount})
                     </button>
                     <button
                         type="button"
                         className={`${styles.filterBtn} ${filter === 'loss' ? styles.active : ''}`}
                         onClick={() => setFilter('loss')}
                     >
-                        Losses ({roundTrips.filter(t => t.pnl <= 0).length})
+                        Losses ({lossCount})
                     </button>
                 </div>
             </div>
@@ -59,36 +82,38 @@ export default function TradesTable({ roundTrips = [] }) {
                     <tbody>
                         {filteredTrades.length === 0 ? (
                             <tr>
-                                <td colSpan="9" style={{ textAlign: 'center', color: '#94A3B8', padding: '24px' }}>
+                                <td colSpan="9" style={{ textAlign: 'center', color: '#94A3B8', padding: '28px' }}>
                                     No trades match the selected filter.
                                 </td>
                             </tr>
                         ) : (
-                            filteredTrades.map((t) => {
-                                const isWin = t.pnl > 0;
-                                const isBuy = t.side === 'BUY';
-                                const triggerLower = (t.trigger || '').toLowerCase();
-                                const triggerClass = triggerLower.includes('target')
+                            filteredTrades.map((t, idx) => {
+                                const pnlNum = Number(t?.pnl) || 0;
+                                const isWin = pnlNum > 0;
+                                const side = String(t?.side || 'BUY').toUpperCase();
+                                const isBuy = side === 'BUY';
+                                const trigger = String(t?.trigger || (isWin ? 'TARGET' : 'STOPLOSS')).toUpperCase();
+                                const triggerClass = trigger.includes('TARGET') || trigger.includes('TP')
                                     ? styles.target
-                                    : triggerLower.includes('stoploss')
+                                    : trigger.includes('STOPLOSS') || trigger.includes('SL') || trigger.includes('TRAILING')
                                     ? styles.stoploss
                                     : '';
 
                                 return (
-                                    <tr key={t.index}>
-                                        <td style={{ color: '#94A3B8' }}>{t.index}</td>
-                                        <td>{t.entryDate}</td>
-                                        <td>{t.entryPrice.toFixed(2)}</td>
-                                        <td>{t.exitDate}</td>
-                                        <td>{t.exitPrice.toFixed(2)}</td>
+                                    <tr key={t?.index || idx + 1}>
+                                        <td style={{ color: '#94A3B8' }}>{t?.index || idx + 1}</td>
+                                        <td>{t?.entryDate || '—'}</td>
+                                        <td>{formatPrice(t?.entryPrice)}</td>
+                                        <td>{t?.exitDate || '—'}</td>
+                                        <td>{formatPrice(t?.exitPrice)}</td>
                                         <td>
                                             <span className={isBuy ? styles.badgeBuy : styles.badgeSell}>
-                                                {t.side}
+                                                {side}
                                             </span>
                                         </td>
                                         <td>
                                             <span className={`${styles.badgeTrigger} ${triggerClass}`}>
-                                                {t.trigger}
+                                                {trigger}
                                             </span>
                                         </td>
                                         <td
@@ -97,10 +122,10 @@ export default function TradesTable({ roundTrips = [] }) {
                                                 fontWeight: 700
                                             }}
                                         >
-                                            {isWin ? '+' : ''}${t.pnl.toFixed(2)}
+                                            {formatPnL(pnlNum)}
                                         </td>
                                         <td style={{ fontWeight: 600 }}>
-                                            ${t.runningBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                            {formatBalance(t?.runningBalance)}
                                         </td>
                                     </tr>
                                 );

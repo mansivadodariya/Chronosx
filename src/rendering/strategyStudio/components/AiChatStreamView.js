@@ -4,7 +4,9 @@ import React, { useState, useCallback } from 'react';
 import styles from '../styles/strategyStudio.module.scss';
 import BacktestResultsView from './BacktestResultsView';
 import ChatProgressSteps from './ChatProgressSteps';
+import ReadyToProceedCard from './ReadyToProceedCard';
 import { useStreamingText } from '../utils/streamingRenderer';
+import { sanitizeRawJsonText } from '../utils/chatTextFormatter';
 import {
     LightningIcon,
     RefreshResetIcon,
@@ -18,14 +20,16 @@ import {
  * Only the latest AI message gets streaming; older messages render instantly.
  */
 function StreamingAiBubble({ text, shouldStream, onStreamComplete, onStreamProgress }) {
-    const { displayedText, isStreaming, skipToEnd } = useStreamingText(text, {
+    const cleanText = React.useMemo(() => sanitizeRawJsonText(text), [text]);
+
+    const { displayedText, isStreaming, skipToEnd } = useStreamingText(cleanText, {
         msPerChar: 18,
         enabled: shouldStream,
         onComplete: onStreamComplete,
         onProgress: onStreamProgress
     });
 
-    const renderedText = shouldStream ? displayedText : text;
+    const renderedText = shouldStream ? displayedText : cleanText;
 
     return (
         <div 
@@ -326,6 +330,9 @@ export default function AiChatStreamView({
                                 results={results}
                                 roundTrips={roundTrips}
                                 initialCapital={capital}
+                                symbol={symbol || 'EURUSD'}
+                                interval={interval || '15min'}
+                                quantity={quantity || 0.01}
                             />
                         </div>
                     )}

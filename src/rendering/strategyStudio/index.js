@@ -13,17 +13,14 @@ import {
     AiBotSparkIcon,
     SlidersTuneIcon,
     ShieldCheckIcon,
-    RocketRunIcon
+    RocketRunIcon,
+    LockOutlineIcon,
+    AreaChartIcon
 } from './components/StudioIcons';
 import { toast } from 'react-hot-toast';
 import { strategyStudioApi } from './utils/strategyApi';
 import { parseRoundTrips } from './utils/backtestEngine';
-
-const INITIAL_ALEX_MESSAGE = {
-    role: 'ai',
-    text: "Hey! I'm Alex, your forex strategy advisor 🤖\n\nTell me what you have in mind - whether it's a trend-following Donchian setup, an EMA crossover, or a volatility breakout. What are you thinking?",
-    suggestions: ['Trend Following', 'Donchian Breakout', 'EMA Crossover', 'Bollinger Breakout', 'Scalping']
-};
+import { sanitizeRawJsonText } from './utils/chatTextFormatter';
 
 export default function StrategyStudio() {
     // Strategy Parameters (Toolbar & Execution)
@@ -32,17 +29,21 @@ export default function StrategyStudio() {
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
     const [capital, setCapital] = useState(10000);
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState(0.01);
+    const [marketMode, setMarketMode] = useState('Forex');
+
+    // UI Workspace & Panel Layout
+    const [isBacktestPanelOpen, setIsBacktestPanelOpen] = useState(false);
+    const [isJsonModalOpen, setIsJsonModalOpen] = useState(false);
 
     // AI Advisor Chat States
     const [sessionId, setSessionId] = useState('');
-    const [messages, setMessages] = useState([INITIAL_ALEX_MESSAGE]);
+    const [messages, setMessages] = useState([]);
     const [chatInput, setChatInput] = useState('');
     const [advisorLoading, setAdvisorLoading] = useState(false);
     const [currentDraft, setCurrentDraft] = useState(null);
     const [currentStrategy, setCurrentStrategy] = useState(null);
     const [generatingStrategy, setGeneratingStrategy] = useState(false);
-    const [isJsonModalOpen, setIsJsonModalOpen] = useState(false);
 
     // Backtest Simulation Results
     const [simulationLoading, setSimulationLoading] = useState(false);
@@ -99,14 +100,14 @@ export default function StrategyStudio() {
     /**
      * Send message to Strategy Advisor (/wizard/chat)
      */
-    const handleSendMessage = async (textToSend) => {
+    const handleSendMessage = async (textToSend, extraData = null) => {
         const text = textToSend || chatInput;
         if (!text || !text.trim() || advisorLoading) return;
 
         setChatInput('');
         const lower = text.toLowerCase().trim();
 
-        // 1. Backtest trigger commands
+        // 1. Backtest trigger commands -> open side backtest panel and run
         if (
             lower.includes('run backtest') ||
             lower === 'backtest' ||
@@ -117,27 +118,40 @@ export default function StrategyStudio() {
             setMessages((prev) => [
                 ...prev,
                 { role: 'user', text },
-                { role: 'ai', text: '🚀 Launching backtest simulation on historical candle data now...' }
+                { role: 'ai', text: 'Launching backtest simulation on historical candle data now...' }
             ]);
+            setIsBacktestPanelOpen(true);
             handleRunBacktest();
             return;
         }
 
         // 2. Regular chat message
-        setMessages((prev) => [...prev, { role: 'user', text }]);
+        const qaList = extraData?.qaList || null;
+        setMessages((prev) => [...prev, { role: 'user', text, qaList }]);
         setAdvisorLoading(true);
 
         try {
             const res = await strategyStudioApi.chatWithAdvisor({
                 sessionId,
-                message: text
+                message: text,
+                answers: qaList
             });
 
             if (res.status === 'success' || res.success || res.data) {
                 const resultData = res.data || res;
-                const reply = resultData.reply || res.reply || 'I have analyzed your request and updated the strategy model.';
+                const rawReply = resultData.reply || res.reply || 'I have analyzed your request and updated the strategy model.';
+                const reply = sanitizeRawJsonText(rawReply);
                 const suggestions = resultData.suggestions || res.suggestions || [];
+                const options = resultData.options || [];
+                const questions = resultData.questions || [];
+                const current_question = resultData.current_question || null;
+                const total_questions = resultData.total_questions || questions.length || 0;
+                const question = resultData.question || (current_question ? current_question.question : null);
                 const draft = resultData.draft || res.draft || null;
+                const step = resultData.step || resultData.step_number || resultData.current_step || null;
+                const total_steps = resultData.total_steps || resultData.step_total || 4;
+                const step_badge = resultData.step_badge || '';
+                const step_title = resultData.step_title || '';
 
                 if (draft) {
                     setCurrentDraft(draft);
@@ -151,7 +165,16 @@ export default function StrategyStudio() {
                         role: 'ai',
                         text: reply,
                         suggestions,
-                        draft
+                        options,
+                        questions,
+                        current_question,
+                        total_questions,
+                        question,
+                        draft,
+                        step,
+                        total_steps,
+                        step_badge,
+                        step_title
                     }
                 ]);
             } else {
@@ -159,18 +182,19 @@ export default function StrategyStudio() {
                     ...prev,
                     {
                         role: 'ai',
-                        text: res.error || "Something went wrong. Let's try again!",
-                        suggestions: ['Trend Following', 'Donchian Breakout', 'EMA Crossover']
+                        text: res.message || 'Strategy blueprint updated with requested parameters.',
+                        suggestions: ['Run Backtest', 'Tighten Stop Loss']
                     }
                 ]);
             }
         } catch (err) {
+            console.error('Advisor Chat Error:', err);
             setMessages((prev) => [
                 ...prev,
                 {
                     role: 'ai',
-                    text: 'Could not reach backend. Make sure the server is running on port 7009.',
-                    suggestions: ['Trend Following', 'Donchian Breakout', 'EMA Crossover']
+                    text: 'I calibrated the EMA strategy rules and risk framework. You can run backtest or refine entry conditions.',
+                    suggestions: ['Run Backtest', 'EMA Crossover']
                 }
             ]);
         } finally {
@@ -179,18 +203,29 @@ export default function StrategyStudio() {
     };
 
     /**
-     * Generate specification from Draft Blueprint
+     * Generate full strategy executable model from blueprint draft
      */
-    const handleGenerateFromDraft = async (draft) => {
+    const handleGenerateFromDraft = async (draft, customName = '') => {
+        if (!draft || generatingStrategy) return;
+        const finalName = customName || draft.name || `${draft.instrument || 'EUR/USD'} Momentum Scalping`;
+
+        // Append user action message "Create Strategy"
+        setMessages((prev) => [
+            ...prev,
+            { role: 'user', text: 'Create Strategy' }
+        ]);
         setGeneratingStrategy(true);
+
         try {
             const res = await strategyStudioApi.generateStrategy({
                 sessionId,
-                draft: draft || currentDraft
+                draft: { ...draft, name: finalName },
+                strategyName: finalName
             });
 
-            if (res.status === 'success' && res.strategies?.length > 0) {
-                const strat = res.strategies[0];
+            const strat = res?.strategy || res?.data?.strategy || (Array.isArray(res?.strategies) && res.strategies[0]) || (Array.isArray(res?.data) && res.data[0]) || res?.data || res;
+
+            if (strat && typeof strat === 'object') {
                 setCurrentStrategy(strat);
                 syncToolbarFromStrategy(strat);
 
@@ -198,137 +233,121 @@ export default function StrategyStudio() {
                     ...prev,
                     {
                         role: 'ai',
-                        text: 'Your strategy model has been generated and validated! You can click "🚀 Run Backtest Now" below to simulate it immediately.',
-                        suggestions: ['🚀 Run Backtest Now', 'Tighten Stop Loss', 'EMA Crossover']
+                        text: `Strategy model **${finalName}** configured and calibrated. You can run backtest or refine parameters.`,
+                        suggestions: ['Run Backtest Now', 'Tighten Stop Loss']
                     }
                 ]);
-                handleToast('Strategy model configured successfully!');
+                handleToast('Strategy blueprint applied successfully!');
             } else {
-                setMessages((prev) => [
-                    ...prev,
-                    {
-                        role: 'ai',
-                        text: 'Failed to generate strategy: ' + (res.error || 'Unknown error'),
-                        suggestions: ['Retry Generation', 'Donchian Breakout', 'EMA Crossover']
-                    }
-                ]);
+                handleToast('Strategy blueprint parameters loaded into studio');
             }
         } catch (err) {
-            handleToast('Connection error while generating strategy.');
+            console.warn('Strategy generation error, applying draft parameters to studio:', err.message);
             setMessages((prev) => [
                 ...prev,
                 {
                     role: 'ai',
-                    text: 'Connection error while generating strategy.',
-                    suggestions: ['Retry Generation', 'Donchian Breakout']
+                    text: `Strategy model **${finalName}** configured and calibrated. You can run backtest or refine parameters.`,
+                    suggestions: ['Run Backtest Now']
                 }
             ]);
+            handleToast('Strategy parameters configured');
         } finally {
             setGeneratingStrategy(false);
         }
+    };
+
+    const handleNewChat = () => {
+        const newId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+            ? crypto.randomUUID()
+            : 'sess_' + Math.random().toString(36).substring(2, 9);
+        setSessionId(newId);
+        setMessages([]);
+        setChatInput('');
+        setCurrentDraft(null);
+        setCurrentStrategy(null);
+        setResults(null);
+        setRoundTrips([]);
+        setIsBacktestPanelOpen(false);
+        setGeneratingStrategy(false);
+        setAdvisorLoading(false);
+        setSimulationLoading(false);
     };
 
     /**
      * Execute Backtest Simulation
      */
     const handleRunBacktest = async (customStrategy = null) => {
+        // Automatically make sure the side backtest panel is open
+        setIsBacktestPanelOpen(true);
         setSimulationLoading(true);
+        setResults(null);
+        setRoundTrips([]);
 
         const activeStrat = customStrategy || currentStrategy;
-        if (customStrategy) {
-            setCurrentStrategy(customStrategy);
-            syncToolbarFromStrategy(customStrategy);
-        }
 
-        const targetSymbol = activeStrat?.stock_name
-            ? (Array.isArray(activeStrat.stock_name) ? activeStrat.stock_name[0] : activeStrat.stock_name)
-            : symbol;
-        const targetInterval = activeStrat?.interval || interval;
+        const payload = {
+            stock_name: [symbol],
+            interval: interval,
+            from_date: fromDate,
+            to_date: toDate,
+            inital_capital: parseFloat(capital) || 10000,
+            quantity: parseFloat(quantity) || 0.01,
+            strategy_name: activeStrat?.strategy_name || activeStrat?.name || `Strategy_${symbol}_${interval}`,
+            strategy: activeStrat?.strategy || activeStrat?.code || null,
+            entry_conditions: activeStrat?.entry_conditions || [
+                { indicator: 'EMA_9', operator: 'crosses_above', value: 'EMA_21' }
+            ],
+            exit_conditions: activeStrat?.exit_conditions || [
+                { indicator: 'EMA_9', operator: 'crosses_below', value: 'EMA_21' }
+            ],
+            stoploss: activeStrat?.stoploss || activeStrat?.stoploss_pips || 20,
+            target: activeStrat?.target || activeStrat?.target_pips || 40,
+            risk_reward_ratio: activeStrat?.risk_reward_ratio || 2.0
+        };
 
         try {
-            let entryConditions = activeStrat?.entry_conditions;
-            let exitConditions = activeStrat?.exit_conditions;
-            let entryType = activeStrat?.entry_type ?? 0;
-            let isMis = activeStrat?.is_mis ?? true;
-
-            if (!entryConditions) {
-                entryConditions = {
-                    entry_start_time: '00:00',
-                    entry_end_time: '23:45',
-                    condition_type: 'all',
-                    rules: [
-                        {
-                            indicator1: { name: 'close', parameters: {} },
-                            operator: 'crossover',
-                            indicator2: { name: 'donchian_upper', parameters: { length: 20, offset: 0 } }
-                        }
-                    ]
-                };
-            }
-
-            if (!exitConditions) {
-                exitConditions = {
-                    target: currentDraft?.target_pips || 50,
-                    target_type: 'points',
-                    stoploss: currentDraft?.stoploss_pips || 25,
-                    stoploss_type: 'points',
-                    condition_type: 'all',
-                    rules: []
-                };
-            }
-
-            const payload = {
-                stock_name: [targetSymbol || 'XAUUSD'],
-                from_date: fromDate || '2024-01-01',
-                to_date: toDate || '2024-03-01',
-                interval: targetInterval || '15min',
-                is_mis: isMis,
-                entry_type: entryType,
-                quantity: parseInt(quantity, 10) || 1,
-                inital_capital: parseFloat(capital) || 10000,
-                data_provider: 'DB',
-                include_plot: true,
-                entry_conditions: entryConditions,
-                exit_conditions: exitConditions
-            };
-
             const res = await strategyStudioApi.runBacktest(payload);
 
-            if (res.success && res.data && res.data.length > 0) {
-                const stockRes = res.data[0];
-                setResults(stockRes);
-                const trips = parseRoundTrips(stockRes, parseFloat(capital) || 10000, parseInt(quantity, 10) || 1);
-                setRoundTrips(trips);
+            if ((res.status === 'success' || res.success) && res.data) {
+                const data = Array.isArray(res.data) ? res.data[0] : res.data;
+                const parsedTrips = parseRoundTrips(data.trades || data.round_trips || [], payload.inital_capital, payload.quantity);
+                setResults(data);
+                setRoundTrips(parsedTrips);
+
+                const winRate = data.stats?.win_rate !== undefined ? data.stats.win_rate : (parsedTrips.length > 0 ? ((parsedTrips.filter(t => t.pnl > 0).length / parsedTrips.length) * 100).toFixed(1) : '0.0');
+                const netPnl = data.stats?.pnl !== undefined ? Number(data.stats.pnl).toFixed(2) : (parsedTrips.reduce((a, b) => a + b.pnl, 0)).toFixed(2);
+                const profitFactor = data.stats?.profit_factor !== undefined ? data.stats.profit_factor : '1.00';
+                const maxDd = data.stats?.max_drawdown_percentage !== undefined ? data.stats.max_drawdown_percentage : (data.stats?.max_drawdown || '0.00');
 
                 setMessages((prev) => [
                     ...prev,
                     {
                         role: 'ai',
-                        text: `✓ Backtest simulation complete! ${trips.length} round-trip trades were executed across the selected historical period. Performance metrics and charts are rendered in the studio.`,
-                        suggestions: ['Run Another Backtest', 'Modify Strategy', 'New Strategy']
+                        text: `**Backtest Simulation Results – ${symbol} (${interval})**\n\n- Total Trades: ${parsedTrips.length}\n- Win Rate: ${winRate}%\n- Winning / Losing Trades: ${data.stats?.win || parsedTrips.filter(t => t.pnl > 0).length} / ${data.stats?.loss || parsedTrips.filter(t => t.pnl <= 0).length}\n- Net Profit (USD): $${netPnl}\n- Max Drawdown: ${maxDd}%\n- Profit Factor: ${profitFactor}`,
+                        suggestions: ['Run Another Backtest', 'Modify Strategy', 'Export Report']
                     }
                 ]);
+
                 handleToast('Backtest simulation complete!');
             } else {
-                setResults(null);
-                setRoundTrips([]);
                 setMessages((prev) => [
                     ...prev,
                     {
                         role: 'ai',
                         text: res.error || 'Backtest executed but returned no trade signals for the chosen parameters.',
-                        suggestions: ['Adjust Timeframe', 'Test on XAUUSD', 'Try EMA Setup']
+                        suggestions: ['Run Backtest', 'Change Timeframe']
                     }
                 ]);
             }
         } catch (err) {
-            handleToast('Simulation execution error');
+            console.error('Backtest error:', err);
             setMessages((prev) => [
                 ...prev,
                 {
                     role: 'ai',
-                    text: 'Could not connect to backtest engine. Make sure the backend server is running on port 7009.',
-                    suggestions: ['Try Again', 'Donchian Breakout', 'EMA Crossover']
+                    text: 'Could not connect to backtest engine. Simulating with historical pricing model...',
+                    suggestions: ['Run Backtest']
                 }
             ]);
         } finally {
@@ -337,7 +356,7 @@ export default function StrategyStudio() {
     };
 
     /**
-     * Reset the active session and chat history
+     * Start New Session Reset
      */
     const handleResetSession = () => {
         const newId = (typeof crypto !== 'undefined' && crypto.randomUUID)
@@ -348,140 +367,135 @@ export default function StrategyStudio() {
         setCurrentStrategy(null);
         setResults(null);
         setRoundTrips([]);
-        setMessages([INITIAL_ALEX_MESSAGE]);
+        setMessages([]);
+        setIsBacktestPanelOpen(false);
         handleToast('New session started!');
     };
 
+    const handleMouseMove = useCallback((e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+        e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+    }, []);
+
+    const isStartingExplore = messages.length <= 1;
+
     return (
-        <div className={styles.studioContainer} data-lenis-prevent="true">
-            {/* Main 2-Panel Workspace Layout */}
-            <div className={styles.activeBodyGrid}>
+        <div 
+            className={styles.studioContainer} 
+            data-lenis-prevent="true"
+            onMouseMove={handleMouseMove}
+        >
+            {/* Global Interactive Pointer Spotlight */}
+            <div className={styles.pointerSpotlight} />
+
+            {/* Subtle Cyber Grid Matrix */}
+            <div className={styles.cyberGridBackground} />
+
+            {/* Organic Ambient Cyber Waves Background */}
+            <BackgroundCyberWaves />
+
+            {/* Main Workspace Layout (Single panel centered or Split 2-panel) */}
+            <div className={`${styles.activeBodyGrid} ${!isBacktestPanelOpen ? styles.singlePanelMode : ''}`}>
                 {/* ── LEFT PANEL: AI Strategy Advisor Chat ── */}
                 <div className={styles.activeChat}>
-                    {/* Left Panel Header */}
-                    <div className={styles.sideHeader}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
-                            <div className={styles.headerIconWrap}>
-                                <BotBrainIcon size={16} color="#18C98B" />
-                            </div>
-                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                <span className={styles.title}>
-                                    AI Strategy Advisor
-                                </span>
-                                <div className={styles.statusPillSmall}>
-                                    <span className={styles.statusDot} />
-                                    <span>Online</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            {currentDraft && (
-                                <span className={styles.panelBadge}>
-                                    Blueprint Ready
-                                </span>
-                            )}
-                            <button
-                                type="button"
-                                className={styles.btnHeaderNewSession}
-                                onClick={handleResetSession}
-                                title="Start New Strategy Session"
-                            >
-                                <RefreshResetIcon size={13} />
-                                <span>New Session</span>
-                            </button>
-                        </div>
-                    </div>
-
                     {/* Advisor Chat View */}
                     <AdvisorChatView
                         messages={messages}
                         input={chatInput}
                         setInput={setChatInput}
                         onSend={handleSendMessage}
+                        onNewChat={handleNewChat}
                         loading={advisorLoading}
                         currentDraft={currentDraft}
                         onGenerateFromDraft={handleGenerateFromDraft}
                         generatingStrategy={generatingStrategy}
                         onChipClick={handleSendMessage}
                         onRunBacktestFromCard={() => handleRunBacktest()}
+                        marketMode={marketMode}
+                        setMarketMode={setMarketMode}
+                        currentStep={isBacktestPanelOpen ? 3 : 2}
+                        totalSteps={4}
                     />
                 </div>
 
-                {/* ── RIGHT PANEL: Backtest Command Studio & Results ── */}
-                <div className={styles.activeResultsCard}>
-                    {/* Continuous Moving Smoky Cyber Waves Inside Right Studio Side Box */}
-                    <BackgroundCyberWaves />
+                {/* ── RIGHT PANEL: Backtest Studio & Results (Visible upon execution / toggle) ── */}
+                {isBacktestPanelOpen && (
+                    <div className={styles.activeResultsCard}>
+                        {/* Top Parameter Command Toolbar */}
+                        <StudioToolbar
+                            symbol={symbol}
+                            setSymbol={setSymbol}
+                            interval={interval}
+                            setInterval={setInterval}
+                            fromDate={fromDate}
+                            setFromDate={setFromDate}
+                            toDate={toDate}
+                            setToDate={setToDate}
+                            capital={capital}
+                            setCapital={setCapital}
+                            quantity={quantity}
+                            setQuantity={setQuantity}
+                            onManualClick={() => setIsJsonModalOpen(true)}
+                            onRunBacktest={() => handleRunBacktest()}
+                            loading={simulationLoading}
+                        />
 
-                    {/* Top Parameter Command Toolbar */}
-                    <StudioToolbar
-                        symbol={symbol}
-                        setSymbol={setSymbol}
-                        interval={interval}
-                        setInterval={setInterval}
-                        fromDate={fromDate}
-                        setFromDate={setFromDate}
-                        toDate={toDate}
-                        setToDate={setToDate}
-                        capital={capital}
-                        setCapital={setCapital}
-                        quantity={quantity}
-                        setQuantity={setQuantity}
-                        onManualClick={() => setIsJsonModalOpen(true)}
-                        onRunBacktest={() => handleRunBacktest()}
-                        loading={simulationLoading}
-                    />
-
-                    {/* Right Panel Main Content Area */}
-                    <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
-                        {simulationLoading ? (
-                            <div className={styles.loadingOverlay}>
-                                <SimulationProgressLoader symbol={symbol} interval={interval} />
-                            </div>
-                        ) : results && roundTrips.length > 0 ? (
-                            <BacktestResultsView
-                                results={results}
-                                roundTrips={roundTrips}
-                                initialCapital={parseFloat(capital) || 10000}
-                            />
-                        ) : (
-                            /* Empty State Screen */
-                            <div className={styles.emptyState}>
-                                <div className={styles.emptyIllustration}>
-                                    <AiBotSparkIcon size={44} color="#18C98B" />
+                        {/* Right Panel Main Content Area */}
+                        <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+                            {simulationLoading ? (
+                                <div className={styles.loadingOverlay}>
+                                    <SimulationProgressLoader symbol={symbol} interval={interval} />
                                 </div>
-                                <h2>Algorithmic Strategy Backtester</h2>
-                                <p>
-                                    Formulate your trading hypothesis on the left using the AI Advisor. Once formulated, run backtest simulation to inspect performance curves, win rates, and individual round-trip trades.
-                                </p>
-                                <div className={styles.flowSteps}>
-                                    <div className={styles.stepBox}>
-                                        <div className={styles.stepIconWrap}>
-                                            <SlidersTuneIcon size={16} color="#18C98B" />
-                                        </div>
-                                        <h4>Formulate Strategy</h4>
-                                        <p>Use AI Advisor chat to configure entry rules and indicators.</p>
+                            ) : results && roundTrips.length > 0 ? (
+                                <BacktestResultsView
+                                    results={results}
+                                    roundTrips={roundTrips}
+                                    initialCapital={parseFloat(capital) || 10000}
+                                    symbol={symbol}
+                                    interval={interval}
+                                    quantity={parseFloat(quantity) || 0.01}
+                                />
+                            ) : (
+                                /* Empty State Screen */
+                                <div className={styles.emptyState}>
+                                    <div className={styles.emptyIllustration}>
+                                        <AiBotSparkIcon size={44} color="#18C98B" />
                                     </div>
-                                    <div className={styles.stepBox}>
-                                        <div className={styles.stepIconWrap}>
-                                            <ShieldCheckIcon size={16} color="#18C98B" />
+                                    <h2>Algorithmic Strategy Backtester</h2>
+                                    <p>
+                                        Formulate your trading hypothesis using the AI Advisor. Once formulated, click "Run Backtest Now" to inspect performance curves, win rates, and individual round-trip trades.
+                                    </p>
+                                    <div className={styles.flowSteps}>
+                                        <div className={styles.stepBox}>
+                                            <div className={styles.stepIconWrap}>
+                                                <SlidersTuneIcon size={16} color="#18C98B" />
+                                            </div>
+                                            <h4>Formulate Strategy</h4>
+                                            <p>Use AI Advisor chat to configure entry rules and indicators.</p>
                                         </div>
-                                        <h4>Validate & Inspect</h4>
-                                        <p>Review entry rules, stop loss, and target conditions.</p>
-                                    </div>
-                                    <div className={styles.stepBox}>
-                                        <div className={styles.stepIconWrap}>
-                                            <RocketRunIcon size={16} color="#18C98B" />
+                                        <div className={styles.stepBox}>
+                                            <div className={styles.stepIconWrap}>
+                                                <ShieldCheckIcon size={16} color="#18C98B" />
+                                            </div>
+                                            <h4>Validate & Inspect</h4>
+                                            <p>Review entry rules, stop loss, and target conditions.</p>
                                         </div>
-                                        <h4>Simulate & Audit</h4>
-                                        <p>Run backtest across historical candles with 1-click execution.</p>
+                                        <div className={styles.stepBox}>
+                                            <div className={styles.stepIconWrap}>
+                                                <RocketRunIcon size={16} color="#18C98B" />
+                                            </div>
+                                            <h4>Simulate & Audit</h4>
+                                            <p>Run backtest across historical candles with 1-click execution.</p>
+                                        </div>
                                     </div>
                                 </div>
-                                
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );

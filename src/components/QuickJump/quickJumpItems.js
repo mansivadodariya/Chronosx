@@ -17,6 +17,7 @@ import {
     AiBotSparkIcon,
     CustomBotIcon,
     BotLibraryIcon,
+    BacktestIcon,
 } from '@/icons/sidebarIcons';
 
 const HomeIcon = () => (
@@ -155,6 +156,14 @@ export const getQuickJumpSections = (t) => [
                 href: '/bot-library',
                 keywords: ['library', 'templates', 'catalog', 'pre-built', 'clone', 'community bots', 'browse'],
                 icon: <BotLibraryIcon />,
+            },
+            {
+                id: 'backtest',
+                title: t('nav.backtest', 'Backtest'),
+                subtitle: 'Simulate and evaluate algorithmic strategy performance on historical candles',
+                href: '/backtest',
+                keywords: ['backtest', 'simulation', 'strategy', 'algo', 'historical', 'trades', 'metrics', 'win rate', 'test'],
+                icon: <BacktestIcon />,
             },
         ],
     },

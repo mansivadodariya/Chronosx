@@ -193,7 +193,7 @@ const PriceChart = ({ data, symbol = 'Asset', theme = 'dark' }) => {
             type: 'candlestick',
             background: 'transparent',
             toolbar: { show: true, tools: { download: false, selection: true, zoom: true, zoomin: true, zoomout: true, pan: true } },
-            animations: { enabled: true, speed: 800 }
+            animations: { enabled: false, dynamicAnimation: { enabled: false } }
         },
         title: {
             text: `${symbol} Price Action`,
@@ -244,7 +244,7 @@ const PriceChart = ({ data, symbol = 'Asset', theme = 'dark' }) => {
                     S/R Levels
                 </button>
             </div>
-            <Chart options={options} series={series} type="candlestick" height={380} />
+            <Chart options={options} series={series} type="candlestick" height={380} width="100%" />
         </div>
     );
 };
@@ -264,7 +264,7 @@ const SentimentRadar = ({ indicators, theme = 'dark' }) => {
     }];
 
     const options = {
-        chart: { type: 'radar', toolbar: { show: false }, animations: { enabled: true, speed: 1000 } },
+        chart: { type: 'radar', toolbar: { show: false }, animations: { enabled: false } },
         theme: { mode: 'dark' },
         labels: ['Trend', 'Momentum', 'Volatility', 'Overall'],
         yaxis: { show: false, min: 0, max: 100 },
@@ -280,14 +280,14 @@ const SentimentRadar = ({ indicators, theme = 'dark' }) => {
 
     return (
         <div className={styles.reportRadar}>
-            <Chart options={options} series={series} type="radar" height={280} />
+            <Chart options={options} series={series} type="radar" height={280} width="100%" />
         </div>
     );
 };
 
 const Gauge = ({ value, title, theme = 'dark' }) => {
     const options = {
-        chart: { type: 'radialBar', sparkline: { enabled: true } },
+        chart: { type: 'radialBar', sparkline: { enabled: true }, animations: { enabled: false } },
         plotOptions: {
             radialBar: {
                 startAngle: -110, endAngle: 110,
@@ -306,7 +306,7 @@ const Gauge = ({ value, title, theme = 'dark' }) => {
 
     return (
         <div className={styles.reportGauge}>
-            <Chart options={options} series={[value]} type="radialBar" height={220} />
+            <Chart options={options} series={[value]} type="radialBar" height={220} width="100%" />
         </div>
     );
 };

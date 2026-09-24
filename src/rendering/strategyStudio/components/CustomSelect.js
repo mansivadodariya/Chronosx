@@ -23,7 +23,9 @@ export default function CustomSelect({
         return opt;
     });
 
-    const selectedOption = normalizedOptions.find((opt) => opt.value === value) || {
+    const selectedOption = normalizedOptions.find(
+        (opt) => opt.value === value || String(opt.value) === String(value)
+    ) || {
         value,
         label: value || placeholder
     };
@@ -76,7 +78,7 @@ export default function CustomSelect({
                     role="listbox"
                 >
                     {normalizedOptions.map((opt) => {
-                        const isSelected = opt.value === value;
+                        const isSelected = opt.value === value || String(opt.value) === String(value);
                         return (
                             <div
                                 key={opt.value}

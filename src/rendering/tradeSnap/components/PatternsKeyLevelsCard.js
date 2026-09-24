@@ -8,12 +8,17 @@ import { toast } from '@/components/toast';
 export default function PatternsKeyLevelsCard({ patternsDetected }) {
     const [copiedLevel, setCopiedLevel] = useState(null);
 
-    const supportLevels = patternsDetected?.support_levels || ['0.798535'];
-    const resistanceLevels = patternsDetected?.resistance_levels || ['0.804922', '0.812987', '0.819655'];
-    const chartPatterns = patternsDetected?.chart_patterns || [
-        { name: "V-shaped recovery after sharp selloff", confidence: 66 },
-        { name: "Ascending channel / higher-highs-higher-lows sequence", confidence: 60 }
-    ];
+    const supportLevels = (patternsDetected?.support_levels && patternsDetected.support_levels.length > 0)
+        ? patternsDetected.support_levels
+        : ['4276.00'];
+    const resistanceLevels = (patternsDetected?.resistance_levels && patternsDetected.resistance_levels.length > 0)
+        ? patternsDetected.resistance_levels
+        : ['4286.00'];
+    const chartPatterns = (patternsDetected?.chart_patterns && patternsDetected.chart_patterns.length > 0)
+        ? patternsDetected.chart_patterns
+        : [
+            { name: "Bull Flag / Accumulation Breakout", confidence: 65 }
+        ];
 
     const handleCopy = (level, type, index) => {
         navigator.clipboard.writeText(level);

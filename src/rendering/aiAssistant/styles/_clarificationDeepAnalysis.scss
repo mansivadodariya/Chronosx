@@ -144,6 +144,8 @@
     p {
         margin: 0 0 10px 0;
         color: #E2E8F0;
+        text-align: justify;
+        text-justify: inter-word;
 
         &:last-child {
             margin-bottom: 0;
@@ -158,6 +160,8 @@
         li {
             margin-bottom: 5px;
             color: #CBD5E1;
+            text-align: justify;
+            text-justify: inter-word;
 
             &::marker {
                 color: #18C98B;

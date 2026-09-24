@@ -30,6 +30,7 @@ import {
   EducationIcon,
   ChevronLeftIcon,
   LogoutIcon,
+  BacktestIcon,
 } from '@/icons/sidebarIcons';
 import { clearAuthSession, getStoredUser, getStoredUserId, hydrateUserFromProfile } from '@/lib/authSession';
 import { useLanguage } from '@/context/LanguageContext';
@@ -78,6 +79,7 @@ const getNavSections = (t) => [
           { label: t('nav.botLibrary', 'Browse Bots Library'), href: "/bot-library", icon: BotLibraryIcon },
         ]
       },
+      { label: t('nav.backtest', 'Backtest'), href: "/backtest", icon: BacktestIcon },
     ]
   },
   {
@@ -442,6 +444,8 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
     '/bot-builder': 'AI Bot Builder',
     '/strategy-studio': 'AI Bot Builder',
     '/ai-strategy-studio': 'AI Bot Builder',
+    '/backtest': 'Backtest',
+    '/backtesting': 'Backtest',
     '/market-assistant': 'AI Market Assistant',
     '/ai-market-assistant': 'AI Market Assistant',
     '/trading-signal': 'AI Trading Signal',
@@ -490,6 +494,11 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
       // Group parent container check: "AI Trading Bot" is shown if the parent tab itself is enabled, or if any of its sub-items is enabled
       if (lowerLabel === 'ai trading bot' || mapped === 'ai trading bot') {
         return visibleTabNames.has('ai trading bot') || visibleTabNames.has('my bots') || visibleTabNames.has('ai bot builder') || visibleTabNames.has('custom bot builder') || visibleTabNames.has('browse bots library');
+      }
+
+      // Backtest is visible if either "Backtest" or "Backtesting" tab permission is enabled in Supabase
+      if (lowerLabel === 'backtest' || mapped === 'backtest') {
+        return visibleTabNames.has('backtest') || visibleTabNames.has('backtesting');
       }
 
       // Exact 1-to-1 check against standardized dashboard_tabs permissions

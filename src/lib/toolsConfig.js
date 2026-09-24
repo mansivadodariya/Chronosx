@@ -30,6 +30,8 @@ export const ROUTE_TAB_MAP = {
   '/bot-builder': 'AI Bot Builder',
   '/strategy-studio': 'AI Bot Builder',
   '/ai-strategy-studio': 'AI Bot Builder',
+  '/backtest': 'Backtest',
+  '/backtesting': 'Backtest',
 
   // AI Market Assistant
   '/market-assistant': 'AI Market Assistant',

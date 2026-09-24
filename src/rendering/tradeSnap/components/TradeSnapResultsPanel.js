@@ -1,9 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ClockIcon } from '@/icons/tradeSnapIcons';
+import { DownloadIcon } from '@/icons/aiSnapIcons';
 import AiSnapDashboard from './AiSnapDashboard';
+import { useTradeSnapExport } from '../hooks/useTradeSnapExport';
 import styles from '../tradeSnap.module.scss';
 
 export default function TradeSnapResultsPanel({
@@ -12,18 +14,42 @@ export default function TradeSnapResultsPanel({
     error,
     retryAnalysis
 }) {
+    const resultsContainerRef = useRef(null);
+    const { exportToPdf, isExporting } = useTradeSnapExport();
+
+    const handleDownloadPdf = () => {
+        const firstTrade = allAnalyses?.[0]?.data?.[0];
+        const symbol = firstTrade?.symbol || firstTrade?.Symbol || firstTrade?.data?.pair || 'MARKET';
+        const timeframe = firstTrade?.timeframe || firstTrade?.Timeframe || firstTrade?.data?.timeframe || 'M15';
+        exportToPdf(resultsContainerRef.current, symbol, timeframe);
+    };
+
     return (
         <div className={styles.resultsColumn}>
             <div className={styles.resultsPanel} data-lenis-prevent="true">
                 <div className={styles.resultsHeader}>
                     <div className={styles.resultsHeaderRow}>
                         <h3>Analysis Results</h3>
-                        {isAnalyzing && (
-                            <div className={styles.liveEngineBadge}>
-                                <span className={styles.pulseDot} />
-                                <span>AI QUANT ENGINE LIVE</span>
-                            </div>
-                        )}
+                        <div className={styles.resultsHeaderActions}>
+                            {isAnalyzing && (
+                                <div className={styles.liveEngineBadge}>
+                                    <span className={styles.pulseDot} />
+                                    <span>AI QUANT ENGINE LIVE</span>
+                                </div>
+                            )}
+                            {!isAnalyzing && allAnalyses && allAnalyses.length > 0 && (
+                                <button
+                                    type="button"
+                                    className={styles.headerDownloadBtn}
+                                    onClick={handleDownloadPdf}
+                                    disabled={isExporting}
+                                    title="Download Complete AI Analysis Report (PDF)"
+                                >
+                                    <DownloadIcon size={14} />
+                                    <span>{isExporting ? 'Exporting...' : 'Download PDF'}</span>
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
 
@@ -70,6 +96,7 @@ export default function TradeSnapResultsPanel({
                         {!isAnalyzing && allAnalyses && allAnalyses.length > 0 && (
                             <motion.div
                                 key="results"
+                                ref={resultsContainerRef}
                                 initial={{ opacity: 0, y: 16 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}

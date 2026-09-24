@@ -5,6 +5,7 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import SmoothScrollProvider from "@/components/smoothScroll";
 import ClientOnlyWidgets from "@/components/ClientOnlyWidgets";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const antonSans = Anton({
   variable: "--font-anton",
@@ -135,6 +136,7 @@ export default function RootLayout({ children }) {
           <LanguageProvider>
             <ToastProvider>
               <SmoothScrollProvider>
+                <GoogleAnalytics />
                 {children}
                 <ClientOnlyWidgets />
               </SmoothScrollProvider>

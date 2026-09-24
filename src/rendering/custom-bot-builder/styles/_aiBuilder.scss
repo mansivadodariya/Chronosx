@@ -288,6 +288,8 @@
   border-radius: 16px;
   font-size: 0.92rem;
   line-height: 1.55;
+  text-align: justify;
+  text-justify: inter-word;
 
   @media (max-width: 576px) {
     max-width: 92%;

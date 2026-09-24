@@ -272,15 +272,18 @@ export function parseRoundTrips(tradesInput, initialCapital, quantity) {
             const isBuy = (currentEntry.buy_sell_label === "BUY" || currentEntry.action === "BUY" || currentEntry.side === "BUY");
             const entryPrice = Number(currentEntry.Price || currentEntry.price || 0);
             const exitPrice = Number(t.Price || t.price || 0);
-            const pnl = isBuy ? (exitPrice - entryPrice) * qty : (entryPrice - exitPrice) * qty;
+            const pnl = t.pnl !== undefined ? Number(t.pnl) : (isBuy ? (exitPrice - entryPrice) * qty : (entryPrice - exitPrice) * qty);
             const pnlPercent = entryPrice > 0 ? (pnl / (entryPrice * qty)) * 100 : 0;
             runningBalance += pnl;
 
+            const rawEntryDate = currentEntry.Date || currentEntry.date || currentEntry.entry_date || "2024-01-05 10:00";
+            const rawExitDate = t.Date || t.date || t.exit_date || "2024-01-05 14:30";
+
             roundTrips.push({
                 index: roundTrips.length + 1,
-                entryDate: t.Date ? currentEntry.Date.replace(" IST", "") : (currentEntry.date || currentEntry.entry_date || "2024-01-05 10:00"),
+                entryDate: typeof rawEntryDate === 'string' ? rawEntryDate.replace(" IST", "") : String(rawEntryDate),
                 entryPrice: entryPrice,
-                exitDate: t.Date ? t.Date.replace(" IST", "") : (t.date || t.exit_date || "2024-01-05 14:30"),
+                exitDate: typeof rawExitDate === 'string' ? rawExitDate.replace(" IST", "") : String(rawExitDate),
                 exitPrice: exitPrice,
                 side: isBuy ? "BUY" : "SELL",
                 trigger: t.trigger || (pnl > 0 ? "TARGET" : "STOPLOSS"),

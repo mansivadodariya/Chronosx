@@ -43,6 +43,18 @@
     strong {
         color: #10B981;
     }
+
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.pdfExportLight) & {
+        background: #F1F5F9;
+        border-color: rgba(15, 23, 42, 0.12);
+        color: #334155;
+
+        strong {
+            color: #047857;
+        }
+    }
 }
 
 .indicatorsGrid {
@@ -67,6 +79,14 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.pdfExportLight) & {
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.12);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    }
 }
 
 .indicatorCardTop {
@@ -90,16 +110,37 @@
     &.badgeGreen {
         background: rgba(16, 185, 129, 0.15);
         color: #10B981;
+
+        :global(html[data-theme='light']) &,
+        :global([data-theme='light']) &,
+        :global(.pdfExportLight) & {
+            background: rgba(16, 185, 129, 0.18);
+            color: #047857;
+        }
     }
 
     &.badgeRed {
         background: rgba(239, 68, 68, 0.15);
         color: #EF4444;
+
+        :global(html[data-theme='light']) &,
+        :global([data-theme='light']) &,
+        :global(.pdfExportLight) & {
+            background: rgba(239, 68, 68, 0.18);
+            color: #DC2626;
+        }
     }
 
     &.badgeAmber {
         background: rgba(14, 165, 233, 0.15);
         color: #38BDF8;
+
+        :global(html[data-theme='light']) &,
+        :global([data-theme='light']) &,
+        :global(.pdfExportLight) & {
+            background: rgba(14, 165, 233, 0.18);
+            color: #0284C7;
+        }
     }
 }
 
@@ -366,7 +407,9 @@
 .riskMessageText {
     font-size: 13px;
     color: var(--text-primary);
-    line-height: 1.4;
+    line-height: 1.55;
+    text-align: justify;
+    text-justify: inter-word;
 
     strong {
         letter-spacing: 0.5px;
@@ -480,5 +523,38 @@
     font-size: 10px;
     font-weight: 800;
     padding: 2px 6px;
+}
+
+.pdfFullBreakdown {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.pdfBreakdownBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.pdfSubHeading {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--title-color);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+:global(.pdfExportLight) &,
+:global(.pdfExporting) & {
+    .tabNavRow,
+    > .tabContentCard {
+        display: none !important;
+    }
+
+    .pdfFullBreakdown {
+        display: flex !important;
+    }
 }
 
