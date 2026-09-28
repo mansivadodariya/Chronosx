@@ -70,7 +70,7 @@ export default function StrategyDetailModal({ strategy, onClose, onSimulate, onR
                     </div>
                 </div>
 
-                <div className={styles.modalFooterRow} style={{ display: 'flex', gap: '10px' }}>
+                <div className={styles.modalFooterRow}>
                     {onRunBacktest && (
                         <button 
                             type="button" 
@@ -93,7 +93,6 @@ export default function StrategyDetailModal({ strategy, onClose, onSimulate, onR
                     <button 
                         type="button" 
                         className={styles.launchBuilderBtn}
-                        style={{ flex: 1 }}
                         onClick={() => {
                             if (onSimulate) onSimulate(strategy);
                             onClose();

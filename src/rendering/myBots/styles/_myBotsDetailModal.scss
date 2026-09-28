@@ -104,27 +104,50 @@
 
 .modalFooterRow {
     display: flex;
-    justify-content: flex-end;
-    margin-top: 6px;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+    width: 100%;
 }
 
 .launchBuilderBtn {
+    flex: 1;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    text-align: center;
     gap: 8px;
     background: linear-gradient(135deg, #18C98B 0%, #10B981 100%);
     color: #04100A;
     font-size: 13px;
     font-weight: 700;
     padding: 10px 20px;
-    border-radius: 9px;
+    border-radius: 999px;
     border: none;
     cursor: pointer;
     box-shadow: 0 4px 14px rgba(24, 201, 139, 0.35);
     transition: all 0.2s ease;
+    white-space: nowrap;
+
+    svg {
+        stroke: #04100A;
+        fill: none;
+        flex-shrink: 0;
+    }
 
     &:hover {
         transform: translateY(-1px);
         box-shadow: 0 6px 20px rgba(24, 201, 139, 0.45);
     }
+
+    :global(html.light) &,
+    [data-theme="light"] & {
+        background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        color: #FFFFFF;
+
+        svg {
+            stroke: #FFFFFF;
+        }
+    }
 }
+

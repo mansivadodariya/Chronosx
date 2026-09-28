@@ -4,7 +4,6 @@ import React, { useMemo, useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import styles from '../styles/strategyStudio.module.scss';
 import { useTheme } from '@/context/ThemeContext';
-import { ChartTrendIcon } from './StudioIcons';
 import ChartSkeletonLoader from './ChartSkeletonLoader';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
@@ -44,6 +43,17 @@ function parseTimestamp(dateVal) {
     return Date.now();
 }
 
+function formatCategoryDate(dateVal) {
+    if (!dateVal) return '';
+    const ts = parseTimestamp(dateVal);
+    const d = new Date(ts);
+    const month = d.toLocaleString('en-US', { month: 'short' });
+    const day = String(d.getDate()).padStart(2, '0');
+    const hours = String(d.getHours()).padStart(2, '0');
+    const mins = String(d.getMinutes()).padStart(2, '0');
+    return `${day} ${month} ${hours}:${mins}`;
+}
+
 /**
  * Generate or normalize OHLC Candlestick data from backtest results / roundTrips
  */
@@ -72,22 +82,24 @@ function buildCandlestickData(results, roundTrips, symbol = 'EURUSD', interval =
         const parsed = rawCandles.map(c => {
             const timeVal = c.time || c.Date || c.date || c.timestamp || c.datetime || c.Time;
             const ts = parseTimestamp(timeVal);
+            const label = formatCategoryDate(timeVal || ts);
             const open = Number(c.open ?? c.Open ?? 0);
             const high = Number(c.high ?? c.High ?? open);
             const low = Number(c.low ?? c.Low ?? open);
             const close = Number(c.close ?? c.Close ?? open);
             return {
-                x: ts,
+                x: label,
+                ts: ts,
                 y: [open, high, low, close]
             };
-        }).filter(item => !isNaN(item.x) && item.y.every(val => !isNaN(val) && val > 0));
+        }).filter(item => item.x && item.y.every(val => !isNaN(val) && val > 0));
 
         if (parsed.length > 0) {
             if (parsed.length <= 250) {
                 return parsed;
             }
             // Intelligent OHLC bucket downsampling for instantaneous 60 FPS chart rendering
-            const targetPoints = 220;
+            const targetPoints = 180;
             const bucketSize = Math.ceil(parsed.length / targetPoints);
             const downsampled = [];
 
@@ -95,7 +107,8 @@ function buildCandlestickData(results, roundTrips, symbol = 'EURUSD', interval =
                 const chunk = parsed.slice(i, i + bucketSize);
                 if (chunk.length === 0) continue;
 
-                const x = chunk[0].x;
+                const label = chunk[0].x;
+                const ts = chunk[0].ts;
                 const open = chunk[0].y[0];
                 let high = chunk[0].y[1];
                 let low = chunk[0].y[2];
@@ -107,7 +120,8 @@ function buildCandlestickData(results, roundTrips, symbol = 'EURUSD', interval =
                 }
 
                 downsampled.push({
-                    x,
+                    x: label,
+                    ts: ts,
                     y: [open, high, low, close]
                 });
             }
@@ -201,7 +215,8 @@ function buildCandlestickData(results, roundTrips, symbol = 'EURUSD', interval =
         const low = Math.min(open, close) - Math.random() * volatility * 0.5;
 
         candles.push({
-            x: currentTime,
+            x: formatCategoryDate(currentTime),
+            ts: currentTime,
             y: [
                 parseFloat(open.toFixed(isForex ? 5 : 2)),
                 parseFloat(high.toFixed(isForex ? 5 : 2)),
@@ -232,12 +247,12 @@ export default function BacktestCandlestickChart({
         setMounted(true);
     }, []);
 
-    // Build Candlestick Series
+    // Build Candlestick Series (Continuous without weekend/calendar dead spaces)
     const candleData = useMemo(() => {
         return buildCandlestickData(results, roundTrips, symbol, interval);
     }, [results, roundTrips, symbol, interval]);
 
-    // Pre-index trades with parsed timestamps for lightning-fast O(1) lookup
+    // Pre-index trades with parsed timestamps for lookup
     const parsedTrips = useMemo(() => {
         const safeTrips = Array.isArray(roundTrips) ? roundTrips : [];
         return safeTrips.map(t => ({
@@ -248,48 +263,65 @@ export default function BacktestCandlestickChart({
         }));
     }, [roundTrips]);
 
-    // Build Annotations (Trade Entry/Exit Markers)
+    // Build Annotations (Trade Entry/Exit Markers mapped to candle categories)
     const annotations = useMemo(() => {
         const points = [];
+        if (!candleData || candleData.length === 0) return { points };
+
         const maxAnnotated = 40;
         const step = parsedTrips.length > maxAnnotated ? Math.ceil(parsedTrips.length / maxAnnotated) : 1;
 
         for (let i = 0; i < parsedTrips.length; i += step) {
             const t = parsedTrips[i];
             if (t.entryTs && t.entryPrice) {
-                points.push({
-                    x: t.entryTs,
-                    y: Number(t.entryPrice),
-                    marker: {
-                        size: 4.5,
-                        fillColor: '#10B981',
-                        strokeColor: '#064E3B',
-                        strokeWidth: 1.5,
-                        shape: 'circle',
-                        radius: 2
-                    }
-                });
+                // Find closest candle category
+                const closest = candleData.reduce((prev, curr) => {
+                    if (!prev) return curr;
+                    return Math.abs(curr.ts - t.entryTs) < Math.abs(prev.ts - t.entryTs) ? curr : prev;
+                }, null);
+
+                if (closest) {
+                    points.push({
+                        x: closest.x,
+                        y: Number(t.entryPrice),
+                        marker: {
+                            size: 4.5,
+                            fillColor: '#10B981',
+                            strokeColor: '#064E3B',
+                            strokeWidth: 1.5,
+                            shape: 'circle',
+                            radius: 2
+                        }
+                    });
+                }
             }
 
             if (t.exitTs && t.exitPrice) {
                 const isWin = t.pnlNum > 0;
-                points.push({
-                    x: t.exitTs,
-                    y: Number(t.exitPrice),
-                    marker: {
-                        size: 4.5,
-                        fillColor: isWin ? '#F59E0B' : '#EF4444',
-                        strokeColor: isWin ? '#78350F' : '#7F1D1D',
-                        strokeWidth: 1.5,
-                        shape: 'circle',
-                        radius: 2
-                    }
-                });
+                const closest = candleData.reduce((prev, curr) => {
+                    if (!prev) return curr;
+                    return Math.abs(curr.ts - t.exitTs) < Math.abs(prev.ts - t.exitTs) ? curr : prev;
+                }, null);
+
+                if (closest) {
+                    points.push({
+                        x: closest.x,
+                        y: Number(t.exitPrice),
+                        marker: {
+                            size: 4.5,
+                            fillColor: isWin ? '#F59E0B' : '#EF4444',
+                            strokeColor: isWin ? '#78350F' : '#7F1D1D',
+                            strokeWidth: 1.5,
+                            shape: 'circle',
+                            radius: 2
+                        }
+                    });
+                }
             }
         }
 
         return { points };
-    }, [parsedTrips]);
+    }, [parsedTrips, candleData]);
 
     const chartOptions = {
         chart: {
@@ -325,15 +357,17 @@ export default function BacktestCandlestickChart({
             }
         },
         xaxis: {
-            type: 'datetime',
+            type: 'category',
+            tickAmount: 8,
             labels: {
                 style: {
                     colors: isDark ? '#94A3B8' : '#64748B',
                     fontSize: '10px',
                     fontWeight: 500
                 },
-                datetimeUTC: false,
-                format: 'dd MMM HH:mm'
+                rotate: 0,
+                hideOverlappingLabels: true,
+                showDuplicates: false
             },
             axisBorder: {
                 show: true,
@@ -371,8 +405,9 @@ export default function BacktestCandlestickChart({
                 const h = w.globals.seriesCandleH[seriesIndex][dataPointIndex];
                 const l = w.globals.seriesCandleL[seriesIndex][dataPointIndex];
                 const c = w.globals.seriesCandleC[seriesIndex][dataPointIndex];
-                const candleTs = w.globals.seriesX[seriesIndex][dataPointIndex];
-                const date = new Date(candleTs).toLocaleString();
+                const item = candleData[dataPointIndex];
+                const dateLabel = item?.x || w.globals.categoryLabels?.[dataPointIndex] || '';
+                const candleTs = item?.ts || parseTimestamp(dateLabel);
                 const isGreen = c >= o;
                 const changePct = o > 0 ? (((c - o) / o) * 100).toFixed(2) : '0.00';
                 const fmt = (v) => typeof v === 'number' ? (v >= 100 ? v.toFixed(2) : v.toFixed(5)) : v;
@@ -400,7 +435,7 @@ export default function BacktestCandlestickChart({
 
                 return `
                     <div style="padding: 10px 14px; background: ${isDark ? '#0b130f' : '#ffffff'}; border: 1px solid ${isDark ? 'rgba(24, 201, 139, 0.25)' : 'rgba(0, 0, 0, 0.12)'}; border-radius: 8px; font-family: inherit; font-size: 11px; box-shadow: 0 8px 24px rgba(0,0,0,0.35);">
-                        <div style="color: #94a3b8; font-weight: 600; margin-bottom: 6px;">${date}</div>
+                        <div style="color: #94a3b8; font-weight: 600; margin-bottom: 6px;">${dateLabel}</div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; margin-bottom: 4px;">
                             <div><span style="color: #64748b;">Open:</span> <strong style="color: ${isDark ? '#fff' : '#0f172a'}">${fmt(o)}</strong></div>
                             <div><span style="color: #64748b;">High:</span> <strong style="color: #10b981">${fmt(h)}</strong></div>
@@ -430,7 +465,7 @@ export default function BacktestCandlestickChart({
 
     return (
         <div className={styles.candlestickChartCard}>
-            {/* Top Position Sizing Summary Banner matching reference */}
+            {/* Top Position Sizing Summary Banner */}
             <div className={styles.positionSizingRibbon}>
                 <div className={styles.sizingTag}>
                     <span className={styles.sizingDot} />

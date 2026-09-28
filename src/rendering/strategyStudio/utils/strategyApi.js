@@ -281,7 +281,7 @@ export const strategyStudioApi = {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     strategy_id,
-                    source: source === 'user_strategies' ? 'user_strategies' : 'trading_strategies'
+                    // source: source === 'user_strategies' ? 'user_strategies' : 'trading_strategies'
                 })
             });
             if (res.ok) {

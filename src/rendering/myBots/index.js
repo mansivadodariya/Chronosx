@@ -45,7 +45,7 @@ export default function MyBotsView() {
                     setVisibleTabNames(new Set(JSON.parse(cached)));
                 }
             }
-        } catch (_) {}
+        } catch (_) { }
 
         async function loadTabs() {
             if (!supabase) return;
@@ -55,7 +55,7 @@ export default function MyBotsView() {
                     const names = new Set(data.map(t => (t.name || '').toLowerCase().trim()));
                     setVisibleTabNames(names);
                 }
-            } catch (_) {}
+            } catch (_) { }
         }
         loadTabs();
     }, []);
@@ -146,7 +146,7 @@ export default function MyBotsView() {
                         localBots = parsed.filter(lb => !apiBots.some(ab => ab.id === lb.id));
                     }
                 }
-            } catch (_) {}
+            } catch (_) { }
 
             const merged = [...apiBots, ...localBots];
             setBots(merged);
@@ -160,7 +160,7 @@ export default function MyBotsView() {
                         setBots(parsed);
                     }
                 }
-            } catch (_) {}
+            } catch (_) { }
         } finally {
             setLoading(false);
         }
@@ -228,7 +228,7 @@ export default function MyBotsView() {
             if (bot?.rawStrategy) {
                 sessionStorage.setItem('active_selected_strategy', JSON.stringify(bot.rawStrategy));
             }
-        } catch (_) {}
+        } catch (_) { }
         handleNavigate('/ai-bot-builder');
     };
 
@@ -256,7 +256,7 @@ export default function MyBotsView() {
                 }));
                 window.dispatchEvent(new CustomEvent('page:loading:start'));
             }
-        } catch (_) {}
+        } catch (_) { }
 
         router.push(`/backtest?strategy_id=${encodeURIComponent(stratId)}&source=user_strategies`);
     };
@@ -353,7 +353,7 @@ export default function MyBotsView() {
                     <div className={`${styles.twoCardsGrid} ${isSingleCard ? styles.singleCardGrid : ''}`}>
                         {/* CARD 1: Generate with AI (AI Bot Builder) */}
                         {hasAiBotPermission && (
-                            <div 
+                            <div
                                 className={`${styles.creationHeroCard} ${styles.aiCard}`}
                                 onClick={() => handleNavigate('/ai-bot-builder')}
                             >
@@ -361,13 +361,13 @@ export default function MyBotsView() {
 
                                 {/* 3D Illustration Graphic in Card BG on Right */}
                                 <div className={styles.cardIllustrationBg}>
-                                    <img 
-                                        src="/assets/images/botai.png" 
-                                        alt="AI Bot Builder" 
-                                        className={styles.cardIllustrationImg} 
+                                    <img
+                                        src="/assets/images/botai.png"
+                                        alt="AI Bot Builder"
+                                        className={styles.cardIllustrationImg}
                                     />
                                 </div>
-                                
+
                                 <div className={styles.cardHeaderRow}>
                                     <div className={styles.cardIconBox}>
                                         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -403,7 +403,7 @@ export default function MyBotsView() {
 
                         {/* CARD 2: Custom Bot Builder */}
                         {hasCustomBotPermission && (
-                            <div 
+                            <div
                                 className={`${styles.creationHeroCard} ${styles.customCard}`}
                                 onClick={() => handleNavigate('/manual-bot-builder')}
                             >
@@ -411,10 +411,10 @@ export default function MyBotsView() {
 
                                 {/* 3D Illustration Graphic in Card BG on Right */}
                                 <div className={styles.cardIllustrationBg}>
-                                    <img 
-                                        src="/assets/images/botcutom.png" 
-                                        alt="Custom Bot Builder" 
-                                        className={styles.cardIllustrationImg} 
+                                    <img
+                                        src="/assets/images/botcutom.png"
+                                        alt="Custom Bot Builder"
+                                        className={styles.cardIllustrationImg}
                                     />
                                 </div>
 
@@ -472,8 +472,8 @@ export default function MyBotsView() {
                                     <p>Explore verified pre-built algorithmic templates in our community library.</p>
                                 </div>
                             </div>
-                            <button 
-                                type="button" 
+                            <button
+                                type="button"
                                 className={styles.libraryLinkBtn}
                                 onClick={() => handleNavigate('/bot-library')}
                             >
@@ -630,11 +630,11 @@ export default function MyBotsView() {
                                         <span className={styles.winRatePct}>{bot.winRate || '0%'}</span>
                                     </div>
                                     <div className={styles.progressTrack}>
-                                        <div 
-                                            className={styles.progressFill} 
-                                            style={{ 
-                                                width: `${Math.min(100, Math.max(0, parseFloat(String(bot.winRate || '0').replace(/[^0-9.]/g, '')) || 0))}%` 
-                                            }} 
+                                        <div
+                                            className={styles.progressFill}
+                                            style={{
+                                                width: `${Math.min(100, Math.max(0, parseFloat(String(bot.winRate || '0').replace(/[^0-9.]/g, '')) || 0))}%`
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -659,11 +659,6 @@ export default function MyBotsView() {
                                         onClick={() => setSelectedStrategyDetail(bot)}
                                         title="View Full Rules"
                                     >
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <circle cx="12" cy="12" r="10" />
-                                            <line x1="12" y1="16" x2="12" y2="12" />
-                                            <line x1="12" y1="8" x2="12.01" y2="8" />
-                                        </svg>
                                         <span>Rules</span>
                                     </button>
                                     <button
