@@ -67,24 +67,18 @@
   pointer-events: none;
   overflow: hidden;
   z-index: 0;
+  transition: opacity 0.3s ease;
+  opacity: 0.95;
 
   [data-theme="light"] &,
   :global(html.light) &,
   :global([data-theme="light"]) &,
   :global(html[data-theme="light"]) &,
   &.isLightModeWaves {
-    opacity: 1;
+    opacity: 0.45;
   }
 }
 
-.isLightModeWaves {
-  .lightWaveGroup {
-    display: inline !important;
-  }
-  .darkWaveGroup {
-    display: none !important;
-  }
-}
 
 .ambientRadialTopRight {
   position: absolute;
@@ -110,11 +104,11 @@
   .isLightModeWaves & {
     background: radial-gradient(
       circle,
-      rgba(16, 185, 129, 0.45) 0%,
-      rgba(6, 182, 212, 0.28) 45%,
+      rgba(16, 185, 129, 0.55) 0%,
+      rgba(6, 182, 212, 0.35) 45%,
       transparent 70%
     );
-    filter: blur(48px);
+    filter: blur(36px);
   }
 }
 
@@ -142,11 +136,11 @@
   .isLightModeWaves & {
     background: radial-gradient(
       circle,
-      rgba(16, 185, 129, 0.45) 0%,
-      rgba(24, 201, 139, 0.28) 45%,
+      rgba(16, 185, 129, 0.55) 0%,
+      rgba(24, 201, 139, 0.35) 45%,
       transparent 75%
     );
-    filter: blur(48px);
+    filter: blur(36px);
   }
 }
 
@@ -174,11 +168,11 @@
   .isLightModeWaves & {
     background: radial-gradient(
       circle,
-      rgba(6, 182, 212, 0.38) 0%,
-      rgba(16, 185, 129, 0.28) 50%,
+      rgba(6, 182, 212, 0.5) 0%,
+      rgba(16, 185, 129, 0.35) 50%,
       transparent 70%
     );
-    filter: blur(48px);
+    filter: blur(36px);
   }
 }
 
@@ -205,11 +199,11 @@
   .isLightModeWaves & {
     background: radial-gradient(
       circle,
-      rgba(16, 185, 129, 0.28) 0%,
-      rgba(6, 182, 212, 0.14) 45%,
+      rgba(16, 185, 129, 0.4) 0%,
+      rgba(6, 182, 212, 0.25) 45%,
       transparent 65%
     );
-    filter: blur(42px);
+    filter: blur(32px);
   }
 }
 
@@ -229,53 +223,47 @@
   }
 }
 
-/* Direct JS & CSS Theme Wave Groups */
-.darkWaveGroupDirect {
-  display: inline;
-}
-
-.lightWaveGroupDirect {
-  display: inline;
-}
-
-.darkWaveGroup {
-  display: inline;
-  [data-theme="light"] &,
-  :global(html.light) &,
-  :global([data-theme="light"]) &,
-  :global(html[data-theme="light"]) &,
-  .isLightModeWaves & {
-    display: none !important;
-  }
-}
-
-.lightWaveGroup {
-  display: none !important;
-  [data-theme="light"] &,
-  :global(html.light) &,
-  :global([data-theme="light"]) &,
-  :global(html[data-theme="light"]) &,
-  .isLightModeWaves & {
-    display: inline !important;
-  }
-}
 
 .waveGroupRight {
   animation: waveFloatRight 18s ease-in-out infinite alternate;
   transform-origin: 80% 20%;
   will-change: transform, opacity;
+
+  [data-theme="light"] &,
+  :global(html.light) &,
+  :global([data-theme="light"]) &,
+  :global(html[data-theme="light"]) &,
+  .isLightModeWaves & {
+    opacity: 1;
+  }
 }
 
 .waveGroupLeft {
   animation: waveFloatLeft 22s ease-in-out infinite alternate;
   transform-origin: 20% 80%;
   will-change: transform, opacity;
+
+  [data-theme="light"] &,
+  :global(html.light) &,
+  :global([data-theme="light"]) &,
+  :global(html[data-theme="light"]) &,
+  .isLightModeWaves & {
+    opacity: 1;
+  }
 }
 
 .waveGroupBottom {
   animation: waveFloatBottom 20s ease-in-out infinite alternate;
   transform-origin: 50% 90%;
   will-change: transform, opacity;
+
+  [data-theme="light"] &,
+  :global(html.light) &,
+  :global([data-theme="light"]) &,
+  :global(html[data-theme="light"]) &,
+  .isLightModeWaves & {
+    opacity: 1;
+  }
 }
 
 .floatingCurve1 {

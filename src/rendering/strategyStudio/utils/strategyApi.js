@@ -22,7 +22,7 @@ export const getApiBase = () => {
         }
         return `${backend}/backtest/v1`;
     }
-    return 'http://localhost:7009/backtest/v1';
+    return 'http://192.168.0.153:8000/backtest/v1';
 };
 
 export const strategyStudioApi = {
@@ -266,6 +266,64 @@ export const strategyStudioApi = {
         // Fallback simulation with realistic trades & metrics
         await new Promise((resolve) => setTimeout(resolve, 600));
         return generateSimulatedBacktest(payload);
+    },
+
+    /**
+     * Run Backtest Execution by Strategy ID
+     * POST /backtest/v1/run-by-id
+     * Payload: { strategy_id, source }
+     */
+    runBacktestById: async ({ strategy_id, source, fallbackParams = {} }) => {
+        try {
+            const apiBase = getApiBase();
+            const res = await fetch(`${apiBase}/run-by-id`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    strategy_id,
+                    source: source === 'user_strategies' ? 'user_strategies' : 'trading_strategies'
+                })
+            });
+            if (res.ok) {
+                const json = await res.json();
+                if ((json.success || json.status === 'success' || json.status === 200) && json.data) {
+                    const dataItem = Array.isArray(json.data) ? json.data[0] : json.data;
+                    return {
+                        status: "success",
+                        success: true,
+                        data: dataItem,
+                        strategy: json.strategy || json.strategy_info || json.raw_strategy || null,
+                        raw: json
+                    };
+                }
+                return {
+                    status: "success",
+                    success: true,
+                    data: json.data || json,
+                    strategy: json.strategy || json.strategy_info || json.raw_strategy || null,
+                    raw: json
+                };
+            } else {
+                const errText = await res.text().catch(() => '');
+                console.warn(`[strategyApi] /backtest/v1/run-by-id returned HTTP ${res.status}:`, errText);
+            }
+        } catch (err) {
+            console.warn("Backend backtest server unreachable for run-by-id, falling back to dynamic simulation:", err.message);
+        }
+
+        // Fallback simulation with realistic trades & metrics
+        await new Promise((resolve) => setTimeout(resolve, 600));
+        return generateSimulatedBacktest({
+            strategy_id,
+            source,
+            stock_name: fallbackParams.symbol || fallbackParams.stock_name || 'XAUUSD',
+            interval: fallbackParams.interval || '15min',
+            inital_capital: fallbackParams.capital || 10000,
+            quantity: fallbackParams.quantity || 0.01,
+            from_date: fallbackParams.fromDate || '2024-01-01',
+            to_date: fallbackParams.toDate || '2024-03-01',
+            ...fallbackParams
+        });
     }
 };
 

@@ -19,7 +19,10 @@ const SYMBOL_OPTIONS = [
     { value: 'EURUSD', label: 'EURUSD' },
     { value: 'GBPJPY', label: 'GBPJPY' },
     { value: 'GBPUSD', label: 'GBPUSD' },
-    { value: 'USDCAD', label: 'USDCAD' }
+    { value: 'USDCAD', label: 'USDCAD' },
+    { value: 'BTCUSD', label: 'BTCUSD' },
+    { value: 'ETHUSD', label: 'ETHUSD' },
+    { value: 'US30', label: 'US30' }
 ];
 
 const INTERVAL_OPTIONS = [

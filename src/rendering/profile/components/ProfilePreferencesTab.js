@@ -5,6 +5,22 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
 import toast from 'react-hot-toast';
 import styles from '../styles/preferencesTab.module.scss';
+import ProfileCustomSelect from './ProfileCustomSelect';
+
+const TIMEZONE_OPTIONS = [
+    { value: 'browser', label: 'Auto (Browser Local Time)' },
+    { value: 'UTC', label: 'UTC (Universal Coordinated Time)' },
+    { value: 'America/New_York', label: 'New York (EST / EDT)' },
+    { value: 'Europe/London', label: 'London (GMT / BST)' },
+    { value: 'Asia/Tokyo', label: 'Tokyo (JST)' }
+];
+
+const CURRENCY_OPTIONS = [
+    { value: 'USD', label: 'USD ($)' },
+    { value: 'EUR', label: 'EUR (€)' },
+    { value: 'GBP', label: 'GBP (£)' },
+    { value: 'USDT', label: 'USDT (₮)' }
+];
 
 /* Crisp Vector Flags for All 9 Supported Languages */
 const USFlag = () => (
@@ -337,14 +353,12 @@ export default function ProfilePreferencesTab({ t }) {
                                 <span className={styles.rowDesc}>{t?.('profile.defaultTzSub', 'Align candlestick timestamp grids with your primary trading session.') || 'Align candlestick timestamp grids with your primary trading session.'}</span>
                             </div>
                         </div>
-                        <div className={styles.prefRowRight}>
-                            <select value={chartTimezone} onChange={handleTimezoneChange}>
-                                <option value="browser">Auto (Browser Local Time)</option>
-                                <option value="UTC">UTC (Universal Coordinated Time)</option>
-                                <option value="America/New_York">New York (EST / EDT)</option>
-                                <option value="Europe/London">London (GMT / BST)</option>
-                                <option value="Asia/Tokyo">Tokyo (JST)</option>
-                            </select>
+                        <div className={styles.prefRowRight} style={{ minWidth: '220px' }}>
+                            <ProfileCustomSelect
+                                value={chartTimezone}
+                                onChange={(val) => handleTimezoneChange({ target: { value: val } })}
+                                options={TIMEZONE_OPTIONS}
+                            />
                         </div>
                     </div>
 
@@ -362,13 +376,12 @@ export default function ProfilePreferencesTab({ t }) {
                                 <span className={styles.rowDesc}>{t?.('profile.displayCurrencySub', 'Symbol formatting for compute estimates and invoices.') || 'Symbol formatting for compute estimates and invoices.'}</span>
                             </div>
                         </div>
-                        <div className={styles.prefRowRight}>
-                            <select value={currency} onChange={handleCurrencyChange}>
-                                <option value="USD">USD ($)</option>
-                                <option value="EUR">EUR (€)</option>
-                                <option value="GBP">GBP (£)</option>
-                                <option value="USDT">USDT (₮)</option>
-                            </select>
+                        <div className={styles.prefRowRight} style={{ minWidth: '160px' }}>
+                            <ProfileCustomSelect
+                                value={currency}
+                                onChange={(val) => handleCurrencyChange({ target: { value: val } })}
+                                options={CURRENCY_OPTIONS}
+                            />
                         </div>
                     </div>
 

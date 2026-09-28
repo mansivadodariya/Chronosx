@@ -1,10 +1,9 @@
 'use client';
+
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import Loader from '@/components/loader';
 import styles from './pageLoader.module.scss';
-
 
 export default function PageLoader() {
     const pathname = usePathname();
@@ -98,14 +97,39 @@ export default function PageLoader() {
                     transition={{ duration: 0.18, ease: 'easeOut' }}
                 >
                     <motion.div
-                        className={styles.loaderBox}
-                        initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                        className={styles.loaderContent}
+                        initial={{ opacity: 0, scale: 0.92 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.94 }}
                         transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
                     >
-                        <div className={styles.emblemContainer}>
-                            <Loader size="xl" />
+                        {/* High-Tech Gyroscope Orbital Core */}
+                        <div className={styles.emblemOrbitalWrap}>
+                            <div className={styles.outerGlowRing} />
+                            <div className={styles.innerGlowRing} />
+                            <div className={styles.centerEmblemCore}>
+                                <svg
+                                    width="18"
+                                    height="18"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    style={{ width: '18px', height: '18px', display: 'block', flexShrink: 0 }}
+                                >
+                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        {/* Text Information */}
+                        <h4 className={styles.loaderTitle}>Loading...</h4>
+
+                        {/* Scanning Progress Laser Track */}
+                        <div className={styles.progressTrack}>
+                            <div className={styles.progressLaser} />
                         </div>
                     </motion.div>
                 </motion.div>

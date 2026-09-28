@@ -1,12 +1,16 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import styles from '../styles/strategyStudio.module.scss';
 import { useTheme } from '@/context/ThemeContext';
 import { ChartTrendIcon } from './StudioIcons';
+import ChartSkeletonLoader from './ChartSkeletonLoader';
 
-const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
+const ReactApexChart = dynamic(() => import('react-apexcharts'), {
+    ssr: false,
+    loading: () => <ChartSkeletonLoader type="candlestick" />
+});
 
 /**
  * Safe timestamp parsing helper
@@ -222,6 +226,11 @@ export default function BacktestCandlestickChart({
 }) {
     const { theme } = useTheme();
     const isDark = theme !== 'light';
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Build Candlestick Series
     const candleData = useMemo(() => {
@@ -481,12 +490,21 @@ export default function BacktestCandlestickChart({
 
             {/* ApexCharts Candlestick Stage */}
             <div className={styles.candlestickCanvasWrap}>
-                <ReactApexChart
-                    options={chartOptions}
-                    series={series}
-                    type="candlestick"
-                    height={360}
-                />
+                {!mounted || !candleData || candleData.length === 0 ? (
+                    <ChartSkeletonLoader
+                        type="candlestick"
+                        symbol={symbol}
+                        interval={interval}
+                    />
+                ) : (
+                    <ReactApexChart
+                        key={`${symbol}_${interval}_${theme}_${candleData.length}`}
+                        options={chartOptions}
+                        series={series}
+                        type="candlestick"
+                        height={360}
+                    />
+                )}
             </div>
         </div>
     );

@@ -70,10 +70,10 @@ export default function InteractiveQuestionWizard({
                         typeof opt === 'string'
                             ? { label: opt, description: '', value: opt }
                             : {
-                                  label: opt.label || opt.title || opt.value || '',
-                                  description: opt.description || opt.desc || '',
-                                  value: opt.value || opt.label || opt.title || ''
-                              }
+                                label: opt.label || opt.title || opt.value || '',
+                                description: opt.description || opt.desc || '',
+                                value: opt.value || opt.label || opt.title || ''
+                            }
                     )
                 }
             ];
@@ -138,11 +138,11 @@ export default function InteractiveQuestionWizard({
             typeof opt === 'string'
                 ? { label: opt, description: '', value: opt }
                 : {
-                      label: opt.label || opt.title || opt.value || '',
-                      description: opt.description || opt.desc || '',
-                      value: opt.value || opt.label || opt.title || '',
-                      is_custom: Boolean(opt.is_custom)
-                  }
+                    label: opt.label || opt.title || opt.value || '',
+                    description: opt.description || opt.desc || '',
+                    value: opt.value || opt.label || opt.title || '',
+                    is_custom: Boolean(opt.is_custom)
+                }
         );
 
         const hasCustomOption = list.some(
@@ -167,9 +167,9 @@ export default function InteractiveQuestionWizard({
     const isCustomSelected = Boolean(
         selectedOption &&
         (selectedOption.is_custom ||
-         selectedOption.value === 'custom' ||
-         selectedOption.label?.toLowerCase().trim() === 'custom' ||
-         selectedOption.label?.toLowerCase().startsWith('custom'))
+            selectedOption.value === 'custom' ||
+            selectedOption.label?.toLowerCase().trim() === 'custom' ||
+            selectedOption.label?.toLowerCase().startsWith('custom'))
     );
 
     // Auto-focus container or custom input
@@ -285,7 +285,7 @@ export default function InteractiveQuestionWizard({
             {/* Header: Keyboard Navigation Shortcuts (Left) + Step Counter Badge (Right) */}
             <div className={styles.optionBoxHeaderRow}>
                 <div className={styles.optionBoxHintsRow}>
-                    <span className={styles.hintBadge}>
+                    <span className={styles.hint}>
                         <kbd>
                             <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="18 15 12 9 6 15" />
@@ -298,7 +298,7 @@ export default function InteractiveQuestionWizard({
                         </kbd>
                         <span>to navigate</span>
                     </span>
-                    <span className={styles.hintBadge}>
+                    <span className={styles.hint}>
                         <kbd>
                             <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="9 10 4 15 9 20" />
@@ -307,7 +307,7 @@ export default function InteractiveQuestionWizard({
                         </kbd>
                         <span>to select</span>
                     </span>
-                    <span className={styles.hintBadge}>
+                    <span className={styles.hint}>
                         <kbd>esc</kbd>
                         <span>to close</span>
                     </span>

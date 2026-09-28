@@ -1,6 +1,6 @@
 import { getOrCreateDeviceId } from './deviceId';
 
-export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
+export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-SLH8FX3W6R';
 
 /**
  * Extracts comprehensive device and browser metadata from the client browser.

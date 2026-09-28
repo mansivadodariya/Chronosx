@@ -507,3 +507,65 @@
     }
 
 }
+
+/* ── Sidebar Nav Skeleton Loader (Prevents flash of unpermitted tabs on refresh) ── */
+.navSkeletonWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.navSkeletonItem {
+    height: 40px;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    gap: 10px;
+    animation: pulseNavSkeleton 1.4s ease-in-out infinite alternate;
+
+    [data-theme='light'] &,
+    :global(html.light) & {
+        background: #F1F5F9;
+        border-color: #E2E8F0;
+    }
+}
+
+.navSkeletonIcon {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background: rgba(24, 201, 139, 0.15);
+    flex-shrink: 0;
+
+    [data-theme='light'] &,
+    :global(html.light) & {
+        background: rgba(5, 150, 105, 0.18);
+    }
+}
+
+.navSkeletonText {
+    height: 12px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.06);
+
+    [data-theme='light'] &,
+    :global(html.light) & {
+        background: #CBD5E1;
+    }
+}
+
+@keyframes pulseNavSkeleton {
+    0% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 0.85;
+    }
+}
+

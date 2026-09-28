@@ -82,8 +82,11 @@ export default function TradesTable({ roundTrips = [] }) {
                     <tbody>
                         {filteredTrades.length === 0 ? (
                             <tr>
-                                <td colSpan="9" style={{ textAlign: 'center', color: '#94A3B8', padding: '28px' }}>
-                                    No trades match the selected filter.
+                                <td colSpan="9" style={{ textAlign: 'center', color: '#94A3B8', padding: '32px' }}>
+                                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
+                                        <span className={styles.liveIndicatorPulse} />
+                                        <span>{safeRoundTrips.length === 0 ? 'Loading detailed trades execution log...' : 'No trades match the selected filter.'}</span>
+                                    </div>
                                 </td>
                             </tr>
                         ) : (

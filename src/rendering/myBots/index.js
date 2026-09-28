@@ -10,6 +10,9 @@ import { toast } from 'react-hot-toast';
 import { supabase } from '@/lib/supabaseClient';
 import { getStoredUserId } from '@/lib/authSession';
 
+import DeleteBotModal from './components/DeleteBotModal';
+import StrategyDetailModal from './components/StrategyDetailModal';
+
 const BACKEND_BASE = (
     process.env.NEXT_PUBLIC_BACKTEST_API_URL ||
     process.env.NEXT_PUBLIC_BACKEND_URL ||
@@ -31,6 +34,8 @@ export default function MyBotsView() {
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [visibleTabNames, setVisibleTabNames] = useState(null);
     const [selectedStrategyDetail, setSelectedStrategyDetail] = useState(null);
+    const [botToDelete, setBotToDelete] = useState(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
         try {
@@ -186,10 +191,10 @@ export default function MyBotsView() {
         saveBots(updated);
     };
 
-    const handleDeleteBot = async (botId, botName, strategyId) => {
-        if (!confirm(`Are you sure you want to delete strategy bot "${botName}"?`)) {
-            return;
-        }
+    const handleConfirmDelete = async () => {
+        if (!botToDelete) return;
+        setIsDeleting(true);
+        const { id: botId, name: botName, strategyId } = botToDelete;
 
         // Try deleting from backend if strategyId is available
         const sid = strategyId || botId;
@@ -207,6 +212,8 @@ export default function MyBotsView() {
         const updated = bots.filter((b) => b.id !== botId);
         saveBots(updated);
         toast.success(`Strategy "${botName}" deleted`);
+        setIsDeleting(false);
+        setBotToDelete(null);
     };
 
     const handleNavigate = (path) => {
@@ -223,6 +230,35 @@ export default function MyBotsView() {
             }
         } catch (_) {}
         handleNavigate('/ai-bot-builder');
+    };
+
+    const handleRunBacktestBot = (bot) => {
+        const stratId = bot?.strategyId || bot?.id || bot?.rawStrategy?.strategy_id || bot?.rawStrategy?.id || 'user_bot';
+        const stratSymbol = bot?.symbol || (Array.isArray(bot?.rawStrategy?.stock_name) ? bot.rawStrategy.stock_name[0] : bot?.rawStrategy?.stock_name) || 'BTCUSD';
+        const stratInterval = bot?.timeframe || bot?.rawStrategy?.interval || bot?.rawStrategy?.timeframe || '15min';
+        const stratCapital = bot?.capital || bot?.rawStrategy?.inital_capital || bot?.rawStrategy?.initial_capital || 10000;
+        const stratQuantity = bot?.lots || bot?.quantity || bot?.rawStrategy?.quantity || 0.01;
+        const stratFromDate = bot?.rawStrategy?.from_date || '';
+        const stratToDate = bot?.rawStrategy?.to_date || '';
+
+        try {
+            if (typeof window !== 'undefined') {
+                sessionStorage.setItem('pending_backtest_run', JSON.stringify({
+                    strategy_id: stratId,
+                    source: 'user_strategies',
+                    symbol: stratSymbol,
+                    interval: stratInterval,
+                    capital: stratCapital,
+                    quantity: stratQuantity,
+                    from_date: stratFromDate,
+                    to_date: stratToDate,
+                    raw_strategy: bot?.rawStrategy || bot
+                }));
+                window.dispatchEvent(new CustomEvent('page:loading:start'));
+            }
+        } catch (_) {}
+
+        router.push(`/backtest?strategy_id=${encodeURIComponent(stratId)}&source=user_strategies`);
     };
 
     const filteredBots = bots.filter((b) => {
@@ -278,7 +314,7 @@ export default function MyBotsView() {
                                 <line x1="12" y1="5" x2="12" y2="19" />
                                 <line x1="5" y1="12" x2="19" y2="12" />
                             </svg>
-                            <span>New Bot</span>
+                            <span>Create New Bot</span>
                         </button>
                     </div>
                 }
@@ -348,30 +384,9 @@ export default function MyBotsView() {
                                     </p>
 
                                     <div className={styles.featureList}>
-                                        <div className={styles.featureItem}>
-                                            <span className={styles.checkIcon}>
-                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                                    <polyline points="20 6 9 17 4 12" />
-                                                </svg>
-                                            </span>
-                                            <span>Instant hypothesis to algorithmic rule conversion</span>
-                                        </div>
-                                        <div className={styles.featureItem}>
-                                            <span className={styles.checkIcon}>
-                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                                    <polyline points="20 6 9 17 4 12" />
-                                                </svg>
-                                            </span>
-                                            <span>Multi-market MT5 simulation & metrics backtest</span>
-                                        </div>
-                                        <div className={styles.featureItem}>
-                                            <span className={styles.checkIcon}>
-                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                                    <polyline points="20 6 9 17 4 12" />
-                                                </svg>
-                                            </span>
-                                            <span>Interactive AI Copilot parameter tuning</span>
-                                        </div>
+                                        <div className={styles.featureItem}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>Instant hypothesis to algorithmic rule conversion</span></div>
+                                        <div className={styles.featureItem}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>Multi-market MT5 simulation & metrics backtest</span></div>
+                                        <div className={styles.featureItem}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>Interactive AI Copilot parameter tuning</span></div>
                                     </div>
                                 </div>
 
@@ -379,8 +394,7 @@ export default function MyBotsView() {
                                     <button type="button" className={styles.primaryActionBtn}>
                                         <span>Launch AI Bot Builder</span>
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                            <line x1="5" y1="12" x2="19" y2="12" />
-                                            <polyline points="12 5 19 12 12 19" />
+                                            <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
                                         </svg>
                                     </button>
                                 </div>
@@ -407,15 +421,10 @@ export default function MyBotsView() {
                                 <div className={styles.cardHeaderRow}>
                                     <div className={styles.cardIconBox}>
                                         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <line x1="4" y1="21" x2="4" y2="14" />
-                                            <line x1="4" y1="10" x2="4" y2="3" />
-                                            <line x1="12" y1="21" x2="12" y2="12" />
-                                            <line x1="12" y1="8" x2="12" y2="3" />
-                                            <line x1="20" y1="21" x2="20" y2="16" />
-                                            <line x1="20" y1="12" x2="20" y2="3" />
-                                            <line x1="1" y1="14" x2="7" y2="14" />
-                                            <line x1="9" y1="8" x2="15" y2="8" />
-                                            <line x1="17" y1="16" x2="23" y2="16" />
+                                            <line x1="4" y1="21" x2="4" y2="14" /><line x1="4" y1="10" x2="4" y2="3" />
+                                            <line x1="12" y1="21" x2="12" y2="12" /><line x1="12" y1="8" x2="12" y2="3" />
+                                            <line x1="20" y1="21" x2="20" y2="16" /><line x1="20" y1="12" x2="20" y2="3" />
+                                            <line x1="1" y1="14" x2="7" y2="14" /><line x1="9" y1="8" x2="15" y2="8" /><line x1="17" y1="16" x2="23" y2="16" />
                                         </svg>
                                     </div>
                                     <h3 className={styles.cardTitle}>Custom Bot Builder</h3>
@@ -427,30 +436,9 @@ export default function MyBotsView() {
                                     </p>
 
                                     <div className={styles.featureList}>
-                                        <div className={styles.featureItem}>
-                                            <span className={styles.checkIcon}>
-                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                                    <polyline points="20 6 9 17 4 12" />
-                                                </svg>
-                                            </span>
-                                            <span>20+ Technical indicator trigger & filter blocks</span>
-                                        </div>
-                                        <div className={styles.featureItem}>
-                                            <span className={styles.checkIcon}>
-                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                                    <polyline points="20 6 9 17 4 12" />
-                                                </svg>
-                                            </span>
-                                            <span>Dynamic Take Profit, Stop Loss & Trailing Stops</span>
-                                        </div>
-                                        <div className={styles.featureItem}>
-                                            <span className={styles.checkIcon}>
-                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                                    <polyline points="20 6 9 17 4 12" />
-                                                </svg>
-                                            </span>
-                                            <span>Custom execution logic & lot size formulas</span>
-                                        </div>
+                                        <div className={styles.featureItem}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>20+ Technical indicator trigger & filter blocks</span></div>
+                                        <div className={styles.featureItem}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>Dynamic Take Profit, Stop Loss & Trailing Stops</span></div>
+                                        <div className={styles.featureItem}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>Custom execution logic & lot size formulas</span></div>
                                     </div>
                                 </div>
 
@@ -588,39 +576,66 @@ export default function MyBotsView() {
                                     <p className={styles.botDesc}>{bot.description}</p>
                                 )}
 
-                                <div className={styles.botConfigRow}>
-                                    <div className={styles.configItem}>
-                                        <span className={styles.configLabel}>SL</span>
-                                        <span className={styles.configVal}>{bot.sl}</span>
+                                <div className={styles.statsGrid}>
+                                    <div className={`${styles.metricCardBox} ${styles.statBoxTarget}`}>
+                                        <span className={styles.metricCardIcon}>
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                                                <circle cx="12" cy="12" r="10" />
+                                                <circle cx="12" cy="12" r="6" />
+                                                <circle cx="12" cy="12" r="2" />
+                                            </svg>
+                                        </span>
+                                        <span className={styles.metricCardValue}>{bot.tp || '50 pts'}</span>
+                                        <span className={styles.metricCardLabel}>Target</span>
                                     </div>
-                                    <div className={styles.configItem}>
-                                        <span className={styles.configLabel}>TP</span>
-                                        <span className={styles.configVal}>{bot.tp}</span>
+
+                                    <div className={`${styles.metricCardBox} ${styles.statBoxSl}`}>
+                                        <span className={styles.metricCardIcon}>
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                                <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
+                                                <polyline points="17 18 23 18 23 12" />
+                                            </svg>
+                                        </span>
+                                        <span className={styles.metricCardValue}>{bot.sl || '25 pts'}</span>
+                                        <span className={styles.metricCardLabel}>Stop Loss</span>
                                     </div>
-                                    <div className={styles.configItem}>
-                                        <span className={styles.configLabel}>R:R</span>
-                                        <span className={styles.configVal}>{bot.riskReward}</span>
+
+                                    <div className={`${styles.metricCardBox} ${styles.statBoxWr}`}>
+                                        <span className={styles.metricCardIcon}>
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                                                <polyline points="17 6 23 6 23 12" />
+                                            </svg>
+                                        </span>
+                                        <span className={styles.metricCardValue}>{bot.winRate || '0%'}</span>
+                                        <span className={styles.metricCardLabel}>Win Rate</span>
                                     </div>
-                                    <div className={styles.configItem}>
-                                        <span className={styles.configLabel}>LOTS</span>
-                                        <span className={styles.configVal}>{bot.lots}</span>
+
+                                    <div className={`${styles.metricCardBox} ${styles.statBoxPnl}`}>
+                                        <span className={styles.metricCardIcon}>
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                                <line x1="18" y1="20" x2="18" y2="10" />
+                                                <line x1="12" y1="20" x2="12" y2="4" />
+                                                <line x1="6" y1="20" x2="6" y2="14" />
+                                            </svg>
+                                        </span>
+                                        <span className={styles.metricCardValue}>{bot.totalPnl || bot.profitFactor || '1.85'}</span>
+                                        <span className={styles.metricCardLabel}>Est. PnL</span>
                                     </div>
                                 </div>
 
-                                <div className={styles.botStatsRow}>
-                                    <div>
-                                        <span className={styles.statMiniLabel}>Win Rate</span>
-                                        <span className={styles.statMiniVal}>{bot.winRate}</span>
+                                <div className={styles.winRateSection}>
+                                    <div className={styles.winRateHeader}>
+                                        <span className={styles.winRateLabel}>Win Rate</span>
+                                        <span className={styles.winRatePct}>{bot.winRate || '0%'}</span>
                                     </div>
-                                    <div>
-                                        <span className={styles.statMiniLabel}>Profit Factor</span>
-                                        <span className={styles.statMiniVal}>{bot.profitFactor}</span>
-                                    </div>
-                                    <div>
-                                        <span className={styles.statMiniLabel}>Est. PnL</span>
-                                        <span className={`${styles.statMiniVal} ${styles.posColor}`}>
-                                            {bot.totalPnl}
-                                        </span>
+                                    <div className={styles.progressTrack}>
+                                        <div 
+                                            className={styles.progressFill} 
+                                            style={{ 
+                                                width: `${Math.min(100, Math.max(0, parseFloat(String(bot.winRate || '0').replace(/[^0-9.]/g, '')) || 0))}%` 
+                                            }} 
+                                        />
                                     </div>
                                 </div>
 
@@ -628,12 +643,15 @@ export default function MyBotsView() {
                                     <button
                                         type="button"
                                         className={styles.botActionBtn}
-                                        onClick={() => handleSimulateEdit(bot)}
+                                        onClick={() => handleRunBacktestBot(bot)}
                                     >
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <polygon points="5 3 19 12 5 21 5 3" />
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+                                            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+                                            <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+                                            <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
                                         </svg>
-                                        <span>Simulate / Edit</span>
+                                        <span>Run Backtest</span>
                                     </button>
                                     <button
                                         type="button"
@@ -650,8 +668,8 @@ export default function MyBotsView() {
                                     </button>
                                     <button
                                         type="button"
-                                        className={`${styles.botActionBtn} ${styles.deleteAction}`}
-                                        onClick={() => handleDeleteBot(bot.id, bot.name, bot.strategyId)}
+                                        className={styles.deleteAction}
+                                        onClick={() => setBotToDelete(bot)}
                                         title="Delete Strategy"
                                     >
                                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -669,7 +687,7 @@ export default function MyBotsView() {
             {/* Create Bot Modal Dialog */}
             {showCreateModal && (
                 <div className={styles.modalOverlay} onClick={() => setShowCreateModal(false)}>
-                    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                    <div className={`${styles.modalContent} ${isSingleCard ? styles.singleModalContent : ''}`} onClick={(e) => e.stopPropagation()}>
                         <div className={styles.modalHeader}>
                             <h3>Create New Trading Bot</h3>
                             <button type="button" className={styles.closeBtn} onClick={() => setShowCreateModal(false)} aria-label="Close">
@@ -680,21 +698,41 @@ export default function MyBotsView() {
                             </button>
                         </div>
                         <p className={styles.modalSub}>Select your preferred bot creation method:</p>
-                        <div className={styles.modalCards}>
-                            <div className={styles.modalCardOption} onClick={() => handleNavigate('/ai-bot-builder')}>
-                                <span className={styles.modalIcon}>
-                                    <img src="/assets/images/botai.png" alt="AI Bot" style={{ width: 28, height: 28, objectFit: 'contain' }} />
-                                </span>
-                                <h4>AI Bot Builder</h4>
-                                <p>Prompt-driven algorithmic strategy builder with AI Copilot.</p>
-                            </div>
+                        <div className={`${styles.modalCards} ${isSingleCard ? styles.singleModalCards : ''}`}>
+                            {hasAiBotPermission && (
+                                <div className={styles.modalCardOption} onClick={() => handleNavigate('/ai-bot-builder')}>
+                                    <div className={styles.modalCardHeader}>
+                                        <div className={styles.modalIconBox}>
+                                            <img src="/assets/images/botai.png" alt="AI Bot" className={styles.modalIllustrationImg} />
+                                        </div>
+                                        <span className={styles.modalBadge}>AI Copilot</span>
+                                    </div>
+                                    <h4>AI Bot Builder</h4>
+                                    <p>Prompt-driven algorithmic strategy builder with AI Copilot & instant MT5 simulations.</p>
+                                    <div className={styles.modalCardAction}>
+                                        <span>Launch AI Builder</span>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                            <path d="M5 12h14M12 5l7 7-7 7" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            )}
                             {hasCustomBotPermission && (
                                 <div className={styles.modalCardOption} onClick={() => handleNavigate('/manual-bot-builder')}>
-                                    <span className={styles.modalIcon}>
-                                        <img src="/assets/images/botcutom.png" alt="Custom Bot" style={{ width: 28, height: 28, objectFit: 'contain' }} />
-                                    </span>
+                                    <div className={styles.modalCardHeader}>
+                                        <div className={styles.modalIconBox}>
+                                            <img src="/assets/images/botcutom.png" alt="Custom Bot" className={styles.modalIllustrationImg} />
+                                        </div>
+                                        <span className={styles.modalBadge}>Visual Studio</span>
+                                    </div>
                                     <h4>Custom Bot Builder</h4>
-                                    <p>Visual rule & indicator configuration with complete manual control.</p>
+                                    <p>Visual rule & indicator configuration with complete manual parameter control.</p>
+                                    <div className={styles.modalCardAction}>
+                                        <span>Launch Studio</span>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                            <path d="M5 12h14M12 5l7 7-7 7" />
+                                        </svg>
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -703,88 +741,21 @@ export default function MyBotsView() {
             )}
 
             {/* Strategy Detail View Modal */}
-            {selectedStrategyDetail && (
-                <div className={styles.modalOverlay} onClick={() => setSelectedStrategyDetail(null)}>
-                    <div className={styles.strategyModalContent} onClick={(e) => e.stopPropagation()}>
-                        <div className={styles.modalHeader}>
-                            <div>
-                                <div className={styles.botMetaRow}>
-                                    <span className={styles.symbolBadge}>{selectedStrategyDetail.symbol}</span>
-                                    <span className={styles.timeframeBadge}>{selectedStrategyDetail.timeframe}</span>
-                                    <span className={`${styles.directionBadge} ${selectedStrategyDetail.direction?.toLowerCase() === 'short' ? styles.shortBadge : styles.longBadge}`}>
-                                        {selectedStrategyDetail.direction}
-                                    </span>
-                                </div>
-                                <h3 className={styles.modalStratTitle}>{selectedStrategyDetail.name}</h3>
-                            </div>
-                            <button type="button" className={styles.closeBtn} onClick={() => setSelectedStrategyDetail(null)} aria-label="Close">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <line x1="18" y1="6" x2="6" y2="18" />
-                                    <line x1="6" y1="6" x2="18" y2="18" />
-                                </svg>
-                            </button>
-                        </div>
+            <StrategyDetailModal
+                strategy={selectedStrategyDetail}
+                onClose={() => setSelectedStrategyDetail(null)}
+                onSimulate={handleSimulateEdit}
+                onRunBacktest={handleRunBacktestBot}
+            />
 
-                        <div className={styles.strategyModalBody}>
-                            {selectedStrategyDetail.description && (
-                                <div className={styles.detailBlock}>
-                                    <span className={styles.detailLabel}>RATIONALE & ARCHETYPE</span>
-                                    <p className={styles.detailText}>{selectedStrategyDetail.description}</p>
-                                </div>
-                            )}
-
-                            {selectedStrategyDetail.rawStrategy?.trade_reasoning?.rule_summary && (
-                                <div className={styles.detailBlock}>
-                                    <span className={styles.detailLabel}>EXECUTION RULE SUMMARY</span>
-                                    <p className={styles.detailText}>{selectedStrategyDetail.rawStrategy.trade_reasoning.rule_summary}</p>
-                                </div>
-                            )}
-
-                            {selectedStrategyDetail.rawStrategy?.trade_reasoning?.market_regime && (
-                                <div className={styles.detailBlock}>
-                                    <span className={styles.detailLabel}>MARKET REGIME & CONTEXT</span>
-                                    <p className={styles.detailText}>{selectedStrategyDetail.rawStrategy.trade_reasoning.market_regime}</p>
-                                </div>
-                            )}
-
-                            <div className={styles.specGrid}>
-                                <div className={styles.specItem}>
-                                    <span>Take Profit</span>
-                                    <strong>{selectedStrategyDetail.tp}</strong>
-                                </div>
-                                <div className={styles.specItem}>
-                                    <span>Stop Loss</span>
-                                    <strong>{selectedStrategyDetail.sl}</strong>
-                                </div>
-                                <div className={styles.specItem}>
-                                    <span>Risk / Reward</span>
-                                    <strong>{selectedStrategyDetail.riskReward}</strong>
-                                </div>
-                                <div className={styles.specItem}>
-                                    <span>Position Sizing</span>
-                                    <strong>{selectedStrategyDetail.lots} Lots</strong>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className={styles.modalFooterRow}>
-                            <button 
-                                type="button" 
-                                className={styles.launchBuilderBtn}
-                                onClick={() => {
-                                    handleSimulateEdit(selectedStrategyDetail);
-                                    setSelectedStrategyDetail(null);
-                                }}
-                            >
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                                    <polygon points="5 3 19 12 5 21 5 3" />
-                                </svg>
-                                <span>Simulate Strategy in AI Bot Builder</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {/* Custom Delete Confirmation Modal */}
+            <DeleteBotModal
+                isOpen={!!botToDelete}
+                bot={botToDelete}
+                onClose={() => setBotToDelete(null)}
+                onConfirm={handleConfirmDelete}
+                isDeleting={isDeleting}
+            />
         </div>
     );
 }

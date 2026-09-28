@@ -41,7 +41,7 @@ export const metadata = {
     default: "ChronosX — Next-Gen AI Trading Platform & Intelligence Desk",
     template: "%s | ChronosX"
   },
-  description: "Next-gen AI trading platform providing real-time AI trading signals, instant neural chart pattern recognition, and multi-market insights across Forex, Crypto, Stocks, and Commodities.",
+  description: "Next-gen AI trading platform providing real-time AI trading signals, instant neural chart pattern recognition, and multi-market insights across Forex, Stocks, and Commodities.",
   keywords: [
     "AI Forex Trading",
     "MT5 Trading Bot",

@@ -359,7 +359,7 @@ const Login = () => {
                                         <span className={styles.highlightText}>AI That Never Sleeps</span>
                                     </h2>
                                     <p className={styles.leftSubtitle}>
-                                        Get real-time AI trading signals, market insights, and trade recommendations across Forex, Crypto, Stocks, and Global Markets.
+                                        Get real-time AI trading signals, market insights, and trade recommendations across Forex, Stocks, and Global Markets.
                                     </p>
                                 </div>
 

@@ -20,6 +20,9 @@ import ProfileRightSidebar from './components/ProfileRightSidebar';
 import ProfileModals from './components/ProfileModals';
 import ProfilePaymentHistoryTab from './components/ProfilePaymentHistoryTab';
 import ProfilePreferencesTab from './components/ProfilePreferencesTab';
+import TradingProfileModal from './components/TradingProfileModal';
+import ProfileSkeleton from './components/ProfileSkeleton';
+import { tradingAnalysisApi } from '@/lib/tradingAnalysisApi';
 
 function getUserFromStorage() {
     try {
@@ -71,6 +74,16 @@ export default function Profile() {
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [passwordForm, setPasswordForm] = useState({ current: '', newPass: '', confirm: '' });
     const [passwordUpdating, setPasswordUpdating] = useState(false);
+    const [tradingProfileData, setTradingProfileData] = useState(() => {
+        try {
+            if (typeof window !== 'undefined') {
+                const cached = localStorage.getItem('chronosx_trading_profile_data');
+                return cached ? JSON.parse(cached) : null;
+            }
+        } catch (_) {}
+        return null;
+    });
+    const [showTradingProfileModal, setShowTradingProfileModal] = useState(false);
 
     const [form, setForm] = useState({
         first_name: '',
@@ -296,6 +309,20 @@ export default function Profile() {
                     console.warn('Credits fetch error:', statsErr);
                 }
             }
+
+            // Fetch Trading Profile Analysis via GET API
+            try {
+                const analysisRes = await tradingAnalysisApi.getTradingAnalysis();
+                const tData = analysisRes?.data || (analysisRes?.has_saved_profile || analysisRes?.preferences || analysisRes?.latest_analysis || analysisRes?.analysis || analysisRes?.assessment ? analysisRes : null);
+                if (tData) {
+                    setTradingProfileData(tData);
+                    try {
+                        localStorage.setItem('chronosx_trading_profile_data', JSON.stringify(tData));
+                    } catch (_) {}
+                }
+            } catch (analysisErr) {
+                console.warn('Trading analysis fetch error:', analysisErr);
+            }
         } catch (err) {
             console.warn('Profile fetch warning:', err);
         } finally {
@@ -399,11 +426,7 @@ export default function Profile() {
     };
 
     if (loading) {
-        return (
-            <div className={styles.centered}>
-                <div className={styles.spinner} />
-            </div>
-        );
+        return <ProfileSkeleton />;
     }
 
     const displayLogins = (lastLogins.length > 0 ? [...lastLogins] : []).reverse();
@@ -524,6 +547,8 @@ export default function Profile() {
                             handleSave={handleSave}
                             saving={saving}
                             onboardingData={onboardingData}
+                            tradingProfileData={tradingProfileData}
+                            onOpenTradingProfileModal={() => setShowTradingProfileModal(true)}
                             t={t}
                         />
                     )}
@@ -595,6 +620,23 @@ export default function Profile() {
                 router={router}
                 t={t}
             />
+
+            {/* Trading Profile & Strategy Analysis Modal */}
+            <TradingProfileModal
+                isOpen={showTradingProfileModal}
+                onClose={() => setShowTradingProfileModal(false)}
+                onSuccess={(updated) => {
+                    setTradingProfileData(updated);
+                    try {
+                        localStorage.setItem('chronosx_trading_profile_data', JSON.stringify(updated));
+                    } catch (_) {}
+                }}
+                initialPreferences={tradingProfileData?.preferences}
+                onboardingData={onboardingData}
+                user={form}
+                t={t}
+            />
         </div>
     );
 }
+

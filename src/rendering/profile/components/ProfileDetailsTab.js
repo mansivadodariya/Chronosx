@@ -5,6 +5,7 @@ import Input from '@/components/input';
 import PhoneInput from '@/components/phoneInput';
 import Button from '@/components/button';
 import ProfileOnboardingSurveyCard from './ProfileOnboardingSurveyCard';
+import TradingProfileAnalysisCard from './TradingProfileAnalysisCard';
 import styles from '../profile.module.scss';
 
 export default function ProfileDetailsTab({
@@ -21,6 +22,8 @@ export default function ProfileDetailsTab({
     handleSave,
     saving,
     onboardingData,
+    tradingProfileData,
+    onOpenTradingProfileModal,
     t
 }) {
     return (
@@ -103,14 +106,6 @@ export default function ProfileDetailsTab({
                             <span className={styles.fieldLabel}>{t('profile.phoneNumber', 'Phone Number')}</span>
                             <span className={styles.fieldValue}>{form.phone_number || 'Not provided'}</span>
                         </div>
-                        <div className={styles.detailFieldItem}>
-                            <span className={styles.fieldLabel}>{t('profile.country', 'Country / Region')}</span>
-                            <span className={styles.fieldValue}>Global (Auto-detected)</span>
-                        </div>
-                        <div className={styles.detailFieldItem}>
-                            <span className={styles.fieldLabel}>{t('profile.language', 'Interface Language')}</span>
-                            <span className={styles.fieldValue}>English (US)</span>
-                        </div>
                     </div>
                 ) : (
                     <form onSubmit={handleSave} className={styles.editDetailsForm}>
@@ -172,7 +167,14 @@ export default function ProfileDetailsTab({
                 )}
             </div>
 
-            {/* Card 2: Trader Onboarding Survey & Strategy Profile */}
+            {/* Card 2: AI Trading Profile & Strategy Alignment Analysis */}
+            <TradingProfileAnalysisCard
+                tradingProfileData={tradingProfileData}
+                onOpenModal={onOpenTradingProfileModal}
+                t={t}
+            />
+
+            {/* Card 3: Trader Onboarding Survey & Strategy Profile */}
             <ProfileOnboardingSurveyCard
                 onboardingData={onboardingData}
                 t={t}

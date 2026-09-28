@@ -1,3 +1,4 @@
+import React, { Suspense } from 'react';
 import BacktestPage from '@/rendering/backtest';
 
 export const metadata = {
@@ -6,5 +7,9 @@ export const metadata = {
 };
 
 export default function BacktestRoute() {
-    return <BacktestPage />;
+    return (
+        <Suspense fallback={null}>
+            <BacktestPage />
+        </Suspense>
+    );
 }

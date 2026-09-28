@@ -16,12 +16,62 @@ import {
 export default function BacktestResultsView({
     results,
     roundTrips,
-    initialCapital,
+    initialCapital = 10000,
     symbol = 'EURUSD',
     interval = '15min',
-    quantity = 0.01
+    quantity = 0.01,
+    loading = false
 }) {
-    if (!results || !roundTrips) return null;
+    const isLoading = loading || !results || !roundTrips || (Array.isArray(roundTrips) && roundTrips.length === 0);
+
+    if (isLoading) {
+        return (
+            <div className={styles.resultsContainer}>
+                {/* Row 1: KPI Skeleton Cards */}
+                <div className={styles.kpiGrid}>
+                    {[
+                        { label: 'Net Profit / Loss', icon: <CoinsCapitalIcon size={14} color="#18C98B" /> },
+                        { label: 'Win Rate', icon: <ChartTrendIcon size={14} color="#18C98B" /> },
+                        { label: 'Completed Trades', icon: <RefreshResetIcon size={14} color="#18C98B" /> },
+                        { label: 'Max Gain / Loss', icon: <SlidersTuneIcon size={14} color="#18C98B" /> },
+                        { label: 'Execution Streaks', icon: <LightningIcon size={14} color="#18C98B" /> }
+                    ].map((card, idx) => (
+                        <div key={idx} className={styles.kpiCard}>
+                            <div className={styles.kpiLabel}>
+                                <span>{card.label}</span>
+                                {card.icon}
+                            </div>
+                            <div className={styles.kpiValue} style={{ color: '#64748B', opacity: 0.6, fontSize: '18px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <span className={styles.liveIndicatorPulse} style={{ display: 'inline-block' }} />
+                                Loading...
+                            </div>
+                            <div className={styles.kpiSub}>
+                                Synchronizing dataset
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Row 2: Market Data & Executions (Candlestick Loader Skeleton) */}
+                <BacktestCandlestickChart
+                    results={null}
+                    roundTrips={[]}
+                    symbol={symbol}
+                    interval={interval}
+                    quantity={quantity}
+                    capital={initialCapital}
+                />
+
+                {/* Row 3: Performance Charts Loader */}
+                <BacktestCharts
+                    roundTrips={[]}
+                    initialCapital={initialCapital}
+                    wins={0}
+                    losses={0}
+                />
+            </div>
+        );
+    }
 
     const stats = results.stats || {};
     const totalPnL = stats.pnl !== undefined ? stats.pnl : roundTrips.reduce((acc, t) => acc + t.pnl, 0);

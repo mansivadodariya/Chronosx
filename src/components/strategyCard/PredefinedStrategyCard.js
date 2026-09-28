@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './strategyCard.module.scss';
 import { useTheme } from '@/context/ThemeContext';
 
@@ -210,6 +211,37 @@ export default function PredefinedStrategyCard({ strategy, isLight: isLightProp,
         return styles.riskAggressive;
     };
 
+    const router = useRouter();
+
+    const handleRunBacktest = () => {
+        const stratId = strategy.strategy_id || strategy.id || strategy._id || raw?.strategy_id || raw?.id || 'predefined';
+        const stratSymbol = symbol || 'XAUUSD';
+        const stratInterval = strategy.timeframe || raw?.interval || strategy.interval || '15min';
+        const stratCapital = initialCapital || 10000;
+        const stratQuantity = targetLot || strategy.lots || raw?.quantity || 0.01;
+        const stratFromDate = strategy.from_date || bConfig?.from_date || raw?.from_date || '';
+        const stratToDate = strategy.to_date || bConfig?.to_date || raw?.to_date || '';
+
+        try {
+            if (typeof window !== 'undefined') {
+                sessionStorage.setItem('pending_backtest_run', JSON.stringify({
+                    strategy_id: stratId,
+                    source: 'trading_strategies',
+                    symbol: stratSymbol,
+                    interval: stratInterval,
+                    capital: stratCapital,
+                    quantity: stratQuantity,
+                    from_date: stratFromDate,
+                    to_date: stratToDate,
+                    raw_strategy: strategy
+                }));
+                window.dispatchEvent(new CustomEvent('page:loading:start'));
+            }
+        } catch (_) {}
+
+        router.push(`/backtest?strategy_id=${encodeURIComponent(stratId)}&source=trading_strategies`);
+    };
+
     return (
         <div className={`${styles.strategyCard} ${isLight ? styles.lightTheme : ''}`}>
             <div>
@@ -315,13 +347,13 @@ export default function PredefinedStrategyCard({ strategy, isLight: isLightProp,
                 </div>
             </div>
 
-            {/* 6. "Run Backtest" Button Footer (Disabled for now) */}
-            <div className={`${styles.actionFooter} ${styles.actionFooterDisabled}`}>
+            {/* 6. "Run Backtest" Button Footer */}
+            <div className={styles.actionFooter}>
                 <button
                     type="button"
-                    className={`${styles.btnRunBacktest} ${styles.btnDisabled}`}
-                    disabled
-                    title="Disabled for now"
+                    className={styles.btnRunBacktest}
+                    onClick={handleRunBacktest}
+                    title="Run Backtest on /backtest"
                 >
                     <RocketIcon />
                     <span>Run Backtest</span>

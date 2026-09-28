@@ -22,6 +22,92 @@ import { strategyStudioApi } from './utils/strategyApi';
 import { parseRoundTrips } from './utils/backtestEngine';
 import { sanitizeRawJsonText } from './utils/chatTextFormatter';
 
+const normalizeInterval = (tf) => {
+    if (!tf) return null;
+    const s = String(tf).toLowerCase().trim();
+    if (s === '1d' || s === '1day' || s === 'd1' || s === 'daily' || s === 'day') return '1day';
+    if (s === '60m' || s === '60min' || s === '1h' || s === 'h1' || s === '1hr' || s === '1hour') return '60min';
+    if (s === '30m' || s === '30min' || s === 'm30') return '30min';
+    if (s === '15m' || s === '15min' || s === 'm15') return '15min';
+    if (s === '5m' || s === '5min' || s === 'm5') return '5min';
+    if (s.includes('min')) return s;
+    return `${s}min`;
+};
+
+const normalizeSymbol = (sym) => {
+    if (!sym) return null;
+    if (Array.isArray(sym)) sym = sym[0];
+    const s = String(sym).toUpperCase().replace(/[\/\-_]/g, '').trim();
+    const map = {
+        'GOLD': 'XAUUSD',
+        'BTC': 'BTCUSD',
+        'ETH': 'ETHUSD',
+        'SOL': 'SOLUSD'
+    };
+    return map[s] || s;
+};
+
+const extractParamsFromChatAndContext = ({ text = '', extraData = null, draft = null, strategy = null, messages = [] }) => {
+    const res = {};
+
+    // 1. Direct from draft & strategy
+    if (draft?.instrument || draft?.symbol) res.symbol = normalizeSymbol(draft.instrument || draft.symbol);
+    if (draft?.timeframe || draft?.interval) res.interval = normalizeInterval(draft.timeframe || draft.interval);
+    if (draft?.capital || draft?.inital_capital) res.capital = Number(draft.capital || draft.inital_capital);
+    if (draft?.quantity || draft?.lots) res.quantity = parseFloat(draft.quantity || draft.lots);
+
+    if (strategy?.stock_name || strategy?.symbol) res.symbol = res.symbol || normalizeSymbol(strategy.stock_name || strategy.symbol);
+    if (strategy?.interval || strategy?.timeframe) res.interval = res.interval || normalizeInterval(strategy.interval || strategy.timeframe);
+
+    // 2. From QA answers in the wizard
+    const qaItems = extraData?.qaList || [];
+    qaItems.forEach((qa) => {
+        const str = `${qa.answer || ''} ${qa.label || ''} ${qa.value || ''} ${qa.question || ''}`;
+        
+        const symMatch = str.match(/\b(GBPJPY|EURJPY|EURUSD|GBPUSD|USDCAD|XAUUSD|BTCUSD|ETHUSD|US30|SOLUSD|AUDUSD|NZDUSD|USDJPY|EURGBP|NAS100)\b/i);
+        if (symMatch && !res.symbol) res.symbol = normalizeSymbol(symMatch[1]);
+
+        const intvMatch = str.match(/\b(1day|1d|daily|60min|1h|1hr|30min|30m|15min|15m|5min|5m)\b/i);
+        if (intvMatch && !res.interval) res.interval = normalizeInterval(intvMatch[1]);
+
+        const capMatch = str.match(/\$?\s*([0-9]{3,7})\s*(?:capital|balance|usd|\$)/i);
+        if (capMatch && !res.capital) res.capital = Number(capMatch[1]);
+
+        const qtyMatch = str.match(/\b(0\.01|0\.05|0\.10|0\.1|0\.50|0\.5|1\.00|1)\s*(?:lots?|micro|mini|std)?\b/i);
+        if (qtyMatch && !res.quantity) res.quantity = parseFloat(qtyMatch[1]);
+    });
+
+    // 3. From text and recent messages in reverse order
+    const allTexts = [text];
+    if (Array.isArray(messages)) {
+        for (let i = messages.length - 1; i >= Math.max(0, messages.length - 8); i--) {
+            const m = messages[i];
+            if (m?.text) allTexts.push(m.text);
+            if (m?.draft?.instrument && !res.symbol) res.symbol = normalizeSymbol(m.draft.instrument);
+            if (m?.draft?.timeframe && !res.interval) res.interval = normalizeInterval(m.draft.timeframe);
+        }
+    }
+
+    const combined = allTexts.join(' ');
+
+    if (!res.symbol) {
+        const symMatch = combined.match(/\b(GBPJPY|EURJPY|EURUSD|GBPUSD|USDCAD|XAUUSD|BTCUSD|ETHUSD|US30|SOLUSD|AUDUSD|NZDUSD|USDJPY|EURGBP|NAS100)\b/i);
+        if (symMatch) res.symbol = normalizeSymbol(symMatch[1]);
+    }
+
+    if (!res.interval) {
+        const intvMatch = combined.match(/\b(1day|1d|daily|60min|1h|1hr|30min|30m|15min|15m|5min|5m)\b/i);
+        if (intvMatch) res.interval = normalizeInterval(intvMatch[1]);
+    }
+
+    if (!res.capital) {
+        const capMatch = combined.match(/\$?\s*([0-9]{4,7})\s*(?:capital|balance|usd|\$)/i);
+        if (capMatch) res.capital = Number(capMatch[1]);
+    }
+
+    return res;
+};
+
 export default function StrategyStudio() {
     // Strategy Parameters (Toolbar & Execution)
     const [symbol, setSymbol] = useState('XAUUSD');
@@ -83,18 +169,18 @@ export default function StrategyStudio() {
      */
     const syncToolbarFromStrategy = useCallback((strat) => {
         if (!strat) return;
-        if (strat.stock_name) {
-            const sym = Array.isArray(strat.stock_name) ? strat.stock_name[0] : strat.stock_name;
-            if (sym) setSymbol(sym.toUpperCase());
+        if (strat.stock_name || strat.symbol) {
+            const sym = normalizeSymbol(strat.stock_name || strat.symbol);
+            if (sym) setSymbol(sym);
         }
-        if (strat.interval) {
-            const intv = ['1min', '3min', '10min'].includes(strat.interval) ? '5min' : strat.interval;
-            setInterval(intv);
+        if (strat.interval || strat.timeframe) {
+            const intv = normalizeInterval(strat.interval || strat.timeframe);
+            if (intv) setInterval(intv);
         }
         if (strat.from_date) setFromDate(strat.from_date);
         if (strat.to_date) setToDate(strat.to_date);
-        if (strat.inital_capital) setCapital(strat.inital_capital);
-        if (strat.quantity) setQuantity(strat.quantity);
+        if (strat.inital_capital || strat.capital) setCapital(Number(strat.inital_capital || strat.capital));
+        if (strat.quantity || strat.lots) setQuantity(parseFloat(strat.quantity || strat.lots));
     }, []);
 
     // Check if strategy was selected from My Bots dashboard
@@ -110,8 +196,8 @@ export default function StrategyStudio() {
                         setCurrentStrategy(strat);
                         syncToolbarFromStrategy(strat);
                         const name = parsed.strategy_name || parsed.name || 'AI Strategy';
-                        const sym = parsed.symbol || (Array.isArray(parsed.stock_name) ? parsed.stock_name[0] : parsed.stock_name) || 'BTCUSD';
-                        const tf = parsed.timeframe || parsed.interval || '15min';
+                        const sym = normalizeSymbol(parsed.symbol || parsed.stock_name) || 'BTCUSD';
+                        const tf = normalizeInterval(parsed.timeframe || parsed.interval) || '15min';
                         setMessages([
                             {
                                 role: 'ai',
@@ -135,6 +221,21 @@ export default function StrategyStudio() {
 
         setChatInput('');
         const lower = text.toLowerCase().trim();
+
+        // Dynamically extract and sync header parameters from chat context
+        const extracted = extractParamsFromChatAndContext({
+            text,
+            extraData,
+            draft: currentDraft,
+            strategy: currentStrategy,
+            messages
+        });
+
+        if (extracted.symbol) setSymbol(extracted.symbol);
+        if (extracted.interval) setInterval(extracted.interval);
+        if (extracted.capital) setCapital(extracted.capital);
+        if (extracted.quantity) setQuantity(extracted.quantity);
+
         // 1. Backtest trigger commands -> open side backtest panel and run real /backtest/v1
         const qaAnswers = (extraData?.qaList || []).map(qa => `${qa.answer || ''} ${qa.label || ''} ${qa.question || ''}`.toLowerCase());
         const isBacktestCommand =
@@ -148,13 +249,30 @@ export default function StrategyStudio() {
         if (isBacktestCommand) {
             const cleanAnswer = extraData?.qaList?.[0]?.answer || extraData?.qaList?.[0]?.label;
             const displayUserText = cleanAnswer || (text.includes('\n') ? text.split('\n').pop() : text);
+            
+            const targetSymbol = extracted.symbol || symbol || 'XAUUSD';
+            const targetInterval = extracted.interval || interval || '15min';
+            const targetCapital = extracted.capital || capital || 10000;
+            const targetQuantity = extracted.quantity || quantity || 0.01;
+
+            setSymbol(targetSymbol);
+            setInterval(targetInterval);
+            setCapital(targetCapital);
+            setQuantity(targetQuantity);
+
             setMessages((prev) => [
                 ...prev,
                 { role: 'user', text: displayUserText },
-                { role: 'ai', text: `Launching backtest simulation for **${symbol}** (${interval}) across historical candle data...` }
+                { role: 'ai', text: `Launching backtest simulation for **${targetSymbol}** (${targetInterval}) across historical candle data...` }
             ]);
             setIsBacktestPanelOpen(true);
-            handleRunBacktest();
+            handleRunBacktest({
+                symbol: targetSymbol,
+                interval: targetInterval,
+                capital: targetCapital,
+                quantity: targetQuantity,
+                ...currentStrategy
+            });
             return;
         }
 
@@ -188,8 +306,16 @@ export default function StrategyStudio() {
 
                 if (draft) {
                     setCurrentDraft(draft);
-                    if (draft.instrument) setSymbol(draft.instrument.toUpperCase());
-                    if (draft.timeframe) setInterval(draft.timeframe);
+                    if (draft.instrument || draft.symbol) setSymbol(normalizeSymbol(draft.instrument || draft.symbol));
+                    if (draft.timeframe || draft.interval) setInterval(normalizeInterval(draft.timeframe || draft.interval));
+                    if (draft.capital || draft.inital_capital) setCapital(Number(draft.capital || draft.inital_capital));
+                    if (draft.quantity || draft.lots) setQuantity(parseFloat(draft.quantity || draft.lots));
+                } else {
+                    const replyExtracted = extractParamsFromChatAndContext({ text: reply, messages });
+                    if (replyExtracted.symbol) setSymbol(replyExtracted.symbol);
+                    if (replyExtracted.interval) setInterval(replyExtracted.interval);
+                    if (replyExtracted.capital) setCapital(replyExtracted.capital);
+                    if (replyExtracted.quantity) setQuantity(replyExtracted.quantity);
                 }
 
                 setMessages((prev) => [
@@ -318,6 +444,15 @@ export default function StrategyStudio() {
         setRoundTrips([]);
 
         const activeStrat = customStrategy || currentStrategy;
+        const activeSymbol = normalizeSymbol(customStrategy?.symbol || (Array.isArray(customStrategy?.stock_name) ? customStrategy.stock_name[0] : customStrategy?.stock_name) || symbol || 'XAUUSD');
+        const activeInterval = normalizeInterval(customStrategy?.interval || customStrategy?.timeframe || interval || '15min');
+        const activeCapital = parseFloat(customStrategy?.capital || customStrategy?.inital_capital || capital) || 10000;
+        const activeQuantity = parseFloat(customStrategy?.quantity || customStrategy?.lots || quantity) || 0.01;
+
+        if (activeSymbol && activeSymbol !== symbol) setSymbol(activeSymbol);
+        if (activeInterval && activeInterval !== interval) setInterval(activeInterval);
+        if (activeCapital && activeCapital !== capital) setCapital(activeCapital);
+        if (activeQuantity && activeQuantity !== quantity) setQuantity(activeQuantity);
 
         const defaultFrom = () => {
             const d = new Date();
@@ -356,17 +491,17 @@ export default function StrategyStudio() {
         };
 
         const payload = {
-            stock_name: [symbol || 'EURUSD'],
+            stock_name: [activeSymbol || 'XAUUSD'],
             from_date: activeFrom,
             to_date: activeTo,
-            interval: interval || '15min',
+            interval: activeInterval || '15min',
             is_mis: true,
             entry_type: 0,
-            quantity: parseFloat(quantity) || 0.01,
-            inital_capital: parseFloat(capital) || 10000,
+            quantity: activeQuantity,
+            inital_capital: activeCapital,
             data_provider: 'DB',
             include_plot: true,
-            strategy_name: activeStrat?.strategy_name || activeStrat?.name || `Strategy_${symbol}_${interval}`,
+            strategy_name: activeStrat?.strategy_name || activeStrat?.name || `Strategy_${activeSymbol}_${activeInterval}`,
             strategy: activeStrat?.strategy || activeStrat?.code || null,
             entry_conditions: entryConditions,
             exit_conditions: exitConditions,
@@ -393,7 +528,7 @@ export default function StrategyStudio() {
                     ...prev,
                     {
                         role: 'ai',
-                        text: `**Backtest Simulation Results – ${symbol} (${interval})**\n\n- Total Trades: ${parsedTrips.length}\n- Win Rate: ${winRate}%\n- Winning / Losing Trades: ${data.stats?.win || parsedTrips.filter(t => t.pnl > 0).length} / ${data.stats?.loss || parsedTrips.filter(t => t.pnl <= 0).length}\n- Net Profit (USD): $${netPnl}\n- Max Drawdown: ${maxDd}%\n- Profit Factor: ${profitFactor}`,
+                        text: `**Backtest Simulation Results – ${activeSymbol} (${activeInterval})**\n\n- Total Trades: ${parsedTrips.length}\n- Win Rate: ${winRate}%\n- Winning / Losing Trades: ${data.stats?.win || parsedTrips.filter(t => t.pnl > 0).length} / ${data.stats?.loss || parsedTrips.filter(t => t.pnl <= 0).length}\n- Net Profit (USD): $${netPnl}\n- Max Drawdown: ${maxDd}%\n- Profit Factor: ${profitFactor}`,
                         suggestions: ['Run Another Backtest', 'Modify Strategy', 'Export Report']
                     }
                 ]);
@@ -453,7 +588,7 @@ export default function StrategyStudio() {
 
     return (
         <div
-            className={styles.studioContainer}
+            className={styles.studio}
             data-lenis-prevent="true"
             onMouseMove={handleMouseMove}
         >
@@ -467,7 +602,7 @@ export default function StrategyStudio() {
             <BackgroundCyberWaves />
 
             {/* Main Workspace Layout (Single panel centered or Split 2-panel) */}
-            <div className={`${styles.activeBodyGrid} ${!isBacktestPanelOpen ? styles.singlePanelMode : ''}`}>
+            <div className={`${styles.activeBodyGrid} ${!isBacktestPanelOpen ? styles.singleMode : ''}`}>
                 {/* ── LEFT PANEL: AI Strategy Advisor Chat ── */}
                 <div className={styles.activeChat}>
                     {/* Advisor Chat View */}

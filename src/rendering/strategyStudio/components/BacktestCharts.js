@@ -1,12 +1,16 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import styles from '../styles/strategyStudio.module.scss';
 import { useTheme } from '@/context/ThemeContext';
 import { AreaChartIcon, PieChartIcon } from './StudioIcons';
+import ChartSkeletonLoader from './ChartSkeletonLoader';
 
-const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
+const ReactApexChart = dynamic(() => import('react-apexcharts'), {
+    ssr: false,
+    loading: () => <ChartSkeletonLoader type="area" />
+});
 
 const formatShortDate = (dateStr) => {
     if (!dateStr || dateStr === 'Start') return 'Start';
@@ -36,6 +40,11 @@ export default function BacktestCharts({
 }) {
     const { theme } = useTheme();
     const isDark = theme !== 'light';
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Equity Curve Data (Optimized for instant loading)
     const equityData = useMemo(() => {
@@ -240,12 +249,17 @@ export default function BacktestCharts({
                     <span style={{ fontSize: '11px', color: '#94A3B8' }}>Portfolio Progression</span>
                 </div>
                 <div style={{ minHeight: '240px' }}>
-                    <ReactApexChart
-                        options={equityChartOptions}
-                        series={equitySeries}
-                        type="area"
-                        height={240}
-                    />
+                    {!mounted || !equityData || equityData.balances.length === 0 ? (
+                        <ChartSkeletonLoader type="area" />
+                    ) : (
+                        <ReactApexChart
+                            key={`equity_${roundTrips.length}_${theme}`}
+                            options={equityChartOptions}
+                            series={equitySeries}
+                            type="area"
+                            height={240}
+                        />
+                    )}
                 </div>
             </div>
 
@@ -255,12 +269,17 @@ export default function BacktestCharts({
                     <span style={{ fontSize: '11px', color: '#94A3B8' }}>Win Rate: {winPercent}%</span>
                 </div>
                 <div style={{ minHeight: '250px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <ReactApexChart
-                        options={outcomeChartOptions}
-                        series={outcomeSeries}
-                        type="donut"
-                        height={250}
-                    />
+                    {!mounted || totalTrades === 0 ? (
+                        <ChartSkeletonLoader type="donut" />
+                    ) : (
+                        <ReactApexChart
+                            key={`outcome_${totalTrades}_${theme}`}
+                            options={outcomeChartOptions}
+                            series={outcomeSeries}
+                            type="donut"
+                            height={250}
+                        />
+                    )}
                 </div>
             </div>
         </div>

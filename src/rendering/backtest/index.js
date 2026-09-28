@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useSearchParams } from 'next/navigation';
 import styles from './backtest.module.scss';
 import studioStyles from '../strategyStudio/styles/strategyStudio.module.scss';
 import BackgroundCyberWaves from '../strategyStudio/components/BackgroundCyberWaves';
@@ -17,7 +18,26 @@ import { toast } from 'react-hot-toast';
 import { strategyStudioApi } from '../strategyStudio/utils/strategyApi';
 import { parseRoundTrips } from '../strategyStudio/utils/backtestEngine';
 
+const normalizeInterval = (tf) => {
+    if (!tf) return '15min';
+    const s = String(tf).toLowerCase().trim();
+    if (s === '5m' || s === '5min' || s === 'm5') return '5min';
+    if (s === '15m' || s === '15min' || s === 'm15') return '15min';
+    if (s === '30m' || s === '30min' || s === 'm30') return '30min';
+    if (s === '1h' || s === '60m' || s === '60min' || s === 'h1') return '60min';
+    if (s === '1d' || s === '1day' || s === 'd1' || s === 'daily') return '1day';
+    return s.includes('min') ? s : `${s}min`;
+};
+
+const normalizeSymbol = (sym) => {
+    if (!sym) return 'XAUUSD';
+    if (Array.isArray(sym)) return sym[0] || 'XAUUSD';
+    return String(sym).toUpperCase().replace('/', '').trim();
+};
+
 export default function BacktestPage() {
+    const searchParams = useSearchParams();
+
     // Strategy Parameters (Toolbar & Execution)
     const [symbol, setSymbol] = useState('XAUUSD');
     const [interval, setInterval] = useState('15min');
@@ -26,12 +46,17 @@ export default function BacktestPage() {
     const [capital, setCapital] = useState(10000);
     const [quantity, setQuantity] = useState(0.01);
 
+    // Active Strategy Meta (for run-by-id)
+    const [activeStrategyInfo, setActiveStrategyInfo] = useState(null);
+
     // Backtest Simulation Results
     const [simulationLoading, setSimulationLoading] = useState(false);
     const [results, setResults] = useState(null);
     const [roundTrips, setRoundTrips] = useState([]);
 
-    // Initialize date ranges on mount
+    const hasInitiatedRun = useRef(false);
+
+    // Initialize default date ranges
     useEffect(() => {
         const today = new Date();
         const yest = new Date(today);
@@ -54,9 +79,135 @@ export default function BacktestPage() {
     }, []);
 
     /**
-     * Execute Backtest Simulation
+     * Execute Run Backtest by Strategy ID (POST /backtest/v1/run-by-id)
+     */
+    const executeRunById = useCallback(async (stratMeta) => {
+        if (!stratMeta?.strategy_id) return;
+        setSimulationLoading(true);
+
+        try {
+            const res = await strategyStudioApi.runBacktestById({
+                strategy_id: stratMeta.strategy_id,
+                source: stratMeta.source === 'user_strategies' ? 'user_strategies' : 'trading_strategies',
+                fallbackParams: {
+                    symbol: stratMeta.symbol || symbol,
+                    interval: stratMeta.interval || interval,
+                    capital: stratMeta.capital || capital,
+                    quantity: stratMeta.quantity || quantity,
+                    fromDate: stratMeta.fromDate || fromDate,
+                    toDate: stratMeta.toDate || toDate
+                }
+            });
+
+            if (res && res.success && res.data) {
+                const stockRes = res.data;
+                setResults(stockRes);
+                const cap = parseFloat(stratMeta.capital || capital) || 10000;
+                const qty = parseFloat(stratMeta.quantity || quantity) || 0.01;
+                const trips = parseRoundTrips(stockRes, cap, qty);
+                setRoundTrips(trips);
+
+                // Sync header toolbar values if returned in strategy response
+                if (res.strategy) {
+                    const s = res.strategy;
+                    if (s.symbol || s.stock_name) setSymbol(normalizeSymbol(s.symbol || s.stock_name));
+                    if (s.interval || s.timeframe) setInterval(normalizeInterval(s.interval || s.timeframe));
+                    if (s.inital_capital || s.initial_capital || s.capital) setCapital(Number(s.inital_capital || s.initial_capital || s.capital));
+                    if (s.quantity || s.lots) setQuantity(parseFloat(s.quantity || s.lots));
+                    if (s.from_date) setFromDate(s.from_date);
+                    if (s.to_date) setToDate(s.to_date);
+                }
+
+                handleToast('Backtest simulation complete!');
+            } else {
+                setResults(null);
+                setRoundTrips([]);
+                handleToast(res?.error || 'No trade signals found for the chosen parameters.');
+            }
+        } catch (err) {
+            console.error('Error in executeRunById:', err);
+            handleToast('Simulation execution error.');
+        } finally {
+            setSimulationLoading(false);
+        }
+    }, [symbol, interval, capital, quantity, fromDate, toDate, handleToast]);
+
+    /**
+     * Check incoming strategy payload from sessionStorage or query params on load
+     */
+    useEffect(() => {
+        if (hasInitiatedRun.current) return;
+
+        let stratId = searchParams?.get('strategy_id') || searchParams?.get('id');
+        let stratSource = searchParams?.get('source');
+        let pendingData = null;
+
+        try {
+            if (typeof window !== 'undefined') {
+                const raw = sessionStorage.getItem('pending_backtest_run');
+                if (raw) {
+                    pendingData = JSON.parse(raw);
+                    sessionStorage.removeItem('pending_backtest_run');
+                }
+            }
+        } catch (_) {}
+
+        if (pendingData) {
+            stratId = stratId || pendingData.strategy_id || pendingData.id;
+            stratSource = stratSource || pendingData.source;
+        }
+
+        if (stratId) {
+            hasInitiatedRun.current = true;
+            const sym = normalizeSymbol(pendingData?.symbol || searchParams?.get('symbol') || 'XAUUSD');
+            const tf = normalizeInterval(pendingData?.interval || pendingData?.timeframe || searchParams?.get('interval') || '15min');
+            const cap = Number(pendingData?.capital || searchParams?.get('capital')) || 10000;
+            const qty = parseFloat(pendingData?.quantity || pendingData?.lots || searchParams?.get('quantity')) || 0.01;
+            const fromD = pendingData?.from_date || pendingData?.fromDate || searchParams?.get('from_date');
+            const toD = pendingData?.to_date || pendingData?.toDate || searchParams?.get('to_date');
+
+            setSymbol(sym);
+            setInterval(tf);
+            setCapital(cap);
+            setQuantity(qty);
+            if (fromD) setFromDate(fromD);
+            if (toD) setToDate(toD);
+
+            const stratMeta = {
+                strategy_id: stratId,
+                source: stratSource === 'user_strategies' ? 'user_strategies' : 'trading_strategies',
+                symbol: sym,
+                interval: tf,
+                capital: cap,
+                quantity: qty,
+                fromDate: fromD,
+                toDate: toD,
+                rawStrategy: pendingData?.raw_strategy || null
+            };
+            setActiveStrategyInfo(stratMeta);
+
+            // Trigger POST /backtest/v1/run-by-id immediately
+            executeRunById(stratMeta);
+        }
+    }, [searchParams, executeRunById]);
+
+    /**
+     * Execute Backtest Simulation manually from Toolbar
      */
     const handleRunBacktest = async () => {
+        if (activeStrategyInfo?.strategy_id) {
+            await executeRunById({
+                ...activeStrategyInfo,
+                symbol,
+                interval,
+                capital,
+                quantity,
+                fromDate,
+                toDate
+            });
+            return;
+        }
+
         setSimulationLoading(true);
 
         try {
@@ -99,8 +250,8 @@ export default function BacktestPage() {
 
             const res = await strategyStudioApi.runBacktest(payload);
 
-            if (res.success && res.data && res.data.length > 0) {
-                const stockRes = res.data[0];
+            if (res.success && res.data && (Array.isArray(res.data) ? res.data.length > 0 : !!res.data)) {
+                const stockRes = Array.isArray(res.data) ? res.data[0] : res.data;
                 setResults(stockRes);
                 const trips = parseRoundTrips(stockRes, parseFloat(capital) || 10000, parseFloat(quantity) || 0.01);
                 setRoundTrips(trips);
@@ -111,7 +262,7 @@ export default function BacktestPage() {
                 handleToast(res.error || 'No trade signals found for the chosen parameters.');
             }
         } catch (err) {
-            handleToast('Simulation execution error. Ensure backend is running on port 7009.');
+            handleToast('Simulation execution error.');
         } finally {
             setSimulationLoading(false);
         }

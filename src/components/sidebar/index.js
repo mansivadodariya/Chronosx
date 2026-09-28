@@ -295,25 +295,20 @@ const NavItem = ({ item, pathname, onNavigate, isCollapsed }) => {
   );
 };
 
-const NavSkeleton = ({ count = 6, isCollapsed }) => {
+const NavSkeleton = ({ count = 7, isCollapsed }) => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '0 8px', margin: '8px 0' }}>
+    <div className={styles.navSkeletonWrap}>
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          style={{
-            height: '44px',
-            borderRadius: '12px',
-            backgroundColor: 'rgba(255, 255, 255, 0.03)',
-            display: 'flex',
-            alignItems: 'center',
-            padding: '0 12px',
-            gap: '12px'
-          }}
+          className={styles.navSkeletonItem}
         >
-          <div style={{ width: '20px', height: '20px', borderRadius: '4px', backgroundColor: 'rgba(24, 201, 139, 0.1)' }} />
+          <div className={styles.navSkeletonIcon} />
           {!isCollapsed && (
-            <div style={{ width: '65%', height: '14px', borderRadius: '4px', backgroundColor: 'rgba(255, 255, 255, 0.05)' }} />
+            <div
+              className={styles.navSkeletonText}
+              style={{ width: `${55 + (i % 4) * 12}%` }}
+            />
           )}
         </div>
       ))}
@@ -331,22 +326,30 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [visibleTabNames, setVisibleTabNames] = useState(null);
-  const [tabsLoading, setTabsLoading] = useState(false);
-  const profileRef = useRef(null);
-  const sidebarMenuRef = useRef(null);
-
-  useEffect(() => {
-    try {
-      if (typeof window !== 'undefined') {
+  const [visibleTabNames, setVisibleTabNames] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
         const cached = sessionStorage.getItem('visible_tab_names');
         if (cached) {
-          const names = new Set(JSON.parse(cached));
-          setVisibleTabNames(names);
+          return new Set(JSON.parse(cached));
         }
-      }
-    } catch (e) { /* ignore */ }
-  }, []);
+      } catch (e) { /* ignore */ }
+    }
+    return null;
+  });
+  const [tabsLoading, setTabsLoading] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = sessionStorage.getItem('visible_tab_names');
+        if (cached) {
+          return false;
+        }
+      } catch (e) { /* ignore */ }
+    }
+    return true;
+  });
+  const profileRef = useRef(null);
+  const sidebarMenuRef = useRef(null);
 
   useEffect(() => {
     async function loadVisibleTabs() {
@@ -372,6 +375,7 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
     }
     loadVisibleTabs();
   }, []);
+
 
   useEffect(() => {
     async function loadUser() {
@@ -481,7 +485,7 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
 
   const rawSections = getNavSections(t);
   const navSections = useMemo(() => {
-    if (!visibleTabNames || visibleTabNames.size === 0) return rawSections;
+    if (tabsLoading || !visibleTabNames) return [];
 
     const checkTabVisible = (tabLabel, routeHref) => {
       const lowerLabel = (tabLabel || '').toLowerCase().trim();
@@ -540,15 +544,15 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
         items: filteredItems
       };
     }).filter(section => section.items.length > 0);
-  }, [rawSections, visibleTabNames]);
+  }, [rawSections, visibleTabNames, tabsLoading]);
 
-  const hasPlansPermission = visibleTabNames && visibleTabNames.size > 0
+  const hasPlansPermission = !tabsLoading && visibleTabNames && visibleTabNames.size > 0
     ? visibleTabNames.has('subscription plans')
-    : true;
+    : false;
 
-  const hasBrokerPermission = visibleTabNames && visibleTabNames.size > 0
+  const hasBrokerPermission = !tabsLoading && visibleTabNames && visibleTabNames.size > 0
     ? (visibleTabNames.has('associated brokers') || visibleTabNames.has('associated broker') || visibleTabNames.has('broker') || visibleTabNames.has('brokers'))
-    : true;
+    : false;
 
   return (
     <>
@@ -605,8 +609,8 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
             e.stopPropagation();
           }}
         >
-          {tabsLoading && !visibleTabNames ? (
-            <NavSkeleton count={8} isCollapsed={isCollapsed} />
+          {tabsLoading || !visibleTabNames ? (
+            <NavSkeleton count={7} isCollapsed={isCollapsed} />
           ) : (
             navSections.map((section, sIndex) => (
               <div key={section.title || sIndex} className={styles.navSectionBlock}>

@@ -5,7 +5,7 @@ import HomePage from "@/rendering/home";
 
 export const metadata = {
   title: "ChronosX — Trade Smarter With AI Signals That Never Sleep",
-  description: "Get real-time AI trading signals, market insights, and trade recommendations across Forex, Crypto, Stocks, and Global Markets.",
+  description: "Get real-time AI trading signals, market insights, and trade recommendations across Forex, Stocks, and Global Markets.",
   alternates: {
     canonical: 'https://chronosx.com',
   },

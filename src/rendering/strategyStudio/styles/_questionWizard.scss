@@ -65,7 +65,7 @@
     font-weight: 500;
     user-select: none;
 
-    .hintBadge {
+    .hint {
         display: inline-flex;
         align-items: center;
         gap: 4px;
@@ -93,12 +93,12 @@
     }
 
     [data-theme='light'] & {
-        color: #94A3B8;
+        color: #475569;
 
-        .hintBadge kbd {
-            background: #F1F5F9;
-            border-color: rgba(0, 0, 0, 0.08);
-            color: #475569;
+        .hint kbd {
+            background: #E2E8F0;
+            border-color: rgba(0, 0, 0, 0.12);
+            color: #334155;
         }
     }
 }

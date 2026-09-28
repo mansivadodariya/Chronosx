@@ -1,8 +1,13 @@
 @use '../../scss/main.scss' as *;
 @use '../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../scss/font/font.scss' as *;
 
 @import './styles/profileHeaderNav';
 @import './styles/profileDetailsCards';
 @import './styles/profileSurveyCard';
 @import './styles/profileSummaryActions';
 @import './styles/profileTabsModals';
+@import './styles/tradingProfileModal';
+@import './styles/tradingProfileAnalysisCard';
+@import './styles/profileSkeleton';
+@import './styles/aiAssessmentCard';

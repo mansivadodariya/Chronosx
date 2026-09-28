@@ -104,7 +104,7 @@ const Signup = () => {
     const Logo = theme === 'light' ? LightLogo : DarkLogo;
     const codeFromQuery = searchParams.get('ref') || searchParams.get('code') || searchParams.get('referral_code') || '';
     const redirectTo = getAuthRedirectTarget(searchParams);
-    
+
     // Auto-cycling active feature highlight animation
     const [activeFeatureIndex, setActiveFeatureIndex] = useState(0);
 
@@ -114,8 +114,8 @@ const Signup = () => {
         }, 2800);
         return () => clearInterval(timer);
     }, []);
-    
-    
+
+
     // Capture and persist referral code for 30 days
     useEffect(() => {
         if (typeof window === 'undefined') return;
@@ -378,11 +378,11 @@ const Signup = () => {
 
             <div className={styles.authContainer}>
                 <div className={styles.splitAuthCard}>
-                    
+
                     {/* ════════════ LEFT HERO PANEL (MATCHING REFERENCE DESIGN) ════════════ */}
                     <div className={styles.leftStepperPanel}>
                         <div className={styles.auroraGlow} aria-hidden="true" />
-                        
+
                         <div className={styles.leftContentWrapper}>
                             {/* Top Aura Area */}
                             <div className={styles.topAuraSpacer} aria-hidden="true" />
@@ -401,7 +401,7 @@ const Signup = () => {
                                         <span className={styles.highlightText}>AI That Never Sleeps</span>
                                     </h2>
                                     <p className={styles.leftSubtitle}>
-                                        Get real-time AI trading signals, market insights, and trade recommendations across Forex, Crypto, Stocks, and Global Markets.
+                                        Get real-time AI trading signals, market insights, and trade recommendations across Forex, Stocks, and Global Markets.
                                     </p>
                                 </div>
 
@@ -431,7 +431,7 @@ const Signup = () => {
                             {/* Clean SVG Vector Assurance Badge */}
                             <div className={styles.leftFooterNotice}>
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                                 </svg>
                                 <span>256-Bit Encrypted &amp; Non-Custodial</span>
                             </div>
