@@ -41,7 +41,8 @@
     "customBotBuilder": "Custom Bot Builder",
     "botLibrary": "Browse Bots Library",
     "strategyStudio": "AI Bot Builder",
-    "affiliate": "Affiliate Program"
+    "affiliate": "Affiliate Program",
+    "landingPage": "Landing Page"
   },
   "topbar": {
     "credits": "credits",
@@ -216,7 +217,7 @@
     "desktopViewRequired": "Desktop View Required",
     "mobileNoticeText": "AI Trade uses screen sharing and requires a desktop or laptop computer with Chrome, Edge, or macOS Safari. Screen sharing is not supported on mobile devices or iOS Safari.",
     "historyTitle": "AI Trade History",
-    "historyDesc": "Your past AI Trade analyses",
+    "historyDesc": "Your AI Trade analyses",
     "noHistoryYet": "No analysis history yet.",
     "confirmDeleteTitle": "Delete Analysis",
     "close": "Close",

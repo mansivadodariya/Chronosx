@@ -33,7 +33,16 @@
     "getStarted": "Empezar",
     "logout": "Cerrar sesión",
     "dashboard": "Panel de control",
-    "affiliate": "Afiliado"
+    "affiliate": "Afiliado",
+    "predefinedStrategies": "Predefined Strategies",
+    "education": "Education",
+    "aiTradingBot": "AI Trading Bot",
+    "myBots": "My Bots",
+    "aiBotBuilder": "AI Bot Builder",
+    "customBotBuilder": "Custom Bot Builder",
+    "botLibrary": "Browse Bots Library",
+    "strategyStudio": "AI Bot Builder",
+    "landingPage": "Página de Inicio"
   },
   "topbar": {
     "credits": "créditos",
@@ -227,7 +236,8 @@
     "desktopRequiredDesc": "Compartir pantalla no se admite en dispositivos móviles Safari o iOS. Ábralo en el escritorio Chrome, Edge o Mac Safari.",
     "scannerTitle": "Escáner de gráficos en vivo con IA",
     "scannerDesc": "Comparta su pantalla de gráficos en vivo o capture instantáneas para obtener análisis técnicos de IA, niveles clave y configuraciones comerciales en tiempo real.",
-    "history": "Historia"
+    "history": "Historia",
+    "pleaseAddGraphScreenshot": "Por favor sube una captura de pantalla del gráfico para comenzar el análisis con IA."
   },
   "aiChat": {
     "heroBadge": "COPILOTO CUÁNTICO INSTITUCIONAL 24/7",
@@ -587,7 +597,10 @@
     "openCalculators": "Calculadoras abiertas",
     "toolEconomicCalendar": "Calendario Económico",
     "viewCalendar": "Ver calendario",
-    "type": "Tipo"
+    "type": "Tipo",
+    "withdrawableBalance": "Saldo Retirable",
+    "withdrawableBalanceDesc": "Fondos disponibles para retiro de tu cuenta",
+    "viewWallet": "Ver Billetera"
   },
   "creditHistory": {
     "title": "Historial de crédito",
@@ -736,7 +749,28 @@
     "changePassword": "Cambiar contraseña",
     "paymentHistory": "Historial de pagos",
     "mySettings": "Configuración",
-    "settingsSubtitle": "Administre su perfil personal, configuración de seguridad y preferencias de cuenta"
+    "settingsSubtitle": "Administre su perfil personal, configuración de seguridad y preferencias de cuenta",
+    "preferences": "Preferencias",
+    "preferencesTitle": "Preferencias de Usuario e Interfaz",
+    "preferencesDesc": "Personaliza temas, idioma, zona horaria, moneda de visualización y notificaciones.",
+    "themeSettings": "Configuración de Tema",
+    "themeDesc": "Elige entre el modo oscuro cyber y el modo claro de alto contraste.",
+    "darkMode": "Modo Oscuro",
+    "darkThemeSub": "Tema oscuro de alto contraste con brillo neón",
+    "lightMode": "Modo Claro",
+    "lightThemeSub": "Tema claro limpio y optimizado",
+    "languageSettings": "Configuración de Idioma",
+    "languageDesc": "Selecciona tu idioma preferido para la interfaz de ChronosX.",
+    "additionalPref": "Preferencias Adicionales",
+    "additionalPrefDesc": "Configura zona horaria, moneda y alertas de sonido.",
+    "defaultTz": "Zona Horaria Predeterminada",
+    "defaultTzSub": "Sincronizar gráficos y marcas de tiempo de señales",
+    "displayCurrency": "Moneda de Visualización",
+    "displayCurrencySub": "Moneda utilizada para saldos y cálculos de P&L",
+    "soundEffects": "Efectos de Sonido",
+    "soundEffectsSub": "Reproducir alertas de audio para nuevas señales",
+    "emailReports": "Informes por Correo Electrónico",
+    "emailReportsSub": "Recibe resúmenes semanales de rendimiento de trading"
   },
   "auth": {
     "loginTitle": "Iniciar sesión en ChronosX",
@@ -1094,6 +1128,41 @@
       "title1": "Un analista institucional",
       "title2": "En tu esquina.",
       "description": "Haga preguntas, explore el contexto macro y ponga a prueba hipótesis comerciales con un copiloto de IA capacitado exclusivamente en lógica cuantitativa de Forex."
+    },
+    "aiCockpit": {
+      "tabOverview": "Overview",
+      "tabDeep": "Deep Analysis",
+      "tabTools": "Trading Tools",
+      "card1Title": "AI Chart Scanner",
+      "card1Sub": "Pattern Vision & Heat Detection",
+      "card1Badge": "ACTIVE",
+      "scoreVal": "STRONG BUY",
+      "scoreBadge": "LIVE",
+      "verdictText": "Bullish Breakout",
+      "confidenceBadge": "HIGH CONVICTION",
+      "sliderMin": "SCALPING",
+      "sliderCenter": "SIGNAL CONVICTION",
+      "sliderMax": "SWING",
+      "card2Title": "AI Strategy Engine",
+      "card2Sub": "MT5 Institutional Execution",
+      "card2Badge": "OPTIMIZED",
+      "rankVal": "ORDER BLOCK",
+      "rankSub": "LIQUIDITY SWEEP",
+      "topPerformer": "TOP STRATEGY PERFORMER",
+      "col1Label": "AI CHART SCANNER",
+      "col1Badge": "VISION AI",
+      "col1Val": "Liquidity Sweep",
+      "col1Sub": "Fair Value Gap Breached",
+      "col2Label": "MT5 BROKER BRIDGE",
+      "col2Badge": "ZERO LAG",
+      "col2Val": "Instant Execution",
+      "col2Sub": "Institutional Raw Spreads",
+      "col3Label": "AI TRADING SIGNAL",
+      "col3Badge": "CONFIRMED",
+      "col3Val": "Strong Buy Setup",
+      "col3Sub": "Multi-Timeframe Confluence",
+      "footerLive": "AI STREAM ACTIVE · REAL-TIME WEBSOCKET",
+      "footerFeed": "CHRONOSX AI TERMINAL · ZERO-LATENCY"
     }
   },
   "aiTrade": {

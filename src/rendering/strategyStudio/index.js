@@ -54,7 +54,7 @@ const extractParamsFromChatAndContext = ({ text = '', extraData = null, draft = 
     if (draft?.instrument || draft?.symbol) res.symbol = normalizeSymbol(draft.instrument || draft.symbol);
     if (draft?.timeframe || draft?.interval) res.interval = normalizeInterval(draft.timeframe || draft.interval);
     if (draft?.capital || draft?.inital_capital) res.capital = Number(draft.capital || draft.inital_capital);
-    if (draft?.quantity || draft?.lots) res.quantity = parseFloat(draft.quantity || draft.lots);
+    if (draft?.quantity || draft?.lots) res.quantity = Math.min(Math.max(parseFloat(draft.quantity || draft.lots) || 0.01, 0.01), 1);
 
     if (strategy?.stock_name || strategy?.symbol) res.symbol = res.symbol || normalizeSymbol(strategy.stock_name || strategy.symbol);
     if (strategy?.interval || strategy?.timeframe) res.interval = res.interval || normalizeInterval(strategy.interval || strategy.timeframe);

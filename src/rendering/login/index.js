@@ -227,7 +227,15 @@ const Login = () => {
             }
         } catch (err) {
             toast.dismiss();
-            toast.error(typeof err.message === 'string' ? err.message : 'Something went wrong. Please try again.');
+            let msg = typeof err.message === 'string' ? err.message : 'Something went wrong. Please try again.';
+            if (
+                msg.toLowerCase().includes('account is not active') ||
+                msg.toLowerCase().includes('account is inactive') ||
+                msg.toLowerCase().includes('account not active')
+            ) {
+                msg = 'Account is not active. Please contact admin.';
+            }
+            toast.error(msg);
         } finally {
             setLoading(false);
         }

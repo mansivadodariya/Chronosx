@@ -269,7 +269,6 @@ html.light [class*="inputField"]:focus {
 /* Light Theme: Calendar Header & Live Countdown Badge Protection */
 html.light [class*="calendarHeaderStrip"],
 html.light [class*="calendarHeaderStrip"] *,
-html.light [class*="liveIndicator"],
 html.light [class*="liveText"],
 html.light [class*="calendarBadge"],
 html.light span[class*="calendarBadge"] {

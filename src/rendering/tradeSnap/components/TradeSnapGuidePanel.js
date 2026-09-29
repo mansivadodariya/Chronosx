@@ -10,7 +10,6 @@ export default function TradeSnapGuidePanel({ onStartSharing, t }) {
             num: '01',
             title: t('tradeSnap.guideStep1Title', 'Open Your Chart'),
             desc: t('tradeSnap.guideStep1Desc', 'Launch TradingView, MT4/MT5, Binance, or any brokerage chart on your screen.'),
-            badge: 'STEP 01',
             tags: ['TradingView', 'MT4 / MT5', 'Binance', 'cTrader'],
             icon: (
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -25,7 +24,6 @@ export default function TradeSnapGuidePanel({ onStartSharing, t }) {
             num: '02',
             title: t('tradeSnap.guideStep2Title', 'Share Screen or Window'),
             desc: t('tradeSnap.guideStep2Desc', 'Click "Start Sharing" and select your chart tab, browser window, or entire monitor.'),
-            badge: 'STEP 02',
             tags: ['Full Screen', 'Chrome Tab', 'App Window'],
             icon: (
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -38,7 +36,6 @@ export default function TradeSnapGuidePanel({ onStartSharing, t }) {
             num: '03',
             title: t('tradeSnap.guideStep3Title', 'Instant AI Technical Scan'),
             desc: t('tradeSnap.guideStep3Desc', 'Capture snapshots or enable Auto-Capture to get real-time pattern detection & trade setups.'),
-            badge: 'STEP 03',
             tags: ['SMC Order Blocks', 'Entry/SL/TP', 'Bull/Bear Bias'],
             icon: (
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -88,7 +85,6 @@ export default function TradeSnapGuidePanel({ onStartSharing, t }) {
                         <div className={styles.stepContentCol}>
                             <div className={styles.stepTopRow}>
                                 <h4 className={styles.stepTitle}>{step.title}</h4>
-                                <span className={styles.stepBadge}>{step.badge}</span>
                             </div>
                             <p className={styles.stepDesc}>{step.desc}</p>
                             <div className={styles.stepTagList}>

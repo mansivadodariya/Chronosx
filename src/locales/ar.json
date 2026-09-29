@@ -41,7 +41,8 @@
     "customBotBuilder": "منشئ البوتات المخصص (Custom Bot Builder)",
     "botLibrary": "مكتبة البوتات (Browse Bots Library)",
     "strategyStudio": "منشئ البوتات بالذكاء الاصطناعي (AI Bot Builder)",
-    "affiliate": "برنامج الشركاء (Affiliate)"
+    "affiliate": "برنامج الشركاء (Affiliate)",
+    "landingPage": "الصفحة الرئيسية"
   },
   "topbar": {
     "credits": "رصيد",
@@ -235,7 +236,8 @@
     "desktopRequiredDesc": "مشاركة الشاشة غير مدعومة على أجهزة Safari أو iOS المحمولة. يرجى فتحه على سطح المكتب Chrome أو Edge أو Mac Safari.",
     "scannerTitle": "ماسح الرسم البياني المباشر بالذكاء الاصطناعي",
     "scannerDesc": "شارك شاشة الرسم البياني المباشر الخاصة بك أو التقط لقطات للحصول على التحليل الفني بالذكاء الاصطناعي في الوقت الفعلي، والمستويات الرئيسية، وإعدادات التداول.",
-    "history": "التاريخ"
+    "history": "التاريخ",
+    "pleaseAddGraphScreenshot": "يرجى تحميل لقطة شاشة للرسم البياني أو المخطط الفني أولاً للبدء بالتحليل بالذكاء الاصطناعي."
   },
   "aiChat": {
     "heroBadge": "مساعد تداول كمي مؤسسي 24/7",
@@ -595,7 +597,10 @@
     "openCalculators": "فتح الحاسبات",
     "toolEconomicCalendar": "التقويم الاقتصادي",
     "viewCalendar": "عرض التقويم",
-    "type": "اكتب"
+    "type": "اكتب",
+    "withdrawableBalance": "الرصيد القابل للسحب",
+    "withdrawableBalanceDesc": "الرصيد المتاح للسحب من محفظتك",
+    "viewWallet": "عرض المحفظة"
   },
   "creditHistory": {
     "title": "سجل الرصيد",
@@ -744,7 +749,28 @@
     "changePassword": "تغيير كلمة المرور",
     "paymentHistory": "تاريخ الدفع",
     "mySettings": "الإعدادات",
-    "settingsSubtitle": "إدارة ملفك الشخصي وإعدادات الأمان وتفضيلات الحساب"
+    "settingsSubtitle": "إدارة ملفك الشخصي وإعدادات الأمان وتفضيلات الحساب",
+    "preferences": "التفضيلات",
+    "preferencesTitle": "تفضيلات المستخدم والواجهة",
+    "preferencesDesc": "تخصيص السمة، واللغة، والمنطقة الزمنية، وعملة العرض وإعدادات الإشعارات.",
+    "themeSettings": "إعدادات المظهر والسمة",
+    "themeDesc": "اختر بين وضع الظلام السيبراني والوضع الفاتح فائق الوضوح.",
+    "darkMode": "الوضع الداكن (Dark Mode)",
+    "darkThemeSub": "سمة داكنة عالية التباين مع توهج نيون",
+    "lightMode": "الوضع الفاتح (Light Mode)",
+    "lightThemeSub": "سمة نهارية واضحة ومريحة للعين",
+    "languageSettings": "إعدادات اللغة",
+    "languageDesc": "اختر لغة الواجهة الأساسية لتطبيق ChronosX.",
+    "additionalPref": "تفضيلات إضافية للحساب",
+    "additionalPrefDesc": "تكوين العملة الافتراضية، المنطقة الزمنية والتنبيهات الصوتية.",
+    "defaultTz": "المنطقة الزمنية الافتراضية",
+    "defaultTzSub": "مزامنة أوقات الشموع ومؤشرات السوق",
+    "displayCurrency": "عملة العرض",
+    "displayCurrencySub": "عملة حساب الأرباح والخسائر والرصيد",
+    "soundEffects": "المؤثرات الصوتية",
+    "soundEffectsSub": "تشغيل أصوات عند صدور إشارات وتنبيهات التداول",
+    "emailReports": "تقارير البريد الإلكتروني",
+    "emailReportsSub": "استلام ملخصات أسبوعية لأداء الصفقات والبوتات"
   },
   "auth": {
     "loginTitle": "تسجيل الدخول إلى ChronosX",
@@ -1102,6 +1128,41 @@
       "title1": "محلل مؤسسي",
       "title2": "بجانبك دائماً.",
       "description": "اطرح الأسئلة، واستكشف السياق الكلي، واختبر فرضيات التداول مع مساعد ذكاء اصطناعي مدرب حصرياً على منطق الفوركس الكمي."
+    },
+    "aiCockpit": {
+      "tabOverview": "Overview",
+      "tabDeep": "Deep Analysis",
+      "tabTools": "Trading Tools",
+      "card1Title": "AI Chart Scanner",
+      "card1Sub": "Pattern Vision & Heat Detection",
+      "card1Badge": "ACTIVE",
+      "scoreVal": "STRONG BUY",
+      "scoreBadge": "LIVE",
+      "verdictText": "Bullish Breakout",
+      "confidenceBadge": "HIGH CONVICTION",
+      "sliderMin": "SCALPING",
+      "sliderCenter": "SIGNAL CONVICTION",
+      "sliderMax": "SWING",
+      "card2Title": "AI Strategy Engine",
+      "card2Sub": "MT5 Institutional Execution",
+      "card2Badge": "OPTIMIZED",
+      "rankVal": "ORDER BLOCK",
+      "rankSub": "LIQUIDITY SWEEP",
+      "topPerformer": "TOP STRATEGY PERFORMER",
+      "col1Label": "AI CHART SCANNER",
+      "col1Badge": "VISION AI",
+      "col1Val": "Liquidity Sweep",
+      "col1Sub": "Fair Value Gap Breached",
+      "col2Label": "MT5 BROKER BRIDGE",
+      "col2Badge": "ZERO LAG",
+      "col2Val": "Instant Execution",
+      "col2Sub": "Institutional Raw Spreads",
+      "col3Label": "AI TRADING SIGNAL",
+      "col3Badge": "CONFIRMED",
+      "col3Val": "Strong Buy Setup",
+      "col3Sub": "Multi-Timeframe Confluence",
+      "footerLive": "AI STREAM ACTIVE · REAL-TIME WEBSOCKET",
+      "footerFeed": "CHRONOSX AI TERMINAL · ZERO-LATENCY"
     }
   },
   "aiTrade": {

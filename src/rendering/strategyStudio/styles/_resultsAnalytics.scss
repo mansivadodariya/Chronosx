@@ -629,15 +629,39 @@
     box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
 }
 
-.legendDotRed {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #EF4444;
-    box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+.legendArrowGreen {
+    font-size: 13px;
+    font-weight: 900;
+    color: #10B981;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    text-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
+}
+
+.legendArrowRed {
+    font-size: 13px;
+    font-weight: 900;
+    color: #EF4444;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    text-shadow: 0 0 8px rgba(239, 68, 68, 0.7);
 }
 
 .candlestickCanvasWrap {
     min-height: 360px;
     width: 100%;
+
+    :global(.apexcharts-point-annotations text) {
+        font-family: inherit !important;
+        filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.9));
+        cursor: default;
+    }
+
+    :global(.apexcharts-point-annotations rect) {
+        fill: transparent !important;
+        stroke: none !important;
+    }
 }
+

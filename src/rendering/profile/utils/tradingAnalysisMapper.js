@@ -37,12 +37,10 @@ export const AVAILABLE_PAIRS = [
     { id: 'GBP/USD', symbol: 'GBP/USD', icon: '💷', tag: 'FX Major' },
     { id: 'USD/JPY', symbol: 'USD/JPY', icon: '💴', tag: 'FX Major' },
     { id: 'XAU/USD', symbol: 'XAU/USD', icon: '🪙', tag: 'Gold' },
-    { id: 'BTC/USD', symbol: 'BTC/USD', icon: '₿', tag: 'Crypto' },
-    { id: 'ETH/USD', symbol: 'ETH/USD', icon: '⟠', tag: 'Crypto' },
-    { id: 'US30', symbol: 'US30', icon: '📈', tag: 'Indices' },
-    { id: 'NAS100', symbol: 'NAS100', icon: '💻', tag: 'Indices' },
+    { id: 'GBP/JPY', symbol: 'GBP/JPY', icon: '💱', tag: 'FX Cross' },
     { id: 'AUD/USD', symbol: 'AUD/USD', icon: '🇦🇺', tag: 'FX Major' },
-    { id: 'USD/CAD', symbol: 'USD/CAD', icon: '🍁', tag: 'FX Major' }
+    { id: 'USD/CAD', symbol: 'USD/CAD', icon: '🍁', tag: 'FX Major' },
+    { id: 'USD/CHF', symbol: 'USD/CHF', icon: '🇨🇭', tag: 'FX Major' },
 ];
 
 export const AVAILABLE_SESSIONS = [
@@ -56,12 +54,21 @@ export const AVAILABLE_SESSIONS = [
 
 const MARKET_TO_PAIR_MAP = {
     eurusd: 'EUR/USD',
+    eur_usd: 'EUR/USD',
     gbpusd: 'GBP/USD',
+    gbp_usd: 'GBP/USD',
     usdjpy: 'USD/JPY',
+    usd_jpy: 'USD/JPY',
     gold: 'XAU/USD',
-    crypto: 'BTC/USD',
-    indices: 'NAS100',
-    oil: 'US30'
+    xau_usd: 'XAU/USD',
+    gbpjpy: 'GBP/JPY',
+    gbp_jpy: 'GBP/JPY',
+    audusd: 'AUD/USD',
+    aud_usd: 'AUD/USD',
+    usdcad: 'USD/CAD',
+    usd_cad: 'USD/CAD',
+    usdchf: 'USD/CHF',
+    usd_chf: 'USD/CHF',
 };
 
 const STYLE_TO_LABEL_MAP = {
@@ -71,6 +78,63 @@ const STYLE_TO_LABEL_MAP = {
     position_trading: 'Position Trading',
     algo_trading: 'Algorithmic / Automated'
 };
+
+/**
+ * Robust helper to dynamically resolve the respective logged-in user's full name
+ */
+export function resolveUserFullName({ personal, user, onboardingData }) {
+    // 1. Primary: Current active user prop (first_name, last_name, full_name, name)
+    const userCombined = (user?.first_name || user?.last_name)
+        ? `${user.first_name || ''} ${user.last_name || ''}`.trim()
+        : '';
+    const userDirect = user?.full_name || user?.name || user?.user_metadata?.full_name || user?.user_metadata?.name || userCombined;
+
+    if (userDirect && userDirect.trim()) {
+        return userDirect.trim();
+    }
+
+    // 2. Secondary: Check browser storage for current logged-in user session
+    if (typeof window !== 'undefined') {
+        try {
+            const rawStored = localStorage.getItem('user');
+            if (rawStored) {
+                const storedUser = JSON.parse(rawStored);
+                const storedCombined = (storedUser?.first_name || storedUser?.last_name)
+                    ? `${storedUser.first_name || ''} ${storedUser.last_name || ''}`.trim()
+                    : '';
+                const storedName = storedUser?.full_name || storedUser?.name || storedUser?.user_metadata?.full_name || storedUser?.user_metadata?.name || storedCombined;
+                if (storedName && storedName.trim()) {
+                    return storedName.trim();
+                }
+            }
+        } catch (_) {}
+    }
+
+    // 3. Saved personal profile name (if previously saved)
+    const savedName = personal?.full_name || personal?.name;
+    if (savedName && savedName.trim()) {
+        return savedName.trim();
+    }
+
+    // 4. Onboarding data
+    if (onboardingData?.name || onboardingData?.full_name) {
+        return (onboardingData.name || onboardingData.full_name).trim();
+    }
+
+    // 5. Fallback from email prefix if available
+    const email = user?.email || (typeof window !== 'undefined' && (() => {
+        try {
+            return JSON.parse(localStorage.getItem('user') || '{}')?.email;
+        } catch (_) { return ''; }
+    })());
+
+    if (email && typeof email === 'string' && email.includes('@')) {
+        const prefix = email.split('@')[0].replace(/[._-]/g, ' ');
+        return prefix.charAt(0).toUpperCase() + prefix.slice(1);
+    }
+
+    return '';
+}
 
 /**
  * Merges API preferences, DB user onboarding survey data, and fallback defaults
@@ -83,8 +147,8 @@ export function buildInitialTradingProfileForm({ apiPreferences, onboardingData,
     const goals = p.goals || {};
     const pref = p.preferences || {};
 
-    // 1. Resolve Full Name
-    const resolvedName = personal.name || personal.full_name || (user?.first_name ? `${user.first_name} ${user.last_name || ''}`.trim() : '') || 'Alex Morgan';
+    // 1. Resolve Respective User Full Name
+    const resolvedName = resolveUserFullName({ personal, user, onboardingData });
 
     // 2. Resolve Experience Level
     let resolvedExp = personal.experience_level;

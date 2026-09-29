@@ -234,23 +234,23 @@ export const InlineCandlestickWidget = React.memo(function InlineCandlestickWidg
                 show: true,
                 position: 'top',
                 horizontalAlign: 'right',
-                labels: { colors: '#FFFFFF' }
+                labels: { colors: isDark ? '#FFFFFF' : '#1E293B' }
             },
             theme: { mode: isDark ? 'dark' : 'light' },
             xaxis: {
                 type: 'datetime',
-                labels: { style: { colors: 'rgba(255, 255, 255, 0.65)' } },
+                labels: { style: { colors: isDark ? 'rgba(255, 255, 255, 0.65)' : '#475569' } },
                 axisBorder: { show: false },
                 axisTicks: { show: false }
             },
             yaxis: {
                 tooltip: { enabled: true },
                 labels: {
-                    style: { colors: 'rgba(255, 255, 255, 0.65)' },
+                    style: { colors: isDark ? 'rgba(255, 255, 255, 0.65)' : '#475569' },
                     formatter: (val) => val?.toFixed(val > 100 ? 2 : 4) ?? val
                 }
             },
-            grid: { borderColor: 'rgba(24, 201, 139, 0.15)', strokeDashArray: 4 },
+            grid: { borderColor: isDark ? 'rgba(24, 201, 139, 0.15)' : 'rgba(226, 232, 240, 0.9)', strokeDashArray: 4 },
             annotations: { yaxis: yAxisAnnotations },
             stroke: { width: strokeWidths, curve: 'straight', dashArray: dashArrays },
             colors: seriesColors,
@@ -262,7 +262,7 @@ export const InlineCandlestickWidget = React.memo(function InlineCandlestickWidg
     }, [symbol, isDark, showSR, supportLevels, resistanceLevels]);
 
     return (
-        <div className={styles.inlineWidgetCard}>
+        <div className={`${styles.inlineWidgetCard} ${styles.pdfGraphBreak} pdfGraphBreak pdfPageBreakBefore`}>
             <div className={styles.inlineWidgetHeader}>
                 <span className={styles.inlineWidgetTitle}>{symbol}</span>
                 <button
@@ -328,13 +328,13 @@ export const InlineSentimentRadarWidget = React.memo(function InlineSentimentRad
             size: 5,
             colors: ['#18C98B'],
             strokeWidth: 2,
-            strokeColors: '#000000'
+            strokeColors: isDark ? '#000000' : '#FFFFFF'
         },
         plotOptions: {
             radar: {
                 polygons: {
-                    strokeColors: 'rgba(24, 201, 139, 0.25)',
-                    connectorColors: 'rgba(24, 201, 139, 0.15)'
+                    strokeColors: isDark ? 'rgba(24, 201, 139, 0.25)' : 'rgba(16, 185, 129, 0.25)',
+                    connectorColors: isDark ? 'rgba(24, 201, 139, 0.15)' : 'rgba(16, 185, 129, 0.15)'
                 }
             }
         },
@@ -342,7 +342,7 @@ export const InlineSentimentRadarWidget = React.memo(function InlineSentimentRad
     }), [isDark]);
 
     return (
-        <div className={styles.inlineWidgetCard}>
+        <div className={`${styles.inlineWidgetCard} ${styles.pdfGraphBreak} pdfGraphBreak pdfPageBreakBefore`}>
             <div className={styles.inlineWidgetHeader}>
                 <span className={styles.inlineWidgetTitle}>Market Sentiment: {symbol}</span>
             </div>
@@ -359,10 +359,11 @@ const RenderMarkdownWithWidgets = React.memo(function RenderMarkdownWithWidgets(
     visualData = null, 
     defaultSymbol = 'XAUUSD',
     isStreaming = false,
-    onComplete
+    onComplete,
+    forceLight = false
 }) {
     const { theme } = useTheme();
-    const isDark = theme !== 'light';
+    const isDark = forceLight ? false : (theme !== 'light');
 
     const words = React.useMemo(() => {
         if (!content) return [];
@@ -424,24 +425,33 @@ const RenderMarkdownWithWidgets = React.memo(function RenderMarkdownWithWidgets(
                     const symbol = widgetMatch[2] ? normalizeAssetSymbol(widgetMatch[2]) : normalizeAssetSymbol(defaultSymbol);
 
                     if (widgetType === 'SENTIMENT_RADAR') {
-                        return <InlineSentimentRadarWidget key={`widget-${index}-${symbol}`} symbol={symbol} visualData={visualData} isDark={isDark} />;
+                        return (
+                            <div key={`widget-${index}-${symbol}`} className={`${styles.pdfSection} pdfSection`} data-pdf-section="widget">
+                                <InlineSentimentRadarWidget symbol={symbol} visualData={visualData} isDark={isDark} />
+                            </div>
+                        );
                     }
                     if (widgetType === 'CANDLESTICK') {
-                        return <InlineCandlestickWidget key={`widget-${index}-${symbol}`} symbol={symbol} visualData={visualData} isDark={isDark} />;
+                        return (
+                            <div key={`widget-${index}-${symbol}`} className={`${styles.pdfSection} pdfSection`} data-pdf-section="widget">
+                                <InlineCandlestickWidget symbol={symbol} visualData={visualData} isDark={isDark} />
+                            </div>
+                        );
                     }
                 }
 
                 if (!part.trim()) return null;
 
                 return (
-                    <ReactMarkdown
-                        key={`md-${index}`}
-                        remarkPlugins={[remarkGfm]}
-                        rehypePlugins={[rehypeRaw]}
-                        components={bidiMarkdownComponents}
-                    >
-                        {part}
-                    </ReactMarkdown>
+                    <div key={`md-${index}`} className={`${styles.pdfSection} pdfSection`} data-pdf-section="text">
+                        <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            rehypePlugins={[rehypeRaw]}
+                            components={bidiMarkdownComponents}
+                        >
+                            {part}
+                        </ReactMarkdown>
+                    </div>
                 );
             })}
             {!isStreamingFinished && (

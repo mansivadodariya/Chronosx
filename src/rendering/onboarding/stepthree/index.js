@@ -159,52 +159,120 @@ const GbpJpyIcon = () => (
     </div>
 );
 
-const CryptoIcon = () => (
+const AudUsdIcon = () => (
     <div className={styles.flagPairContainer}>
-        {/* Bitcoin ₿ Badge */}
+        {/* Australia Flag Disc */}
         <div className={styles.flagDisc}>
             <svg viewBox="0 0 32 32" width="22" height="22">
-                <circle cx="16" cy="16" r="16" fill="#F7931A" />
-                <path
-                    d="M21.5 13.5C21.9 12.3 21.2 10.9 19.3 10.4L18.8 8.6L17.7 8.9L18.2 10.7C17.9 10.8 17.6 10.9 17.3 11L16.8 9.2L15.7 9.5L16.2 11.3C15.9 11.4 15.6 11.5 15.3 11.6L13.8 11.2L13.4 12.7C13.4 12.7 14.2 12.9 14.2 12.9C14.6 13 14.7 13.3 14.6 13.6L13.3 18.7C13.2 18.9 13 19 12.7 18.9C12.7 18.9 11.9 18.7 11.9 18.7L11.2 20.3L12.7 20.7C13 20.8 13.3 20.9 13.6 21L13.1 23L14.2 22.7L14.7 20.7C15 20.8 15.3 20.9 15.6 21L15.1 23L16.2 22.7L16.7 20.7C18.6 21 20.1 20.6 20.7 18.9C21.2 17.5 20.7 16.7 19.8 16.2C20.5 15.8 21 14.9 20.7 13.7M18.8 18.3C18.5 19.6 16.2 18.8 15.3 18.6L16 15.9C16.9 16.1 19.2 16.9 18.8 18.3M19.1 14.3C18.8 15.5 16.9 14.8 16.1 14.6L16.7 12.2C17.5 12.4 19.4 13.1 19.1 14.3Z"
-                    fill="#FFFFFF"
-                />
+                <clipPath id="audClip1">
+                    <circle cx="16" cy="16" r="16" />
+                </clipPath>
+                <g clipPath="url(#audClip1)">
+                    <rect width="32" height="32" fill="#00008B" />
+                    <rect width="14" height="13" fill="#012169" />
+                    <path d="M0,0 L14,13 M14,0 L0,13" stroke="#FFFFFF" strokeWidth="2.8" />
+                    <path d="M0,0 L14,13 M14,0 L0,13" stroke="#C8102E" strokeWidth="1.4" />
+                    <path d="M7,0 V13 M0,6.5 H14" stroke="#FFFFFF" strokeWidth="4.4" />
+                    <path d="M7,0 V13 M0,6.5 H14" stroke="#C8102E" strokeWidth="2.5" />
+                    <circle cx="7" cy="22" r="2.4" fill="#FFFFFF" />
+                    <circle cx="23" cy="8" r="1.5" fill="#FFFFFF" />
+                    <circle cx="26" cy="14" r="1.3" fill="#FFFFFF" />
+                    <circle cx="23" cy="23" r="1.5" fill="#FFFFFF" />
+                    <circle cx="19" cy="16" r="1.3" fill="#FFFFFF" />
+                </g>
             </svg>
         </div>
-        {/* Ethereum Ξ Badge */}
+        {/* US Flag Disc */}
         <div className={`${styles.flagDisc} ${styles.flagDiscOverlap}`}>
             <svg viewBox="0 0 32 32" width="22" height="22">
-                <circle cx="16" cy="16" r="16" fill="#627EEA" />
-                <path d="M16 4L15.8 4.6V20.2L16 20.4L22.5 16.5L16 4Z" fill="#FFFFFF" fillOpacity="0.6" />
-                <path d="M16 4L9.5 16.5L16 20.4V4Z" fill="#FFFFFF" />
-                <path d="M16 21.8L15.9 22V27.6L16 28L22.5 18L16 21.8Z" fill="#FFFFFF" fillOpacity="0.6" />
-                <path d="M16 28V21.8L9.5 18L16 28Z" fill="#FFFFFF" />
+                <clipPath id="usClipAud">
+                    <circle cx="16" cy="16" r="16" />
+                </clipPath>
+                <g clipPath="url(#usClipAud)">
+                    <rect width="32" height="32" fill="#B22234" />
+                    {[3.5, 8.5, 13.5, 18.5, 23.5, 28.5].map((y, i) => (
+                        <rect key={i} y={y} width="32" height="2.5" fill="#FFFFFF" />
+                    ))}
+                    <rect width="15" height="15" fill="#3C3B6E" />
+                    <circle cx="4" cy="4" r="1.1" fill="#FFFFFF" />
+                    <circle cx="11" cy="4" r="1.1" fill="#FFFFFF" />
+                    <circle cx="7.5" cy="7.5" r="1.1" fill="#FFFFFF" />
+                    <circle cx="4" cy="11" r="1.1" fill="#FFFFFF" />
+                    <circle cx="11" cy="11" r="1.1" fill="#FFFFFF" />
+                </g>
             </svg>
         </div>
     </div>
 );
 
-const IndicesIcon = () => (
-    <div className={styles.indicesBoxBadge}>
-        <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-            <rect x="2" y="16" width="4" height="9" rx="1" fill="#10B981" />
-            <rect x="9" y="10" width="4" height="15" rx="1" fill="#10B981" />
-            <rect x="16" y="13" width="4" height="12" rx="1" fill="#EF4444" />
-            <rect x="23" y="5" width="4" height="20" rx="1" fill="#10B981" />
-            <path d="M4 14L11 8L18 11L25 3M25 3H20M25 3V8" stroke="#38BDF8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+const UsdCadIcon = () => (
+    <div className={styles.flagPairContainer}>
+        {/* US Flag Disc */}
+        <div className={styles.flagDisc}>
+            <svg viewBox="0 0 32 32" width="22" height="22">
+                <clipPath id="usClipCad">
+                    <circle cx="16" cy="16" r="16" />
+                </clipPath>
+                <g clipPath="url(#usClipCad)">
+                    <rect width="32" height="32" fill="#B22234" />
+                    {[3.5, 8.5, 13.5, 18.5, 23.5, 28.5].map((y, i) => (
+                        <rect key={i} y={y} width="32" height="2.5" fill="#FFFFFF" />
+                    ))}
+                    <rect width="15" height="15" fill="#3C3B6E" />
+                    <circle cx="4" cy="4" r="1.1" fill="#FFFFFF" />
+                    <circle cx="11" cy="4" r="1.1" fill="#FFFFFF" />
+                    <circle cx="7.5" cy="7.5" r="1.1" fill="#FFFFFF" />
+                    <circle cx="4" cy="11" r="1.1" fill="#FFFFFF" />
+                    <circle cx="11" cy="11" r="1.1" fill="#FFFFFF" />
+                </g>
+            </svg>
+        </div>
+        {/* Canada Flag Disc */}
+        <div className={`${styles.flagDisc} ${styles.flagDiscOverlap}`}>
+            <svg viewBox="0 0 32 32" width="22" height="22">
+                <clipPath id="cadClip1">
+                    <circle cx="16" cy="16" r="16" />
+                </clipPath>
+                <g clipPath="url(#cadClip1)">
+                    <rect width="32" height="32" fill="#FF0000" />
+                    <rect x="8" width="16" height="32" fill="#FFFFFF" />
+                    <path d="M16 7.5l1.6 3.5 3.2-.8-1.6 3.2 3.2 1.9-4 1.3.8 3.2-3.2-1.6-.8 3.2-.8-3.2-3.2 1.6.8-3.2-4-1.3 3.2-1.9-1.6-3.2 3.2.8z" fill="#FF0000" />
+                </g>
+            </svg>
+        </div>
     </div>
 );
 
-const CommoditiesIcon = () => (
-    <div className={styles.commoditiesBoxBadge}>
-        <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-            {/* Oil Barrel & Flame */}
-            <path d="M8 8C8 6.5 11 5 15 5C19 5 22 6.5 22 8V20C22 21.5 19 23 15 23C11 23 8 21.5 8 20V8Z" stroke="#F59E0B" strokeWidth="1.8" />
-            <ellipse cx="15" cy="8" rx="7" ry="3" stroke="#F59E0B" strokeWidth="1.8" />
-            <path d="M8 14C8 15.5 11 17 15 17C19 17 22 15.5 22 14" stroke="#F59E0B" strokeWidth="1.8" />
-            <path d="M15 10C13.5 12 12.5 13.5 12.5 14.5C12.5 15.8 13.6 16.8 15 16.8C16.4 16.8 17.5 15.8 17.5 14.5C17.5 13.5 16.5 12 15 10Z" fill="#F59E0B" />
-        </svg>
+const UsdChfIcon = () => (
+    <div className={styles.flagPairContainer}>
+        {/* US Flag Disc */}
+        <div className={styles.flagDisc}>
+            <svg viewBox="0 0 32 32" width="22" height="22">
+                <clipPath id="usClipChf">
+                    <circle cx="16" cy="16" r="16" />
+                </clipPath>
+                <g clipPath="url(#usClipChf)">
+                    <rect width="32" height="32" fill="#B22234" />
+                    {[3.5, 8.5, 13.5, 18.5, 23.5, 28.5].map((y, i) => (
+                        <rect key={i} y={y} width="32" height="2.5" fill="#FFFFFF" />
+                    ))}
+                    <rect width="15" height="15" fill="#3C3B6E" />
+                    <circle cx="4" cy="4" r="1.1" fill="#FFFFFF" />
+                    <circle cx="11" cy="4" r="1.1" fill="#FFFFFF" />
+                    <circle cx="7.5" cy="7.5" r="1.1" fill="#FFFFFF" />
+                    <circle cx="4" cy="11" r="1.1" fill="#FFFFFF" />
+                    <circle cx="11" cy="11" r="1.1" fill="#FFFFFF" />
+                </g>
+            </svg>
+        </div>
+        {/* Switzerland Flag Disc */}
+        <div className={`${styles.flagDisc} ${styles.flagDiscOverlap}`}>
+            <svg viewBox="0 0 32 32" width="22" height="22">
+                <rect width="32" height="32" rx="16" fill="#D52B1E" />
+                <rect x="13" y="7" width="6" height="18" fill="#FFFFFF" rx="1" />
+                <rect x="7" y="13" width="18" height="6" fill="#FFFFFF" rx="1" />
+            </svg>
+        </div>
     </div>
 );
 
@@ -245,25 +313,25 @@ const MARKET_OPTIONS = [
         icon: GbpJpyIcon,
     },
     {
-        id: 'crypto',
-        title: 'Crypto / Digital Assets',
-        category: 'CRYPTO ASSETS',
-        desc: 'BTC, ETH, SOL & Top Liquidity Pairs',
-        icon: CryptoIcon,
+        id: 'aud_usd',
+        title: 'AUD / USD',
+        category: 'FOREX MAJOR',
+        desc: 'Australian Dollar vs. US Dollar',
+        icon: AudUsdIcon,
     },
     {
-        id: 'indices',
-        title: 'Global Indices',
-        category: 'EQUITIES & FUTURES',
-        desc: 'US30, NAS100, SPX500, DAX40',
-        icon: IndicesIcon,
+        id: 'usd_cad',
+        title: 'USD / CAD',
+        category: 'FOREX MAJOR',
+        desc: 'US Dollar vs. Canadian Dollar',
+        icon: UsdCadIcon,
     },
     {
-        id: 'other',
-        title: 'Energy & Commodities',
-        category: 'COMMODITIES',
-        desc: 'USOIL, UKOIL, Silver & Exotics',
-        icon: CommoditiesIcon,
+        id: 'usd_chf',
+        title: 'USD / CHF',
+        category: 'FOREX MAJOR',
+        desc: 'US Dollar vs. Swiss Franc',
+        icon: UsdChfIcon,
     },
 ];
 

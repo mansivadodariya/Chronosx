@@ -91,6 +91,14 @@ export const FLAG_ICONS = {
             </g>
         </svg>
     ),
+    // Switzerland (CHF)
+    CHF: (
+        <svg viewBox="0 0 20 20" width="100%" height="100%" fill="none">
+            <circle cx="10" cy="10" r="10" fill="#D52B1E" />
+            <rect x="8.5" y="4.5" width="3" height="11" fill="#FFFFFF" />
+            <rect x="4.5" y="8.5" width="11" height="3" fill="#FFFFFF" />
+        </svg>
+    ),
     // Gold (XAU)
     XAU: (
         <svg viewBox="0 0 20 20" width="100%" height="100%" fill="none">
@@ -154,6 +162,7 @@ export const PAIR_CONFIG = {
     'USD/JPY': { base: 'USD', quote: 'JPY', name: 'US Dollar / Japanese Yen', tag: 'FX Major' },
     'AUD/USD': { base: 'AUD', quote: 'USD', name: 'Australian Dollar / US Dollar', tag: 'FX Major' },
     'USD/CAD': { base: 'USD', quote: 'CAD', name: 'US Dollar / Canadian Dollar', tag: 'FX Major' },
+    'USD/CHF': { base: 'USD', quote: 'CHF', name: 'US Dollar / Swiss Franc', tag: 'FX Major' },
     'XAU/USD': { base: 'XAU', quote: 'USD', name: 'Gold / US Dollar', tag: 'Commodity' },
     'BTC/USD': { base: 'BTC', quote: 'USD', name: 'Bitcoin / US Dollar', tag: 'Crypto' },
     'ETH/USD': { base: 'ETH', quote: 'USD', name: 'Ethereum / US Dollar', tag: 'Crypto' },

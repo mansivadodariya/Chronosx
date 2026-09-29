@@ -458,211 +458,163 @@
     line-height: 1.55;
     text-align: justify;
     text-justify: inter-word;
+    word-break: normal;
+    overflow-wrap: break-word;
 
     strong {
         letter-spacing: 0.5px;
     }
 }
 
-// Section H: Multi-Indicator & Pivot Breakdown
-.indicatorPivotSection {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    box-shadow: var(--card-shadow);
-    padding: 20px;
-    border-radius: 0 !important;
-}
+/* ============================================================
+   LIGHT MODE & PDF EXPORT OVERRIDES (SECTIONS E, F, G)
+   ============================================================ */
+:global(html.light),
+:global(html[data-theme='light']),
+:global([data-theme='light']),
+:global(.light),
+:global(.pdfExportLight) {
+    .liveIndicatorsSection,
+    .patternsKeyLevelsCard,
+    .riskFlagsSection {
+        background: #FFFFFF !important;
+        border-color: rgba(15, 23, 42, 0.12) !important;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
 
-.tabNavRow {
-    display: flex;
-    gap: 4px;
-    border-bottom: 1px solid var(--card-border);
-    margin-bottom: 16px;
-    overflow-x: auto;
-}
-
-.tabNavBtn {
-    padding: 10px 16px;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-
-    &:hover {
-        color: var(--title-color);
-    }
-
-    &.tabNavActive {
-        color: var(--pill-color);
-        border-bottom-color: #18C98B;
-        border-radius: 0 !important;
-    }
-}
-
-.tabContentCard {
-    background: var(--box-bg);
-    border: 1px solid var(--box-border);
-    border-radius: 0 !important;
-    overflow: hidden;
-}
-
-.tableWrapper {
-    width: 100%;
-    overflow-x: auto;
-}
-
-.breakdownTable {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-    text-align: left;
-
-    th {
-        background: var(--box-bg);
-        padding: 10px 14px;
-        color: var(--text-muted);
-        font-weight: 700;
-        font-size: 11px;
-        text-transform: uppercase;
-        border-bottom: 1px solid var(--box-border);
-
-        &.pivotMainHeader {
-            color: var(--pill-color);
+        h3,
+        .cardHeaderRow h3,
+        .sectionHeaderRow h3,
+        .riskSectionHeader h3 {
+            color: #0F172A !important;
         }
     }
 
-    td {
-        padding: 10px 14px;
-        color: var(--text-primary);
-        border-bottom: 1px solid var(--box-border);
+    .strengthBadge {
+        background: #F1F5F9 !important;
+        border: 1px solid rgba(15, 23, 42, 0.12) !important;
+        color: #1E293B !important;
+
+        strong {
+            color: #047857 !important;
+        }
     }
 
-    .tableNameCell {
-        font-weight: 700;
-        color: var(--title-color);
-    }
+    .indicatorCard {
+        background: #F8FAFC !important;
+        border: 1px solid rgba(15, 23, 42, 0.1) !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
 
-    .tableValCell {
-        font-family: monospace, sans-serif;
-        color: var(--pill-color);
-    }
-
-    .supportCell {
-        color: #10B981;
-        font-family: monospace, sans-serif;
-    }
-
-    .resistanceCell {
-        color: #EF4444;
-        font-family: monospace, sans-serif;
-    }
-
-    .pivotMainCell {
-        color: #38BDF8;
-        font-weight: 700;
-        font-family: monospace, sans-serif;
-    }
-}
-
-.actionTableBadge {
-    font-size: 10px;
-    font-weight: 800;
-    padding: 2px 6px;
-    border-radius: 4px;
-}
-
-.pdfFullBreakdown {
-    display: none;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 12px;
-
-    :global(html[data-theme='light']) &,
-    :global([data-theme='light']) &,
-    :global(html.light) &,
-    :global(.light) &,
-    :global(.pdfExportLight) & {
-        .tabContentCard {
-            background: #FFFFFF !important;
-            border: 1px solid #E2E8F0 !important;
+        .indicatorName {
+            color: #475569 !important;
         }
 
-        .breakdownTable {
-            th {
-                background: #F8FAFC !important;
-                color: #0F172A !important;
-                border-bottom: 1px solid #E2E8F0 !important;
-            }
+        .indicatorValue {
+            color: #0F172A !important;
+        }
 
-            td {
-                background: #FFFFFF !important;
-                color: #1E293B !important;
-                border-bottom: 1px solid #E2E8F0 !important;
-            }
+        .indicatorSubLabel {
+            color: #64748B !important;
+        }
+    }
 
-            .tableNameCell {
-                color: #0F172A !important;
-            }
+    .indicatorName {
+        color: #475569 !important;
+    }
 
-            .tableValCell {
+    .indicatorValue {
+        color: #0F172A !important;
+    }
+
+    .indicatorSubLabel {
+        color: #64748B !important;
+    }
+
+    .statusBadge {
+        &.badgeGreen {
+            background: rgba(16, 185, 129, 0.15) !important;
+            color: #047857 !important;
+            border: 1px solid rgba(16, 185, 129, 0.3) !important;
+        }
+
+        &.badgeRed {
+            background: rgba(239, 68, 68, 0.15) !important;
+            color: #DC2626 !important;
+            border: 1px solid rgba(239, 68, 68, 0.3) !important;
+        }
+
+        &.badgeAmber {
+            background: rgba(14, 165, 233, 0.15) !important;
+            color: #0284C7 !important;
+            border: 1px solid rgba(14, 165, 233, 0.3) !important;
+        }
+    }
+
+    .patternCountBadge {
+        background: rgba(24, 201, 139, 0.12) !important;
+        border-color: rgba(24, 201, 139, 0.35) !important;
+        color: #047857 !important;
+    }
+
+    .levelGroupHeader {
+        color: #475569 !important;
+    }
+
+    .levelPill {
+        background: #F8FAFC !important;
+        border: 1px solid rgba(15, 23, 42, 0.12) !important;
+
+        .pillPrice {
+            color: #0F172A !important;
+        }
+
+        .pillCopyBtn {
+            color: #64748B !important;
+
+            &:hover {
                 color: #047857 !important;
             }
-
-            .supportCell {
-                color: #059669 !important;
-            }
-
-            .resistanceCell {
-                color: #DC2626 !important;
-            }
-
-            .pivotMainCell {
-                color: #0284C7 !important;
-            }
         }
     }
-}
 
-.pdfBreakdownBlock {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-}
+    .patternItemCard {
+        background: #F8FAFC !important;
+        border: 1px solid rgba(15, 23, 42, 0.1) !important;
 
-.pdfSubHeading {
-    font-size: 13px;
-    font-weight: 800;
-    color: #047857;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+        .patternName {
+            color: #0F172A !important;
+        }
 
-    :global(html.dark) &,
-    :global([data-theme='dark']) & {
-        color: #18C98B;
+        .patternConfVal {
+            color: #047857 !important;
+        }
+    }
+
+    .patternTrack,
+    .indicatorBarTrack {
+        background: #E2E8F0 !important;
+    }
+
+    .riskCard {
+        &.riskDangerCard {
+            background: rgba(239, 68, 68, 0.08) !important;
+            border-color: rgba(239, 68, 68, 0.25) !important;
+            color: #991B1B !important;
+        }
+
+        &.riskWarningCard {
+            background: rgba(245, 158, 11, 0.08) !important;
+            border-color: rgba(245, 158, 11, 0.25) !important;
+            color: #92400E !important;
+        }
+
+        &.riskInfoCard {
+            background: rgba(24, 201, 139, 0.08) !important;
+            border-color: rgba(24, 201, 139, 0.25) !important;
+            color: #065F46 !important;
+        }
+    }
+
+    .riskMessageText {
+        color: #1E293B !important;
     }
 }
-
-// Ensure in PDF export that the tabs are hidden and all 4 tables are displayed in full
-:global(.pdfExportLight) .tabNavRow,
-:global(.pdfExportLight) .indicatorPivotSection > .tabContentCard,
-.pdfExportLight .tabNavRow,
-.pdfExportLight .indicatorPivotSection > .tabContentCard {
-    display: none !important;
-}
-
-:global(.pdfExportLight) .pdfFullBreakdown,
-.pdfExportLight .pdfFullBreakdown {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 18px !important;
-}
-
-

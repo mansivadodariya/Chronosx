@@ -14,27 +14,6 @@ export default function ChartSkeletonLoader({
     label = ''
 }) {
     if (type === 'candlestick') {
-        const dummyBars = [
-            { wickH: 60, bodyH: 28, top: 45, isBull: true },
-            { wickH: 80, bodyH: 42, top: 30, isBull: false },
-            { wickH: 50, bodyH: 22, top: 60, isBull: true },
-            { wickH: 90, bodyH: 50, top: 20, isBull: true },
-            { wickH: 70, bodyH: 35, top: 40, isBull: false },
-            { wickH: 45, bodyH: 20, top: 65, isBull: false },
-            { wickH: 85, bodyH: 48, top: 25, isBull: true },
-            { wickH: 65, bodyH: 30, top: 50, isBull: true },
-            { wickH: 95, bodyH: 55, top: 15, isBull: false },
-            { wickH: 75, bodyH: 38, top: 35, isBull: true },
-            { wickH: 55, bodyH: 26, top: 55, isBull: false },
-            { wickH: 80, bodyH: 44, top: 30, isBull: true },
-            { wickH: 60, bodyH: 28, top: 48, isBull: false },
-            { wickH: 90, bodyH: 52, top: 18, isBull: true },
-            { wickH: 70, bodyH: 34, top: 42, isBull: true },
-            { wickH: 85, bodyH: 46, top: 28, isBull: false },
-            { wickH: 50, bodyH: 24, top: 58, isBull: true },
-            { wickH: 78, bodyH: 40, top: 32, isBull: false }
-        ];
-
         return (
             <div className={styles.candlestickLoaderStage}>
                 {/* Horizontal dashed grid lines */}
@@ -48,29 +27,6 @@ export default function ChartSkeletonLoader({
 
                 {/* Sweeping laser radar scanline */}
                 <div className={styles.scanRadarLine} />
-
-                {/* Animated Candlestick Bars */}
-                <div className={styles.candlestickBarsRow}>
-                    {dummyBars.map((b, i) => (
-                        <div key={i} className={styles.candleSkeletonItem}>
-                            <div
-                                className={styles.candleWick}
-                                style={{
-                                    height: `${b.wickH}%`,
-                                    animationDelay: `${i * 0.08}s`
-                                }}
-                            />
-                            <div
-                                className={`${styles.candleBody} ${b.isBull ? styles.bullish : styles.bearish}`}
-                                style={{
-                                    height: `${b.bodyH}%`,
-                                    top: `${b.top}%`,
-                                    animationDelay: `${i * 0.08}s`
-                                }}
-                            />
-                        </div>
-                    ))}
-                </div>
 
                 {/* Overlay with high-tech spinning orbital loader */}
                 <div className={styles.chartLoaderOverlay}>

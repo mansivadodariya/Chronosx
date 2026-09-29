@@ -311,7 +311,7 @@ const Gauge = ({ value, title, theme = 'dark' }) => {
     );
 };
 
-const ReportPanel = ({ fullReport, visualData, symbol, isLoading, scrollToTopSignal, onDownload, inline = true }) => {
+const ReportPanel = ({ fullReport, visualData, symbol, isLoading, scrollToTopSignal, onDownload, inline = true, forceLight = false }) => {
     const scrollRef = useRef(null);
     const reportRef = useRef(null);
     const { theme } = useTheme();
@@ -327,6 +327,7 @@ const ReportPanel = ({ fullReport, visualData, symbol, isLoading, scrollToTopSig
                 content={fullReport}
                 visualData={visualData}
                 defaultSymbol={symbol || 'XAUUSD'}
+                forceLight={forceLight}
             />
         );
     };

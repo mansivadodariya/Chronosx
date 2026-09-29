@@ -1,0 +1,8 @@
+@use '../../scss/main.scss' as *;
+@use '../../scss/breakpoints/breakpoints.scss' as *;
+
+@import './styles/whiteLabelHero';
+@import './styles/whiteLabelCapabilities';
+@import './styles/whiteLabelAudience';
+@import './styles/whiteLabelCustomization';
+@import './styles/whiteLabelTimelineFaq';

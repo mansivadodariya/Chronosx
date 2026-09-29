@@ -174,6 +174,18 @@ async function executeRequest(path, options = {}, _isRetry = false) {
             errorMessage = data?.detail?.message || data?.message || (typeof data?.detail === 'string' ? data.detail : null) || data?.error || 'Something went wrong';
         }
 
+        if (typeof errorMessage === 'string') {
+            const lower = errorMessage.toLowerCase().trim();
+            if (
+                lower.includes('account is not active') ||
+                lower.includes('account is inactive') ||
+                lower === 'account not active' ||
+                lower === 'account is not active.'
+            ) {
+                errorMessage = 'Account is not active. Please contact admin.';
+            }
+        }
+
         const err = new Error(errorMessage);
         err.detail = data?.detail;
         err.status = res.status;

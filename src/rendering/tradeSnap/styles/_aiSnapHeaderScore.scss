@@ -29,9 +29,8 @@
     :global([data-theme='light']) &,
     :global(html.light) &,
     :global(.light) &,
-    &.pdfExportLight,
     :global(.pdfExportLight) &,
-    :global(.pdfExporting) & {
+    :global(.pdfExportContainer) & {
         // Theme Variables - LIGHT MODE
         --card-bg: #FFFFFF;
         --card-border: rgba(15, 23, 42, 0.12);
@@ -42,7 +41,7 @@
         --text-primary: #0F172A;
         --text-muted: #475569;
         --text-faint: #64748B;
-        --wrapper-bg: #F8FAFC;
+        --wrapper-bg: #FFFFFF;
         --wrapper-border: rgba(15, 23, 42, 0.1);
         --pill-bg: rgba(24, 201, 139, 0.12);
         --pill-border: rgba(24, 201, 139, 0.35);
@@ -57,7 +56,13 @@
         --tp-card-border: rgba(16, 185, 129, 0.35);
     }
 
-    :global(.pdfExporting) & {
+    :global(.pdfExportLight) &,
+    :global(.pdfExportContainer) & {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+
         .downloadPdfBtn {
             display: none !important;
         }
@@ -369,6 +374,38 @@
     height: auto;
     max-height: 155px;
     overflow: visible;
+
+    .gaugeNeedleLine {
+        stroke: var(--gauge-needle, #FFFFFF);
+    }
+
+    .gaugeNeedleTip {
+        fill: var(--gauge-needle, #FFFFFF);
+    }
+
+    .gaugePivotDot {
+        fill: var(--gauge-needle, #FFFFFF);
+    }
+
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(html.light) &,
+    :global(.light) &,
+    :global(.pdfExportLight) &,
+    :global(.pdfExportContainer) & {
+        .gaugeNeedleLine {
+            stroke: #0F172A !important;
+            filter: drop-shadow(0 0 2px rgba(15, 23, 42, 0.3)) !important;
+        }
+
+        .gaugeNeedleTip {
+            fill: #0F172A !important;
+        }
+
+        .gaugePivotDot {
+            fill: #0F172A !important;
+        }
+    }
 }
 
 .gaugeCenterText {
@@ -430,4 +467,4 @@
         color: var(--code-color);
     }
 }
-
+

@@ -33,7 +33,16 @@
     "getStarted": "Memulai",
     "logout": "Keluar",
     "dashboard": "Dasbor",
-    "affiliate": "Afiliasi"
+    "affiliate": "Afiliasi",
+    "predefinedStrategies": "Predefined Strategies",
+    "education": "Education",
+    "aiTradingBot": "AI Trading Bot",
+    "myBots": "My Bots",
+    "aiBotBuilder": "AI Bot Builder",
+    "customBotBuilder": "Custom Bot Builder",
+    "botLibrary": "Browse Bots Library",
+    "strategyStudio": "AI Bot Builder",
+    "landingPage": "Halaman Utama"
   },
   "topbar": {
     "credits": "kredit",
@@ -227,7 +236,8 @@
     "desktopRequiredDesc": "Berbagi layar tidak didukung di Safari seluler atau perangkat iOS. Silakan buka di desktop Chrome, Edge, atau Mac Safari.",
     "scannerTitle": "Pemindai Grafik Langsung AI",
     "scannerDesc": "Bagikan layar grafik langsung Anda atau ambil cuplikan untuk mendapatkan analisis teknis AI, level kunci, dan pengaturan perdagangan real-time.",
-    "history": "Sejarah"
+    "history": "Sejarah",
+    "pleaseAddGraphScreenshot": "Harap unggah tangkapan layar grafik terlebih dahulu untuk memulai analisis AI."
   },
   "aiChat": {
     "heroBadge": "COPILOT KUANT INSTITUSIONAL 24/7",
@@ -587,7 +597,10 @@
     "openCalculators": "Buka Kalkulator",
     "toolEconomicCalendar": "Kalender Ekonomi",
     "viewCalendar": "Lihat Kalender",
-    "type": "Ketik"
+    "type": "Ketik",
+    "withdrawableBalance": "Saldo yang Dapat Ditarik",
+    "withdrawableBalanceDesc": "Dana yang tersedia untuk ditarik dari akun Anda",
+    "viewWallet": "Lihat Dompet"
   },
   "creditHistory": {
     "title": "Riwayat Kredit",
@@ -736,7 +749,28 @@
     "changePassword": "Ubah Kata Sandi",
     "paymentHistory": "Riwayat Pembayaran",
     "mySettings": "Pengaturan",
-    "settingsSubtitle": "Kelola profil pribadi Anda, pengaturan keamanan, dan preferensi akun"
+    "settingsSubtitle": "Kelola profil pribadi Anda, pengaturan keamanan, dan preferensi akun",
+    "preferences": "Preferensi",
+    "preferencesTitle": "Preferensi Pengguna & Antarmuka",
+    "preferencesDesc": "Sesuaikan tema, bahasa, zona waktu, mata uang tampilan, dan notifikasi.",
+    "themeSettings": "Pengaturan Tema",
+    "themeDesc": "Pilih antara mode gelap cyber dan mode terang kontras tinggi.",
+    "darkMode": "Mode Gelap",
+    "darkThemeSub": "Tema gelap kontras tinggi dengan aksen neon",
+    "lightMode": "Mode Terang",
+    "lightThemeSub": "Tema terang yang bersih dan ramah mata",
+    "languageSettings": "Pengaturan Bahasa",
+    "languageDesc": "Pilih bahasa antarmuka utama untuk ChronosX.",
+    "additionalPref": "Preferensi Tambahan",
+    "additionalPrefDesc": "Konfigurasi zona waktu default, mata uang, dan suara peringatan.",
+    "defaultTz": "Zona Waktu Default",
+    "defaultTzSub": "Sinkronkan grafik lilin dan stempel waktu sinyal",
+    "displayCurrency": "Mata Uang Tampilan",
+    "displayCurrencySub": "Mata uang yang digunakan untuk saldo dan kalkulasi P&L",
+    "soundEffects": "Efek Suara",
+    "soundEffectsSub": "Putar peringatan audio saat ada sinyal trading baru",
+    "emailReports": "Laporan Email",
+    "emailReportsSub": "Terima ringkasan performa trading dan bot mingguan"
   },
   "auth": {
     "loginTitle": "Masuk ke ChronosX",
@@ -1094,6 +1128,41 @@
       "title1": "Seorang Analis Institusional",
       "title2": "Di Sudut Anda.",
       "description": "Ajukan pertanyaan, jelajahi konteks makro, dan uji hipotesis perdagangan dengan kopilot AI yang dilatih secara eksklusif pada logika Forex kuantitatif."
+    },
+    "aiCockpit": {
+      "tabOverview": "Overview",
+      "tabDeep": "Deep Analysis",
+      "tabTools": "Trading Tools",
+      "card1Title": "AI Chart Scanner",
+      "card1Sub": "Pattern Vision & Heat Detection",
+      "card1Badge": "ACTIVE",
+      "scoreVal": "STRONG BUY",
+      "scoreBadge": "LIVE",
+      "verdictText": "Bullish Breakout",
+      "confidenceBadge": "HIGH CONVICTION",
+      "sliderMin": "SCALPING",
+      "sliderCenter": "SIGNAL CONVICTION",
+      "sliderMax": "SWING",
+      "card2Title": "AI Strategy Engine",
+      "card2Sub": "MT5 Institutional Execution",
+      "card2Badge": "OPTIMIZED",
+      "rankVal": "ORDER BLOCK",
+      "rankSub": "LIQUIDITY SWEEP",
+      "topPerformer": "TOP STRATEGY PERFORMER",
+      "col1Label": "AI CHART SCANNER",
+      "col1Badge": "VISION AI",
+      "col1Val": "Liquidity Sweep",
+      "col1Sub": "Fair Value Gap Breached",
+      "col2Label": "MT5 BROKER BRIDGE",
+      "col2Badge": "ZERO LAG",
+      "col2Val": "Instant Execution",
+      "col2Sub": "Institutional Raw Spreads",
+      "col3Label": "AI TRADING SIGNAL",
+      "col3Badge": "CONFIRMED",
+      "col3Val": "Strong Buy Setup",
+      "col3Sub": "Multi-Timeframe Confluence",
+      "footerLive": "AI STREAM ACTIVE · REAL-TIME WEBSOCKET",
+      "footerFeed": "CHRONOSX AI TERMINAL · ZERO-LATENCY"
     }
   },
   "aiTrade": {

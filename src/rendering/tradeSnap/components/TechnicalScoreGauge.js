@@ -166,6 +166,7 @@ export default function TechnicalScoreGauge({ technicalScore, marketAssessment }
 
                     {/* Animated Needle with attached pivot pin - perfectly centered at (140, 118) */}
                     <g
+                        className={styles.gaugeNeedleGroup}
                         transform={`translate(140, 118) rotate(${angle})`}
                         style={{
                             transition: 'transform 1.2s cubic-bezier(0.25, 1, 0.5, 1)',
@@ -181,6 +182,7 @@ export default function TechnicalScoreGauge({ technicalScore, marketAssessment }
                             y1="0"
                             x2="0"
                             y2="-64"
+                            className={styles.gaugeNeedleLine}
                             stroke={needleColor}
                             strokeWidth="2.8"
                             strokeLinecap="round"
@@ -189,6 +191,7 @@ export default function TechnicalScoreGauge({ technicalScore, marketAssessment }
                         {/* Sleek needle tip pointer */}
                         <polygon
                             points="-3,-10 3,-10 0,-65"
+                            className={styles.gaugeNeedleTip}
                             fill={needleColor}
                         />
                         {/* Attached Center Pivot Dot */}
@@ -203,6 +206,7 @@ export default function TechnicalScoreGauge({ technicalScore, marketAssessment }
                             cx="0"
                             cy="0"
                             r="2.5"
+                            className={styles.gaugePivotDot}
                             fill={isDark ? '#FFFFFF' : '#0F172A'}
                         />
                     </g>

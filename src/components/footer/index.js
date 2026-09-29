@@ -133,6 +133,7 @@ export default function Footer() {
               <li><Link href="/market-news">{t('header.company.news.title', 'Market News')}</Link></li>
               <li><Link href="/forex-calculator">{t('header.company.forexCalculator.title', 'Forex Calculator')}</Link></li>
               <li><Link href="/economic-calendar">{t('header.company.economicCalendar.title', 'Economic Calendar')}</Link></li>
+              <li><Link href="/white-label">{t('footer.whiteLabel', 'White Label')}</Link></li>
               <li><Link href="/contact-us">{t('footer.contactUs', 'Contact Us')}</Link></li>
             </ul>
           </div>

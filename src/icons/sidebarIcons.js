@@ -239,6 +239,12 @@ export const BacktestIcon = ({ width = 20, height = 20, className = '', ...props
     </svg>
 );
 
+export const LandingHomeIcon = ({ width = 20, height = 20, className = '', ...props }) => (
+    <svg width={width} height={height} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} style={{ flexShrink: 0 }} {...props}>
+        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z" />
+    </svg>
+);
+
 
 
 

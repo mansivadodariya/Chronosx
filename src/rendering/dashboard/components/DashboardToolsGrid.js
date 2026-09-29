@@ -38,19 +38,19 @@ export default function DashboardToolsGrid() {
     }, []);
 
     const tools = useMemo(() => [
-        {
-            id: 'strategyStudio',
-            title: t('dashboard.toolStrategyStudio', 'AI Bot Builder'),
-            desc: t('dashboard.strategyStudioDesc', 'Conversational strategy builder & algorithmic backtester'),
-            badge: 'QUANT LAB',
-            cta: t('dashboard.launchStudio', 'Launch Builder'),
-            href: '/ai-bot-builder',
-            icon: (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                </svg>
-            )
-        },
+        // {
+        //     id: 'strategyStudio',
+        //     title: t('dashboard.toolStrategyStudio', 'AI Bot Builder'),
+        //     desc: t('dashboard.strategyStudioDesc', 'Conversational strategy builder & algorithmic backtester'),
+        //     badge: 'QUANT LAB',
+        //     cta: t('dashboard.launchStudio', 'Launch Builder'),
+        //     href: '/ai-bot-builder',
+        //     icon: (
+        //         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        //             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        //         </svg>
+        //     )
+        // },
         {
             id: 'terminal',
             title: t('dashboard.toolLiveScanner', 'Signal Terminal'),
@@ -138,9 +138,9 @@ export default function DashboardToolsGrid() {
     const displayedTools = useMemo(() => {
         if (!visibleTabNames || visibleTabNames.size === 0) return tools;
         return tools.filter(tool => {
-            if (tool.id === 'strategyStudio' || tool.href === '/ai-bot-builder') {
-                return visibleTabNames.has('ai bot builder');
-            }
+            // if (tool.id === 'strategyStudio' || tool.href === '/ai-bot-builder') {
+            //     return visibleTabNames.has('ai bot builder');
+            // }
             if (tool.id === 'terminal' || tool.href === '/signal-terminal') {
                 return visibleTabNames.has('signal terminal');
             }

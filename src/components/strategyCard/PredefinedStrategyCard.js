@@ -226,6 +226,7 @@ export default function PredefinedStrategyCard({ strategy, isLight: isLightProp,
             if (typeof window !== 'undefined') {
                 sessionStorage.setItem('pending_backtest_run', JSON.stringify({
                     strategy_id: stratId,
+                    name: strategyName,
                     source: 'trading_strategies',
                     symbol: stratSymbol,
                     interval: stratInterval,
@@ -239,7 +240,7 @@ export default function PredefinedStrategyCard({ strategy, isLight: isLightProp,
             }
         } catch (_) {}
 
-        router.push(`/backtest?strategy_id=${encodeURIComponent(stratId)}&source=trading_strategies`);
+        router.push(`/backtest?strategy_id=${encodeURIComponent(stratId)}&name=${encodeURIComponent(strategyName)}&source=trading_strategies`);
     };
 
     return (
@@ -354,6 +355,7 @@ export default function PredefinedStrategyCard({ strategy, isLight: isLightProp,
                     className={styles.btnRunBacktest}
                     onClick={handleRunBacktest}
                     title="Run Backtest on /backtest"
+                    disabled
                 >
                     <RocketIcon />
                     <span>Run Backtest</span>

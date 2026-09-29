@@ -1,0 +1,391 @@
+/* ============================================================
+   06 & 14 — YOUR BRAND, YOUR PLATFORM & CUSTOMIZATION
+   ============================================================ */
+.customizationSection {
+    padding: 80px 0;
+    position: relative;
+
+    @include respond-to('md') {
+        padding: 60px 0;
+    }
+}
+
+.customizationSplitGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+
+    @include respond-to('lg') {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+}
+
+.customizationTextCol {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.customizationPointsList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 10px;
+}
+
+.customizationPointItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(13, 14, 19, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.25s ease;
+
+    &:hover {
+        border-color: rgba(24, 201, 139, 0.35);
+        background: rgba(24, 201, 139, 0.03);
+    }
+
+    .pointIconWrap {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        background: rgba(24, 201, 139, 0.12);
+        color: #18C98B;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .pointContent {
+        h4 {
+            font-size: 15.5px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin: 0 0 4px 0;
+        }
+
+        p {
+            font-size: 13px;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.65);
+            margin: 0;
+        }
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.1);
+
+        .pointContent {
+            h4 {
+                color: #0F172A;
+            }
+
+            p {
+                color: #64748B;
+            }
+        }
+    }
+}
+
+/* Interactive Brand Simulator Widget */
+.brandSimulatorCard {
+    background: #0D0E13;
+    border: 1px solid rgba(24, 201, 139, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(24, 201, 139, 0.1);
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.12);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+}
+
+.simulatorTopRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    .simulatorTitle {
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #18C98B;
+    }
+}
+
+.brandControlsRow {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.brandThemeBtn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11.5px;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.activeTheme {
+        border-color: #18C98B;
+        background: rgba(24, 201, 139, 0.15);
+        color: #18C98B;
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        border-color: rgba(15, 23, 42, 0.15);
+        background: #F1F5F9;
+        color: #475569;
+
+        &.activeTheme {
+            border-color: #18C98B;
+            background: #F0FDF4;
+            color: #047857;
+        }
+    }
+}
+
+/* Simulated Live Terminal Preview */
+.simulatedTerminal {
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    background: #060706;
+    transition: all 0.3s ease;
+
+    &.themeCyan {
+        --accent-sim: #38BDF8;
+    }
+
+    &.themeGold {
+        --accent-sim: #F59E0B;
+    }
+
+    &.themeEmerald {
+        --accent-sim: #18C98B;
+    }
+}
+
+.simTerminalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    .simBrandLogo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 800;
+        font-size: 13px;
+        color: #FFFFFF;
+
+        .logoIconBox {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            background: var(--accent-sim, #18C98B);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 10px;
+            font-weight: 900;
+        }
+    }
+
+    .simNavLinks {
+        display: flex;
+        gap: 12px;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.5);
+
+        span.activeLink {
+            color: var(--accent-sim, #18C98B);
+            font-weight: 700;
+        }
+    }
+}
+
+.simTerminalBody {
+    padding: 16px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 14px;
+
+    @include respond-to('sm') {
+        grid-template-columns: 1fr;
+    }
+}
+
+.simChartBox {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 12px;
+
+    .simChartTitle {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        font-weight: 700;
+        color: #FFFFFF;
+        margin-bottom: 8px;
+
+        span {
+            color: var(--accent-sim, #18C98B);
+        }
+    }
+
+    .simCandleSvg {
+        width: 100%;
+        height: 90px;
+    }
+}
+
+.simScoreBox {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    .simScoreVal {
+        font-size: 26px;
+        font-weight: 800;
+        color: var(--accent-sim, #18C98B);
+        font-family: monospace;
+    }
+
+    .simScoreTag {
+        font-size: 10px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.6);
+        text-transform: uppercase;
+    }
+}
+
+/* ============================================================
+   11 — WHITE-LABEL ADVANTAGE & INSTITUTIONAL GRADE
+   ============================================================ */
+.advantageSection {
+    padding: 80px 0;
+    position: relative;
+
+    @include respond-to('md') {
+        padding: 60px 0;
+    }
+}
+
+.advantageSplitRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+
+    @include respond-to('lg') {
+        grid-template-columns: 1fr;
+    }
+}
+
+.advantageBox {
+    background: rgba(13, 14, 19, 0.75);
+    border: 1px solid rgba(24, 201, 139, 0.22);
+    border-radius: 16px;
+    padding: 32px;
+    backdrop-filter: blur(12px);
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.12);
+    }
+}
+
+.advantagePillGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 24px;
+
+    @include respond-to('sm') {
+        grid-template-columns: 1fr;
+    }
+}
+
+.advantagePillItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    .pillIcon {
+        color: #18C98B;
+        flex-shrink: 0;
+    }
+
+    h5 {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: #FFFFFF;
+        margin: 0 0 2px 0;
+    }
+
+    p {
+        font-size: 11.5px;
+        color: rgba(255, 255, 255, 0.6);
+        margin: 0;
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        background: #F8FAFC;
+        border-color: rgba(15, 23, 42, 0.08);
+
+        h5 {
+            color: #0F172A;
+        }
+
+        p {
+            color: #64748B;
+        }
+    }
+}
