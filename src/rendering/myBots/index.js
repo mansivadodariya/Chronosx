@@ -14,7 +14,6 @@ import DeleteBotModal from './components/DeleteBotModal';
 import StrategyDetailModal from './components/StrategyDetailModal';
 
 const BACKEND_BASE = (
-    process.env.NEXT_PUBLIC_BACKTEST_API_URL ||
     process.env.NEXT_PUBLIC_BACKEND_URL ||
     'http://192.168.0.153:8000'
 ).replace(/\/+$/, '');

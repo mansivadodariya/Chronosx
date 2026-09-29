@@ -125,12 +125,12 @@ export default function PageLoader() {
                         </div>
 
                         {/* Text Information */}
-                        <h4 className={styles.loaderTitle}>Loading...</h4>
+                        {/* <h4 className={styles.loaderTitle}>Loading...</h4> */}
 
                         {/* Scanning Progress Laser Track */}
-                        <div className={styles.progressTrack}>
+                        {/* <div className={styles.progressTrack}>
                             <div className={styles.progressLaser} />
-                        </div>
+                        </div> */}
                     </motion.div>
                 </motion.div>
             )}
