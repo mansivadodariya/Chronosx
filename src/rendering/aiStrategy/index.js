@@ -120,7 +120,11 @@ export default function AiStrategy({ initialTab = 'live' }) {
                 if (!res.ok) throw new Error('Failed to fetch strategies');
                 const data = await res.json();
                 const list = Array.isArray(data) ? data : (data.strategies || data.data || []);
-                const effectiveList = list.length > 0 ? list : [
+                const pullbackList = list.filter(st => {
+                    const text = `${st.name || ''} ${st.title || ''} ${st.strategy_name || ''} ${st.description || ''}`.toLowerCase();
+                    return text.includes('pullback') || text.includes('ema pullback');
+                });
+                const effectiveList = pullbackList.length > 0 ? pullbackList : [
                     { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback Strategy', description: 'Trend Following EMA Pullback' }
                 ];
                 setStrategies(effectiveList);
