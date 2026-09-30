@@ -141,7 +141,7 @@ export default function Header() {
 
     const tradingToolsDropdownItems = useMemo(() => [
         {
-            label: t('header.tradingTools.tradeAudit.title', 'AI Past Trade Analyzer'),
+            label: t('header.tradingTools.tradeAudit.title', 'AI Trade Advisor'),
             desc: t('header.tradingTools.tradeAudit.desc', 'Review historical trading data to evaluate performance, pinpoint mistakes, and track win rates.'),
             href: '/ai-trade-advisor',
             badge: t('header.tradingTools.tradeAudit.badge', 'AI ADVISOR'),

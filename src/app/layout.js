@@ -42,22 +42,9 @@ export const metadata = {
     template: "%s | ChronosX"
   },
   description: "Next-gen AI trading platform providing real-time AI trading signals, instant neural chart pattern recognition, and multi-market insights across Forex, Stocks, and Commodities.",
-  keywords: [
-    "AI Forex Trading",
-    "MT5 Trading Bot",
-    "Algorithmic Trading Signals",
-    "Forex AI Copilot",
-    "ChronosX",
-    "Neural Chart Pattern Recognition",
-    "Live Forex Analysis",
-    "Automated OCR Chart Vision",
-    "Institutional Trading Desk",
-    "Gold Trading Signals",
-    "XAUUSD AI Analysis"
-  ],
-  authors: [{ name: "ChronosX AI Technologies", url: "https://chronosx.com" }],
-  creator: "ChronosX",
-  publisher: "ChronosX",
+  authors: [{ name: "ChronosX Financial Technologies FZ-LLC", url: "https://chronosx.com" }],
+  creator: "ChronosX Financial Technologies FZ-LLC",
+  publisher: "ChronosX Financial Technologies FZ-LLC",
   category: "Finance & Trading Technology",
   robots: {
     index: true,
@@ -94,8 +81,8 @@ export const metadata = {
     title: "ChronosX — Next-Gen AI Trading Platform & Intelligence Desk",
     description: "Trade smarter with AI that never sleeps. Real-time AI trading signals, instant neural chart insights, and algorithmic market analysis.",
     images: ["/assets/logo/logo.png"],
-    creator: "@ChronosX",
-    site: "@ChronosX",
+    creator: "@ChronosX_AI",
+    site: "@ChronosX_AI",
   },
   icons: {
     icon: [
@@ -111,9 +98,53 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://chronosx.com/#organization",
+        "name": "ChronosX Financial Technologies FZ-LLC",
+        "alternateName": "ChronosX AI Trading Platform",
+        "url": "https://chronosx.com",
+        "logo": "https://chronosx.com/assets/logo/logo.png",
+        "description": "ChronosX is a financial technology software provider delivering non-custodial AI market intelligence, neural chart pattern recognition, and quantitative trading signals.",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Dubai Silicon Oasis, IFZA Business Park, Building A1",
+          "addressLocality": "Dubai",
+          "addressCountry": "AE"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "support@chronosx.com",
+          "contactType": "customer support"
+        },
+        "sameAs": [
+          "https://x.com/ChronosX_AI",
+          "https://t.me/ChronosX_Official",
+          "https://youtube.com/@ChronosX_AI",
+          "https://instagram.com/chronosx.ai"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://chronosx.com/#website",
+        "url": "https://chronosx.com",
+        "name": "ChronosX",
+        "publisher": { "@id": "https://chronosx.com/#organization" }
+      }
+    ]
+  };
+
   return (
     <html lang="en" className={`${antonSans.variable} ${robotoSans.variable} ${plusSans.variable}`} suppressHydrationWarning>
       <body suppressHydrationWarning>
+        <script
+          id="organization-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <script
           id="theme-initializer"
           dangerouslySetInnerHTML={{

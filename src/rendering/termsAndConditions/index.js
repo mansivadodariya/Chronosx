@@ -12,7 +12,7 @@ export default function TermsAndConditions() {
                 <div className={styles.content}>
                     <section>
                         <h2>Acceptance of Terms</h2>
-                        <p>These Terms and Conditions constitute a legally binding agreement between you and ChronosX governing your access to and use of our website, applications, AI-powered services, trading tools, educational resources, market analysis features, economic calendar services, and related products. By accessing or using ChronosX, you acknowledge that you have read, understood, and agreed to be bound by these Terms and Conditions.</p>
+                        <p>These Terms and Conditions constitute a legally binding agreement between you and ChronosX Financial Technologies FZ-LLC ("ChronosX", registered in Dubai Silicon Oasis, IFZA Business Park, Building A1, Dubai, UAE, Reg No: FZ-LLC-2024-CX8901) governing your access to and use of our website, applications, AI-powered services, trading tools, educational resources, market analysis features, economic calendar services, and related products. By accessing or using ChronosX, you acknowledge that you have read, understood, and agreed to be bound by these Terms and Conditions.</p>
                     </section>
 
                     <section>
@@ -96,8 +96,11 @@ export default function TermsAndConditions() {
                     </section>
 
                     <section>
-                        <h2>Contact Information</h2>
+                        <h2>Contact Information & Registered Office</h2>
                         <p>For legal inquiries, questions regarding these Terms and Conditions, or requests related to the platform, please contact:</p>
+                        <p><strong>Entity:</strong> ChronosX Financial Technologies FZ-LLC</p>
+                        <p><strong>Address:</strong> Dubai Silicon Oasis, IFZA Business Park, Building A1, Dubai, United Arab Emirates (UAE)</p>
+                        <p><strong>Registration No:</strong> FZ-LLC-2024-CX8901</p>
                         <p><strong>Email:</strong> <a href="mailto:support@chronosx.com">support@chronosx.com</a></p>
                     </section>
 

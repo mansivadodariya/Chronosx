@@ -4,21 +4,11 @@ export const metadata = {
     title: "AI Trading Signal — Algorithmic Playbooks & Strategy Engine | ChronosX",
     description:
         "Select custom algorithmic strategies, explore high-conviction quantitative rule playbooks, and execute data-backed trades with multi-factor confluence.",
-    keywords: [
-        "AI Trading Signal",
-        "Trading Signal",
-        "Strategy Hub",
-        "AI Strategy",
-        "Algorithmic Playbooks",
-        "Quantitative Strategy Engine",
-        "MetaTrader 5 Strategies",
-        "ChronosX Trading Signal"
-    ],
     openGraph: {
         title: "AI Trading Signal — Algorithmic Playbooks & Strategy Engine | ChronosX",
         description:
             "Select custom algorithmic strategies and deploy institutional rule playbooks with multi-factor confluence.",
-        url: "https://chronosx.com/ai-strategy-hub",
+        url: "https://chronosx.com/ai-trading-signal",
         siteName: "ChronosX",
         images: [
             {
@@ -39,7 +29,7 @@ export const metadata = {
         images: ["/assets/images/ai-strategy.png"]
     },
     alternates: {
-        canonical: "https://chronosx.com/ai-strategy-hub"
+        canonical: "https://chronosx.com/ai-trading-signal"
     }
 };
 

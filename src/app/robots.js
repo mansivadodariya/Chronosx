@@ -5,8 +5,8 @@ export default function robots() {
         rules: [
             {
                 userAgent: '*',
-                allow: ['/', '/privacy-policy', '/terms-and-conditions', '/risk-disclosure', '/plans', '/capabilities'],
-                disallow: ['/api/', '/dashboard', '/chart-scanner', '/trade-advisor', '/trade-audit', '/market-assistant', '/signal-terminal', '/live-scanner', '/strategy-core', '/trading-signal', '/ai-trading-signal', '/strategy-signal', '/strategy-hub', '/forex-calculator', '/economic-calendar', '/profile', '/credit-history'],
+                allow: '/',
+                disallow: ['/api/', '/dashboard/', '/profile/', '/credit-history/', '/onboarding/'],
             },
         ],
         sitemap: `${baseUrl}/sitemap.xml`,

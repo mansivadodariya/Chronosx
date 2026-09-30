@@ -2,7 +2,7 @@
   "nav": {
     "home": "Home",
     "chartScanner": "AI Chart Scanner",
-    "tradeAudit": "AI Past Trade Analyzer",
+    "tradeAudit": "AI Trade Advisor",
     "marketAssistant": "AI Market Assistant",
     "liveMarketScanner": "Signal Terminal",
     "strategyHub": "AI Trading Signal",
@@ -18,7 +18,7 @@
     "liveAnalysis": "Signal Terminal",
     "liveMarketAnalysis": "Signal Terminal",
     "strategyEnginePlaybooks": "Strategy Signal",
-    "aiTradeAnalysis": "AI Past Trade Analyzer",
+    "aiTradeAnalysis": "AI Trade Advisor",
     "tools": "Tools",
     "economicCalendar": "Economic Calendar",
     "forexCalculator": "Forex Calculator",

@@ -4,18 +4,6 @@ export const metadata = {
     title: "AI Trading Signal — Algorithmic Playbooks & Strategy Engine",
     description:
         "Select custom algorithmic strategies, explore high-conviction quantitative rule playbooks, and execute data-backed trades with multi-factor confluence.",
-    keywords: [
-        "AI Trading Signal",
-        "Trading Signal",
-        "AI Strategy Core",
-        "Strategy Core",
-        "Strategy Hub",
-        "AI Strategy",
-        "Algorithmic Playbooks",
-        "Quantitative Strategy Engine",
-        "MetaTrader 5 Strategies",
-        "ChronosX Trading Signal"
-    ],
     openGraph: {
         title: "AI Trading Signal — Algorithmic Playbooks & Strategy Engine | ChronosX",
         description:

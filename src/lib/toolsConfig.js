@@ -14,11 +14,11 @@ export const ROUTE_TAB_MAP = {
   '/chart-scanner': 'AI Chart Scanner',
   '/ai-chart-scanner': 'AI Chart Scanner',
 
-  // AI Past Trade Analyzer
-  '/trade-audit': 'AI Past Trade Analyzer',
-  '/ai-trade-audit': 'AI Past Trade Analyzer',
-  '/trade-advisor': 'AI Past Trade Analyzer',
-  '/ai-trade-advisor': 'AI Past Trade Analyzer',
+  // AI Trade Advisor
+  '/trade-audit': 'AI Trade Advisor',
+  '/ai-trade-audit': 'AI Trade Advisor',
+  '/trade-advisor': 'AI Trade Advisor',
+  '/ai-trade-advisor': 'AI Trade Advisor',
 
   // AI Trading Bot Suite
   '/my-bots': 'My Bots',

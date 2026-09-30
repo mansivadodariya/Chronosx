@@ -4,16 +4,6 @@ export const metadata = {
     title: "Signal Terminal — Real-Time Algorithmic Market Signals | ChronosX",
     description:
         "Experience real-time institutional FX and Crypto intelligence. Track live 100-point Technical Scores across major pairs, momentum breakouts, and algorithmic alerts.",
-    keywords: [
-        "Signal Terminal",
-        "Live Market Scanner",
-        "Market Scanner",
-        "Live Forex Analysis",
-        "100-Point Technical Score",
-        "Algorithmic FX Signals",
-        "Breakout Scanner",
-        "ChronosX Signal Terminal"
-    ],
     openGraph: {
         title: "Signal Terminal — Real-Time Breakout Signals & Technical Scoring | ChronosX",
         description:
