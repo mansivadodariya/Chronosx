@@ -1,5 +1,21 @@
 'use client';
-import hotToast, { Toaster } from 'react-hot-toast';
+import React, { useEffect } from 'react';
+import hotToast, { Toaster, useToasterStore } from 'react-hot-toast';
+
+// Single Toast Limiter Component: strictly enforces max 1 visible toast globally
+function ToastLimiter() {
+    const { toasts } = useToasterStore();
+    const TOAST_LIMIT = 1;
+
+    useEffect(() => {
+        toasts
+            .filter((t) => t.visible)
+            .filter((_, i) => i >= TOAST_LIMIT)
+            .forEach((t) => hotToast.dismiss(t.id));
+    }, [toasts]);
+
+    return null;
+}
 
 // Single Toast Wrapper (Ensures ONLY ONE toast is displayed at a time)
 const singleToast = (message, options) => {
@@ -45,7 +61,9 @@ export { singleToast as toast };
 export function ToastProvider({ children }) {
     return (
         <>
+            <ToastLimiter />
             {children}
+
             <Toaster
                 position="bottom-right"
                 reverseOrder={false}

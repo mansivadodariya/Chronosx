@@ -111,39 +111,101 @@ export function useTradeSnapExport() {
                         clonedDoc.querySelectorAll('[class*="gaugeNeedleGroup"]').forEach((g) => {
                             g.style.color = '#0F172A';
                         });
+                        // 7. Inject dedicated print/PDF page-break styles into cloned document
+                        const styleEl = clonedDoc.createElement('style');
+                        styleEl.innerHTML = `
+                            @media all {
+                                tr {
+                                    page-break-inside: avoid !important;
+                                    break-inside: avoid !important;
+                                    break-inside: avoid-page !important;
+                                    display: table-row !important;
+                                }
+                                td, th {
+                                    page-break-inside: avoid !important;
+                                    break-inside: avoid !important;
+                                }
+                                table {
+                                    page-break-inside: auto !important;
+                                    break-inside: auto !important;
+                                    border-collapse: collapse !important;
+                                }
+                                thead {
+                                    display: table-header-group !important;
+                                }
+                                tbody {
+                                    display: table-row-group !important;
+                                }
+                                .pdfBreakdownBlock, [class*="pdfBreakdownBlock"] {
+                                    page-break-inside: avoid !important;
+                                    break-inside: avoid !important;
+                                    break-inside: avoid-page !important;
+                                    margin-bottom: 16px !important;
+                                }
+                                .pdfSubHeading, [class*="pdfSubHeading"], h1, h2, h3, h4 {
+                                    page-break-after: avoid !important;
+                                    break-after: avoid !important;
+                                    break-after: avoid-page !important;
+                                }
+                                .technicalGaugeCard, [class*="technicalGaugeCard"],
+                                .bullBearHero, [class*="bullBearHero"],
+                                .heroBanner, [class*="heroBanner"],
+                                .tradeSignalSetupCard, [class*="tradeSignalSetupCard"],
+                                .patternsCard, [class*="patternsCard"],
+                                .riskFlagsCard, [class*="riskFlagsCard"],
+                                .summaryHeaderGrid, [class*="summaryHeaderGrid"] {
+                                    page-break-inside: avoid !important;
+                                    break-inside: avoid !important;
+                                    break-inside: avoid-page !important;
+                                }
+                                .indicatorPivotSection, [class*="indicatorPivotSection"],
+                                .pdfFullBreakdown, [class*="pdfFullBreakdown"],
+                                .tableWrapper, [class*="tableWrapper"] {
+                                    page-break-inside: auto !important;
+                                    break-inside: auto !important;
+                                    overflow: visible !important;
+                                    max-height: none !important;
+                                    height: auto !important;
+                                }
+                            }
+                        `;
+                        clonedDoc.head.appendChild(styleEl);
+
+                        // 8. Explicitly apply inline avoid rules on all rows and cards
+                        clonedDoc.querySelectorAll('tr').forEach((row) => {
+                            row.style.setProperty('page-break-inside', 'avoid', 'important');
+                            row.style.setProperty('break-inside', 'avoid', 'important');
+                            row.style.setProperty('break-inside', 'avoid-page', 'important');
+                        });
+                        clonedDoc.querySelectorAll('.pdfBreakdownBlock, [class*="pdfBreakdownBlock"]').forEach((block) => {
+                            block.style.setProperty('page-break-inside', 'avoid', 'important');
+                            block.style.setProperty('break-inside', 'avoid', 'important');
+                            block.style.setProperty('break-inside', 'avoid-page', 'important');
+                        });
                     }
                 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
                 pagebreak: {
-                    mode: ['avoid-all', 'css', 'legacy'],
+                    mode: ['css', 'legacy'],
                     avoid: [
-                        '.topSplitRow',
-                        '.summaryHeaderGrid',
-                        '.technicalGaugeCard',
-                        '.bullBearHero',
-                        '.heroBanner',
-                        '.tradeSignalSetupCard',
-                        '.liveIndicatorsGrid',
-                        '.patternsCard',
-                        '.riskFlagsCard',
-                        '.indicatorPivotSection',
-                        '.pdfBreakdownBlock',
-                        '[class*="topSplitRow"]',
-                        '[class*="summaryHeaderGrid"]',
-                        '[class*="technicalGaugeCard"]',
-                        '[class*="bullBearHero"]',
-                        '[class*="heroBanner"]',
-                        '[class*="tradeSignalSetupCard"]',
-                        '[class*="liveIndicatorsGrid"]',
-                        '[class*="patternsCard"]',
-                        '[class*="riskFlagsCard"]',
-                        '[class*="indicatorPivotSection"]',
-                        '[class*="pdfBreakdownBlock"]',
-                        'table',
                         'tr',
-                        'figure',
+                        '.pdfBreakdownBlock',
+                        '[class*="pdfBreakdownBlock"]',
+                        '.technicalGaugeCard',
+                        '[class*="technicalGaugeCard"]',
+                        '.tradeSignalSetupCard',
+                        '[class*="tradeSignalSetupCard"]',
+                        '.patternsCard',
+                        '[class*="patternsCard"]',
+                        '.riskFlagsCard',
+                        '[class*="riskFlagsCard"]',
+                        '.bullBearHero',
+                        '[class*="bullBearHero"]',
+                        '.heroBanner',
+                        '[class*="heroBanner"]',
                         'svg',
-                        'canvas'
+                        'canvas',
+                        'figure'
                     ]
                 }
             };

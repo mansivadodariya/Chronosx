@@ -496,3 +496,121 @@
     }
 }
 
+
+
+/* Search / Filter Empty State */
+.noResultsBox {
+    background: #0C100E;
+    border: 1px dashed rgba(24, 201, 139, 0.25);
+    border-radius: 16px;
+    padding: 48px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px;
+
+    :global(html.light) &,
+    [data-theme='light'] & {
+        background: #F8FAFC;
+        border-color: rgba(0, 0, 0, 0.12);
+    }
+}
+
+.noResultsIcon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(24, 201, 139, 0.08);
+    border: 1px solid rgba(24, 201, 139, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    color: #18C98B;
+
+    :global(html.light) &,
+    [data-theme='light'] & {
+        background: rgba(5, 150, 105, 0.08);
+        border-color: rgba(5, 150, 105, 0.2);
+        color: #059669;
+    }
+}
+
+.noResultsTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.01em;
+
+    :global(html.light) &,
+    [data-theme='light'] & {
+        color: #0F172A;
+    }
+}
+
+.noResultsDesc {
+    font-size: 13px;
+    color: #94A3B8;
+    max-width: 420px;
+    margin: 0 0 20px 0;
+    line-height: 1.5;
+
+    strong {
+        color: #18C98B;
+        font-weight: 600;
+    }
+
+    :global(html.light) &,
+    [data-theme='light'] & {
+        color: #64748B;
+
+        strong {
+            color: #059669;
+        }
+    }
+}
+
+.noResultsActions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.clearSearchBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(24, 201, 139, 0.12);
+    border: 1px solid rgba(24, 201, 139, 0.3);
+    color: #18C98B;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(24, 201, 139, 0.22);
+        border-color: rgba(24, 201, 139, 0.5);
+        transform: translateY(-1px);
+    }
+
+    :global(html.light) &,
+    [data-theme='light'] & {
+        background: rgba(5, 150, 105, 0.1);
+        border-color: rgba(5, 150, 105, 0.3);
+        color: #059669;
+
+        &:hover {
+            background: rgba(5, 150, 105, 0.18);
+            border-color: rgba(5, 150, 105, 0.5);
+        }
+    }
+}

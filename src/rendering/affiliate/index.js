@@ -6,7 +6,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
 import { getStoredUser, getStoredUserId } from '@/lib/authSession';
 import { affiliateService } from '@/services/affiliateService';
-import toast from 'react-hot-toast';
+import { toast } from '@/components/toast';
 import styles from './affiliate.module.scss';
 import {
     UsersGroupIcon,

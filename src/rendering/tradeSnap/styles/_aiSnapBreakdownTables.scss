@@ -126,6 +126,16 @@
     }
 
     .breakdownTable {
+        page-break-inside: auto !important;
+        break-inside: auto !important;
+        border-collapse: collapse !important;
+
+        tr {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+            break-inside: avoid-page !important;
+        }
+
         th {
             background: #F8FAFC !important;
             color: #0F172A !important;
@@ -136,6 +146,8 @@
             background: #FFFFFF !important;
             color: #1E293B !important;
             border-bottom: 1px solid #E2E8F0 !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
         }
 
         .tableNameCell {
@@ -166,6 +178,8 @@
     gap: 8px;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
+    break-inside: avoid-page !important;
+    margin-bottom: 14px;
 }
 
 .pdfSubHeading {

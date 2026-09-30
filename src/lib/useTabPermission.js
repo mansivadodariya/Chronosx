@@ -7,11 +7,11 @@ let cachedVisibleTabs = null;
 let fetchPromise = null;
 const listeners = new Set();
 
-function normalizeTabName(name) {
+export function normalizeTabName(name) {
   return (name || '').toLowerCase().trim();
 }
 
-function checkPermissionInSet(set, tabName) {
+export function checkPermissionInSet(set, tabName) {
   if (!set || set.size === 0) return true;
   const target = normalizeTabName(tabName);
   
@@ -28,22 +28,43 @@ function checkPermissionInSet(set, tabName) {
   return set.has(target);
 }
 
+export function getVisibleTabNamesSync() {
+  if (cachedVisibleTabs) return cachedVisibleTabs;
+  if (typeof window !== 'undefined') {
+    try {
+      const stored = sessionStorage.getItem('visible_tab_names');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          cachedVisibleTabs = new Set(parsed.map(normalizeTabName));
+          return cachedVisibleTabs;
+        }
+      }
+    } catch { /* ignore */ }
+  }
+  return null;
+}
+
 export async function fetchVisibleTabNames() {
   if (cachedVisibleTabs) return cachedVisibleTabs;
+
+  if (typeof window !== 'undefined') {
+    try {
+      const stored = sessionStorage.getItem('visible_tab_names');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          cachedVisibleTabs = new Set(parsed.map(normalizeTabName));
+          return cachedVisibleTabs;
+        }
+      }
+    } catch { /* ignore */ }
+  }
+
   if (fetchPromise) return fetchPromise;
 
   fetchPromise = (async () => {
     try {
-      if (typeof window !== 'undefined') {
-        const stored = sessionStorage.getItem('visible_tab_names');
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            cachedVisibleTabs = new Set(parsed.map(normalizeTabName));
-          }
-        }
-      }
-
       if (supabase) {
         const { data, error } = await supabase.rpc('get_visible_dashboard_tabs');
         if (!error && Array.isArray(data)) {

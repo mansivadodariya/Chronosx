@@ -13,6 +13,7 @@ import { captureUtmParameters } from '@/lib/utm';
 import { getStoredUserId } from '@/lib/authSession';
 import { dashboardApi, neweraApi } from '@/lib/api';
 import { supabase } from '@/lib/supabaseClient';
+import { fetchVisibleTabNames, checkPermissionInSet } from '@/lib/useTabPermission';
 import './layout.scss';
 
 const NeweraCreditsModal = dynamic(() => import('@/components/neweraCreditsModal'), { ssr: false });
@@ -313,7 +314,6 @@ const layout = ({ children }) => {
 
     useEffect(() => {
         const checkPermission = async () => {
-            if (!supabase) return;
             const currentTabName = Object.entries(ROUTE_TAB_MAP).find(([route]) =>
                 pathname === route || (route !== '/' && pathname.startsWith(`${route}/`))
             )?.[1];
@@ -329,15 +329,15 @@ const layout = ({ children }) => {
             }
 
             try {
-                const { data, error } = await supabase.rpc('get_visible_dashboard_tabs');
-                if (!error && Array.isArray(data)) {
-                    const visibleNames = new Set(data.map(t => (t.name || '').toLowerCase().trim()));
+                const visibleNames = await fetchVisibleTabNames();
+                if (visibleNames) {
                     const currentLower = (currentTabName || '').toLowerCase().trim();
-
                     const isAllowed =
-                        visibleNames.has(currentLower) ||
-                        (currentLower === 'backtest' && visibleNames.has('ai bot builder'));
+                        checkPermissionInSet(visibleNames, currentLower) ||
+                        (currentLower === 'backtest' && checkPermissionInSet(visibleNames, 'ai bot builder'));
                     setIsTabAllowed(isAllowed);
+                } else {
+                    setIsTabAllowed(true);
                 }
             } catch (e) {
                 console.warn("Failed to check tab permissions:", e);

@@ -22,7 +22,7 @@ export default function BacktestResultsView({
     quantity = 0.01,
     loading = false
 }) {
-    const isLoading = loading || !results || !roundTrips || (Array.isArray(roundTrips) && roundTrips.length === 0);
+    const isLoading = loading || !results;
 
     if (isLoading) {
         return (
@@ -64,6 +64,7 @@ export default function BacktestResultsView({
 
                 {/* Row 3: Performance Charts Loader */}
                 <BacktestCharts
+                    results={null}
                     roundTrips={[]}
                     initialCapital={initialCapital}
                     wins={0}
@@ -74,12 +75,60 @@ export default function BacktestResultsView({
     }
 
     const stats = results.stats || {};
-    const totalPnL = stats.pnl !== undefined ? stats.pnl : roundTrips.reduce((acc, t) => acc + t.pnl, 0);
-    const pnlPercent = initialCapital > 0 ? (totalPnL / initialCapital) * 100 : 0;
-    const wins = stats.win !== undefined ? stats.win : roundTrips.filter(t => t.pnl > 0).length;
-    const losses = stats.loss !== undefined ? stats.loss : roundTrips.filter(t => t.pnl <= 0).length;
-    const totalCompleted = roundTrips.length;
-    const winRate = totalCompleted > 0 ? ((wins / totalCompleted) * 100).toFixed(1) : '0.0';
+    const safeTrips = Array.isArray(roundTrips) ? roundTrips : [];
+    
+    // Total completed trades: extract from top-level, stats, or safeTrips
+    const totalCompleted = Number(
+        results?.total_trades ?? 
+        stats?.trades ?? 
+        stats?.total_trades ?? 
+        safeTrips.length ?? 
+        0
+    );
+
+    // Wins and Losses
+    const wins = Number(
+        results?.wins ?? 
+        stats?.win ?? 
+        stats?.wins ?? 
+        (safeTrips.length > 0 ? safeTrips.filter(t => (Number(t?.pnl) || 0) > 0).length : 0)
+    );
+
+    const losses = Number(
+        results?.losses ?? 
+        stats?.loss ?? 
+        stats?.losses ?? 
+        (safeTrips.length > 0 ? safeTrips.filter(t => (Number(t?.pnl) || 0) <= 0).length : 0)
+    );
+
+    // Total PnL
+    const rawPnL = results?.pnl ?? results?.net_profit ?? stats?.pnl ?? (safeTrips.length > 0 ? safeTrips.reduce((acc, t) => acc + (Number(t?.pnl) || 0), 0) : 0);
+    const totalPnL = parseFloat(Number(rawPnL || 0).toFixed(2));
+
+    // PnL percentage
+    const rawPnLPct = results?.pnl_percentage ?? stats?.pnl_percentage ?? (initialCapital > 0 ? (totalPnL / initialCapital) * 100 : 0);
+    const pnlPercent = parseFloat(Number(rawPnLPct || 0).toFixed(2));
+
+    // Win rate
+    const rawWinRate = results?.win_rate ?? stats?.win_rate ?? (totalCompleted > 0 ? ((wins / totalCompleted) * 100) : 0);
+    const winRate = parseFloat(Number(rawWinRate || 0).toFixed(1));
+
+    // Max Gain & Max Loss
+    const maxGain = Number(
+        results?.max_gain ?? 
+        stats?.max_gain ?? 
+        (safeTrips.length > 0 ? Math.max(0, ...safeTrips.map(t => Number(t?.pnl) || 0)) : 0)
+    );
+
+    const maxLoss = Math.abs(Number(
+        results?.max_loss ?? 
+        stats?.max_loss ?? 
+        (safeTrips.length > 0 ? Math.min(0, ...safeTrips.map(t => Number(t?.pnl) || 0)) : 0)
+    ));
+
+    // Streaks
+    const winStreak = Number(results?.win_streak ?? stats?.win_streak ?? 0);
+    const lossStreak = Number(results?.loss_streak ?? stats?.loss_streak ?? 0);
 
     const sign = totalPnL >= 0 ? '+' : '';
 
@@ -132,10 +181,10 @@ export default function BacktestResultsView({
                         <SlidersTuneIcon size={14} color="#18C98B" />
                     </div>
                     <div className={styles.kpiValue} style={{ fontSize: '17px', color: '#10B981' }}>
-                        +${(stats.max_gain || 0).toFixed(2)}
+                        +${maxGain.toFixed(2)}
                     </div>
                     <div className={styles.kpiSub} style={{ color: '#F43F5E' }}>
-                        -${(stats.max_loss || 0).toFixed(2)}
+                        -${maxLoss.toFixed(2)}
                     </div>
                 </div>
 
@@ -145,10 +194,10 @@ export default function BacktestResultsView({
                         <LightningIcon size={14} color="#18C98B" />
                     </div>
                     <div className={styles.kpiValue} style={{ fontSize: '17px', color: '#18C98B' }}>
-                        {stats.win_streak || 0} Wins
+                        {winStreak} Wins
                     </div>
                     <div className={styles.kpiSub}>
-                        {stats.loss_streak || 0} Losses max
+                        {lossStreak} Losses max
                     </div>
                 </div>
             </div>
@@ -165,14 +214,22 @@ export default function BacktestResultsView({
 
             {/* Row 3: Performance Charts */}
             <BacktestCharts
+                results={results}
                 roundTrips={roundTrips}
                 initialCapital={initialCapital}
                 wins={wins}
                 losses={losses}
+                totalPnL={totalPnL}
+                totalTrades={totalCompleted}
             />
 
             {/* Row 4: Trades Table */}
-            <TradesTable roundTrips={roundTrips} />
+            <TradesTable
+                roundTrips={roundTrips}
+                totalTrades={totalCompleted}
+                wins={wins}
+                losses={losses}
+            />
         </div>
     );
 }

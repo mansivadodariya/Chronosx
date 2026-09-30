@@ -188,14 +188,21 @@ export default function AdvisorChatView({
         }
     }, []);
 
+    const isSendingRef = useRef(false);
+
     useEffect(() => {
         scrollToBottom(true);
     }, [messages, loading, scrollToBottom]);
 
     const handleSend = useCallback((textToSend, extraData) => {
+        if (isSendingRef.current || loading) return;
+        isSendingRef.current = true;
         setIsOptionBoxDismissed(true);
         onSend(textToSend, extraData);
-    }, [onSend]);
+        setTimeout(() => {
+            isSendingRef.current = false;
+        }, 500);
+    }, [onSend, loading]);
 
     const handleKeyDown = (e) => {
         if (showTypedSuggestions) {
@@ -226,7 +233,8 @@ export default function AdvisorChatView({
         }
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            if (input.trim() && !loading) {
+            e.stopPropagation();
+            if (input.trim() && !loading && !isSendingRef.current) {
                 handleSend(input);
             }
         }

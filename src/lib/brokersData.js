@@ -199,26 +199,46 @@ export function formatBroker(item) {
     };
 }
 
+let cachedBrokers = null;
+let brokersFetchPromise = null;
+
 export async function fetchBrokers() {
+    if (cachedBrokers && cachedBrokers.length > 0) {
+        return cachedBrokers;
+    }
+    if (brokersFetchPromise) {
+        return brokersFetchPromise;
+    }
+
     const fallback = brokerList.filter((b) => b.is_active !== false);
     if (!supabase) {
         return fallback;
     }
-    try {
-        const { data, error } = await supabase
-            .from('brokers')
-            .select('*')
-            .eq('is_active', true)
-            .order('created_at', { ascending: true });
 
-        if (error || !data || data.length === 0) {
+    brokersFetchPromise = (async () => {
+        try {
+            const { data, error } = await supabase
+                .from('brokers')
+                .select('*')
+                .eq('is_active', true)
+                .order('created_at', { ascending: true });
+
+            if (error || !data || data.length === 0) {
+                cachedBrokers = fallback;
+                return fallback;
+            }
+            const formatted = data.map(formatBroker).filter((b) => b && b.is_active !== false);
+            cachedBrokers = formatted;
+            return formatted;
+        } catch (err) {
+            console.error('Error fetching brokers from Supabase:', err);
             return fallback;
+        } finally {
+            brokersFetchPromise = null;
         }
-        return data.map(formatBroker).filter((b) => b && b.is_active !== false);
-    } catch (err) {
-        console.error('Error fetching brokers from Supabase:', err);
-        return fallback;
-    }
+    })();
+
+    return brokersFetchPromise;
 }
 
 export async function fetchBrokerById(id) {

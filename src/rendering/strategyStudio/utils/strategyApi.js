@@ -2,6 +2,21 @@
  * Strategy Advisor & Backtest API Client
  */
 import { generateSimulatedBacktest } from './backtestEngine';
+import { getStoredUserId } from '@/lib/authSession';
+
+/**
+ * Helper to construct headers with Bearer token if present
+ */
+const getAuthHeaders = () => {
+    const headers = { "Content-Type": "application/json" };
+    if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('access_token');
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+    }
+    return headers;
+};
 
 /**
  * Resolves the Backtest & Wizard API base URL dynamically from environment variables.
@@ -27,19 +42,21 @@ export const strategyStudioApi = {
     /**
      * Chat with AI Strategy Advisor
      */
-    chatWithAdvisor: async ({ sessionId, message, answers }) => {
+    chatWithAdvisor: async ({ sessionId, message, answers, userId }) => {
         try {
             const apiBase = getApiBase();
+            const currentUserId = userId || getStoredUserId() || undefined;
             const payload = {
                 session_id: sessionId,
-                message
+                message,
+                ...(currentUserId ? { user_id: currentUserId } : {})
             };
             if (answers && Array.isArray(answers) && answers.length > 0) {
                 payload.answers = answers;
             }
             const res = await fetch(`${apiBase}/wizard/chat`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(payload)
             });
             if (res.ok) {
@@ -144,18 +161,20 @@ export const strategyStudioApi = {
     /**
      * Generate Strategy JSON from AI Draft via /backtest/v1/wizard/generate
      */
-    generateStrategy: async ({ sessionId, draft, strategyName }) => {
+    generateStrategy: async ({ sessionId, draft, strategyName, userId }) => {
         const stratName = strategyName || draft?.name || "AI Strategy";
         try {
             const apiBase = getApiBase();
+            const currentUserId = userId || getStoredUserId() || undefined;
             const payload = {
                 session_id: sessionId,
                 strategy_name: stratName,
-                draft: draft || {}
+                draft: draft || {},
+                ...(currentUserId ? { user_id: currentUserId } : {})
             };
             const res = await fetch(`${apiBase}/wizard/generate`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(payload)
             });
             if (res.ok) {
@@ -237,14 +256,18 @@ export const strategyStudioApi = {
     runBacktest: async (payload) => {
         try {
             const apiBase = getApiBase();
+            const currentUserId = payload?.user_id || getStoredUserId() || undefined;
             const res = await fetch(apiBase, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
+                headers: getAuthHeaders(),
+                body: JSON.stringify({
+                    ...payload,
+                    ...(currentUserId && !payload?.user_id ? { user_id: currentUserId } : {})
+                })
             });
             if (res.ok) {
                 const json = await res.json();
-                if ((json.success || json.status === 'success') && json.data) {
+                if ((json.success || json.status === 'success' || json.message) && json.data) {
                     const dataItem = Array.isArray(json.data) ? json.data[0] : json.data;
                     return {
                         status: "success",
@@ -256,72 +279,77 @@ export const strategyStudioApi = {
             } else {
                 const errText = await res.text().catch(() => '');
                 console.warn(`[strategyApi] /backtest/v1 returned HTTP ${res.status}:`, errText);
+                return {
+                    status: "error",
+                    success: false,
+                    error: `Engine returned status ${res.status}: ${errText || 'Backtest execution failed'}`,
+                    data: null
+                };
             }
         } catch (err) {
-            console.warn("Backend backtest server unreachable, simulating backtest with historical pricing model:", err.message);
+            console.error("Backend backtest server unreachable:", err.message);
+            return {
+                status: "error",
+                success: false,
+                error: `Backend unreachable: ${err.message}`,
+                data: null
+            };
         }
 
-        // Fallback simulation with realistic trades & metrics
-        await new Promise((resolve) => setTimeout(resolve, 600));
-        return generateSimulatedBacktest(payload);
+        return {
+            status: "error",
+            success: false,
+            error: "No output received from backtest engine.",
+            data: null
+        };
     },
 
     /**
      * Run Backtest Execution by Strategy ID
      * POST /backtest/v1/run-by-id
-     * Payload: { strategy_id, source }
+     * Payload: { strategy_id, user_id }
      */
-    runBacktestById: async ({ strategy_id, source, fallbackParams = {} }) => {
+    runBacktestById: async ({ strategy_id, source, fallbackParams = {}, userId }) => {
         try {
             const apiBase = getApiBase();
+            const currentUserId = userId || getStoredUserId() || undefined;
             const res = await fetch(`${apiBase}/run-by-id`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({
                     strategy_id,
-                    // source: source === 'user_strategies' ? 'user_strategies' : 'trading_strategies'
+                    ...(currentUserId ? { user_id: currentUserId } : {})
                 })
             });
             if (res.ok) {
                 const json = await res.json();
-                if ((json.success || json.status === 'success' || json.status === 200) && json.data) {
-                    const dataItem = Array.isArray(json.data) ? json.data[0] : json.data;
-                    return {
-                        status: "success",
-                        success: true,
-                        data: dataItem,
-                        strategy: json.strategy || json.strategy_info || json.raw_strategy || null,
-                        raw: json
-                    };
-                }
+                const dataItem = Array.isArray(json.data) ? json.data[0] : json.data;
                 return {
                     status: "success",
                     success: true,
-                    data: json.data || json,
+                    data: dataItem || json,
                     strategy: json.strategy || json.strategy_info || json.raw_strategy || null,
                     raw: json
                 };
             } else {
                 const errText = await res.text().catch(() => '');
                 console.warn(`[strategyApi] /backtest/v1/run-by-id returned HTTP ${res.status}:`, errText);
+                return {
+                    status: "error",
+                    success: false,
+                    error: `Engine returned status ${res.status}: ${errText || 'Backtest execution failed'}`,
+                    data: null
+                };
             }
         } catch (err) {
-            console.warn("Backend backtest server unreachable for run-by-id, falling back to dynamic simulation:", err.message);
+            console.error("Backend backtest server unreachable for run-by-id:", err.message);
+            return {
+                status: "error",
+                success: false,
+                error: `Backend unreachable: ${err.message}`,
+                data: null
+            };
         }
-
-        // Fallback simulation with realistic trades & metrics
-        await new Promise((resolve) => setTimeout(resolve, 600));
-        return generateSimulatedBacktest({
-            strategy_id,
-            source,
-            stock_name: fallbackParams.symbol || fallbackParams.stock_name || 'XAUUSD',
-            interval: fallbackParams.interval || '15min',
-            inital_capital: fallbackParams.capital || 10000,
-            quantity: fallbackParams.quantity || 0.01,
-            from_date: fallbackParams.fromDate || '2024-01-01',
-            to_date: fallbackParams.toDate || '2024-03-01',
-            ...fallbackParams
-        });
     }
 };
 

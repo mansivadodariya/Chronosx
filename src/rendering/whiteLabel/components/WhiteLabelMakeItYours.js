@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
 import styles from '../whiteLabel.module.scss';
 
 const CUSTOMIZATION_POINTS = [
@@ -51,18 +53,18 @@ const CUSTOMIZATION_POINTS = [
 ];
 
 export default function WhiteLabelMakeItYours() {
-    const [activeTheme, setActiveTheme] = useState('Emerald');
-    const brandName = 'TRADEFLOW';
-
-    const getThemeClass = () => {
-        if (activeTheme === 'Cyan') return styles.themeCyan;
-        if (activeTheme === 'Gold') return styles.themeGold;
-        return styles.themeEmerald;
-    };
-
     return (
         <section className={styles.customizationSection}>
             <div className={styles.container}>
+                {/* Centered Section Header */}
+                <SectionHeader
+                    badge="Your Brand, Your Platform"
+                    title="Make the Experience Yours."
+                    description="Your users shouldn't feel like they're using someone else's product. The experience should belong completely to your brand."
+                    align="center"
+                    className={styles.makeItYoursHeader}
+                />
+
                 <div className={styles.customizationSplitGrid}>
                     {/* Left Points */}
                     <motion.div
@@ -72,14 +74,6 @@ export default function WhiteLabelMakeItYours() {
                         transition={{ duration: 0.55 }}
                         className={styles.customizationTextCol}
                     >
-                        <div className={styles.sectionMiniTag}>Your Brand, Your Platform</div>
-                        <h2 className={styles.sectionMainTitle} style={{ textAlign: 'left', margin: 0 }}>
-                            Make the Experience Yours.
-                        </h2>
-                        <p className={styles.sectionMainSubtitle} style={{ margin: 0 }}>
-                            Your users shouldn&apos;t feel like they&apos;re using someone else&apos;s product. The experience should belong completely to your brand.
-                        </p>
-
                         <div className={styles.customizationPointsList}>
                             {CUSTOMIZATION_POINTS.map((point) => (
                                 <div key={point.title} className={styles.customizationPointItem}>
@@ -95,65 +89,23 @@ export default function WhiteLabelMakeItYours() {
                         </div>
                     </motion.div>
 
-                    {/* Right Interactive Brand Simulator */}
+                    {/* Right Brand Customization Visual Mockup */}
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.55, delay: 0.1 }}
-                        className={styles.brandSimulatorCard}
+                        className={styles.customizationVisualCol}
                     >
-                        <div className={styles.simulatorTopRow}>
-                            <span className={styles.simulatorTitle}>Interactive Brand Simulator</span>
-                            <div className={styles.brandControlsRow}>
-                                {['Emerald', 'Cyan', 'Gold'].map((theme) => (
-                                    <button
-                                        key={theme}
-                                        type="button"
-                                        className={`${styles.brandThemeBtn} ${activeTheme === theme ? styles.activeTheme : ''}`}
-                                        onClick={() => setActiveTheme(theme)}
-                                    >
-                                        {theme}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Simulated Mini Terminal */}
-                        <div className={`${styles.simulatedTerminal} ${getThemeClass()}`}>
-                            <div className={styles.simTerminalHeader}>
-                                <div className={styles.simBrandLogo}>
-                                    <div className={styles.logoIconBox}>▲</div>
-                                    <span>{brandName} AI</span>
-                                </div>
-                                <div className={styles.simNavLinks}>
-                                    <span className={styles.activeLink}>Terminal</span>
-                                    <span>OCR Scanner</span>
-                                    <span>Signals</span>
-                                    <span>Audit</span>
-                                </div>
-                            </div>
-
-                            <div className={styles.simTerminalBody}>
-                                <div className={styles.simChartBox}>
-                                    <div className={styles.simChartTitle}>
-                                        <span>EUR/USD • M15 Breakout</span>
-                                        <span>+1.84%</span>
-                                    </div>
-                                    <svg className={styles.simCandleSvg} viewBox="0 0 300 100" fill="none">
-                                        <path d="M10 80 Q 70 20, 140 60 T 290 15" stroke="currentColor" strokeWidth="2.5" />
-                                        <line x1="60" y1="40" x2="60" y2="70" stroke="currentColor" strokeWidth="1.5" />
-                                        <line x1="120" y1="30" x2="120" y2="65" stroke="currentColor" strokeWidth="1.5" />
-                                        <line x1="180" y1="20" x2="180" y2="80" stroke="currentColor" strokeWidth="1.5" />
-                                        <line x1="240" y1="10" x2="240" y2="50" stroke="currentColor" strokeWidth="1.5" />
-                                    </svg>
-                                </div>
-
-                                <div className={styles.simScoreBox}>
-                                    <div className={styles.simScoreVal}>88</div>
-                                    <div className={styles.simScoreTag}>Strong Buy</div>
-                                </div>
-                            </div>
+                        <div className={styles.customizationMockupWrap}>
+                            <Image
+                                src="/assets/images/customization-suite.png"
+                                alt="ChronosX Brand Customization Suite Mockup"
+                                width={800}
+                                height={600}
+                                priority
+                                className={styles.customizationMockupImg}
+                            />
                         </div>
                     </motion.div>
                 </div>

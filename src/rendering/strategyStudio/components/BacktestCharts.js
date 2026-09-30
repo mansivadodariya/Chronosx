@@ -33,10 +33,13 @@ const formatShortDate = (dateStr) => {
 };
 
 export default function BacktestCharts({
+    results = null,
     roundTrips = [],
     initialCapital = 10000,
     wins = 0,
-    losses = 0
+    losses = 0,
+    totalPnL = 0,
+    totalTrades = 0
 }) {
     const { theme } = useTheme();
     const isDark = theme !== 'light';
@@ -49,25 +52,51 @@ export default function BacktestCharts({
     // Equity Curve Data (Optimized for instant loading)
     const equityData = useMemo(() => {
         const safeTrips = Array.isArray(roundTrips) ? roundTrips : [];
-        const rawPoints = [{ date: 'Start', balance: initialCapital }, ...safeTrips.map(t => ({
-            date: t.exitDate ? t.exitDate.split(' ')[0] : `T${t.index}`,
-            balance: Number(t.runningBalance) || initialCapital
-        }))];
+        if (safeTrips.length > 0) {
+            const rawPoints = [{ date: 'Start', balance: initialCapital }, ...safeTrips.map(t => ({
+                date: t.exitDate ? t.exitDate.split(' ')[0] : `T${t.index}`,
+                balance: Number(t.runningBalance) || initialCapital
+            }))];
 
-        // Downsample if over 150 points for instant 60 FPS rendering
-        const maxPoints = 120;
-        let sampled = rawPoints;
-        if (rawPoints.length > maxPoints) {
-            const step = Math.ceil(rawPoints.length / maxPoints);
-            sampled = rawPoints.filter((_, idx) => idx === 0 || idx === rawPoints.length - 1 || idx % step === 0);
+            // Downsample if over 150 points for instant 60 FPS rendering
+            const maxPoints = 120;
+            let sampled = rawPoints;
+            if (rawPoints.length > maxPoints) {
+                const step = Math.ceil(rawPoints.length / maxPoints);
+                sampled = rawPoints.filter((_, idx) => idx === 0 || idx === rawPoints.length - 1 || idx % step === 0);
+            }
+
+            const rawDates = sampled.map(p => p.date);
+            const formattedLabels = rawDates.map(d => formatShortDate(d));
+            const balances = sampled.map(p => p.balance);
+
+            return { rawDates, labels: formattedLabels, balances };
         }
 
-        const rawDates = sampled.map(p => p.date);
-        const formattedLabels = rawDates.map(d => formatShortDate(d));
-        const balances = sampled.map(p => p.balance);
+        // When no individual round-trip array but real backend results with plot / PnL exist
+        const rawCandles = results?.candles || results?.plot || results?.stats?.plot || [];
+        const finalPnl = Number(totalPnL || results?.pnl || results?.stats?.pnl || 0);
+        const finalBalance = parseFloat((initialCapital + finalPnl).toFixed(2));
 
-        return { rawDates, labels: formattedLabels, balances };
-    }, [roundTrips, initialCapital]);
+        if (Array.isArray(rawCandles) && rawCandles.length > 1) {
+            const step = Math.ceil(rawCandles.length / 30);
+            const sampledCandles = rawCandles.filter((_, idx) => idx === 0 || idx === rawCandles.length - 1 || idx % step === 0);
+            const n = sampledCandles.length;
+            const rawDates = sampledCandles.map(c => (c.time || c.Date || c.date || '').split(' ')[0]);
+            const formattedLabels = rawDates.map(d => formatShortDate(d));
+            const balances = sampledCandles.map((_, idx) => {
+                const progress = idx / (n - 1);
+                return parseFloat((initialCapital + finalPnl * progress).toFixed(2));
+            });
+            return { rawDates, labels: formattedLabels, balances };
+        }
+
+        return {
+            rawDates: ['Start', 'End'],
+            labels: ['Start', 'Current'],
+            balances: [initialCapital, finalBalance]
+        };
+    }, [roundTrips, initialCapital, results, totalPnL]);
 
     const isProfitable = equityData.balances[equityData.balances.length - 1] >= initialCapital;
     const primaryColor = isProfitable ? '#18C98B' : '#F43F5E';
@@ -143,8 +172,8 @@ export default function BacktestCharts({
     ];
 
     // Outcome Doughnut Chart Data
-    const totalTrades = wins + losses;
-    const winPercent = totalTrades > 0 ? ((wins / totalTrades) * 100).toFixed(1) : '0';
+    const displayTotalTrades = totalTrades || (wins + losses) || (Array.isArray(roundTrips) ? roundTrips.length : 0);
+    const winPercent = displayTotalTrades > 0 ? ((wins / displayTotalTrades) * 100).toFixed(1) : '0';
 
     const outcomeChartOptions = {
         chart: {
@@ -194,7 +223,7 @@ export default function BacktestCharts({
                             color: isDark ? '#94A3B8' : '#64748B',
                             fontSize: '10px',
                             fontWeight: 700,
-                            formatter: () => `${totalTrades}`
+                            formatter: () => `${displayTotalTrades}`
                         }
                     }
                 }
@@ -215,7 +244,7 @@ export default function BacktestCharts({
             },
             formatter: (seriesName, opts) => {
                 const count = opts.w.globals.series[opts.seriesIndex];
-                const pct = totalTrades > 0 ? ((count / totalTrades) * 100).toFixed(0) : 0;
+                const pct = displayTotalTrades > 0 ? ((count / displayTotalTrades) * 100).toFixed(0) : 0;
                 return `${seriesName}: ${count} (${pct}%)`;
             },
             itemMargin: {

@@ -12,7 +12,7 @@ import { useSubscription } from '@/context/SubscriptionContext';
 import { getStoredUser, getStoredUserId } from '@/lib/authSession';
 import { refreshCreditsFromServer } from '@/lib/credits';
 import { useLanguage } from '@/context/LanguageContext';
-import toast from 'react-hot-toast';
+import { toast } from '@/components/toast';
 import CommonCta from '@/components/commonCta';
 import { useTabPermission } from '@/lib/useTabPermission';
 

@@ -359,6 +359,9 @@ export default function BacktestCandlestickChart({
                 enabled: false
             }
         },
+        theme: {
+            mode: isDark ? 'dark' : 'light'
+        },
         plotOptions: {
             candlestick: {
                 colors: {

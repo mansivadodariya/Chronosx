@@ -1,55 +1,203 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from '@/components/toast';
+import { motion, AnimatePresence } from 'framer-motion';
 import styles from './customBotBuilder.module.scss';
 import CommonSectionHeader from '@/components/CommonSectionHeader';
 import { CustomBotIcon } from '@/icons/sidebarIcons';
 import { useLanguage } from '@/context/LanguageContext';
-import { toast } from 'react-hot-toast';
+import StepperHeader from './components/StepperHeader';
+import StepBasics from './components/StepBasics';
+import StepEntryRules from './components/StepEntryRules';
+import StepExitRules from './components/StepExitRules';
+import StepRisk from './components/StepRisk';
+import StepReview from './components/StepReview';
+import StepFooterNav from './components/StepFooterNav';
 
-const INDICATOR_OPTIONS = [
-    { id: 'rsi', name: 'Relative Strength Index (RSI)', defaultParam: 'Period 14, Oversold < 30, Overbought > 70' },
-    { id: 'ema_cross', name: 'Exponential Moving Average (EMA)', defaultParam: 'Fast 20 EMA / Slow 50 EMA' },
-    { id: 'bollinger', name: 'Bollinger Bands (BB)', defaultParam: 'Period 20, StdDev 2.0' },
-    { id: 'macd', name: 'MACD Trend Oscillator', defaultParam: '12, 26, 9' },
-    { id: 'atr_sl', name: 'Average True Range (ATR)', defaultParam: '14-period 1.5x Multiplier' },
-    { id: 'ict_ob', name: 'ICT Order Block / Liquidity Sweep', defaultParam: '15m High Liquidity' }
-];
+const INITIAL_FORM_DATA = {
+    botName: '',
+    description: '',
+    tradingPair: '',
+    timeframe: '',
+    triggerMode: 'ALL',
+    entryConditions: [
+        {
+            id: 'cond_1',
+            indicatorKey: 'ema_crossover',
+            condition: 'Golden Cross (Fast > Slow)',
+            params: { fastPeriod: 9, slowPeriod: 21 }
+        }
+    ],
+    takeProfitPips: '',
+    stopLossPips: '',
+    trailingStop: false,
+    trailingDistance: '',
+    trailingStep: '',
+    riskLevel: '',
+    lotSize: '',
+    maxOpenPositions: '',
+    riskPerTrade: '',
+    maxDailyLoss: ''
+};
+
+function validateStep(step, data) {
+    const errors = {};
+
+    if (step === 1) {
+        if (!data.botName || !data.botName.trim()) {
+            errors.botName = 'Bot name is required';
+        } else if (data.botName.trim().length < 3) {
+            errors.botName = 'Bot name must be at least 3 characters';
+        }
+
+        if (!data.tradingPair) {
+            errors.tradingPair = 'Please select a trading pair';
+        }
+
+        if (!data.timeframe) {
+            errors.timeframe = 'Please select a timeframe';
+        }
+    }
+
+    if (step === 2) {
+        if (!data.entryConditions || data.entryConditions.length === 0) {
+            errors.entryConditions = 'Please add at least one entry condition';
+        }
+    }
+
+    if (step === 3) {
+        if (!data.takeProfitPips || Number(data.takeProfitPips) <= 0) {
+            errors.takeProfitPips = 'Take Profit must be greater than 0 pips';
+        }
+        if (!data.stopLossPips || Number(data.stopLossPips) <= 0) {
+            errors.stopLossPips = 'Stop Loss must be greater than 0 pips';
+        }
+        if (data.trailingStop) {
+            if (!data.trailingDistance || Number(data.trailingDistance) <= 0) {
+                errors.trailingDistance = 'Trailing distance must be greater than 0 pips';
+            }
+            if (!data.trailingStep || Number(data.trailingStep) <= 0) {
+                errors.trailingStep = 'Trailing step must be greater than 0 pips';
+            }
+        }
+    }
+
+    if (step === 4) {
+        if (!data.lotSize || Number(data.lotSize) <= 0) {
+            errors.lotSize = 'Lot size must be greater than 0 (e.g. 0.10)';
+        }
+        if (!data.maxOpenPositions || Number(data.maxOpenPositions) < 1) {
+            errors.maxOpenPositions = 'Max open positions must be at least 1';
+        }
+        if (!data.riskPerTrade || Number(data.riskPerTrade) <= 0 || Number(data.riskPerTrade) > 100) {
+            errors.riskPerTrade = 'Risk per trade must be between 0.1% and 100%';
+        }
+        if (!data.maxDailyLoss || Number(data.maxDailyLoss) <= 0 || Number(data.maxDailyLoss) > 100) {
+            errors.maxDailyLoss = 'Max daily loss must be between 0.5% and 100%';
+        }
+    }
+
+    return {
+        isValid: Object.keys(errors).length === 0,
+        errors
+    };
+}
 
 export default function CustomBotBuilderView() {
     const { t } = useLanguage();
+    const router = useRouter();
 
-    const [botName, setBotName] = useState('My Custom Momentum Bot');
-    const [symbol, setSymbol] = useState('XAUUSD');
-    const [timeframe, setTimeframe] = useState('15m');
-    const [capital, setCapital] = useState(10000);
-    const [lotSize, setLotSize] = useState(1.0);
+    const [currentStep, setCurrentStep] = useState(1);
+    const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+    const [errors, setErrors] = useState({});
+    const [isSimulating, setIsSimulating] = useState(false);
 
-    // Selected Indicators
-    const [selectedIndicators, setSelectedIndicators] = useState(['rsi', 'ema_cross']);
-    const [stopLossPips, setStopLossPips] = useState(25);
-    const [takeProfitPips, setTakeProfitPips] = useState(50);
-    const [trailingStop, setTrailingStop] = useState(true);
+    const handleFormChange = (field, value) => {
+        setFormData(prev => ({
+            ...prev,
+            [field]: value
+        }));
 
-    const toggleIndicator = (id) => {
-        if (selectedIndicators.includes(id)) {
-            setSelectedIndicators(selectedIndicators.filter((item) => item !== id));
-        } else {
-            setSelectedIndicators([...selectedIndicators, id]);
+        if (errors[field]) {
+            setErrors(prev => {
+                const next = { ...prev };
+                delete next[field];
+                return next;
+            });
         }
     };
 
-    const handleSaveBot = () => {
+    const handlePrev = () => {
+        setErrors({});
+        setCurrentStep(prev => Math.max(prev - 1, 1));
+    };
+
+    const handleNext = () => {
+        const { isValid, errors: validationErrors } = validateStep(currentStep, formData);
+
+        if (!isValid) {
+            setErrors(validationErrors);
+            const firstError = Object.values(validationErrors)[0];
+            toast.error(firstError);
+            return;
+        }
+
+        setErrors({});
+        setCurrentStep(prev => Math.min(prev + 1, 5));
+    };
+
+    const handleSelectStep = (targetStep) => {
+        if (targetStep < currentStep) {
+            setErrors({});
+            setCurrentStep(targetStep);
+            return;
+        }
+
+        const { isValid, errors: validationErrors } = validateStep(currentStep, formData);
+        if (!isValid) {
+            setErrors(validationErrors);
+            toast.error(Object.values(validationErrors)[0]);
+            return;
+        }
+
+        setErrors({});
+        setCurrentStep(targetStep);
+    };
+
+    const handleRunBacktest = () => {
+        setIsSimulating(true);
+        toast.loading('Running historical tick simulation...', { id: 'sim-toast' });
+        setTimeout(() => {
+            setIsSimulating(false);
+            toast.success('Simulation completed: 68.4% Win Rate, Profit Factor 1.92!', { id: 'sim-toast' });
+        }, 1200);
+    };
+
+    const handleDeployBot = () => {
+        for (let s = 1; s <= 4; s++) {
+            const { isValid, errors: validationErrors } = validateStep(s, formData);
+            if (!isValid) {
+                setCurrentStep(s);
+                setErrors(validationErrors);
+                toast.error(Object.values(validationErrors)[0]);
+                return;
+            }
+        }
+
         const newBot = {
-            id: 'bot_' + Date.now(),
-            name: botName || 'Custom Trading Bot',
-            symbol,
-            timeframe,
-            type: 'Custom Builder',
+            id: 'custom_bot_' + Date.now(),
+            name: formData.botName || 'Custom Algo Bot',
+            symbol: formData.tradingPair || 'EUR/USD',
+            timeframe: formData.timeframe || '1h',
+            type: 'Custom Bot',
             status: 'active',
-            winRate: '62.5%',
-            profitFactor: '1.75',
-            totalPnl: '+$840.00',
+            winRate: '68.4%',
+            profitFactor: '1.92',
+            totalPnl: '+$0.00',
+            lotSize: formData.lotSize || 0.1,
+            riskLevel: formData.riskLevel || 'medium',
             createdAt: new Date().toISOString()
         };
 
@@ -57,10 +205,14 @@ export default function CustomBotBuilderView() {
             const current = JSON.parse(localStorage.getItem('chronosx_user_bots') || '[]');
             current.unshift(newBot);
             localStorage.setItem('chronosx_user_bots', JSON.stringify(current));
-            toast.success(`Bot "${botName}" saved to My Bots!`);
+            toast.success(`Custom Bot "${newBot.name}" deployed successfully!`);
+            setTimeout(() => {
+                router.push('/my-bots');
+            }, 800);
         } catch (e) {
-            console.error('Save error:', e);
+            console.error('Error saving bot:', e);
             toast.success('Bot saved successfully!');
+            router.push('/my-bots');
         }
     };
 
@@ -68,192 +220,76 @@ export default function CustomBotBuilderView() {
         <div className={styles.builderContainer}>
             {/* Common Section Header */}
             <CommonSectionHeader
-                badge="CHRONOSX AI TRADING BOT SUITE"
-                icon={<CustomBotIcon width={28} height={28} />}
+                badge="CHRONOSX QUANT SUITE"
+                icon={<CustomBotIcon width={26} height={26} />}
                 title={t('nav.customBotBuilder', 'Custom Bot Builder')}
-                subtitle="Design and assemble algorithmic trading bots step-by-step with technical indicator triggers and risk management rules."
-                rightAction={
-                    <button type="button" className={styles.saveHeaderBtn} onClick={handleSaveBot}>
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                            <polyline points="17 21 17 13 7 13 7 21" />
-                            <polyline points="7 3 7 8 15 8" />
-                        </svg>
-                        <span>Save to My Bots</span>
-                    </button>
-                }
+                subtitle="Build custom algorithmic trading bots step-by-step with technical entry signals, exit targets, and risk parameters."
             />
 
-            {/* Builder Workspace Layout */}
-            <div className={styles.workspaceGrid}>
-                {/* Left Column: Asset & Parameter Configuration */}
-                <div className={styles.configColumn}>
-                    {/* Bot Info Card */}
-                    <div className={styles.sectionCard}>
-                        <div className={styles.cardHeader}>
-                            <span className={styles.stepNum}>1</span>
-                            <h3>Bot Identity & Market</h3>
-                        </div>
+            {/* Stepper Header Bar */}
+            <StepperHeader
+                currentStep={currentStep}
+                onSelectStep={handleSelectStep}
+            />
 
-                        <div className={styles.formGroup}>
-                            <label>Bot Name</label>
-                            <input
-                                type="text"
-                                value={botName}
-                                onChange={(e) => setBotName(e.target.value)}
-                                placeholder="e.g. Gold EMA Crossover Bot"
+            {/* Step Body Content with Smooth Transition */}
+            <div className={styles.stepBodyArea}>
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={currentStep}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.22 }}
+                    >
+                        {currentStep === 1 && (
+                            <StepBasics
+                                data={formData}
+                                errors={errors}
+                                onChange={handleFormChange}
                             />
-                        </div>
-
-                        <div className={styles.formRow}>
-                            <div className={styles.formGroup}>
-                                <label>Trading Pair</label>
-                                <select value={symbol} onChange={(e) => setSymbol(e.target.value)}>
-                                    <option value="XAUUSD">XAUUSD (Gold)</option>
-                                    <option value="EURUSD">EURUSD</option>
-                                    <option value="GBPUSD">GBPUSD</option>
-                                    <option value="BTCUSD">BTCUSD</option>
-                                    <option value="US30">US30 (Dow Jones)</option>
-                                </select>
-                            </div>
-
-                            <div className={styles.formGroup}>
-                                <label>Timeframe</label>
-                                <select value={timeframe} onChange={(e) => setTimeframe(e.target.value)}>
-                                    <option value="5m">5 Minutes</option>
-                                    <option value="15m">15 Minutes</option>
-                                    <option value="1h">1 Hour</option>
-                                    <option value="4h">4 Hours</option>
-                                    <option value="1d">1 Day</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className={styles.formRow}>
-                            <div className={styles.formGroup}>
-                                <label>Initial Capital ($)</label>
-                                <input
-                                    type="number"
-                                    value={capital}
-                                    onChange={(e) => setCapital(Number(e.target.value))}
-                                />
-                            </div>
-
-                            <div className={styles.formGroup}>
-                                <label>Lot Size / Position</label>
-                                <input
-                                    type="number"
-                                    step="0.1"
-                                    value={lotSize}
-                                    onChange={(e) => setLotSize(Number(e.target.value))}
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Risk Management Card */}
-                    <div className={styles.sectionCard}>
-                        <div className={styles.cardHeader}>
-                            <span className={styles.stepNum}>2</span>
-                            <h3>Risk & Exit Parameters</h3>
-                        </div>
-
-                        <div className={styles.formRow}>
-                            <div className={styles.formGroup}>
-                                <label>Stop Loss (Pips)</label>
-                                <input
-                                    type="number"
-                                    value={stopLossPips}
-                                    onChange={(e) => setStopLossPips(Number(e.target.value))}
-                                />
-                            </div>
-
-                            <div className={styles.formGroup}>
-                                <label>Take Profit (Pips)</label>
-                                <input
-                                    type="number"
-                                    value={takeProfitPips}
-                                    onChange={(e) => setTakeProfitPips(Number(e.target.value))}
-                                />
-                            </div>
-                        </div>
-
-                        <div className={styles.toggleRow}>
-                            <div>
-                                <span className={styles.toggleTitle}>Trailing Stop Loss</span>
-                                <span className={styles.toggleSub}>Lock in profit as price advances</span>
-                            </div>
-                            <input
-                                type="checkbox"
-                                checked={trailingStop}
-                                onChange={(e) => setTrailingStop(e.target.checked)}
-                                className={styles.checkboxInput}
+                        )}
+                        {currentStep === 2 && (
+                            <StepEntryRules
+                                data={formData}
+                                errors={errors}
+                                onChange={handleFormChange}
                             />
-                        </div>
-                    </div>
-                </div>
-
-                {/* Right Column: Visual Indicator Trigger Blocks */}
-                <div className={styles.rulesColumn}>
-                    <div className={styles.sectionCard}>
-                        <div className={styles.cardHeader}>
-                            <span className={styles.stepNum}>3</span>
-                            <h3>Technical Indicator Trigger Blocks</h3>
-                        </div>
-                        <p className={styles.helperText}>
-                            Select indicators to combine into your strategy execution matrix:
-                        </p>
-
-                        <div className={styles.indicatorsList}>
-                            {INDICATOR_OPTIONS.map((ind) => {
-                                const isSelected = selectedIndicators.includes(ind.id);
-                                return (
-                                    <div
-                                        key={ind.id}
-                                        className={`${styles.indicatorCard} ${isSelected ? styles.indicatorActive : ''}`}
-                                        onClick={() => toggleIndicator(ind.id)}
-                                    >
-                                        <div className={styles.indicatorLeft}>
-                                            <span className={`${styles.checkCircle} ${isSelected ? styles.checkedCircle : ''}`}>
-                                                {isSelected ? '✓' : ''}
-                                            </span>
-                                            <div>
-                                                <h4 className={styles.indicatorName}>{ind.name}</h4>
-                                                <span className={styles.indicatorParam}>{ind.defaultParam}</span>
-                                            </div>
-                                        </div>
-                                        <span className={styles.indicatorStatus}>
-                                            {isSelected ? 'ENABLED' : 'DISABLED'}
-                                        </span>
-                                    </div>
-                                );
-                            })}
-                        </div>
-
-                        {/* Backtest & Action Bar */}
-                        <div className={styles.actionBar}>
-                            <button
-                                type="button"
-                                className={styles.runSimBtn}
-                                onClick={() => toast.success('Simulation backtest engine initialized!')}
-                            >
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                    <polygon points="5 3 19 12 5 21 5 3" />
-                                </svg>
-                                <span>Run Strategy Backtest</span>
-                            </button>
-
-                            <button
-                                type="button"
-                                className={styles.secondarySaveBtn}
-                                onClick={handleSaveBot}
-                            >
-                                Save Bot
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                        )}
+                        {currentStep === 3 && (
+                            <StepExitRules
+                                data={formData}
+                                errors={errors}
+                                onChange={handleFormChange}
+                            />
+                        )}
+                        {currentStep === 4 && (
+                            <StepRisk
+                                data={formData}
+                                errors={errors}
+                                onChange={handleFormChange}
+                            />
+                        )}
+                        {currentStep === 5 && (
+                            <StepReview
+                                data={formData}
+                                onEditStep={(step) => setCurrentStep(step)}
+                                onRunBacktest={handleRunBacktest}
+                                onDeployBot={handleDeployBot}
+                            />
+                        )}
+                    </motion.div>
+                </AnimatePresence>
             </div>
+
+            {/* Step Footer Navigation */}
+            <StepFooterNav
+                currentStep={currentStep}
+                totalSteps={5}
+                onPrev={handlePrev}
+                onNext={handleNext}
+                onDeploy={handleDeployBot}
+            />
         </div>
     );
 }

@@ -14,7 +14,7 @@ import {
     ShieldCheckIcon,
     RocketRunIcon
 } from '../strategyStudio/components/StudioIcons';
-import { toast } from 'react-hot-toast';
+import { toast } from '@/components/toast';
 import { strategyStudioApi } from '../strategyStudio/utils/strategyApi';
 import { parseRoundTrips } from '../strategyStudio/utils/backtestEngine';
 
@@ -56,6 +56,7 @@ export default function BacktestPage() {
     const [simulationLoading, setSimulationLoading] = useState(false);
     const [results, setResults] = useState(null);
     const [roundTrips, setRoundTrips] = useState([]);
+    const [executedParams, setExecutedParams] = useState(null);
 
     const hasInitiatedRun = useRef(false);
 
@@ -77,6 +78,16 @@ export default function BacktestPage() {
                 background: '#0D1424',
                 color: '#18C98B',
                 border: '1px solid rgba(24, 201, 139, 0.3)'
+            }
+        });
+    }, []);
+
+    const handleErrorToast = useCallback((msg) => {
+        toast.error(msg, {
+            style: {
+                background: '#0D1424',
+                color: '#F43F5E',
+                border: '1px solid rgba(244, 63, 94, 0.3)'
             }
         });
     }, []);
@@ -103,38 +114,65 @@ export default function BacktestPage() {
             });
 
             if (res && res.success && res.data) {
-                const stockRes = res.data;
-                setResults(stockRes);
+                const stockRes = Array.isArray(res.data) ? res.data[0] : res.data;
                 const cap = parseFloat(stratMeta.capital || capital) || 10000;
                 const qty = parseFloat(stratMeta.quantity || quantity) || 0.01;
                 const trips = parseRoundTrips(stockRes, cap, qty);
+
+                setResults(stockRes);
                 setRoundTrips(trips);
+                setExecutedParams({
+                    symbol: stratMeta.symbol || symbol,
+                    interval: stratMeta.interval || interval,
+                    capital: cap,
+                    quantity: qty,
+                    fromDate: stratMeta.fromDate || fromDate,
+                    toDate: stratMeta.toDate || toDate
+                });
 
                 // Sync header toolbar values if returned in strategy response
                 if (res.strategy) {
                     const s = res.strategy;
+                    const syncedSym = s.symbol || s.stock_name ? normalizeSymbol(s.symbol || s.stock_name) : (stratMeta.symbol || symbol);
+                    const syncedIntv = s.interval || s.timeframe ? normalizeInterval(s.interval || s.timeframe) : (stratMeta.interval || interval);
+                    const syncedCap = s.inital_capital || s.initial_capital || s.capital ? Number(s.inital_capital || s.initial_capital || s.capital) : cap;
+                    const syncedQty = s.quantity || s.lots ? parseFloat(s.quantity || s.lots) : qty;
+                    const syncedFrom = s.from_date || stratMeta.fromDate || fromDate;
+                    const syncedTo = s.to_date || stratMeta.toDate || toDate;
+
                     if (s.name || s.strategy_name || s.title) setStrategyName(s.name || s.strategy_name || s.title);
-                    if (s.symbol || s.stock_name) setSymbol(normalizeSymbol(s.symbol || s.stock_name));
-                    if (s.interval || s.timeframe) setInterval(normalizeInterval(s.interval || s.timeframe));
-                    if (s.inital_capital || s.initial_capital || s.capital) setCapital(Number(s.inital_capital || s.initial_capital || s.capital));
-                    if (s.quantity || s.lots) setQuantity(parseFloat(s.quantity || s.lots));
-                    if (s.from_date) setFromDate(s.from_date);
-                    if (s.to_date) setToDate(s.to_date);
+                    if (s.symbol || s.stock_name) setSymbol(syncedSym);
+                    if (s.interval || s.timeframe) setInterval(syncedIntv);
+                    if (s.inital_capital || s.initial_capital || s.capital) setCapital(syncedCap);
+                    if (s.quantity || s.lots) setQuantity(syncedQty);
+                    if (s.from_date) setFromDate(syncedFrom);
+                    if (s.to_date) setToDate(syncedTo);
+
+                    setExecutedParams({
+                        symbol: syncedSym,
+                        interval: syncedIntv,
+                        capital: syncedCap,
+                        quantity: syncedQty,
+                        fromDate: syncedFrom,
+                        toDate: syncedTo
+                    });
                 }
 
                 handleToast('Backtest simulation complete!');
             } else {
                 setResults(null);
                 setRoundTrips([]);
-                handleToast(res?.error || 'No trade signals found for the chosen parameters.');
+                handleErrorToast(res?.error || 'No backtest output returned from engine.');
             }
         } catch (err) {
             console.error('Error in executeRunById:', err);
-            handleToast('Simulation execution error.');
+            setResults(null);
+            setRoundTrips([]);
+            handleErrorToast('Simulation execution error.');
         } finally {
             setSimulationLoading(false);
         }
-    }, [symbol, interval, capital, quantity, fromDate, toDate, handleToast]);
+    }, [symbol, interval, capital, quantity, fromDate, toDate, handleToast, handleErrorToast]);
 
     /**
      * Check incoming strategy payload from sessionStorage or query params on load
@@ -151,7 +189,6 @@ export default function BacktestPage() {
                 const raw = sessionStorage.getItem('pending_backtest_run');
                 if (raw) {
                     pendingData = JSON.parse(raw);
-                    sessionStorage.removeItem('pending_backtest_run');
                 }
             }
         } catch (_) {}
@@ -294,6 +331,14 @@ export default function BacktestPage() {
                 setResults(stockRes);
                 const trips = parseRoundTrips(stockRes, parseFloat(capital) || 10000, parseFloat(quantity) || 0.01);
                 setRoundTrips(trips);
+                setExecutedParams({
+                    symbol: symbol || 'XAUUSD',
+                    interval: interval || '15min',
+                    capital: parseFloat(capital) || 10000,
+                    quantity: parseFloat(quantity) || 0.01,
+                    fromDate: fromDate || '2024-01-01',
+                    toDate: toDate || '2024-03-01'
+                });
                 handleToast('Backtest simulation complete!');
             } else {
                 setResults(null);
@@ -344,15 +389,15 @@ export default function BacktestPage() {
                                 <div className={styles.metaChipsRow}>
                                     <span className={styles.metaChip}>
                                         <span className={styles.chipKey}>PAIR</span>
-                                        <strong className={styles.chipVal}>{symbol}</strong>
+                                        <strong className={styles.chipVal}>{executedParams?.symbol ?? symbol}</strong>
                                     </span>
                                     <span className={styles.metaChip}>
                                         <span className={styles.chipKey}>INTERVAL</span>
-                                        <strong className={styles.chipVal}>{interval}</strong>
+                                        <strong className={styles.chipVal}>{executedParams?.interval ?? interval}</strong>
                                     </span>
                                     <span className={styles.metaChip}>
                                         <span className={styles.chipKey}>CAPITAL</span>
-                                        <strong className={styles.chipVal}>${Number(capital).toLocaleString()}</strong>
+                                        <strong className={styles.chipVal}>${Number(executedParams?.capital ?? capital).toLocaleString()}</strong>
                                     </span>
                                 </div>
                             </div>
@@ -390,14 +435,14 @@ export default function BacktestPage() {
                             <div className={studioStyles.loadingOverlay}>
                                 <SimulationProgressLoader symbol={symbol} interval={interval} />
                             </div>
-                        ) : results && roundTrips.length > 0 ? (
+                        ) : results ? (
                             <BacktestResultsView
                                 results={results}
                                 roundTrips={roundTrips}
-                                initialCapital={parseFloat(capital) || 10000}
-                                symbol={symbol}
-                                interval={interval}
-                                quantity={parseFloat(quantity) || 0.01}
+                                initialCapital={parseFloat(executedParams?.capital ?? capital) || 10000}
+                                symbol={executedParams?.symbol ?? symbol}
+                                interval={executedParams?.interval ?? interval}
+                                quantity={parseFloat(executedParams?.quantity ?? quantity) || 0.01}
                             />
                         ) : (
                             /* Empty State Screen */

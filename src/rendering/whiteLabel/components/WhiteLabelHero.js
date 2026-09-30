@@ -57,12 +57,16 @@ export default function WhiteLabelHero({ onContactClick }) {
                     transition={{ duration: 0.55, delay: 0.3 }}
                     className={styles.heroCtaGroup}
                 >
-                    <Link href="/contact-us" className={styles.primaryCtaBtn}>
+                    <button
+                        type="button"
+                        onClick={onContactClick}
+                        className={styles.primaryCtaBtn}
+                    >
                         <span>Build Your White-Label Platform</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
-                    </Link>
+                    </button>
 
                     <button
                         type="button"
@@ -86,7 +90,7 @@ export default function WhiteLabelHero({ onContactClick }) {
                 >
                     <div className={styles.heroVisualInner}>
                         <Image
-                            src="/assets/images/white-label/hero-dashboard.jpg"
+                            src="/assets/images/hero-whitelabel.png"
                             alt="ChronosX White Label Trading Platform Dashboard Mockup"
                             width={1200}
                             height={675}
@@ -95,15 +99,7 @@ export default function WhiteLabelHero({ onContactClick }) {
                         />
 
                         {/* Floating telemetry pills */}
-                        <div className={styles.floatingBadgeTopRight}>
-                            <span className={styles.statDot} />
-                            <span>AI Quant Engine Live • 99.98% SLA</span>
-                        </div>
-
-                        <div className={styles.floatingBadgeBottomLeft}>
-                            <div className={styles.statDot} />
-                            <span>Sub-millisecond latency • <strong>Vision OCR Active</strong></span>
-                        </div>
+                        
                     </div>
                 </motion.div>
             </div>

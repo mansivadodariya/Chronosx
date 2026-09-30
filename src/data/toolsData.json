@@ -98,6 +98,19 @@
         "/strategy-studio",
         "/ai-strategy-studio"
       ]
+    },
+    {
+      "id": "custom-bot-builder",
+      "name": "Custom Bot Builder",
+      "shortName": "Custom Bot Builder",
+      "outerRoute": "/custom-bot-builder",
+      "innerRoute": "/manual-bot-builder",
+      "description": "Step-by-step visual rule & technical indicator configuration with risk parameters",
+      "badge": "AI BOT",
+      "legacyRoutes": [
+        "/manual-bot-builder",
+        "/custom-bot-builder"
+      ]
     }
   ],
   "utilityTools": [

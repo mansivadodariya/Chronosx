@@ -9,6 +9,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import LanguageToggle from '@/components/languageToggle';
 import ThemeToggle from '@/components/themeToggle';
 import { supabase } from '@/lib/supabaseClient';
+import { fetchVisibleTabNames, getVisibleTabNamesSync } from '@/lib/useTabPermission';
 import { CreditCardIcon } from '@/icons/creditIcon';
 
 const ROUTE_TITLE_MAP = {
@@ -65,7 +66,7 @@ const Topbar = ({ onMenuClick }) => {
   const { t } = useLanguage();
   const [credits, setCredits] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [visibleTabNames, setVisibleTabNames] = useState(null);
+  const [visibleTabNames, setVisibleTabNames] = useState(() => getVisibleTabNamesSync());
 
   const currentEntry = Object.entries(ROUTE_TITLE_MAP).find(([route]) =>
     pathname === route || pathname?.startsWith(`${route}/`)
@@ -88,30 +89,9 @@ const Topbar = ({ onMenuClick }) => {
   };
 
   useEffect(() => {
-    try {
-      if (typeof window !== 'undefined') {
-        const cached = sessionStorage.getItem('visible_tab_names');
-        if (cached) {
-          setVisibleTabNames(new Set(JSON.parse(cached)));
-        }
-      }
-    } catch (e) { /* ignore */ }
-  }, []);
-
-  useEffect(() => {
-    async function loadVisibleTabs() {
-      if (!supabase) return;
-      try {
-        const { data, error } = await supabase.rpc('get_visible_dashboard_tabs');
-        if (!error && Array.isArray(data)) {
-          const arr = data.map(tab => (tab.name || '').toLowerCase());
-          setVisibleTabNames(new Set(arr));
-        }
-      } catch (e) {
-        console.warn('Failed to load visible tabs in topbar:', e);
-      }
-    }
-    loadVisibleTabs();
+    fetchVisibleTabNames().then((set) => {
+      if (set) setVisibleTabNames(set);
+    });
   }, []);
 
   useEffect(() => {

@@ -10,17 +10,6 @@
     }
 }
 
-@keyframes pulseCore {
-    0%, 100% {
-        opacity: 0.6;
-        transform: scale(0.9);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.1);
-    }
-}
-
 .loaderWrapper {
     position: relative;
     display: inline-flex;
@@ -42,10 +31,6 @@
             border-bottom-color: #0284C7;
             border-left-color: #0284C7;
             box-shadow: 0 0 10px rgba(2, 132, 199, 0.18);
-        }
-        .coreDot {
-            background: #059669;
-            box-shadow: 0 0 6px #059669;
         }
     }
 }
@@ -74,15 +59,6 @@
     animation: spinCounterClockwise 0.7s linear infinite;
     box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
     box-sizing: border-box;
-}
-
-.coreDot {
-    width: 25%;
-    height: 25%;
-    border-radius: 50%;
-    background: #18C98B;
-    box-shadow: 0 0 8px #18C98B;
-    animation: pulseCore 1.4s ease-in-out infinite;
 }
 
 .sm {

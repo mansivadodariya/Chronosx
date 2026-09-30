@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { toast } from 'react-hot-toast';
+import { toast } from '@/components/toast';
 import styles from '../tradeAnalysis.module.scss';
 import { SparklesIcon, CopyIcon } from '@/icons/tradeAnalysisIcons';
 

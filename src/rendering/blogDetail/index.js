@@ -8,7 +8,7 @@ import { BLOG_POSTS } from '../blogs/data';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import { toast } from 'react-hot-toast';
+import { toast } from '@/components/toast';
 
 export default function BlogDetailView({ slug }) {
     const postIndex = BLOG_POSTS.findIndex(p => p.slug === slug);

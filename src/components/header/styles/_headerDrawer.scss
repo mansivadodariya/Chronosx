@@ -104,11 +104,26 @@
                             }
 
                             .subIconWrap {
-                                color: #18c98b;
+                                color: #FFFFFF;
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
                                 flex-shrink: 0;
+                                background: transparent;
+                                border: none;
+                                transition: transform 0.2s ease, color 0.2s ease, filter 0.2s ease;
+
+                                svg {
+                                    width: 22px;
+                                    height: 22px;
+                                    flex-shrink: 0;
+                                }
+                            }
+
+                            &:hover .subIconWrap {
+                                color: #18c98b;
+                                transform: scale(1.1);
+                                filter: drop-shadow(0 0 6px rgba(24, 201, 139, 0.6));
                             }
 
                             .subContent {

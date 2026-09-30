@@ -17,7 +17,6 @@ export default function Loader({ size = 'md', centered = false, className = '' }
         >
             <div className={styles.outerRing} />
             <div className={styles.innerRing} />
-            <div className={styles.coreDot} />
         </div>
     );
 

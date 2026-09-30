@@ -32,7 +32,6 @@ export default function ChartSkeletonLoader({
                 <div className={styles.chartLoaderOverlay}>
                     <div className={styles.spinnerOrbitalSmall}>
                         <div className={styles.spinnerRing} />
-                        <div className={styles.spinnerDot} />
                     </div>
                     <div className={styles.chartLoaderLabel}>
                         <ChartTrendIcon size={14} color="#18C98B" />
@@ -70,7 +69,6 @@ export default function ChartSkeletonLoader({
                 <div className={styles.chartLoaderOverlay}>
                     <div className={styles.spinnerOrbitalSmall}>
                         <div className={styles.spinnerRing} />
-                        <div className={styles.spinnerDot} />
                     </div>
                     <div className={styles.chartLoaderLabel}>
                         <AreaChartIcon size={14} color="#18C98B" />
@@ -116,7 +114,6 @@ export default function ChartSkeletonLoader({
         <div className={styles.chartLoaderContainer}>
             <div className={styles.spinnerOrbitalSmall}>
                 <div className={styles.spinnerRing} />
-                <div className={styles.spinnerDot} />
             </div>
             <div className={styles.chartLoaderLabel} style={{ marginTop: '12px' }}>
                 <span>Loading Chart Data...</span>

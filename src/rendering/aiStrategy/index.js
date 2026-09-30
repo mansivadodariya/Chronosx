@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from './aiStrategy.module.scss';
 import Loader from '@/components/loader';
 import { getStoredUserId } from '@/lib/authSession';
-import { toast } from 'react-hot-toast';
+import { toast } from '@/components/toast';
 import dynamic from 'next/dynamic';
 import StrategyDropdown from './StrategyDropdown';
 import { useRouter } from 'next/navigation';

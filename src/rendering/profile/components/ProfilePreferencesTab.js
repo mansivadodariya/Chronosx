@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
-import toast from 'react-hot-toast';
+import { toast } from '@/components/toast';
 import styles from '../styles/preferencesTab.module.scss';
 import ProfileCustomSelect from './ProfileCustomSelect';
 

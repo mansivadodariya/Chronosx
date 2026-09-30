@@ -17,6 +17,7 @@ export default function InteractiveQuestionWizard({
     const [collectedAnswers, setCollectedAnswers] = useState([]);
     const inputRef = useRef(null);
     const containerRef = useRef(null);
+    const isSubmittingRef = useRef(false);
 
     // Collect all questions that the user has already answered in the chat session
     const previouslyAnsweredSet = useMemo(() => {
@@ -123,6 +124,7 @@ export default function InteractiveQuestionWizard({
         setSelectedOptionIndex(0);
         setInlineAnswer('');
         setCollectedAnswers([]);
+        isSubmittingRef.current = false;
     }, [latestAiMessage, questionsList.length]);
 
     const totalQuestions = Math.max(1, latestAiMessage?.total_questions || questionsList.length);
@@ -210,6 +212,7 @@ export default function InteractiveQuestionWizard({
             setCurrentIndex((prev) => prev + 1);
             setSelectedOptionIndex(0);
             setInlineAnswer('');
+            isSubmittingRef.current = false;
         } else {
             // All questions answered — compile formatted summary string matching Image 2
             const formattedSummary = updatedAnswers
@@ -219,10 +222,13 @@ export default function InteractiveQuestionWizard({
             onComplete(formattedSummary, updatedAnswers);
             setCurrentIndex(0);
             setCollectedAnswers([]);
+            // Keep locked until new AI response arrives
+            isSubmittingRef.current = true;
         }
     };
 
     const handleOptionClick = (choice, cIdx) => {
+        if (isSubmittingRef.current || loading) return;
         setSelectedOptionIndex(cIdx);
         const isCustom = Boolean(
             choice.is_custom ||
@@ -236,6 +242,7 @@ export default function InteractiveQuestionWizard({
                 inputRef.current?.focus();
             }, 60);
         } else {
+            isSubmittingRef.current = true;
             // Visually show option selected with arrow before submitting
             setTimeout(() => {
                 handleAnswerSubmit(choice.value, choice.label);
@@ -255,14 +262,17 @@ export default function InteractiveQuestionWizard({
                 setSelectedOptionIndex((prev) => (prev - 1 + activeOptions.length) % activeOptions.length);
             }
         } else if (e.key === 'Enter') {
+            e.preventDefault();
+            e.stopPropagation();
+            if (isSubmittingRef.current || loading) return;
             if (inlineAnswer.trim()) {
-                e.preventDefault();
+                isSubmittingRef.current = true;
                 handleAnswerSubmit(inlineAnswer.trim(), inlineAnswer.trim());
             } else if (selectedOption) {
                 if (isCustomSelected) {
                     inputRef.current?.focus();
                 } else {
-                    e.preventDefault();
+                    isSubmittingRef.current = true;
                     handleAnswerSubmit(selectedOption.value, selectedOption.label);
                 }
             }
@@ -337,6 +347,7 @@ export default function InteractiveQuestionWizard({
                         <button
                             key={cIdx}
                             type="button"
+                            disabled={loading}
                             className={`${styles.optionChoiceItem} ${isSelected ? styles.selectedOption : ''}`}
                             onClick={() => handleOptionClick(choice, cIdx)}
                         >

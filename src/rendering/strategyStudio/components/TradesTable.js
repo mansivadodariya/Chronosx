@@ -21,45 +21,51 @@ const formatBalance = (val) => {
     return `$${Number(val).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
-export default function TradesTable({ roundTrips = [] }) {
+export default function TradesTable({
+    roundTrips = [],
+    totalTrades = 0,
+    wins = 0,
+    losses = 0
+}) {
     const [filter, setFilter] = useState('all');
 
     const safeRoundTrips = Array.isArray(roundTrips) ? roundTrips : [];
 
     const filteredTrades = useMemo(() => {
         if (filter === 'win') return safeRoundTrips.filter(t => (Number(t?.pnl) || 0) > 0);
-        if (filter === 'loss') return safeRoundTrips.filter(t => (Number(t?.pnl) || 0) <= 0);
+        if (filter === 'loss') return safeRoundTrips.filter(t => (Number(t?.pnl) || 0) < 0);
         return safeRoundTrips;
     }, [safeRoundTrips, filter]);
 
-    const winCount = safeRoundTrips.filter(t => (Number(t?.pnl) || 0) > 0).length;
-    const lossCount = safeRoundTrips.filter(t => (Number(t?.pnl) || 0) <= 0).length;
+    const displayTotal = safeRoundTrips.length > 0 ? safeRoundTrips.length : totalTrades;
+    const displayWins = safeRoundTrips.length > 0 ? safeRoundTrips.filter(t => (Number(t?.pnl) || 0) > 0).length : wins;
+    const displayLosses = safeRoundTrips.length > 0 ? safeRoundTrips.filter(t => (Number(t?.pnl) || 0) < 0).length : losses;
 
     return (
         <div className={styles.tableCard}>
             <div className={styles.tableHeader}>
-                <h3>Detailed Trades Execution Log ({safeRoundTrips.length})</h3>
+                <h3>Detailed Trades Execution Log ({displayTotal})</h3>
                 <div className={styles.filterPills}>
                     <button
                         type="button"
                         className={`${styles.filterBtn} ${filter === 'all' ? styles.active : ''}`}
                         onClick={() => setFilter('all')}
                     >
-                        All Trades ({safeRoundTrips.length})
+                        All Trades ({displayTotal})
                     </button>
                     <button
                         type="button"
                         className={`${styles.filterBtn} ${filter === 'win' ? styles.active : ''}`}
                         onClick={() => setFilter('win')}
                     >
-                        Wins ({winCount})
+                        Wins ({displayWins})
                     </button>
                     <button
                         type="button"
                         className={`${styles.filterBtn} ${filter === 'loss' ? styles.active : ''}`}
                         onClick={() => setFilter('loss')}
                     >
-                        Losses ({lossCount})
+                        Losses ({displayLosses})
                     </button>
                 </div>
             </div>
@@ -84,8 +90,13 @@ export default function TradesTable({ roundTrips = [] }) {
                             <tr>
                                 <td colSpan="9" style={{ textAlign: 'center', color: '#94A3B8', padding: '32px' }}>
                                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
-                                        <span className={styles.liveIndicatorPulse} />
-                                        <span>{safeRoundTrips.length === 0 ? 'Loading detailed trades execution log...' : 'No trades match the selected filter.'}</span>
+                                        {displayTotal > 0 ? (
+                                            <span>
+                                                Backend Engine Execution: <strong>{displayTotal}</strong> aggregate trades computed ({displayWins} wins / {displayLosses} losses).
+                                            </span>
+                                        ) : (
+                                            <span>No trade signals generated for this backtest dataset.</span>
+                                        )}
                                     </div>
                                 </td>
                             </tr>

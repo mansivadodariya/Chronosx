@@ -1,0 +1,784 @@
+/* ============================================================
+   WHITE LABEL ENTERPRISE INQUIRY FORM SECTION
+   ============================================================ */
+
+.inquirySection {
+    padding: 90px 0 110px 0;
+    position: relative;
+    scroll-margin-top: 100px;
+
+    @include respond-to('md') {
+        padding: 60px 0 80px 0;
+    }
+}
+
+.inquiryContainer {
+    max-width: 1260px;
+    margin: 0 auto;
+    padding: 0 24px;
+
+    @include respond-to('md') {
+        padding: 0 16px;
+    }
+}
+
+.inquiryCard {
+    position: relative;
+    background: #0C100E;
+    border: 1px solid rgba(24, 201, 139, 0.25);
+    border-radius: 20px;
+    padding: 0;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65), 0 0 30px rgba(24, 201, 139, 0.08);
+    overflow: hidden;
+
+    @include respond-to('lg') {
+        border-radius: 18px;
+    }
+
+    @include respond-to('md') {
+        border-radius: 16px;
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.12);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+    }
+}
+
+.inquirySplitLayout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 0;
+    align-items: stretch;
+
+    @include respond-to('xl') {
+        grid-template-columns: 320px 1fr;
+    }
+
+    @include respond-to('lg') {
+        grid-template-columns: 1fr;
+    }
+}
+
+.inquiryVisualCol {
+    position: relative;
+    border-right: 1px solid rgba(24, 201, 139, 0.2);
+    background: #070A08;
+    display: flex;
+    overflow: hidden;
+
+    @include respond-to('lg') {
+        border-right: none;
+        border-bottom: 1px solid rgba(24, 201, 139, 0.2);
+        height: 340px;
+        min-height: 340px;
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        background: #F8FAFC;
+        border-color: rgba(15, 23, 42, 0.1);
+    }
+}
+
+.inquiryVisualImageWrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+    background: #060907;
+}
+
+.inquiryVisualImage {
+    object-fit: cover;
+    object-position: center center;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &:hover {
+        transform: scale(1.02);
+    }
+}
+
+.inquiryFormCol {
+    position: relative;
+    z-index: 1;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+
+    @include respond-to('xl') {
+        padding: 24px 20px;
+    }
+
+    @include respond-to('lg') {
+        padding: 24px 18px;
+    }
+
+    @include respond-to('md') {
+        padding: 20px 16px;
+    }
+}
+
+.cardAmbientGlow {
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(24, 201, 139, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.inquiryForm {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.formGridTwoCols {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+
+    @include respond-to('md') {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+.formGridThreeCols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+
+    @include respond-to('lg') {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    @include respond-to('md') {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+.formGridFourCols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+
+    @include respond-to('xl') {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+
+    @include respond-to('lg') {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    @include respond-to('sm') {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}
+
+.bottomSplitRow {
+    display: grid;
+    grid-template-columns: 1fr 1.65fr;
+    gap: 18px;
+    align-items: stretch;
+
+    @include respond-to('lg') {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+.colSpan2 {
+    grid-column: span 2;
+
+    @include respond-to('lg') {
+        grid-column: span 2;
+    }
+
+    @include respond-to('md') {
+        grid-column: span 1;
+    }
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+}
+
+.formLabel {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    letter-spacing: 0.1px;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        color: #0F172A;
+    }
+}
+
+.requiredStar {
+    color: #EF4444;
+    font-size: 13px;
+}
+
+.optionalTag {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.4);
+    margin-left: 3px;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        color: #94A3B8;
+    }
+}
+
+.inputWrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.fieldIcon {
+    position: absolute;
+    left: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.45);
+    pointer-events: none;
+    z-index: 2;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        color: #64748B;
+    }
+}
+
+.textInput, .selectInput, .textareaInput {
+    width: 100%;
+    background: #141816;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px !important;
+    padding: 10px 14px;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+
+    &.withIcon {
+        padding-left: 38px;
+    }
+
+    &:hover:not(:disabled) {
+        border-color: rgba(24, 201, 139, 0.4);
+    }
+
+    &:focus {
+        border-color: #18C98B;
+        box-shadow: 0 0 0 1px rgba(24, 201, 139, 0.4), 0 0 14px rgba(24, 201, 139, 0.15);
+    }
+
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.35);
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        background: #F8FAFC;
+        border-color: #CBD5E1;
+        border-radius: 12px !important;
+        color: #0F172A;
+
+        &::placeholder {
+            color: #94A3B8;
+        }
+
+        &:hover:not(:disabled) {
+            border-color: #94A3B8;
+        }
+
+        &:focus {
+            border-color: #18C98B;
+            box-shadow: 0 0 0 1px rgba(24, 201, 139, 0.35);
+        }
+    }
+}
+
+.textInput {
+    height: 44px;
+}
+
+.textareaInput {
+    resize: vertical;
+    min-height: 42px;
+    height: 42px;
+    line-height: 1.4;
+    padding: 8px 12px;
+}
+
+.inputError {
+    border-color: #EF4444 !important;
+    box-shadow: 0 0 0 1.5px rgba(239, 68, 68, 0.45) !important;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        border-color: #EF4444 !important;
+        box-shadow: 0 0 0 1.5px rgba(239, 68, 68, 0.35) !important;
+    }
+}
+
+.errorHelperText {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #EF4444 !important;
+    margin-top: 2px;
+    letter-spacing: 0.1px;
+
+    svg {
+        flex-shrink: 0;
+        width: 13px;
+        height: 13px;
+        color: #EF4444 !important;
+        fill: #EF4444 !important;
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        color: #DC2626 !important;
+
+        svg {
+            color: #DC2626 !important;
+            fill: #DC2626 !important;
+        }
+    }
+}
+
+.messageColumnGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    height: 100%;
+}
+
+.messageTextarea {
+    width: 100%;
+    flex: 1;
+    min-height: 140px;
+    height: 100%;
+    resize: none;
+    background: #141816;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px !important;
+    padding: 12px 14px;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    line-height: 1.45;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+        border-color: rgba(24, 201, 139, 0.4);
+    }
+
+    &:focus {
+        border-color: #18C98B;
+        box-shadow: 0 0 0 1px rgba(24, 201, 139, 0.4), 0 0 14px rgba(24, 201, 139, 0.15);
+    }
+
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.35);
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        background: #F8FAFC;
+        border-color: #CBD5E1;
+        border-radius: 12px !important;
+        color: #0F172A;
+
+        &::placeholder {
+            color: #94A3B8;
+        }
+
+        &:hover:not(:disabled) {
+            border-color: #94A3B8;
+        }
+
+        &:focus {
+            border-color: #18C98B;
+            box-shadow: 0 0 0 1px rgba(24, 201, 139, 0.35);
+        }
+    }
+}
+
+.inquiryCapabilitiesSection {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    height: 100%;
+    justify-content: flex-start;
+}
+
+.inquiryCapabilitiesHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: 20px;
+}
+
+.inquiryCapabilitiesCounter {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #18C98B;
+    background: rgba(24, 201, 139, 0.1);
+    padding: 1px 7px;
+    border-radius: 5px;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        color: #047857;
+        background: #DCFCE7;
+    }
+}
+
+.inquiryCapabilitiesGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px 7px;
+    flex: 1;
+
+    @include respond-to('md') {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include respond-to('sm') {
+        grid-template-columns: 1fr;
+    }
+}
+
+.capabilityPill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    height: 38px;
+    min-height: 38px;
+    background: #141816;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px !important;
+    padding: 0 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    box-sizing: border-box;
+    min-width: 0;
+
+    &:hover {
+        border-color: rgba(24, 201, 139, 0.4);
+        background: #181E1A;
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        background: #FFFFFF;
+        border-color: #CBD5E1;
+        border-radius: 12px !important;
+
+        &:hover {
+            border-color: #18C98B;
+            background: #F0FDF4;
+        }
+    }
+}
+
+.capabilityPillActive {
+    background: rgba(24, 201, 139, 0.12) !important;
+    border-color: #18C98B !important;
+    border-radius: 12px !important;
+    box-shadow: 0 0 12px rgba(24, 201, 139, 0.2);
+
+    .customCheckSquare {
+        background: #18C98B !important;
+        border-color: #18C98B !important;
+        color: #0A0D0B;
+    }
+
+    .capabilityLabel {
+        color: #18C98B !important;
+        font-weight: 700;
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        background: #DCFCE7 !important;
+        border-color: #059669 !important;
+        border-radius: 12px !important;
+
+        .customCheckSquare {
+            background: #059669 !important;
+            border-color: #059669 !important;
+            color: #FFFFFF;
+        }
+
+        .capabilityLabel {
+            color: #047857 !important;
+        }
+    }
+}
+
+.customCheckSquare {
+    width: 15px;
+    height: 15px;
+    border-radius: 4px;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        border-color: #94A3B8;
+    }
+}
+
+.capabilityLabel {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        color: #334155;
+    }
+}
+
+.submitActionArea {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.submitBtn {
+    width: 100%;
+    height: 48px;
+    background: linear-gradient(135deg, #18C98B 0%, #10B981 100%);
+    border: none;
+    border-radius: 12px !important;
+    color: #060907;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 6px 20px rgba(24, 201, 139, 0.35);
+
+    &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(24, 201, 139, 0.5);
+        background: linear-gradient(135deg, #20E39F 0%, #10B981 100%);
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+.submitSpinner {
+    width: 20px;
+    height: 20px;
+    border: 2.5px solid rgba(6, 9, 7, 0.25);
+    border-top-color: #060907;
+    border-radius: 50%;
+    animation: submitSpin 0.7s linear infinite;
+}
+
+@keyframes submitSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.privacyNote {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        color: #64748B;
+    }
+}
+
+/* Success State */
+.successCard {
+    text-align: center;
+    padding: 60px 24px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    width: 100%;
+
+    @include respond-to('lg') {
+        min-height: 380px;
+        padding: 40px 16px;
+    }
+}
+
+.successIconWrap {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: rgba(24, 201, 139, 0.15);
+    border: 2px solid #18C98B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #18C98B;
+    box-shadow: 0 0 24px rgba(24, 201, 139, 0.3);
+}
+
+.successHeading {
+    font-size: 26px;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        color: #0F172A;
+    }
+}
+
+.successMessage {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.75);
+    max-width: 540px;
+    line-height: 1.6;
+    margin: 0;
+
+    strong {
+        color: #18C98B;
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        color: #475569;
+
+        strong {
+            color: #047857;
+        }
+    }
+}
+
+.resetFormBtn {
+    margin-top: 10px;
+    padding: 11px 24px;
+    background: transparent;
+    border: 1px solid rgba(24, 201, 139, 0.4);
+    border-radius: 12px;
+    color: #18C98B;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(24, 201, 139, 0.1);
+        border-color: #18C98B;
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
+        color: #047857;
+        border-color: #059669;
+
+        &:hover {
+            background: #F0FDF4;
+        }
+    }
+}

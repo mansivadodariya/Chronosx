@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import styles from './broker.module.scss';
 import { getStoredUserId } from '@/lib/authSession';
 import { fetchBrokers, brokerList } from '@/lib/brokersData';
-import toast from 'react-hot-toast';
+import { toast } from '@/components/toast';
 
 import BrokerCard from '@/components/brokerCard';
 import { BrokerCardSkeleton } from '@/components/brokerSkeleton';

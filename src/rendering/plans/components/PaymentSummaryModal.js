@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from '../styles/paymentSummaryModal.module.scss';
 import { subscriptionApi } from '@/lib/subscriptionApi';
 import { useLanguage } from '@/context/LanguageContext';
-import toast from 'react-hot-toast';
+import { toast } from '@/components/toast';
 
 export default function PaymentSummaryModal({
     isOpen,

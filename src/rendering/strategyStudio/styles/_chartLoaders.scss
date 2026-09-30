@@ -178,39 +178,24 @@
 }
 
 .spinnerOrbitalSmall {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
 
     .spinnerRing {
-        position: absolute;
-        inset: 0;
+        width: 100%;
+        height: 100%;
         border-radius: 50%;
-        border: 2.5px solid rgba(24, 201, 139, 0.15);
+        border: 2.5px solid rgba(24, 201, 139, 0.18);
         border-top-color: #18C98B;
-        border-right-color: #00F2FE;
         animation: spinRing 0.85s linear infinite;
-        box-shadow: 0 0 12px rgba(24, 201, 139, 0.3);
 
         [data-theme='light'] & {
+            border-color: rgba(5, 150, 105, 0.18);
             border-top-color: #059669;
-            border-right-color: #10B981;
-        }
-    }
-
-    .spinnerDot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #18C98B;
-        box-shadow: 0 0 8px #18C98B;
-        animation: simPulse 1.4s ease-in-out infinite;
-
-        [data-theme='light'] & {
-            background: #059669;
         }
     }
 }

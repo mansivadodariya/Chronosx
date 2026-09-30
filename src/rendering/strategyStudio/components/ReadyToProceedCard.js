@@ -36,13 +36,14 @@ export default function ReadyToProceedCard({
 }) {
     const defaultName = computeDynamicStrategyName(draft);
     const [strategyName, setStrategyName] = useState(defaultName);
+    const [hasUserEdited, setHasUserEdited] = useState(false);
     const [generationStage, setGenerationStage] = useState(1);
 
     useEffect(() => {
-        if (draft) {
+        if (!hasUserEdited && draft) {
             setStrategyName(computeDynamicStrategyName(draft));
         }
-    }, [draft]);
+    }, [draft, hasUserEdited]);
 
     // Animate the 3-step generation progression when generatingStrategy is true
     useEffect(() => {
@@ -144,7 +145,10 @@ export default function ReadyToProceedCard({
                     type="text"
                     className={styles.strategyNameInput}
                     value={strategyName}
-                    onChange={(e) => setStrategyName(e.target.value)}
+                    onChange={(e) => {
+                        setStrategyName(e.target.value);
+                        setHasUserEdited(true);
+                    }}
                     placeholder="Strategy name (e.g. EUR/USD Momentum Scalping)"
                 />
             </div>
@@ -154,7 +158,10 @@ export default function ReadyToProceedCard({
                 <button
                     type="button"
                     className={styles.btnCreateStrategy}
-                    onClick={() => onCreateStrategy(strategyName.trim() || defaultName)}
+                    onClick={() => {
+                        const finalChosenName = strategyName.trim() || defaultName;
+                        onCreateStrategy(finalChosenName);
+                    }}
                     disabled={generatingStrategy}
                 >
                     <span>Create Strategy</span>

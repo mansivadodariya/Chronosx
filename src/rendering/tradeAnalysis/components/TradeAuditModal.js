@@ -4,7 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { toast } from 'react-hot-toast';
+import { toast } from '@/components/toast';
 import styles from '../tradeAnalysis.module.scss';
 import {
     SparklesIcon,

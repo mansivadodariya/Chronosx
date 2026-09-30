@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import styles from './quickJump.module.scss';
 import { supabase } from '@/lib/supabaseClient';
+import { fetchVisibleTabNames, getVisibleTabNamesSync } from '@/lib/useTabPermission';
 import { getQuickJumpSections, checkItemPermission } from './quickJumpItems';
 
 export default function QuickJump({ isCollapsed = false }) {
@@ -17,35 +18,15 @@ export default function QuickJump({ isCollapsed = false }) {
     const [query, setQuery] = useState('');
     const [activeCategoryKey, setActiveCategoryKey] = useState('all');
     const [selectedIndex, setSelectedIndex] = useState(0);
-    const [visibleTabNames, setVisibleTabNames] = useState(null);
+    const [visibleTabNames, setVisibleTabNames] = useState(() => getVisibleTabNamesSync());
     const inputRef = useRef(null);
     const itemRefs = useRef([]);
     const resultsListRef = useRef(null);
 
     useEffect(() => {
-        try {
-            if (typeof window !== 'undefined') {
-                const cached = sessionStorage.getItem('visible_tab_names');
-                if (cached) {
-                    setVisibleTabNames(new Set(JSON.parse(cached)));
-                }
-            }
-        } catch (_) {}
-
-        async function loadTabs() {
-            if (!supabase) return;
-            try {
-                const { data, error } = await supabase.rpc('get_visible_dashboard_tabs');
-                if (!error && Array.isArray(data)) {
-                    const names = new Set(data.map((tab) => (tab.name || '').toLowerCase().trim()));
-                    setVisibleTabNames(names);
-                    if (typeof window !== 'undefined') {
-                        sessionStorage.setItem('visible_tab_names', JSON.stringify([...names]));
-                    }
-                }
-            } catch (_) {}
-        }
-        loadTabs();
+        fetchVisibleTabNames().then(set => {
+            if (set) setVisibleTabNames(set);
+        });
     }, [isOpen]);
 
     const sections = useMemo(() => getQuickJumpSections(t), [t]);

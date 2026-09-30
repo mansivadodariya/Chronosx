@@ -37,6 +37,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
 import { getBidiProps } from '@/lib/bidi';
 import { supabase } from '@/lib/supabaseClient';
+import { fetchVisibleTabNames, getVisibleTabNamesSync } from '@/lib/useTabPermission';
 import QuickJump from '@/components/QuickJump';
 import SidebarSubscriptionWidget from './SidebarSubscriptionWidget';
 
@@ -68,17 +69,17 @@ const getNavSections = (t) => [
           { label: t('nav.predefinedStrategies', 'Predefined Strategies'), href: "/predefined-strategies", icon: PredefinedStrategyIcon },
         ]
       },
-      // {
-      //   label: t('nav.aiTradingBot', 'AI Trading Bot'),
-      //   href: "/my-bots",
-      //   icon: BotBuilderIcon,
-      //   subItems: [
-      //     { label: t('nav.myBots', 'My Bots'), href: "/my-bots", icon: MyBotsIcon },
-      //     { label: t('nav.aiBotBuilder', 'AI Bot Builder'), href: "/ai-bot-builder", icon: AiBotSparkIcon },
-      //     { label: t('nav.customBotBuilder', 'Custom Bot Builder'), href: "/manual-bot-builder", icon: CustomBotIcon },
-      //     { label: t('nav.botLibrary', 'Browse Bots Library'), href: "/bot-library", icon: BotLibraryIcon },
-      //   ]
-      // },
+      {
+        label: t('nav.aiTradingBot', 'AI Trading Bot'),
+        href: "/my-bots",
+        icon: BotBuilderIcon,
+        subItems: [
+          { label: t('nav.myBots', 'My Bots'), href: "/my-bots", icon: MyBotsIcon },
+          { label: t('nav.aiBotBuilder', 'AI Bot Builder'), href: "/ai-bot-builder", icon: AiBotSparkIcon },
+          { label: t('nav.customBotBuilder', 'Custom Bot Builder'), href: "/manual-bot-builder", icon: CustomBotIcon },
+          { label: t('nav.botLibrary', 'Browse Bots Library'), href: "/bot-library", icon: BotLibraryIcon },
+        ]
+      },
     ]
   },
   {
@@ -103,18 +104,50 @@ const getNavSections = (t) => [
 ];
 
 /** Match current route to nav item (handles trailing slashes and nested paths). */
-function isNavItemActive(pathname, href) {
+function isNavItemActive(pathname, href, search = '') {
   if (!pathname || !href) return false;
   const current = pathname.split('?')[0].replace(/\/$/, '') || '/';
   const target = href.replace(/\/$/, '') || '/';
-  return current === target || current.startsWith(`${target}/`);
+  if (current === target || current.startsWith(`${target}/`)) return true;
+
+  // Handle /backtest and /backtesting route matching to AI Trading Bot or AI Trading Signal
+  if (current === '/backtest' || current === '/backtesting') {
+    let queryStr = search;
+    if (!queryStr && typeof window !== 'undefined') {
+      queryStr = window.location.search || '';
+    }
+    const params = new URLSearchParams(queryStr);
+    const source = (params.get('source') || '').toLowerCase();
+
+    // If redirected from Predefined Strategies / AI Trading Signal
+    if (source === 'trading_strategies' || source.includes('signal') || source.includes('trading_strat')) {
+      if (target === '/predefined-strategies' || target === '/trading-signal') {
+        return true;
+      }
+    } else {
+      // Default: redirected from My Bots / Bot Builder (AI Trading Bot suite)
+      if (target === '/my-bots' || target === '/ai-trading-bot') {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 const NavItem = ({ item, pathname, onNavigate, isCollapsed }) => {
   const Icon = item.icon;
   const router = useRouter();
-  const isParentActive = isNavItemActive(pathname, item.href);
-  const isAnySubActive = item.subItems?.some(sub => isNavItemActive(pathname, sub.href));
+  const [currentSearch, setCurrentSearch] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setCurrentSearch(window.location.search || '');
+    }
+  }, [pathname]);
+
+  const isParentActive = isNavItemActive(pathname, item.href, currentSearch);
+  const isAnySubActive = item.subItems?.some(sub => isNavItemActive(pathname, sub.href, currentSearch));
   const isActive = isParentActive || isAnySubActive;
 
   const [isOpen, setIsOpen] = useState(isActive);
@@ -148,7 +181,7 @@ const NavItem = ({ item, pathname, onNavigate, isCollapsed }) => {
               <div className={styles.flyoutHeader}>{item.label}</div>
               <div className={styles.flyoutList}>
                 {item.subItems.map(sub => {
-                  const isSubActive = isNavItemActive(pathname, sub.href);
+                  const isSubActive = isNavItemActive(pathname, sub.href, currentSearch);
                   const SubIcon = sub.icon;
                   if (sub.isExternal) {
                     return (
@@ -237,7 +270,7 @@ const NavItem = ({ item, pathname, onNavigate, isCollapsed }) => {
         {isOpen && (
           <div className={styles.subItemsList}>
             {item.subItems.map(sub => {
-              const isSubActive = isNavItemActive(pathname, sub.href);
+              const isSubActive = isNavItemActive(pathname, sub.href, currentSearch);
               const SubIcon = sub.icon;
               if (sub.isExternal) {
                 return (
@@ -325,54 +358,21 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [visibleTabNames, setVisibleTabNames] = useState(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const cached = sessionStorage.getItem('visible_tab_names');
-        if (cached) {
-          return new Set(JSON.parse(cached));
-        }
-      } catch (e) { /* ignore */ }
-    }
-    return null;
-  });
-  const [tabsLoading, setTabsLoading] = useState(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const cached = sessionStorage.getItem('visible_tab_names');
-        if (cached) {
-          return false;
-        }
-      } catch (e) { /* ignore */ }
-    }
-    return true;
-  });
+  const [visibleTabNames, setVisibleTabNames] = useState(() => getVisibleTabNamesSync());
+  const [tabsLoading, setTabsLoading] = useState(() => !getVisibleTabNamesSync());
   const profileRef = useRef(null);
   const sidebarMenuRef = useRef(null);
 
   useEffect(() => {
-    async function loadVisibleTabs() {
-      if (!supabase) {
-        setTabsLoading(false);
-        return;
-      }
-      try {
-        const { data, error } = await supabase.rpc('get_visible_dashboard_tabs');
-        if (!error && Array.isArray(data)) {
-          const arr = data.map(t => (t.name || '').toLowerCase());
-          const names = new Set(arr);
+    fetchVisibleTabNames()
+      .then((names) => {
+        if (names) {
           setVisibleTabNames(names);
-          if (typeof window !== 'undefined') {
-            sessionStorage.setItem('visible_tab_names', JSON.stringify([...names]));
-          }
         }
-      } catch (e) {
-        console.warn('Failed to load visible tabs in sidebar:', e);
-      } finally {
+      })
+      .finally(() => {
         setTabsLoading(false);
-      }
-    }
-    loadVisibleTabs();
+      });
   }, []);
 
 

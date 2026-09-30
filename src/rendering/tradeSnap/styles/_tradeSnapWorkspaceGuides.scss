@@ -454,70 +454,118 @@ $success: #10b981;
     }
 }
 
-:global(html[data-theme='light']) {
-    .tradeSnap {
+:global(html.light) .tradeSnap,
+:global(html[data-theme='light']) .tradeSnap {
+    .panel,
+    .resultsPanel {
+        background: #FFFFFF;
+        border-color: rgba(5, 150, 105, 0.25);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 0 20px rgba(5, 150, 105, 0.05);
+    }
 
-        .panel,
-        .resultsPanel {
-            background: #FFFFFF;
-            border-color: rgba(5, 150, 105, 0.25);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 0 20px rgba(5, 150, 105, 0.05);
+    .panelHeader,
+    .resultsHeader {
+        background: #F8FAFC;
+        border-bottom-color: rgba(5, 150, 105, 0.15);
+
+        h3 {
+            color: #0F172A;
+
+            svg {
+                color: #059669;
+            }
+        }
+    }
+
+    .autoCapture {
+        label {
+            color: #475569;
         }
 
-        .panelHeader,
-        .resultsHeader {
-            background: #F8FAFC;
-            border-bottom-color: rgba(5, 150, 105, 0.15);
+        select {
+            background: #FFFFFF;
+            border: 1px solid #CBD5E1;
+            color: #0F172A;
 
-            h3 {
+            option {
+                background: #FFFFFF;
                 color: #0F172A;
             }
         }
+    }
 
-        .panelActions {
-            background: #F8FAFC;
-        }
+    .panelActions {
+        background: #F8FAFC;
+        border-top: 1px solid rgba(5, 150, 105, 0.15);
+    }
 
-        .videoFrame,
-        .snapshotWrapper {
-            background: #F8FAFC;
-            border-color: rgba(5, 150, 105, 0.2);
-        }
+    .videoFrame,
+    .snapshotWrapper {
+        background: #F8FAFC;
+        border-color: rgba(5, 150, 105, 0.15);
+    }
 
-        .videoPlaceholder,
-        .snapshotEmpty {
-            color: #64748B;
+    .videoPlaceholder {
+        background: radial-gradient(circle at center, rgba(16, 185, 129, 0.08) 0%, #F1F5F9 75%);
+        color: #334155;
 
-            p {
-                color: #64748B;
-            }
-        }
-
-        .snapshotHeader {
-            background: #F1F5F9;
-            border-bottom-color: rgba(5, 150, 105, 0.15);
+        h3 {
             color: #0F172A;
         }
 
-        .btnSecondary {
-            background: #F1F5F9;
-            border-color: #CBD5E1;
-            color: #334155;
-
-            &:hover {
-                background: #E2E8F0;
-                color: #0F172A;
-            }
-        }
-
-        .btnGhost {
+        p {
             color: #64748B;
-
-            &:hover {
-                background: #F1F5F9;
-                color: #0F172A;
-            }
         }
+
+        .placeholderIcon {
+            color: #059669;
+            filter: drop-shadow(0 4px 12px rgba(5, 150, 105, 0.25));
+        }
+    }
+
+    .snapshotEmpty {
+        background: radial-gradient(circle at center, rgba(16, 185, 129, 0.08) 0%, #F1F5F9 75%);
+        color: #334155;
+
+        h3 {
+            color: #0F172A;
+        }
+
+        p {
+            color: #64748B;
+        }
+
+        .emptyIcon {
+            color: #059669;
+            filter: drop-shadow(0 4px 12px rgba(5, 150, 105, 0.25));
+        }
+    }
+
+    .snapshotHeader {
+        background: #F1F5F9;
+        border-bottom-color: rgba(5, 150, 105, 0.15);
+        color: #0F172A;
+    }
+
+    .btnSecondary {
+        background: #F1F5F9;
+        border-color: #CBD5E1;
+        color: #334155;
+
+        &:hover {
+            background: #E2E8F0;
+            color: #0F172A;
+        }
+    }
+
+    .btnGhost {
+        color: #64748B;
+
+        &:hover {
+            background: #F1F5F9;
+            color: #0F172A;
+        }
+    }
 
         .guidePanel {
             background: #FFFFFF;
@@ -604,4 +652,3 @@ $success: #10b981;
             }
         }
     }
-}

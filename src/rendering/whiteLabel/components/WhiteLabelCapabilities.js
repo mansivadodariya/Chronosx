@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
 import styles from '../whiteLabel.module.scss';
 
 const CAPABILITIES = [
@@ -87,91 +88,39 @@ export default function WhiteLabelCapabilities() {
         <section className={styles.capabilitiesSection}>
             <div className={styles.container}>
                 {/* Section Header */}
-                <div className={styles.sectionHeaderCenter}>
-                    <div className={styles.sectionMiniTag} style={{ justifyContent: 'center' }}>
-                        Core Capabilities
-                    </div>
-                    <h2 className={styles.sectionMainTitle}>
-                        Everything You Need to Build a Modern Trading Ecosystem.
-                    </h2>
-                    <p className={styles.sectionMainSubtitle}>
-                        Modular, high-performance financial intelligence modules ready to deploy under your custom brand.
-                    </p>
-                </div>
+                <SectionHeader
+                    badge="Core Capabilities"
+                    title="Everything You Need to Build a Modern Trading Ecosystem."
+                    description="Modular, high-performance financial intelligence modules ready to deploy under your custom brand."
+                />
 
-                <div className={styles.capabilitiesLayout}>
-                    {/* Grid of 6 Capabilities */}
-                    <div className={styles.capabilitiesGrid}>
-                        {CAPABILITIES.map((cap, index) => (
-                            <motion.div
-                                key={cap.num}
-                                initial={{ opacity: 0, y: 16 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.45, delay: index * 0.08 }}
-                                className={styles.capabilityCard}
-                            >
-                                <div className={styles.capabilityIconRow}>
-                                    <div className={styles.capabilityIconWrap}>
-                                        {cap.icon}
-                                    </div>
-                                    <span className={styles.capabilityNum}>{cap.num}</span>
+                {/* Symmetrical 3x2 Grid of Capabilities */}
+                <div className={styles.capabilitiesGrid}>
+                    {CAPABILITIES.map((cap, index) => (
+                        <motion.div
+                            key={cap.num}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.45, delay: index * 0.07 }}
+                            className={styles.capabilityCard}
+                        >
+                            <div className={styles.capabilityCardGlow} />
+                            <div className={styles.capabilityIconRow}>
+                                <div className={styles.capabilityIconWrap}>
+                                    {cap.icon}
                                 </div>
-                                <h3 className={styles.capabilityTitle}>{cap.title}</h3>
-                                <p className={styles.capabilityDesc}>{cap.desc}</p>
-                                <div className={styles.capabilityTagList}>
-                                    {cap.tags.map((tag) => (
-                                        <span key={tag}>{tag}</span>
-                                    ))}
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-
-                    {/* Side Telemetry Showcase Card */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.96 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.55 }}
-                        className={styles.capabilitiesTelemetryCard}
-                    >
-                        <div className={styles.telemetryHeader}>
-                            <h4>Live AI Diagnostic Stream</h4>
-                            <div className={styles.telemetryLiveDot}>
-                                <span />
-                                <span>LIVE</span>
+                                <span className={styles.capabilityBigNum}>{cap.num}</span>
                             </div>
-                        </div>
-
-                        <div className={styles.telemetryScoreBox}>
-                            <div className={styles.scoreBigVal}>94.2</div>
-                            <div className={styles.scoreLabel}>Neural Quant Score • Strong Buy</div>
-                        </div>
-
-                        <div className={styles.telemetryMetricsList}>
-                            <div className={styles.metricRow}>
-                                <span className={styles.mKey}>Active Market Pair</span>
-                                <span className={styles.mVal}>XAUUSD / Gold</span>
+                            <h3 className={styles.capabilityTitle}>{cap.title}</h3>
+                            <p className={styles.capabilityDesc}>{cap.desc}</p>
+                            <div className={styles.capabilityTagList}>
+                                {cap.tags.map((tag) => (
+                                    <span key={tag}>{tag}</span>
+                                ))}
                             </div>
-                            <div className={styles.metricRow}>
-                                <span className={styles.mKey}>Vision OCR Confidence</span>
-                                <span className={`${styles.mVal} ${styles.bullishVal}`}>98.4%</span>
-                            </div>
-                            <div className={styles.metricRow}>
-                                <span className={styles.mKey}>Structure State</span>
-                                <span className={`${styles.mVal} ${styles.bullishVal}`}>Bullish Breakout</span>
-                            </div>
-                            <div className={styles.metricRow}>
-                                <span className={styles.mKey}>Execution Latency</span>
-                                <span className={`${styles.mVal} ${styles.blueVal}`}>&lt; 9.4ms</span>
-                            </div>
-                            <div className={styles.metricRow}>
-                                <span className={styles.mKey}>Risk : Reward Target</span>
-                                <span className={styles.mVal}>1 : 3.4</span>
-                            </div>
-                        </div>
-                    </motion.div>
+                        </motion.div>
+                    ))}
                 </div>
             </div>
         </section>

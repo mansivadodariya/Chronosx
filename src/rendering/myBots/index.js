@@ -6,125 +6,64 @@ import styles from './myBots.module.scss';
 import CommonSectionHeader from '@/components/CommonSectionHeader';
 import { MyBotsIcon } from '@/icons/sidebarIcons';
 import { useLanguage } from '@/context/LanguageContext';
-import { toast } from 'react-hot-toast';
-import { supabase } from '@/lib/supabaseClient';
+import { toast } from '@/components/toast';
 import { getStoredUserId } from '@/lib/authSession';
 
 import DeleteBotModal from './components/DeleteBotModal';
 import StrategyDetailModal from './components/StrategyDetailModal';
+import { mapStrategyToBot } from './utils/botHelpers';
+import { fetchVisibleTabNames, getVisibleTabNamesSync } from '@/lib/useTabPermission';
 
-const BACKEND_BASE = (
-    process.env.NEXT_PUBLIC_BACKEND_URL ||
-    'http://192.168.0.153:8000'
-).replace(/\/+$/, '');
+const resolveBacktestApiBase = () => {
+    const raw = (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_BACKTEST_API_URL || 'http://192.168.0.153:8000').replace(/\/+$/, '');
+    return raw.endsWith('/backtest/v1') ? raw : `${raw}/backtest/v1`;
+};
 
-const API_BASE = BACKEND_BASE.endsWith('/backtest/v1')
-    ? BACKEND_BASE
-    : `${BACKEND_BASE}/backtest/v1`;
-
-export default function MyBotsView() {
+export default function MyBots() {
     const router = useRouter();
     const { t } = useLanguage();
-
     const [bots, setBots] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [filterStatus, setFilterStatus] = useState('all'); // 'all' | 'active' | 'paused'
+    const [filterStatus, setFilterStatus] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [showCreateModal, setShowCreateModal] = useState(false);
-    const [visibleTabNames, setVisibleTabNames] = useState(null);
     const [selectedStrategyDetail, setSelectedStrategyDetail] = useState(null);
     const [botToDelete, setBotToDelete] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [visibleTabNames, setVisibleTabNames] = useState(() => getVisibleTabNamesSync());
 
     useEffect(() => {
-        try {
-            if (typeof window !== 'undefined') {
-                const cached = sessionStorage.getItem('visible_tab_names');
-                if (cached) {
-                    setVisibleTabNames(new Set(JSON.parse(cached)));
-                }
-            }
-        } catch (_) { }
-
-        async function loadTabs() {
-            if (!supabase) return;
-            try {
-                const { data, error } = await supabase.rpc('get_visible_dashboard_tabs');
-                if (!error && Array.isArray(data)) {
-                    const names = new Set(data.map(t => (t.name || '').toLowerCase().trim()));
-                    setVisibleTabNames(names);
-                }
-            } catch (_) { }
-        }
-        loadTabs();
+        fetchVisibleTabNames().then(set => {
+            if (set) setVisibleTabNames(set);
+        });
     }, []);
 
-    // Format backend strategy item to unified bot object
-    const mapStrategyToBot = (item, idx) => {
-        const id = item.strategy_id || item.id || `strat_${idx}_${Date.now()}`;
-        const name = item.strategy_name || item.name || `AI Strategy #${idx + 1}`;
-        const symbol = item.symbol || (Array.isArray(item.stock_name) ? item.stock_name[0] : item.stock_name) || 'BTCUSD';
-        const timeframe = item.timeframe || item.interval || '15min';
-        const type = item.strategy_type
-            ? item.strategy_type.replace(/_/g, ' ').toUpperCase()
-            : (item.pattern || item.category || 'AI GENERATED');
-        const direction = item.direction || (item.entry_type === 1 ? 'Short' : 'Long');
-        const isActive = item.is_active !== undefined ? Boolean(item.is_active) : true;
-        const sl = item.sl || (item.stoploss_pips ? `${item.stoploss_pips} pips` : null) || '50.0 pts';
-        const tp = item.tp || (item.target_pips ? `${item.target_pips} pips` : null) || '50.0 pts';
-        const riskReward = item.risk_reward || '1:1.0';
-        const lots = item.lots || item.quantity || 0.01;
-        const pattern = item.pattern || item.entry_pattern || '';
-        const description = item.description || item.trade_reasoning?.rationale || 'Algorithmic quantitative strategy.';
-        const createdAt = item.created_at || item.updated_at || '';
-
-        // Win rate / profit factor simulation fallback metrics if not returned directly
-        const winRate = item.win_rate || item.winRate || (60 + ((id.charCodeAt(0) || 10) % 18)) + '.5%';
-        const profitFactor = item.profit_factor || item.profitFactor || (1.6 + (((id.charCodeAt(1) || 5) % 8) / 10)).toFixed(2);
-        const totalPnl = item.total_pnl || item.totalPnl || (item.pnl ? (item.pnl >= 0 ? `+$${item.pnl.toFixed(2)}` : `-$${Math.abs(item.pnl).toFixed(2)}`) : '+$1,420.00');
-
-        return {
-            id,
-            strategyId: item.strategy_id || item.id,
-            name,
-            symbol,
-            timeframe,
-            type,
-            direction,
-            status: isActive ? 'active' : 'paused',
-            sl,
-            tp,
-            riskReward,
-            lots,
-            pattern,
-            description,
-            createdAt,
-            winRate,
-            profitFactor,
-            totalPnl,
-            rawStrategy: item,
-            source: 'api'
-        };
-    };
-
-    // Load Strategies from backend API: /backtest/v1/ai-bot-builder/{user_id}
+    // Load Strategies dynamically from backend API
     const loadUserStrategies = useCallback(async () => {
         setLoading(true);
         try {
             const uid = getStoredUserId() || 'test_user';
-            const endpoint = `${API_BASE}/ai-bot-builder/${encodeURIComponent(uid)}`;
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            };
+            if (typeof window !== 'undefined') {
+                const token = localStorage.getItem('access_token');
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+            }
 
+            const apiBase = resolveBacktestApiBase();
+            const endpoint = `${apiBase}/ai-bot-builder/${encodeURIComponent(uid)}`;
             const res = await fetch(endpoint, {
                 method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
+                headers,
                 cache: 'no-store'
-            });
+            }).catch(() => null);
 
             let apiBots = [];
-            if (res.ok) {
+            if (res && res.ok) {
                 const json = await res.json();
                 const rawList = Array.isArray(json.data)
                     ? json.data
@@ -135,31 +74,10 @@ export default function MyBotsView() {
                 }
             }
 
-            // Also check localStorage for locally created bots and merge
-            let localBots = [];
-            try {
-                const saved = localStorage.getItem('chronosx_user_bots');
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed)) {
-                        localBots = parsed.filter(lb => !apiBots.some(ab => ab.id === lb.id));
-                    }
-                }
-            } catch (_) { }
-
-            const merged = [...apiBots, ...localBots];
-            setBots(merged);
+            setBots(apiBots);
         } catch (err) {
-            console.warn('Could not fetch strategies from backend, checking local storage:', err);
-            try {
-                const saved = localStorage.getItem('chronosx_user_bots');
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed)) {
-                        setBots(parsed);
-                    }
-                }
-            } catch (_) { }
+            console.warn('Could not fetch strategies from backend:', err);
+            setBots([]);
         } finally {
             setLoading(false);
         }
@@ -171,11 +89,6 @@ export default function MyBotsView() {
 
     const saveBots = (newBots) => {
         setBots(newBots);
-        try {
-            localStorage.setItem('chronosx_user_bots', JSON.stringify(newBots));
-        } catch (e) {
-            console.error('Failed to save bots:', e);
-        }
     };
 
     const handleToggleBotStatus = (botId) => {
@@ -195,14 +108,21 @@ export default function MyBotsView() {
         setIsDeleting(true);
         const { id: botId, name: botName, strategyId } = botToDelete;
 
-        // Try deleting from backend if strategyId is available
         const sid = strategyId || botId;
         if (sid) {
             try {
-                await fetch(`${API_BASE}/user-strategies/${encodeURIComponent(sid)}`, {
+                const apiBase = resolveBacktestApiBase();
+                const headers = { 'Accept': 'application/json' };
+                if (typeof window !== 'undefined') {
+                    const token = localStorage.getItem('access_token');
+                    if (token) {
+                        headers['Authorization'] = `Bearer ${token}`;
+                    }
+                }
+                await fetch(`${apiBase}/user-strategies/${encodeURIComponent(sid)}`, {
                     method: 'DELETE',
-                    headers: { 'Accept': 'application/json' }
-                });
+                    headers
+                }).catch(() => null);
             } catch (err) {
                 console.warn('Backend delete error:', err);
             }
@@ -543,139 +463,170 @@ export default function MyBotsView() {
                         </div>
                     </div>
 
-                    {/* Bot Cards Grid */}
-                    <div className={styles.botsGrid}>
-                        {filteredBots.map((bot) => (
-                            <div key={bot.id} className={styles.botCard}>
-                                <div className={styles.botCardHeader}>
-                                    <div className={styles.headerInfo}>
-                                        <div className={styles.botMetaRow}>
-                                            <span className={styles.symbolBadge}>{bot.symbol || 'BTCUSD'}</span>
-                                            <span className={styles.timeframeBadge}>{bot.timeframe || '15m'}</span>
-                                            <span className={`${styles.directionBadge} ${bot.direction?.toLowerCase() === 'short' ? styles.shortBadge : styles.longBadge}`}>
-                                                {bot.direction || 'Long'}
-                                            </span>
-                                            <span className={styles.typeBadge}>{bot.type || 'AI STRATEGY'}</span>
+                    {/* Bot Cards Grid or No Found State */}
+                    {filteredBots.length > 0 ? (
+                        <div className={styles.botsGrid}>
+                            {filteredBots.map((bot) => (
+                                <div key={bot.id} className={styles.botCard}>
+                                    <div className={styles.botCardHeader}>
+                                        <div className={styles.headerInfo}>
+                                            <div className={styles.botMetaRow}>
+                                                <span className={styles.symbolBadge}>{bot.symbol || 'BTCUSD'}</span>
+                                                <span className={styles.timeframeBadge}>{bot.timeframe || '15m'}</span>
+                                                <span className={`${styles.directionBadge} ${bot.direction?.toLowerCase() === 'short' ? styles.shortBadge : styles.longBadge}`}>
+                                                    {bot.direction || 'Long'}
+                                                </span>
+                                                <span className={styles.typeBadge}>{bot.type || 'AI STRATEGY'}</span>
+                                            </div>
+                                            <h3 className={styles.botName} title={bot.name}>{bot.name}</h3>
+                                            {bot.pattern && (
+                                                <p className={styles.botPatternText}>{bot.pattern}</p>
+                                            )}
                                         </div>
-                                        <h3 className={styles.botName} title={bot.name}>{bot.name}</h3>
-                                        {bot.pattern && (
-                                            <p className={styles.botPatternText}>{bot.pattern}</p>
-                                        )}
+                                        <button
+                                            type="button"
+                                            className={`${styles.statusToggle} ${bot.status === 'active' ? styles.statusActive : styles.statusPaused}`}
+                                            onClick={() => handleToggleBotStatus(bot.id)}
+                                            title="Toggle live / paused"
+                                        >
+                                            {bot.status === 'active' ? '● LIVE' : '○ PAUSED'}
+                                        </button>
                                     </div>
-                                    <button
-                                        type="button"
-                                        className={`${styles.statusToggle} ${bot.status === 'active' ? styles.statusActive : styles.statusPaused}`}
-                                        onClick={() => handleToggleBotStatus(bot.id)}
-                                        title="Toggle live / paused"
-                                    >
-                                        {bot.status === 'active' ? '● LIVE' : '○ PAUSED'}
-                                    </button>
-                                </div>
 
-                                {bot.description && (
-                                    <p className={styles.botDesc}>{bot.description}</p>
-                                )}
+                                    {bot.description && (
+                                        <p className={styles.botDesc}>{bot.description}</p>
+                                    )}
 
-                                <div className={styles.statsGrid}>
-                                    <div className={`${styles.metricCardBox} ${styles.statBoxTarget}`}>
-                                        <span className={styles.metricCardIcon}>
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                                                <circle cx="12" cy="12" r="10" />
-                                                <circle cx="12" cy="12" r="6" />
-                                                <circle cx="12" cy="12" r="2" />
+                                    <div className={styles.statsGrid}>
+                                        <div className={`${styles.metricCardBox} ${styles.statBoxTarget}`}>
+                                            <span className={styles.metricCardIcon}>
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                                                    <circle cx="12" cy="12" r="10" />
+                                                    <circle cx="12" cy="12" r="6" />
+                                                    <circle cx="12" cy="12" r="2" />
+                                                </svg>
+                                            </span>
+                                            <span className={styles.metricCardValue}>{bot.tp || '50 pts'}</span>
+                                            <span className={styles.metricCardLabel}>Target</span>
+                                        </div>
+
+                                        <div className={`${styles.metricCardBox} ${styles.statBoxSl}`}>
+                                            <span className={styles.metricCardIcon}>
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
+                                                    <polyline points="17 18 23 18 23 12" />
+                                                </svg>
+                                            </span>
+                                            <span className={styles.metricCardValue}>{bot.sl || '25 pts'}</span>
+                                            <span className={styles.metricCardLabel}>Stop Loss</span>
+                                        </div>
+
+                                        <div className={`${styles.metricCardBox} ${styles.statBoxWr}`}>
+                                            <span className={styles.metricCardIcon}>
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                                                    <polyline points="17 6 23 6 23 12" />
+                                                </svg>
+                                            </span>
+                                            <span className={styles.metricCardValue}>{bot.winRate || '0%'}</span>
+                                            <span className={styles.metricCardLabel}>Win Rate</span>
+                                        </div>
+
+                                        <div className={`${styles.metricCardBox} ${styles.statBoxPnl}`}>
+                                            <span className={styles.metricCardIcon}>
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <line x1="18" y1="20" x2="18" y2="10" />
+                                                    <line x1="12" y1="20" x2="12" y2="4" />
+                                                    <line x1="6" y1="20" x2="6" y2="14" />
+                                                </svg>
+                                            </span>
+                                            <span className={styles.metricCardValue}>{bot.totalPnl || bot.profitFactor || '1.85'}</span>
+                                            <span className={styles.metricCardLabel}>Est. PnL</span>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.winRateSection}>
+                                        <div className={styles.winRateHeader}>
+                                            <span className={styles.winRateLabel}>Win Rate</span>
+                                            <span className={styles.winRatePct}>{bot.winRate || '0%'}</span>
+                                        </div>
+                                        <div className={styles.progressTrack}>
+                                            <div
+                                                className={styles.progressFill}
+                                                style={{
+                                                    width: `${Math.min(100, Math.max(0, parseFloat(String(bot.winRate || '0').replace(/[^0-9.]/g, '')) || 0))}%`
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.botCardActions}>
+                                        <button
+                                            type="button"
+                                            className={styles.botActionBtn}
+                                            onClick={() => handleRunBacktestBot(bot)}
+                                        >
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+                                                <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+                                                <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+                                                <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
                                             </svg>
-                                        </span>
-                                        <span className={styles.metricCardValue}>{bot.tp || '50 pts'}</span>
-                                        <span className={styles.metricCardLabel}>Target</span>
-                                    </div>
-
-                                    <div className={`${styles.metricCardBox} ${styles.statBoxSl}`}>
-                                        <span className={styles.metricCardIcon}>
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                                                <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
-                                                <polyline points="17 18 23 18 23 12" />
+                                            <span>Run Backtest</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className={styles.detailsActionBtn}
+                                            onClick={() => setSelectedStrategyDetail(bot)}
+                                            title="View Full Rules"
+                                        >
+                                            <span>Rules</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className={styles.deleteAction}
+                                            onClick={() => setBotToDelete(bot)}
+                                            title="Delete Strategy"
+                                        >
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <polyline points="3 6 5 6 21 6" />
+                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                                             </svg>
-                                        </span>
-                                        <span className={styles.metricCardValue}>{bot.sl || '25 pts'}</span>
-                                        <span className={styles.metricCardLabel}>Stop Loss</span>
-                                    </div>
-
-                                    <div className={`${styles.metricCardBox} ${styles.statBoxWr}`}>
-                                        <span className={styles.metricCardIcon}>
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-                                                <polyline points="17 6 23 6 23 12" />
-                                            </svg>
-                                        </span>
-                                        <span className={styles.metricCardValue}>{bot.winRate || '0%'}</span>
-                                        <span className={styles.metricCardLabel}>Win Rate</span>
-                                    </div>
-
-                                    <div className={`${styles.metricCardBox} ${styles.statBoxPnl}`}>
-                                        <span className={styles.metricCardIcon}>
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                                                <line x1="18" y1="20" x2="18" y2="10" />
-                                                <line x1="12" y1="20" x2="12" y2="4" />
-                                                <line x1="6" y1="20" x2="6" y2="14" />
-                                            </svg>
-                                        </span>
-                                        <span className={styles.metricCardValue}>{bot.totalPnl || bot.profitFactor || '1.85'}</span>
-                                        <span className={styles.metricCardLabel}>Est. PnL</span>
+                                        </button>
                                     </div>
                                 </div>
-
-                                <div className={styles.winRateSection}>
-                                    <div className={styles.winRateHeader}>
-                                        <span className={styles.winRateLabel}>Win Rate</span>
-                                        <span className={styles.winRatePct}>{bot.winRate || '0%'}</span>
-                                    </div>
-                                    <div className={styles.progressTrack}>
-                                        <div
-                                            className={styles.progressFill}
-                                            style={{
-                                                width: `${Math.min(100, Math.max(0, parseFloat(String(bot.winRate || '0').replace(/[^0-9.]/g, '')) || 0))}%`
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className={styles.botCardActions}>
-                                    <button
-                                        type="button"
-                                        className={styles.botActionBtn}
-                                        onClick={() => handleRunBacktestBot(bot)}
-                                    >
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                                            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
-                                            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
-                                            <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
-                                            <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
-                                        </svg>
-                                        <span>Run Backtest</span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className={styles.detailsActionBtn}
-                                        onClick={() => setSelectedStrategyDetail(bot)}
-                                        title="View Full Rules"
-                                    >
-                                        <span>Rules</span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className={styles.deleteAction}
-                                        onClick={() => setBotToDelete(bot)}
-                                        title="Delete Strategy"
-                                    >
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <polyline points="3 6 5 6 21 6" />
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                        </svg>
-                                    </button>
-                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className={styles.noResultsBox}>
+                            <div className={styles.noResultsIcon}>
+                                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
+                                </svg>
                             </div>
-                        ))}
-                    </div>
+                            <h3 className={styles.noResultsTitle}>No Matching Strategies Found</h3>
+                            <p className={styles.noResultsDesc}>
+                                {searchQuery
+                                    ? <>No trading strategies matched your search &ldquo;<strong>{searchQuery}</strong>&rdquo;{filterStatus !== 'all' ? ` in ${filterStatus} status` : ''}.</>
+                                    : <>No trading strategies found with status &ldquo;<strong>{filterStatus}</strong>&rdquo;.</>
+                                }
+                            </p>
+                            <div className={styles.noResultsActions}>
+                                <button
+                                    type="button"
+                                    className={styles.clearSearchBtn}
+                                    onClick={() => {
+                                        setSearchQuery('');
+                                        setFilterStatus('all');
+                                    }}
+                                >
+                                    <span>Reset Filters & Search</span>
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
 

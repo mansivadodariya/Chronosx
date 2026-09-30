@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import styles from '../styles/paymentHistoryTab.module.scss';
 import { subscriptionApi } from '@/lib/subscriptionApi';
 import { generateInvoicePdf, formatTransactionId } from '../utils/invoicePdfGenerator';
-import toast from 'react-hot-toast';
+import { toast } from '@/components/toast';
 
 export default function ProfilePaymentHistoryTab({ t }) {
     const router = useRouter();

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import styles from './styles/strategyStudio.module.scss';
 import BackgroundCyberWaves from './components/BackgroundCyberWaves';
 import StudioToolbar from './components/StudioToolbar';
@@ -17,7 +17,7 @@ import {
     LockOutlineIcon,
     AreaChartIcon
 } from './components/StudioIcons';
-import { toast } from 'react-hot-toast';
+import { toast } from '@/components/toast';
 import { strategyStudioApi } from './utils/strategyApi';
 import { parseRoundTrips } from './utils/backtestEngine';
 import { sanitizeRawJsonText } from './utils/chatTextFormatter';
@@ -135,6 +135,9 @@ export default function StrategyStudio() {
     const [simulationLoading, setSimulationLoading] = useState(false);
     const [results, setResults] = useState(null);
     const [roundTrips, setRoundTrips] = useState([]);
+    const [executedParams, setExecutedParams] = useState(null);
+    const isSendingRef = useRef(false);
+    const lastSendRef = useRef({ time: 0, text: '' });
 
     // Initialize session ID and date ranges on mount
     useEffect(() => {
@@ -217,7 +220,15 @@ export default function StrategyStudio() {
      */
     const handleSendMessage = async (textToSend, extraData = null) => {
         const text = textToSend || chatInput;
-        if (!text || !text.trim() || advisorLoading) return;
+        const now = Date.now();
+        if (!text || !text.trim() || advisorLoading || isSendingRef.current) return;
+
+        // Prevent duplicate concurrent / rapid submissions within 600ms
+        if (lastSendRef.current.text === text.trim() && (now - lastSendRef.current.time) < 600) {
+            return;
+        }
+        lastSendRef.current = { time: now, text: text.trim() };
+        isSendingRef.current = true;
 
         setChatInput('');
         const lower = text.toLowerCase().trim();
@@ -273,6 +284,7 @@ export default function StrategyStudio() {
                 quantity: targetQuantity,
                 ...currentStrategy
             });
+            isSendingRef.current = false;
             return;
         }
 
@@ -342,7 +354,7 @@ export default function StrategyStudio() {
                     {
                         role: 'ai',
                         text: res.message || 'Strategy blueprint updated with requested parameters.',
-                        suggestions: ['Run Backtest', 'Tighten Stop Loss']
+                        suggestions: res.suggestions || ['Run Backtest Now']
                     }
                 ]);
             }
@@ -353,10 +365,11 @@ export default function StrategyStudio() {
                 {
                     role: 'ai',
                     text: 'I calibrated the EMA strategy rules and risk framework. You can run backtest or refine entry conditions.',
-                    suggestions: ['Run Backtest', 'EMA Crossover']
+                    suggestions: ['Run Backtest Now']
                 }
             ]);
         } finally {
+            isSendingRef.current = false;
             setAdvisorLoading(false);
         }
     };
@@ -385,6 +398,8 @@ export default function StrategyStudio() {
             const strat = res?.strategy || res?.data?.strategy || (Array.isArray(res?.strategies) && res.strategies[0]) || (Array.isArray(res?.data) && res.data[0]) || res?.data || res;
 
             if (strat && typeof strat === 'object') {
+                strat.name = finalName;
+                strat.strategy_name = finalName;
                 setCurrentStrategy(strat);
                 syncToolbarFromStrategy(strat);
 
@@ -393,7 +408,7 @@ export default function StrategyStudio() {
                     {
                         role: 'ai',
                         text: `Strategy model **${finalName}** configured and calibrated. You can run backtest or refine parameters.`,
-                        suggestions: ['Run Backtest Now', 'Tighten Stop Loss']
+                        suggestions: ['Run Backtest Now']
                     }
                 ]);
                 handleToast('Strategy blueprint applied successfully!');
@@ -427,6 +442,7 @@ export default function StrategyStudio() {
         setCurrentStrategy(null);
         setResults(null);
         setRoundTrips([]);
+        setExecutedParams(null);
         setIsBacktestPanelOpen(false);
         setGeneratingStrategy(false);
         setAdvisorLoading(false);
@@ -518,6 +534,14 @@ export default function StrategyStudio() {
                 const parsedTrips = parseRoundTrips(data.trades || data.round_trips || [], payload.inital_capital, payload.quantity);
                 setResults(data);
                 setRoundTrips(parsedTrips);
+                setExecutedParams({
+                    symbol: activeSymbol,
+                    interval: activeInterval,
+                    capital: activeCapital,
+                    quantity: activeQuantity,
+                    fromDate: activeFrom,
+                    toDate: activeTo
+                });
 
                 const winRate = data.stats?.win_rate !== undefined ? data.stats.win_rate : (parsedTrips.length > 0 ? ((parsedTrips.filter(t => t.pnl > 0).length / parsedTrips.length) * 100).toFixed(1) : '0.0');
                 const netPnl = data.stats?.pnl !== undefined ? Number(data.stats.pnl).toFixed(2) : (parsedTrips.reduce((a, b) => a + b.pnl, 0)).toFixed(2);
@@ -657,10 +681,10 @@ export default function StrategyStudio() {
                                 <BacktestResultsView
                                     results={results}
                                     roundTrips={roundTrips}
-                                    initialCapital={parseFloat(capital) || 10000}
-                                    symbol={symbol}
-                                    interval={interval}
-                                    quantity={parseFloat(quantity) || 0.01}
+                                    initialCapital={parseFloat(executedParams?.capital ?? capital) || 10000}
+                                    symbol={executedParams?.symbol ?? symbol}
+                                    interval={executedParams?.interval ?? interval}
+                                    quantity={parseFloat(executedParams?.quantity ?? quantity) || 0.01}
                                 />
                             ) : (
                                 /* Empty State Screen */

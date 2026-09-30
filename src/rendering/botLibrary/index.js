@@ -6,7 +6,7 @@ import styles from './botLibrary.module.scss';
 import CommonSectionHeader from '@/components/CommonSectionHeader';
 import { BotLibraryIcon } from '@/icons/sidebarIcons';
 import { useLanguage } from '@/context/LanguageContext';
-import { toast } from 'react-hot-toast';
+import { toast } from '@/components/toast';
 
 const BOT_TEMPLATES = [
     {

@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import styles from './profile.module.scss';
 import CreditHistory from '@/rendering/creditHistory';
 import { supabase } from '@/lib/supabaseClient';
+import { fetchVisibleTabNames, getVisibleTabNamesSync, checkPermissionInSet } from '@/lib/useTabPermission';
 import { toast } from '@/components/toast';
 import { isValidPhoneNumber } from 'react-phone-number-input';
 import { profileApi, dashboardApi } from '@/lib/api';
@@ -66,7 +67,7 @@ export default function Profile() {
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
     const [initialPhone, setInitialPhone] = useState('');
     const [referralCount, setReferralCount] = useState(0);
-    const [visibleTabNames, setVisibleTabNames] = useState(null);
+    const [visibleTabNames, setVisibleTabNames] = useState(() => getVisibleTabNamesSync());
     const [onboardingData, setOnboardingData] = useState(null);
     const [isPhoneVerified, setIsPhoneVerified] = useState(false);
 
@@ -101,28 +102,9 @@ export default function Profile() {
     }, [tabParam]);
 
     useEffect(() => {
-        try {
-            if (typeof window !== 'undefined') {
-                const cached = sessionStorage.getItem('visible_tab_names');
-                if (cached) {
-                    setVisibleTabNames(new Set(JSON.parse(cached)));
-                }
-            }
-        } catch (e) { /* ignore */ }
-
-        async function fetchVisibleTabs() {
-            try {
-                const { data, error } = await supabase.rpc('get_visible_dashboard_tabs');
-                if (!error && Array.isArray(data)) {
-                    const set = new Set(data.map(t => typeof t === 'string' ? t : (t?.tab_name || t?.name || '')));
-                    setVisibleTabNames(set);
-                    if (typeof window !== 'undefined') {
-                        sessionStorage.setItem('visible_tab_names', JSON.stringify(Array.from(set)));
-                    }
-                }
-            } catch (e) { /* ignore */ }
-        }
-        fetchVisibleTabs();
+        fetchVisibleTabNames().then(set => {
+            if (set) setVisibleTabNames(set);
+        });
     }, []);
 
     const canViewPlans = () => {
