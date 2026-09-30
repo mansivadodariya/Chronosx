@@ -122,10 +122,10 @@ export default function AiStrategy({ initialTab = 'live' }) {
                 const list = Array.isArray(data) ? data : (data.strategies || data.data || []);
                 const pullbackList = list.filter(st => {
                     const text = `${st.name || ''} ${st.title || ''} ${st.strategy_name || ''} ${st.description || ''}`.toLowerCase();
-                    return text.includes('pullback') || text.includes('ema pullback');
+                    return (text.includes('pullback') || text.includes('ema pullback')) && !text.includes('eurusd');
                 });
                 const effectiveList = pullbackList.length > 0 ? pullbackList : [
-                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback Strategy', description: 'Trend Following EMA Pullback' }
+                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback', description: 'Trend Following EMA Pullback' }
                 ];
                 setStrategies(effectiveList);
                 if (!selectedStrategyId && effectiveList.length > 0) {
@@ -133,7 +133,7 @@ export default function AiStrategy({ initialTab = 'live' }) {
                 }
             } catch (err) {
                 const fallbackList = [
-                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback Strategy', description: 'Trend Following EMA Pullback' }
+                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback', description: 'Trend Following EMA Pullback' }
                 ];
                 setStrategies(fallbackList);
                 if (!selectedStrategyId) {

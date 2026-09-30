@@ -42,10 +42,10 @@ export default function StrategyDropdown({ strategies: propStrategies = [], sele
         if (propStrategies && propStrategies.length > 0) {
             const filtered = propStrategies.filter(st => {
                 const text = `${st.name || ''} ${st.title || ''} ${st.strategy_name || ''} ${st.description || ''}`.toLowerCase();
-                return text.includes('pullback') || text.includes('ema pullback');
+                return (text.includes('pullback') || text.includes('ema pullback')) && !text.includes('eurusd');
             });
             const effectiveList = filtered.length > 0 ? filtered : [
-                { id: propStrategies[0].id || propStrategies[0].strategy_id || '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback Strategy', description: 'Trend Following EMA Pullback' }
+                { id: propStrategies[0].id || propStrategies[0].strategy_id || '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback', description: 'Trend Following EMA Pullback' }
             ];
             setStrategies(effectiveList);
             setLoading(false);
@@ -99,10 +99,10 @@ export default function StrategyDropdown({ strategies: propStrategies = [], sele
                 const list = Array.isArray(data) ? data : (data.strategies || data.data || []);
                 const pullbackList = list.filter(st => {
                     const text = `${st.name || ''} ${st.title || ''} ${st.strategy_name || ''} ${st.description || ''}`.toLowerCase();
-                    return text.includes('pullback') || text.includes('ema pullback');
+                    return (text.includes('pullback') || text.includes('ema pullback')) && !text.includes('eurusd');
                 });
                 const effectiveList = pullbackList.length > 0 ? pullbackList : [
-                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback Strategy', description: 'Trend Following EMA Pullback' }
+                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback', description: 'Trend Following EMA Pullback' }
                 ];
                 setStrategies(effectiveList);
                 if (effectiveList.length > 0) {
@@ -116,7 +116,7 @@ export default function StrategyDropdown({ strategies: propStrategies = [], sele
             } catch (err) {
                 console.error("Error fetching strategies:", err);
                 const fallbackList = [
-                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback Strategy', description: 'Trend Following EMA Pullback' }
+                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback', description: 'Trend Following EMA Pullback' }
                 ];
                 setStrategies(fallbackList);
                 const firstId = fallbackList[0].id;

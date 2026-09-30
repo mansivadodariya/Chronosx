@@ -6,6 +6,7 @@ import styles from '../calculator.module.scss';
 export default function CustomDropdown({ options = [], value, onChange, placeholder = 'Select...' }) {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const menuRef = useRef(null);
 
     // Normalize options into { value, label } format
     const normalizedOptions = options.map((opt) => {
@@ -41,6 +42,16 @@ export default function CustomDropdown({ options = [], value, onChange, placehol
         };
     }, [isOpen]);
 
+    // Auto-scroll selected item into view when dropdown opens
+    useEffect(() => {
+        if (isOpen && menuRef.current) {
+            const selectedEl = menuRef.current.querySelector(`.${styles.isSelected}`);
+            if (selectedEl) {
+                selectedEl.scrollIntoView({ block: 'nearest' });
+            }
+        }
+    }, [isOpen]);
+
     const handleSelect = (val) => {
         if (onChange) {
             onChange(val);
@@ -48,8 +59,41 @@ export default function CustomDropdown({ options = [], value, onChange, placehol
         setIsOpen(false);
     };
 
+    const handleMenuWheel = (e) => {
+        // Ensure mouse wheel scrolling on the dropdown menu works seamlessly
+        e.stopPropagation();
+    };
+
+    const handleKeyDown = (e) => {
+        if (!isOpen) {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter') {
+                e.preventDefault();
+                setIsOpen(true);
+            }
+            return;
+        }
+
+        const currentIndex = normalizedOptions.findIndex((opt) => opt.value === value);
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            const nextIdx = Math.min(currentIndex + 1, normalizedOptions.length - 1);
+            if (nextIdx >= 0 && normalizedOptions[nextIdx]) {
+                handleSelect(normalizedOptions[nextIdx].value);
+            }
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            const prevIdx = Math.max(currentIndex - 1, 0);
+            if (prevIdx >= 0 && normalizedOptions[prevIdx]) {
+                handleSelect(normalizedOptions[prevIdx].value);
+            }
+        } else if (e.key === 'Escape') {
+            e.preventDefault();
+            setIsOpen(false);
+        }
+    };
+
     return (
-        <div className={styles.customDropdown} ref={dropdownRef}>
+        <div className={styles.customDropdown} ref={dropdownRef} onKeyDown={handleKeyDown}>
             <button
                 type="button"
                 className={`${styles.dropdownTrigger} ${isOpen ? styles.isOpen : ''}`}
@@ -73,7 +117,12 @@ export default function CustomDropdown({ options = [], value, onChange, placehol
             </button>
 
             {isOpen && (
-                <div className={styles.dropdownMenu}>
+                <div
+                    ref={menuRef}
+                    className={styles.dropdownMenu}
+                    onWheel={handleMenuWheel}
+                    tabIndex={-1}
+                >
                     {normalizedOptions.map((opt) => {
                         const isSelected = opt.value === value;
                         return (

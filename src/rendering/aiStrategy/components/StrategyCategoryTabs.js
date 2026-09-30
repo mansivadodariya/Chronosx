@@ -16,18 +16,23 @@ export default function StrategyCategoryTabs({
     // Dynamically build category / strategy tabs from the API response (keeping only EMA Pullback)
     const dynamicTabs = useMemo(() => {
         const tabs = [];
+        const seenLabels = new Set();
         if (Array.isArray(strategies) && strategies.length > 0) {
             const pullbackStrategies = strategies.filter(st => {
                 const text = `${st.name || ''} ${st.title || ''} ${st.strategy_name || ''} ${st.description || ''}`.toLowerCase();
-                return text.includes('pullback') || text.includes('ema pullback');
+                return (text.includes('pullback') || text.includes('ema pullback')) && !text.includes('eurusd');
             });
             const listToUse = pullbackStrategies.length > 0 ? pullbackStrategies : [
                 { id: strategies[0].id || strategies[0].strategy_id || '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback' }
             ];
             listToUse.forEach(st => {
                 const id = st.id || st.strategy_id;
-                const label = st.name || st.title || st.strategy_name || st.description || 'EMA Pullback';
-                tabs.push({ id, label });
+                let rawLabel = st.name || st.title || st.strategy_name || st.description || 'EMA Pullback';
+                let label = rawLabel.replace(/\bEURUSD\b/gi, '').replace(/\bStrategy\b/gi, '').trim() || 'EMA Pullback';
+                if (!seenLabels.has(label)) {
+                    seenLabels.add(label);
+                    tabs.push({ id, label });
+                }
             });
         } else {
             tabs.push({ id: '3e8d2b78-0e86-4fdf-9759-338276db1742', label: 'EMA Pullback' });
