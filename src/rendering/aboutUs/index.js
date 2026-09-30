@@ -149,6 +149,7 @@ export default function AboutUs() {
                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 >
                     <SectionHeader
+                        as="h1"
                         badge={t('aboutUs.heroBadge', 'INSTITUTIONAL AI // EST. 2024')}
                         title1={t('aboutUs.heroTitle1', 'Pioneering the Future of')}
                         title2={t('aboutUs.heroTitle2', 'Algorithmic Intelligence & Market Vision')}

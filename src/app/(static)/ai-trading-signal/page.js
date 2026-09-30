@@ -1,7 +1,7 @@
-﻿import AiStrategyPage from "@/rendering/aiStrategyPage";
+import AiStrategyPage from "@/rendering/aiStrategyPage";
 
 export const metadata = {
-    title: "AI Trading Signal — Algorithmic Playbooks & Strategy Engine | ChronosX",
+    title: "AI Trading Signal — Algorithmic Playbooks & Strategy Engine",
     description:
         "Select custom algorithmic strategies, explore high-conviction quantitative rule playbooks, and execute data-backed trades with multi-factor confluence.",
     keywords: [
@@ -45,6 +45,29 @@ export const metadata = {
     }
 };
 
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ChronosX AI Trading Signal Engine",
+    "operatingSystem": "Web",
+    "applicationCategory": "FinanceApplication",
+    "url": "https://chronosx.com/ai-trading-signal",
+    "description": "Select custom algorithmic strategies, explore high-conviction quantitative rule playbooks, and execute data-backed trades.",
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    }
+};
+
 export default function AiTradingSignalPage() {
-    return <AiStrategyPage />;
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <AiStrategyPage />
+        </>
+    );
 }

@@ -1,7 +1,7 @@
 import AiChat from "@/rendering/aiChat";
 
 export const metadata = {
-    title: "AI Market Assistant — Real-Time Conversational Market Intelligence | ChronosX",
+    title: "AI Market Assistant — Real-Time Conversational Market Intelligence",
     description:
         "Meet your institutional AI market copilot. Ask any question about technical setups, macroeconomic trends, and risk management with real-time financial context.",
     keywords: [
@@ -41,6 +41,29 @@ export const metadata = {
     }
 };
 
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ChronosX AI Market Assistant",
+    "operatingSystem": "Web",
+    "applicationCategory": "FinanceApplication",
+    "url": "https://chronosx.com/ai-market-assistant",
+    "description": "Meet your institutional AI market copilot. Ask any question about technical setups, macroeconomic trends, and risk management with real-time financial context.",
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    }
+};
+
 export default function AiMarketAssistantPage() {
-    return <AiChat />;
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <AiChat />
+        </>
+    );
 }

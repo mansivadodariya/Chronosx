@@ -1,7 +1,7 @@
 import AiTrade from "@/rendering/aiTrade";
 
 export const metadata = {
-    title: "AI Chart Scanner — Instant Vision AI Technical Pattern Scanner | ChronosX",
+    title: "AI Chart Scanner — Instant Vision AI Technical Pattern Scanner",
     description:
         "Upload any TradingView, MT4/MT5, or broker chart screenshot and get instant institutional AI trade signals. Dual Vision AI and live MT5 indicator confluence with precise Entry, Stop-Loss, and Multi-TP targets.",
     keywords: [
@@ -19,7 +19,7 @@ export const metadata = {
     openGraph: {
         title: "AI Chart Scanner — Instant Vision AI Technical Pattern Scanner | ChronosX",
         description:
-            "Upload any chart screenshot. Get instant institutional AI trade setups powered by Vision AI + MT5 indicator engines.",
+            "Upload any TradingView, MT4/MT5, or broker chart screenshot and get instant institutional AI trade signals.",
         url: "https://chronosx.com/ai-chart-scanner",
         siteName: "ChronosX",
         images: [
@@ -45,6 +45,29 @@ export const metadata = {
     }
 };
 
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ChronosX AI Chart Scanner",
+    "operatingSystem": "Web",
+    "applicationCategory": "FinanceApplication",
+    "url": "https://chronosx.com/ai-chart-scanner",
+    "description": "Upload any TradingView, MT4/MT5, or broker chart screenshot and get instant institutional AI trade signals with Entry, Stop-Loss, and Multi-TP targets.",
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    }
+};
+
 export default function AiChartScannerPage() {
-    return <AiTrade />;
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <AiTrade />
+        </>
+    );
 }

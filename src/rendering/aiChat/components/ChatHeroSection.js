@@ -18,6 +18,7 @@ export default function ChatHeroSection({ scrollToDemo }) {
                 <div className={styles.heroCenterWrapper}>
                     {/* Uniform Section Header */}
                     <SectionHeader
+                        as="h1"
                         badge={t('aiChat.heroBadge', 'INSTITUTIONAL AI TRADING DESK')}
                         title1={t('aiChat.heroTitle1', 'Your 24/7 AI-Powered')}
                         title2={t('aiChat.heroTitle2', 'Institutional Forex & Trading Copilot')}

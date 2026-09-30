@@ -135,6 +135,7 @@ export default function MarketNews() {
         <div className={styles.newsContainer}>
             {/* Hero Header */}
             <CommonSectionHeader
+                as="h1"
                 badge="LIVE MACRO CATALYST FEED"
                 badgeIcon={
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

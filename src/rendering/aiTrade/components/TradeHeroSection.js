@@ -19,6 +19,7 @@ export default function TradeHeroSection({ scrollToDemo }) {
                 <div className={styles.heroCenterWrapper}>
                     {/* Uniform Section Header */}
                     <SectionHeader
+                        as="h1"
                         badge={t('aiTrade.heroBadge', 'NEXT-GEN AI CHART SCANNER')}
                         title1={t('aiTrade.heroTitle1', 'Show Your Chart.')}
                         title2={t('aiTrade.heroTitle2', 'Get Instant AI Market Analysis.')}

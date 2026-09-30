@@ -1,7 +1,7 @@
 import AiPastTradeAnalyzer from "@/rendering/aiPastTradeAnalyzer";
 
 export const metadata = {
-    title: "AI Past Trade Analyzer — Learn From Every Trade & Eliminate Leaks | ChronosX",
+    title: "AI Past Trade Analyzer — Learn From Every Trade & Eliminate Leaks",
     description:
         "Upload your past trade screenshots and statements to get instant AI-powered advice and audits. Identify poor entries, risk management errors, market structure conflicts, and execution mistakes to trade smarter.",
     keywords: [
@@ -47,6 +47,29 @@ export const metadata = {
     }
 };
 
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ChronosX AI Past Trade Analyzer",
+    "operatingSystem": "Web",
+    "applicationCategory": "FinanceApplication",
+    "url": "https://chronosx.com/ai-trade-advisor",
+    "description": "Upload your past trade screenshots and statements to get instant AI-powered advice and audits. Identify poor entries and execution mistakes.",
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    }
+};
+
 export default function AiTradeAdvisorPage() {
-    return <AiPastTradeAnalyzer />;
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <AiPastTradeAnalyzer />
+        </>
+    );
 }

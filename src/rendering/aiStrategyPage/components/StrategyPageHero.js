@@ -20,6 +20,7 @@ export default function StrategyPageHero({
                 <div className={styles.heroCenterWrapper}>
                     {/* Uniform Section Header */}
                     <SectionHeader
+                        as="h1"
                         badge={t('strategyPage.heroBadge', 'INSTITUTIONAL QUANTITATIVE FEED')}
                         title1={t('strategyPage.heroTitle1', 'Live Analysis Feed & Quantitative')}
                         title2={t('strategyPage.heroTitle2', 'AI Strategy Generator.')}

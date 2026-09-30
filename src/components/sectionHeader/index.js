@@ -16,7 +16,10 @@ export default function SectionHeader({
   className = '',
   descMaxWidth,
   children,
-  action
+  action,
+  as,
+  asTag,
+  headingTag,
 }) {
   const descriptionContent = description || desc || children;
 
@@ -40,17 +43,18 @@ export default function SectionHeader({
   };
 
   const renderTitle = () => {
+    const Tag = as || asTag || headingTag || 'h2';
     if (title) {
-      return <h2 className={styles.title}>{title}</h2>;
+      return <Tag className={styles.title}>{title}</Tag>;
     }
 
     return (
-      <h2 className={styles.title}>
+      <Tag className={styles.title}>
         {title1 && <span className={styles.title1}>{title1}</span>}
         {title1 && title2 && breakLine && <br />}
         {title1 && title2 && !breakLine && ' '}
         {title2 && <span className={styles.title2}>{title2}</span>}
-      </h2>
+      </Tag>
     );
   };
 
