@@ -50,6 +50,7 @@ export default function EconomicCalendar() {
   return (
     <section className={styles.economicCalendar}>
       <CommonSectionHeader
+        as="h1"
         badge="MACROECONOMIC EVENT RADAR"
         badgeIcon={
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

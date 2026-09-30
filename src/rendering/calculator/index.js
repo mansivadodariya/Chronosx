@@ -25,6 +25,7 @@ export default function ForexCalculator() {
         <div className={styles.calculatorContainer}>
             {/* Header Title */}
             <CommonSectionHeader
+                as="h1"
                 badge="INSTITUTIONAL QUANT UTILITY"
                 badgeIcon={
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

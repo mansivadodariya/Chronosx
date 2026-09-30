@@ -4,16 +4,80 @@ import Footer from "@/components/footer";
 import HomePage from "@/rendering/home";
 
 export const metadata = {
-  title: "ChronosX — Trade Smarter With AI Signals That Never Sleep",
-  description: "Get real-time AI trading signals, market insights, and trade recommendations across Forex, Stocks, and Global Markets.",
-  alternates: {
-    canonical: 'https://chronosx.com',
+  title: {
+    absolute: "ChronosX — Trade Smarter With AI Signals That Never Sleep",
   },
+  description:
+    "Get real-time AI trading signals, market insights, and trade recommendations across Forex, Crypto, Stocks, and Global Markets.",
+  alternates: {
+    canonical: "https://chronosx.com",
+  },
+  openGraph: {
+    title: "ChronosX — Trade Smarter With AI Signals That Never Sleep",
+    description:
+      "Get real-time AI trading signals, market insights, and trade recommendations across Forex, Crypto, Stocks, and Global Markets.",
+    url: "https://chronosx.com",
+    siteName: "ChronosX",
+    images: [
+      {
+        url: "/assets/logo/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "ChronosX AI Trading Platform",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ChronosX — Trade Smarter With AI Signals That Never Sleep",
+    description:
+      "Get real-time AI trading signals, market insights, and trade recommendations across Forex, Crypto, Stocks, and Global Markets.",
+    images: ["/assets/logo/logo.png"],
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://chronosx.com/#organization",
+      "name": "ChronosX",
+      "url": "https://chronosx.com",
+      "logo": "https://chronosx.com/assets/logo/logo.png",
+      "description": "Next-Gen AI Trading Platform & Institutional Market Intelligence Desk."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://chronosx.com/#website",
+      "url": "https://chronosx.com",
+      "name": "ChronosX",
+      "publisher": { "@id": "https://chronosx.com/#organization" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "ChronosX AI Trading Platform",
+      "operatingSystem": "Web",
+      "applicationCategory": "FinanceApplication",
+      "description": "Get real-time AI trading signals, market insights, and trade recommendations across Forex, Crypto, Stocks, and Global Markets.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
 };
 
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <HomePage />
       <Footer />

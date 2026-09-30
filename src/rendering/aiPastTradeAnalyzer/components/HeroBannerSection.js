@@ -82,6 +82,7 @@ export default function HeroBannerSection({ scrollToAudit }) {
                 <div className={styles.heroCenterWrapper}>
                     {/* Uniform Section Header */}
                     <SectionHeader
+                        as="h1"
                         badge={t('tradeAudit.heroBadge', 'QUANT AUDIT ENGINE // OCR V3.2')}
                         title1={t('tradeAudit.heroTitle1', 'AI PAST TRADE')}
                         title2={t('tradeAudit.heroTitle2', 'ANALYZER')}

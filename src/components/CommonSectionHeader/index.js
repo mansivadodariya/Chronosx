@@ -34,12 +34,16 @@ export default function CommonSectionHeader({
     rightAction,
     isCard = true,
     className = '',
-    children
+    children,
+    as,
+    asTag,
+    headingTag
 }) {
     const pathname = usePathname();
     const resolvedIcon = icon !== undefined 
         ? icon 
         : (pathname ? PATH_ICON_MAP[pathname] || null : null);
+    const HeadingTag = as || asTag || headingTag || 'h2';
 
     return (
         <div className={`${styles.sectionHeaderCard} ${!isCard ? styles.inlineHeader : ''} ${className}`}>
@@ -75,11 +79,11 @@ export default function CommonSectionHeader({
                     <div className={styles.headerMainRow}>
                         <div className={styles.textGroup}>
                             {title && (
-                                <h2 className={styles.headline}>
+                                <HeadingTag className={styles.headline}>
                                     {title}{' '}
                                     {highlightText && <span className={styles.highlight}>{highlightText}</span>}
                                     {emoji && <span className={styles.emoji}>{emoji}</span>}
-                                </h2>
+                                </HeadingTag>
                             )}
                             {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
                         </div>

@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import styles from '../tradeSnap.module.scss';
 import { PlayIcon } from '@/icons/tradeSnapIcons';
 

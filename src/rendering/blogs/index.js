@@ -36,6 +36,7 @@ export default function BlogsListing() {
             <div className={styles.container}>
                 {/* Uniform Section Header */}
                 <SectionHeader
+                    as="h1"
                     badge={t('blogs.badge', 'CHRONOSX TRADING RESEARCH & INSIGHTS')}
                     title1={t('blogs.title1', 'Institutional Trading Intelligence &')}
                     title2={t('blogs.title2', 'Macro Insights')}

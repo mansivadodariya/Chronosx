@@ -316,6 +316,7 @@ export default function SubscriptionPlansView() {
                 {/* 1. Header Section */}
                 {isDashboard ? (
                     <CommonSectionHeader
+                        as="h1"
                         badge={t('plans.pricingTiersBadge', 'CHRONOSX PRICING TIERS')}
                         badgeIcon={
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -329,6 +330,7 @@ export default function SubscriptionPlansView() {
                     />
                 ) : (
                     <SectionHeader
+                        as="h1"
                         badge={t('plans.pricingTiersBadge', 'CHRONOSX PRICING TIERS')}
                         title1={t('plans.heroTitle1', 'Institutional AI Power,')}
                         title2={t('plans.heroTitle2', 'Tailored For Your Edge')}
