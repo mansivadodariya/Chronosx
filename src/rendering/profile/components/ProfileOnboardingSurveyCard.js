@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from '../profile.module.scss';
+import { TradingViewPairIcon } from './TradingViewPairIcon';
 
 // Mapping for Experience Level
 const EXPERIENCE_MAP = {
@@ -54,13 +55,25 @@ const GOAL_MAP = {
 
 // Mapping for Preferred Markets
 const MARKET_MAP = {
-    eurusd: { label: 'EUR/USD', flag: '🇪🇺🇺🇸', category: 'Forex Major' },
-    gbpusd: { label: 'GBP/USD', flag: '🇬🇧🇺🇸', category: 'Forex Major' },
-    usdjpy: { label: 'USD/JPY', flag: '🇺🇸🇯🇵', category: 'Forex Major' },
-    gold: { label: 'XAU/USD (Gold)', flag: '🥇', category: 'Commodity' },
-    crypto: { label: 'BTC/USD (Crypto)', flag: '₿', category: 'Digital Asset' },
-    indices: { label: 'US30 / NAS100', flag: '📈', category: 'Indices' },
-    oil: { label: 'Crude Oil (WTI)', flag: '🛢️', category: 'Energy' }
+    eur_usd: { label: 'EUR/USD', category: 'Forex Major' },
+    eurusd: { label: 'EUR/USD', category: 'Forex Major' },
+    gbp_usd: { label: 'GBP/USD', category: 'Forex Major' },
+    gbpusd: { label: 'GBP/USD', category: 'Forex Major' },
+    usd_jpy: { label: 'USD/JPY', category: 'Forex Major' },
+    usdjpy: { label: 'USD/JPY', category: 'Forex Major' },
+    aud_usd: { label: 'AUD/USD', category: 'Forex Major' },
+    audusd: { label: 'AUD/USD', category: 'Forex Major' },
+    usd_cad: { label: 'USD/CAD', category: 'Forex Major' },
+    usdcad: { label: 'USD/CAD', category: 'Forex Major' },
+    usd_chf: { label: 'USD/CHF', category: 'Forex Major' },
+    usdchf: { label: 'USD/CHF', category: 'Forex Major' },
+    xau_usd: { label: 'XAU/USD', category: 'Commodity' },
+    gold: { label: 'XAU/USD', category: 'Commodity' },
+    btc_usd: { label: 'BTC/USD', category: 'Crypto' },
+    crypto: { label: 'BTC/USD', category: 'Crypto' },
+    us30: { label: 'US30', category: 'Indices' },
+    indices: { label: 'US30', category: 'Indices' },
+    oil: { label: 'Crude Oil (WTI)', category: 'Energy' }
 };
 
 export default function ProfileOnboardingSurveyCard({ onboardingData, t }) {
@@ -192,10 +205,14 @@ export default function ProfileOnboardingSurveyCard({ onboardingData, t }) {
                         <div className={styles.pillsCluster}>
                             {marketsList.length > 0 ? (
                                 marketsList.map((mId) => {
-                                    const mInfo = MARKET_MAP[mId] || { label: mId.replace(/_/g, '/').toUpperCase(), flag: '📊', category: 'Asset' };
+                                    const key = String(mId).toLowerCase();
+                                    const mInfo = MARKET_MAP[key] || {
+                                        label: String(mId).replace(/_/g, '/').toUpperCase(),
+                                        category: 'Forex'
+                                    };
                                     return (
                                         <div key={mId} className={styles.assetPillTag}>
-                                            <span className={styles.assetFlag}>{mInfo.flag}</span>
+                                            <TradingViewPairIcon pair={mInfo.label} size={15} />
                                             <span className={styles.assetName}>{mInfo.label}</span>
                                             <span className={styles.assetCategory}>{mInfo.category}</span>
                                         </div>

@@ -33,14 +33,6 @@ const INTERVAL_OPTIONS = [
     { value: '1day', label: '1day' }
 ];
 
-const LOTS_OPTIONS = [
-    { value: 0.01, label: '0.01 Micro' },
-    { value: 0.05, label: '0.05' },
-    { value: 0.1, label: '0.10 Mini' },
-    { value: 0.5, label: '0.50' },
-    { value: 1, label: '1.00 Std' }
-];
-
 export default function StudioToolbar({
     symbol,
     setSymbol,
@@ -146,16 +138,45 @@ export default function StudioToolbar({
                     <div className={styles.paramLabelRow}>
                         <QuantityHashIcon size={12} />
                         <span>Volume (Lots)</span>
-                        <span style={{ color: '#10b981', fontWeight: '700', fontSize: '11px', marginLeft: '3px' }}>
-                            {quantity}
-                        </span>
                     </div>
                     <div className={styles.paramControlWrap}>
-                        <CustomSelect
+                        <input
+                            type="number"
+                            step="0.01"
+                            min="0.01"
+                            max="1"
+                            placeholder="0.01"
                             value={quantity}
-                            onChange={(val) => setQuantity(parseFloat(val) || 0.01)}
-                            options={LOTS_OPTIONS}
-                            width="112px"
+                            onChange={(e) => {
+                                const val = e.target.value;
+                                if (val === '') {
+                                    setQuantity('');
+                                    return;
+                                }
+                                const num = parseFloat(val);
+                                if (!isNaN(num)) {
+                                    if (num > 1) {
+                                        setQuantity(1);
+                                    } else if (num < 0) {
+                                        setQuantity(0.01);
+                                    } else {
+                                        setQuantity(val);
+                                    }
+                                } else {
+                                    setQuantity(val);
+                                }
+                            }}
+                            onBlur={(e) => {
+                                const num = parseFloat(e.target.value);
+                                if (isNaN(num) || num < 0.01) {
+                                    setQuantity(0.01);
+                                } else if (num > 1) {
+                                    setQuantity(1);
+                                } else {
+                                    setQuantity(num);
+                                }
+                            }}
+                            style={{ width: '90px' }}
                         />
                     </div>
                 </div>

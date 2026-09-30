@@ -175,10 +175,16 @@ const ContinueWithGoogle = ({ redirectTo = '/dashboard', onPendingPhone }) => {
                 result?.message || 'Google sign-in could not be completed. Please try again.'
             );
         } catch (err) {
-            setError(typeof err.message === 'string' ? err.message : 'Google sign-in failed.');
-            toast.error(
-                typeof err.message === 'string' ? err.message : 'Google sign-in failed.'
-            );
+            let msg = typeof err.message === 'string' ? err.message : 'Google sign-in failed.';
+            if (
+                msg.toLowerCase().includes('account is not active') ||
+                msg.toLowerCase().includes('account is inactive') ||
+                msg.toLowerCase().includes('account not active')
+            ) {
+                msg = 'Account is not active. Please contact admin.';
+            }
+            setError(msg);
+            toast.error(msg);
         } finally {
             setLoading(false);
         }

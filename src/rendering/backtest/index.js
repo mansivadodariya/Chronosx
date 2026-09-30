@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useSearchParams } from 'next/navigation';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import styles from './backtest.module.scss';
 import studioStyles from '../strategyStudio/styles/strategyStudio.module.scss';
 import BackgroundCyberWaves from '../strategyStudio/components/BackgroundCyberWaves';
@@ -37,6 +37,7 @@ const normalizeSymbol = (sym) => {
 
 export default function BacktestPage() {
     const searchParams = useSearchParams();
+    const router = useRouter();
 
     // Strategy Parameters (Toolbar & Execution)
     const [symbol, setSymbol] = useState('XAUUSD');
@@ -46,7 +47,9 @@ export default function BacktestPage() {
     const [capital, setCapital] = useState(10000);
     const [quantity, setQuantity] = useState(0.01);
 
-    // Active Strategy Meta (for run-by-id)
+    // Active Strategy Meta & Header Title
+    const [strategyName, setStrategyName] = useState('');
+    const [strategyOrigin, setStrategyOrigin] = useState('');
     const [activeStrategyInfo, setActiveStrategyInfo] = useState(null);
 
     // Backtest Simulation Results
@@ -110,6 +113,7 @@ export default function BacktestPage() {
                 // Sync header toolbar values if returned in strategy response
                 if (res.strategy) {
                     const s = res.strategy;
+                    if (s.name || s.strategy_name || s.title) setStrategyName(s.name || s.strategy_name || s.title);
                     if (s.symbol || s.stock_name) setSymbol(normalizeSymbol(s.symbol || s.stock_name));
                     if (s.interval || s.timeframe) setInterval(normalizeInterval(s.interval || s.timeframe));
                     if (s.inital_capital || s.initial_capital || s.capital) setCapital(Number(s.inital_capital || s.initial_capital || s.capital));
@@ -139,7 +143,7 @@ export default function BacktestPage() {
         if (hasInitiatedRun.current) return;
 
         let stratId = searchParams?.get('strategy_id') || searchParams?.get('id');
-        let stratSource = searchParams?.get('source');
+        let stratSource = searchParams?.get('source') || searchParams?.get('from');
         let pendingData = null;
 
         try {
@@ -155,6 +159,17 @@ export default function BacktestPage() {
         if (pendingData) {
             stratId = stratId || pendingData.strategy_id || pendingData.id;
             stratSource = stratSource || pendingData.source;
+        }
+
+        const rawName = pendingData?.name || pendingData?.strategy_name || pendingData?.raw_strategy?.name || pendingData?.raw_strategy?.strategy_name || searchParams?.get('name') || searchParams?.get('strategy_name') || '';
+        if (rawName) setStrategyName(rawName);
+
+        if (stratSource === 'user_strategies' || stratSource === 'my-bots' || stratSource === 'my_bots') {
+            setStrategyOrigin('my-bots');
+        } else if (stratSource === 'trading_strategies' || stratSource === 'predefined_strategies' || stratSource === 'predefined') {
+            setStrategyOrigin('predefined');
+        } else if (stratSource) {
+            setStrategyOrigin(stratSource);
         }
 
         if (stratId) {
@@ -190,6 +205,30 @@ export default function BacktestPage() {
             executeRunById(stratMeta);
         }
     }, [searchParams, executeRunById]);
+
+    const handleBackNavigation = () => {
+        if (strategyOrigin === 'my-bots' || searchParams?.get('source') === 'user_strategies') {
+            router.push('/my-bots');
+        } else if (strategyOrigin === 'predefined' || searchParams?.get('source') === 'trading_strategies') {
+            router.push('/predefined-strategies');
+        } else {
+            if (typeof window !== 'undefined' && window.history.length > 1) {
+                router.back();
+            } else {
+                router.push('/predefined-strategies');
+            }
+        }
+    };
+
+    const backButtonLabel = useMemo(() => {
+        if (strategyOrigin === 'my-bots' || searchParams?.get('source') === 'user_strategies') {
+            return 'Back';
+        }
+        if (strategyOrigin === 'predefined' || searchParams?.get('source') === 'trading_strategies') {
+            return 'Back';
+        }
+        return 'Back';
+    }, [strategyOrigin, searchParams]);
 
     /**
      * Execute Backtest Simulation manually from Toolbar
@@ -275,7 +314,59 @@ export default function BacktestPage() {
                     {/* Background Cyber Waves */}
                     <BackgroundCyberWaves />
 
-                    {/* Top Parameter Command Toolbar */}
+                    {/* Contextual Top Navigation & Strategy Header Bar */}
+                    <div className={styles.backtestTopNav}>
+                        <div className={styles.navLeftSection}>
+                            <button
+                                type="button"
+                                className={styles.backBtn}
+                                onClick={handleBackNavigation}
+                                title={backButtonLabel}
+                            >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                                </svg>
+                                <span>{backButtonLabel}</span>
+                            </button>
+
+                            <div className={styles.navDivider} aria-hidden="true" />
+
+                            <div className={styles.strategyInfoBlock}>
+                                <div className={styles.titleRowWrap}>
+                                    <h1 className={styles.headerStrategyTitle}>
+                                        {strategyName || (activeStrategyInfo?.strategy_id ? 'Active Strategy Backtest' : 'Algorithmic Strategy Backtester')}
+                                    </h1>
+                                    <span className={styles.strategyOriginTag}>
+                                        <span className={styles.originDot} />
+                                        {strategyOrigin === 'my-bots' ? 'My Bot Strategy' : 'Predefined Model'}
+                                    </span>
+                                </div>
+                                <div className={styles.metaChipsRow}>
+                                    <span className={styles.metaChip}>
+                                        <span className={styles.chipKey}>PAIR</span>
+                                        <strong className={styles.chipVal}>{symbol}</strong>
+                                    </span>
+                                    <span className={styles.metaChip}>
+                                        <span className={styles.chipKey}>INTERVAL</span>
+                                        <strong className={styles.chipVal}>{interval}</strong>
+                                    </span>
+                                    <span className={styles.metaChip}>
+                                        <span className={styles.chipKey}>CAPITAL</span>
+                                        <strong className={styles.chipVal}>${Number(capital).toLocaleString()}</strong>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={styles.navRightSection}>
+                            <div className={styles.statusLivePill}>
+                                <span className={styles.liveDot} />
+                                <span>{simulationLoading ? 'Simulating Engine...' : results ? 'Simulation Completed' : 'Engine Ready'}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Parameter Command Toolbar */}
                     <StudioToolbar
                         symbol={symbol}
                         setSymbol={setSymbol}

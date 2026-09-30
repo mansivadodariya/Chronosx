@@ -260,7 +260,7 @@ html.light .children-wrapper {
 .sidebar-wrapper {
   width: 250px;
   position: relative;
-  z-index: 101;
+  z-index: 1005;
   overflow: visible !important;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: #040605;

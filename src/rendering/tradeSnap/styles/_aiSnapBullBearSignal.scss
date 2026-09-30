@@ -241,6 +241,8 @@
     text-align: justify;
     text-justify: inter-word;
     line-height: 1.6;
+    word-break: normal;
+    overflow-wrap: break-word;
 }
 
 .bannerRight {
@@ -665,6 +667,113 @@
         margin: 0;
         text-align: justify;
         text-justify: inter-word;
+        word-break: normal;
+        overflow-wrap: break-word;
     }
 }
-
+
+/* ============================================================
+   LIGHT MODE & PDF EXPORT CONTRAST (HERO BANNER & TRADE SETUP)
+   ============================================================ */
+:global(html.light),
+:global(html[data-theme='light']),
+:global([data-theme='light']),
+:global(.light),
+:global(.pdfExportLight) {
+    .heroBanner {
+        background: #FFFFFF !important;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+
+        .bannerTitle {
+            color: #0F172A !important;
+        }
+
+        .bannerDesc {
+            color: #475569 !important;
+        }
+
+        .statItem {
+            background: #F8FAFC !important;
+            border-color: rgba(15, 23, 42, 0.1) !important;
+
+            .statLabel {
+                color: #64748B !important;
+            }
+
+            .statVal {
+                color: #0F172A !important;
+            }
+        }
+    }
+
+    .tradeSignalSetupCard {
+        background: #FFFFFF !important;
+        border-color: rgba(15, 23, 42, 0.12) !important;
+
+        .cardHeaderRow h3 {
+            color: #0F172A !important;
+        }
+
+        .entryBox {
+            background: #F8FAFC !important;
+            border-color: rgba(15, 23, 42, 0.1) !important;
+
+            .boxLabel {
+                color: #64748B !important;
+            }
+
+            .boxPrimaryValue {
+                color: #0F172A !important;
+            }
+
+            .boxSubInfo {
+                color: #64748B !important;
+            }
+        }
+
+        .slBox {
+            background: rgba(239, 68, 68, 0.05) !important;
+            border-color: rgba(239, 68, 68, 0.2) !important;
+
+            .slLabel {
+                color: #DC2626 !important;
+            }
+
+            .slPrimaryValue {
+                color: #DC2626 !important;
+            }
+        }
+
+        .tpSection {
+            background: #F8FAFC !important;
+            border-color: rgba(15, 23, 42, 0.1) !important;
+        }
+
+        .tpPillCard {
+            background: #FFFFFF !important;
+            border-color: rgba(16, 185, 129, 0.25) !important;
+
+            .tpPillTop {
+                color: #64748B !important;
+            }
+
+            .tpPillVal {
+                color: #047857 !important;
+            }
+        }
+
+        .rationaleBox {
+            background: #F0FDF4 !important;
+            border-color: rgba(16, 185, 129, 0.25) !important;
+
+            .rationaleTitle {
+                color: #047857 !important;
+            }
+
+            .rationaleText {
+                color: #1E293B !important;
+            }
+        }
+    }
+}
+

@@ -33,7 +33,16 @@
     "getStarted": "开始",
     "logout": "退出",
     "dashboard": "仪表板",
-    "affiliate": "附属机构"
+    "affiliate": "附属机构",
+    "predefinedStrategies": "Predefined Strategies",
+    "education": "Education",
+    "aiTradingBot": "AI Trading Bot",
+    "myBots": "My Bots",
+    "aiBotBuilder": "AI Bot Builder",
+    "customBotBuilder": "Custom Bot Builder",
+    "botLibrary": "Browse Bots Library",
+    "strategyStudio": "AI Bot Builder",
+    "landingPage": "首页"
   },
   "topbar": {
     "credits": "学分",
@@ -227,7 +236,8 @@
     "desktopRequiredDesc": "移动 Safari 或 iOS 设备不支持屏幕共享。请在桌面 Chrome、Edge 或 Mac Safari 上打开。",
     "scannerTitle": "AI 实时图表扫描仪",
     "scannerDesc": "分享您的实时图表屏幕或捕获快照，以获得实时人工��能技术分析、关键水平和交易设置。",
-    "history": "历史"
+    "history": "历史",
+    "pleaseAddGraphScreenshot": "请先上传图表截图以开始AI分析。"
   },
   "aiChat": {
     "heroBadge": "24/7 机构量化副驾驶",
@@ -587,7 +597,10 @@
     "openCalculators": "打开计算器",
     "toolEconomicCalendar": "经济日历",
     "viewCalendar": "查看日历",
-    "type": "类型"
+    "type": "类型",
+    "withdrawableBalance": "可提现余额",
+    "withdrawableBalanceDesc": "钱包中可供随时提现的资金",
+    "viewWallet": "查看钱包"
   },
   "creditHistory": {
     "title": "信用记录",
@@ -736,7 +749,28 @@
     "changePassword": "更改密码",
     "paymentHistory": "付款历史",
     "mySettings": "设置",
-    "settingsSubtitle": "管理您的个人资料、安全设置和帐户首选项"
+    "settingsSubtitle": "管理您的个人资料、安全设置和帐户首选项",
+    "preferences": "偏好设置",
+    "preferencesTitle": "用户与界面偏好",
+    "preferencesDesc": "自定义主题、语言、时区、显示货币与通知设置。",
+    "themeSettings": "外观与主题设置",
+    "themeDesc": "在赛博暗黑模式与高清明亮模式之间进行切换。",
+    "darkMode": "深色模式",
+    "darkThemeSub": "高对比度深色赛博霓虹主题",
+    "lightMode": "浅色模式",
+    "lightThemeSub": "清晰护眼的明亮日间主题",
+    "languageSettings": "语言设置",
+    "languageDesc": "选择 ChronosX 界面的主要显示语言。",
+    "additionalPref": "其他偏好设置",
+    "additionalPrefDesc": "配置默认时区、显示货币与声音提醒。",
+    "defaultTz": "默认时区",
+    "defaultTzSub": "同步蜡烛图与交易信号时间戳",
+    "displayCurrency": "显示货币",
+    "displayCurrencySub": "用于盈亏与账户余额计算的货币单位",
+    "soundEffects": "声音特效",
+    "soundEffectsSub": "在生成新交易信号时播放音频提示",
+    "emailReports": "邮件报告",
+    "emailReportsSub": "每周接收交易机器人与策略表现摘要"
   },
   "auth": {
     "loginTitle": "登录 ChronosX",
@@ -1094,6 +1128,41 @@
       "title1": "机构分析师",
       "title2": "在你的角落。",
       "description": "与专门接受过定量外汇逻辑培训的人工智能副驾驶一起提出问题、探索宏观背景并对交易假设进行压力测试。"
+    },
+    "aiCockpit": {
+      "tabOverview": "Overview",
+      "tabDeep": "Deep Analysis",
+      "tabTools": "Trading Tools",
+      "card1Title": "AI Chart Scanner",
+      "card1Sub": "Pattern Vision & Heat Detection",
+      "card1Badge": "ACTIVE",
+      "scoreVal": "STRONG BUY",
+      "scoreBadge": "LIVE",
+      "verdictText": "Bullish Breakout",
+      "confidenceBadge": "HIGH CONVICTION",
+      "sliderMin": "SCALPING",
+      "sliderCenter": "SIGNAL CONVICTION",
+      "sliderMax": "SWING",
+      "card2Title": "AI Strategy Engine",
+      "card2Sub": "MT5 Institutional Execution",
+      "card2Badge": "OPTIMIZED",
+      "rankVal": "ORDER BLOCK",
+      "rankSub": "LIQUIDITY SWEEP",
+      "topPerformer": "TOP STRATEGY PERFORMER",
+      "col1Label": "AI CHART SCANNER",
+      "col1Badge": "VISION AI",
+      "col1Val": "Liquidity Sweep",
+      "col1Sub": "Fair Value Gap Breached",
+      "col2Label": "MT5 BROKER BRIDGE",
+      "col2Badge": "ZERO LAG",
+      "col2Val": "Instant Execution",
+      "col2Sub": "Institutional Raw Spreads",
+      "col3Label": "AI TRADING SIGNAL",
+      "col3Badge": "CONFIRMED",
+      "col3Val": "Strong Buy Setup",
+      "col3Sub": "Multi-Timeframe Confluence",
+      "footerLive": "AI STREAM ACTIVE · REAL-TIME WEBSOCKET",
+      "footerFeed": "CHRONOSX AI TERMINAL · ZERO-LATENCY"
     }
   },
   "aiTrade": {

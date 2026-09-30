@@ -66,7 +66,7 @@ export default function TradeSnapModals({
                 open={historyOpen}
                 onClose={() => setHistoryOpen(false)}
                 title={t('tradeSnap.historyTitle', 'AI Trade History')}
-                description={t('tradeSnap.historyDesc', 'Your past AI Trade analyses')}
+                description={t('tradeSnap.historyDesc', 'Your AI Trade analyses')}
             >
                 {historyLoading ? (
                     <div className={styles.loadingBox}>
@@ -99,33 +99,56 @@ export default function TradeSnapModals({
             </Modal>
 
             {confirmDeleteOpen && (
-                <div className={styles.modalOverlay} role="dialog" aria-modal="true">
-                    <div className={styles.modalBox}>
-                        <div className={styles.modalHeader}>
-                            <h3>{t('tradeSnap.confirmDeleteTitle', 'Delete Analysis')}</h3>
+                <div
+                    className={styles.modalOverlay}
+                    role="dialog"
+                    aria-modal="true"
+                    onClick={() => setConfirmDeleteOpen(false)}
+                >
+                    <div
+                        className={styles.deleteConfirmModalBox}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                            type="button"
+                            className={styles.deleteModalCloseBtn}
+                            onClick={() => setConfirmDeleteOpen(false)}
+                            aria-label={t('tradeSnap.close', 'Close')}
+                        >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                        </button>
+
+                        <div className={styles.deleteIconBadge}>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="3 6 5 6 21 6" />
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                <line x1="10" y1="11" x2="10" y2="17" />
+                                <line x1="14" y1="11" x2="14" y2="17" />
+                            </svg>
+                        </div>
+
+                        <h3 className={styles.deleteConfirmTitle}>
+                            {t('tradeSnap.confirmDeleteTitle', 'Delete Analysis')}
+                        </h3>
+
+                        <p className={styles.deleteConfirmMessage}>
+                            {t('tradeSnap.confirmDeleteBody', 'Are you sure you want to delete this analysis? This action cannot be undone.')}
+                        </p>
+
+                        <div className={styles.deleteConfirmActions}>
                             <button
                                 type="button"
-                                className={styles.modalClose}
-                                onClick={() => setConfirmDeleteOpen(false)}
-                                aria-label={t('tradeSnap.close', 'Close')}
-                            >
-                                ×
-                            </button>
-                        </div>
-                        <div className={styles.modalBody}>
-                            <p>{t('tradeSnap.confirmDeleteBody', 'Are you sure you want to delete this analysis? This action cannot be undone.')}</p>
-                        </div>
-                        <div className={styles.modalFooter}>
-                            <button
-                                type="button"
-                                className={styles.btnSecondary}
+                                className={styles.deleteCancelBtn}
                                 onClick={() => setConfirmDeleteOpen(false)}
                             >
                                 {t('tradeSnap.cancel', 'Cancel')}
                             </button>
                             <button
                                 type="button"
-                                className={styles.btnDanger}
+                                className={styles.deleteConfirmBtn}
                                 onClick={confirmDeleteHistoryItem}
                             >
                                 {t('tradeSnap.delete', 'Delete')}

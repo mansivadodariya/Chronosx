@@ -231,6 +231,15 @@ function buildCandlestickData(results, roundTrips, symbol = 'EURUSD', interval =
     return candles;
 }
 
+// SVG Arrow Data URIs matching modern rounded stem & chevron design
+const BUY_ARROW_SVG = `data:image/svg+xml;utf8,${encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32" fill="none" stroke="#10B981" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="28" x2="12" y2="5"/><polyline points="4 13 12 5 20 13"/></svg>'
+)}`;
+
+const SELL_ARROW_SVG = `data:image/svg+xml;utf8,${encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32" fill="none" stroke="#EF4444" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="4" x2="12" y2="27"/><polyline points="4 19 12 27 20 19"/></svg>'
+)}`;
+
 export default function BacktestCandlestickChart({
     results,
     roundTrips = [],
@@ -263,12 +272,12 @@ export default function BacktestCandlestickChart({
         }));
     }, [roundTrips]);
 
-    // Build Annotations (Trade Entry/Exit Markers mapped to candle categories)
+    // Build Annotations (Green Up Arrow for Buy Entry, Red Down Arrow for Sell/Exit with spacing gap)
     const annotations = useMemo(() => {
         const points = [];
         if (!candleData || candleData.length === 0) return { points };
 
-        const maxAnnotated = 40;
+        const maxAnnotated = 50;
         const step = parsedTrips.length > maxAnnotated ? Math.ceil(parsedTrips.length / maxAnnotated) : 1;
 
         for (let i = 0; i < parsedTrips.length; i += step) {
@@ -281,39 +290,44 @@ export default function BacktestCandlestickChart({
                 }, null);
 
                 if (closest) {
+                    const candleLow = Array.isArray(closest.y) ? closest.y[2] : Number(t.entryPrice);
                     points.push({
                         x: closest.x,
-                        y: Number(t.entryPrice),
+                        y: candleLow,
                         marker: {
-                            size: 4.5,
-                            fillColor: '#10B981',
-                            strokeColor: '#064E3B',
-                            strokeWidth: 1.5,
-                            shape: 'circle',
-                            radius: 2
+                            size: 0
+                        },
+                        image: {
+                            path: BUY_ARROW_SVG,
+                            width: 13,
+                            height: 18,
+                            offsetX: 0,
+                            offsetY: 22
                         }
                     });
                 }
             }
 
             if (t.exitTs && t.exitPrice) {
-                const isWin = t.pnlNum > 0;
                 const closest = candleData.reduce((prev, curr) => {
                     if (!prev) return curr;
                     return Math.abs(curr.ts - t.exitTs) < Math.abs(prev.ts - t.exitTs) ? curr : prev;
                 }, null);
 
                 if (closest) {
+                    const candleHigh = Array.isArray(closest.y) ? closest.y[1] : Number(t.exitPrice);
                     points.push({
                         x: closest.x,
-                        y: Number(t.exitPrice),
+                        y: candleHigh,
                         marker: {
-                            size: 4.5,
-                            fillColor: isWin ? '#F59E0B' : '#EF4444',
-                            strokeColor: isWin ? '#78350F' : '#7F1D1D',
-                            strokeWidth: 1.5,
-                            shape: 'circle',
-                            radius: 2
+                            size: 0
+                        },
+                        image: {
+                            path: SELL_ARROW_SVG,
+                            width: 13,
+                            height: 18,
+                            offsetX: 0,
+                            offsetY: -22
                         }
                     });
                 }
@@ -509,16 +523,18 @@ export default function BacktestCandlestickChart({
 
                 <div className={styles.chartLegendFilterRow}>
                     <div className={styles.legendItem}>
-                        <span className={styles.legendDotGreen} />
-                        <span>Buy Entry ({roundTrips.filter(t => t.side === 'BUY').length})</span>
+                        <svg width="11" height="15" viewBox="0 0 24 32" fill="none" stroke="#10B981" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="12" y1="28" x2="12" y2="5" />
+                            <polyline points="4 13 12 5 20 13" />
+                        </svg>
+                        <span>Buy ({roundTrips.filter(t => (t.side || 'BUY').toUpperCase() === 'BUY').length})</span>
                     </div>
                     <div className={styles.legendItem}>
-                        <span className={styles.legendDotYellow} />
-                        <span>Target Exit ({roundTrips.filter(t => t.pnl > 0).length})</span>
-                    </div>
-                    <div className={styles.legendItem}>
-                        <span className={styles.legendDotRed} />
-                        <span>Stoploss Exit ({roundTrips.filter(t => t.pnl <= 0).length})</span>
+                        <svg width="11" height="15" viewBox="0 0 24 32" fill="none" stroke="#EF4444" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="12" y1="4" x2="12" y2="27" />
+                            <polyline points="4 19 12 27 20 19" />
+                        </svg>
+                        <span>Sell / Exit ({roundTrips.filter(t => t.exitPrice || t.exitDate).length})</span>
                     </div>
                 </div>
             </div>

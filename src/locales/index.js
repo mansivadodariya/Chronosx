@@ -1,10 +1,27 @@
 import en from './en.json';
+import ar from './ar.json';
+import ary from './ary.json';
+import es from './es.json';
+import ru from './ru.json';
+import zh from './zh.json';
+import vi from './vi.json';
+import id from './id.json';
+import fil from './fil.json';
 
 /**
- * In-memory cache for loaded language dictionaries. 'en' is bundled as base fallback
+ * In-memory cache for all supported language dictionaries.
+ * Bundled statically for instantaneous 0ms reactivity without async loading delays.
  */
 export const translations = {
   en,
+  ar,
+  ary,
+  es,
+  ru,
+  zh,
+  vi,
+  id,
+  fil,
 };
 
 /** All supported locale codes */
@@ -12,20 +29,6 @@ export const SUPPORTED_LOCALES = ['en', 'ar', 'ary', 'es', 'ru', 'zh', 'vi', 'id
 
 /** RTL locale codes */
 export const RTL_LOCALES = ['ar', 'ary'];
-
-/**
- * Dynamic loader map for non-English locales to prevent bundling ~750KB on initial load
- */
-const localeLoaders = {
-  ar: () => import('./ar.json'),
-  ary: () => import('./ary.json'),
-  es: () => import('./es.json'),
-  ru: () => import('./ru.json'),
-  zh: () => import('./zh.json'),
-  vi: () => import('./vi.json'),
-  id: () => import('./id.json'),
-  fil: () => import('./fil.json'),
-};
 
 /**
  * Dynamically load dictionary for a given locale if not yet cached.

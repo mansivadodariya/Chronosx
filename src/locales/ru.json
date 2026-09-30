@@ -33,7 +33,16 @@
     "getStarted": "Начать",
     "logout": "Выйти",
     "dashboard": "Панель управления",
-    "affiliate": "Партнер"
+    "affiliate": "Партнер",
+    "predefinedStrategies": "Predefined Strategies",
+    "education": "Education",
+    "aiTradingBot": "AI Trading Bot",
+    "myBots": "My Bots",
+    "aiBotBuilder": "AI Bot Builder",
+    "customBotBuilder": "Custom Bot Builder",
+    "botLibrary": "Browse Bots Library",
+    "strategyStudio": "AI Bot Builder",
+    "landingPage": "Главная страница"
   },
   "topbar": {
     "credits": "кредиты",
@@ -227,7 +236,8 @@
     "desktopRequiredDesc": "Совместное использование экрана не поддерживается на мобильных устройствах Safari и iOS. Откройте на настольном компьютере Chrome, Edge или Mac Safari.",
     "scannerTitle": "Сканер графиков с искусственным интеллектом",
     "scannerDesc": "Поделитесь своим экраном графика в реальном времени или сделайте снимки, чтобы получить технический анализ AI в реальном времени, ключевые уровни и торговые настройки.",
-    "history": "История"
+    "history": "История",
+    "pleaseAddGraphScreenshot": "Пожалуйста, загрузите снимок графика для начала анализа с помощью ИИ."
   },
   "aiChat": {
     "heroBadge": "ИНСТИТУЦИОНАЛЬНЫЙ КВАНТОВЫЙ ВТОРОЙ ПИЛОТ 24 часа в сутки, 7 дней в неделю",
@@ -587,7 +597,10 @@
     "openCalculators": "Открытые калькуляторы",
     "toolEconomicCalendar": "Экономический календарь",
     "viewCalendar": "Просмотреть календарь",
-    "type": "Тип"
+    "type": "Тип",
+    "withdrawableBalance": "Доступно к выводу",
+    "withdrawableBalanceDesc": "Средства, доступные для вывода с вашего счета",
+    "viewWallet": "Просмотреть кошелек"
   },
   "creditHistory": {
     "title": "Кредитная история",
@@ -736,7 +749,28 @@
     "changePassword": "Изменить пароль",
     "paymentHistory": "История платежей",
     "mySettings": "Настройки",
-    "settingsSubtitle": "Управляйте своим личным профилем, настройками безопасности и настройками учетной записи"
+    "settingsSubtitle": "Управляйте своим личным профилем, настройками безопасности и настройками учетной записи",
+    "preferences": "Настройки",
+    "preferencesTitle": "Пользовательские настройки и интерфейс",
+    "preferencesDesc": "Настройка темы, языка, часового пояса, валюты и уведомлений.",
+    "themeSettings": "Настройки темы",
+    "themeDesc": "Выберите темную кибер-тему или светлую тему высокой четкости.",
+    "darkMode": "Темная тема",
+    "darkThemeSub": "Контрастная темная тема с неоновым свечением",
+    "lightMode": "Светлая тема",
+    "lightThemeSub": "Чистая и комфортная светлая тема",
+    "languageSettings": "Настройки языка",
+    "languageDesc": "Выберите основной язык интерфейса ChronosX.",
+    "additionalPref": "Дополнительные параметры",
+    "additionalPrefDesc": "Настройка часового пояса, валюты и звуковых оповещений.",
+    "defaultTz": "Часовой пояс по умолчанию",
+    "defaultTzSub": "Синхронизация времени свечей и сигналов",
+    "displayCurrency": "Валюта отображения",
+    "displayCurrencySub": "Валюта для балансов и расчетов P&L",
+    "soundEffects": "Звуковые эффекты",
+    "soundEffectsSub": "Звуковые оповещения при поступлении новых сигналов",
+    "emailReports": "Отчеты по электронной почте",
+    "emailReportsSub": "Получать еженедельные сводки по торговле и ботам"
   },
   "auth": {
     "loginTitle": "Войдите в ChronosX",
@@ -1094,6 +1128,41 @@
       "title1": "Институциональный аналитик",
       "title2": "В твоем углу.",
       "description": "Задавайте вопросы, изучайте макроэкономический контекст и проверяйте торговые гипотезы на стресс с помощью второго пилота с искусственным интеллектом, обученного исключительно количественной логике Форекс."
+    },
+    "aiCockpit": {
+      "tabOverview": "Overview",
+      "tabDeep": "Deep Analysis",
+      "tabTools": "Trading Tools",
+      "card1Title": "AI Chart Scanner",
+      "card1Sub": "Pattern Vision & Heat Detection",
+      "card1Badge": "ACTIVE",
+      "scoreVal": "STRONG BUY",
+      "scoreBadge": "LIVE",
+      "verdictText": "Bullish Breakout",
+      "confidenceBadge": "HIGH CONVICTION",
+      "sliderMin": "SCALPING",
+      "sliderCenter": "SIGNAL CONVICTION",
+      "sliderMax": "SWING",
+      "card2Title": "AI Strategy Engine",
+      "card2Sub": "MT5 Institutional Execution",
+      "card2Badge": "OPTIMIZED",
+      "rankVal": "ORDER BLOCK",
+      "rankSub": "LIQUIDITY SWEEP",
+      "topPerformer": "TOP STRATEGY PERFORMER",
+      "col1Label": "AI CHART SCANNER",
+      "col1Badge": "VISION AI",
+      "col1Val": "Liquidity Sweep",
+      "col1Sub": "Fair Value Gap Breached",
+      "col2Label": "MT5 BROKER BRIDGE",
+      "col2Badge": "ZERO LAG",
+      "col2Val": "Instant Execution",
+      "col2Sub": "Institutional Raw Spreads",
+      "col3Label": "AI TRADING SIGNAL",
+      "col3Badge": "CONFIRMED",
+      "col3Val": "Strong Buy Setup",
+      "col3Sub": "Multi-Timeframe Confluence",
+      "footerLive": "AI STREAM ACTIVE · REAL-TIME WEBSOCKET",
+      "footerFeed": "CHRONOSX AI TERMINAL · ZERO-LATENCY"
     }
   },
   "aiTrade": {

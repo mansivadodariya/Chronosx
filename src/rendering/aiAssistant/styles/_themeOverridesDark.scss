@@ -331,134 +331,139 @@
 /* ==========================================================================
    Chat History & Confirmation Modal Styles (Luxury Dark Gold Theme)
    ========================================================================== */
-.historyModalContent {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-height: 60vh;
-    overflow-y: auto;
-    padding-right: 4px;
-
-    &::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: rgba(24, 201, 139, 0.3);
-        border-radius: 4px;
-    }
-
-    .allMessage {
+:global(html.dark),
+:global([data-theme="dark"]),
+:global(.dark) {
+    .historyModalContent {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
+        max-height: 60vh;
+        overflow-y: auto;
+        padding-right: 4px;
+        background: #0d0e13;
 
-        .noHistory {
-            text-align: center;
-            padding: 36px 16px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 14px;
-            font-weight: 500;
+        &::-webkit-scrollbar {
+            width: 6px;
         }
 
-        .messageBox {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 14px 16px;
-            background: #040605;
-            border: 1px solid rgba(24, 201, 139, 0.22);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        &::-webkit-scrollbar-thumb {
+            background: rgba(24, 201, 139, 0.3);
+            border-radius: 4px;
+        }
 
-            p {
-                margin: 0;
+        .allMessage {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .noHistory {
+                text-align: center;
+                padding: 36px 16px;
+                color: rgba(255, 255, 255, 0.5);
                 font-size: 14px;
                 font-weight: 500;
-                color: #ffffff;
-                flex: 1;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
             }
 
-            .truncate {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-
-            .icon {
+            .messageBox {
                 display: flex;
                 align-items: center;
-                justify-content: center;
-                width: 28px;
-                height: 28px;
-                border-radius: 6px;
-                color: rgba(255, 255, 255, 0.5);
-                transition: all 0.15s ease;
-                flex-shrink: 0;
+                justify-content: space-between;
+                gap: 12px;
+                padding: 14px 16px;
+                background: #040605;
+                border: 1px solid rgba(24, 201, 139, 0.22);
+                border-radius: 12px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                p {
+                    margin: 0;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #ffffff;
+                    flex: 1;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                .truncate {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                .icon {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 6px;
+                    color: rgba(255, 255, 255, 0.5);
+                    transition: all 0.15s ease;
+                    flex-shrink: 0;
+
+                    &:hover {
+                        color: #ef4444;
+                        background: rgba(239, 68, 68, 0.15);
+                    }
+                }
 
                 &:hover {
-                    color: #ef4444;
-                    background: rgba(239, 68, 68, 0.15);
+                    background: rgba(24, 201, 139, 0.12);
+                    border-color: #18C98B;
+                    transform: translateY(-1px);
                 }
-            }
 
-            &:hover {
-                background: rgba(24, 201, 139, 0.12);
-                border-color: #18C98B;
-                transform: translateY(-1px);
-            }
-
-            &.selectedBox {
-                background: rgba(24, 201, 139, 0.2);
-                border-color: #18C98B;
-                box-shadow: 0 0 12px rgba(24, 201, 139, 0.2);
+                &.selectedBox {
+                    background: rgba(24, 201, 139, 0.2);
+                    border-color: #18C98B;
+                    box-shadow: 0 0 12px rgba(24, 201, 139, 0.2);
+                }
             }
         }
     }
-}
 
-.modalText {
-    margin: 0;
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-.modalCancelBtn {
-    background: transparent;
-    border: 1px solid rgba(24, 201, 139, 0.35);
-    color: rgba(255, 255, 255, 0.75);
-    padding: 8px 18px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s ease;
-
-    &:hover {
-        background: rgba(255, 255, 255, 0.08);
-        color: #ffffff;
+    .modalText {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 14px;
+        line-height: 1.5;
     }
-}
 
-.modalDeleteBtn {
-    background: #ef4444;
-    border: none;
-    color: #ffffff;
-    padding: 8px 20px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s ease;
+    .modalCancelBtn {
+        background: transparent;
+        border: 1px solid rgba(24, 201, 139, 0.35);
+        color: rgba(255, 255, 255, 0.75);
+        padding: 8px 18px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s ease;
 
-    &:hover {
-        background: #dc2626;
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        &:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+        }
+    }
+
+    .modalDeleteBtn {
+        background: #ef4444;
+        border: none;
+        color: #ffffff;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.15s ease;
+
+        &:hover {
+            background: #dc2626;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
     }
 }

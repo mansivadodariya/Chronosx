@@ -71,7 +71,7 @@ $success: #10b981;
                 stroke-width: 2.2;
             }
 
-            :global(.pdfExporting) & {
+            :global(.pdfExportContainer) & {
                 display: none !important;
             }
         }
@@ -318,7 +318,7 @@ $success: #10b981;
         }
     }
 
-    :global(.pdfExporting) & {
+    :global(.pdfExportContainer) & {
         .resultsPanel {
             max-height: none !important;
             overflow: visible !important;

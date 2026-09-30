@@ -244,6 +244,7 @@ export default function MyBotsView() {
             if (typeof window !== 'undefined') {
                 sessionStorage.setItem('pending_backtest_run', JSON.stringify({
                     strategy_id: stratId,
+                    name: bot?.name || 'Custom Bot Strategy',
                     source: 'user_strategies',
                     symbol: stratSymbol,
                     interval: stratInterval,
@@ -257,7 +258,7 @@ export default function MyBotsView() {
             }
         } catch (_) { }
 
-        router.push(`/backtest?strategy_id=${encodeURIComponent(stratId)}&source=user_strategies`);
+        router.push(`/backtest?strategy_id=${encodeURIComponent(stratId)}&name=${encodeURIComponent(bot?.name || '')}&source=user_strategies`);
     };
 
     const filteredBots = bots.filter((b) => {

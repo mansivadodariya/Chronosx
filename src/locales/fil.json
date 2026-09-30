@@ -41,7 +41,8 @@
     "customBotBuilder": "Custom Bot Builder",
     "botLibrary": "Browse Bots Library",
     "strategyStudio": "AI Bot Builder",
-    "affiliate": "Affiliate"
+    "affiliate": "Affiliate",
+    "landingPage": "Pangunahing Pahina"
   },
   "topbar": {
     "credits": "mga kredito",
@@ -235,7 +236,8 @@
     "desktopRequiredDesc": "Hindi sinusuportahan ang pagbabahagi ng screen sa mga mobile Safari o iOS device. Mangyaring buksan sa desktop Chrome, Edge, o Mac Safari.",
     "scannerTitle": "AI Live Chart Scanner",
     "scannerDesc": "Ibahagi ang iyong live na screen ng chart o kumuha ng mga snapshot para makakuha ng real-time na teknikal na pagsusuri ng AI, mga pangunahing antas, at mga setup ng kalakalan.",
-    "history": "Kasaysayan"
+    "history": "Kasaysayan",
+    "pleaseAddGraphScreenshot": "Paki-upload muna ang screenshot ng chart upang simulan ang pagsusuri gamit ang AI."
   },
   "aiChat": {
     "heroBadge": "24/7 INSTITUTIONAL QUANT COPILOT",
@@ -595,7 +597,10 @@
     "openCalculators": "Buksan ang mga Calculator",
     "toolEconomicCalendar": "Economic Calendar",
     "viewCalendar": "Tingnan ang Calendar",
-    "type": "Uri"
+    "type": "Uri",
+    "withdrawableBalance": "Maaaring I-withdraw na Balanse",
+    "withdrawableBalanceDesc": "Pondo na handang i-withdraw mula sa iyong pitaka",
+    "viewWallet": "Tingnan ang Wallet"
   },
   "creditHistory": {
     "title": "Kasaysayan ng Kredito",
@@ -744,7 +749,28 @@
     "changePassword": "Palitan ang Password",
     "paymentHistory": "Kasaysayan ng Pagbabayad",
     "mySettings": "Mga Setting",
-    "settingsSubtitle": "Pamahalaan ang iyong personal na profile, mga setting ng seguridad, at mga kagustuhan sa account"
+    "settingsSubtitle": "Pamahalaan ang iyong personal na profile, mga setting ng seguridad, at mga kagustuhan sa account",
+    "preferences": "Mga Kagustuhan",
+    "preferencesTitle": "Mga Kagustuhan sa Gumagamit at Interface",
+    "preferencesDesc": "I-customize ang tema, wika, time zone, display currency at mga abiso.",
+    "themeSettings": "Mga Setting ng Tema",
+    "themeDesc": "Pumili sa pagitan ng cyber dark mode at malinaw na light mode.",
+    "darkMode": "Madilim na Mode",
+    "darkThemeSub": "Mataas na contrast na dark theme na may neon glow",
+    "lightMode": "Maliwanag na Mode",
+    "lightThemeSub": "Malinis at komportableng light theme",
+    "languageSettings": "Mga Setting ng Wika",
+    "languageDesc": "Piliin ang pangunahing wika ng interface para sa ChronosX.",
+    "additionalPref": "Karagdagang Mga Kagustuhan",
+    "additionalPrefDesc": "I-configure ang default na time zone, pera, at mga sound alert.",
+    "defaultTz": "Default na Time Zone",
+    "defaultTzSub": "I-synchronize ang mga chart ng kandila at timestamp ng signal",
+    "displayCurrency": "Pera sa Pagpapakita",
+    "displayCurrencySub": "Perang ginagamit para sa balanse at kalkulasyon ng P&L",
+    "soundEffects": "Mga Sound Effect",
+    "soundEffectsSub": "Magpatugtog ng audio alert para sa mga bagong signal ng kalakalan",
+    "emailReports": "Mga Ulat sa Email",
+    "emailReportsSub": "Tumanggap ng lingguhang buod ng pagganap ng kalakalan at mga bot"
   },
   "auth": {
     "loginTitle": "Mag-log In sa ChronosX",
@@ -1102,6 +1128,41 @@
       "title1": "Isang Institutional Analyst",
       "title2": "sa Iyong Tabi.",
       "description": "Magtanong, galugarin ang konteksto ng macro, at subukan ang mga teorya ng trade sa isang AI copilot."
+    },
+    "aiCockpit": {
+      "tabOverview": "Overview",
+      "tabDeep": "Deep Analysis",
+      "tabTools": "Trading Tools",
+      "card1Title": "AI Chart Scanner",
+      "card1Sub": "Pattern Vision & Heat Detection",
+      "card1Badge": "ACTIVE",
+      "scoreVal": "STRONG BUY",
+      "scoreBadge": "LIVE",
+      "verdictText": "Bullish Breakout",
+      "confidenceBadge": "HIGH CONVICTION",
+      "sliderMin": "SCALPING",
+      "sliderCenter": "SIGNAL CONVICTION",
+      "sliderMax": "SWING",
+      "card2Title": "AI Strategy Engine",
+      "card2Sub": "MT5 Institutional Execution",
+      "card2Badge": "OPTIMIZED",
+      "rankVal": "ORDER BLOCK",
+      "rankSub": "LIQUIDITY SWEEP",
+      "topPerformer": "TOP STRATEGY PERFORMER",
+      "col1Label": "AI CHART SCANNER",
+      "col1Badge": "VISION AI",
+      "col1Val": "Liquidity Sweep",
+      "col1Sub": "Fair Value Gap Breached",
+      "col2Label": "MT5 BROKER BRIDGE",
+      "col2Badge": "ZERO LAG",
+      "col2Val": "Instant Execution",
+      "col2Sub": "Institutional Raw Spreads",
+      "col3Label": "AI TRADING SIGNAL",
+      "col3Badge": "CONFIRMED",
+      "col3Val": "Strong Buy Setup",
+      "col3Sub": "Multi-Timeframe Confluence",
+      "footerLive": "AI STREAM ACTIVE · REAL-TIME WEBSOCKET",
+      "footerFeed": "CHRONOSX AI TERMINAL · ZERO-LATENCY"
     }
   },
   "aiTrade": {

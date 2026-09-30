@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './aiStrategy.module.scss';
@@ -40,10 +40,17 @@ export default function StrategyDropdown({ strategies: propStrategies = [], sele
 
     useEffect(() => {
         if (propStrategies && propStrategies.length > 0) {
-            setStrategies(propStrategies);
+            const filtered = propStrategies.filter(st => {
+                const text = `${st.name || ''} ${st.title || ''} ${st.strategy_name || ''} ${st.description || ''}`.toLowerCase();
+                return text.includes('pullback') || text.includes('ema pullback');
+            });
+            const effectiveList = filtered.length > 0 ? filtered : [
+                { id: propStrategies[0].id || propStrategies[0].strategy_id || '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback Strategy', description: 'Trend Following EMA Pullback' }
+            ];
+            setStrategies(effectiveList);
             setLoading(false);
             if (!selectedId) {
-                const firstId = propStrategies[0].id || propStrategies[0].strategy_id;
+                const firstId = effectiveList[0].id || effectiveList[0].strategy_id;
                 setSelectedId(firstId);
                 if (onSelect && !initialSelectFiredRef.current) {
                     initialSelectFiredRef.current = true;
@@ -90,7 +97,11 @@ export default function StrategyDropdown({ strategies: propStrategies = [], sele
                 
                 // Handle various response wrappers
                 const list = Array.isArray(data) ? data : (data.strategies || data.data || []);
-                const effectiveList = list.length > 0 ? list : [
+                const pullbackList = list.filter(st => {
+                    const text = `${st.name || ''} ${st.title || ''} ${st.strategy_name || ''} ${st.description || ''}`.toLowerCase();
+                    return text.includes('pullback') || text.includes('ema pullback');
+                });
+                const effectiveList = pullbackList.length > 0 ? pullbackList : [
                     { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback Strategy', description: 'Trend Following EMA Pullback' }
                 ];
                 setStrategies(effectiveList);

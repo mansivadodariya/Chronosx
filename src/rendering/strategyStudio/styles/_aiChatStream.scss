@@ -106,6 +106,18 @@
     -webkit-backdrop-filter: blur(14px);
     word-break: break-word;
     white-space: pre-wrap;
+    text-align: justify;
+    text-justify: inter-word;
+
+    p {
+        margin: 0 0 8px;
+        text-align: justify;
+        text-justify: inter-word;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
 
     [data-theme='light'] & {
         background: #FFFFFF;

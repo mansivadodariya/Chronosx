@@ -243,23 +243,203 @@
     gap: 10px;
 }
 
+.noTradeSummaryBox {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .noTradeText {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        font-size: 13px;
+        line-height: 1.5;
+        color: rgba(255, 255, 255, 0.7);
+
+        span:not(.noTradeDot) {
+            text-align: justify;
+            text-justify: inter-word;
+            flex: 1;
+        }
+
+        .noTradeDot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #18C98B;
+            margin-top: 6px;
+            flex-shrink: 0;
+            box-shadow: 0 0 6px rgba(24, 201, 139, 0.6);
+        }
+    }
+
+    .compactSrRow {
+        display: flex;
+        gap: 16px;
+        font-size: 12px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+        .compactSrItem {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            span {
+                color: rgba(255, 255, 255, 0.5);
+            }
+
+            strong {
+                color: #FFFFFF;
+                font-family: monospace, sans-serif;
+            }
+        }
+    }
+}
+
+.resultCardFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    background: rgba(0, 0, 0, 0.25);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
 .viewDetailsBtn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    margin: 0 20px 16px;
-    padding: 0;
-    border: none;
-    background: none;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: 8px;
+    background: rgba(24, 201, 139, 0.1);
+    border: 1px solid rgba(24, 201, 139, 0.28);
     color: #18C98B;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-grow: 1;
+    justify-content: center;
 
     &:hover {
-        color: #6EE7B7;
-        text-decoration: underline;
+        background: rgba(24, 201, 139, 0.2);
+        border-color: #18C98B;
+        color: #34D399;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 14px rgba(24, 201, 139, 0.25);
+
+        .btnArrow {
+            transform: translateX(3px);
+        }
+    }
+
+    svg {
+        flex-shrink: 0;
+    }
+
+    .btnArrow {
+        transition: transform 0.2s ease;
+    }
+}
+
+.deleteResultBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #EF4444;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+
+    &:hover {
+        background: rgba(239, 68, 68, 0.2);
+        border-color: #EF4444;
+        color: #F87171;
+        transform: scale(1.05);
+    }
+}
+
+:global(html.light),
+:global(html[data-theme='light']),
+:global([data-theme='light']),
+:global(.light) {
+    .resultCard {
+        background: #FFFFFF !important;
+        border-color: rgba(15, 23, 42, 0.12) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+
+        .resultHeader {
+            border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+
+            h3 {
+                color: #0F172A !important;
+            }
+
+            .timeframeBadge {
+                background: #F1F5F9 !important;
+                color: #475569 !important;
+            }
+        }
+
+        .noTradeSummaryBox {
+            background: #F8FAFC !important;
+            border-color: rgba(15, 23, 42, 0.08) !important;
+
+            .noTradeText {
+                color: #475569 !important;
+            }
+
+            .compactSrRow {
+                border-top-color: rgba(15, 23, 42, 0.08) !important;
+
+                .compactSrItem {
+                    span {
+                        color: #64748B !important;
+                    }
+                    strong {
+                        color: #0F172A !important;
+                    }
+                }
+            }
+        }
+
+        .resultCardFooter {
+            background: #F8FAFC !important;
+            border-top-color: rgba(15, 23, 42, 0.08) !important;
+        }
+
+        .viewDetailsBtn {
+            background: rgba(24, 201, 139, 0.1) !important;
+            border-color: rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+
+            &:hover {
+                background: #18C98B !important;
+                color: #FFFFFF !important;
+            }
+        }
+
+        .deleteResultBtn {
+            background: rgba(239, 68, 68, 0.08) !important;
+            border-color: rgba(239, 68, 68, 0.25) !important;
+            color: #DC2626 !important;
+
+            &:hover {
+                background: #DC2626 !important;
+                color: #FFFFFF !important;
+            }
+        }
     }
 }
 

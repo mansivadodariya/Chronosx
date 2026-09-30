@@ -33,7 +33,16 @@
     "getStarted": "Bắt đầu",
     "logout": "Đăng xuất",
     "dashboard": "Trang tổng quan",
-    "affiliate": "Liên kết"
+    "affiliate": "Liên kết",
+    "predefinedStrategies": "Predefined Strategies",
+    "education": "Education",
+    "aiTradingBot": "AI Trading Bot",
+    "myBots": "My Bots",
+    "aiBotBuilder": "AI Bot Builder",
+    "customBotBuilder": "Custom Bot Builder",
+    "botLibrary": "Browse Bots Library",
+    "strategyStudio": "AI Bot Builder",
+    "landingPage": "Trang chủ"
   },
   "topbar": {
     "credits": "tín dụng",
@@ -227,7 +236,8 @@
     "desktopRequiredDesc": "Chia sẻ màn hình không được hỗ trợ trên thiết bị Safari hoặc iOS di động. Vui lòng mở trên Chrome, Edge hoặc Mac Safari trên máy tính để bàn.",
     "scannerTitle": "Máy quét biểu đồ trực tiếp AI",
     "scannerDesc": "Chia sẻ màn hình biểu đồ trực tiếp của bạn hoặc chụp ảnh nhanh để nhận phân tích kỹ thuật AI theo thời gian thực, các cấp độ chính và thiết lập giao dịch.",
-    "history": "Lịch sử"
+    "history": "Lịch sử",
+    "pleaseAddGraphScreenshot": "Vui lòng tải ảnh chụp biểu đồ lên trước để bắt đầu phân tích bằng AI."
   },
   "aiChat": {
     "heroBadge": "PHI CÔNG SỐ LƯỢNG THỂ CHẾ 24/7",
@@ -587,7 +597,10 @@
     "openCalculators": "Mở Máy tính",
     "toolEconomicCalendar": "Lịch kinh tế",
     "viewCalendar": "Xem Lịch",
-    "type": "Loại"
+    "type": "Loại",
+    "withdrawableBalance": "Số dư Có thể Rút",
+    "withdrawableBalanceDesc": "Số tiền có thể rút từ ví của bạn",
+    "viewWallet": "Xem Ví"
   },
   "creditHistory": {
     "title": "Lịch sử tín dụng",
@@ -736,7 +749,28 @@
     "changePassword": "Đổi mật khẩu",
     "paymentHistory": "Lịch sử thanh toán",
     "mySettings": "Cài đặt",
-    "settingsSubtitle": "Quản lý hồ sơ cá nhân, cài đặt bảo mật và tùy chọn tài khoản của bạn"
+    "settingsSubtitle": "Quản lý hồ sơ cá nhân, cài đặt bảo mật và tùy chọn tài khoản của bạn",
+    "preferences": "Tùy chọn",
+    "preferencesTitle": "Tùy chọn Người dùng & Giao diện",
+    "preferencesDesc": "Tùy chỉnh giao diện, ngôn ngữ, múi giờ, đơn vị tiền tệ và thông báo.",
+    "themeSettings": "Cài đặt Giao diện",
+    "themeDesc": "Chọn giữa chế độ tối cyber và chế độ sáng độ tương phản cao.",
+    "darkMode": "Chế độ Tối",
+    "darkThemeSub": "Giao diện tối tương phản cao với ánh sáng neon",
+    "lightMode": "Chế độ Sáng",
+    "lightThemeSub": "Giao diện sáng rõ ràng và thân thiện",
+    "languageSettings": "Cài đặt Ngôn ngữ",
+    "languageDesc": "Chọn ngôn ngữ giao diện chính cho ChronosX.",
+    "additionalPref": "Tùy chọn Bổ sung",
+    "additionalPrefDesc": "Cấu hình múi giờ mặc định, tiền tệ và cảnh báo âm thanh.",
+    "defaultTz": "Múi giờ Mặc định",
+    "defaultTzSub": "Đồng bộ biểu đồ nến và dấu thời gian tín hiệu",
+    "displayCurrency": "Tiền tệ Hiển thị",
+    "displayCurrencySub": "Đơn vị tiền tệ dùng để tính số dư và P&L",
+    "soundEffects": "Hiệu ứng Âm thanh",
+    "soundEffectsSub": "Phát âm thanh thông báo khi có tín hiệu mới",
+    "emailReports": "Báo cáo qua Email",
+    "emailReportsSub": "Nhận bản tóm tắt hiệu suất giao dịch hàng tuần"
   },
   "auth": {
     "loginTitle": "Đăng nhập vào ChronosX",
@@ -1094,6 +1128,41 @@
       "title1": "Nhà phân tích thể chế",
       "title2": "Ở Góc Của Bạn.",
       "description": "Đặt câu hỏi, khám phá bối cảnh vĩ mô và kiểm tra các giả thuyết giao dịch căng thẳng với một phi công phụ AI được đào tạo riêng về logic định lượng Forex."
+    },
+    "aiCockpit": {
+      "tabOverview": "Overview",
+      "tabDeep": "Deep Analysis",
+      "tabTools": "Trading Tools",
+      "card1Title": "AI Chart Scanner",
+      "card1Sub": "Pattern Vision & Heat Detection",
+      "card1Badge": "ACTIVE",
+      "scoreVal": "STRONG BUY",
+      "scoreBadge": "LIVE",
+      "verdictText": "Bullish Breakout",
+      "confidenceBadge": "HIGH CONVICTION",
+      "sliderMin": "SCALPING",
+      "sliderCenter": "SIGNAL CONVICTION",
+      "sliderMax": "SWING",
+      "card2Title": "AI Strategy Engine",
+      "card2Sub": "MT5 Institutional Execution",
+      "card2Badge": "OPTIMIZED",
+      "rankVal": "ORDER BLOCK",
+      "rankSub": "LIQUIDITY SWEEP",
+      "topPerformer": "TOP STRATEGY PERFORMER",
+      "col1Label": "AI CHART SCANNER",
+      "col1Badge": "VISION AI",
+      "col1Val": "Liquidity Sweep",
+      "col1Sub": "Fair Value Gap Breached",
+      "col2Label": "MT5 BROKER BRIDGE",
+      "col2Badge": "ZERO LAG",
+      "col2Val": "Instant Execution",
+      "col2Sub": "Institutional Raw Spreads",
+      "col3Label": "AI TRADING SIGNAL",
+      "col3Badge": "CONFIRMED",
+      "col3Val": "Strong Buy Setup",
+      "col3Sub": "Multi-Timeframe Confluence",
+      "footerLive": "AI STREAM ACTIVE · REAL-TIME WEBSOCKET",
+      "footerFeed": "CHRONOSX AI TERMINAL · ZERO-LATENCY"
     }
   },
   "aiTrade": {

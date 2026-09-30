@@ -30,7 +30,7 @@ import {
   EducationIcon,
   ChevronLeftIcon,
   LogoutIcon,
-  BacktestIcon,
+  LandingHomeIcon,
 } from '@/icons/sidebarIcons';
 import { clearAuthSession, getStoredUser, getStoredUserId, hydrateUserFromProfile } from '@/lib/authSession';
 import { useLanguage } from '@/context/LanguageContext';
@@ -68,18 +68,17 @@ const getNavSections = (t) => [
           { label: t('nav.predefinedStrategies', 'Predefined Strategies'), href: "/predefined-strategies", icon: PredefinedStrategyIcon },
         ]
       },
-      {
-        label: t('nav.aiTradingBot', 'AI Trading Bot'),
-        href: "/my-bots",
-        icon: BotBuilderIcon,
-        subItems: [
-          { label: t('nav.myBots', 'My Bots'), href: "/my-bots", icon: MyBotsIcon },
-          { label: t('nav.aiBotBuilder', 'AI Bot Builder'), href: "/ai-bot-builder", icon: AiBotSparkIcon },
-          { label: t('nav.customBotBuilder', 'Custom Bot Builder'), href: "/manual-bot-builder", icon: CustomBotIcon },
-          { label: t('nav.botLibrary', 'Browse Bots Library'), href: "/bot-library", icon: BotLibraryIcon },
-        ]
-      },
-      { label: t('nav.backtest', 'Backtest'), href: "/backtest", icon: BacktestIcon },
+      // {
+      //   label: t('nav.aiTradingBot', 'AI Trading Bot'),
+      //   href: "/my-bots",
+      //   icon: BotBuilderIcon,
+      //   subItems: [
+      //     { label: t('nav.myBots', 'My Bots'), href: "/my-bots", icon: MyBotsIcon },
+      //     { label: t('nav.aiBotBuilder', 'AI Bot Builder'), href: "/ai-bot-builder", icon: AiBotSparkIcon },
+      //     { label: t('nav.customBotBuilder', 'Custom Bot Builder'), href: "/manual-bot-builder", icon: CustomBotIcon },
+      //     { label: t('nav.botLibrary', 'Browse Bots Library'), href: "/bot-library", icon: BotLibraryIcon },
+      //   ]
+      // },
     ]
   },
   {
@@ -717,7 +716,20 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
                     }}
                   >
                     <ProfileUserIcon />
-                    <span>{t('nav.profile', 'Profile')}</span>
+                    <span>{t('nav.profile', 'Settings')}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className={styles.dropdownItem}
+                    onClick={() => {
+                      setProfileDropdownOpen(false);
+                      handleNavigate();
+                      router.push('/');
+                    }}
+                  >
+                    <LandingHomeIcon width={18} height={18} />
+                    <span>{t('nav.landingPage', 'Landing Page')}</span>
                   </button>
 
                   <button

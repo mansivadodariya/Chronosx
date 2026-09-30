@@ -262,8 +262,9 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
             setIsExportingPdf(true);
             try {
                 toast('Preparing PDF download with market charts & figures...');
-                const html2pdf = (await import('html2pdf.js')).default;
-                await new Promise((resolve) => setTimeout(resolve, 1200));
+                const html2canvas = (await import('html2canvas')).default;
+                const { jsPDF } = await import('jspdf');
+                await new Promise((resolve) => setTimeout(resolve, 1400));
 
                 const element = exportRef.current;
                 if (!element) throw new Error("Export element not found");
@@ -273,11 +274,43 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
                     : 'MARKET';
 
                 const dateStr = new Date().toISOString().split('T')[0];
-                const opt = {
-                    margin: [8, 8, 8, 8],
-                    filename: `ChronosX_Trading_Report_${cleanPair}_${dateStr}.pdf`,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: {
+                const filename = `ChronosX_Trading_Report_${cleanPair}_${dateStr}.pdf`;
+
+                // ── PDF page dimensions (A4 portrait in mm) ──
+                const PDF_W = 210;
+                const PDF_H = 297;
+                const MARGIN = 8; // mm on each side
+                const CONTENT_W = PDF_W - MARGIN * 2;
+                const CONTENT_H = PDF_H - MARGIN * 2;
+
+                const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+
+                // ── Collect atomic sections ──
+                const sections = element.querySelectorAll('.pdfSection');
+
+                // If no sections found, fall back to rendering entire container
+                const renderTargets = sections.length > 0
+                    ? Array.from(sections)
+                    : [element];
+
+                let cursorY = MARGIN; // mm from top on current page
+                let isFirstPage = true;
+
+                // Force light-theme styles onto the export container
+                const forceLightOnElement = (el) => {
+                    el.style.backgroundColor = '#FFFFFF';
+                    el.style.color = '#0F172A';
+                };
+                forceLightOnElement(element);
+
+                for (let i = 0; i < renderTargets.length; i++) {
+                    const section = renderTargets[i];
+
+                    // Skip hidden or empty sections
+                    if (section.offsetHeight === 0) continue;
+
+                    // Render this single section to a canvas
+                    const canvas = await html2canvas(section, {
                         scale: 2,
                         useCORS: true,
                         allowTaint: true,
@@ -286,35 +319,108 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
                         scrollY: 0,
                         windowWidth: 800,
                         width: 800,
-                        logging: false
-                    },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                    pagebreak: {
-                        mode: ['avoid-all', 'css', 'legacy'],
-                        avoid: [
-                            '.inlineWidgetCard',
-                            '.chartCanvas',
-                            '.chartContainer',
-                            '.reportWidget',
-                            '.reportGauge',
-                            '.reportRadar',
-                            'canvas',
-                            'svg',
-                            'table',
-                            'tr',
-                            'figure',
-                            'img',
-                            'h1',
-                            'h2',
-                            'h3',
-                            'blockquote',
-                            '.deepAnalysisCardWrapper',
-                            '.analysisCenterCard'
-                        ]
-                    }
-                };
+                        logging: false,
+                        onclone: (clonedDoc, clonedEl) => {
+                            if (!clonedDoc) return;
 
-                await html2pdf().set(opt).from(element).save();
+                            if (clonedDoc.documentElement) {
+                                clonedDoc.documentElement.classList.add('light');
+                                clonedDoc.documentElement.classList.remove('dark', 'isDark');
+                                clonedDoc.documentElement.setAttribute('data-theme', 'light');
+                                clonedDoc.documentElement.style.backgroundColor = '#FFFFFF';
+                                clonedDoc.documentElement.style.color = '#0F172A';
+                            }
+                            if (clonedDoc.body) {
+                                clonedDoc.body.classList.add('light', 'pdfExportLight');
+                                clonedDoc.body.classList.remove('dark', 'isDark');
+                                clonedDoc.body.style.backgroundColor = '#FFFFFF';
+                                clonedDoc.body.style.color = '#0F172A';
+                            }
+
+                            const target = clonedEl || clonedDoc.body;
+                            if (target && target.classList) {
+                                target.classList.add('pdfExportLight', 'pdfExporting');
+                            }
+
+                            // Force high-contrast text on chart elements
+                            clonedDoc.querySelectorAll('.apexcharts-text, [class*="apexcharts-text"]').forEach((textEl) => {
+                                textEl.style.fill = '#334155';
+                            });
+                            clonedDoc.querySelectorAll('.apexcharts-gridline, [class*="apexcharts-gridline"]').forEach((gridEl) => {
+                                gridEl.style.stroke = '#E2E8F0';
+                            });
+
+                            // Force light bg on widget cards inside this section
+                            clonedDoc.querySelectorAll('.inlineWidgetCard, .reportWidget, .reportRadar, .reportGauge').forEach((el) => {
+                                el.style.backgroundColor = '#F8FAFC';
+                                el.style.border = '1px solid #E2E8F0';
+                            });
+                        }
+                    });
+
+                    // Convert canvas → image dimensions in mm
+                    const imgW = CONTENT_W;
+                    const imgH = (canvas.height * CONTENT_W) / canvas.width;
+                    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+                    // If section is taller than a full page, render it across multiple pages by slicing
+                    if (imgH > CONTENT_H) {
+                        // Start tall section on a new page for cleanliness
+                        if (cursorY > MARGIN) {
+                            pdf.addPage();
+                            cursorY = MARGIN;
+                        }
+
+                        // Slice the tall canvas across pages
+                        const totalCanvasPx = canvas.height;
+                        const pxPerMM = canvas.height / imgH;
+                        const sliceHeightMM = CONTENT_H;
+                        const sliceHeightPx = sliceHeightMM * pxPerMM;
+
+                        let srcY = 0;
+                        while (srcY < totalCanvasPx) {
+                            const thisSlicePx = Math.min(sliceHeightPx, totalCanvasPx - srcY);
+                            const thisSliceMM = thisSlicePx / pxPerMM;
+
+                            // Create a sub-canvas for this slice
+                            const sliceCanvas = document.createElement('canvas');
+                            sliceCanvas.width = canvas.width;
+                            sliceCanvas.height = thisSlicePx;
+                            const ctx = sliceCanvas.getContext('2d');
+                            ctx.fillStyle = '#FFFFFF';
+                            ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+                            ctx.drawImage(canvas, 0, srcY, canvas.width, thisSlicePx, 0, 0, canvas.width, thisSlicePx);
+
+                            const sliceData = sliceCanvas.toDataURL('image/jpeg', 0.95);
+                            pdf.addImage(sliceData, 'JPEG', MARGIN, MARGIN, imgW, thisSliceMM);
+
+                            srcY += thisSlicePx;
+                            if (srcY < totalCanvasPx) {
+                                pdf.addPage();
+                            }
+                        }
+
+                        cursorY = MARGIN + (((totalCanvasPx % sliceHeightPx) || sliceHeightPx) / pxPerMM);
+                        continue;
+                    }
+
+                    // If this section won't fit on the current page, start a new page
+                    if (cursorY + imgH > PDF_H - MARGIN) {
+                        pdf.addPage();
+                        cursorY = MARGIN;
+                    }
+
+                    // If not the first item on the first page and we're at page start, no extra page needed
+                    if (!isFirstPage && i > 0 && cursorY === MARGIN) {
+                        // Already on a fresh page
+                    }
+
+                    pdf.addImage(imgData, 'JPEG', MARGIN, cursorY, imgW, imgH);
+                    cursorY += imgH + 2; // 2mm gap between sections
+                    isFirstPage = false;
+                }
+
+                pdf.save(filename);
                 toast.success('Report downloaded successfully!');
             } catch (err) {
                 console.error('PDF download error:', err);
@@ -496,6 +602,7 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
                             visualData={exportData.visualData}
                             symbol={exportData.symbol}
                             isLoading={false}
+                            forceLight={true}
                         />
                     </div>
                 </div>

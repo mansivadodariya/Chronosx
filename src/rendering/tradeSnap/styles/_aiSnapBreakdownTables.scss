@@ -1,0 +1,273 @@
+// Section H: Multi-Indicator & Pivot Breakdown
+.indicatorPivotSection {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow);
+    padding: 20px;
+    border-radius: 0 !important;
+}
+
+.tabNavRow {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--card-border);
+    margin-bottom: 16px;
+    overflow-x: auto;
+}
+
+.tabNavBtn {
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+        color: var(--title-color);
+    }
+
+    &.tabNavActive {
+        color: var(--pill-color);
+        border-bottom-color: #18C98B;
+        border-radius: 0 !important;
+    }
+}
+
+.tabContentCard {
+    background: var(--box-bg);
+    border: 1px solid var(--box-border);
+    border-radius: 0 !important;
+    overflow: hidden;
+}
+
+.tableWrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.breakdownTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+
+    th {
+        text-align: left;
+        padding: 10px 14px;
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text-muted);
+        font-weight: 600;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid var(--box-border);
+    }
+
+    td {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--box-border);
+        color: var(--text-primary);
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    .tableNameCell {
+        font-weight: 600;
+        color: var(--title-color);
+    }
+
+    .tableValCell {
+        font-family: monospace, sans-serif;
+        color: var(--pill-color);
+    }
+
+    .pivotMainHeader {
+        color: #38BDF8;
+        font-weight: 700;
+    }
+
+    .supportCell {
+        color: #10B981;
+        font-family: monospace, sans-serif;
+    }
+
+    .resistanceCell {
+        color: #EF4444;
+        font-family: monospace, sans-serif;
+    }
+
+    .pivotMainCell {
+        color: #38BDF8;
+        font-weight: 700;
+        font-family: monospace, sans-serif;
+    }
+}
+
+.actionTableBadge {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.pdfFullBreakdown {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+
+    .tabContentCard {
+        background: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+    }
+
+    .breakdownTable {
+        th {
+            background: #F8FAFC !important;
+            color: #0F172A !important;
+            border-bottom: 1px solid #E2E8F0 !important;
+        }
+
+        td {
+            background: #FFFFFF !important;
+            color: #1E293B !important;
+            border-bottom: 1px solid #E2E8F0 !important;
+        }
+
+        .tableNameCell {
+            color: #0F172A !important;
+        }
+
+        .tableValCell {
+            color: #047857 !important;
+        }
+
+        .supportCell {
+            color: #059669 !important;
+        }
+
+        .resistanceCell {
+            color: #DC2626 !important;
+        }
+
+        .pivotMainCell {
+            color: #0284C7 !important;
+        }
+    }
+}
+
+.pdfBreakdownBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+}
+
+.pdfSubHeading {
+    font-size: 13px;
+    font-weight: 800;
+    color: #047857;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    :global(html.dark) &,
+    :global([data-theme='dark']) & {
+        color: #18C98B;
+    }
+}
+
+// Ensure in PDF export that the tabs are hidden and all 4 tables are displayed in full
+:global(.pdfExportLight) .tabNavRow,
+:global(.pdfExportLight) .indicatorPivotSection > .tabContentCard,
+:global(.pdfExportContainer) .tabNavRow,
+:global(.pdfExportContainer) .indicatorPivotSection > .tabContentCard {
+    display: none !important;
+}
+
+:global(.pdfExportLight) .pdfFullBreakdown,
+:global(.pdfExportContainer) .pdfFullBreakdown {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 18px !important;
+}
+
+/* ============================================================
+   LIGHT MODE BREAKDOWN TABLES OVERRIDES
+   ============================================================ */
+:global(html.light),
+:global(html[data-theme='light']),
+:global([data-theme='light']),
+:global(.light),
+:global(.pdfExportLight),
+:global(.pdfExportContainer) {
+    .indicatorPivotSection {
+        background: #FFFFFF !important;
+        border-color: rgba(15, 23, 42, 0.12) !important;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+
+        h3,
+        .sectionHeaderRow h3 {
+            color: #0F172A !important;
+        }
+    }
+
+    .tabNavBtn {
+        background: #F1F5F9 !important;
+        border-color: rgba(15, 23, 42, 0.12) !important;
+        color: #475569 !important;
+
+        &.tabNavActive {
+            background: #FFFFFF !important;
+            color: #047857 !important;
+            border-color: #059669 !important;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+        }
+    }
+
+    .tabContentCard {
+        background: #FFFFFF !important;
+        border-color: rgba(15, 23, 42, 0.12) !important;
+    }
+
+    .breakdownTable {
+        th {
+            background: #F8FAFC !important;
+            color: #0F172A !important;
+            border-bottom: 1px solid #E2E8F0 !important;
+        }
+
+        td {
+            background: #FFFFFF !important;
+            color: #1E293B !important;
+            border-bottom: 1px solid #E2E8F0 !important;
+        }
+
+        .tableNameCell {
+            color: #0F172A !important;
+        }
+
+        .tableValCell {
+            color: #047857 !important;
+        }
+
+        .supportCell {
+            color: #059669 !important;
+        }
+
+        .resistanceCell {
+            color: #DC2626 !important;
+        }
+
+        .pivotMainCell {
+            color: #0284C7 !important;
+        }
+    }
+}
