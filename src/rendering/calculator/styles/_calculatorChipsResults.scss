@@ -186,26 +186,35 @@
         }
 
         .copyBtn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(24, 201, 139, 0.2);
-            color: rgba(255, 255, 255, 0.8);
-            border-radius: 6px;
-            padding: 4px 10px;
+            background: rgba(24, 201, 139, 0.08);
+            border: 1px solid rgba(24, 201, 139, 0.35);
+            color: #18C98B;
+            border-radius: 8px;
+            padding: 5px 12px;
             font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             transition: all 0.2s ease;
+
+            svg {
+                flex-shrink: 0;
+                color: inherit;
+            }
 
             @include respond-to('sm') {
                 font-size: 11px;
-                padding: 3px 8px;
+                padding: 4px 10px;
+                gap: 4px;
             }
 
             &:hover {
-                background: rgba(24, 201, 139, 0.15);
-                color: #18C98B;
+                background: rgba(24, 201, 139, 0.22);
+                border-color: #18C98B;
+                color: #FFFFFF;
+                box-shadow: 0 0 12px rgba(24, 201, 139, 0.25);
             }
         }
     }
@@ -399,7 +408,8 @@
     }
 }
 
-:global(html.light) .calculatorContainer {
+:global(html.light) .calculatorContainer,
+:global([data-theme='light']) .calculatorContainer {
     color: #0F172A;
 
     .heroHeader {
@@ -443,25 +453,138 @@
     }
 
     .formCard,
-    .resultCard {
+    .resultsCard {
         background: #FFFFFF !important;
         border-color: rgba(15, 23, 42, 0.09) !important;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05) !important;
 
         .cardHeader h2,
         .resultHeader h3 {
             color: #0F172A !important;
         }
 
-        .formGroup label {
-            color: #334155 !important;
+        .cardHeader span {
+            background: rgba(24, 201, 139, 0.12) !important;
+            border-color: rgba(24, 201, 139, 0.3) !important;
+            color: #059669 !important;
         }
 
-        .inputWrap input,
-        .dropdownTrigger {
+        .inputGroup label {
+            color: #1E293B !important;
+
+            .hint {
+                color: #64748B !important;
+            }
+        }
+
+        .inputGroup input,
+        .inputGroup select {
             background: #F8FAFC !important;
             border-color: #CBD5E1 !important;
             color: #0F172A !important;
+
+            &::placeholder {
+                color: #94A3B8 !important;
+            }
+
+            &:focus {
+                border-color: #18C98B !important;
+                background: #FFFFFF !important;
+                box-shadow: 0 0 0 3px rgba(24, 201, 139, 0.15) !important;
+            }
+        }
+
+        .customDropdown {
+            .dropdownTrigger {
+                background: #F8FAFC !important;
+                border-color: #CBD5E1 !important;
+                color: #0F172A !important;
+
+                .selectedLabel {
+                    color: #0F172A !important;
+                }
+
+                .chevronIcon {
+                    color: #059669 !important;
+                }
+
+                &:hover {
+                    border-color: #18C98B !important;
+                    background: #FFFFFF !important;
+                }
+
+                &.isOpen {
+                    border-color: #18C98B !important;
+                    background: #FFFFFF !important;
+                    box-shadow: 0 0 0 3px rgba(24, 201, 139, 0.15) !important;
+                }
+            }
+
+            .dropdownMenu {
+                background: #FFFFFF !important;
+                border: 1.5px solid rgba(24, 201, 139, 0.4) !important;
+                box-shadow: 0 12px 36px rgba(15, 23, 42, 0.14), 0 0 16px rgba(24, 201, 139, 0.08) !important;
+                overscroll-behavior: contain !important;
+                -webkit-overflow-scrolling: touch !important;
+                scrollbar-width: thin !important;
+                scrollbar-color: #18C98B transparent !important;
+
+                &::-webkit-scrollbar {
+                    width: 5px !important;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: transparent !important;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: rgba(24, 201, 139, 0.5) !important;
+                    border-radius: 4px !important;
+
+                    &:hover {
+                        background: #18C98B !important;
+                    }
+                }
+            }
+
+            .dropdownItem {
+                color: #334155 !important;
+                background: transparent !important;
+
+                &:hover {
+                    background: #F1F5F9 !important;
+                    color: #0F172A !important;
+                }
+
+                &.isSelected {
+                    background: rgba(24, 201, 139, 0.12) !important;
+                    color: #059669 !important;
+
+                    .checkMark {
+                        color: #059669 !important;
+                    }
+                }
+            }
+        }
+
+        .quickChips {
+            .chipBtn {
+                background: #F1F5F9 !important;
+                border-color: #CBD5E1 !important;
+                color: #475569 !important;
+
+                &:hover {
+                    border-color: #18C98B !important;
+                    color: #059669 !important;
+                    background: rgba(24, 201, 139, 0.08) !important;
+                }
+
+                &.activeChip {
+                    background: rgba(24, 201, 139, 0.16) !important;
+                    border-color: #18C98B !important;
+                    color: #059669 !important;
+                }
+            }
         }
 
         .toggleSwitchRow {
@@ -470,23 +593,78 @@
 
             .switchBtn {
                 color: #64748B !important;
+
+                &.buyActive {
+                    background: rgba(0, 230, 118, 0.18) !important;
+                    color: #059669 !important;
+                    border-color: rgba(0, 230, 118, 0.4) !important;
+                }
+
+                &.sellActive {
+                    background: rgba(255, 82, 82, 0.18) !important;
+                    color: #DC2626 !important;
+                    border-color: rgba(255, 82, 82, 0.4) !important;
+                }
+
+                &.goldActive {
+                    background: rgba(24, 201, 139, 0.18) !important;
+                    color: #059669 !important;
+                    border-color: rgba(24, 201, 139, 0.4) !important;
+                }
             }
         }
 
-        .primaryMetricBox,
-        .metricTile,
-        .breakdownCard {
-            background: #F8FAFC !important;
-            border-color: #E2E8F0 !important;
-            color: #0F172A !important;
+        .resultHeader {
+            border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+
+            .copyBtn {
+                background: rgba(24, 201, 139, 0.12) !important;
+                border: 1px solid rgba(24, 201, 139, 0.4) !important;
+                color: #047857 !important;
+                font-weight: 700 !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 6px !important;
+
+                svg {
+                    color: #047857 !important;
+                }
+
+                &:hover {
+                    background: #10B981 !important;
+                    border-color: #10B981 !important;
+                    color: #FFFFFF !important;
+                    box-shadow: 0 2px 10px rgba(16, 185, 129, 0.25) !important;
+
+                    svg {
+                        color: #FFFFFF !important;
+                    }
+                }
+            }
         }
 
-        .metricLabel {
+        .breakdownList {
+            .breakdownItem {
+                background: #F8FAFC !important;
+                border-color: #E2E8F0 !important;
+
+                span:first-child {
+                    color: #64748B !important;
+                }
+
+                span:last-child {
+                    color: #0F172A !important;
+                }
+            }
+        }
+
+        .formulaNote {
+            border-top-color: #E2E8F0 !important;
             color: #64748B !important;
-        }
 
-        .metricValue {
-            color: #0F172A !important;
+            strong {
+                color: #1E293B !important;
+            }
         }
 
         .levelsTable {
@@ -496,11 +674,34 @@
             th {
                 background: #F1F5F9 !important;
                 color: #475569 !important;
+                border-bottom-color: #E2E8F0 !important;
             }
 
             td {
                 color: #0F172A !important;
                 border-bottom-color: #E2E8F0 !important;
+
+                &:first-child {
+                    color: #1E293B !important;
+                }
+            }
+
+            .resistanceRow td {
+                color: #DC2626 !important;
+            }
+
+            .pivotRow td {
+                color: #059669 !important;
+                background: rgba(24, 201, 139, 0.08) !important;
+            }
+
+            .supportRow td {
+                color: #16A34A !important;
+            }
+
+            .goldenRatio td {
+                color: #059669 !important;
+                background: rgba(24, 201, 139, 0.12) !important;
             }
         }
     }
