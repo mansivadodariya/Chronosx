@@ -458,7 +458,19 @@ export default function DashboardMarketOverview({ initialItems = [], userId = ''
             clearInterval(tickInterval);
             window.removeEventListener('livePriceUpdate', handleGlobalPrice);
             if (wsRef.current) {
-                try { wsRef.current.close(); } catch (_) {}
+                const ws = wsRef.current;
+                wsRef.current = null;
+                try {
+                    if (ws.readyState === WebSocket.OPEN) {
+                        ws.close();
+                    } else if (ws.readyState === WebSocket.CONNECTING) {
+                        ws.onopen = () => {
+                            try { ws.close(); } catch (_) {}
+                        };
+                        ws.onmessage = null;
+                        ws.onerror = null;
+                    }
+                } catch (_) {}
             }
             Object.values(flashTimersRef.current).forEach(t => clearTimeout(t));
         };

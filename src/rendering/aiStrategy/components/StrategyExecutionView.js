@@ -64,6 +64,18 @@ export default function StrategyExecutionView({ selectedStrategyId, strategies =
             <div className={styles.pairsGrid}>
                 {loading && finalSetups.length === 0 ? (
                     <StrategyGridSkeleton count={4} />
+                ) : finalSetups.length === 0 ? (
+                    <div className={styles.emptySetupsState}>
+                        <div className={styles.emptyIconWrapper}>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="8" x2="12" y2="12" />
+                                <line x1="12" y1="16" x2="12.01" y2="16" />
+                            </svg>
+                        </div>
+                        <h4>No Active Setups</h4>
+                        <p>There are currently no active setups for this strategy. Real-time setups will stream live as soon as market conditions trigger.</p>
+                    </div>
                 ) : (
                     finalSetups.map((item) => {
                     const meta = item.meta || { fullName: item.display_name || item.symbol, short: item.symbol, market: 'Forex' };

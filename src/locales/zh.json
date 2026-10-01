@@ -1286,7 +1286,7 @@
     "reset": "重置",
     "applySettings": "应用设置",
     "loadingChart": "处理分析...",
-    "deepPlaceholder": "aiAssistant.deepPlaceholder",
+    "deepPlaceholder": "询问 {pair} 的深度技术结构、关键水平和交易设置...",
     "newsPlaceholder": "询问经济事件、催化剂、新闻情绪...",
     "imagePlaceholder": "询问此图表上的技术模式和诊断...",
     "askAnythingPlaceholder": "询问有关外汇交易、图表和策略的任何问题...",

@@ -1286,7 +1286,7 @@
     "reset": "Restablecer",
     "applySettings": "Aplicar configuración",
     "loadingChart": "Análisis de procesamiento...",
-    "deepPlaceholder": "aiAssistant.deepPlaceholder",
+    "deepPlaceholder": "Pregunte por estructura técnica profunda, niveles clave, configuración comercial para {pair}...",
     "newsPlaceholder": "Pregunte sobre eventos económicos, catalizadores, sentimiento de noticias...",
     "imagePlaceholder": "Pregunta por patrones técnicos y diagnóstico en este gráfico...",
     "askAnythingPlaceholder": "Pregunte cualquier cosa sobre el comercio de divisas, gráficos y estrategias...",

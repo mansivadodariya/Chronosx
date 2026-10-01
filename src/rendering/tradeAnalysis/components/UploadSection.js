@@ -34,7 +34,7 @@ export default function UploadSection({
                     </div>
                     <div className={styles.stepMeta}>
                         <span className={styles.stepTitle}>Statement Ingestion</span>
-                        <span className={styles.stepSub}>PDF, CSV, XLSX, or HTML</span>
+                        <span className={styles.stepSub}>XLSX</span>
                     </div>
                 </div>
 

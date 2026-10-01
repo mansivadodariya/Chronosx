@@ -1314,7 +1314,7 @@
     "reset": "Reset",
     "applySettings": "Apply Settings",
     "loadingChart": "Processing analysis...",
-    "deepPlaceholder": "aiAssistant.deepPlaceholder",
+    "deepPlaceholder": "Ask for deep technical structure, key levels, trade setup for {pair}...",
     "newsPlaceholder": "Ask about economic events, catalysts, news sentiment...",
     "imagePlaceholder": "Ask about technical patterns and diagnosis on this chart...",
     "askAnythingPlaceholder": "Ask anything about forex trading, chart and strategies...",

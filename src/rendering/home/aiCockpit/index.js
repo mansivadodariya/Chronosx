@@ -29,8 +29,8 @@ const LiveETClock = React.memo(function LiveETClock({ className }) {
 export default function AiCockpit({ isHero = false, showHeader = true }) {
   const { t } = useLanguage();
   const [activeTimeframe, setActiveTimeframe] = useState('1H');
-  const [livePrice, setLivePrice] = useState(2894.50);
-  const [priceChangeText, setPriceChangeText] = useState('+$14.20 (+0.52%)');
+  const [livePrice, setLivePrice] = useState(4308.18);
+  const [priceChangeText, setPriceChangeText] = useState('+$1.72 (+0.04%)');
   const [isPositiveChange, setIsPositiveChange] = useState(true);
   const [priceFlash, setPriceFlash] = useState(null);
   const [volume24h, setVolume24h] = useState('$24.85B');
@@ -76,29 +76,6 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
       return () => clearTimeout(timer);
     }
   }, [priceData, tickDirection]);
-
-
-
-  // Micro-tick price engine
-  useEffect(() => {
-    const tickInterval = setInterval(() => {
-      if (document.hidden) return;
-
-      const randomJump = (Math.random() - 0.48) * 0.85;
-      const isUp = randomJump >= 0;
-      setPriceFlash(isUp ? 'up' : 'down');
-      const flashTimer = setTimeout(() => setPriceFlash(null), 400);
-
-      setLivePrice((prev) => Number((prev + randomJump).toFixed(2)));
-
-      tickCounterRef.current += 1;
-      if (tickCounterRef.current % 4 === 0) {
-        setLastUpdatedSec(Number((Math.random() * 0.8 + 0.3).toFixed(1)));
-      }
-    }, 2200);
-
-    return () => clearInterval(tickInterval);
-  }, []);
 
   return (
     <section ref={cockpitSectionRef} className={`${styles.cockpitSection} ${isHero ? styles.heroMode : ''}`} aria-label="XAUUSD AI Trading Intelligence Terminal">

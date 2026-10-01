@@ -19,11 +19,14 @@ import AnalysisHistoryModal from './components/AnalysisHistoryModal';
 import TradeAuditModal from './components/TradeAuditModal';
 import AnalysisLoadingOverlay from './components/AnalysisLoadingOverlay';
 import { useTradeAnalysisStore } from '@/context/toolState';
+import { useTradeAnalysisExport } from './hooks/useTradeAnalysisExport';
 
 export default function TradeAnalysis() {
     const fileInputRef = useRef(null);
+    const { exportToPdf, isExporting } = useTradeAnalysisExport();
     const {
         files,
+        fileMeta,
         isDragging,
         setIsDragging,
         loading,
@@ -191,18 +194,18 @@ export default function TradeAnalysis() {
         return sections.join('\n\n') || 'Analysis report generated successfully.';
     }, [analysisData?.report, summary, quickAnalysis, entryAnalysis, timeInsights]);
 
-    // Dynamic File Meta Details (100% Accurate to Uploaded File)
+    // Dynamic File Meta Details (100% Accurate to Uploaded File or Persisted Session)
     const fileDetails = useMemo(() => {
         const uploadedFile = files && files.length > 0 ? files[0] : null;
-        const name = uploadedFile?.name || brokerMeta?.platform || 'Trade_Report_Statement.pdf';
+        const name = uploadedFile?.name || fileMeta?.name || brokerMeta?.platform || 'Trade_Report_Statement.pdf';
         
         const extMatch = name.match(/\.([a-zA-Z0-9]+)$/);
         const ext = extMatch ? extMatch[1].toUpperCase() : 'PDF';
 
+        const fileSize = uploadedFile?.size || fileMeta?.size || 0;
         let sizeText = '145.2 KB';
-        if (uploadedFile?.size && uploadedFile.size > 0) {
-            const b = uploadedFile.size;
-            sizeText = b >= 1024 * 1024 ? `${(b / (1024 * 1024)).toFixed(2)} MB` : `${(b / 1024).toFixed(1)} KB`;
+        if (fileSize > 0) {
+            sizeText = fileSize >= 1024 * 1024 ? `${(fileSize / (1024 * 1024)).toFixed(2)} MB` : `${(fileSize / 1024).toFixed(1)} KB`;
         }
 
         let badgeClass = styles.fileBadgePdf;
@@ -211,7 +214,7 @@ export default function TradeAnalysis() {
         else if (['TXT', 'HTML', 'HTM'].includes(ext)) badgeClass = styles.fileBadgeTxt;
 
         return { name, ext, sizeText, badgeClass };
-    }, [files, brokerMeta]);
+    }, [files, fileMeta, brokerMeta]);
 
     // Scorecard Data (Uses backend scorecard if available, otherwise generates high-precision institutional scorecard)
     const scorecardData = useMemo(() => {
@@ -371,6 +374,30 @@ export default function TradeAnalysis() {
                                     totalTradesCount={totalTradesCount}
                                     onViewTrades={() => setActiveTab('ledger')}
                                     onReupload={resetAnalysis}
+                                    onDownloadReport={() => exportToPdf({
+                                        fileDetails,
+                                        scorecardData,
+                                        summary,
+                                        trades,
+                                        brokerMeta,
+                                        quickAnalysis,
+                                        timeInsights,
+                                        entryAnalysis,
+                                        dynamicReportMarkdown,
+                                        netProfitVal,
+                                        winRateVal,
+                                        profitFactor,
+                                        payoffRatio,
+                                        largestWin,
+                                        largestLoss,
+                                        avgWinningTrade,
+                                        avgLosingTrade,
+                                        totalTradesCount,
+                                        avgHoldingTime,
+                                        reqBreakevenWinRate,
+                                        avgProfitPerTrade
+                                    })}
+                                    isExporting={isExporting}
                                 />
                             </motion.div>
 

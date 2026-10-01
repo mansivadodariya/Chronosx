@@ -55,6 +55,27 @@ export default function ChatInputBar({
             }
         }
     });
+    const getPlaceholderText = () => {
+        if (pendingRequest) return t('aiAssistant.loadingChart', 'Processing analysis...');
+        if (activeAnalysisMode === 'deep') {
+            const raw = t('aiAssistant.deepPlaceholder', `Ask for deep technical structure, key levels, trade setup for ${selectedPair || 'market'}...`);
+            if (!raw || raw === 'aiAssistant.deepPlaceholder') {
+                return `Ask for deep technical structure, key levels, trade setup for ${selectedPair || 'market'}...`;
+            }
+            return raw.replace('{pair}', selectedPair || 'market');
+        }
+        if (activeAnalysisMode === 'news') {
+            const raw = t('aiAssistant.newsPlaceholder', 'Ask about economic events, catalysts, news sentiment...');
+            return (!raw || raw === 'aiAssistant.newsPlaceholder') ? 'Ask about economic events, catalysts, news sentiment...' : raw;
+        }
+        if (activeAnalysisMode === 'image') {
+            const raw = t('aiAssistant.imagePlaceholder', 'Ask about technical patterns and diagnosis on this chart...');
+            return (!raw || raw === 'aiAssistant.imagePlaceholder') ? 'Ask about technical patterns and diagnosis on this chart...' : raw;
+        }
+        const raw = t('aiAssistant.askAnythingPlaceholder', 'Ask anything about forex trading, chart and strategies...');
+        return (!raw || raw === 'aiAssistant.askAnythingPlaceholder') ? 'Ask anything about forex trading, chart and strategies...' : raw;
+    };
+
     return (
         <div
             className={styles.inputArea}
@@ -70,17 +91,7 @@ export default function ChatInputBar({
             )}
             <textarea
                 ref={textareaRef}
-                placeholder={
-                    pendingRequest
-                        ? t('aiAssistant.loadingChart', 'Processing analysis...')
-                        : activeAnalysisMode === 'deep'
-                            ? t('aiAssistant.deepPlaceholder', `Ask for deep technical structure, key levels, trade setup for ${selectedPair || 'market'}...`).replace('{pair}', selectedPair || 'market')
-                            : activeAnalysisMode === 'news'
-                                ? t('aiAssistant.newsPlaceholder', 'Ask about economic events, catalysts, news sentiment...')
-                                : activeAnalysisMode === 'image'
-                                    ? t('aiAssistant.imagePlaceholder', 'Ask about technical patterns and diagnosis on this chart...')
-                                    : t('aiAssistant.askAnythingPlaceholder', 'Ask anything about forex trading, chart and strategies...')
-                }
+                placeholder={getPlaceholderText()}
                 className={styles.textarea}
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value.trimStart())}

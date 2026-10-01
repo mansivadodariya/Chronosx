@@ -84,7 +84,7 @@ export function getDefaultSymbolBasePrice(symbolStr = 'XAUUSD', fallbackPrice = 
         return Number(fallbackPrice);
     }
     const s = (symbolStr || '').replace('/', '').toUpperCase();
-    if (s.includes('XAU') || s.includes('GOLD')) return 4308.18;
+    if (s.includes('XAU') || s.includes('GOLD')) return 4160.00;
     if (s.includes('BTC')) return 88500.00;
     if (s.includes('ETH')) return 2650.00;
     if (s.includes('JPY')) return 154.500;
@@ -97,27 +97,30 @@ export function getDefaultSymbolBasePrice(symbolStr = 'XAUUSD', fallbackPrice = 
     return 100.00;
 }
 
-// Generate fallback candles if backend REST API endpoint is offline or returning empty
+// Generate realistic fallback candles anchored precisely to the live price at the latest candle
 export function generateMockCandles(count = 600, basePrice = null, tf = '15m', symbolStr = 'XAUUSD') {
     const finalBasePrice = (basePrice && !isNaN(basePrice) && Number(basePrice) > 0)
         ? Number(basePrice)
         : getDefaultSymbolBasePrice(symbolStr);
     const candles = [];
-    let currentPrice = finalBasePrice;
     const now = Math.floor(Date.now() / 1000);
     const interval = getTimeframeInterval(tf);
     const { precision } = getSymbolPrecision(symbolStr);
 
-    for (let i = count; i >= 0; i--) {
+    let currentPrice = finalBasePrice;
+    // Walk backwards from current time so latest candle's close is EXACTLY finalBasePrice
+    for (let i = 0; i <= count; i++) {
         const time = now - i * interval;
-        const change = (Math.random() - 0.49) * (finalBasePrice * 0.003);
-        const open = currentPrice;
-        const close = open + change;
-        const high = Math.max(open, close) + Math.random() * (finalBasePrice * 0.0015);
-        const low = Math.min(open, close) - Math.random() * (finalBasePrice * 0.0015);
-        currentPrice = close;
+        const volatility = finalBasePrice * 0.0006;
+        const change = (Math.random() - 0.5) * volatility;
+        const close = currentPrice;
+        const open = close - change;
+        const wick = Math.random() * volatility * 0.4;
+        const high = Math.max(open, close) + wick;
+        const low = Math.min(open, close) - wick;
+        currentPrice = open;
 
-        candles.push({
+        candles.unshift({
             time,
             open: Number(open.toFixed(precision)),
             high: Number(high.toFixed(precision)),

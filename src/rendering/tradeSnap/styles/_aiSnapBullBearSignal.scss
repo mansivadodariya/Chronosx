@@ -2,9 +2,12 @@
 .heroBanner {
     position: relative;
     border-radius: 0 !important;
-    padding: 20px 24px;
+    padding: 18px 20px;
     overflow: hidden;
     border: 1px solid;
+    container-type: inline-size;
+    width: 100%;
+    box-sizing: border-box;
 
     &.bullishHero {
         background: var(--bull-hero-bg);
@@ -21,6 +24,86 @@
     &.neutralHero {
         background: var(--neutral-hero-bg);
         border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    @container (max-width: 720px) {
+        .bannerContent {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 16px !important;
+        }
+
+        .bannerLeft {
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+            width: 100% !important;
+            gap: 12px !important;
+        }
+
+        .bannerImageContainer {
+            width: 100% !important;
+            max-width: 160px !important;
+            height: 120px !important;
+            min-width: unset !important;
+        }
+
+        .neutralBannerImages {
+            justify-content: center !important;
+            width: 100% !important;
+        }
+
+        .bannerTextCol {
+            align-items: center !important;
+            text-align: center !important;
+            width: 100% !important;
+        }
+
+        .bannerTagRow,
+        .bannerTagRowRed,
+        .bannerTagRowAmber {
+            justify-content: center !important;
+        }
+
+        .bannerSubtitle {
+            text-align: center !important;
+        }
+
+        .bannerRight {
+            flex-direction: row !important;
+            width: 100% !important;
+            gap: 10px !important;
+
+            .bannerStatCard,
+            .bannerStatCardRed,
+            .bannerStatCardAmber {
+                flex: 1 1 0 !important;
+                min-width: 0 !important;
+            }
+        }
+    }
+
+    @container (max-width: 440px) {
+        padding: 14px 12px;
+
+        .neutralBullImg,
+        .neutralBearImg {
+            width: 60px !important;
+            height: 52px !important;
+        }
+
+        .bannerTitle {
+            font-size: 16px !important;
+        }
+
+        .bannerSubtitle {
+            font-size: 12px !important;
+        }
+
+        .bannerRight {
+            flex-direction: column !important;
+            gap: 8px !important;
+        }
     }
 }
 
@@ -50,34 +133,47 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 24px;
+    gap: 18px;
+    width: 100%;
 
-    @media (max-width: 768px) {
+    @media (max-width: 860px) {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        gap: 16px;
     }
 }
 
 .bannerLeft {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 18px;
+    flex: 1 1 280px;
+    min-width: 0;
+
+    @media (max-width: 860px) {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        gap: 12px;
+    }
 }
 
 .bannerImageContainer {
     position: relative;
-    width: 220px;
-    height: 170px;
-    min-width: 220px;
+    width: 180px;
+    height: 140px;
+    min-width: 180px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    @media (max-width: 768px) {
-        width: 140px;
-        height: 110px;
-        min-width: 140px;
+    @media (max-width: 860px) {
+        width: 100%;
+        max-width: 160px;
+        height: 120px;
+        min-width: unset;
     }
 }
 
@@ -97,8 +193,8 @@
 
 .bullGlowAura {
     position: absolute;
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(16, 185, 129, 0.45) 0%, transparent 70%);
     pointer-events: none;
@@ -107,8 +203,8 @@
 
 .bearGlowAura {
     position: absolute;
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(239, 68, 68, 0.45) 0%, transparent 70%);
     pointer-events: none;
@@ -118,15 +214,20 @@
 .neutralBannerImages {
     display: flex;
     align-items: center;
-    gap: 14px;
+    justify-content: center;
+    gap: 12px;
     flex-shrink: 0;
+
+    @media (max-width: 860px) {
+        width: 100%;
+    }
 }
 
 .neutralBullImg {
-    width: 100px;
-    height: 90px;
+    width: 85px;
+    height: 76px;
     object-fit: contain;
-    filter: drop-shadow(0 0 18px rgba(16, 185, 129, 0.7));
+    filter: drop-shadow(0 0 16px rgba(16, 185, 129, 0.7));
 
     @media (max-width: 640px) {
         width: 65px;
@@ -135,10 +236,10 @@
 }
 
 .neutralBearImg {
-    width: 100px;
-    height: 90px;
+    width: 85px;
+    height: 76px;
     object-fit: contain;
-    filter: drop-shadow(0 0 18px rgba(239, 68, 68, 0.7));
+    filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.7));
 
     @media (max-width: 640px) {
         width: 65px;
@@ -147,18 +248,29 @@
 }
 
 .neutralVsBadge {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 900;
     color: #38BDF8;
     background: rgba(14, 165, 233, 0.18);
     border: 1px solid rgba(14, 165, 233, 0.4);
-    padding: 3px 7px;
+    padding: 3px 6px;
     border-radius: 2px;
+    flex-shrink: 0;
 }
 
 .bannerTextCol {
     display: flex;
     flex-direction: column;
+    flex: 1 1 180px;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+
+    @media (max-width: 860px) {
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
 }
 
 .bannerTagRow {
@@ -178,7 +290,7 @@
     .bannerTagText {
         font-size: 11px;
         font-weight: 800;
-        letter-spacing: 1px;
+        letter-spacing: 0.8px;
         color: #10B981;
     }
 }
@@ -200,7 +312,7 @@
     .bannerTagText {
         font-size: 11px;
         font-weight: 800;
-        letter-spacing: 1px;
+        letter-spacing: 0.8px;
         color: #EF4444;
     }
 }
@@ -222,27 +334,27 @@
     .bannerTagText {
         font-size: 11px;
         font-weight: 800;
-        letter-spacing: 1px;
+        letter-spacing: 0.8px;
         color: #38BDF8;
     }
 }
 
 .bannerTitle {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 800;
     color: var(--title-color);
     margin: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .bannerSubtitle {
-    font-size: 13px;
+    font-size: 12.5px;
     color: var(--text-muted);
     margin: 4px 0 0 0;
-    text-align: justify;
-    text-justify: inter-word;
-    line-height: 1.6;
-    word-break: normal;
+    line-height: 1.55;
     overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .bannerRight {
@@ -250,15 +362,19 @@
     flex-direction: column;
     gap: 8px;
     justify-content: center;
-    min-width: 140px;
+    min-width: 130px;
     flex-shrink: 0;
 
-    @media (max-width: 768px) {
+    @media (max-width: 860px) {
         width: 100%;
         flex-direction: row;
+        gap: 10px;
 
-        .bannerStatCard, .bannerStatCardRed, .bannerStatCardAmber {
-            flex: 1;
+        .bannerStatCard,
+        .bannerStatCardRed,
+        .bannerStatCardAmber {
+            flex: 1 1 0;
+            min-width: 0;
         }
     }
 }
@@ -419,262 +535,7 @@
     vertical-align: middle;
 }
 
-// Section C: Actionable Buy/Sell Trade Signal Setup Card
-.tradeSetupCard {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    box-shadow: var(--card-shadow);
-    border-radius: 0 !important;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.tradeSetupHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--card-border);
-    padding-bottom: 14px;
-}
-
-.actionBadgeWrap {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.actionMainBadge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    font-size: 16px;
-    font-weight: 900;
-    letter-spacing: 0.5px;
-    border-radius: 0 !important;
-
-    &.actionBuy {
-        background: rgba(16, 185, 129, 0.2);
-        color: #10B981;
-        border: 1px solid #10B981;
-        box-shadow: 0 0 16px rgba(16, 185, 129, 0.25);
-    }
-
-    &.actionSell {
-        background: rgba(239, 68, 68, 0.2);
-        color: #EF4444;
-        border: 1px solid #EF4444;
-        box-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
-    }
-
-    &.actionNeutral {
-        background: rgba(14, 165, 233, 0.2);
-        color: #38BDF8;
-        border: 1px solid #38BDF8;
-    }
-}
-
-.signalTypeTag {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text-muted);
-    background: var(--box-bg);
-    padding: 4px 10px;
-    border: 1px solid var(--box-border);
-}
-
-.rrBadge {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-
-    .rrLabel {
-        font-size: 10px;
-        color: var(--text-faint);
-        font-weight: 700;
-    }
-
-    .rrValue {
-        font-size: 18px;
-        font-weight: 800;
-        color: var(--pill-color);
-    }
-}
-
-.setupGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-
-    @media (max-width: 640px) {
-        grid-template-columns: 1fr;
-    }
-}
-
-.setupBox {
-    background: var(--box-bg);
-    border: 1px solid var(--box-border);
-    padding: 14px;
-    border-radius: 0 !important;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-
-    &.slBox {
-        border-color: rgba(239, 68, 68, 0.3);
-        background: rgba(239, 68, 68, 0.05);
-    }
-}
-
-.boxTitleRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text-muted);
-
-    .slTextTitle {
-        color: #EF4444;
-    }
-}
-
-.copyBtn {
-    background: transparent;
-    border: none;
-    color: var(--text-faint);
-    cursor: pointer;
-    position: relative;
-
-    &:hover {
-        color: var(--pill-color);
-    }
-}
-
-.copiedPopup {
-    position: absolute;
-    top: -22px;
-    right: 0;
-    background: #10B981;
-    color: #FFFFFF;
-    font-size: 9px;
-    padding: 2px 4px;
-}
-
-.boxPrimaryValue {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--title-color);
-}
-
-.boxSubInfo {
-    font-size: 11px;
-    color: var(--text-faint);
-}
-
-.slPrimaryValue {
-    font-size: 20px;
-    font-weight: 800;
-    color: #EF4444;
-}
-
-.slReasonInfo {
-    font-size: 11px;
-    color: #F87171;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.tpSection {
-    background: var(--box-bg);
-    border: 1px solid var(--box-border);
-    padding: 14px;
-    border-radius: 0 !important;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.tpSectionHeader {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    font-weight: 700;
-    color: #10B981;
-
-    .tpHintBadge {
-        color: var(--text-faint);
-        font-weight: 500;
-    }
-}
-
-.tpGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-
-    @media (max-width: 640px) {
-        grid-template-columns: 1fr;
-    }
-}
-
-.tpPillCard {
-    background: var(--tp-card-bg);
-    border: 1px solid var(--tp-card-border);
-    padding: 10px;
-    border-radius: 0 !important;
-
-    .tpPillTop {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 10px;
-        color: var(--text-muted);
-
-        .tpIcon {
-            color: #10B981;
-        }
-    }
-
-    .tpPillVal {
-        font-size: 16px;
-        font-weight: 800;
-        color: #10B981;
-        margin-top: 4px;
-    }
-}
-
-.rationaleBox {
-    background: var(--pill-bg);
-    border: 1px solid var(--pill-border);
-    padding: 14px;
-    border-radius: 0 !important;
-
-    .rationaleTitle {
-        font-size: 11px;
-        font-weight: 800;
-        color: var(--pill-color);
-        margin-bottom: 6px;
-    }
-
-    .rationaleText {
-        font-size: 13px;
-        color: var(--text-primary);
-        line-height: 1.6;
-        margin: 0;
-        text-align: justify;
-        text-justify: inter-word;
-        word-break: normal;
-        overflow-wrap: break-word;
-    }
-}
-
-/* ============================================================
-   LIGHT MODE & PDF EXPORT CONTRAST (HERO BANNER & TRADE SETUP)
-   ============================================================ */
+/* Light Mode Overrides for Hero Banner */
 :global(html.light),
 :global(html[data-theme='light']),
 :global([data-theme='light']),
@@ -688,92 +549,19 @@
             color: #0F172A !important;
         }
 
-        .bannerDesc {
+        .bannerSubtitle {
             color: #475569 !important;
         }
 
-        .statItem {
+        .bannerStatCard,
+        .bannerStatCardRed,
+        .bannerStatCardAmber {
             background: #F8FAFC !important;
             border-color: rgba(15, 23, 42, 0.1) !important;
 
-            .statLabel {
+            .bannerStatLabel {
                 color: #64748B !important;
-            }
-
-            .statVal {
-                color: #0F172A !important;
-            }
-        }
-    }
-
-    .tradeSignalSetupCard {
-        background: #FFFFFF !important;
-        border-color: rgba(15, 23, 42, 0.12) !important;
-
-        .cardHeaderRow h3 {
-            color: #0F172A !important;
-        }
-
-        .entryBox {
-            background: #F8FAFC !important;
-            border-color: rgba(15, 23, 42, 0.1) !important;
-
-            .boxLabel {
-                color: #64748B !important;
-            }
-
-            .boxPrimaryValue {
-                color: #0F172A !important;
-            }
-
-            .boxSubInfo {
-                color: #64748B !important;
-            }
-        }
-
-        .slBox {
-            background: rgba(239, 68, 68, 0.05) !important;
-            border-color: rgba(239, 68, 68, 0.2) !important;
-
-            .slLabel {
-                color: #DC2626 !important;
-            }
-
-            .slPrimaryValue {
-                color: #DC2626 !important;
-            }
-        }
-
-        .tpSection {
-            background: #F8FAFC !important;
-            border-color: rgba(15, 23, 42, 0.1) !important;
-        }
-
-        .tpPillCard {
-            background: #FFFFFF !important;
-            border-color: rgba(16, 185, 129, 0.25) !important;
-
-            .tpPillTop {
-                color: #64748B !important;
-            }
-
-            .tpPillVal {
-                color: #047857 !important;
-            }
-        }
-
-        .rationaleBox {
-            background: #F0FDF4 !important;
-            border-color: rgba(16, 185, 129, 0.25) !important;
-
-            .rationaleTitle {
-                color: #047857 !important;
-            }
-
-            .rationaleText {
-                color: #1E293B !important;
             }
         }
     }
 }
-

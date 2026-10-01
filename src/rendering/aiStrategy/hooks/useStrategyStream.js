@@ -111,182 +111,7 @@ export const STRATEGY_PAIRS = [
     'EUR/JPY'
 ];
 
-export const DEFAULT_SETUPS_LIST = [
-    {
-        symbol: 'EURO / US DOLLAR',
-        display_name: 'EURO / US DOLLAR',
-        pair_id: 'b0500000-0000-0000-0000-000000000001',
-        strategy_id: '3e8d2b78-0e86-4fdf-9759-338276db1742',
-        strategy_name: 'EMA Pullback',
-        signal: {
-            active: true,
-            direction: 'SELL',
-            direction_display: '↓ SELL',
-            entry: 1.16049,
-            entry_display: '$1.16049',
-            sl: 1.16144,
-            sl_display: '$1.16144',
-            tp: 1.15353,
-            tp_display: '$1.15353',
-            time_ago: '1h ago',
-            status_label: 'RECENT SETUP (1h ago)',
-            risk_reward: '1:2.0',
-            rr: 'R:R 1.0',
-            confluence: {
-                volume_strength: 'MODERATE',
-                risk_reward: 'Risk Reward: 1:2.0',
-            },
-            indicators: { rsi: 65.3, rvol: 1.1 },
-            tags: ['EMA Pullback', 'DOWNTREND'],
-            mini_candles: createSampleCandles(1.16049, 'SELL', 25),
-        },
-    },
-    {
-        symbol: 'GOLD / US DOLLAR',
-        display_name: 'GOLD / US DOLLAR',
-        pair_id: 'b0500000-0000-0000-0000-000000000002',
-        strategy_id: '3e8d2b78-0e86-4fdf-9759-338276db1743',
-        strategy_name: 'EMA Pullback',
-        signal: {
-            active: true,
-            direction: 'BUY',
-            direction_display: '↑ BUY',
-            entry: 2498.45,
-            entry_display: '$2,498.45',
-            sl: 2490.10,
-            sl_display: '$2,490.10',
-            tp: 2523.50,
-            tp_display: '$2,523.50',
-            time_ago: '15m ago',
-            status_label: 'RECENT SETUP (15m ago)',
-            risk_reward: '1:3.0',
-            rr: 'R:R 1.3',
-            confluence: {
-                volume_strength: 'STRONG',
-                risk_reward: 'Risk Reward: 1:3.0',
-            },
-            indicators: { rsi: 58.2, rvol: 1.4 },
-            tags: ['EMA Pullback', 'UPTREND'],
-            mini_candles: createSampleCandles(2498.45, 'BUY', 25),
-        },
-    },
-    {
-        symbol: 'BRITISH POUND / US DOLLAR',
-        display_name: 'BRITISH POUND / US DOLLAR',
-        pair_id: 'b0500000-0000-0000-0000-000000000003',
-        strategy_id: '3e8d2b78-0e86-4fdf-9759-338276db1744',
-        strategy_name: 'EMA Pullback',
-        signal: {
-            active: true,
-            direction: 'BUY',
-            direction_display: '↑ BUY',
-            entry: 1.31200,
-            entry_display: '$1.31200',
-            sl: 1.30800,
-            sl_display: '$1.30800',
-            tp: 1.32400,
-            tp_display: '$1.32400',
-            time_ago: '1h ago',
-            status_label: 'RECENT SETUP (1h ago)',
-            risk_reward: '1:3.0',
-            rr: 'R:R 1.2',
-            confluence: {
-                volume_strength: 'STRONG',
-                risk_reward: 'Risk Reward: 1:3.0',
-            },
-            indicators: { rsi: 52.8, rvol: 1.2 },
-            tags: ['EMA Pullback', 'UPTREND'],
-            mini_candles: createSampleCandles(1.31200, 'BUY', 25),
-        },
-    },
-    {
-        symbol: 'US DOLLAR / CANADIAN DOLLAR',
-        display_name: 'US DOLLAR / CANADIAN DOLLAR',
-        pair_id: 'b0500000-0000-0000-0000-000000000004',
-        strategy_id: '3e8d2b78-0e86-4fdf-9759-338276db1745',
-        strategy_name: 'EMA Pullback',
-        signal: {
-            active: true,
-            direction: 'SELL',
-            direction_display: '↓ SELL',
-            entry: 1.34900,
-            entry_display: '$1.34900',
-            sl: 1.35250,
-            sl_display: '$1.35250',
-            tp: 1.33850,
-            tp_display: '$1.33850',
-            time_ago: '2h ago',
-            status_label: 'RECENT SETUP (2h ago)',
-            risk_reward: '1:3.0',
-            rr: 'R:R 1.1',
-            confluence: {
-                volume_strength: 'STRONG',
-                risk_reward: 'Risk Reward: 1:3.0',
-            },
-            indicators: { rsi: 64.1, rvol: 1.15 },
-            tags: ['EMA Pullback', 'DOWNTREND'],
-            mini_candles: createSampleCandles(1.34900, 'SELL', 25),
-        },
-    },
-    {
-        symbol: 'GBP/JPY',
-        display_name: 'GBP/JPY',
-        pair_id: '345a3242-01da-4c63-ac74-fe3446b5fc3f',
-        strategy_id: '3e8d2b78-0e86-4fdf-9759-338276db1746',
-        strategy_name: 'EMA Pullback',
-        signal: {
-            active: true,
-            direction: 'SELL',
-            direction_display: '↓ SELL',
-            entry: 211.520,
-            entry_display: '$211.520',
-            sl: 212.578,
-            sl_display: '$212.578',
-            tp: 209.405,
-            tp_display: '$209.405',
-            time_ago: '1h ago',
-            status_label: 'RECENT SETUP (1h ago)',
-            risk_reward: '1:2.0',
-            rr: 'R:R 1.0',
-            confluence: {
-                volume_strength: 'WEAK',
-                risk_reward: 'Risk Reward: 1:2.0',
-            },
-            indicators: { rsi: 61.5, rvol: 0.95 },
-            tags: ['EMA Pullback', 'DOWNTREND'],
-            mini_candles: createSampleCandles(211.520, 'SELL', 25),
-        },
-    },
-    {
-        symbol: 'EUR/JPY',
-        display_name: 'EUR/JPY',
-        pair_id: 'b2cd25b2-9078-40c0-980a-de3269d61e71',
-        strategy_id: '3e8d2b78-0e86-4fdf-9759-338276db1747',
-        strategy_name: 'EMA Pullback',
-        signal: {
-            active: true,
-            direction: 'SELL',
-            direction_display: '↓ SELL',
-            entry: 181.933,
-            entry_display: '$181.933',
-            sl: 182.843,
-            sl_display: '$182.843',
-            tp: 180.114,
-            tp_display: '$180.114',
-            time_ago: '1h ago',
-            status_label: 'RECENT SETUP (1h ago)',
-            risk_reward: '1:2.0',
-            rr: 'R:R 1.0',
-            confluence: {
-                volume_strength: 'WEAK',
-                risk_reward: 'Risk Reward: 1:2.0',
-            },
-            indicators: { rsi: 63.8, rvol: 0.92 },
-            tags: ['EMA Pullback', 'DOWNTREND'],
-            mini_candles: createSampleCandles(181.933, 'SELL', 25),
-        },
-    },
-];
+export const DEFAULT_SETUPS_LIST = [];
 
 // Helper to convert any setup item into standard normalized structure
 export const normalizeSetupItem = (item) => {
@@ -373,31 +198,11 @@ export function useStrategyStream() {
     const reconnectTimerRef = useRef(null);
     const isUnmountingRef = useRef(false);
 
-    // Initial fallback if WebSocket hasn't delivered payload in initial window
+    // Conclude initial loading state if WebSocket takes time or returns empty
     useEffect(() => {
         const timer = setTimeout(() => {
-            setSetupsList((prev) => {
-                if (prev.length === 0) {
-                    return DEFAULT_SETUPS_LIST.map(normalizeSetupItem);
-                }
-                return prev;
-            });
-            setSetups((prev) => {
-                if (Object.keys(prev).length === 0) {
-                    const dict = {};
-                    DEFAULT_SETUPS_LIST.forEach((item) => {
-                        const norm = normalizeSetupItem(item);
-                        if (norm) {
-                            dict[norm.meta.short] = norm;
-                            dict[norm.symbol] = norm;
-                        }
-                    });
-                    return dict;
-                }
-                return prev;
-            });
             setLoading(false);
-        }, 850);
+        }, 1500);
 
         return () => clearTimeout(timer);
     }, []);
@@ -505,11 +310,19 @@ export function useStrategyStream() {
                 clearTimeout(reconnectTimerRef.current);
             }
             if (socketRef.current) {
+                const ws = socketRef.current;
+                socketRef.current = null;
                 try {
-                    socketRef.current.close();
-                } catch {
-                    // Ignore close exceptions
-                }
+                    if (ws.readyState === WebSocket.OPEN) {
+                        ws.close();
+                    } else if (ws.readyState === WebSocket.CONNECTING) {
+                        ws.onopen = () => {
+                            try { ws.close(); } catch (_) {}
+                        };
+                        ws.onmessage = null;
+                        ws.onerror = null;
+                    }
+                } catch (_) {}
             }
         };
     }, [connectWebSocket]);

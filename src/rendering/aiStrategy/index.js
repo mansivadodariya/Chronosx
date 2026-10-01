@@ -89,7 +89,35 @@ export default function AiStrategy({ initialTab = 'live' }) {
     useEffect(() => {
         async function fetchStrategies() {
             try {
-                const primaryBase = (process.env.NEXT_PUBLIC_BACKEND_URL || 'https://api.thetradermaster.com').replace(/\/+$/, '');
+                const getBackendBase = () => {
+                    if (process.env.NEXT_PUBLIC_BACKEND_URL) {
+                        return process.env.NEXT_PUBLIC_BACKEND_URL.replace(/\/+$/, '');
+                    }
+                    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || process.env.NEXT_PUBLIC_WS_LIVE_URL;
+                    if (wsUrl) {
+                        try {
+                            const parsed = new URL(wsUrl);
+                            const proto = parsed.protocol === 'wss:' ? 'https:' : 'http:';
+                            return `${proto}//${parsed.host}`;
+                        } catch (_) {}
+                    }
+                    return 'https://api.chronosx.com';
+                };
+
+                const getWsHttpBase = () => {
+                    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || process.env.NEXT_PUBLIC_WS_LIVE_URL;
+                    if (wsUrl) {
+                        try {
+                            const parsed = new URL(wsUrl);
+                            const proto = parsed.protocol === 'wss:' ? 'https:' : 'http:';
+                            return `${proto}//${parsed.host}`;
+                        } catch (_) {}
+                    }
+                    return null;
+                };
+
+                const primaryBase = getBackendBase();
+                const fallbackBase = getWsHttpBase() || primaryBase;
                 let res;
                 try {
                     const controller = new AbortController();
@@ -108,7 +136,7 @@ export default function AiStrategy({ initialTab = 'live' }) {
                         res = await fetch('/api/v1/chart/strategies');
                         if (!res.ok) throw new Error('Proxy failed');
                     } catch (err2) {
-                        res = await fetch('https://api.thetradermaster.com/api/v1/chart/strategies', {
+                        res = await fetch(`${fallbackBase}/api/v1/chart/strategies`, {
                             headers: { 
                                 'accept': 'application/json',
                                 'ngrok-skip-browser-warning': 'true'
