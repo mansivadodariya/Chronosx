@@ -152,7 +152,7 @@ export default function HeroSection({ onStartClick }) {
               </div>
 
               <div className={styles.trustText}>
-                <span className={styles.trustHighlight}>Trusted by over +32k</span>
+                <span className={styles.trustHighlight}>Trusted by over +35k</span>
                 <span className={styles.trustSub}>traders & quants worldwide</span>
               </div>
             </div>

@@ -12,9 +12,9 @@ import styles from './aboutUs.module.scss';
 // Institutional Metrics
 const METRICS = [
     { value: '$4.2B+', label: 'Volume Analyzed', sub: 'Processed across global FX & metals' },
-    { value: '99.98%', label: 'Engine Uptime', sub: 'Institutional high-availability SLA' },
+    { value: '99.99%', label: 'Engine Uptime', sub: 'Institutional high-availability SLA' },
     { value: '< 12ms', label: 'Signal Latency', sub: 'Ultra-low latency execution speed' },
-    { value: '85,000+', label: 'Active Traders', sub: 'Across 120+ countries worldwide' }
+    { value: '35,000+', label: 'Active Traders', sub: 'Across 120+ countries worldwide' }
 ];
 
 // Core Technology Pillars
@@ -120,11 +120,11 @@ const LEADERSHIP = [
     }
 ];
 
-// Global Hubs
+// Global Hubs & Registered Corporate Entity
 const GLOBAL_HUBS = [
     { city: 'London', role: 'Fintech & Quant Engine Desk', timezone: 'UTC+0 (GMT)' },
     { city: 'New York', role: 'Market Intelligence & ML Operations', timezone: 'UTC-5 (EST)' },
-    { city: 'Dubai', role: 'MENA Strategic Headquarters', timezone: 'UTC+4 (GST)' },
+    { city: 'Dubai (HQ)', role: 'ChronosX Financial Technologies FZ-LLC, Dubai Silicon Oasis, IFZA Building A1, UAE', timezone: 'UTC+4 (GST)' },
     { city: 'Singapore', role: 'APAC Ultra-Low Latency Gateway', timezone: 'UTC+8 (SGT)' }
 ];
 

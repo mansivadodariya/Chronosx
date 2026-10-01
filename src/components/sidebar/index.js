@@ -504,6 +504,28 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
         return visibleTabNames.has('backtest') || visibleTabNames.has('backtesting');
       }
 
+      // Past Trade Analyzer matches both new and legacy tab names
+      if (
+        lowerLabel.includes('past trade') ||
+        lowerLabel.includes('trade audit') ||
+        lowerLabel.includes('trade advisor') ||
+        mapped.includes('past trade') ||
+        mapped.includes('trade audit') ||
+        mapped.includes('trade advisor') ||
+        routeHref?.includes('trade-advisor') ||
+        routeHref?.includes('trade-audit')
+      ) {
+        return (
+          visibleTabNames.has('ai past trade analyzer') ||
+          visibleTabNames.has('past trade analyzer') ||
+          visibleTabNames.has('ai trade advisor') ||
+          visibleTabNames.has('trade advisor') ||
+          visibleTabNames.has('ai trade audit') ||
+          visibleTabNames.has('trade audit') ||
+          visibleTabNames.has('ai trade analysis')
+        );
+      }
+
       // Exact 1-to-1 check against standardized dashboard_tabs permissions
       return visibleTabNames.has(mapped) || visibleTabNames.has(lowerLabel);
     };
@@ -729,7 +751,7 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
                     }}
                   >
                     <LandingHomeIcon width={18} height={18} />
-                    <span>{t('nav.landingPage', 'Landing Page')}</span>
+                    <span>{t('nav.home', 'Home')}</span>
                   </button>
 
                   <button

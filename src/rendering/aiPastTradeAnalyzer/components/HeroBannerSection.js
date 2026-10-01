@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -35,7 +34,6 @@ export default function HeroBannerSection({ scrollToAudit }) {
                 <div className={styles.ambientGlowTop} aria-hidden="true" />
                 <div className={styles.ambientGlowCenter} aria-hidden="true" />
 
-                {/* Interactive Cursor Spotlight Glow */}
                 <div
                     className={styles.interactiveSpotlight}
                     style={{

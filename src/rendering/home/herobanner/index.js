@@ -169,7 +169,7 @@ export default function Herobanner() {
               </div>
 
               <div className={styles.trustText}>
-                <span className={styles.trustHighlight}>{t('homeSections.hero.trustCount', 'Trusted by over +32k')}</span>
+                <span className={styles.trustHighlight}>{t('homeSections.hero.trustCount', 'Trusted by over +35k')}</span>
                 <span className={styles.trustSub}>{t('homeSections.hero.trustSub', 'people in the world')}</span>
               </div>
             </div>

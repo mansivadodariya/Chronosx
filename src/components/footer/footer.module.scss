@@ -201,6 +201,10 @@
                 font-size: 12px;
                 font-weight: 700;
                 letter-spacing: 0.4px;
+
+                span {
+                    color: inherit;
+                }
             }
 
             .statusDot {
@@ -209,6 +213,7 @@
                 border-radius: 50%;
                 background: #10B981;
                 box-shadow: 0 0 8px #10B981;
+                flex-shrink: 0;
             }
         }
 
@@ -389,7 +394,9 @@
         }
     }
 
-    :global(html.light) & {
+    :global(html.light) &,
+    :global(html[data-theme="light"]) &,
+    :global([data-theme="light"]) & {
         background: #F8FAFC !important;
         border-top: none !important;
         border: none !important;
@@ -400,9 +407,20 @@
             }
 
             .statusBadge {
-                background: rgba(16, 185, 129, 0.12) !important;
-                border-color: rgba(5, 150, 105, 0.35) !important;
+                background: #ECFDF5 !important;
+                border: 1px solid rgba(16, 185, 129, 0.4) !important;
                 color: #047857 !important;
+                font-weight: 700 !important;
+                box-shadow: 0 2px 8px rgba(16, 185, 129, 0.12) !important;
+
+                span {
+                    color: #047857 !important;
+                }
+            }
+
+            .statusDot {
+                background: #10B981 !important;
+                box-shadow: 0 0 6px rgba(16, 185, 129, 0.6) !important;
             }
         }
 
