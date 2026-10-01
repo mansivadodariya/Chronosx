@@ -4,15 +4,6 @@ export const metadata = {
     title: "AI Market Assistant — Real-Time Conversational Market Intelligence",
     description:
         "Meet your institutional AI market copilot. Ask any question about technical setups, macroeconomic trends, and risk management with real-time financial context.",
-    keywords: [
-        "AI Market Assistant",
-        "AI Trading Chatbot",
-        "Market Assistant",
-        "Forex AI Assistant",
-        "Crypto Market AI",
-        "Trading Copilot",
-        "ChronosX Market Assistant"
-    ],
     openGraph: {
         title: "AI Market Assistant — Instant Conversational Market Intelligence | ChronosX",
         description:

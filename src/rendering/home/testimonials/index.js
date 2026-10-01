@@ -23,29 +23,29 @@ const testimonialsData = [
   {
     rating: 5,
     quote: '"Risk management tools alone are worth it. The AI keeps me disciplined and out of low-quality trades."',
-    initials: 'MV',
-    name: 'Marcus Vela',
+    initials: 'MR',
+    name: 'Marcus Reed',
     role: 'Prop Firm Trader'
   },
   {
     rating: 5,
     quote: '"The breakout confirmation alerts caught the entire gold surge before the London open. Absolute game changer."',
-    initials: 'LV',
-    name: 'Liam Vance',
+    initials: 'LS',
+    name: 'Liam Sterling',
     role: 'Commodities Trader'
   },
   {
     rating: 5,
     quote: '"Having institutional heat list rankings mapped alongside raw price action completely eliminated second-guessing."',
-    initials: 'ER',
-    name: 'Elena Rostova',
+    initials: 'EV',
+    name: 'Elena Vasilev',
     role: 'Quant Trader'
   },
   {
     rating: 5,
     quote: '"Backtesting my custom ICT strategies against 5 years of tick data gave me the edge I needed to get funded."',
-    initials: 'LT',
-    name: 'Lucas Thorne',
+    initials: 'LB',
+    name: 'Lucas Bennett',
     role: 'Funded Account Trader'
   }
 ];

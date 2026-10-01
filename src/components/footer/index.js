@@ -11,11 +11,11 @@ const DarkLogo = '/assets/logo/logo.png';
 const LightLogo = '/assets/logo/darklogo.png';
 
 const socialLinks = [
-  { icon: '/assets/icons/twitter.svg', href: 'https://twitter.com', label: 'Twitter' },
-  { icon: '/assets/icons/instagram.svg', href: 'https://instagram.com', label: 'Instagram' },
-  { icon: '/assets/icons/discord.svg', href: 'https://discord.com', label: 'Discord' },
+  { icon: '/assets/icons/twitter.svg', href: 'https://x.com/ChronosX_AI', label: 'X / Twitter' },
   { icon: '/assets/icons/telegram.svg', href: 'https://t.me/ChronosX_Official', label: 'Telegram' },
-  { icon: '/assets/icons/youtube.svg', href: 'https://youtube.com', label: 'YouTube' }
+  { icon: '/assets/icons/youtube.svg', href: 'https://youtube.com/@ChronosX_AI', label: 'YouTube' },
+  { icon: '/assets/icons/instagram.svg', href: 'https://instagram.com/chronosx.ai', label: 'Instagram' },
+  { icon: '/assets/icons/discord.svg', href: 'https://discord.gg/chronosx', label: 'Discord' }
 ];
 
 export default function Footer() {
@@ -152,6 +152,7 @@ export default function Footer() {
         </div>
 
         <div className={styles.disclaimerSection}>
+          <p><strong>ChronosX Financial Technologies FZ-LLC</strong> | Dubai Silicon Oasis, IFZA Business Park, Building A1, Dubai, United Arab Emirates (UAE). Reg No: FZ-LLC-2024-CX8901.</p>
           <p>{t('footer.disclaimerP1')}</p>
           <p>{t('footer.disclaimerP2')}</p>
           <p>{t('footer.disclaimerP3')}</p>
@@ -169,7 +170,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className={styles.bottomSection}>
-          <p>{t('footer.copyright', '© 2026 ChronosX. All rights reserved.')}</p>
+          <p>{t('footer.copyright', '© 2026 ChronosX Financial Technologies FZ-LLC. All rights reserved.')}</p>
 
           <div className={styles.socialList}>
             {socialLinks.map((item, index) => (

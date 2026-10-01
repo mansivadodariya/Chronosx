@@ -4,18 +4,6 @@ export const metadata = {
     title: "AI Chart Scanner — Instant Vision AI Technical Pattern Scanner",
     description:
         "Upload any TradingView, MT4/MT5, or broker chart screenshot and get instant institutional AI trade signals. Dual Vision AI and live MT5 indicator confluence with precise Entry, Stop-Loss, and Multi-TP targets.",
-    keywords: [
-        "AI Chart Scanner",
-        "Vision AI Chart Scanner",
-        "AI Snap Trading",
-        "Chart screenshot analyzer",
-        "MetaTrader 5 AI Scanner",
-        "TradingView AI scanner",
-        "Automated trade setups",
-        "Forex chart recognition AI",
-        "Market chart pattern AI",
-        "ChronosX AI Chart Scanner"
-    ],
     openGraph: {
         title: "AI Chart Scanner — Instant Vision AI Technical Pattern Scanner | ChronosX",
         description:

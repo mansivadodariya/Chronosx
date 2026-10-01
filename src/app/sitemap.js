@@ -88,6 +88,36 @@ export default function sitemap() {
             priority: 0.5,
         },
         {
+            url: `${baseUrl}/blogs`,
+            lastModified,
+            changeFrequency: 'daily',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/economic-calendar`,
+            lastModified,
+            changeFrequency: 'daily',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/forex-calculator`,
+            lastModified,
+            changeFrequency: 'weekly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/market-news`,
+            lastModified,
+            changeFrequency: 'daily',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/backtesting`,
+            lastModified,
+            changeFrequency: 'weekly',
+            priority: 0.8,
+        },
+        {
             url: `${baseUrl}/contact-us`,
             lastModified,
             changeFrequency: 'monthly',

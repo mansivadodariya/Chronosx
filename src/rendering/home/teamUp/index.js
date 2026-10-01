@@ -27,8 +27,8 @@ const pillars = [
   {
     icon: '/assets/icons/hex-users.svg?v=2',
     title: 'Institutional Scale & Uptime',
-    stat: '$50B+ ROUTED',
-    desc: 'Enterprise-grade matching engine with 99.99% uptime, built to handle massive high-frequency trading volume.'
+    stat: '$4.2B+ ANALYZED',
+    desc: 'Enterprise-grade AI analytical engine with 99.99% uptime, processing high-volume tick data across global sessions.'
   }
 ];
 
