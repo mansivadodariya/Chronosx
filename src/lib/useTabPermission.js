@@ -25,6 +25,27 @@ function checkPermissionInSet(set, tabName) {
     );
   }
 
+  if (
+    target === 'ai past trade analyzer' ||
+    target === 'past trade analyzer' ||
+    target === 'ai trade advisor' ||
+    target === 'trade advisor' ||
+    target === 'ai trade audit' ||
+    target === 'trade audit' ||
+    target === 'ai trade analysis' ||
+    target === 'trade analysis'
+  ) {
+    return (
+      set.has('ai past trade analyzer') ||
+      set.has('past trade analyzer') ||
+      set.has('ai trade advisor') ||
+      set.has('trade advisor') ||
+      set.has('ai trade audit') ||
+      set.has('trade audit') ||
+      set.has('ai trade analysis')
+    );
+  }
+
   return set.has(target);
 }
 

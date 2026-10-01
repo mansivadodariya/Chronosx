@@ -336,7 +336,9 @@ const layout = ({ children }) => {
 
                     const isAllowed =
                         visibleNames.has(currentLower) ||
-                        (currentLower === 'backtest' && visibleNames.has('ai bot builder'));
+                        (currentLower === 'backtest' && visibleNames.has('ai bot builder')) ||
+                        ((currentLower.includes('trade analyzer') || currentLower.includes('trade audit') || currentLower.includes('trade advisor')) &&
+                         (visibleNames.has('ai past trade analyzer') || visibleNames.has('past trade analyzer') || visibleNames.has('ai trade advisor') || visibleNames.has('trade advisor') || visibleNames.has('ai trade audit') || visibleNames.has('trade audit') || visibleNames.has('ai trade analysis')));
                     setIsTabAllowed(isAllowed);
                 }
             } catch (e) {

@@ -148,7 +148,15 @@ export default function DashboardToolsGrid() {
                 return visibleTabNames.has('strategy signal');
             }
             if (tool.id === 'advisor' || tool.href === '/trade-advisor') {
-                return visibleTabNames.has('ai past trade analyzer');
+                return (
+                    visibleTabNames.has('ai past trade analyzer') ||
+                    visibleTabNames.has('past trade analyzer') ||
+                    visibleTabNames.has('ai trade advisor') ||
+                    visibleTabNames.has('trade advisor') ||
+                    visibleTabNames.has('ai trade audit') ||
+                    visibleTabNames.has('trade audit') ||
+                    visibleTabNames.has('ai trade analysis')
+                );
             }
             if (tool.id === 'calculators' || tool.href === '/calculator') {
                 return visibleTabNames.has('forex calculator');
