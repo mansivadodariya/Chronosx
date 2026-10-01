@@ -56,16 +56,20 @@ export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategy
     const candidates = [];
     const envWs = process.env.NEXT_PUBLIC_WS_URL || process.env.NEXT_PUBLIC_WS_LIVE_URL;
 
+    const isPublicHost = (url = '') => {
+        const u = url.toLowerCase();
+        return u.includes('chronosx.com') || u.includes('thetradermaster.com') ||
+               (!u.includes('localhost') && !u.includes('127.0.0.1') && !u.includes('192.168.') && !u.includes('10.'));
+    };
+
     if (envWs) {
         let cleanBase = envWs.split('?')[0];
-        if (isHttps && cleanBase.startsWith('ws://')) {
+        if (isPublicHost(cleanBase) || isHttps) {
             cleanBase = cleanBase.replace(/^ws:\/\//, 'wss://');
-        }
-        candidates.push(`${cleanBase}${qs}`);
-        if (!isHttps) {
-            if (cleanBase.startsWith('wss://')) {
-                candidates.push(`${cleanBase.replace(/^wss:\/\//, 'ws://')}${qs}`);
-            } else if (cleanBase.startsWith('ws://')) {
+            candidates.push(`${cleanBase}${qs}`);
+        } else {
+            candidates.push(`${cleanBase}${qs}`);
+            if (cleanBase.startsWith('ws://')) {
                 candidates.push(`${cleanBase.replace(/^ws:\/\//, 'wss://')}${qs}`);
             }
         }
@@ -75,20 +79,17 @@ export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategy
     if (backendUrl) {
         const isHttp = backendUrl.startsWith('http://');
         const host = backendUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '');
-        if (isHttps || !isHttp) {
+        if (isPublicHost(host) || isHttps || !isHttp) {
             candidates.push(`wss://${host}/api/v1/ws/live${qs}`);
-            if (!isHttps) {
-                candidates.push(`ws://${host}/api/v1/ws/live${qs}`);
-            }
         } else {
             candidates.push(`ws://${host}/api/v1/ws/live${qs}`);
             candidates.push(`wss://${host}/api/v1/ws/live${qs}`);
         }
     }
 
-    // Public cloud fallbacks
-    candidates.push(`wss://api.thetradermaster.com/api/v1/ws/live${qs}`);
+    // Public cloud fallbacks (always SSL wss://)
     candidates.push(`wss://api.chronosx.com/api/v1/ws/live${qs}`);
+    candidates.push(`wss://api.thetradermaster.com/api/v1/ws/live${qs}`);
 
     if (!isHttps) {
         candidates.push(`ws://192.168.0.153:8000/api/v1/ws/live${qs}`);
@@ -96,7 +97,7 @@ export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategy
 
         if (typeof window !== 'undefined' && window.location) {
             const host = window.location.hostname || '127.0.0.1';
-            if (host !== '192.168.0.153') {
+            if (host !== '192.168.0.153' && (host.includes('localhost') || host.includes('127.0.0.1'))) {
                 candidates.push(`ws://${host}:8000/api/v1/ws/live${qs}`);
                 candidates.push(`wss://${host}:8000/api/v1/ws/live${qs}`);
             }

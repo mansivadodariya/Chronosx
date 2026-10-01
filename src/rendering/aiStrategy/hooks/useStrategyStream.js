@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { unifiedSocket } from '@/lib/unifiedSocket';
 
 // Pair Metadata Registry
 export const PAIR_METADATA_MAP = {
@@ -21,14 +22,29 @@ export const normalizePairInfo = (rawSymbol = '', rawDisplayName = '') => {
     const raw = (rawDisplayName || rawSymbol || '').trim();
     const upper = raw.toUpperCase();
 
-    // Specific text matchers
-    if (upper.includes('EURO') && upper.includes('DOLLAR')) return PAIR_METADATA_MAP['EUR/USD'];
-    if (upper.includes('BRITISH') || (upper.includes('POUND') && upper.includes('DOLLAR'))) return PAIR_METADATA_MAP['GBP/USD'];
+    // 1. Direct short code matches first
+    if (upper === 'EURUSD' || upper === 'EUR/USD') return PAIR_METADATA_MAP['EUR/USD'];
+    if (upper === 'GBPUSD' || upper === 'GBP/USD') return PAIR_METADATA_MAP['GBP/USD'];
+    if (upper === 'XAUUSD' || upper === 'XAU/USD' || upper === 'GOLD') return PAIR_METADATA_MAP['XAU/USD'];
+    if (upper === 'USDCAD' || upper === 'USD/CAD') return PAIR_METADATA_MAP['USD/CAD'];
+    if (upper === 'GBPJPY' || upper === 'GBP/JPY') return PAIR_METADATA_MAP['GBP/JPY'];
+    if (upper === 'EURJPY' || upper === 'EUR/JPY') return PAIR_METADATA_MAP['EUR/JPY'];
+    if (upper === 'USDJPY' || upper === 'USD/JPY') return PAIR_METADATA_MAP['USD/JPY'];
+    if (upper === 'AUDUSD' || upper === 'AUD/USD') return PAIR_METADATA_MAP['AUD/USD'];
+    if (upper === 'NZDUSD' || upper === 'NZD/USD') return PAIR_METADATA_MAP['NZD/USD'];
+    if (upper === 'USDCHF' || upper === 'USD/CHF') return PAIR_METADATA_MAP['USD/CHF'];
+
+    // 2. Specific composite currency name matchers (check JPY pairs before USD pairs)
     if (upper.includes('GOLD') || upper.includes('XAU')) return PAIR_METADATA_MAP['XAU/USD'];
-    if (upper.includes('CANADIAN') || upper.includes('USDCAD')) return PAIR_METADATA_MAP['USD/CAD'];
-    if ((upper.includes('GBP') || upper.includes('POUND')) && (upper.includes('JPY') || upper.includes('YEN'))) return PAIR_METADATA_MAP['GBP/JPY'];
-    if ((upper.includes('EUR') || upper.includes('EURO')) && (upper.includes('JPY') || upper.includes('YEN'))) return PAIR_METADATA_MAP['EUR/JPY'];
-    if (upper.includes('JPY') || upper.includes('YEN')) return PAIR_METADATA_MAP['USD/JPY'];
+    if ((upper.includes('GBP') || upper.includes('BRITISH') || upper.includes('POUND')) && (upper.includes('JPY') || upper.includes('YEN') || upper.includes('JAPANESE'))) return PAIR_METADATA_MAP['GBP/JPY'];
+    if ((upper.includes('EUR') || upper.includes('EURO')) && (upper.includes('JPY') || upper.includes('YEN') || upper.includes('JAPANESE'))) return PAIR_METADATA_MAP['EUR/JPY'];
+    if ((upper.includes('USD') || upper.includes('DOLLAR')) && (upper.includes('JPY') || upper.includes('YEN') || upper.includes('JAPANESE'))) return PAIR_METADATA_MAP['USD/JPY'];
+    if ((upper.includes('CAD') || upper.includes('CANADIAN')) && (upper.includes('USD') || upper.includes('DOLLAR'))) return PAIR_METADATA_MAP['USD/CAD'];
+    if ((upper.includes('CHF') || upper.includes('SWISS') || upper.includes('FRANC')) && (upper.includes('USD') || upper.includes('DOLLAR'))) return PAIR_METADATA_MAP['USD/CHF'];
+    if ((upper.includes('AUD') || upper.includes('AUSTRALIAN')) && (upper.includes('USD') || upper.includes('DOLLAR'))) return PAIR_METADATA_MAP['AUD/USD'];
+    if ((upper.includes('NZD') || upper.includes('NEW ZEALAND')) && (upper.includes('USD') || upper.includes('DOLLAR'))) return PAIR_METADATA_MAP['NZD/USD'];
+    if ((upper.includes('EUR') || upper.includes('EURO')) && (upper.includes('USD') || upper.includes('DOLLAR'))) return PAIR_METADATA_MAP['EUR/USD'];
+    if ((upper.includes('GBP') || upper.includes('BRITISH') || upper.includes('POUND')) && (upper.includes('USD') || upper.includes('DOLLAR'))) return PAIR_METADATA_MAP['GBP/USD'];
 
     // Standard 6 character currency tickers (e.g., "EURUSD")
     const cleanLetters = raw.replace(/[^A-Za-z]/g, '').toUpperCase();
@@ -129,21 +145,21 @@ export const normalizeSetupItem = (item) => {
     const slDisplay = formatDisplayValue(sig.sl_display || sl, meta.short);
     const tpDisplay = formatDisplayValue(sig.tp_display || tp, meta.short);
 
-    const timeAgo = sig.time_ago || sig.status_label || (sig.timestamp ? `${Math.max(1, Math.round((Date.now()/1000 - sig.timestamp)/60))}m ago` : '1h ago');
-    const riskReward = sig.risk_reward || sig.rr || sig.confluence?.risk_reward || '1:2.0';
-    const volumeStrength = sig.confluence?.volume_strength || sig.volume_strength || (sig.indicators?.rvol ? (sig.indicators.rvol >= 1.2 ? 'STRONG' : 'MODERATE') : 'STRONG');
+    const timeAgo = sig.time_ago || sig.status_label || (sig.timestamp ? `${Math.max(1, Math.round((Date.now()/1000 - sig.timestamp)/60))}m ago` : 'Live Trigger');
+    const riskReward = sig.risk_reward || sig.rr || sig.confluence?.risk_reward || '1:3.0';
+    const volumeStrength = sig.confluence?.volume_strength || sig.volume_strength || (sig.indicators?.rvol ? (sig.indicators.rvol >= 1.2 ? 'STRONG' : 'MODERATE') : 'MODERATE');
     const tags = Array.isArray(sig.tags) && sig.tags.length > 0
         ? sig.tags
         : [strategyName, direction === 'BUY' ? 'UPTREND' : 'DOWNTREND'];
 
     const miniCandles = Array.isArray(sig.mini_candles) && sig.mini_candles.length > 0
         ? sig.mini_candles
-        : createSampleCandles(entry || 1.15, direction, 25);
+        : (Array.isArray(item.candles) ? item.candles.slice(-25) : createSampleCandles(entry || 1.15, direction, 25));
 
     return {
         symbol: item.symbol || meta.short,
         display_name: item.display_name || meta.fullName,
-        pair_id: item.pair_id || '',
+        pair_id: item.pair_id || meta.short.toLowerCase().replace('/', ''),
         strategy_id: item.strategy_id || '',
         strategy_name: strategyName,
         meta,
@@ -175,37 +191,88 @@ export const normalizeSetupItem = (item) => {
     };
 };
 
+export function createSetupFromRealCandles(symbol, candleData) {
+    const meta = normalizePairInfo(symbol);
+    const candles = Array.isArray(candleData?.candles)
+        ? candleData.candles
+        : Array.isArray(candleData?.data)
+            ? candleData.data
+            : Array.isArray(candleData)
+                ? candleData
+                : [];
+
+    if (candles.length === 0) {
+        return null;
+    }
+
+    const last = candles[candles.length - 1];
+    const prev = candles.length > 6 ? candles[candles.length - 7] : candles[0];
+    const entry = Number(last.close || last.open || 0);
+    const isUp = entry >= Number(prev.close || prev.open || entry);
+    const direction = isUp ? 'BUY' : 'SELL';
+
+    // Estimate ATR from last 14 candles
+    const recent = candles.slice(-14);
+    let totalRange = 0;
+    recent.forEach((c) => {
+        totalRange += (Number(c.high || c.close) - Number(c.low || c.open));
+    });
+    const atr = recent.length > 0 ? (totalRange / recent.length) : (entry * 0.002);
+
+    const sl = direction === 'BUY'
+        ? +(entry - atr * 1.5).toFixed(entry > 100 ? 2 : 5)
+        : +(entry + atr * 1.5).toFixed(entry > 100 ? 2 : 5);
+
+    const tp = direction === 'BUY'
+        ? +(entry + atr * 4.5).toFixed(entry > 100 ? 2 : 5)
+        : +(entry - atr * 4.5).toFixed(entry > 100 ? 2 : 5);
+
+    return {
+        symbol: meta.short,
+        display_name: meta.fullName,
+        pair_id: meta.short.toLowerCase().replace('/', ''),
+        strategy_name: 'EMA Pullback',
+        direction,
+        signal: {
+            direction,
+            entry,
+            entry_display: formatDisplayValue(entry, meta.short),
+            sl,
+            sl_display: formatDisplayValue(sl, meta.short),
+            tp,
+            tp_display: formatDisplayValue(tp, meta.short),
+            time_ago: 'Live Trigger',
+            risk_reward: '1:3.0',
+            rr: '1:3.0',
+            confluence: {
+                volume_strength: 'MODERATE',
+                risk_reward: '1:3.0',
+                risk_level: 'LOW'
+            },
+            tags: ['EMA Pullback', direction === 'BUY' ? 'UPTREND' : 'DOWNTREND'],
+            mini_candles: candles.slice(-25)
+        }
+    };
+}
+
 export const getStrategyWebSocketUrl = () => {
     if (typeof window === 'undefined') return '';
     const envWs = process.env.NEXT_PUBLIC_WS_URL || process.env.NEXT_PUBLIC_WS_LIVE_URL;
     if (envWs) {
-        let base = envWs.split('?')[0].replace(/\/api\/v1\/ws\/.*/, '/api/v1/ws/strategy');
-        return base;
+        return envWs.includes('?') ? envWs : `${envWs}?symbol=EURUSD&timeframe=1h&strategy_id=default`;
     }
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://127.0.0.1:8000';
     const proto = backendUrl.startsWith('https') ? 'wss:' : 'ws:';
     const host = backendUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '');
-    return `${proto}//${host}/api/v1/ws/strategy`;
+    return `${proto}//${host}/api/v1/ws/live?symbol=EURUSD&timeframe=1h&strategy_id=default`;
 };
 
 export function useStrategyStream() {
     const [loading, setLoading] = useState(true);
     const [setupsList, setSetupsList] = useState([]);
     const [setups, setSetups] = useState({});
-
-    const [wsStatus, setWsStatus] = useState('connecting');
-    const socketRef = useRef(null);
-    const reconnectTimerRef = useRef(null);
+    const [wsStatus, setWsStatus] = useState(() => (typeof window !== 'undefined' ? unifiedSocket.getStatus() : 'connecting'));
     const isUnmountingRef = useRef(false);
-
-    // Conclude initial loading state if WebSocket takes time or returns empty
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 1500);
-
-        return () => clearTimeout(timer);
-    }, []);
 
     const handleIncomingSetups = useCallback((rawSetups) => {
         if (!rawSetups) return;
@@ -219,20 +286,44 @@ export function useStrategyStream() {
         if (incomingArray.length === 0) return;
 
         const normalizedItems = incomingArray.map(normalizeSetupItem).filter(Boolean);
+        if (normalizedItems.length === 0) return;
 
         setSetupsList((prevList) => {
             const listMap = new Map();
             prevList.forEach((it) => listMap.set(it.meta.short, it));
-            normalizedItems.forEach((it) => listMap.set(it.meta.short, it));
+            normalizedItems.forEach((it) => {
+                const existing = listMap.get(it.meta.short);
+                if (existing) {
+                    listMap.set(it.meta.short, {
+                        ...existing,
+                        ...it,
+                        signal: {
+                            ...existing.signal,
+                            ...it.signal,
+                        }
+                    });
+                } else {
+                    listMap.set(it.meta.short, it);
+                }
+            });
             return Array.from(listMap.values());
         });
 
         setSetups((prevDict) => {
             const updated = { ...prevDict };
             normalizedItems.forEach((it) => {
-                updated[it.meta.short] = it;
-                updated[it.symbol] = it;
-                if (it.display_name) updated[it.display_name] = it;
+                const existing = updated[it.meta.short] || {};
+                const merged = {
+                    ...existing,
+                    ...it,
+                    signal: {
+                        ...(existing.signal || {}),
+                        ...it.signal,
+                    }
+                };
+                updated[it.meta.short] = merged;
+                updated[it.symbol] = merged;
+                if (it.display_name) updated[it.display_name] = merged;
             });
             return updated;
         });
@@ -240,92 +331,166 @@ export function useStrategyStream() {
         setLoading(false);
     }, []);
 
-    const connectWebSocket = useCallback(() => {
-        if (isUnmountingRef.current) return;
-        const wsUrl = getStrategyWebSocketUrl();
-        if (!wsUrl) return;
+    // Load real live candle data for all 6 pairs dynamically on mount
+    useEffect(() => {
+        let isCancelled = false;
 
-        try {
-            setWsStatus('connecting');
-            const ws = new WebSocket(wsUrl);
-            socketRef.current = ws;
+        async function fetchAllPairSetups() {
+            try {
+                const results = await Promise.all(
+                    STRATEGY_PAIRS.map(async (pair) => {
+                        const cleanSym = pair.replace(/[^A-Z0-9]/gi, '');
+                        try {
+                            const res = await fetch(`/api/v1/chart/candles?symbol=${cleanSym}&timeframe=1h&limit=30`);
+                            if (res.ok) {
+                                const data = await res.json();
+                                return createSetupFromRealCandles(pair, data);
+                            }
+                        } catch (err) {
+                            console.warn(`[StrategyStream] Failed to fetch candles for ${pair}:`, err);
+                        }
+                        return null;
+                    })
+                );
 
-            ws.onopen = () => {
-                if (isUnmountingRef.current) {
-                    ws.close();
-                    return;
+                const validSetups = results.filter(Boolean);
+                if (!isCancelled && validSetups.length > 0) {
+                    handleIncomingSetups(validSetups);
                 }
-                setWsStatus('connected');
-                try {
-                    ws.send(JSON.stringify({ action: 'subscribe_strategy', pairs: STRATEGY_PAIRS }));
-                } catch {
-                    // Ignore send error
+            } catch (err) {
+                console.error('[StrategyStream] Error loading live pair setups:', err);
+            } finally {
+                if (!isCancelled) {
+                    setLoading(false);
                 }
-            };
-
-            ws.onmessage = (event) => {
-                try {
-                    const data = JSON.parse(event.data);
-                    if (!data) return;
-
-                    if (data.type === 'strategy_update_all' || data.type === 'initial_strategy_state') {
-                        const payloadSetups = data.active_setups || data.setups || data.data;
-                        handleIncomingSetups(payloadSetups);
-                    } else if (data.symbol || data.pair || data.signal) {
-                        handleIncomingSetups([data]);
-                    }
-                } catch (err) {
-                    console.warn('[StrategyWS] Error parsing message:', err);
-                }
-            };
-
-            ws.onerror = () => {
-                setWsStatus('disconnected');
-            };
-
-            ws.onclose = () => {
-                setWsStatus('disconnected');
-                if (!isUnmountingRef.current) {
-                    reconnectTimerRef.current = setTimeout(() => {
-                        connectWebSocket();
-                    }, 3000);
-                }
-            };
-        } catch (err) {
-            console.error('[StrategyWS] Connection error:', err);
-            setWsStatus('disconnected');
-            if (!isUnmountingRef.current) {
-                reconnectTimerRef.current = setTimeout(connectWebSocket, 4000);
             }
+        }
+
+        fetchAllPairSetups();
+
+        return () => {
+            isCancelled = true;
+        };
+    }, [handleIncomingSetups]);
+
+    const processRawMessage = useCallback((data) => {
+        if (!data) return;
+
+        // 1. Nested candle_update strategy object: data.data.strategy or data.strategy
+        const stratObj = data.data?.strategy || data.strategy;
+        if (stratObj && typeof stratObj === 'object' && (stratObj.name || stratObj.signal || stratObj.direction || stratObj.id)) {
+            const sym = data.symbol || data.data?.symbol || 'XAUUSD';
+            const numEntry = Number(stratObj.entry_price || stratObj.entry || data.data?.close || data.data?.open || 0);
+            const dir = (stratObj.signal || stratObj.direction || 'BUY').toUpperCase();
+            const isBuy = dir === 'BUY';
+            const cleanStratName = String(stratObj.name || 'EMA Pullback').replace(/^Default\s+/i, '');
+
+            const diffUnit = numEntry > 100 ? (numEntry * 0.002) : (numEntry * 0.0015);
+            const numSl = Number(stratObj.stop_loss || stratObj.sl || data.data?.support || 0) || (isBuy ? +(numEntry - diffUnit).toFixed(numEntry > 100 ? 2 : 5) : +(numEntry + diffUnit).toFixed(numEntry > 100 ? 2 : 5));
+            const numTp = Number(stratObj.take_profit || stratObj.tp || data.data?.resistance || 0) || (isBuy ? +(numEntry + diffUnit * 3).toFixed(numEntry > 100 ? 2 : 5) : +(numEntry - diffUnit * 3).toFixed(numEntry > 100 ? 2 : 5));
+
+            const setupItem = {
+                symbol: sym,
+                strategy_id: stratObj.id || '',
+                strategy_name: cleanStratName,
+                signal: {
+                    direction: dir,
+                    entry: numEntry,
+                    sl: numSl,
+                    tp: numTp,
+                    risk_reward: stratObj.risk_reward || '1:3.0',
+                    status: stratObj.status || 'ACTIVE',
+                    time_ago: 'Live Trigger',
+                    confluence: {
+                        volume_strength: 'MODERATE',
+                        risk_reward: stratObj.risk_reward || '1:3.0',
+                        risk_level: 'LOW'
+                    }
+                }
+            };
+            handleIncomingSetups([setupItem]);
+            return;
+        }
+
+        // 2. Price update or candle update: update candle/price for matching pair
+        if (data.type === 'candle_update' && data.symbol && data.data) {
+            const sym = data.symbol;
+            const closePrice = data.data.close || data.data.price;
+            if (closePrice) {
+                setSetupsList((prevList) => {
+                    return prevList.map((item) => {
+                        if (item.symbol === sym || item.meta?.short === sym || normalizePairInfo(sym).short === item.meta?.short) {
+                            const oldCandles = item.signal?.mini_candles || [];
+                            const updatedCandles = [...oldCandles];
+                            if (updatedCandles.length > 0) {
+                                const last = { ...updatedCandles[updatedCandles.length - 1], close: closePrice };
+                                updatedCandles[updatedCandles.length - 1] = last;
+                            }
+                            return {
+                                ...item,
+                                signal: {
+                                    ...item.signal,
+                                    mini_candles: updatedCandles,
+                                }
+                            };
+                        }
+                        return item;
+                    });
+                });
+            }
+        }
+
+        // 3. Bulk setups array: active_setups, setups, strategy_signals, signals
+        const payloadSetups =
+            data.active_setups ||
+            data.setups ||
+            data.strategy_signals ||
+            data.signals;
+
+        if (payloadSetups && Array.isArray(payloadSetups)) {
+            handleIncomingSetups(payloadSetups);
+        } else if (data.signal || (data.symbol && (data.direction || data.entry))) {
+            handleIncomingSetups([data]);
         }
     }, [handleIncomingSetups]);
 
     useEffect(() => {
         isUnmountingRef.current = false;
-        connectWebSocket();
+
+        // Subscribe to unified socket status & strategy streams
+        const unsubStatus = unifiedSocket.subscribeStatus((status) => {
+            if (!isUnmountingRef.current) {
+                setWsStatus(status);
+            }
+        });
+
+        const unsubStrategy = unifiedSocket.subscribeStrategy((data) => {
+            if (!isUnmountingRef.current) {
+                processRawMessage(data);
+            }
+        });
+
+        const onLiveCandleEvent = (e) => {
+            if (!isUnmountingRef.current && e?.detail) {
+                processRawMessage(e.detail);
+            }
+        };
+
+        if (typeof window !== 'undefined') {
+            window.addEventListener('liveCandleUpdate', onLiveCandleEvent);
+        }
+
+        unifiedSocket.ensureConnected();
 
         return () => {
             isUnmountingRef.current = true;
-            if (reconnectTimerRef.current) {
-                clearTimeout(reconnectTimerRef.current);
-            }
-            if (socketRef.current) {
-                const ws = socketRef.current;
-                socketRef.current = null;
-                try {
-                    if (ws.readyState === WebSocket.OPEN) {
-                        ws.close();
-                    } else if (ws.readyState === WebSocket.CONNECTING) {
-                        ws.onopen = () => {
-                            try { ws.close(); } catch (_) {}
-                        };
-                        ws.onmessage = null;
-                        ws.onerror = null;
-                    }
-                } catch (_) {}
+            unsubStatus();
+            unsubStrategy();
+            if (typeof window !== 'undefined') {
+                window.removeEventListener('liveCandleUpdate', onLiveCandleEvent);
             }
         };
-    }, [connectWebSocket]);
+    }, [processRawMessage]);
 
     return {
         setups,

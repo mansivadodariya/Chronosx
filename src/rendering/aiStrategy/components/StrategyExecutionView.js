@@ -24,16 +24,7 @@ export default function StrategyExecutionView({ selectedStrategyId, strategies =
     const { setupsList, wsStatus, loading } = useStrategyStream();
 
     const selectedStrategy = Array.isArray(strategies) ? strategies.find(s => (s.id || s.strategy_id) === selectedStrategyId) : null;
-    const selectedName = (selectedStrategy?.name || selectedStrategy?.title || '').toLowerCase();
-
-    const displayedSetups = (selectedName && setupsList.length > 0)
-        ? setupsList.filter(item => {
-            const itemStrat = (item.strategy_name || '').toLowerCase();
-            return itemStrat.includes(selectedName) || selectedName.includes(itemStrat);
-        })
-        : setupsList;
-
-    const finalSetups = displayedSetups.length > 0 ? displayedSetups : setupsList;
+    const finalSetups = setupsList;
 
     const handleViewDetail = (item) => {
         if (typeof window !== 'undefined') {
@@ -63,7 +54,7 @@ export default function StrategyExecutionView({ selectedStrategyId, strategies =
             {/* Dark Glassmorphism Grid of Strategy Cards (2 Columns per Row) */}
             <div className={styles.pairsGrid}>
                 {loading && finalSetups.length === 0 ? (
-                    <StrategyGridSkeleton count={4} />
+                    <StrategyGridSkeleton count={6} />
                 ) : finalSetups.length === 0 ? (
                     <div className={styles.emptySetupsState}>
                         <div className={styles.emptyIconWrapper}>
@@ -81,7 +72,7 @@ export default function StrategyExecutionView({ selectedStrategyId, strategies =
                     const meta = item.meta || { fullName: item.display_name || item.symbol, short: item.symbol, market: 'Forex' };
                     const sig = item.signal || {};
                     const isBuy = (sig.direction || 'BUY').toUpperCase() === 'BUY';
-                    const strategyName = item.strategy_name || 'EMA Pullback';
+                    const strategyName = selectedStrategy?.name || item.strategy_name || 'EMA Pullback';
                     const volumeStrength = sig.confluence?.volume_strength || sig.volume_strength || 'STRONG';
                     const riskReward = sig.risk_reward || '1:3.0';
                     const rrLabel = sig.rr ? sig.rr.replace('R:R ', '') : '1:3 R:R';

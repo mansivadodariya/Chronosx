@@ -117,20 +117,20 @@ const generateMockCandles = (symbol = 'XAUUSD', count = 40) => {
     }
 
     const rand = pseudoRandom(getSymbolSeed(cleanSym));
-    const base = cleanSym.includes('BTC') ? 92000 : cleanSym.includes('XAU') ? 2720 : cleanSym.includes('JPY') ? 154.5 : 1.085;
+    const base = cleanSym.includes('BTC') ? 92000 : (cleanSym.includes('XAU') || cleanSym.includes('GOLD')) ? 4165 : cleanSym.includes('JPY') ? 154.5 : 1.085;
     
     // Stable reference timestamp so candle dates on X-axis do not drift or change
-    const baseTime = 1726650000;
+    const baseTime = Math.floor(Date.now() / 1000) - count * 3600;
     const candles = [];
     let cur = base;
 
-    for (let i = count; i >= 0; i--) {
-        const t = baseTime - (i * 3600);
-        const change = (rand() - 0.49) * (base * 0.004);
+    for (let i = 0; i < count; i++) {
+        const t = baseTime + (i * 3600);
+        const change = (rand() - 0.49) * (base * 0.003);
         const open = cur;
         const close = open + change;
-        const high = Math.max(open, close) + rand() * (base * 0.002);
-        const low = Math.min(open, close) - rand() * (base * 0.002);
+        const high = Math.max(open, close) + rand() * (base * 0.0015);
+        const low = Math.min(open, close) - rand() * (base * 0.0015);
         cur = close;
         candles.push({ timestamp: new Date(t * 1000).toISOString(), open, high, low, close });
     }
@@ -163,29 +163,29 @@ export const InlineCandlestickWidget = React.memo(function InlineCandlestickWidg
     }, [backendResistance, rawOhlc]);
 
     const series = useMemo(() => {
-        const candleSeries = {
+        const candleData = (Array.isArray(rawOhlc) ? rawOhlc : []).map((d) => {
+            const timeVal = d.timestamp
+                ? new Date(d.timestamp).getTime()
+                : d.time
+                ? (typeof d.time === 'number' ? (d.time > 1e11 ? d.time : d.time * 1000) : new Date(d.time).getTime())
+                : Date.now();
+
+            return {
+                x: new Date(timeVal),
+                y: [
+                    parseFloat(d.open || 0),
+                    parseFloat(d.high || 0),
+                    parseFloat(d.low || 0),
+                    parseFloat(d.close || 0)
+                ]
+            };
+        }).filter(item => !isNaN(item.x.getTime()) && item.y.every(v => !isNaN(v) && v > 0));
+
+        return [{
             name: 'Candles',
-            type: 'candlestick',
-            data: rawOhlc.map((d) => ({
-                x: new Date(d.timestamp || (d.time ? d.time * 1000 : 0)),
-                y: [parseFloat(d.open), parseFloat(d.high), parseFloat(d.low), parseFloat(d.close)]
-            }))
-        };
-
-        const createLevelLine = ({ price, strength }, rank, type) => ({
-            name: `${type === 'support' ? 'S' : 'R'}${rank + 1} ${strengthStars(strength)}`,
-            type: 'line',
-            data: [
-                { x: new Date(rawOhlc[0]?.timestamp || (rawOhlc[0]?.time ? rawOhlc[0].time * 1000 : 0)), y: price },
-                { x: new Date(rawOhlc[rawOhlc.length - 1]?.timestamp || (rawOhlc[rawOhlc.length - 1]?.time ? rawOhlc[rawOhlc.length - 1].time * 1000 : 0)), y: price }
-            ]
-        });
-
-        const supportSeriesArr = supportLevels.map((z, i) => createLevelLine(z, i, 'support'));
-        const resistanceSeriesArr = resistanceLevels.map((z, i) => createLevelLine(z, i, 'resistance'));
-
-        return [candleSeries, ...(showSR ? [...supportSeriesArr, ...resistanceSeriesArr] : [])];
-    }, [rawOhlc, supportLevels, resistanceLevels, showSR]);
+            data: candleData
+        }];
+    }, [rawOhlc]);
 
     const options = useMemo(() => {
         const yAxisAnnotations = showSR ? [
@@ -211,12 +211,6 @@ export const InlineCandlestickWidget = React.memo(function InlineCandlestickWidg
             }))
         ] : [];
 
-        const seriesColors = showSR
-            ? ['transparent', ...supportLevels.map(() => '#10b981'), ...resistanceLevels.map(() => '#ef4444')]
-            : ['transparent'];
-        const strokeWidths = showSR ? [1, ...supportLevels.map(() => 1.5), ...resistanceLevels.map(() => 1.5)] : [1];
-        const dashArrays = showSR ? [0, ...supportLevels.map(() => 4), ...resistanceLevels.map(() => 4)] : [0];
-
         return {
             chart: {
                 type: 'candlestick',
@@ -231,10 +225,7 @@ export const InlineCandlestickWidget = React.memo(function InlineCandlestickWidg
                 style: { color: '#18C98B', fontSize: '13px', fontWeight: 700 }
             },
             legend: {
-                show: true,
-                position: 'top',
-                horizontalAlign: 'right',
-                labels: { colors: isDark ? '#FFFFFF' : '#1E293B' }
+                show: false
             },
             theme: { mode: isDark ? 'dark' : 'light' },
             xaxis: {
@@ -247,15 +238,19 @@ export const InlineCandlestickWidget = React.memo(function InlineCandlestickWidg
                 tooltip: { enabled: true },
                 labels: {
                     style: { colors: isDark ? 'rgba(255, 255, 255, 0.65)' : '#475569' },
-                    formatter: (val) => val?.toFixed(val > 100 ? 2 : 4) ?? val
+                    formatter: (val) => (typeof val === 'number' ? val.toFixed(val > 100 ? 2 : 4) : val)
                 }
             },
             grid: { borderColor: isDark ? 'rgba(24, 201, 139, 0.15)' : 'rgba(226, 232, 240, 0.9)', strokeDashArray: 4 },
             annotations: { yaxis: yAxisAnnotations },
-            stroke: { width: strokeWidths, curve: 'straight', dashArray: dashArrays },
-            colors: seriesColors,
             plotOptions: {
-                candlestick: { colors: { upward: '#10b981', downward: '#ef4444' }, wick: { useFillColor: true } }
+                candlestick: {
+                    colors: {
+                        upward: '#10b981',
+                        downward: '#ef4444'
+                    },
+                    wick: { useFillColor: true }
+                }
             },
             tooltip: { theme: isDark ? 'dark' : 'light', x: { format: 'dd MMM HH:mm' } }
         };

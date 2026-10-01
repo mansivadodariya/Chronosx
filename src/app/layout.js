@@ -1,4 +1,5 @@
 import { Anton, Plus_Jakarta_Sans, Roboto } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { ToastProvider } from "@/components/toast";
 import { LanguageProvider } from "@/context/LanguageContext";
@@ -140,13 +141,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${antonSans.variable} ${robotoSans.variable} ${plusSans.variable}`} suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <script
+        <Script
           id="organization-jsonld"
           type="application/ld+json"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <script
+        <Script
           id="theme-initializer"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               try {

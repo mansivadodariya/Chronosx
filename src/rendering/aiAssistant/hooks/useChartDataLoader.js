@@ -234,15 +234,16 @@ export default function useChartDataLoader({
                     const rawClose = bar.close !== undefined ? bar.close : (bar.price !== undefined ? bar.price : (bar.last !== undefined ? bar.last : bar.c));
                     const closePrice = parseFloat(rawClose);
 
-                    if (isNaN(timeVal) || timeVal <= 0 || isNaN(closePrice) || closePrice <= 0) return;
+                    const interval = getTimeframeInterval(currentTimeframe);
+                    const bucketTime = Math.floor(timeVal / interval) * interval;
 
-                    const openPrice = !isNaN(parseFloat(bar.open)) ? parseFloat(bar.open) : closePrice;
+                    const openPrice = !isNaN(parseFloat(bar.open)) && parseFloat(bar.open) > 0 ? parseFloat(bar.open) : closePrice;
                     const highPrice = !isNaN(parseFloat(bar.high)) ? Math.max(openPrice, closePrice, parseFloat(bar.high)) : Math.max(openPrice, closePrice);
                     const lowPrice = !isNaN(parseFloat(bar.low)) ? Math.min(openPrice, closePrice, parseFloat(bar.low)) : Math.min(openPrice, closePrice);
                     const volumeVal = parseFloat(bar.volume || bar.tick_volume || bar.vol || 0);
 
                     let updatedBar = {
-                        time: timeVal,
+                        time: bucketTime,
                         open: openPrice,
                         high: highPrice,
                         low: lowPrice,
@@ -254,19 +255,17 @@ export default function useChartDataLoader({
                         const lastIndex = candlesDataRef.current.length - 1;
                         const lastCandle = candlesDataRef.current[lastIndex];
 
-                        // Prevent cross-symbol price distortion or sudden giant spikes
+                        // Prevent cross-symbol price distortion or sudden giant spikes (> 25% single-tick gap)
                         const lastClose = lastCandle.close;
                         const ratio = closePrice / lastClose;
-                        if (ratio > 1.35 || ratio < 0.65) {
+                        if (ratio > 1.25 || ratio < 0.75) {
                             return;
                         }
 
-                        // Align forming candle time to prevent backward jumps
-                        const effectiveTime = Math.max(timeVal, lastCandle.time);
-
-                        if (effectiveTime === lastCandle.time) {
+                        if (bucketTime <= lastCandle.time) {
+                            // Updating current forming candle
                             updatedBar = {
-                                time: effectiveTime,
+                                time: lastCandle.time,
                                 open: lastCandle.open,
                                 high: Math.max(lastCandle.high, highPrice, closePrice),
                                 low: Math.min(lastCandle.low, lowPrice, closePrice),
@@ -275,8 +274,19 @@ export default function useChartDataLoader({
                             };
                             candlesDataRef.current[lastIndex] = updatedBar;
                         } else {
+                            // New candle period started
+                            updatedBar = {
+                                time: bucketTime,
+                                open: Math.abs(openPrice - lastCandle.close) < (lastCandle.close * 0.02) ? openPrice : lastCandle.close,
+                                high: Math.max(openPrice, closePrice, highPrice),
+                                low: Math.min(openPrice, closePrice, lowPrice),
+                                close: closePrice,
+                                value: closePrice,
+                            };
                             candlesDataRef.current.push(updatedBar);
                         }
+                    } else {
+                        candlesDataRef.current = [updatedBar];
                     }
 
                     unifiedSocket.setKnownPrice(activeSymbolClean, closePrice);
@@ -292,9 +302,9 @@ export default function useChartDataLoader({
                     try {
                         if (volumeSeriesRef.current) {
                             volumeSeriesRef.current.update({
-                                time: timeVal,
+                                time: updatedBar.time,
                                 value: volumeVal || Math.floor(Math.random() * 2000) + 500,
-                                color: closePrice >= openPrice ? 'rgba(38, 166, 154, 0.7)' : 'rgba(239, 83, 80, 0.7)',
+                                color: closePrice >= updatedBar.open ? 'rgba(38, 166, 154, 0.7)' : 'rgba(239, 83, 80, 0.7)',
                             });
                         }
                     } catch {}
