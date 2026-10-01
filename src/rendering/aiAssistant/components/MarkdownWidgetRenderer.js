@@ -26,14 +26,14 @@ const getAssetData = (visualData, symbol) => {
 const LEFT = 8;
 const RIGHT = 8;
 
-const strengthStars = (score) => {
+export const strengthStars = (score) => {
     if (typeof score === 'string') return score;
     if (score >= 8) return 'Strong';
     if (score >= 4) return 'Medium';
     return 'Weak';
 };
 
-const normalizeBackendLevels = (levels) => {
+export const normalizeBackendLevels = (levels) => {
     if (!Array.isArray(levels)) return null;
     return levels.map(level => {
         if (typeof level === 'number') return { price: level, strength: 5 };
@@ -46,7 +46,7 @@ const normalizeBackendLevels = (levels) => {
     }).filter(Boolean);
 };
 
-const calculateSupportResistance = (candles) => {
+export const calculateSupportResistance = (candles) => {
     if (!candles?.length) return { support: [], resistance: [] };
     const highs = candles.map(c => Number(c.high));
     const lows = candles.map(c => Number(c.low));
@@ -87,7 +87,7 @@ const calculateSupportResistance = (candles) => {
 };
 
 // Seeded deterministic pseudo-random generator so mock candles NEVER change across re-renders
-function pseudoRandom(seed) {
+export function pseudoRandom(seed) {
     let s = seed % 2147483647;
     if (s <= 0) s += 2147483646;
     return function() {
@@ -96,7 +96,7 @@ function pseudoRandom(seed) {
     };
 }
 
-function getSymbolSeed(symbol = 'XAUUSD') {
+export function getSymbolSeed(symbol = 'XAUUSD') {
     let hash = 0;
     const str = String(symbol).toUpperCase();
     for (let i = 0; i < str.length; i++) {
@@ -107,9 +107,9 @@ function getSymbolSeed(symbol = 'XAUUSD') {
 }
 
 // Global cache for mock candles so candles remain 100% stable across renders
-const MOCK_CANDLES_CACHE = new Map();
+export const MOCK_CANDLES_CACHE = new Map();
 
-const generateMockCandles = (symbol = 'XAUUSD', count = 40) => {
+export const generateMockCandles = (symbol = 'XAUUSD', count = 40) => {
     const cleanSym = String(symbol).replace('/', '').toUpperCase();
     const cacheKey = `${cleanSym}_${count}`;
     if (MOCK_CANDLES_CACHE.has(cacheKey)) {
@@ -138,6 +138,8 @@ const generateMockCandles = (symbol = 'XAUUSD', count = 40) => {
     MOCK_CANDLES_CACHE.set(cacheKey, candles);
     return candles;
 };
+
+export { normalizeAssetSymbol, getAssetData };
 
 // ─── 1. Candlestick Price Chart Widget ─────────────────────────────────────────
 export const InlineCandlestickWidget = React.memo(function InlineCandlestickWidget({ symbol = 'XAUUSD', visualData, isDark = true }) {
@@ -241,7 +243,14 @@ export const InlineCandlestickWidget = React.memo(function InlineCandlestickWidg
                     formatter: (val) => (typeof val === 'number' ? val.toFixed(val > 100 ? 2 : 4) : val)
                 }
             },
-            grid: { borderColor: isDark ? 'rgba(24, 201, 139, 0.15)' : 'rgba(226, 232, 240, 0.9)', strokeDashArray: 4 },
+            grid: { 
+                borderColor: isDark ? 'rgba(24, 201, 139, 0.15)' : 'rgba(226, 232, 240, 0.9)', 
+                strokeDashArray: 4,
+                padding: {
+                    right: 65,
+                    left: 10
+                }
+            },
             annotations: { yaxis: yAxisAnnotations },
             plotOptions: {
                 candlestick: {
@@ -348,6 +357,80 @@ export const InlineSentimentRadarWidget = React.memo(function InlineSentimentRad
     );
 });
 
+// ─── Helper: Format & Clean Inline Markdown Linebreaks ───────────────────────
+export function normalizeMarkdownParagraphs(text = '') {
+    if (!text) return '';
+    const rawLines = String(text).split('\n');
+    const processedLines = [];
+
+    for (let i = 0; i < rawLines.length; i++) {
+        let line = rawLines[i];
+        const trimmed = line.trim();
+
+        // 1. If this is a markdown table row (starts and ends with '|', or is a table separator line), preserve it completely!
+        if ((trimmed.startsWith('|') && trimmed.endsWith('|')) || /^\|?[\s-:]+(\|[\s-:]+)+\|?$/.test(trimmed)) {
+            processedLines.push(line);
+            continue;
+        }
+
+        // 2. Skip empty bullet lines, stray asterisks, or stray divider lines
+        if (/^[-*+•]\s*$/.test(trimmed) || /^(\*\*|\*|__|_)\s*$/.test(trimmed) || /^[–—]\s*$/.test(trimmed)) {
+            continue;
+        }
+
+        // 3. For normal lines, normalize inline section headers only when separated by pipes, punctuation, or newlines
+        line = line
+            // Pipe-separated bias tokens: e.g. "Intraday Bias: Bearish | Swing Bias: Bearish | Conviction: Moderate"
+            .replace(/\s*\|\s*(\*{0,2}(?:Intraday Bias|Swing Bias|Conviction|Forecast Horizon|Trade Thesis):\s*)/gi, '\n- $1')
+            // Separate "Final Bias:" onto a new paragraph when preceded by sentence-ending punctuation or double-asterisk
+            .replace(/(?<=[.:!]\s*|\n|\*\*)\s*(?:\*{0,2}Final Bias:?\*{0,2})\s*/gi, '\n\n**Final Bias:**\n')
+            // Separate "Trade Thesis:" onto a new paragraph when preceded by sentence-ending punctuation
+            .replace(/(?<=[.:!]\s*|\n)\s*(?:\*{0,2}Trade Thesis:?\*{0,2})\s*/gi, '\n\n**Trade Thesis:** ')
+            // Standalone "Forecast Horizon:" metric onto a bullet
+            .replace(/(?<=[.:!|\n]\s*|\*\*)\s*[-*•]?\s*(?:\*{0,2}Forecast Horizon:?\*{0,2})\s*/gi, '\n- Forecast Horizon: ')
+            // Standalone "Conviction:" rating onto a bullet (only when preceded by pipe, punctuation, or start of line)
+            .replace(/(?<=[.:!|\n]\s*)\s*[-*•]?\s*(?:\*{0,2}Conviction:?\*{0,2})\s*(High|Moderate|Low|Strong|Weak|\d+)/gi, '\n- Conviction: $1')
+            // Standalone "Intraday Bias:" or "Swing Bias:" onto a bullet
+            .replace(/(?<=[.:!|\n]\s*)\s*[-*•]?\s*(?:\*{0,2}Intraday Bias:?\*{0,2})\s*/gi, '\n- Intraday Bias: ')
+            .replace(/(?<=[.:!|\n]\s*)\s*[-*•]?\s*(?:\*{0,2}Swing Bias:?\*{0,2})\s*/gi, '\n- Swing Bias: ');
+
+        const subLines = line.split('\n');
+        for (const sub of subLines) {
+            const subTrimmed = sub.trim();
+            if (/^[-*+•]\s*$/.test(subTrimmed) || /^(\*\*|\*|__|_)\s*$/.test(subTrimmed)) continue;
+
+            let cleanedSub = sub
+                .replace(/\s+\*{2,}$/, '')
+                .replace(/^-\s+\*{2,}\s+/, '- ')
+                .replace(/\*\*\s*\*\*/g, ' ')
+                .replace(/\*{4,}/g, '**');
+
+            // Format bullet items with key: value (e.g. "- **Intraday (1H-4H):** Bearish")
+            // Ensure the key is bold and the value is completely free of stray asterisks / wrapping bold
+            const bulletMatch = cleanedSub.match(/^([ \t]*[-*•]\s*)\*{0,2}([A-Za-z0-9\s()/-]+:)\*{0,2}\s*(.*?)$/);
+            if (bulletMatch) {
+                const prefix = bulletMatch[1];
+                const key = bulletMatch[2].trim();
+                let val = bulletMatch[3].trim();
+
+                val = val
+                    .replace(/^\*{1,2}\s*/, '')
+                    .replace(/\s*\*{1,2}$/, '')
+                    .replace(/\*\*\s*\*\*/g, '')
+                    .trim();
+
+                cleanedSub = `${prefix}**${key}** ${val}`;
+            }
+
+            processedLines.push(cleanedSub);
+        }
+    }
+
+    return processedLines.join('\n')
+        .replace(/([^\n])\n(- |\* |\d+\. )/g, '$1\n\n$2')
+        .replace(/\n{3,}/g, '\n\n');
+}
+
 // ─── 3. Main Widget-Aware Markdown Renderer ───────────────────────────────────
 const RenderMarkdownWithWidgets = React.memo(function RenderMarkdownWithWidgets({ 
     content = '', 
@@ -360,10 +443,12 @@ const RenderMarkdownWithWidgets = React.memo(function RenderMarkdownWithWidgets(
     const { theme } = useTheme();
     const isDark = forceLight ? false : (theme !== 'light');
 
+    const normalizedContent = useMemo(() => normalizeMarkdownParagraphs(content), [content]);
+
     const words = React.useMemo(() => {
-        if (!content) return [];
-        return content.split(' ');
-    }, [content]);
+        if (!normalizedContent) return [];
+        return normalizedContent.split(' ');
+    }, [normalizedContent]);
 
     const [revealedWordCount, setRevealedWordCount] = useState(isStreaming ? 0 : words.length);
     const [isStreamingFinished, setIsStreamingFinished] = useState(!isStreaming);
@@ -397,12 +482,12 @@ const RenderMarkdownWithWidgets = React.memo(function RenderMarkdownWithWidgets(
         }, 45);
 
         return () => clearInterval(intervalId);
-    }, [content, isStreaming, words.length, onComplete]);
+    }, [normalizedContent, isStreaming, words.length, onComplete]);
 
     const displayContent = useMemo(() => {
-        if (isStreamingFinished) return content;
+        if (isStreamingFinished) return normalizedContent;
         return words.slice(0, revealedWordCount).join(' ');
-    }, [isStreamingFinished, content, words, revealedWordCount]);
+    }, [isStreamingFinished, normalizedContent, words, revealedWordCount]);
 
     const parts = useMemo(() => {
         if (!displayContent) return [];
@@ -444,7 +529,7 @@ const RenderMarkdownWithWidgets = React.memo(function RenderMarkdownWithWidgets(
                             rehypePlugins={[rehypeRaw]}
                             components={bidiMarkdownComponents}
                         >
-                            {part}
+                            {normalizeMarkdownParagraphs(part)}
                         </ReactMarkdown>
                     </div>
                 );

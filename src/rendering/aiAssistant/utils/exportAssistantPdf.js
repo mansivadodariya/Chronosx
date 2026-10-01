@@ -1,13 +1,12 @@
-'use client';
-
 import { toast } from '@/components/toast';
+import { renderRadarSvgHtml, renderCandlestickSvgHtml } from './pdfChartGenerators';
 
 /**
  * Universal White-Theme PDF Exporter for ChronosX AI Assistant
  * Exports any chat message (Vision Analysis, Deep Analysis, Markdown, or Technical Advice)
  * strictly formatted in institutional white-theme with cover header, proper margins, and zero line cutting.
  */
-export async function exportAssistantMessageToPdf(msg, defaultPair = 'XAU/USD') {
+export async function exportAssistantMessageToPdf(msg, defaultPair = 'XAU/USD', sourceDomElement = null) {
     if (!msg) return;
 
     try {
@@ -31,10 +30,70 @@ export async function exportAssistantMessageToPdf(msg, defaultPair = 'XAU/USD') 
                 .replace(/`(.*?)`/g, '<code style="background: #F1F5F9; color: #0F172A; padding: 1px 4px; border-radius: 3px; font-size: 10px;">$1</code>');
         }
 
-        // Helper: format full markdown with tables and heading protections
+        // Helper: format full markdown with tables, widgets, and heading protections
         function formatMarkdownToHtml(markdown) {
             if (!markdown) return '';
-            const lines = String(markdown).split('\n');
+            const rawLines = String(markdown).split('\n');
+            const lines = [];
+
+            for (let i = 0; i < rawLines.length; i++) {
+                let line = rawLines[i];
+                const trimmed = line.trim();
+
+                // If table row, preserve as is
+                if ((trimmed.startsWith('|') && trimmed.endsWith('|')) || /^\|?[\s-:]+(\|[\s-:]+)+\|?$/.test(trimmed)) {
+                    lines.push(line);
+                    continue;
+                }
+
+                if (/^[-*+•]\s*$/.test(trimmed) || /^(\*\*|\*|__|_)\s*$/.test(trimmed) || /^[–—]\s*$/.test(trimmed)) continue;
+
+                // 3. For normal lines, normalize inline section headers only when separated by pipes, punctuation, or newlines
+                line = line
+                    // Pipe-separated bias tokens: e.g. "Intraday Bias: Bearish | Swing Bias: Bearish | Conviction: Moderate"
+                    .replace(/\s*\|\s*(\*{0,2}(?:Intraday Bias|Swing Bias|Conviction|Forecast Horizon|Trade Thesis):\s*)/gi, '\n- $1')
+                    // Separate "Final Bias:" onto a new paragraph when preceded by sentence-ending punctuation or double-asterisk
+                    .replace(/(?<=[.:!]\s*|\n|\*\*)\s*(?:\*{0,2}Final Bias:?\*{0,2})\s*/gi, '\n\n**Final Bias:**\n')
+                    // Separate "Trade Thesis:" onto a new paragraph when preceded by sentence-ending punctuation
+                    .replace(/(?<=[.:!]\s*|\n)\s*(?:\*{0,2}Trade Thesis:?\*{0,2})\s*/gi, '\n\n**Trade Thesis:** ')
+                    // Standalone "Forecast Horizon:" metric onto a bullet
+                    .replace(/(?<=[.:!|\n]\s*|\*\*)\s*[-*•]?\s*(?:\*{0,2}Forecast Horizon:?\*{0,2})\s*/gi, '\n- Forecast Horizon: ')
+                    // Standalone "Conviction:" rating onto a bullet (only when preceded by pipe, punctuation, or start of line)
+                    .replace(/(?<=[.:!|\n]\s*)\s*[-*•]?\s*(?:\*{0,2}Conviction:?\*{0,2})\s*(High|Moderate|Low|Strong|Weak|\d+)/gi, '\n- Conviction: $1')
+                    // Standalone "Intraday Bias:" or "Swing Bias:" onto a bullet
+                    .replace(/(?<=[.:!|\n]\s*)\s*[-*•]?\s*(?:\*{0,2}Intraday Bias:?\*{0,2})\s*/gi, '\n- Intraday Bias: ')
+                    .replace(/(?<=[.:!|\n]\s*)\s*[-*•]?\s*(?:\*{0,2}Swing Bias:?\*{0,2})\s*/gi, '\n- Swing Bias: ');
+
+                const subLines = line.split('\n');
+                for (const sub of subLines) {
+                    const subTrimmed = sub.trim();
+                    if (/^[-*+•]\s*$/.test(subTrimmed) || /^(\*\*|\*|__|_)\s*$/.test(subTrimmed)) continue;
+
+                    let cleanedSub = sub
+                        .replace(/\s+\*{2,}$/, '')
+                        .replace(/^-\s+\*{2,}\s+/, '- ')
+                        .replace(/\*\*\s*\*\*/g, ' ')
+                        .replace(/\*{4,}/g, '**');
+
+                    const bulletMatch = cleanedSub.match(/^([ \t]*[-*•]\s*)\*{0,2}([A-Za-z0-9\s()/-]+:)\*{0,2}\s*(.*?)$/);
+                    if (bulletMatch) {
+                        const prefix = bulletMatch[1];
+                        const key = bulletMatch[2].trim();
+                        let val = bulletMatch[3].trim();
+
+                        val = val
+                            .replace(/^\*{1,2}\s*/, '')
+                            .replace(/\s*\*{1,2}$/, '')
+                            .replace(/\*\*\s*\*\*/g, '')
+                            .trim();
+
+                        cleanedSub = `${prefix}**${key}** ${val}`;
+                    }
+
+                    lines.push(cleanedSub);
+                }
+            }
+
             const result = [];
             let inTable = false;
             let tableRows = [];
@@ -64,8 +123,19 @@ export async function exportAssistantMessageToPdf(msg, defaultPair = 'XAU/USD') 
             for (let i = 0; i < lines.length; i++) {
                 let line = lines[i].trim();
 
-                // Strip widget shortcodes e.g. [WIDGET:...]
-                if (/^\[WIDGET:/.test(line)) continue;
+                // Check for embedded widget shortcodes e.g. [WIDGET:SENTIMENT_RADAR:XAUUSD] or [WIDGET:CANDLESTICK:XAUUSD]
+                const widgetMatch = line.match(/\[WIDGET:([A-Z_]+)(?::([A-Z0-9/_-]+))?\]/i);
+                if (widgetMatch) {
+                    if (inTable) flushTable();
+                    const widgetType = widgetMatch[1].toUpperCase();
+                    const widgetSym = widgetMatch[2] || pair || 'XAUUSD';
+                    if (widgetType === 'SENTIMENT_RADAR' || widgetType === 'RADAR') {
+                        result.push(renderRadarSvgHtml(widgetSym, msg.visualData, sourceDomElement, pair));
+                    } else if (widgetType === 'CANDLESTICK') {
+                        result.push(renderCandlestickSvgHtml(widgetSym, msg.visualData, sourceDomElement, pair));
+                    }
+                    continue;
+                }
 
                 // Table row: | col1 | col2 |
                 if (line.startsWith('|') && line.endsWith('|')) {
@@ -105,8 +175,13 @@ export async function exportAssistantMessageToPdf(msg, defaultPair = 'XAU/USD') 
                 }
 
                 // Bullet points
-                if (line.startsWith('- ') || line.startsWith('* ')) {
-                    result.push(`<div class="pdfBlock" style="display: flex; gap: 6px; margin-bottom: 4px; font-size: 10.5px; line-height: 1.5; color: #334155; page-break-inside: avoid; break-inside: avoid;"><span style="color: #10B981; font-weight: 800; flex-shrink: 0;">•</span><span>${parseInline(line.slice(2))}</span></div>`);
+                if (line.startsWith('- ') || line.startsWith('* ') || line.startsWith('• ')) {
+                    const bulletText = line.slice(2).trim();
+                    if (!bulletText) continue;
+                    result.push(`<div class="pdfBlock" style="display: flex; gap: 6px; margin-bottom: 4px; font-size: 10.5px; line-height: 1.5; color: #334155; page-break-inside: avoid; break-inside: avoid;"><span style="color: #10B981; font-weight: 800; flex-shrink: 0;">•</span><span>${parseInline(bulletText)}</span></div>`);
+                    continue;
+                }
+                if (/^[-*+•]\s*$/.test(line)) {
                     continue;
                 }
 

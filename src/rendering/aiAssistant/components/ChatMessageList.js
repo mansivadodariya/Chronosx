@@ -149,7 +149,7 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                                 <div className={styles.downloadReportRow} style={{ marginTop: 10 }}>
                                                     <button
                                                         type="button"
-                                                        onClick={() => exportAssistantMessageToPdf(msg, selectedPair)}
+                                                        onClick={(e) => exportAssistantMessageToPdf(msg, selectedPair, e.currentTarget.closest('.' + styles.chatMessageBubble) || e.currentTarget.closest('.' + styles.analysisCenterCard))}
                                                         className={styles.downloadFullReportBtn}
                                                     >
                                                         <DownloadIcon size={14} />
@@ -202,7 +202,7 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                                         <div className={styles.downloadReportRow}>
                                                             <button
                                                                 type="button"
-                                                                onClick={() => exportAssistantMessageToPdf(msg, selectedPair)}
+                                                                onClick={(e) => exportAssistantMessageToPdf(msg, selectedPair, e.currentTarget.closest('.' + styles.chatMessageBubble) || e.currentTarget.closest('.' + styles.analysisCenterCard))}
                                                                 className={styles.downloadFullReportBtn}
                                                             >
                                                                 <DownloadIcon size={15} />
@@ -225,7 +225,7 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                                         <div className={styles.downloadReportRow} style={{ marginTop: 8 }}>
                                                             <button
                                                                 type="button"
-                                                                onClick={() => exportAssistantMessageToPdf(msg, selectedPair)}
+                                                                onClick={(e) => exportAssistantMessageToPdf(msg, selectedPair, e.currentTarget.closest('.' + styles.chatMessageBubble) || e.currentTarget.closest('.' + styles.analysisCenterCard))}
                                                                 className={styles.downloadFullReportBtn}
                                                                 style={{ padding: '6px 12px', fontSize: '11.5px' }}
                                                             >
