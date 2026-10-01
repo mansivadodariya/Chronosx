@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
 import styles from '../whiteLabel.module.scss';
 
 const FAQS = [
@@ -40,7 +40,7 @@ const FAQS = [
     }
 ];
 
-export default function WhiteLabelFaq({ onContactClick }) {
+export default function WhiteLabelFaq() {
     const [openIndex, setOpenIndex] = useState(0);
 
     const toggleFaq = (index) => {
@@ -48,106 +48,54 @@ export default function WhiteLabelFaq({ onContactClick }) {
     };
 
     return (
-        <>
-            {/* 17 — Call To Action Section */}
-            <section className={styles.ctaSection}>
-                <div className={styles.container}>
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.96 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.55 }}
-                        className={styles.ctaCardBox}
-                    >
-                        <div className={styles.sectionMiniTag} style={{ justifyContent: 'center' }}>
-                            Ready to Get Started?
-                        </div>
-                        <h2 className={styles.ctaTitle}>
-                            Build Your Trading Platform With ChronosX.
-                        </h2>
-                        <p className={styles.ctaSubtitle}>
-                            Your business already has the vision. Now build the technology around it. Launch an AI-powered trading experience under your own brand with everything you need in one connected environment.
-                        </p>
-                        <div className={styles.ctaTagline}>
-                            Your Brand. Your Users. Your Platform. Powered by ChronosX.
-                        </div>
+        <section className={styles.faqSection}>
+            <div className={styles.container}>
+                <SectionHeader
+                    badge="FAQ"
+                    title="Frequently Asked Questions."
+                    description="Everything you need to know about ChronosX White-Label platform deployment."
+                />
 
-                        <div className={styles.heroCtaGroup} style={{ margin: 0 }}>
-                            <button
-                                type="button"
-                                onClick={onContactClick}
-                                className={styles.primaryCtaBtn}
+                <div className={styles.faqList}>
+                    {FAQS.map((faq, index) => {
+                        const isOpen = openIndex === index;
+                        return (
+                            <div
+                                key={faq.q}
+                                className={`${styles.faqItem} ${isOpen ? styles.faqOpen : ''}`}
                             >
-                                <span>Talk to Our Team</span>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                    <path d="M5 12h14M12 5l7 7-7 7" />
-                                </svg>
-                            </button>
-
-                            <Link href="/capabilities" className={styles.secondaryCtaBtn}>
-                                <span>Explore ChronosX</span>
-                            </Link>
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* 18 — FAQ Accordion Section */}
-            <section className={styles.faqSection}>
-                <div className={styles.container}>
-                    <div className={styles.sectionHeaderCenter}>
-                        <div className={styles.sectionMiniTag} style={{ justifyContent: 'center' }}>
-                            FAQ
-                        </div>
-                        <h2 className={styles.sectionMainTitle}>
-                            Frequently Asked Questions.
-                        </h2>
-                        <p className={styles.sectionMainSubtitle}>
-                            Everything you need to know about ChronosX White-Label platform deployment.
-                        </p>
-                    </div>
-
-                    <div className={styles.faqList}>
-                        {FAQS.map((faq, index) => {
-                            const isOpen = openIndex === index;
-                            return (
-                                <div
-                                    key={faq.q}
-                                    className={`${styles.faqItem} ${isOpen ? styles.faqOpen : ''}`}
+                                <button
+                                    type="button"
+                                    className={styles.faqQuestionBtn}
+                                    onClick={() => toggleFaq(index)}
                                 >
-                                    <button
-                                        type="button"
-                                        className={styles.faqQuestionBtn}
-                                        onClick={() => toggleFaq(index)}
+                                    <span>{faq.q}</span>
+                                    <span
+                                        className={styles.faqToggleIcon}
+                                        style={{ transform: isOpen ? 'rotate(180deg)' : 'none' }}
                                     >
-                                        <span>{faq.q}</span>
-                                        <span
-                                            className={styles.faqToggleIcon}
-                                            style={{ transform: isOpen ? 'rotate(180deg)' : 'none' }}
-                                        >
-                                            ▼
-                                        </span>
-                                    </button>
+                                        ▼
+                                    </span>
+                                </button>
 
-                                    <AnimatePresence>
-                                        {isOpen && (
-                                            <motion.div
-                                                initial={{ height: 0, opacity: 0 }}
-                                                animate={{ height: 'auto', opacity: 1 }}
-                                                exit={{ height: 0, opacity: 0 }}
-                                                transition={{ duration: 0.28, ease: 'easeInOut' }}
-                                                className={styles.faqAnswerBox}
-                                            >
-                                                <p>{faq.a}</p>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                </div>
-                            );
-                        })}
-                    </div>
+                                <AnimatePresence>
+                                    {isOpen && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.28, ease: 'easeInOut' }}
+                                            className={styles.faqAnswerBox}
+                                        >
+                                            <p>{faq.a}</p>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        );
+                    })}
                 </div>
-            </section>
-        </>
+            </div>
+        </section>
     );
 }

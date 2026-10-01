@@ -2,33 +2,30 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import SectionHeader from '@/components/sectionHeader';
 import styles from '../whiteLabel.module.scss';
 
 const STEPS = [
     {
         num: '01',
-        badge: 'DISCOVER',
         title: 'Share Your Vision',
         desc: 'Tell us about your business, target trader audience, asset markets, and platform requirements. We map out your target ecosystem.',
         outcome: 'We understand what you are building.'
     },
     {
         num: '02',
-        badge: 'DESIGN',
         title: 'Define Brand & UX',
         desc: 'Customize your visual identity, typography, UI layout, platform modules, and required broker/auth integrations.',
         outcome: 'We map the technology to your needs.'
     },
     {
         num: '03',
-        badge: 'CONFIGURE',
         title: 'Configure Engine Modules',
         desc: 'Our team provisions your dedicated enterprise instance, routes live market data, and configures AI vision models.',
         outcome: 'Your platform begins taking shape.'
     },
     {
         num: '04',
-        badge: 'LAUNCH',
         title: 'Deploy & Scale',
         desc: 'Deploy your branded trading ecosystem on your custom domain and begin onboarding your traders with ongoing support.',
         outcome: 'Your brand. Your platform. Your users.'
@@ -54,17 +51,11 @@ export default function WhiteLabelHowItWorks() {
         <section className={styles.howItWorksSection}>
             <div className={styles.container}>
                 {/* 10 — How it works */}
-                <div className={styles.sectionHeaderCenter}>
-                    <div className={styles.sectionMiniTag} style={{ justifyContent: 'center' }}>
-                        How It Works
-                    </div>
-                    <h2 className={styles.sectionMainTitle}>
-                        From Idea to Branded Platform.
-                    </h2>
-                    <p className={styles.sectionMainSubtitle}>
-                        A streamlined, 4-step deployment process to launch your turnkey trading ecosystem.
-                    </p>
-                </div>
+                <SectionHeader
+                    badge="How It Works"
+                    title="From Idea to Branded Platform."
+                    description="A streamlined, 4-step deployment process to launch your turnkey trading ecosystem."
+                />
 
                 <div className={styles.timelineStepsRow}>
                     {STEPS.map((step, index) => (
@@ -77,10 +68,7 @@ export default function WhiteLabelHowItWorks() {
                             className={styles.timelineStepCard}
                         >
                             <div className={styles.timelineStepHeader}>
-                                <div className={styles.stepIconWrap}>
-                                    <span style={{ fontWeight: 800, fontSize: '13px' }}>{step.num}</span>
-                                </div>
-                                <span className={styles.stepBadge}>{step.badge}</span>
+                                <span className={styles.stepNum}>{step.num}</span>
                             </div>
                             <h3 className={styles.stepTitle}>{step.title}</h3>
                             <p className={styles.stepDesc}>{step.desc}</p>
@@ -100,13 +88,12 @@ export default function WhiteLabelHowItWorks() {
                             transition={{ duration: 0.55 }}
                             className={styles.advantageBox}
                         >
-                            <div className={styles.sectionMiniTag}>Why Build From Scratch?</div>
-                            <h3 className={styles.sectionMainTitle} style={{ fontSize: '24px', textAlign: 'left' }}>
-                                Focus on Your Business. Let Technology Do the Heavy Lifting.
-                            </h3>
-                            <p className={styles.sectionMainSubtitle} style={{ fontSize: '14px' }}>
-                                Skip the high development cycle and get to market immediately with a battle-tested AI and quantitative trading foundation.
-                            </p>
+                            <SectionHeader
+                                badge="Why Build From Scratch?"
+                                title="Focus on Your Business. Let Technology Do the Heavy Lifting."
+                                description="Skip the high development cycle and get to market immediately with a battle-tested AI and quantitative trading foundation."
+                                align="left"
+                            />
 
                             <div className={styles.advantagePillGrid}>
                                 {ADVANTAGES.map((adv) => (
@@ -131,13 +118,12 @@ export default function WhiteLabelHowItWorks() {
                             transition={{ duration: 0.55, delay: 0.1 }}
                             className={styles.advantageBox}
                         >
-                            <div className={styles.sectionMiniTag}>Built For Trust</div>
-                            <h3 className={styles.sectionMainTitle} style={{ fontSize: '24px', textAlign: 'left' }}>
-                                Secure, Reliable, Institutional-Grade.
-                            </h3>
-                            <p className={styles.sectionMainSubtitle} style={{ fontSize: '14px' }}>
-                                Your users’ data and trading experience are protected with enterprise-level security and high-availability SLA.
-                            </p>
+                            <SectionHeader
+                                badge="Built For Trust"
+                                title="Secure, Reliable, Institutional-Grade."
+                                description="Your users’ data and trading experience are protected with enterprise-level security and high-availability SLA."
+                                align="left"
+                            />
 
                             <div className={styles.advantagePillGrid}>
                                 {SECURITY_POINTS.map((sec) => (

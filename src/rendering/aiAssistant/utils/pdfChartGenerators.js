@@ -6,7 +6,7 @@ import {
 } from '../components/MarkdownWidgetRenderer';
 
 /**
- * Render SVG Radar Chart for PDF
+ * Render SVG Radar Chart for PDF (White Theme, Centered, No Clipping)
  */
 export function renderRadarSvgHtml(symbol, visualData, sourceDomElement = null, pair = 'XAUUSD') {
     const cleanSym = normalizeAssetSymbol(symbol || pair);
@@ -26,9 +26,9 @@ export function renderRadarSvgHtml(symbol, visualData, sourceDomElement = null, 
     const sVol = norm(scores.volatility ?? scores.volatility_score, 50);
     const sOver = norm(scores.overall ?? scores.overall_score, 72);
 
-    const cx = 150;
-    const cy = 125;
-    const maxR = 75;
+    const cx = 200;
+    const cy = 120;
+    const maxR = 68;
 
     const pTrend = `${cx},${cy - (sTrend / 100) * maxR}`;
     const pMom = `${cx + (sMom / 100) * maxR},${cy}`;
@@ -36,32 +36,37 @@ export function renderRadarSvgHtml(symbol, visualData, sourceDomElement = null, 
     const pOver = `${cx - (sOver / 100) * maxR},${cy}`;
 
     return `
-    <div class="pdfBlock pdfSectionCard" style="background: #0B0F17 !important; border: 1px solid rgba(255, 255, 255, 0.12) !important; border-radius: 10px; padding: 12px 14px; margin: 12px 0; text-align: center; page-break-inside: avoid !important; break-inside: avoid !important; color: #FFFFFF !important; box-sizing: border-box; width: 100%;">
-        <div style="font-size: 11px; font-weight: 800; color: #10B981; text-transform: uppercase; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 4px;">
-            <span>Market Sentiment: <strong>${cleanSym}</strong></span>
-            <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10B981; color: #10B981; font-size: 8.5px; font-weight: 800; padding: 2px 6px; border-radius: 4px;">QUANT AUDIT</span>
+    <div class="pdfBlock pdfSectionCard" style="background: #FFFFFF !important; border: 1.5px solid #E2E8F0 !important; border-radius: 8px; padding: 12px 16px; margin: 12px 0; text-align: center; page-break-inside: avoid !important; break-inside: avoid !important; color: #0F172A !important; box-sizing: border-box; width: 100%;">
+        <div style="font-size: 11px; font-weight: 800; color: #0F172A; text-transform: uppercase; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; padding-bottom: 6px;">
+            <span>Market Sentiment: <strong style="color: #059669;">${cleanSym}</strong></span>
+            <span style="background: #ECFDF5; border: 1px solid #10B981; color: #065F46; font-size: 8.5px; font-weight: 800; padding: 2px 7px; border-radius: 4px;">QUANT AUDIT</span>
         </div>
-        <div style="display: flex; justify-content: center; align-items: center; padding: 4px 0; width: 100%;">
-            <svg width="100%" height="240" viewBox="0 0 300 250" style="overflow: visible; display: block; max-width: 320px; margin: 0 auto;">
-                <polygon points="${cx},${cy - maxR} ${cx + maxR},${cy} ${cx},${cy + maxR} ${cx - maxR},${cy}" fill="none" stroke="rgba(24, 201, 139, 0.25)" stroke-width="1" />
-                <polygon points="${cx},${cy - maxR * 0.75} ${cx + maxR * 0.75},${cy} ${cx},${cy + maxR * 0.75} ${cx - maxR * 0.75},${cy}" fill="none" stroke="rgba(24, 201, 139, 0.2)" stroke-width="1" />
-                <polygon points="${cx},${cy - maxR * 0.5} ${cx + maxR * 0.5},${cy} ${cx},${cy + maxR * 0.5} ${cx - maxR * 0.5},${cy}" fill="none" stroke="rgba(24, 201, 139, 0.15)" stroke-width="1" />
-                <polygon points="${cx},${cy - maxR * 0.25} ${cx + maxR * 0.25},${cy} ${cx},${cy + maxR * 0.25} ${cx - maxR * 0.25},${cy}" fill="none" stroke="rgba(24, 201, 139, 0.1)" stroke-width="1" />
+        <div style="display: flex; justify-content: center; align-items: center; padding: 6px 0; width: 100%;">
+            <svg width="100%" height="240" viewBox="0 0 400 240" style="display: block; max-width: 380px; margin: 0 auto; overflow: visible;">
+                <!-- Web Concentric Polygons -->
+                <polygon points="${cx},${cy - maxR} ${cx + maxR},${cy} ${cx},${cy + maxR} ${cx - maxR},${cy}" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1" />
+                <polygon points="${cx},${cy - maxR * 0.75} ${cx + maxR * 0.75},${cy} ${cx},${cy + maxR * 0.75} ${cx - maxR * 0.75},${cy}" fill="none" stroke="#E2E8F0" stroke-width="1" />
+                <polygon points="${cx},${cy - maxR * 0.5} ${cx + maxR * 0.5},${cy} ${cx},${cy + maxR * 0.5} ${cx - maxR * 0.5},${cy}" fill="none" stroke="#E2E8F0" stroke-width="1" />
+                <polygon points="${cx},${cy - maxR * 0.25} ${cx + maxR * 0.25},${cy} ${cx},${cy + maxR * 0.25} ${cx - maxR * 0.25},${cy}" fill="none" stroke="#E2E8F0" stroke-width="1" />
                 
-                <line x1="${cx}" y1="${cy - maxR}" x2="${cx}" y2="${cy + maxR}" stroke="rgba(24, 201, 139, 0.2)" stroke-width="1" stroke-dasharray="2,2" />
-                <line x1="${cx - maxR}" y1="${cy}" x2="${cx + maxR}" y2="${cy}" stroke="rgba(24, 201, 139, 0.2)" stroke-width="1" stroke-dasharray="2,2" />
+                <!-- Center Axis Lines -->
+                <line x1="${cx}" y1="${cy - maxR}" x2="${cx}" y2="${cy + maxR}" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="2,2" />
+                <line x1="${cx - maxR}" y1="${cy}" x2="${cx + maxR}" y2="${cy}" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="2,2" />
                 
-                <polygon points="${pTrend} ${pMom} ${pVol} ${pOver}" fill="rgba(24, 201, 139, 0.35)" stroke="#18C98B" stroke-width="2.5" />
+                <!-- Data Polygon -->
+                <polygon points="${pTrend} ${pMom} ${pVol} ${pOver}" fill="rgba(16, 185, 129, 0.25)" stroke="#10B981" stroke-width="2.5" />
                 
-                <circle cx="${cx}" cy="${cy - (sTrend / 100) * maxR}" r="4.5" fill="#18C98B" stroke="#000000" stroke-width="2" />
-                <circle cx="${cx + (sMom / 100) * maxR}" cy="${cy}" r="4.5" fill="#18C98B" stroke="#000000" stroke-width="2" />
-                <circle cx="${cx}" cy="${cy + (sVol / 100) * maxR}" r="4.5" fill="#18C98B" stroke="#000000" stroke-width="2" />
-                <circle cx="${cx - (sOver / 100) * maxR}" cy="${cy}" r="4.5" fill="#18C98B" stroke="#000000" stroke-width="2" />
+                <!-- Data Points -->
+                <circle cx="${cx}" cy="${cy - (sTrend / 100) * maxR}" r="4" fill="#10B981" stroke="#FFFFFF" stroke-width="2" />
+                <circle cx="${cx + (sMom / 100) * maxR}" cy="${cy}" r="4" fill="#10B981" stroke="#FFFFFF" stroke-width="2" />
+                <circle cx="${cx}" cy="${cy + (sVol / 100) * maxR}" r="4" fill="#10B981" stroke="#FFFFFF" stroke-width="2" />
+                <circle cx="${cx - (sOver / 100) * maxR}" cy="${cy}" r="4" fill="#10B981" stroke="#FFFFFF" stroke-width="2" />
                 
-                <text x="${cx}" y="${cy - maxR - 8}" text-anchor="middle" font-size="10" font-weight="700" fill="#E2E8F0">Trend (${sTrend}%)</text>
-                <text x="${cx + maxR + 8}" y="${cy + 4}" text-anchor="start" font-size="10" font-weight="700" fill="#E2E8F0">Momentum (${sMom}%)</text>
-                <text x="${cx}" y="${cy + maxR + 16}" text-anchor="middle" font-size="10" font-weight="700" fill="#E2E8F0">Volatility (${sVol}%)</text>
-                <text x="${cx - maxR - 8}" y="${cy + 4}" text-anchor="end" font-size="10" font-weight="700" fill="#E2E8F0">Overall (${sOver}%)</text>
+                <!-- Labels with Safe Margins -->
+                <text x="${cx}" y="${cy - maxR - 10}" text-anchor="middle" font-size="10" font-weight="700" fill="#0F172A">Trend (${sTrend}%)</text>
+                <text x="${cx + maxR + 10}" y="${cy + 3.5}" text-anchor="start" font-size="10" font-weight="700" fill="#0F172A">Momentum (${sMom}%)</text>
+                <text x="${cx}" y="${cy + maxR + 18}" text-anchor="middle" font-size="10" font-weight="700" fill="#0F172A">Volatility (${sVol}%)</text>
+                <text x="${cx - maxR - 10}" y="${cy + 3.5}" text-anchor="end" font-size="10" font-weight="700" fill="#0F172A">Overall (${sOver}%)</text>
             </svg>
         </div>
     </div>
@@ -69,7 +74,7 @@ export function renderRadarSvgHtml(symbol, visualData, sourceDomElement = null, 
 }
 
 /**
- * Render SVG Candlestick Chart for PDF matching UI 100%
+ * Render SVG Candlestick Chart for PDF matching Institutional White Theme
  */
 export function renderCandlestickSvgHtml(symbol, visualData, sourceDomElement = null, pair = 'XAUUSD') {
     const cleanSym = normalizeAssetSymbol(symbol || pair);
@@ -99,8 +104,8 @@ export function renderCandlestickSvgHtml(symbol, visualData, sourceDomElement = 
     const svgW = 660;
     const svgH = 280;
     const chartL = 60;
-    const chartR = 490;
-    const chartT = 25;
+    const chartR = 500;
+    const chartT = 20;
     const chartB = 230;
     const chartW = chartR - chartL;
     const chartH = chartB - chartT;
@@ -157,7 +162,7 @@ export function renderCandlestickSvgHtml(symbol, visualData, sourceDomElement = 
         return p > 100 ? p.toFixed(2) : p.toFixed(4);
     };
 
-    // S/R Lines (Strictly Horizontal with y1 == y2 and matching UI badge colors)
+    // S/R Lines (Horizontal with badges on right)
     let srLinesSvg = '';
     rList.forEach(p => {
         const y = getY(p);
@@ -176,15 +181,15 @@ export function renderCandlestickSvgHtml(symbol, visualData, sourceDomElement = 
         `;
     });
 
-    // Y-Axis Gridlines & Price Ticks on LEFT
+    // Y-Axis Gridlines & Price Ticks on LEFT (Clean light styling)
     let yGridSvg = '';
     const stepCount = 6;
     for (let i = 0; i <= stepCount; i++) {
         const priceVal = adjMin + (i / stepCount) * pRange;
         const yPos = getY(priceVal);
         yGridSvg += `
-            <line x1="${chartL}" y1="${yPos}" x2="${chartR}" y2="${yPos}" stroke="rgba(24, 201, 139, 0.12)" stroke-width="1" stroke-dasharray="3,3" />
-            <text x="${chartL - 6}" y="${yPos + 3}" text-anchor="end" font-size="8.5" font-family="monospace" fill="rgba(255, 255, 255, 0.65)">${fmtPrice(priceVal)}</text>
+            <line x1="${chartL}" y1="${yPos}" x2="${chartR}" y2="${yPos}" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="3,3" />
+            <text x="${chartL - 6}" y="${yPos + 3}" text-anchor="end" font-size="8.5" font-family="monospace" fill="#64748B" font-weight="600">${fmtPrice(priceVal)}</text>
         `;
     }
 
@@ -205,23 +210,23 @@ export function renderCandlestickSvgHtml(symbol, visualData, sourceDomElement = 
             label = `T-${(candles.length - idx)}h`;
         }
         xTimeSvg += `
-            <text x="${xPos}" y="${chartB + 16}" text-anchor="middle" font-size="8.5" fill="rgba(255, 255, 255, 0.65)" font-weight="500">${label}</text>
+            <text x="${xPos}" y="${chartB + 16}" text-anchor="middle" font-size="8.5" fill="#64748B" font-weight="600">${label}</text>
         `;
     }
 
     return `
-    <div class="pdfBlock pdfSectionCard" style="background: #0B0F17 !important; border: 1px solid rgba(255, 255, 255, 0.12) !important; border-radius: 10px; padding: 12px 14px; margin: 12px 0; page-break-inside: avoid !important; break-inside: avoid !important; color: #FFFFFF !important; box-sizing: border-box; width: 100%;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 6px;">
+    <div class="pdfBlock pdfSectionCard" style="background: #FFFFFF !important; border: 1.5px solid #E2E8F0 !important; border-radius: 8px; padding: 12px 16px; margin: 12px 0; page-break-inside: avoid !important; break-inside: avoid !important; color: #0F172A !important; box-sizing: border-box; width: 100%;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #E2E8F0; padding-bottom: 6px;">
             <div>
-                <span style="font-size: 13px; font-weight: 800; color: #FFFFFF; letter-spacing: 0.5px;">${cleanSym}</span>
-                <div style="font-size: 11px; font-weight: 700; color: #18C98B; margin-top: 2px;">${cleanSym} Price Action & Key Levels</div>
+                <span style="font-size: 13px; font-weight: 800; color: #0F172A; letter-spacing: 0.3px;">${cleanSym}</span>
+                <div style="font-size: 10.5px; font-weight: 700; color: #059669; margin-top: 1px;">${cleanSym} Price Action & Key Levels</div>
             </div>
             <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10B981; color: #10B981; font-size: 8.5px; font-weight: 800; padding: 2px 8px; border-radius: 10px;">S/R Levels</span>
+                <span style="background: #F0FDF4; border: 1px solid #10B981; color: #065F46; font-size: 8.5px; font-weight: 800; padding: 2px 8px; border-radius: 4px;">S/R Levels</span>
             </div>
         </div>
         <div style="display: flex; justify-content: center; width: 100%; box-sizing: border-box;">
-            <svg width="100%" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" style="display: block; width: 100%; height: auto;">
+            <svg width="100%" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" style="display: block; width: 100%; height: auto; overflow: visible;">
                 <!-- Horizontal Gridlines & Left Price Ticks -->
                 ${yGridSvg}
                 
@@ -232,7 +237,7 @@ export function renderCandlestickSvgHtml(symbol, visualData, sourceDomElement = 
                 ${srLinesSvg}
                 
                 <!-- Bottom Axis Line -->
-                <line x1="${chartL}" y1="${chartB}" x2="${chartR}" y2="${chartB}" stroke="rgba(255,255,255,0.15)" stroke-width="1" />
+                <line x1="${chartL}" y1="${chartB}" x2="${chartR}" y2="${chartB}" stroke="#CBD5E1" stroke-width="1" />
                 
                 <!-- X-Axis Timestamps -->
                 ${xTimeSvg}

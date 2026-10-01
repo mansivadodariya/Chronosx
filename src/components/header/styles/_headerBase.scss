@@ -356,23 +356,30 @@
                                         }
 
                                         .itemIconBox {
-                                            width: 36px;
-                                            height: 36px;
-                                            border-radius: 10px;
-                                            background: rgba(24, 201, 139, 0.08);
-                                            border: 1px solid rgba(24, 201, 139, 0.35);
+                                            width: 28px;
+                                            height: 28px;
+                                            margin-top: 1px;
+                                            background: transparent;
+                                            border: none;
                                             display: flex;
                                             align-items: center;
                                             justify-content: center;
-                                            color: #18c98b;
+                                            color: #FFFFFF;
                                             flex-shrink: 0;
-                                            transition: all 0.2s ease;
+                                            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease, filter 0.25s ease;
+
+                                            svg {
+                                                width: 24px;
+                                                height: 24px;
+                                                flex-shrink: 0;
+                                            }
                                         }
 
                                         &:hover .itemIconBox {
-                                            background: #18c98b;
-                                            color: #040605;
-                                            box-shadow: 0 0 14px rgba(24, 201, 139, 0.5);
+                                            background: transparent;
+                                            color: #18c98b;
+                                            transform: scale(1.12);
+                                            filter: drop-shadow(0 0 8px rgba(24, 201, 139, 0.7));
                                         }
 
                                         .itemContent {

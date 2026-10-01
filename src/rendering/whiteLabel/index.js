@@ -1,24 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import WhiteLabelHero from './components/WhiteLabelHero';
 import WhiteLabelIntro from './components/WhiteLabelIntro';
 import WhiteLabelCapabilities from './components/WhiteLabelCapabilities';
-import WhiteLabelAudience from './components/WhiteLabelAudience';
 import WhiteLabelMakeItYours from './components/WhiteLabelMakeItYours';
-import WhiteLabelEcosystem from './components/WhiteLabelEcosystem';
 import WhiteLabelHowItWorks from './components/WhiteLabelHowItWorks';
-import WhiteLabelUseCases from './components/WhiteLabelUseCases';
 import WhiteLabelFaq from './components/WhiteLabelFaq';
+import WhiteLabelInquiryForm from './components/WhiteLabelInquiryForm';
+import CommonCta from '@/components/commonCta';
 import styles from './whiteLabel.module.scss';
 
 export default function WhiteLabel() {
-    const router = useRouter();
-    const [contactOpen, setContactOpen] = useState(false);
-
-    const handleContactClick = () => {
-        router.push('/contact-us?subject=White-Label%20Enterprise%20Inquiry');
+    const scrollToInquiryForm = () => {
+        const el = document.getElementById('whiteLabelInquiryForm');
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     };
 
     return (
@@ -29,32 +28,39 @@ export default function WhiteLabel() {
             <div className={styles.ambientGlowLeft} />
             <div className={styles.gridPatternOverlay} />
 
-            {/* 01 — Hero Section */}
-            <WhiteLabelHero onContactClick={handleContactClick} />
+            {/* 01 — Hero Section with Official Site Logo Mockup */}
+            <WhiteLabelHero onContactClick={scrollToInquiryForm} />
 
-            {/* 02 & 03 — Introduction & What is ChronosX White Label */}
+            {/* 02 — Enterprise Architecture & Strategic Foundation */}
             <WhiteLabelIntro />
 
-            {/* 04 — Core Capabilities */}
+            {/* 03 — Core AI Platform Capabilities & Live Telemetry Stream */}
             <WhiteLabelCapabilities />
 
-            {/* 05 — Who Is It For */}
-            <WhiteLabelAudience />
-
-            {/* 06 & 14 — Your Brand, Your Platform & Customization */}
+            {/* 04 — Interactive Brand Customization & Theme Simulator */}
             <WhiteLabelMakeItYours />
 
-            {/* 08 — Platform Ecosystem */}
-            <WhiteLabelEcosystem />
-
-            {/* 10 & 11 — How It Works, Advantage & Security */}
+            {/* 05 — 4-Step Deployment Process & Enterprise Security Infrastructure */}
             <WhiteLabelHowItWorks />
 
-            {/* 16 — Ideal White-Label Use Cases */}
-            <WhiteLabelUseCases />
+            {/* 07 — Dedicated White-Label Inquiry & Lead Capture Form */}
+            <WhiteLabelInquiryForm />
 
-            {/* 17 & 18 — CTA and FAQ */}
-            <WhiteLabelFaq onContactClick={handleContactClick} />
+            {/* 06 — Frequently Asked Questions */}
+            <WhiteLabelFaq />
+
+            {/* 08 — Enterprise Conversion Call To Action */}
+            <CommonCta
+                badge="READY TO GET STARTED?"
+                title1="Build Your Trading Platform"
+                title2="With ChronosX."
+                description="Your business already has the vision. Now build the technology around it. Launch an AI-powered trading experience under your own brand with everything you need in one connected environment."
+                primaryBtnText="TALK TO OUR TEAM"
+                primaryBtnAction={scrollToInquiryForm}
+                secondaryBtnText="EXPLORE CHRONOSX"
+                secondaryBtnAction="/capabilities"
+            />
         </main>
     );
 }
+

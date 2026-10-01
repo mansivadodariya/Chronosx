@@ -12,7 +12,7 @@ export const metadata = {
         url: 'https://chronosx.com/white-label',
         images: [
             {
-                url: '/assets/images/white-label/hero-dashboard.jpg',
+                url: '/assets/images/hero-whitelabel.png',
                 width: 1200,
                 height: 630,
                 alt: 'ChronosX White Label Trading Platform'

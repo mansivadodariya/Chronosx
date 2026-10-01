@@ -62,14 +62,18 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+
+    .stepNum {
+        font-size: 32px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: #18C98B;
+        line-height: 1;
+    }
 
     .stepIconWrap {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        background: rgba(24, 201, 139, 0.12);
-        border: 1px solid rgba(24, 201, 139, 0.3);
+        border-radius: 10px;    
         color: #18C98B;
         display: flex;
         align-items: center;
@@ -90,6 +94,10 @@
     :global(html[data-theme='light']) &,
     :global([data-theme='light']) &,
     :global(.light) & {
+        .stepNum {
+            color: #059669;
+        }
+
         .stepIconWrap {
             color: #047857;
         }
@@ -121,8 +129,6 @@
     color: rgba(255, 255, 255, 0.65);
     margin-bottom: 16px;
     flex-grow: 1;
-    text-align: justify;
-    text-justify: inter-word;
 
     :global(html.light) &,
     :global(html[data-theme='light']) &,
@@ -145,94 +151,6 @@
     :global(.light) & {
         color: #047857;
         border-color: rgba(15, 23, 42, 0.08);
-    }
-}
-
-/* ============================================================
-   17 — CTA SECTION
-   ============================================================ */
-.ctaSection {
-    padding: 80px 0;
-    position: relative;
-
-    @include respond-to('md') {
-        padding: 60px 0;
-    }
-}
-
-.ctaCardBox {
-    position: relative;
-    border-radius: 20px;
-    padding: 56px 40px;
-    text-align: center;
-    background: radial-gradient(ellipse at center, rgba(24, 201, 139, 0.15) 0%, rgba(13, 14, 19, 0.95) 75%);
-    border: 1px solid rgba(24, 201, 139, 0.35);
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7), 0 0 40px rgba(24, 201, 139, 0.15);
-    overflow: hidden;
-
-    @include respond-to('sm') {
-        padding: 36px 20px;
-    }
-
-    :global(html.light) &,
-    :global(html[data-theme='light']) &,
-    :global([data-theme='light']) &,
-    :global(.light) & {
-        background: radial-gradient(ellipse at center, rgba(24, 201, 139, 0.12) 0%, #FFFFFF 75%);
-        border-color: rgba(24, 201, 139, 0.35);
-        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.06);
-    }
-}
-
-.ctaTitle {
-    font-size: 40px;
-    font-weight: 800;
-    color: #FFFFFF;
-    margin-bottom: 16px;
-    letter-spacing: -0.8px;
-
-    @include respond-to('md') {
-        font-size: 30px;
-    }
-
-    @include respond-to('sm') {
-        font-size: 24px;
-    }
-
-    :global(html.light) &,
-    :global(html[data-theme='light']) &,
-    :global([data-theme='light']) &,
-    :global(.light) & {
-        color: #0F172A;
-    }
-}
-
-.ctaSubtitle {
-    font-size: 16.5px;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.75);
-    max-width: 740px;
-    margin: 0 auto 24px auto;
-
-    :global(html.light) &,
-    :global(html[data-theme='light']) &,
-    :global([data-theme='light']) &,
-    :global(.light) & {
-        color: #475569;
-    }
-}
-
-.ctaTagline {
-    font-size: 14.5px;
-    font-weight: 700;
-    color: #18C98B;
-    margin-bottom: 32px;
-
-    :global(html.light) &,
-    :global(html[data-theme='light']) &,
-    :global([data-theme='light']) &,
-    :global(.light) & {
-        color: #047857;
     }
 }
 

@@ -91,9 +91,12 @@
             background: rgba(24, 201, 139, 0.08) !important;
 
             .itemIconBox {
-                background: #18C98B !important;
-                border-color: #18C98B !important;
-                color: #040605 !important;
+                background: transparent !important;
+                border: none !important;
+                border-color: transparent !important;
+                color: #047857 !important;
+                transform: scale(1.12);
+                filter: drop-shadow(0 0 6px rgba(24, 201, 139, 0.4));
             }
 
             .itemTitle {
@@ -102,9 +105,10 @@
         }
 
         .itemIconBox {
-            background: #F8FAFC !important;
-            border-color: rgba(24, 201, 139, 0.25) !important;
-            color: #18C98B !important;
+            background: transparent !important;
+            border: none !important;
+            border-color: transparent !important;
+            color: #0F172A !important;
         }
 
         .itemTitle {
@@ -202,9 +206,11 @@
                 border-color: rgba(24, 201, 139, 0.35) !important;
 
                 .subIconWrap {
-                    background: #18C98B !important;
-                    color: #040605 !important;
-                    border-color: #18C98B !important;
+                    background: transparent !important;
+                    color: #047857 !important;
+                    border: none !important;
+                    border-color: transparent !important;
+                    transform: scale(1.1);
                 }
 
                 .subTitle {
@@ -213,9 +219,10 @@
             }
 
             .subIconWrap {
-                background: #FFFFFF !important;
-                border: 1px solid rgba(24, 201, 139, 0.25) !important;
-                color: #047857 !important;
+                background: transparent !important;
+                border: none !important;
+                border-color: transparent !important;
+                color: #0F172A !important;
                 transition: all 0.2s ease;
             }
 
