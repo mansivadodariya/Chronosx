@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from '../customBotBuilder.module.scss';
-import { INDICATOR_DEFINITIONS } from '../constants';
+import { INDICATOR_DEFINITIONS, getConditionParams, validateEntryCondition } from '../constants';
 import CustomSelect from './CustomSelect';
 
 export default function StepEntryRules({ data, errors = {}, onChange }) {
@@ -30,33 +30,38 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
     };
 
     const handleIndicatorChange = (index, newKey) => {
-        const def = INDICATOR_DEFINITIONS[newKey];
+        const def = INDICATOR_DEFINITIONS[newKey] || INDICATOR_DEFINITIONS.ema_crossover;
+        const defaultCond = def.conditions[0];
+        const condParams = getConditionParams(defaultCond);
         const updated = [...entryConditions];
         updated[index] = {
             ...updated[index],
             indicatorKey: newKey,
-            condition: def.conditions[0],
-            params: { ...def.defaultParams }
+            condition: defaultCond,
+            params: { ...condParams.defaultParams }
         };
         onChange('entryConditions', updated);
     };
 
     const handleConditionChange = (index, newCondition) => {
+        const condParams = getConditionParams(newCondition);
         const updated = [...entryConditions];
         updated[index] = {
             ...updated[index],
-            condition: newCondition
+            condition: newCondition,
+            params: { ...condParams.defaultParams }
         };
         onChange('entryConditions', updated);
     };
 
     const handleParamChange = (index, paramKey, value) => {
         const updated = [...entryConditions];
+        const parsedVal = value === '' ? '' : Math.max(1, parseInt(value, 10) || 0);
         updated[index] = {
             ...updated[index],
             params: {
                 ...updated[index].params,
-                [paramKey]: value === '' ? '' : Number(value)
+                [paramKey]: parsedVal
             }
         };
         onChange('entryConditions', updated);
@@ -103,6 +108,8 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
                 {entryConditions.map((cond, index) => {
                     const def = INDICATOR_DEFINITIONS[cond.indicatorKey] || INDICATOR_DEFINITIONS.ema_crossover;
                     const conditionOptions = def.conditions.map(c => ({ value: c, label: c }));
+                    const condParams = getConditionParams(cond.condition);
+                    const condError = validateEntryCondition(cond);
 
                     return (
                         <div key={cond.id || index} className={styles.conditionCard}>
@@ -166,17 +173,20 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
 
                             {/* Dynamic Parameters Grid */}
                             <div className={styles.paramGrid}>
-                                {Object.keys(def.defaultParams).map(paramKey => {
-                                    const label = def.paramLabels?.[paramKey] || paramKey;
-                                    const val = cond.params?.[paramKey] !== undefined ? cond.params[paramKey] : def.defaultParams[paramKey];
+                                {Object.keys(condParams.defaultParams).map(paramKey => {
+                                    const label = condParams.paramLabels?.[paramKey] || paramKey;
+                                    const val = cond.params?.[paramKey] !== undefined ? cond.params[paramKey] : condParams.defaultParams[paramKey];
+                                    const isInvalid = Boolean(condError);
 
                                     return (
                                         <div key={paramKey} className={styles.paramItem}>
                                             <label className={styles.paramLabel}>{label}</label>
                                             <input
                                                 type="number"
-                                                className={styles.paramInput}
-                                                placeholder={String(def.defaultParams[paramKey])}
+                                                min="1"
+                                                max={paramKey === 'fastPeriod' ? 500 : 1000}
+                                                className={`${styles.paramInput} ${isInvalid ? styles.inputError : ''}`}
+                                                placeholder={String(condParams.defaultParams[paramKey])}
                                                 value={val}
                                                 onChange={(e) => handleParamChange(index, paramKey, e.target.value)}
                                             />
@@ -184,6 +194,20 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
                                     );
                                 })}
                             </div>
+
+                            {/* Inline Condition Error Message */}
+                            {condError && (
+                                <div className={styles.conditionErrorMsg}>
+                                    <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                    <span>{condError}</span>
+                                </div>
+                            )}
                         </div>
                     );
                 })}

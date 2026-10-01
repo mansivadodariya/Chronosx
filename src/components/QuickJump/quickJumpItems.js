@@ -328,6 +328,11 @@ export function checkItemPermission(item, visibleTabNames) {
     if (item.id === 'home' || item.href === '/') return true;
     if (item.id === 'education' || item.isExternal || item.href?.includes('edufins')) return true;
 
+    // Custom Bot Builder is always accessible
+    if (item.href === '/manual-bot-builder' || item.href === '/custom-bot-builder' || item.id === 'custom-bot-builder') {
+        return true;
+    }
+
     // Check by ID mapping
     const targetTabById = ID_PERMISSION_MAP[item.id];
     if (targetTabById && !visibleTabNames.has(targetTabById)) {
@@ -342,7 +347,6 @@ export function checkItemPermission(item, visibleTabNames) {
 
     // Direct Title check as safety fallback
     const titleLower = (item.title || '').toLowerCase().trim();
-    if (titleLower === 'custom bot builder' && !visibleTabNames.has('custom bot builder')) return false;
     if (titleLower === 'browse bots library' && !visibleTabNames.has('browse bots library')) return false;
     if (titleLower === 'my bots' && !visibleTabNames.has('my bots')) return false;
     if (titleLower === 'ai bot builder' && !visibleTabNames.has('ai bot builder')) return false;

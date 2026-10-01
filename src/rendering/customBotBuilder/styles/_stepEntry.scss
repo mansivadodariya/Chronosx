@@ -182,9 +182,10 @@
     transition: all 0.2s ease;
     box-sizing: border-box;
 
-    &:focus {
-        border-color: #18C98B;
-        box-shadow: 0 0 0 1px rgba(24, 201, 139, 0.35);
+    &.inputError {
+        border-color: #EF4444 !important;
+        background: rgba(239, 68, 68, 0.06) !important;
+        box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.3) !important;
     }
 
     :global(html.light) & {
@@ -196,6 +197,36 @@
         &:focus {
             border-color: #18C98B;
         }
+
+        &.inputError {
+            border-color: #EF4444 !important;
+            background: #FEF2F2 !important;
+        }
+    }
+}
+
+.conditionErrorMsg {
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #F87171;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    padding: 6px 12px;
+    border-radius: 8px;
+
+    svg {
+        flex-shrink: 0;
+        color: #EF4444;
+    }
+
+    :global(html.light) & {
+        background: #FEF2F2;
+        border-color: #FCA5A5;
+        color: #DC2626;
     }
 }
 

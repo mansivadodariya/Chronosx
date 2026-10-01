@@ -490,13 +490,15 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
       const lowerLabel = (tabLabel || '').toLowerCase().trim();
       const mapped = (ROUTE_TAB_MAP[routeHref] || '').toLowerCase().trim();
 
-      // Affiliate & Education (Edufins external link) & Settings/Profile & Dashboard are always accessible
+      // Affiliate & Education (Edufins external link) & Settings/Profile & Custom Bot Builder are always accessible
       if (lowerLabel.includes('affiliate') || mapped.includes('affiliate')) return true;
       if (lowerLabel.includes('education') || lowerLabel.includes('edufins') || routeHref?.includes('edufins')) return true;
       if (lowerLabel === 'profile' || lowerLabel === 'settings' || mapped === 'profile') return true;
+      if (lowerLabel.includes('custom bot') || mapped.includes('custom bot') || routeHref?.includes('manual-bot-builder') || routeHref?.includes('custom-bot-builder')) return true;
+
       // Group parent container check: "AI Trading Bot" is shown if the parent tab itself is enabled, or if any of its sub-items is enabled
       if (lowerLabel === 'ai trading bot' || mapped === 'ai trading bot') {
-        return visibleTabNames.has('ai trading bot') || visibleTabNames.has('my bots') || visibleTabNames.has('ai bot builder') || visibleTabNames.has('custom bot builder') || visibleTabNames.has('browse bots library');
+        return true;
       }
 
       // Backtest is visible if either "Backtest" or "Backtesting" tab permission is enabled in Supabase

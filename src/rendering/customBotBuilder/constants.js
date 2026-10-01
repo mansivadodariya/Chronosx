@@ -46,104 +46,56 @@ export const INDICATOR_DEFINITIONS = {
             fastPeriod: 'Fast Period',
             slowPeriod: 'Slow Period'
         }
-    },
-    rsi: {
-        name: 'RSI (Relative Strength Index)',
-        desc: 'Momentum oscillator measuring overbought and oversold levels',
-        conditions: [
-            'RSI Crosses Below Oversold',
-            'RSI Crosses Above Overbought',
-            'RSI Greater Than',
-            'RSI Less Than'
-        ],
-        defaultParams: {
-            period: 14,
-            oversold: 30,
-            overbought: 70
-        },
-        paramLabels: {
-            period: 'RSI Period',
-            oversold: 'Oversold Level',
-            overbought: 'Overbought Level'
-        }
-    },
-    macd: {
-        name: 'MACD (Moving Average Convergence)',
-        desc: 'Trend momentum oscillator tracking fast vs slow exponential moving averages',
-        conditions: [
-            'MACD Line Crosses Signal Line Up',
-            'MACD Line Crosses Signal Line Down',
-            'MACD Histogram Turns Positive',
-            'MACD Histogram Turns Negative'
-        ],
-        defaultParams: {
-            fastEma: 12,
-            slowEma: 26,
-            signalPeriod: 9
-        },
-        paramLabels: {
-            fastEma: 'Fast EMA',
-            slowEma: 'Slow EMA',
-            signalPeriod: 'Signal Period'
-        }
-    },
-    bollinger: {
-        name: 'Bollinger Bands',
-        desc: 'Volatility envelope bands measuring standard deviation breakouts & pullbacks',
-        conditions: [
-            'Price Touches Lower Band (Buy)',
-            'Price Touches Upper Band (Sell)',
-            'Band Squeeze Breakout',
-            'Price Crosses Middle Band'
-        ],
-        defaultParams: {
-            period: 20,
-            stdDev: 2.0
-        },
-        paramLabels: {
-            period: 'Period',
-            stdDev: 'StdDev Multiplier'
-        }
-    },
-    supertrend: {
-        name: 'SuperTrend Indicator',
-        desc: 'ATR-based trend following dynamic support & resistance signals',
-        conditions: [
-            'SuperTrend Turns Bullish (Buy)',
-            'SuperTrend Turns Bearish (Sell)',
-            'Price Above SuperTrend',
-            'Price Below SuperTrend'
-        ],
-        defaultParams: {
-            atrPeriod: 10,
-            multiplier: 3.0
-        },
-        paramLabels: {
-            atrPeriod: 'ATR Period',
-            multiplier: 'Multiplier'
-        }
-    },
-    stochastic: {
-        name: 'Stochastic Oscillator',
-        desc: 'Momentum indicator comparing closing price to high-low range over period',
-        conditions: [
-            'K% Crosses Above D% (Oversold Buy)',
-            'K% Crosses Below D% (Overbought Sell)',
-            'K% Above 80 (Overbought)',
-            'K% Below 20 (Oversold)'
-        ],
-        defaultParams: {
-            kPeriod: 14,
-            dPeriod: 3,
-            slowing: 3
-        },
-        paramLabels: {
-            kPeriod: '%K Period',
-            dPeriod: '%D Period',
-            slowing: 'Slowing'
-        }
     }
 };
+
+export function getConditionParams(condition) {
+    if (condition?.includes('Price Above') || condition?.includes('Price Below')) {
+        return {
+            defaultParams: { fastPeriod: 20 },
+            paramLabels: { fastPeriod: 'EMA Period' }
+        };
+    }
+    return {
+        defaultParams: { fastPeriod: 9, slowPeriod: 21 },
+        paramLabels: { fastPeriod: 'Fast Period', slowPeriod: 'Slow Period' }
+    };
+}
+
+export function validateEntryCondition(cond) {
+    if (!cond) return null;
+    const { condition, params = {} } = cond;
+    const isSingle = condition?.includes('Price Above') || condition?.includes('Price Below');
+    const fast = Number(params.fastPeriod);
+    const slow = Number(params.slowPeriod);
+
+    if (isSingle) {
+        if (!params.fastPeriod || isNaN(fast) || fast < 1) {
+            return 'EMA Period must be at least 1';
+        }
+        if (fast > 1000) {
+            return 'EMA Period cannot exceed 1000';
+        }
+        return null;
+    }
+
+    if (!params.fastPeriod || isNaN(fast) || fast < 1) {
+        return 'Fast Period must be at least 1';
+    }
+    if (fast > 500) {
+        return 'Fast Period cannot exceed 500';
+    }
+    if (!params.slowPeriod || isNaN(slow) || slow < 2) {
+        return 'Slow Period must be at least 2';
+    }
+    if (slow > 1000) {
+        return 'Slow Period cannot exceed 1000';
+    }
+    if (fast >= slow) {
+        return `Fast Period (${fast}) must be less than Slow Period (${slow})`;
+    }
+    return null;
+}
 
 export const RISK_LEVELS = [
     {

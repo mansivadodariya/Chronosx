@@ -87,7 +87,9 @@ export default function StepReview({ data, onEditStep, onRunBacktest, onDeployBo
                                         <span className={styles.condPillNum}>{idx + 1}</span>
                                         <div className={styles.condPillDetails}>
                                             <span className={styles.condPillName}>{def?.name || cond.indicatorKey}</span>
-                                            <span className={styles.condPillRule}>{cond.condition}</span>
+                                            <span className={styles.condPillRule}>
+                                                {cond.condition} {cond.params?.slowPeriod ? `(Fast: ${cond.params.fastPeriod}, Slow: ${cond.params.slowPeriod})` : `(EMA: ${cond.params?.fastPeriod || 20})`}
+                                            </span>
                                         </div>
                                     </div>
                                 );

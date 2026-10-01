@@ -15,6 +15,7 @@ import StepExitRules from './components/StepExitRules';
 import StepRisk from './components/StepRisk';
 import StepReview from './components/StepReview';
 import StepFooterNav from './components/StepFooterNav';
+import { validateEntryCondition } from './constants';
 
 const INITIAL_FORM_DATA = {
     botName: '',
@@ -64,6 +65,14 @@ function validateStep(step, data) {
     if (step === 2) {
         if (!data.entryConditions || data.entryConditions.length === 0) {
             errors.entryConditions = 'Please add at least one entry condition';
+        } else {
+            for (let i = 0; i < data.entryConditions.length; i++) {
+                const condErr = validateEntryCondition(data.entryConditions[i]);
+                if (condErr) {
+                    errors.entryConditions = `Condition #${i + 1}: ${condErr}`;
+                    break;
+                }
+            }
         }
     }
 

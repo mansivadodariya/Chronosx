@@ -193,7 +193,7 @@ export default function MyBots() {
     });
 
     const hasAiBotPermission = visibleTabNames ? visibleTabNames.has('ai bot builder') : true;
-    const hasCustomBotPermission = visibleTabNames ? visibleTabNames.has('custom bot builder') : true;
+    const hasCustomBotPermission = true;
     const hasLibraryPermission = visibleTabNames ? visibleTabNames.has('browse bots library') : false;
     const isSingleCard = (hasAiBotPermission ? 1 : 0) + (hasCustomBotPermission ? 1 : 0) === 1;
 

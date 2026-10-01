@@ -322,7 +322,12 @@ const layout = ({ children }) => {
                 !currentTabName ||
                 currentTabName === 'Dashboard' ||
                 currentTabName === 'Affiliate' ||
-                currentTabName === 'Profile'
+                currentTabName === 'Profile' ||
+                currentTabName === 'Custom Bot Builder' ||
+                pathname === '/manual-bot-builder' ||
+                pathname === '/custom-bot-builder' ||
+                pathname?.startsWith('/manual-bot-builder') ||
+                pathname?.startsWith('/custom-bot-builder')
             ) {
                 setIsTabAllowed(true);
                 return;
