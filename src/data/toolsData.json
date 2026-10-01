@@ -16,8 +16,8 @@
     },
     {
       "id": "trade-advisor",
-      "name": "AI Trade Advisor",
-      "shortName": "AI Trade Advisor",
+      "name": "AI Past Trade Analyzer",
+      "shortName": "AI Past Trade Analyzer",
       "outerRoute": "/ai-trade-advisor",
       "innerRoute": "/trade-advisor",
       "description": "Review your historical trading data to evaluate performance, pinpoint mistakes, and track win rates.",

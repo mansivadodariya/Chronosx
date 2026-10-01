@@ -115,7 +115,7 @@ export default function Footer() {
           <div className={styles.navCol}>
             <h4>{t('footer.tradingToolsTitle', 'TRADING TOOLS')}</h4>
             <ul>
-              <li><Link href="/ai-trade-advisor">{t('header.tradingTools.tradeAudit.title', 'AI Trade Advisor')}</Link></li>
+              <li><Link href="/ai-trade-advisor">{t('header.tradingTools.tradeAudit.title', 'AI Past Trade Analyzer')}</Link></li>
               <li><Link href={getAuthHref('/strategy-core')}>{t('footer.strategyBuilder', 'Strategy Builder')}</Link></li>
               <li><Link href={getAuthHref('/strategy-core')}>{t('footer.quantBacktesting', 'Quant Backtesting')}</Link></li>
             </ul>
