@@ -12,6 +12,7 @@ import RenderMarkdownWithWidgets from './MarkdownWidgetRenderer';
 import VisionAnalysisAccordions from './VisionAnalysisAccordions';
 import { WarningIcon, ChatIcon, AnalyticsIcon, DownloadIcon } from '@/icons/visionIcons';
 import { formatTechnicalProse, isTechnicalJsonPayload } from '@/utils/formatTechnicalProse';
+import { exportAssistantMessageToPdf } from '../utils/exportAssistantPdf';
 import styles from '../aiAssistant.module.scss';
 
 const ANALYZING_ASSISTANT_PHRASES = [
@@ -135,14 +136,27 @@ const ChatMessageList = React.memo(function ChatMessageList({
 
                                     if (sections && isVisionAnalysis) {
                                         return (
-                                            <VisionAnalysisAccordions
-                                                data={sections}
-                                                chartSections={sections}
-                                                textSummary={contentText || sections.overall_summary}
-                                                imageWarning={msg.image_warning}
-                                                disclaimerHeader={disclaimerHeader}
-                                                disclaimerFooter={disclaimerFooter}
-                                            />
+                                            <>
+                                                <VisionAnalysisAccordions
+                                                    data={sections}
+                                                    chartSections={sections}
+                                                    textSummary={contentText || sections.overall_summary}
+                                                    imageWarning={msg.image_warning}
+                                                    disclaimerHeader={disclaimerHeader}
+                                                    disclaimerFooter={disclaimerFooter}
+                                                />
+                                                {/* DOWNLOAD OPTION FOR VISION ANALYSIS */}
+                                                <div className={styles.downloadReportRow} style={{ marginTop: 10 }}>
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => exportAssistantMessageToPdf(msg, selectedPair, e.currentTarget.closest('.' + styles.chatMessageBubble) || e.currentTarget.closest('.' + styles.analysisCenterCard))}
+                                                        className={styles.downloadFullReportBtn}
+                                                    >
+                                                        <DownloadIcon size={14} />
+                                                        <span>Download Full Report (PDF)</span>
+                                                    </button>
+                                                </div>
+                                            </>
                                         );
                                     }
 
@@ -188,7 +202,7 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                                         <div className={styles.downloadReportRow}>
                                                             <button
                                                                 type="button"
-                                                                onClick={() => handleDownloadFullReport(msg.fullReport, msg.visualData, msg.detected_pair || selectedPair)}
+                                                                onClick={(e) => exportAssistantMessageToPdf(msg, selectedPair, e.currentTarget.closest('.' + styles.chatMessageBubble) || e.currentTarget.closest('.' + styles.analysisCenterCard))}
                                                                 className={styles.downloadFullReportBtn}
                                                             >
                                                                 <DownloadIcon size={15} />
@@ -198,13 +212,29 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                                     </div>
                                                 </div>
                                             ) : (
-                                                <RenderMarkdownWithWidgets
-                                                    content={displayContent}
-                                                    visualData={msg.visualData}
-                                                    defaultSymbol={msg.detected_pair || selectedPair}
-                                                    isStreaming={Boolean(msg.isNewlyGenerated)}
-                                                    onComplete={() => { msg.isNewlyGenerated = false; }}
-                                                />
+                                                <>
+                                                    <RenderMarkdownWithWidgets
+                                                        content={displayContent}
+                                                        visualData={msg.visualData}
+                                                        defaultSymbol={msg.detected_pair || selectedPair}
+                                                        isStreaming={Boolean(msg.isNewlyGenerated)}
+                                                        onComplete={() => { msg.isNewlyGenerated = false; }}
+                                                    />
+                                                    {/* DOWNLOAD OPTION FOR STANDARD CHAT RESPONSES */}
+                                                    {displayContent && (
+                                                        <div className={styles.downloadReportRow} style={{ marginTop: 8 }}>
+                                                            <button
+                                                                type="button"
+                                                                onClick={(e) => exportAssistantMessageToPdf(msg, selectedPair, e.currentTarget.closest('.' + styles.chatMessageBubble) || e.currentTarget.closest('.' + styles.analysisCenterCard))}
+                                                                className={styles.downloadFullReportBtn}
+                                                                style={{ padding: '6px 12px', fontSize: '11.5px' }}
+                                                            >
+                                                                <DownloadIcon size={13} />
+                                                                <span>Download Report (PDF)</span>
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </>
                                             )}
 
                                             {/* 3. Disclaimer Footer if present on plain message */}

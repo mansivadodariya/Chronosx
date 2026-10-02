@@ -15,7 +15,7 @@
  */
 
 const BASE_FALLBACK_PRICES = {
-    XAUUSD: 4308.18,
+    XAUUSD: 4160.00,
     EURUSD: 1.08450,
     GBPUSD: 1.29200,
     USDJPY: 154.200,
@@ -23,8 +23,8 @@ const BASE_FALLBACK_PRICES = {
     USDCAD: 1.38500,
     USDCHF: 0.88400,
     NZDUSD: 0.59800,
-    BTCUSD: 94250.00,
-    ETHUSD: 2780.00
+    BTCUSD: 88500.00,
+    ETHUSD: 2650.00
 };
 
 export function cleanPairSymbol(symbol) {
@@ -56,16 +56,20 @@ export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategy
     const candidates = [];
     const envWs = process.env.NEXT_PUBLIC_WS_URL || process.env.NEXT_PUBLIC_WS_LIVE_URL;
 
+    const isPublicHost = (url = '') => {
+        const u = url.toLowerCase();
+        return u.includes('chronosx.com') || u.includes('thetradermaster.com') ||
+               (!u.includes('localhost') && !u.includes('127.0.0.1') && !u.includes('192.168.') && !u.includes('10.'));
+    };
+
     if (envWs) {
         let cleanBase = envWs.split('?')[0];
-        if (isHttps && cleanBase.startsWith('ws://')) {
+        if (isPublicHost(cleanBase) || isHttps) {
             cleanBase = cleanBase.replace(/^ws:\/\//, 'wss://');
-        }
-        candidates.push(`${cleanBase}${qs}`);
-        if (!isHttps) {
-            if (cleanBase.startsWith('wss://')) {
-                candidates.push(`${cleanBase.replace(/^wss:\/\//, 'ws://')}${qs}`);
-            } else if (cleanBase.startsWith('ws://')) {
+            candidates.push(`${cleanBase}${qs}`);
+        } else {
+            candidates.push(`${cleanBase}${qs}`);
+            if (cleanBase.startsWith('ws://')) {
                 candidates.push(`${cleanBase.replace(/^ws:\/\//, 'wss://')}${qs}`);
             }
         }
@@ -75,16 +79,17 @@ export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategy
     if (backendUrl) {
         const isHttp = backendUrl.startsWith('http://');
         const host = backendUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '');
-        if (isHttps || !isHttp) {
+        if (isPublicHost(host) || isHttps || !isHttp) {
             candidates.push(`wss://${host}/api/v1/ws/live${qs}`);
-            if (!isHttps) {
-                candidates.push(`ws://${host}/api/v1/ws/live${qs}`);
-            }
         } else {
             candidates.push(`ws://${host}/api/v1/ws/live${qs}`);
             candidates.push(`wss://${host}/api/v1/ws/live${qs}`);
         }
     }
+
+    // Public cloud fallbacks (always SSL wss://)
+    candidates.push(`wss://api.chronosx.com/api/v1/ws/live${qs}`);
+    candidates.push(`wss://api.thetradermaster.com/api/v1/ws/live${qs}`);
 
     if (!isHttps) {
         candidates.push(`ws://192.168.0.153:8000/api/v1/ws/live${qs}`);
@@ -92,7 +97,7 @@ export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategy
 
         if (typeof window !== 'undefined' && window.location) {
             const host = window.location.hostname || '127.0.0.1';
-            if (host !== '192.168.0.153') {
+            if (host !== '192.168.0.153' && (host.includes('localhost') || host.includes('127.0.0.1'))) {
                 candidates.push(`ws://${host}:8000/api/v1/ws/live${qs}`);
                 candidates.push(`wss://${host}:8000/api/v1/ws/live${qs}`);
             }
@@ -117,6 +122,21 @@ export function getWsEndpointUrl(symbol = 'XAUUSD', timeframe = 'H1', strategyId
     const list = getWsCandidateUrls(symbol, timeframe, strategyId);
     const defaultProto = typeof window !== 'undefined' && window.location?.protocol === 'https:' ? 'wss' : 'ws';
     return list[0] || `${defaultProto}://127.0.0.1:8000/api/v1/ws/live?symbol=${cleanPairSymbol(symbol)}&timeframe=${normalizeTimeframe(timeframe)}&strategy_id=${strategyId || 'default'}`;
+}
+
+function safeCloseSocket(ws) {
+    if (!ws) return;
+    try {
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.close();
+        } else if (ws.readyState === WebSocket.CONNECTING) {
+            ws.onopen = () => {
+                try { ws.close(); } catch (_) {}
+            };
+            ws.onmessage = null;
+            ws.onerror = null;
+        }
+    } catch (_) {}
 }
 
 class UnifiedSocketManager {
@@ -148,6 +168,12 @@ class UnifiedSocketManager {
         if (!symbol || price === undefined || price === null || isNaN(price) || Number(price) <= 0) return;
         const sym = cleanPairSymbol(symbol);
         this.knownPrices.set(sym, Number(price));
+    }
+
+    getKnownPrice(symbol) {
+        if (!symbol) return null;
+        const sym = cleanPairSymbol(symbol);
+        return this.knownPrices.get(sym) || this.lastPriceUpdate?.price || BASE_FALLBACK_PRICES[sym] || null;
     }
 
     getStatus() {
@@ -201,11 +227,7 @@ class UnifiedSocketManager {
         if (typeof window === 'undefined') return;
 
         if (this.socket) {
-            try {
-                this.socket.close();
-            } catch (e) {
-                /* ignore */
-            }
+            safeCloseSocket(this.socket);
             this.socket = null;
         }
 
@@ -225,15 +247,16 @@ class UnifiedSocketManager {
             // Timeout connection attempt if hanging (e.g. invalid wss handshake)
             this.connectionTimeoutTimer = setTimeout(() => {
                 if (this.socket === ws && ws.readyState !== WebSocket.OPEN) {
-                    try {
-                        ws.close();
-                    } catch (_) {}
+                    safeCloseSocket(ws);
                     this._handleSocketFailure();
                 }
             }, 4000);
 
             ws.onopen = () => {
-                if (this.socket !== ws) return;
+                if (this.socket !== ws) {
+                    safeCloseSocket(ws);
+                    return;
+                }
                 if (this.connectionTimeoutTimer) {
                     clearTimeout(this.connectionTimeoutTimer);
                     this.connectionTimeoutTimer = null;
@@ -242,6 +265,15 @@ class UnifiedSocketManager {
                 this.retryCount = 0;
                 this._stopFallbackStream();
                 console.log(`[UnifiedWS] Connected: ${wsUrl}`);
+
+                // Send active subscription immediately on connect
+                try {
+                    ws.send(JSON.stringify({
+                        action: 'subscribe',
+                        symbol: this.currentSymbol,
+                        timeframe: this.currentTimeframe
+                    }));
+                } catch (_) {}
             };
 
             ws.onmessage = (event) => {
@@ -606,9 +638,7 @@ class UnifiedSocketManager {
                 this.disconnectTimer = setTimeout(() => {
                     this.disconnectTimer = null;
                     if (this._totalSubscriberCount() === 0 && this.socket) {
-                        try {
-                            this.socket.close();
-                        } catch (e) {}
+                        safeCloseSocket(this.socket);
                         this.socket = null;
                         this.setStatus('disconnected');
                         this._stopFallbackStream();

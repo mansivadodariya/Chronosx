@@ -4,102 +4,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createChart, CandlestickSeries, HistogramSeries, LineSeries } from 'lightweight-charts';
 import styles from './aiStrategy.module.scss';
 import { useTheme } from '@/context/ThemeContext';
+import { parseCandleTimestamp } from '@/lib/chartStore';
 
-// Helper to calculate milliseconds until the next HH:01:00
-function getMsUntilNextHourOOne() {
-    const now = new Date();
-    const next = new Date(now);
-
-    next.setMinutes(1);
-    next.setSeconds(0);
-    next.setMilliseconds(0);
-
-    if (now.getMinutes() >= 1) {
-        next.setHours(now.getHours() + 1);
-    }
-
-    const diff = next.getTime() - now.getTime();
-    return diff > 0 ? diff : 3600000;
-}
-
-function formatPairCurrency(val, symbol) {
-    if (typeof val !== 'number' || isNaN(val)) return '-';
-    let symUpper = (symbol || '').toUpperCase().replace("/", "").replace(" ", "");
-    if (symUpper.endsWith("JPY")) return val.toFixed(3);
-    if (symUpper.includes("XAU") || symUpper.includes("GOLD") || symUpper.includes("XAG")) return val.toFixed(2);
-    if (symUpper.includes("BTC")) return val.toFixed(2);
-    if (symUpper.includes("NIFTY")) return val.toFixed(2);
-    if (symUpper.length === 6) return val.toFixed(5);
-    return val.toFixed(2);
-}
-
-function generateFallbackCandles(symbol = 'XAUUSD', timeframe = '1H') {
-    const candlesList = [];
-    let basePrice = 4457.50;
-    let step = 1.5;
-
-    const symUpper = (symbol || '').toUpperCase().replace('/', '').replace(' ', '');
-    if (symUpper.endsWith('JPY')) {
-        basePrice = 155.25;
-        step = 0.15;
-    } else if (symUpper.includes('EUR') || symUpper === 'EURUSD') {
-        basePrice = 1.16027;
-        step = 0.0004;
-    } else if (symUpper.includes('GBP') || symUpper === 'GBPUSD') {
-        basePrice = 1.35431;
-        step = 0.0005;
-    } else if (symUpper.includes('USDCAD')) {
-        basePrice = 1.36495;
-        step = 0.0004;
-    } else if (symUpper.includes('BTC')) {
-        basePrice = 78562.99;
-        step = 45.0;
-    } else if (symUpper.includes('NIFTY')) {
-        basePrice = 23500.00;
-        step = 12.0;
-    } else if (symUpper.includes('XAU') || symUpper.includes('GOLD')) {
-        basePrice = 4457.58;
-        step = 2.5;
-    }
-
-    const now = Math.floor(Date.now() / 1000);
-    const count = 120;
-    const interval = timeframe === '5M' ? 300 : timeframe === '15M' ? 900 : timeframe === '1D' ? 86400 : 3600;
-
-    let currentPrice = basePrice - count * 0.15 * step;
-    let ema20Val = currentPrice;
-    let ema50Val = currentPrice;
-
-    for (let i = 0; i < count; i++) {
-        const time = now - (count - i) * interval;
-        const change = (Math.random() - 0.47) * step * 2;
-        const open = currentPrice;
-        const close = open + change;
-        const high = Math.max(open, close) + Math.random() * step * 0.8;
-        const low = Math.min(open, close) - Math.random() * step * 0.8;
-        const vol = Math.floor(Math.random() * 4000) + 1200;
-
-        currentPrice = close;
-        ema20Val = ema20Val * (1 - 2 / 21) + close * (2 / 21);
-        ema50Val = ema50Val * (1 - 2 / 51) + close * (2 / 51);
-        const supertrend_dir = close >= ema20Val ? 1 : -1;
-        const supertrend_val = supertrend_dir === 1 ? low - step * 0.5 : high + step * 0.5;
-
-        candlesList.push({
-            time,
-            open: Number(open.toFixed(4)),
-            high: Number(high.toFixed(4)),
-            low: Number(low.toFixed(4)),
-            close: Number(close.toFixed(4)),
-            tick_volume: vol,
-            ema20: Number(ema20Val.toFixed(4)),
-            ema50: Number(ema50Val.toFixed(4)),
-            supertrend_value: Number(supertrend_val.toFixed(4)),
-            supertrend_direction: supertrend_dir,
-        });
-    }
-    return candlesList;
-}
+import { getMsUntilNextHourOOne, formatPairCurrency, generateFallbackCandles, EyeToggleIcon } from './utils/chartHelpers';
 
 export default function ChartPanel({ symbol, strategyId, timeframe = '1H', nearestSupport, nearestResistance, onRefreshNeeded, livePriceInfo }) {
     const containerRef = useRef(null);
@@ -125,6 +32,23 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
 
     const [hoveredData, setHoveredData] = useState(null);
     const [dotPositions, setDotPositions] = useState(null);
+    const [visibleIndicators, setVisibleIndicators] = useState({
+        ema20: true,
+        ema50: true,
+        supertrend: true
+    });
+
+    const toggleIndicator = (key) => {
+        setVisibleIndicators(prev => {
+            const nextState = !prev[key];
+            const series = chartRef.current?.series?.[key];
+            if (series) {
+                series.applyOptions({ visible: nextState });
+            }
+            return { ...prev, [key]: nextState };
+        });
+    };
+
     const chartDataRef = useRef({
         candles: [],
         ema20Map: new Map(),
@@ -183,12 +107,7 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
             const supertrendData = [];
 
             candlesList.forEach((c) => {
-                let ts;
-                if (typeof c.time === 'number') {
-                    ts = c.time;
-                } else {
-                    ts = Math.floor(new Date(c.time).getTime() / 1000);
-                }
+                const ts = parseCandleTimestamp(c.time || c.timestamp);
 
                 const o = parseFloat(c.open);
                 const h = parseFloat(c.high);
@@ -410,7 +329,7 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
         });
 
         const ema20Series = chart.addSeries(LineSeries, {
-            color: '#38bdf8',
+            color: '#60A5FA',
             lineWidth: 1.5,
             priceLineVisible: false,
             lastValueVisible: false,
@@ -418,7 +337,7 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
         });
 
         const ema50Series = chart.addSeries(LineSeries, {
-            color: '#00E5FF',
+            color: '#F59E0B',
             lineWidth: 1.5,
             priceLineVisible: false,
             lastValueVisible: false,
@@ -704,10 +623,10 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
             </div>
 
             <div className={styles.chartCanvasContainer} style={{ cursor: 'crosshair' }}>
-                {loading && (!chartDataRef.current?.candles || chartDataRef.current.candles.length === 0) && (
+                {loading && (
                     <div className={styles.chartOverlay}>
                         <div className={styles.chartSpinner} />
-                        <span>Loading chart...</span>
+                        <span>Loading chart data...</span>
                     </div>
                 )}
                 {error && (
@@ -736,21 +655,39 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
                 )}
             </div>
 
-            {/* Custom Chart Legend with AI Chat Indicator Colors */}
+            {/* Custom Chart Legend with Interactive Eye Visibility Toggles */}
             <div className={styles.chartLegendContainer}>
                 <div className={styles.chartLegend}>
-                    <div className={styles.legendItem}>
+                    <button
+                        type="button"
+                        className={`${styles.legendItem} ${!visibleIndicators.ema20 ? styles.legendDisabled : ''}`}
+                        onClick={() => toggleIndicator('ema20')}
+                        title={visibleIndicators.ema20 ? 'Hide EMA 20' : 'Show EMA 20'}
+                    >
                         <span className={`${styles.legendColor} ${styles.ema20}`} />
                         <span>EMA 20</span>
-                    </div>
-                    <div className={styles.legendItem}>
+                        <EyeToggleIcon visible={visibleIndicators.ema20} className={styles.eyeIcon} />
+                    </button>
+                    <button
+                        type="button"
+                        className={`${styles.legendItem} ${!visibleIndicators.ema50 ? styles.legendDisabled : ''}`}
+                        onClick={() => toggleIndicator('ema50')}
+                        title={visibleIndicators.ema50 ? 'Hide EMA 50' : 'Show EMA 50'}
+                    >
                         <span className={`${styles.legendColor} ${styles.ema50}`} />
                         <span>EMA 50</span>
-                    </div>
-                    <div className={styles.legendItem}>
+                        <EyeToggleIcon visible={visibleIndicators.ema50} className={styles.eyeIcon} />
+                    </button>
+                    <button
+                        type="button"
+                        className={`${styles.legendItem} ${!visibleIndicators.supertrend ? styles.legendDisabled : ''}`}
+                        onClick={() => toggleIndicator('supertrend')}
+                        title={visibleIndicators.supertrend ? 'Hide SuperTrend' : 'Show SuperTrend'}
+                    >
                         <span className={`${styles.legendColor} ${styles.supertrend}`} />
                         <span>SuperTrend</span>
-                    </div>
+                        <EyeToggleIcon visible={visibleIndicators.supertrend} className={styles.eyeIcon} />
+                    </button>
                 </div>
             </div>
         </div>

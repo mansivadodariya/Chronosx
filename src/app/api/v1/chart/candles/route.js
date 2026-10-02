@@ -168,24 +168,56 @@ function calculateSupportResistance(candles) {
 
 export async function GET(request) {
     try {
+        const searchParams = request.nextUrl.searchParams;
+        const rawSymbol = searchParams.get('symbol') || 'XAUUSD';
+        const rawTimeframe = searchParams.get('timeframe') || '15m';
+        const strategyId = searchParams.get('strategy_id') || 'default';
+        const limit = parseInt(searchParams.get('limit') || '500', 10);
+
+        const strippedSymbol = rawSymbol.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+
+        // 1. Primary: Fetch real live MT5 candles directly from ChronosX Live API
+        try {
+            const liveBackendUrl = `https://api.chronosx.com/api/v1/chart/candles?symbol=${strippedSymbol}&timeframe=${rawTimeframe}&strategy_id=${strategyId}`;
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 4000);
+            const liveRes = await fetch(liveBackendUrl, {
+                headers: {
+                    'accept': 'application/json',
+                    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ChronosXApp'
+                },
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+
+            if (liveRes.ok) {
+                const liveData = await liveRes.json();
+                const liveCandles = liveData.candles || liveData.data;
+                if (Array.isArray(liveCandles) && liveCandles.length > 0) {
+                    return NextResponse.json(liveData, {
+                        headers: {
+                            'Access-Control-Allow-Origin': '*',
+                            'Cache-Control': 'public, max-age=10, stale-while-revalidate=30'
+                        }
+                    });
+                }
+            }
+        } catch (backendErr) {
+            console.warn('[CandlesRoute] Live API fetch notice:', backendErr.message);
+        }
+
+        // 2. Secondary Fallback: Supabase market_candles table
         if (!supabase) {
-            return NextResponse.json({ error: 'Supabase client is not configured.' }, {
-                status: 500,
+            return NextResponse.json({ candles: [], support: null, resistance: null }, {
                 headers: { 'Access-Control-Allow-Origin': '*' }
             });
         }
-
-        const searchParams = request.nextUrl.searchParams;
-        const rawSymbol = searchParams.get('symbol') || 'EURUSD';
-        const rawTimeframe = searchParams.get('timeframe') || 'H1';
-        const limit = parseInt(searchParams.get('limit') || '744', 10);
 
         // Generate robust variants to query symbol & timeframe
         const symbolVariants = [rawSymbol];
         const upperSymbol = rawSymbol.toUpperCase();
         if (!symbolVariants.includes(upperSymbol)) symbolVariants.push(upperSymbol);
         
-        const strippedSymbol = upperSymbol.replace('/', '');
         if (!symbolVariants.includes(strippedSymbol)) symbolVariants.push(strippedSymbol);
         
         if (strippedSymbol.length === 6) {

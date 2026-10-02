@@ -206,12 +206,25 @@ export default function MiniCandlestickChart({
             wave2Points.push(`${x},${Math.min(indBottom - 1, Math.max(indTop + 1, yWave2))}`);
         });
 
-        // Time labels for X-Axis
+        // Time labels for X-Axis (safely parse ISO strings, numbers, or millisecond timestamps)
         const formatTime = (ts) => {
             if (!ts) return '';
-            const d = new Date(ts * 1000);
-            const hh = String(d.getUTCHours() || d.getHours()).padStart(2, '0');
-            const mm = String(d.getUTCMinutes() || d.getMinutes()).padStart(2, '0');
+            let d;
+            if (typeof ts === 'number') {
+                d = new Date(ts > 1e11 ? ts : ts * 1000);
+            } else if (typeof ts === 'string') {
+                const parsedNum = Number(ts);
+                if (!isNaN(parsedNum)) {
+                    d = new Date(parsedNum > 1e11 ? parsedNum : parsedNum * 1000);
+                } else {
+                    d = new Date(ts);
+                }
+            } else {
+                d = new Date(ts);
+            }
+            if (isNaN(d.getTime())) return '';
+            const hh = String(d.getUTCHours() ?? d.getHours()).padStart(2, '0');
+            const mm = String(d.getUTCMinutes() ?? d.getMinutes()).padStart(2, '0');
             return `${hh}:${mm}`;
         };
 

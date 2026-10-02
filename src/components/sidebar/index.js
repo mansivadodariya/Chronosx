@@ -357,7 +357,6 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
 
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [user, setUser] = useState(null);
-  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [visibleTabNames, setVisibleTabNames] = useState(() => getVisibleTabNamesSync());
   const [tabsLoading, setTabsLoading] = useState(() => !getVisibleTabNamesSync());
   const profileRef = useRef(null);

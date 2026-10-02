@@ -30,8 +30,35 @@ export default function AnalysisPanel({ symbol, strategyId, activeAnalysis, onAn
         const queryParams = new URLSearchParams({ symbol: cleanSymbol, lang: langParam });
         if (strategyId) queryParams.set('strategy_id', strategyId);
 
-        const primaryBase = (process.env.NEXT_PUBLIC_BACKEND_URL || 'https://api.thetradermaster.com').replace(/\/+$/, '');
-        const fallbackBase = 'https://api.thetradermaster.com';
+        const getBackendBase = () => {
+            if (process.env.NEXT_PUBLIC_BACKEND_URL) {
+                return process.env.NEXT_PUBLIC_BACKEND_URL.replace(/\/+$/, '');
+            }
+            const wsUrl = process.env.NEXT_PUBLIC_WS_URL || process.env.NEXT_PUBLIC_WS_LIVE_URL;
+            if (wsUrl) {
+                try {
+                    const parsed = new URL(wsUrl);
+                    const proto = parsed.protocol === 'wss:' ? 'https:' : 'http:';
+                    return `${proto}//${parsed.host}`;
+                } catch (_) {}
+            }
+            return 'https://api.chronosx.com';
+        };
+
+        const getWsHttpBase = () => {
+            const wsUrl = process.env.NEXT_PUBLIC_WS_URL || process.env.NEXT_PUBLIC_WS_LIVE_URL;
+            if (wsUrl) {
+                try {
+                    const parsed = new URL(wsUrl);
+                    const proto = parsed.protocol === 'wss:' ? 'https:' : 'http:';
+                    return `${proto}//${parsed.host}`;
+                } catch (_) {}
+            }
+            return null;
+        };
+
+        const primaryBase = getBackendBase();
+        const fallbackBase = getWsHttpBase() || primaryBase;
 
         let data = null;
         let lastErr = null;

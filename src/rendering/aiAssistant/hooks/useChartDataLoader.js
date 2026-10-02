@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { CandlestickSeries, LineSeries, AreaSeries, HistogramSeries } from 'lightweight-charts';
-import { fetchChartCandlesOnce, subscribeLiveCandles } from '@/lib/chartStore';
+import { fetchChartCandlesOnce, subscribeLiveCandles, parseCandleTimestamp } from '@/lib/chartStore';
 import { unifiedSocket } from '@/lib/unifiedSocket';
 import { generateMockCandles, getSymbolPrecision, getDefaultSymbolBasePrice } from '../utils/indicatorCalculations';
 
@@ -88,27 +88,16 @@ export default function useChartDataLoader({
                 }
 
                 if (!Array.isArray(rawCandles) || rawCandles.length === 0) {
+                    const known = unifiedSocket?.getKnownPrice ? unifiedSocket.getKnownPrice(activeSymbolClean) : null;
                     const baseVal = (livePrice && !isNaN(livePrice) && Number(livePrice) > 0)
                         ? Number(livePrice)
-                        : getDefaultSymbolBasePrice(activeSymbolClean);
+                        : (known && !isNaN(known) && Number(known) > 0 ? Number(known) : getDefaultSymbolBasePrice(activeSymbolClean));
                     rawCandles = generateMockCandles(600, baseVal, currentTimeframe, activeSymbolClean);
                 }
 
                 const formattedCandles = rawCandles
                     .map((c) => {
-                        let timeVal = c.time || c.timestamp;
-                        if (typeof timeVal === 'string') {
-                            if (timeVal.includes('T')) {
-                                timeVal = Math.floor(new Date(timeVal).getTime() / 1000);
-                            } else if (!isNaN(Number(timeVal))) {
-                                timeVal = Number(timeVal);
-                            } else {
-                                timeVal = Math.floor(new Date(timeVal).getTime() / 1000);
-                            }
-                        } else {
-                            timeVal = Number(timeVal);
-                        }
-
+                        const timeVal = parseCandleTimestamp(c.time || c.timestamp);
                         const openPrice = parseFloat(c.open);
                         const highPrice = parseFloat(c.high);
                         const lowPrice = parseFloat(c.low);
@@ -126,7 +115,7 @@ export default function useChartDataLoader({
                             volumeColor: closePrice >= openPrice ? 'rgba(38, 166, 154, 0.7)' : 'rgba(239, 83, 80, 0.7)',
                         };
                     })
-                    .filter((c) => !isNaN(c.time) && !isNaN(c.close));
+                    .filter((c) => !isNaN(c.time) && !isNaN(c.close) && c.close > 0);
 
                 formattedCandles.sort((a, b) => a.time - b.time);
                 candlesDataRef.current = formattedCandles;
@@ -241,28 +230,20 @@ export default function useChartDataLoader({
                 unsubscribeWS = subscribeLiveCandles(activeSymbolClean, currentTimeframe, (bar) => {
                     if (!isMounted) return;
                     setLoading(false);
-                    let timeVal = bar.time || bar.timestamp;
-                    if (typeof timeVal === 'string') {
-                        if (timeVal.includes('T')) {
-                            timeVal = Math.floor(new Date(timeVal).getTime() / 1000);
-                        } else if (!isNaN(Number(timeVal))) {
-                            timeVal = Number(timeVal);
-                        } else {
-                            timeVal = Math.floor(new Date(timeVal).getTime() / 1000);
-                        }
-                    } else {
-                        timeVal = Number(timeVal);
-                    }
+                    const timeVal = parseCandleTimestamp(bar.time || bar.timestamp);
+                    const rawClose = bar.close !== undefined ? bar.close : (bar.price !== undefined ? bar.price : (bar.last !== undefined ? bar.last : bar.c));
+                    const closePrice = parseFloat(rawClose);
 
-                    if (isNaN(timeVal) || timeVal <= 0 || isNaN(closePrice)) return;
+                    const interval = getTimeframeInterval(currentTimeframe);
+                    const bucketTime = Math.floor(timeVal / interval) * interval;
 
-                    const openPrice = isNaN(parseFloat(bar.open)) ? closePrice : parseFloat(bar.open);
-                    const highPrice = isNaN(parseFloat(bar.high)) ? Math.max(openPrice, closePrice) : parseFloat(bar.high);
-                    const lowPrice = isNaN(parseFloat(bar.low)) ? Math.min(openPrice, closePrice) : parseFloat(bar.low);
+                    const openPrice = !isNaN(parseFloat(bar.open)) && parseFloat(bar.open) > 0 ? parseFloat(bar.open) : closePrice;
+                    const highPrice = !isNaN(parseFloat(bar.high)) ? Math.max(openPrice, closePrice, parseFloat(bar.high)) : Math.max(openPrice, closePrice);
+                    const lowPrice = !isNaN(parseFloat(bar.low)) ? Math.min(openPrice, closePrice, parseFloat(bar.low)) : Math.min(openPrice, closePrice);
                     const volumeVal = parseFloat(bar.volume || bar.tick_volume || bar.vol || 0);
 
-                    const updatedBar = {
-                        time: timeVal,
+                    let updatedBar = {
+                        time: bucketTime,
                         open: openPrice,
                         high: highPrice,
                         low: lowPrice,
@@ -274,23 +255,38 @@ export default function useChartDataLoader({
                         const lastIndex = candlesDataRef.current.length - 1;
                         const lastCandle = candlesDataRef.current[lastIndex];
 
-                        // Prevent cross-symbol price distortion or sudden giant spikes
+                        // Prevent cross-symbol price distortion or sudden giant spikes (> 25% single-tick gap)
                         const lastClose = lastCandle.close;
                         const ratio = closePrice / lastClose;
-                        if (ratio > 1.35 || ratio < 0.65) {
+                        if (ratio > 1.25 || ratio < 0.75) {
                             return;
                         }
 
-                        // Lightweight Charts requires time >= last bar time
-                        if (timeVal < lastCandle.time) {
-                            return;
-                        }
-
-                        if (timeVal === lastCandle.time) {
+                        if (bucketTime <= lastCandle.time) {
+                            // Updating current forming candle
+                            updatedBar = {
+                                time: lastCandle.time,
+                                open: lastCandle.open,
+                                high: Math.max(lastCandle.high, highPrice, closePrice),
+                                low: Math.min(lastCandle.low, lowPrice, closePrice),
+                                close: closePrice,
+                                value: closePrice,
+                            };
                             candlesDataRef.current[lastIndex] = updatedBar;
                         } else {
+                            // New candle period started
+                            updatedBar = {
+                                time: bucketTime,
+                                open: Math.abs(openPrice - lastCandle.close) < (lastCandle.close * 0.02) ? openPrice : lastCandle.close,
+                                high: Math.max(openPrice, closePrice, highPrice),
+                                low: Math.min(openPrice, closePrice, lowPrice),
+                                close: closePrice,
+                                value: closePrice,
+                            };
                             candlesDataRef.current.push(updatedBar);
                         }
+                    } else {
+                        candlesDataRef.current = [updatedBar];
                     }
 
                     unifiedSocket.setKnownPrice(activeSymbolClean, closePrice);
@@ -306,9 +302,9 @@ export default function useChartDataLoader({
                     try {
                         if (volumeSeriesRef.current) {
                             volumeSeriesRef.current.update({
-                                time: timeVal,
+                                time: updatedBar.time,
                                 value: volumeVal || Math.floor(Math.random() * 2000) + 500,
-                                color: closePrice >= openPrice ? 'rgba(38, 166, 154, 0.7)' : 'rgba(239, 83, 80, 0.7)',
+                                color: closePrice >= updatedBar.open ? 'rgba(38, 166, 154, 0.7)' : 'rgba(239, 83, 80, 0.7)',
                             });
                         }
                     } catch {}

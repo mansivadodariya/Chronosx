@@ -2,13 +2,15 @@
 
 import React from 'react';
 import styles from '../tradeAnalysis.module.scss';
-import { CheckIcon, UploadIcon } from '@/icons/tradeAnalysisIcons';
+import { CheckIcon, UploadIcon, DownloadIcon } from '@/icons/tradeAnalysisIcons';
 
 export default function ReportSuccessBanner({
     fileDetails,
     totalTradesCount,
     onViewTrades,
-    onReupload
+    onReupload,
+    onDownloadReport,
+    isExporting = false
 }) {
     return (
         <div className={styles.reportSuccessBannerCard}>
@@ -58,6 +60,16 @@ export default function ReportSuccessBanner({
                     >
                         <UploadIcon />
                         <span>Upload New Statement</span>
+                    </button>
+                    <button
+                        type="button"
+                        className={styles.downloadReportBtn}
+                        onClick={onDownloadReport}
+                        disabled={isExporting}
+                        title="Download Complete Statement Audit Report (PDF)"
+                    >
+                        <DownloadIcon />
+                        <span>{isExporting ? 'Generating PDF...' : 'Download Report'}</span>
                     </button>
                 </div>
             </div>

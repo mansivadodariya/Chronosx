@@ -148,45 +148,24 @@ const PriceChart = ({ data, symbol = 'Asset', theme = 'dark' }) => {
     const supportLevels = backendSupport !== null ? backendSupport : calculateSupportResistance(ohlc).support;
     const resistanceLevels = backendResistance !== null ? backendResistance : calculateSupportResistance(ohlc).resistance;
 
-    const candleSeries = {
+    const series = [{
         name: 'Candles',
-        type: 'candlestick',
-        data: ohlc.map((d) => ({
-            x: new Date(d.timestamp),
-            y: [parseFloat(d.open), parseFloat(d.high), parseFloat(d.low), parseFloat(d.close)]
+        data: (Array.isArray(ohlc) ? ohlc : []).map((d) => ({
+            x: new Date(d.timestamp || (d.time ? (typeof d.time === 'number' ? (d.time > 1e11 ? d.time : d.time * 1000) : d.time) : Date.now())),
+            y: [parseFloat(d.open || 0), parseFloat(d.high || 0), parseFloat(d.low || 0), parseFloat(d.close || 0)]
         }))
-    };
-
-    const createLevelLine = ({ price, strength }, rank, type) => ({
-        name: `${type === 'support' ? 'S' : 'R'}${rank + 1} ${strengthStars(strength)}`,
-        type: 'line',
-        data: [
-            { x: new Date(ohlc[0].timestamp), y: price },
-            { x: new Date(ohlc[ohlc.length - 1].timestamp), y: price }
-        ]
-    });
-
-    const supportSeriesArr = supportLevels.map((z, i) => createLevelLine(z, i, 'support'));
-    const resistanceSeriesArr = resistanceLevels.map((z, i) => createLevelLine(z, i, 'resistance'));
-
-    const series = [candleSeries, ...(showSR ? [...supportSeriesArr, ...resistanceSeriesArr] : [])];
+    }];
 
     const yAxisAnnotations = showSR ? [
         ...supportLevels.map(({ price, strength }) => ({
             y: price, borderColor: '#10b981', strokeDashArray: 4,
-            label: { borderColor: '#10b981', style: { color: '#fff', background: '#10b981', fontSize: '11px' }, text: `S ${price.toFixed(4)} ${strengthStars(strength)}` }
+            label: { borderColor: '#10b981', style: { color: '#fff', background: '#10b981', fontSize: '11px' }, text: `S ${price.toFixed(price > 100 ? 2 : 4)} ${strengthStars(strength)}` }
         })),
         ...resistanceLevels.map(({ price, strength }) => ({
             y: price, borderColor: '#ef4444', strokeDashArray: 4,
-            label: { borderColor: '#ef4444', style: { color: '#fff', background: '#ef4444', fontSize: '11px' }, text: `R ${price.toFixed(4)} ${strengthStars(strength)}` }
+            label: { borderColor: '#ef4444', style: { color: '#fff', background: '#ef4444', fontSize: '11px' }, text: `R ${price.toFixed(price > 100 ? 2 : 4)} ${strengthStars(strength)}` }
         }))
     ] : [];
-
-    const seriesColors = showSR
-        ? ['transparent', ...supportLevels.map(() => '#10b981'), ...resistanceLevels.map(() => '#ef4444')]
-        : ['transparent'];
-    const strokeWidths = showSR ? [1, ...supportLevels.map(() => 1.5), ...resistanceLevels.map(() => 1.5)] : [1];
-    const dashArrays = showSR ? [0, ...supportLevels.map(() => 4), ...resistanceLevels.map(() => 4)] : [0];
 
     const options = {
         chart: {
@@ -201,29 +180,24 @@ const PriceChart = ({ data, symbol = 'Asset', theme = 'dark' }) => {
             style: { color: '#18C98B', fontSize: '16px', fontWeight: 700 }
         },
         legend: {
-            show: true, position: 'top', horizontalAlign: 'right',
-            onItemClick: { toggleDataSeries: true },
-            onItemHover: { highlightDataSeries: true },
-            labels: { colors: '#ffffff' }
+            show: false
         },
-        theme: { mode: 'dark' },
+        theme: { mode: isDark ? 'dark' : 'light' },
         xaxis: {
             type: 'datetime',
-            labels: { style: { colors: 'rgba(255, 255, 255, 0.65)' } },
+            labels: { style: { colors: isDark ? 'rgba(255, 255, 255, 0.65)' : '#475569' } },
             axisBorder: { show: false }, axisTicks: { show: false }
         },
         yaxis: {
             tooltip: { enabled: true },
-            labels: { style: { colors: 'rgba(255, 255, 255, 0.65)' }, formatter: (val) => val?.toFixed(4) ?? val }
+            labels: { style: { colors: isDark ? 'rgba(255, 255, 255, 0.65)' : '#475569' }, formatter: (val) => (typeof val === 'number' ? val.toFixed(val > 100 ? 2 : 4) : val) }
         },
-        grid: { borderColor: 'rgba(24, 201, 139, 0.15)', strokeDashArray: 4 },
+        grid: { borderColor: isDark ? 'rgba(24, 201, 139, 0.15)' : 'rgba(226, 232, 240, 0.9)', strokeDashArray: 4 },
         annotations: { yaxis: yAxisAnnotations },
-        stroke: { width: strokeWidths, curve: 'straight', dashArray: dashArrays },
-        colors: seriesColors,
         plotOptions: {
             candlestick: { colors: { upward: '#10b981', downward: '#ef4444' }, wick: { useFillColor: true } }
         },
-        tooltip: { theme: 'dark', x: { format: 'dd MMM HH:mm' } }
+        tooltip: { theme: isDark ? 'dark' : 'light', x: { format: 'dd MMM HH:mm' } }
     };
 
     if (!ohlc.length) return null;

@@ -158,7 +158,7 @@ export default function Header() {
                 </svg>
             )
         },
-        {
+        /* {
             label: t('header.tradingTools.strategyCreate.title', 'Custom Bot Builder'),
             desc: t('header.tradingTools.strategyCreate.desc', 'Build, backtest & automate custom trading bots & algorithmic strategies'),
             href: '/custom-bot-builder',
@@ -177,7 +177,7 @@ export default function Header() {
                     <line x1="1" y1="15" x2="4" y2="15" />
                 </svg>
             )
-        },
+        }, */
         {
             label: t('header.tradingTools.backtesting.title', 'Backtesting'),
             desc: t('header.tradingTools.backtesting.desc', 'High-speed historical simulation, win-rate metrics & Sharpe ratio'),

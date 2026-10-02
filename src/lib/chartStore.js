@@ -25,6 +25,25 @@ export function applySymbolPrecision(series, symbol) {
     series.applyOptions({ priceFormat: { type: 'price', precision, minMove } });
 }
 
+// Robust Universal UTC Candle Timestamp Normalizer
+export function parseCandleTimestamp(rawTime) {
+    if (!rawTime) return Math.floor(Date.now() / 1000);
+    if (typeof rawTime === 'number') {
+        return rawTime > 1e11 ? Math.floor(rawTime / 1000) : rawTime;
+    }
+    const str = String(rawTime).trim();
+    if (!isNaN(Number(str))) {
+        const num = Number(str);
+        return num > 1e11 ? Math.floor(num / 1000) : num;
+    }
+    let iso = str.replace(' ', 'T');
+    if (!iso.endsWith('Z') && !iso.includes('+') && (iso.length === 19 || (iso.includes('T') && iso.split('T')[1]?.length === 8))) {
+        iso = `${iso}Z`;
+    }
+    const parsed = Math.floor(new Date(iso).getTime() / 1000);
+    return isNaN(parsed) ? Math.floor(Date.now() / 1000) : parsed;
+}
+
 // 1. Single HTTP REST API Fetch Cache & Deduplication
 const activeFetches = new Map();
 
@@ -36,35 +55,65 @@ export async function fetchChartCandlesOnce(symbol, timeframe = '15m', strategyI
         return activeFetches.get(key);
     }
 
-    const baseUrl = (process.env.NEXT_PUBLIC_BACKEND_URL || 'https://api.thetradermaster.com').replace(/\/+$/, '');
-    const url = `${baseUrl}/api/v1/chart/candles?symbol=${cleanSymbol}&timeframe=${timeframe}&strategy_id=${strategyId}`;
+    const fetchPromise = (async () => {
+        const candidateEndpoints = [];
 
-    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
-    const timeoutId = controller ? setTimeout(() => controller.abort(), 4000) : null;
+        // 1. Internal Next.js API route (Proxies to Live MT5 backend / Supabase)
+        if (typeof window !== 'undefined') {
+            candidateEndpoints.push(`/api/v1/chart/candles?symbol=${cleanSymbol}&timeframe=${timeframe}&strategy_id=${strategyId}`);
+        }
 
-    const fetchPromise = fetch(url, {
-        headers: {
-            'accept': 'application/json',
-            'ngrok-skip-browser-warning': 'true'
-        },
-        signal: controller ? controller.signal : undefined
-    })
-    .then(async (res) => {
-        if (timeoutId) clearTimeout(timeoutId);
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        return res.json();
-    })
-    .catch((err) => {
-        if (timeoutId) clearTimeout(timeoutId);
-        activeFetches.delete(key);
-        throw err;
-    })
+        // 2. Direct Official ChronosX Live API
+        candidateEndpoints.push(`https://api.chronosx.com/api/v1/chart/candles?symbol=${cleanSymbol}&timeframe=${timeframe}&strategy_id=${strategyId}`);
+
+        // 3. Configured Backend URL (if not unreachable LAN IP)
+        const envBackend = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/, '');
+        if (envBackend && !envBackend.includes('192.168.')) {
+            candidateEndpoints.push(`${envBackend}/api/v1/chart/candles?symbol=${cleanSymbol}&timeframe=${timeframe}&strategy_id=${strategyId}`);
+        }
+
+        // 4. Additional fallback
+        candidateEndpoints.push(`https://api.thetradermaster.com/api/v1/chart/candles?symbol=${cleanSymbol}&timeframe=${timeframe}&strategy_id=${strategyId}`);
+
+        // Try candidates sequentially
+        for (const url of candidateEndpoints) {
+            try {
+                const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+                const timeoutId = controller ? setTimeout(() => controller.abort(), 3500) : null;
+
+                const res = await fetch(url, {
+                    headers: {
+                        'accept': 'application/json',
+                        'ngrok-skip-browser-warning': 'true'
+                    },
+                    signal: controller ? controller.signal : undefined
+                });
+
+                if (timeoutId) clearTimeout(timeoutId);
+
+                if (res.ok) {
+                    const data = await res.json();
+                    const rawCandles = Array.isArray(data) ? data : (data?.candles || data?.data || []);
+                    if (Array.isArray(rawCandles) && rawCandles.length > 0) {
+                        return data;
+                    }
+                }
+            } catch (_) {
+                // Try next endpoint
+            }
+        }
+
+        return { candles: [] };
+    })()
     .then((data) => {
-        // Keep in cache briefly to handle near-simultaneous mounts across multiple components
         setTimeout(() => {
             activeFetches.delete(key);
         }, 4000);
         return data;
+    })
+    .catch((err) => {
+        activeFetches.delete(key);
+        return { candles: [] };
     });
 
     activeFetches.set(key, fetchPromise);

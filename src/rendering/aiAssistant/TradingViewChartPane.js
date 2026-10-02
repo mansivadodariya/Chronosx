@@ -150,39 +150,6 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
         }
     }, [liveTickDirection, priceData?.price]);
 
-    // Live tick updates to candle series from socket
-    useEffect(() => {
-        if (loading) return;
-        if (!priceData || priceData.price === undefined || priceData.price === null) return;
-        if (priceData.symbol && priceData.symbol !== activeSymbolClean) return;
-        const newPrice = parseFloat(priceData.price);
-        if (isNaN(newPrice) || newPrice <= 0) return;
-
-        setLatestCandle((prev) => {
-            if (!prev) return prev;
-            // Prevent cross-symbol price distortion or sudden giant spike
-            const ratio = newPrice / prev.close;
-            if (ratio > 1.35 || ratio < 0.65) {
-                return prev;
-            }
-            const updated = {
-                ...prev,
-                high: Math.max(prev.high, newPrice),
-                low: Math.min(prev.low, newPrice),
-                close: newPrice,
-                value: newPrice,
-            };
-            if (seriesRef.current) {
-                try {
-                    seriesRef.current.update(updated);
-                } catch (err) {
-                    console.warn('Series live update notice:', err);
-                }
-            }
-            return updated;
-        });
-    }, [priceData?.price, loading, activeSymbolClean]);
-
     // Indicator Configs & Visibility States Hook
     const {
         indicatorConfigs,

@@ -3,15 +3,32 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { createChart, CandlestickSeries, HistogramSeries } from 'lightweight-charts';
 import styles from '../aiCockpit.module.scss';
-import { fetchGoldCandles, generateFallbackGoldCandles } from '../utils/goldCandles';
+import { fetchGoldCandles } from '../utils/goldCandles';
+import { unifiedSocket, cleanPairSymbol } from '@/lib/unifiedSocket';
+import { parseCandleTimestamp } from '@/lib/chartStore';
 
-export default function AiCockpitLiveChart({ livePrice = 2894.50, isPositiveChange = true }) {
+const SYMBOL = 'XAUUSD';
+const TIMEFRAME = 'H1';
+
+export default function AiCockpitLiveChart({ livePrice = 4308.18, isPositiveChange = true }) {
   const containerRef = useRef(null);
   const chartRef = useRef(null);
   const candleSeriesRef = useRef(null);
   const volumeSeriesRef = useRef(null);
   const [candlesData, setCandlesData] = useState([]);
   const [activeCandle, setActiveCandle] = useState(null);
+  const livePriceRef = useRef(livePrice);
+  const candlesDataRef = useRef([]);
+  const dataLoadedRef = useRef(false);
+
+  // Keep refs in sync to avoid stale closures
+  useEffect(() => {
+    livePriceRef.current = livePrice;
+  }, [livePrice]);
+
+  useEffect(() => {
+    candlesDataRef.current = candlesData;
+  }, [candlesData]);
 
   // Initialize and render the TradingView Lightweight Chart
   useEffect(() => {
@@ -142,36 +159,59 @@ export default function AiCockpitLiveChart({ livePrice = 2894.50, isPositiveChan
     };
   }, []);
 
-  // Fetch and populate candles
+  // Helper: normalize a timestamp to seconds
+  const normalizeTime = useCallback((rawTime) => {
+    return parseCandleTimestamp(rawTime);
+  }, []);
+
+  // Helper: apply candle + volume data to the chart series
+  const applyDataToChart = useCallback((data) => {
+    if (!candleSeriesRef.current || !volumeSeriesRef.current || !data.length) return;
+
+    const formattedCandles = data.map((c) => ({
+      time: normalizeTime(c.time),
+      open: c.open,
+      high: c.high,
+      low: c.low,
+      close: c.close,
+    }));
+
+    const formattedVolumes = data.map((c) => ({
+      time: normalizeTime(c.time),
+      value: c.volume || 1000,
+      color: c.close >= c.open ? 'rgba(16, 185, 129, 0.35)' : 'rgba(244, 63, 94, 0.35)',
+    }));
+
+    candleSeriesRef.current.setData(formattedCandles);
+    volumeSeriesRef.current.setData(formattedVolumes);
+    if (chartRef.current) {
+      chartRef.current.timeScale().fitContent();
+    }
+  }, [normalizeTime]);
+
+  // Fetch and populate initial candles — use live price as base for fallback
   useEffect(() => {
     let isMounted = true;
 
     async function loadData() {
-      const data = await fetchGoldCandles(60, livePrice);
+      // Use the current live price (from socket/prop) as fallback base
+      // so generated candles match the actual market price range
+      const basePrice = livePriceRef.current && livePriceRef.current > 0
+        ? livePriceRef.current
+        : 4308.18;
+
+      const data = await fetchGoldCandles(60, basePrice);
       if (!isMounted) return;
 
-      const formattedCandles = data.map((c) => ({
-        time: typeof c.time === 'number' && c.time > 10000000000 ? Math.floor(c.time / 1000) : c.time,
-        open: c.open,
-        high: c.high,
-        low: c.low,
-        close: c.close,
-      }));
-
-      const formattedVolumes = data.map((c) => ({
-        time: typeof c.time === 'number' && c.time > 10000000000 ? Math.floor(c.time / 1000) : c.time,
-        value: c.volume || 1000,
-        color: c.close >= c.open ? 'rgba(16, 185, 129, 0.35)' : 'rgba(244, 63, 94, 0.35)',
-      }));
-
       setCandlesData(data);
+      dataLoadedRef.current = true;
+      applyDataToChart(data);
 
-      if (candleSeriesRef.current && volumeSeriesRef.current) {
-        candleSeriesRef.current.setData(formattedCandles);
-        volumeSeriesRef.current.setData(formattedVolumes);
-        if (chartRef.current) {
-          chartRef.current.timeScale().fitContent();
-        }
+      // Seed the socket's known price with the last candle close
+      // so fallback/continuous stream uses real price when backend sends no messages
+      const lastCandle = data[data.length - 1];
+      if (lastCandle && lastCandle.close > 0) {
+        unifiedSocket.setKnownPrice(SYMBOL, lastCandle.close);
       }
     }
 
@@ -180,30 +220,105 @@ export default function AiCockpitLiveChart({ livePrice = 2894.50, isPositiveChan
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Update latest forming candle on live price ticks
+  // Subscribe to WebSocket candle_update events for real-time forming candle
+  useEffect(() => {
+    const unsubscribe = unifiedSocket.subscribeCandles(
+      (candleData, fullPayload) => {
+        if (!candleData || !candleSeriesRef.current) return;
+
+        const time = normalizeTime(
+          candleData.time || candleData.t || fullPayload?.timestamp
+        );
+        const open = parseFloat(candleData.open || candleData.o);
+        const high = parseFloat(candleData.high || candleData.h);
+        const low = parseFloat(candleData.low || candleData.l);
+        const close = parseFloat(candleData.close || candleData.c);
+        const volume = parseFloat(candleData.volume || candleData.v || candleData.tick_volume || 0);
+
+        if (isNaN(open) || isNaN(close) || isNaN(time)) return;
+
+        const updatedCandle = {
+          time,
+          open: Number(open.toFixed(2)),
+          high: Number(high.toFixed(2)),
+          low: Number(low.toFixed(2)),
+          close: Number(close.toFixed(2)),
+        };
+
+        try {
+          candleSeriesRef.current.update(updatedCandle);
+        } catch (_) {}
+
+        if (volumeSeriesRef.current && !isNaN(volume)) {
+          try {
+            volumeSeriesRef.current.update({
+              time,
+              value: volume || 1000,
+              color: close >= open
+                ? 'rgba(16, 185, 129, 0.35)'
+                : 'rgba(244, 63, 94, 0.35)',
+            });
+          } catch (_) {}
+        }
+
+        // Update local candles state: append or update last candle
+        setCandlesData((prev) => {
+          const newData = [...prev];
+          const lastIdx = newData.length - 1;
+          const newCandle = {
+            time,
+            open: updatedCandle.open,
+            high: updatedCandle.high,
+            low: updatedCandle.low,
+            close: updatedCandle.close,
+            volume: volume || 1000,
+            isBullish: updatedCandle.close >= updatedCandle.open,
+          };
+
+          if (lastIdx >= 0 && normalizeTime(newData[lastIdx].time) === time) {
+            // Update existing candle
+            newData[lastIdx] = newCandle;
+          } else {
+            // New candle period
+            newData.push(newCandle);
+          }
+          return newData;
+        });
+      },
+      SYMBOL,
+      TIMEFRAME
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, [normalizeTime]);
+
+  // Update latest forming candle on live price ticks (from prop)
   useEffect(() => {
     if (!livePrice || !candleSeriesRef.current || candlesData.length === 0) return;
 
     const lastCandle = candlesData[candlesData.length - 1];
     if (!lastCandle) return;
 
-    const rawTime = lastCandle.time;
-    const formattedTime = typeof rawTime === 'number' && rawTime > 10000000000 ? Math.floor(rawTime / 1000) : rawTime;
+    const formattedTime = normalizeTime(lastCandle.time);
+    const price = parseFloat(livePrice);
+    if (isNaN(price) || price <= 0) return;
 
     const updatedCandle = {
       time: formattedTime,
       open: lastCandle.open,
-      high: Math.max(lastCandle.high, livePrice),
-      low: Math.min(lastCandle.low, livePrice),
-      close: livePrice,
+      high: Math.max(lastCandle.high, price),
+      low: Math.min(lastCandle.low, price),
+      close: price,
     };
 
     try {
       candleSeriesRef.current.update(updatedCandle);
     } catch (_) {}
-  }, [livePrice, candlesData]);
+  }, [livePrice, candlesData, normalizeTime]);
 
   // Display Candle Info for HUD
   const displayCandle = activeCandle || (candlesData.length > 0 ? candlesData[candlesData.length - 1] : null);

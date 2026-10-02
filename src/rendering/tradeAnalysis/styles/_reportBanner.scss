@@ -192,6 +192,35 @@
                     background: rgba(255, 255, 255, 0.12);
                 }
             }
+
+            .downloadReportBtn {
+                background: rgba(24, 201, 139, 0.12);
+                border: 1px solid rgba(24, 201, 139, 0.4);
+                color: #18C98B;
+                padding: 10px 20px;
+                border-radius: 9999px;
+                font-size: 13px;
+                font-weight: 700;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                box-shadow: 0 2px 10px rgba(24, 201, 139, 0.15);
+                transition: all 0.2s ease;
+
+                &:hover:not(:disabled) {
+                    background: #18C98B;
+                    color: #040605;
+                    border-color: #18C98B;
+                    box-shadow: 0 4px 16px rgba(24, 201, 139, 0.35);
+                    transform: translateY(-1px);
+                }
+
+                &:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                }
+            }
         }
     }
 

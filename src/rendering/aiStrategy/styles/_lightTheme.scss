@@ -349,6 +349,16 @@
                 .legendItem {
                     color: #475569 !important;
                     font-weight: 600 !important;
+
+                    &:hover {
+                        background: #F1F5F9 !important;
+                        color: #0F172A !important;
+                    }
+
+                    &.legendDisabled {
+                        opacity: 0.35 !important;
+                        color: #94A3B8 !important;
+                    }
                 }
             }
         }
