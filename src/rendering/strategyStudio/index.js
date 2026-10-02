@@ -549,11 +549,13 @@ export default function StrategyStudio() {
                 const profitFactor = data.stats?.profit_factor !== undefined ? data.stats.profit_factor : '1.00';
                 const maxDd = data.stats?.max_drawdown_percentage !== undefined ? data.stats.max_drawdown_percentage : (data.stats?.max_drawdown || '0.00');
 
+                const formattedNetPnl = Number(netPnl) >= 0 ? `+$${netPnl}` : `-$${Math.abs(Number(netPnl)).toFixed(2)}`;
+
                 setMessages((prev) => [
                     ...prev,
                     {
                         role: 'ai',
-                        text: `**Backtest Simulation Results – ${activeSymbol} (${activeInterval})**\n\n- Total Trades: ${totalTradesCount}\n- Win Rate: ${winRate}%\n- Winning / Losing Trades: ${data.stats?.win || parsedTrips.filter(t => t.pnl > 0).length} / ${data.stats?.loss || parsedTrips.filter(t => t.pnl <= 0).length}\n- Net Profit (USD): $${netPnl}\n- Max Drawdown: ${maxDd}%\n- Profit Factor: ${profitFactor}`,
+                        text: `**Backtest Simulation Results – ${activeSymbol} (${activeInterval})**\n\n- Total Trades: ${totalTradesCount}\n- Win Rate: ${winRate}%\n- Winning / Losing Trades: ${data.stats?.win || parsedTrips.filter(t => t.pnl > 0).length} / ${data.stats?.loss || parsedTrips.filter(t => t.pnl <= 0).length}\n- Net Profit (USD): ${formattedNetPnl}\n- Max Drawdown: ${maxDd}%\n- Profit Factor: ${profitFactor}`,
                         suggestions: ['Run Another Backtest', 'Modify Strategy', 'Export Report']
                     }
                 ]);

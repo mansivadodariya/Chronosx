@@ -150,12 +150,39 @@ export function getVisibleTabNamesSync() {
   return null;
 }
 
-export async function fetchVisibleTabNames() {
+let realtimeChannel = null;
+
+function initRealtimeSubscription() {
+  if (typeof window === 'undefined' || !supabase || realtimeChannel) return;
+  try {
+    realtimeChannel = supabase
+      .channel('realtime:dashboard_tabs_permissions')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'dashboard_tabs' },
+        () => {
+          // Realtime push notification from Supabase on Admin toggle
+          fetchVisibleTabNames(true);
+        }
+      )
+      .subscribe();
+  } catch (err) {
+    console.warn('Realtime tab permission subscription error:', err);
+  }
+}
+
+export async function fetchVisibleTabNames(force = false) {
+  if (force) {
+    cachedVisibleTabs = null;
+    fetchPromise = null;
+  }
   if (fetchPromise) return fetchPromise;
 
   fetchPromise = (async () => {
     try {
       if (supabase) {
+        initRealtimeSubscription();
+
         let rawTabs = null;
 
         // Directly query dashboard_tabs table for latest is_visible values
@@ -188,6 +215,7 @@ export async function fetchVisibleTabNames() {
           cachedVisibleTabs = names;
           if (typeof window !== 'undefined') {
             sessionStorage.setItem('visible_tab_names', JSON.stringify([...names]));
+            window.dispatchEvent(new CustomEvent('tab_permissions:updated', { detail: names }));
           }
           listeners.forEach(fn => fn(cachedVisibleTabs));
           return cachedVisibleTabs;

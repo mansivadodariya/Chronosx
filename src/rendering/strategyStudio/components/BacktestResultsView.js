@@ -142,10 +142,14 @@ export default function BacktestResultsView({
                         <CoinsCapitalIcon size={14} color="#18C98B" />
                     </div>
                     <div className={`${styles.kpiValue} ${totalPnL >= 0 ? styles.positive : styles.negative}`}>
-                        {sign}${totalPnL.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        {totalPnL >= 0 
+                            ? `+$${totalPnL.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` 
+                            : `-$${Math.abs(totalPnL).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
                     </div>
                     <div className={styles.kpiSub}>
-                        {sign}{pnlPercent.toFixed(2)}% net return
+                        {pnlPercent >= 0 
+                            ? `+${pnlPercent.toFixed(2)}% net return` 
+                            : `-${Math.abs(pnlPercent).toFixed(2)}% net return`}
                     </div>
                 </div>
 
