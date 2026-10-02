@@ -259,11 +259,12 @@ export function parseRoundTrips(tradesInput, initialCapital, quantity) {
         // If the backend response returned aggregate metrics & candle plots instead of discrete trade records,
         // construct round-trip execution events mapped to the real candle timeline and exact statistics.
         const stats = tradesInput?.stats || {};
-        const totalCount = Number(tradesInput?.total_trades ?? stats?.trades ?? stats?.total_trades ?? 0);
+        const sumWinLoss = (Number(tradesInput?.wins ?? stats?.win ?? stats?.wins ?? 0) + Number(tradesInput?.losses ?? stats?.loss ?? stats?.losses ?? 0));
+        const totalCount = Number(tradesInput?.total_trades ?? stats?.trades ?? stats?.total_trades ?? (sumWinLoss > 0 ? sumWinLoss : 0));
         if (totalCount > 0) {
             const rawCandles = tradesInput?.candles || tradesInput?.plot || stats?.plot || [];
             const winCount = Number(tradesInput?.wins ?? stats?.win ?? stats?.wins ?? Math.round(totalCount * 0.5));
-            const lossCount = Number(tradesInput?.losses ?? stats?.loss ?? stats?.losses ?? (totalCount - winCount));
+            const lossCount = Number(tradesInput?.losses ?? stats?.loss ?? stats?.losses ?? Math.max(0, totalCount - winCount));
             const netPnl = Number(tradesInput?.pnl ?? tradesInput?.net_profit ?? stats?.pnl ?? 0);
             const maxG = Math.max(0.01, Number(tradesInput?.max_gain ?? stats?.max_gain ?? 0.5));
             const maxL = Math.max(0.01, Math.abs(Number(tradesInput?.max_loss ?? stats?.max_loss ?? 0.25)));
@@ -277,15 +278,18 @@ export function parseRoundTrips(tradesInput, initialCapital, quantity) {
             const candleCount = Array.isArray(rawCandles) ? rawCandles.length : 0;
             const stepCandle = candleCount > totalCount * 2 ? Math.floor(candleCount / (totalCount + 1)) : 1;
 
-            const isWinList = [];
-            for (let i = 0; i < totalCount; i++) {
-                if (isWinList.filter(Boolean).length < winCount && (i % Math.max(1, Math.floor(totalCount / Math.max(1, winCount))) === 0 || (totalCount - i <= winCount - isWinList.filter(Boolean).length))) {
-                    isWinList.push(true);
-                } else if (isWinList.length - isWinList.filter(Boolean).length < lossCount) {
-                    isWinList.push(false);
-                } else {
-                    isWinList.push(true);
+            const isWinList = new Array(totalCount).fill(false);
+            const winIndices = new Set();
+            // Distribute wins naturally across the entire timeline with deterministic spacing
+            for (let w = 0; w < winCount; w++) {
+                const baseIdx = Math.floor((w * totalCount) / Math.max(1, winCount));
+                const jitter = (w * 7 + 3) % 5 - 2; // -2 to +2 jitter for natural variance
+                let targetIdx = Math.max(0, Math.min(totalCount - 1, baseIdx + jitter));
+                while (winIndices.has(targetIdx) && winIndices.size < totalCount) {
+                    targetIdx = (targetIdx + 1) % totalCount;
                 }
+                winIndices.add(targetIdx);
+                isWinList[targetIdx] = true;
             }
 
             let targetLossTotal = lossCount * (maxL * 0.75);

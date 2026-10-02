@@ -355,7 +355,6 @@ export default function PredefinedStrategyCard({ strategy, isLight: isLightProp,
                     className={styles.btnRunBacktest}
                     onClick={handleRunBacktest}
                     title="Run Backtest on /backtest"
-                    disabled
                 >
                     <RocketIcon />
                     <span>Run Backtest</span>

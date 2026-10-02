@@ -8,8 +8,7 @@ import { CREDITS_UPDATED_EVENT } from '@/lib/credits';
 import { useLanguage } from '@/context/LanguageContext';
 import LanguageToggle from '@/components/languageToggle';
 import ThemeToggle from '@/components/themeToggle';
-import { supabase } from '@/lib/supabaseClient';
-import { fetchVisibleTabNames, getVisibleTabNamesSync } from '@/lib/useTabPermission';
+import { fetchVisibleTabNames, getVisibleTabNamesSync, checkPermissionInSet } from '@/lib/useTabPermission';
 import { CreditCardIcon } from '@/icons/creditIcon';
 
 const ROUTE_TITLE_MAP = {
@@ -125,7 +124,7 @@ const Topbar = ({ onMenuClick }) => {
     return () => window.removeEventListener(CREDITS_UPDATED_EVENT, onCreditsUpdated);
   }, []);
 
-  const hasPlansPermission = visibleTabNames ? visibleTabNames.has('subscription plans') : true;
+  const hasPlansPermission = checkPermissionInSet(visibleTabNames, 'subscription plans');
 
   if (loading) {
     return (

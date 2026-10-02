@@ -11,8 +11,7 @@ import { getStoredUserId } from '@/lib/authSession';
 
 import DeleteBotModal from './components/DeleteBotModal';
 import StrategyDetailModal from './components/StrategyDetailModal';
-import { mapStrategyToBot } from './utils/botHelpers';
-import { fetchVisibleTabNames, getVisibleTabNamesSync } from '@/lib/useTabPermission';
+import { fetchVisibleTabNames, getVisibleTabNamesSync, checkPermissionInSet } from '@/lib/useTabPermission';
 
 const resolveBacktestApiBase = () => {
     const raw = (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_BACKTEST_API_URL || 'http://192.168.0.153:8000').replace(/\/+$/, '');
@@ -192,9 +191,9 @@ export default function MyBots() {
         return matchStatus && matchSearch;
     });
 
-    const hasAiBotPermission = visibleTabNames ? visibleTabNames.has('ai bot builder') : true;
-    const hasCustomBotPermission = true;
-    const hasLibraryPermission = visibleTabNames ? visibleTabNames.has('browse bots library') : false;
+    const hasAiBotPermission = checkPermissionInSet(visibleTabNames, 'ai bot builder');
+    const hasCustomBotPermission = checkPermissionInSet(visibleTabNames, 'custom bot builder');
+    const hasLibraryPermission = checkPermissionInSet(visibleTabNames, 'browse bots library');
     const isSingleCard = (hasAiBotPermission ? 1 : 0) + (hasCustomBotPermission ? 1 : 0) === 1;
 
     const activeCount = bots.filter((b) => b.status === 'active').length;

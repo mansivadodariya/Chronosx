@@ -324,15 +324,15 @@ export default function AiChatStreamView({
                     )}
 
                     {/* Backtest Simulation Results */}
-                    {results && roundTrips.length > 0 && (
+                    {results && (
                         <div style={{ marginTop: '16px', width: '100%' }}>
                             <BacktestResultsView
                                 results={results}
-                                roundTrips={roundTrips}
-                                initialCapital={capital}
+                                roundTrips={roundTrips || []}
+                                initialCapital={Number(capital) || 10000}
                                 symbol={symbol || 'EURUSD'}
                                 interval={interval || '15min'}
-                                quantity={quantity || 0.01}
+                                quantity={0.01}
                             />
                         </div>
                     )}

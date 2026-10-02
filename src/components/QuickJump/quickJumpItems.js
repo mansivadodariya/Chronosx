@@ -328,11 +328,6 @@ export function checkItemPermission(item, visibleTabNames) {
     if (item.id === 'home' || item.href === '/') return true;
     if (item.id === 'education' || item.isExternal || item.href?.includes('edufins')) return true;
 
-    // Custom Bot Builder is always accessible
-    if (item.href === '/manual-bot-builder' || item.href === '/custom-bot-builder' || item.id === 'custom-bot-builder') {
-        return true;
-    }
-
     // Check by ID mapping
     const targetTabById = ID_PERMISSION_MAP[item.id];
     if (targetTabById && !visibleTabNames.has(targetTabById)) {

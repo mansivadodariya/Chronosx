@@ -121,14 +121,15 @@ export default function BacktestPage() {
 
                 setResults(stockRes);
                 setRoundTrips(trips);
-                setExecutedParams({
+                const execParams = {
                     symbol: stratMeta.symbol || symbol,
                     interval: stratMeta.interval || interval,
                     capital: cap,
                     quantity: qty,
                     fromDate: stratMeta.fromDate || fromDate,
                     toDate: stratMeta.toDate || toDate
-                });
+                };
+                setExecutedParams(execParams);
 
                 // Sync header toolbar values if returned in strategy response
                 if (res.strategy) {
@@ -148,15 +149,37 @@ export default function BacktestPage() {
                     if (s.from_date) setFromDate(syncedFrom);
                     if (s.to_date) setToDate(syncedTo);
 
-                    setExecutedParams({
-                        symbol: syncedSym,
-                        interval: syncedIntv,
-                        capital: syncedCap,
-                        quantity: syncedQty,
-                        fromDate: syncedFrom,
-                        toDate: syncedTo
-                    });
+                    execParams.symbol = syncedSym;
+                    execParams.interval = syncedIntv;
+                    execParams.capital = syncedCap;
+                    execParams.quantity = syncedQty;
+                    execParams.fromDate = syncedFrom;
+                    execParams.toDate = syncedTo;
+                    setExecutedParams({ ...execParams });
                 }
+
+                // Cache successful response to sessionStorage so refresh reuses previous data
+                try {
+                    if (typeof window !== 'undefined' && stratMeta.strategy_id) {
+                        const cacheData = {
+                            strategy_id: stratMeta.strategy_id,
+                            source: stratMeta.source,
+                            strategyName: stratMeta.name || strategyName || res.strategy?.name || res.strategy?.strategy_name || '',
+                            results: stockRes,
+                            roundTrips: trips,
+                            executedParams: execParams,
+                            strategy: res.strategy || null,
+                            symbol: execParams.symbol,
+                            interval: execParams.interval,
+                            capital: execParams.capital,
+                            quantity: execParams.quantity,
+                            fromDate: execParams.fromDate,
+                            toDate: execParams.toDate,
+                            timestamp: Date.now()
+                        };
+                        sessionStorage.setItem(`backtest_result_${stratMeta.strategy_id}`, JSON.stringify(cacheData));
+                    }
+                } catch (_) {}
 
                 handleToast('Backtest simulation complete!');
             } else {
@@ -172,7 +195,7 @@ export default function BacktestPage() {
         } finally {
             setSimulationLoading(false);
         }
-    }, [symbol, interval, capital, quantity, fromDate, toDate, handleToast, handleErrorToast]);
+    }, [symbol, interval, capital, quantity, fromDate, toDate, strategyName, handleToast, handleErrorToast]);
 
     /**
      * Check incoming strategy payload from sessionStorage or query params on load
@@ -234,12 +257,46 @@ export default function BacktestPage() {
                 quantity: qty,
                 fromDate: fromD,
                 toDate: toD,
+                name: rawName,
                 rawStrategy: pendingData?.raw_strategy || null
             };
             setActiveStrategyInfo(stratMeta);
 
-            // Trigger POST /backtest/v1/run-by-id immediately
-            executeRunById(stratMeta);
+            // Check if we already have cached one-time data from a previous run for this strategy
+            let cachedResult = null;
+            try {
+                if (typeof window !== 'undefined') {
+                    const cachedRaw = sessionStorage.getItem(`backtest_result_${stratId}`);
+                    if (cachedRaw) {
+                        cachedResult = JSON.parse(cachedRaw);
+                    }
+                }
+            } catch (_) {}
+
+            if (cachedResult && cachedResult.results) {
+                // If previous response exists, load it immediately without re-running backtest API
+                setResults(cachedResult.results);
+                setRoundTrips(cachedResult.roundTrips || []);
+                setExecutedParams(cachedResult.executedParams || {
+                    symbol: cachedResult.symbol || sym,
+                    interval: cachedResult.interval || tf,
+                    capital: cachedResult.capital || cap,
+                    quantity: cachedResult.quantity || qty,
+                    fromDate: cachedResult.fromDate || fromD,
+                    toDate: cachedResult.toDate || toD
+                });
+                if (cachedResult.strategyName) setStrategyName(cachedResult.strategyName);
+                if (cachedResult.symbol) setSymbol(cachedResult.symbol);
+                if (cachedResult.interval) setInterval(cachedResult.interval);
+                if (cachedResult.capital) setCapital(cachedResult.capital);
+                if (cachedResult.quantity) setQuantity(cachedResult.quantity);
+                if (cachedResult.fromDate) setFromDate(cachedResult.fromDate);
+                if (cachedResult.toDate) setToDate(cachedResult.toDate);
+                setSimulationLoading(false);
+            } else {
+                // First time run: execute POST /backtest/v1/run-by-id
+                executeRunById(stratMeta);
+            }
         }
     }, [searchParams, executeRunById]);
 

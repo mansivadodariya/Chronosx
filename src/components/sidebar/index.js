@@ -36,8 +36,7 @@ import { clearAuthSession, getStoredUser, getStoredUserId, hydrateUserFromProfil
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
 import { getBidiProps } from '@/lib/bidi';
-import { supabase } from '@/lib/supabaseClient';
-import { fetchVisibleTabNames, getVisibleTabNamesSync } from '@/lib/useTabPermission';
+import { fetchVisibleTabNames, getVisibleTabNamesSync, checkPermissionInSet } from '@/lib/useTabPermission';
 import QuickJump from '@/components/QuickJump';
 import SidebarSubscriptionWidget from './SidebarSubscriptionWidget';
 
@@ -357,6 +356,7 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
 
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [visibleTabNames, setVisibleTabNames] = useState(() => getVisibleTabNamesSync());
   const [tabsLoading, setTabsLoading] = useState(() => !getVisibleTabNamesSync());
   const profileRef = useRef(null);
@@ -489,46 +489,36 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
       const lowerLabel = (tabLabel || '').toLowerCase().trim();
       const mapped = (ROUTE_TAB_MAP[routeHref] || '').toLowerCase().trim();
 
-      // Affiliate & Education (Edufins external link) & Settings/Profile & Custom Bot Builder are always accessible
+      // Affiliate & Education (Edufins external link) & Settings/Profile are always accessible
       if (lowerLabel.includes('affiliate') || mapped.includes('affiliate')) return true;
       if (lowerLabel.includes('education') || lowerLabel.includes('edufins') || routeHref?.includes('edufins')) return true;
       if (lowerLabel === 'profile' || lowerLabel === 'settings' || mapped === 'profile') return true;
-      if (lowerLabel.includes('custom bot') || mapped.includes('custom bot') || routeHref?.includes('manual-bot-builder') || routeHref?.includes('custom-bot-builder')) return true;
 
-      // Group parent container check: "AI Trading Bot" is shown if the parent tab itself is enabled, or if any of its sub-items is enabled
+      // Group parent container check: "AI Trading Bot" is shown if any of its sub-items is enabled
       if (lowerLabel === 'ai trading bot' || mapped === 'ai trading bot') {
-        return true;
-      }
-
-      // Backtest is visible if either "Backtest" or "Backtesting" tab permission is enabled in Supabase
-      if (lowerLabel === 'backtest' || mapped === 'backtest') {
-        return visibleTabNames.has('backtest') || visibleTabNames.has('backtesting');
-      }
-
-      // Past Trade Analyzer matches both new and legacy tab names
-      if (
-        lowerLabel.includes('past trade') ||
-        lowerLabel.includes('trade audit') ||
-        lowerLabel.includes('trade advisor') ||
-        mapped.includes('past trade') ||
-        mapped.includes('trade audit') ||
-        mapped.includes('trade advisor') ||
-        routeHref?.includes('trade-advisor') ||
-        routeHref?.includes('trade-audit')
-      ) {
         return (
-          visibleTabNames.has('ai past trade analyzer') ||
-          visibleTabNames.has('past trade analyzer') ||
-          visibleTabNames.has('ai trade advisor') ||
-          visibleTabNames.has('trade advisor') ||
-          visibleTabNames.has('ai trade audit') ||
-          visibleTabNames.has('trade audit') ||
-          visibleTabNames.has('ai trade analysis')
+          checkPermissionInSet(visibleTabNames, 'my bots') ||
+          checkPermissionInSet(visibleTabNames, 'ai bot builder') ||
+          checkPermissionInSet(visibleTabNames, 'custom bot builder') ||
+          checkPermissionInSet(visibleTabNames, 'browse bots library')
         );
       }
 
-      // Exact 1-to-1 check against standardized dashboard_tabs permissions
-      return visibleTabNames.has(mapped) || visibleTabNames.has(lowerLabel);
+      // Group parent container check: "AI Trading Signal" is shown if any of its sub-items is enabled
+      if (lowerLabel === 'ai trading signal' || mapped === 'ai trading signal') {
+        return (
+          checkPermissionInSet(visibleTabNames, 'strategy signal') ||
+          checkPermissionInSet(visibleTabNames, 'signal terminal') ||
+          checkPermissionInSet(visibleTabNames, 'predefined strategies') ||
+          checkPermissionInSet(visibleTabNames, 'ai trading signal')
+        );
+      }
+
+      // Exact check against standardized dashboard_tabs permissions
+      return (
+        checkPermissionInSet(visibleTabNames, mapped) ||
+        checkPermissionInSet(visibleTabNames, lowerLabel)
+      );
     };
 
     return rawSections.map(section => {

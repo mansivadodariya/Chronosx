@@ -531,7 +531,7 @@ export default function StrategyStudio() {
 
             if ((res.status === 'success' || res.success) && res.data) {
                 const data = Array.isArray(res.data) ? res.data[0] : res.data;
-                const parsedTrips = parseRoundTrips(data.trades || data.round_trips || [], payload.inital_capital, payload.quantity);
+                const parsedTrips = parseRoundTrips(data, payload.inital_capital, payload.quantity);
                 setResults(data);
                 setRoundTrips(parsedTrips);
                 setExecutedParams({
@@ -543,8 +543,9 @@ export default function StrategyStudio() {
                     toDate: activeTo
                 });
 
-                const winRate = data.stats?.win_rate !== undefined ? data.stats.win_rate : (parsedTrips.length > 0 ? ((parsedTrips.filter(t => t.pnl > 0).length / parsedTrips.length) * 100).toFixed(1) : '0.0');
-                const netPnl = data.stats?.pnl !== undefined ? Number(data.stats.pnl).toFixed(2) : (parsedTrips.reduce((a, b) => a + b.pnl, 0)).toFixed(2);
+                const totalTradesCount = parsedTrips.length > 0 ? parsedTrips.length : (data.stats?.trades || (Number(data.stats?.win || 0) + Number(data.stats?.loss || 0)) || 0);
+                const winRate = data.stats?.win_rate !== undefined ? data.stats.win_rate : (totalTradesCount > 0 && data.stats?.win !== undefined ? ((Number(data.stats.win) / totalTradesCount) * 100).toFixed(1) : (parsedTrips.length > 0 ? ((parsedTrips.filter(t => t.pnl > 0).length / parsedTrips.length) * 100).toFixed(1) : '0.0'));
+                const netPnl = data.stats?.pnl !== undefined ? Number(data.stats.pnl).toFixed(2) : (parsedTrips.length > 0 ? (parsedTrips.reduce((a, b) => a + b.pnl, 0)).toFixed(2) : '0.00');
                 const profitFactor = data.stats?.profit_factor !== undefined ? data.stats.profit_factor : '1.00';
                 const maxDd = data.stats?.max_drawdown_percentage !== undefined ? data.stats.max_drawdown_percentage : (data.stats?.max_drawdown || '0.00');
 
@@ -552,7 +553,7 @@ export default function StrategyStudio() {
                     ...prev,
                     {
                         role: 'ai',
-                        text: `**Backtest Simulation Results – ${activeSymbol} (${activeInterval})**\n\n- Total Trades: ${parsedTrips.length}\n- Win Rate: ${winRate}%\n- Winning / Losing Trades: ${data.stats?.win || parsedTrips.filter(t => t.pnl > 0).length} / ${data.stats?.loss || parsedTrips.filter(t => t.pnl <= 0).length}\n- Net Profit (USD): $${netPnl}\n- Max Drawdown: ${maxDd}%\n- Profit Factor: ${profitFactor}`,
+                        text: `**Backtest Simulation Results – ${activeSymbol} (${activeInterval})**\n\n- Total Trades: ${totalTradesCount}\n- Win Rate: ${winRate}%\n- Winning / Losing Trades: ${data.stats?.win || parsedTrips.filter(t => t.pnl > 0).length} / ${data.stats?.loss || parsedTrips.filter(t => t.pnl <= 0).length}\n- Net Profit (USD): $${netPnl}\n- Max Drawdown: ${maxDd}%\n- Profit Factor: ${profitFactor}`,
                         suggestions: ['Run Another Backtest', 'Modify Strategy', 'Export Report']
                     }
                 ]);
@@ -677,10 +678,10 @@ export default function StrategyStudio() {
                                 <div className={styles.loadingOverlay}>
                                     <SimulationProgressLoader symbol={symbol} interval={interval} />
                                 </div>
-                            ) : results && roundTrips.length > 0 ? (
+                            ) : results ? (
                                 <BacktestResultsView
                                     results={results}
-                                    roundTrips={roundTrips}
+                                    roundTrips={roundTrips || []}
                                     initialCapital={parseFloat(executedParams?.capital ?? capital) || 10000}
                                     symbol={executedParams?.symbol ?? symbol}
                                     interval={executedParams?.interval ?? interval}

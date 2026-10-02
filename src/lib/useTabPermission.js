@@ -12,7 +12,7 @@ export function normalizeTabName(name) {
 }
 
 export function checkPermissionInSet(set, tabName) {
-  if (!set || set.size === 0) return true;
+  if (!set || set.size === 0) return false;
   const target = normalizeTabName(tabName);
   
   if (target === 'subscription plans' || target === 'plans' || target === 'pricing') {
@@ -46,6 +46,90 @@ export function checkPermissionInSet(set, tabName) {
     );
   }
 
+  if (
+    target === 'custom bot builder' ||
+    target === 'manual bot builder' ||
+    target === 'custom bot' ||
+    target === 'manual bot'
+  ) {
+    return (
+      set.has('custom bot builder') ||
+      set.has('manual bot builder') ||
+      set.has('custom bot') ||
+      set.has('manual bot')
+    );
+  }
+
+  if (
+    target === 'ai bot builder' ||
+    target === 'bot builder' ||
+    target === 'strategy studio' ||
+    target === 'ai strategy studio'
+  ) {
+    return (
+      set.has('ai bot builder') ||
+      set.has('bot builder') ||
+      set.has('strategy studio') ||
+      set.has('ai strategy studio')
+    );
+  }
+
+  if (
+    target === 'browse bots library' ||
+    target === 'bot library' ||
+    target === 'browse bots' ||
+    target === 'bots library'
+  ) {
+    return (
+      set.has('browse bots library') ||
+      set.has('bot library') ||
+      set.has('browse bots') ||
+      set.has('bots library')
+    );
+  }
+
+  if (target === 'my bots' || target === 'my bot') {
+    return set.has('my bots') || set.has('my bot');
+  }
+
+  if (
+    target === 'associated brokers' ||
+    target === 'associated broker' ||
+    target === 'broker' ||
+    target === 'brokers'
+  ) {
+    return (
+      set.has('associated brokers') ||
+      set.has('associated broker') ||
+      set.has('broker') ||
+      set.has('brokers')
+    );
+  }
+
+  if (target === 'economic calendar' || target === 'calendar') {
+    return set.has('economic calendar') || set.has('calendar');
+  }
+
+  if (target === 'forex calculator' || target === 'calculator') {
+    return set.has('forex calculator') || set.has('calculator');
+  }
+
+  if (target === 'market news' || target === 'news') {
+    return set.has('market news') || set.has('news');
+  }
+
+  if (target === 'ai chart scanner' || target === 'chart scanner') {
+    return set.has('ai chart scanner') || set.has('chart scanner');
+  }
+
+  if (target === 'ai market assistant' || target === 'market assistant') {
+    return set.has('ai market assistant') || set.has('market assistant');
+  }
+
+  if (target === 'backtest' || target === 'backtesting') {
+    return set.has('backtest') || set.has('backtesting') || set.has('ai bot builder');
+  }
+
   return set.has(target);
 }
 
@@ -67,36 +151,46 @@ export function getVisibleTabNamesSync() {
 }
 
 export async function fetchVisibleTabNames() {
-  if (cachedVisibleTabs) return cachedVisibleTabs;
-
-  if (typeof window !== 'undefined') {
-    try {
-      const stored = sessionStorage.getItem('visible_tab_names');
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          cachedVisibleTabs = new Set(parsed.map(normalizeTabName));
-          return cachedVisibleTabs;
-        }
-      }
-    } catch { /* ignore */ }
-  }
-
   if (fetchPromise) return fetchPromise;
 
   fetchPromise = (async () => {
     try {
       if (supabase) {
-        const { data, error } = await supabase.rpc('get_visible_dashboard_tabs');
-        if (!error && Array.isArray(data)) {
+        let rawTabs = null;
+
+        // Directly query dashboard_tabs table for latest is_visible values
+        const { data: tableData, error: tableError } = await supabase
+          .from('dashboard_tabs')
+          .select('*')
+          .order('display_order', { ascending: true });
+
+        if (!tableError && Array.isArray(tableData) && tableData.length > 0) {
+          rawTabs = tableData;
+        } else {
+          const { data: rpcData, error: rpcError } = await supabase.rpc('get_visible_dashboard_tabs');
+          if (!rpcError && Array.isArray(rpcData)) {
+            rawTabs = rpcData;
+          }
+        }
+
+        if (Array.isArray(rawTabs)) {
           const names = new Set(
-            data.map(t => normalizeTabName(typeof t === 'string' ? t : (t?.name || t?.tab_name || '')))
+            rawTabs
+              .filter(t => {
+                if (typeof t === 'string') return true;
+                if (t?.is_visible === false || t?.is_visible === 0 || t?.is_visible === 'false') return false;
+                if (t?.is_active === false || t?.is_active === 0 || t?.is_active === 'false') return false;
+                return true;
+              })
+              .map(t => normalizeTabName(typeof t === 'string' ? t : (t?.name || t?.tab_name || '')))
+              .filter(Boolean)
           );
           cachedVisibleTabs = names;
           if (typeof window !== 'undefined') {
             sessionStorage.setItem('visible_tab_names', JSON.stringify([...names]));
           }
           listeners.forEach(fn => fn(cachedVisibleTabs));
+          return cachedVisibleTabs;
         }
       }
     } catch (e) {
