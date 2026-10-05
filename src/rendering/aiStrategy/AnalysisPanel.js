@@ -42,7 +42,7 @@ export default function AnalysisPanel({ symbol, strategyId, activeAnalysis, onAn
                     return `${proto}//${parsed.host}`;
                 } catch (_) {}
             }
-            return 'https://api.chronosx.com';
+            return '';
         };
 
         const getWsHttpBase = () => {

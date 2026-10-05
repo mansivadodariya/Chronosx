@@ -87,9 +87,6 @@ export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategy
         }
     }
 
-    // Public cloud fallbacks (always SSL wss://)
-    candidates.push(`wss://api.chronosx.com/api/v1/ws/live${qs}`);
-    candidates.push(`wss://api.thetradermaster.com/api/v1/ws/live${qs}`);
 
     if (!isHttps) {
         candidates.push(`ws://192.168.0.153:8000/api/v1/ws/live${qs}`);

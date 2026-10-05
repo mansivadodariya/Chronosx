@@ -151,9 +151,10 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                                         type="button"
                                                         onClick={(e) => exportAssistantMessageToPdf(msg, selectedPair, e.currentTarget.closest('.' + styles.chatMessageBubble) || e.currentTarget.closest('.' + styles.analysisCenterCard))}
                                                         className={styles.downloadFullReportBtn}
+                                                        style={{ color: '#FFFFFF' }}
                                                     >
                                                         <DownloadIcon size={14} />
-                                                        <span>Download Full Report (PDF)</span>
+                                                        <span style={{ color: '#FFFFFF' }}>Download Full Report (PDF)</span>
                                                     </button>
                                                 </div>
                                             </>
@@ -204,9 +205,10 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                                                 type="button"
                                                                 onClick={(e) => exportAssistantMessageToPdf(msg, selectedPair, e.currentTarget.closest('.' + styles.chatMessageBubble) || e.currentTarget.closest('.' + styles.analysisCenterCard))}
                                                                 className={styles.downloadFullReportBtn}
+                                                                style={{ color: '#FFFFFF' }}
                                                             >
                                                                 <DownloadIcon size={15} />
-                                                                <span>Download Full Report (PDF)</span>
+                                                                <span style={{ color: '#FFFFFF' }}>Download Full Report (PDF)</span>
                                                             </button>
                                                         </div>
                                                     </div>
@@ -227,10 +229,10 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                                                 type="button"
                                                                 onClick={(e) => exportAssistantMessageToPdf(msg, selectedPair, e.currentTarget.closest('.' + styles.chatMessageBubble) || e.currentTarget.closest('.' + styles.analysisCenterCard))}
                                                                 className={styles.downloadFullReportBtn}
-                                                                style={{ padding: '6px 12px', fontSize: '11.5px' }}
+                                                                style={{ padding: '6px 12px', fontSize: '11.5px', color: '#FFFFFF' }}
                                                             >
                                                                 <DownloadIcon size={13} />
-                                                                <span>Download Report (PDF)</span>
+                                                                <span style={{ color: '#FFFFFF' }}>Download Report (PDF)</span>
                                                             </button>
                                                         </div>
                                                     )}

@@ -176,34 +176,37 @@ export async function GET(request) {
 
         const strippedSymbol = rawSymbol.replace(/[^A-Z0-9]/gi, '').toUpperCase();
 
-        // 1. Primary: Fetch real live MT5 candles directly from ChronosX Live API
-        try {
-            const liveBackendUrl = `https://api.chronosx.com/api/v1/chart/candles?symbol=${strippedSymbol}&timeframe=${rawTimeframe}&strategy_id=${strategyId}`;
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 4000);
-            const liveRes = await fetch(liveBackendUrl, {
-                headers: {
-                    'accept': 'application/json',
-                    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ChronosXApp'
-                },
-                signal: controller.signal
-            });
-            clearTimeout(timeoutId);
+        // 1. Primary: Fetch real live MT5 candles directly from configured Backend API
+        const backendBase = (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL || '').replace(/\/+$/, '');
+        if (backendBase) {
+            try {
+                const liveBackendUrl = `${backendBase}/api/v1/chart/candles?symbol=${strippedSymbol}&timeframe=${rawTimeframe}&strategy_id=${strategyId}`;
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 4000);
+                const liveRes = await fetch(liveBackendUrl, {
+                    headers: {
+                        'accept': 'application/json',
+                        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ChronosXApp'
+                    },
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
 
-            if (liveRes.ok) {
-                const liveData = await liveRes.json();
-                const liveCandles = liveData.candles || liveData.data;
-                if (Array.isArray(liveCandles) && liveCandles.length > 0) {
-                    return NextResponse.json(liveData, {
-                        headers: {
-                            'Access-Control-Allow-Origin': '*',
-                            'Cache-Control': 'public, max-age=10, stale-while-revalidate=30'
-                        }
-                    });
+                if (liveRes.ok) {
+                    const liveData = await liveRes.json();
+                    const liveCandles = liveData.candles || liveData.data;
+                    if (Array.isArray(liveCandles) && liveCandles.length > 0) {
+                        return NextResponse.json(liveData, {
+                            headers: {
+                                'Access-Control-Allow-Origin': '*',
+                                'Cache-Control': 'public, max-age=10, stale-while-revalidate=30'
+                            }
+                        });
+                    }
                 }
+            } catch (backendErr) {
+                console.warn('[CandlesRoute] Live API fetch notice:', backendErr.message);
             }
-        } catch (backendErr) {
-            console.warn('[CandlesRoute] Live API fetch notice:', backendErr.message);
         }
 
         // 2. Secondary Fallback: Supabase market_candles table

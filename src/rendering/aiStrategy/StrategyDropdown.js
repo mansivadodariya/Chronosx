@@ -75,7 +75,7 @@ export default function StrategyDropdown({ strategies: propStrategies = [], sele
                             return `${proto}//${parsed.host}`;
                         } catch (_) {}
                     }
-                    return 'https://api.chronosx.com';
+                    return '';
                 };
 
                 const getWsHttpBase = () => {

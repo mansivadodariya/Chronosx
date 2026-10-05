@@ -340,10 +340,24 @@
         color: #FFFFFF;
     }
 
-    :global(html.light) & {
+    :global(html.light) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
         background: #F8FAFC;
         border-color: rgba(0, 0, 0, 0.08);
         color: #64748B;
+
+        &:hover {
+            color: #0F172A;
+            background: #F1F5F9;
+        }
+
+        &.activePill {
+            background: rgba(24, 201, 139, 0.14);
+            border-color: rgba(24, 201, 139, 0.45);
+            color: #059669;
+            font-weight: 700;
+        }
     }
 }
 
@@ -352,6 +366,15 @@
     background: rgba(24, 201, 139, 0.12);
     border-color: rgba(24, 201, 139, 0.3);
     color: #18C98B;
+
+    :global(html.light) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        background: rgba(24, 201, 139, 0.14);
+        border-color: rgba(24, 201, 139, 0.45);
+        color: #059669;
+        font-weight: 700;
+    }
 }
 
 .searchBox {

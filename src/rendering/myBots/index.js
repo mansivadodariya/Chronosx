@@ -12,6 +12,7 @@ import { getStoredUserId } from '@/lib/authSession';
 import DeleteBotModal from './components/DeleteBotModal';
 import StrategyDetailModal from './components/StrategyDetailModal';
 import { fetchVisibleTabNames, getVisibleTabNamesSync, checkPermissionInSet } from '@/lib/useTabPermission';
+import { mapStrategyToBot } from './utils/botHelpers';
 
 const resolveBacktestApiBase = () => {
     const raw = (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_BACKTEST_API_URL || 'http://192.168.0.153:8000').replace(/\/+$/, '');
@@ -276,10 +277,10 @@ export default function MyBots() {
                                 className={`${styles.creationHeroCard} ${styles.aiCard}`}
                                 onClick={() => handleNavigate('/ai-bot-builder')}
                             >
-                                <div className={styles.cardGlowOverlay} />
+                                <div className={styles.botGlowOverlay} />
 
                                 {/* 3D Illustration Graphic in Card BG on Right */}
-                                <div className={styles.cardIllustrationBg}>
+                                <div className={styles.botIllustrationBg}>
                                     <img
                                         src="/assets/images/botai.png"
                                         alt="AI Bot Builder"
@@ -287,29 +288,29 @@ export default function MyBots() {
                                     />
                                 </div>
 
-                                <div className={styles.cardHeaderRow}>
-                                    <div className={styles.cardIconBox}>
+                                <div className={styles.botHeaderRow}>
+                                    <div className={styles.botIconBox}>
                                         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
                                             <path d="M5 3v4M3 5h4M19 17v4M17 19h4" />
                                         </svg>
                                     </div>
-                                    <h3 className={styles.cardTitle}>AI Bot Builder</h3>
+                                    <h3 className={styles.botTitle}>AI Bot Builder</h3>
                                 </div>
 
                                 <div className={styles.botBody}>
-                                    <p className={styles.cardDescription}>
+                                    <p className={styles.botDescription}>
                                         Describe your trading strategy concept or archetype in plain English. ChronosX AI handles quantitative parameter formulas, indicator conditions, and backtest simulations instantly.
                                     </p>
 
                                     <div className={styles.featureList}>
-                                        <div className={styles.featureItem}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>Instant hypothesis to algorithmic rule conversion</span></div>
-                                        <div className={styles.featureItem}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>Multi-market MT5 simulation & metrics backtest</span></div>
-                                        <div className={styles.featureItem}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>Interactive AI Copilot parameter tuning</span></div>
+                                        <div className={styles.botList}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>Instant hypothesis to algorithmic rule conversion</span></div>
+                                        <div className={styles.botList}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>Multi-market MT5 simulation & metrics backtest</span></div>
+                                        <div className={styles.botList}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>Interactive AI Copilot parameter tuning</span></div>
                                     </div>
                                 </div>
 
-                                <div className={styles.cardFooter}>
+                                <div className={styles.botFooter}>
                                     <button type="button" className={styles.primaryActionBtn}>
                                         <span>Launch AI Bot Builder</span>
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -326,10 +327,10 @@ export default function MyBots() {
                                 className={`${styles.creationHeroCard} ${styles.customCard}`}
                                 onClick={() => handleNavigate('/manual-bot-builder')}
                             >
-                                <div className={styles.cardGlowOverlay} />
+                                <div className={styles.botGlowOverlay} />
 
                                 {/* 3D Illustration Graphic in Card BG on Right */}
-                                <div className={styles.cardIllustrationBg}>
+                                <div className={styles.botIllustrationBg}>
                                     <img
                                         src="/assets/images/botcutom.png"
                                         alt="Custom Bot Builder"
@@ -337,8 +338,8 @@ export default function MyBots() {
                                     />
                                 </div>
 
-                                <div className={styles.cardHeaderRow}>
-                                    <div className={styles.cardIconBox}>
+                                <div className={styles.botHeaderRow}>
+                                    <div className={styles.botIconBox}>
                                         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                             <line x1="4" y1="21" x2="4" y2="14" /><line x1="4" y1="10" x2="4" y2="3" />
                                             <line x1="12" y1="21" x2="12" y2="12" /><line x1="12" y1="8" x2="12" y2="3" />
@@ -346,22 +347,22 @@ export default function MyBots() {
                                             <line x1="1" y1="14" x2="7" y2="14" /><line x1="9" y1="8" x2="15" y2="8" /><line x1="17" y1="16" x2="23" y2="16" />
                                         </svg>
                                     </div>
-                                    <h3 className={styles.cardTitle}>Custom Bot Builder</h3>
+                                    <h3 className={styles.botTitle}>Custom Bot Builder</h3>
                                 </div>
 
                                 <div className={styles.botBody}>
-                                    <p className={styles.cardDescription}>
+                                    <p className={styles.botDescription}>
                                         Assemble technical indicators (RSI, EMA, MACD, Bollinger Bands, Order Blocks), define deterministic entry/exit triggers, position sizing, and risk-reward ratios step-by-step.
                                     </p>
 
                                     <div className={styles.featureList}>
-                                        <div className={styles.featureItem}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>20+ Technical indicator trigger & filter blocks</span></div>
-                                        <div className={styles.featureItem}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>Dynamic Take Profit, Stop Loss & Trailing Stops</span></div>
-                                        <div className={styles.featureItem}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>Custom execution logic & lot size formulas</span></div>
+                                        <div className={styles.botList}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>20+ Technical indicator trigger & filter blocks</span></div>
+                                        <div className={styles.botList}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>Dynamic Take Profit, Stop Loss & Trailing Stops</span></div>
+                                        <div className={styles.botList}><span className={styles.checkIcon}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg></span><span>Custom execution logic & lot size formulas</span></div>
                                     </div>
                                 </div>
 
-                                <div className={styles.cardFooter}>
+                                <div className={styles.botFooter}>
                                     <button type="button" className={styles.primaryActionBtn}>
                                         <span>Open Custom Bot Builder</span>
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

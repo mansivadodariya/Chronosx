@@ -58,22 +58,16 @@ export async function fetchChartCandlesOnce(symbol, timeframe = '15m', strategyI
     const fetchPromise = (async () => {
         const candidateEndpoints = [];
 
-        // 1. Internal Next.js API route (Proxies to Live MT5 backend / Supabase)
-        if (typeof window !== 'undefined') {
-            candidateEndpoints.push(`/api/v1/chart/candles?symbol=${cleanSymbol}&timeframe=${timeframe}&strategy_id=${strategyId}`);
-        }
-
-        // 2. Direct Official ChronosX Live API
-        candidateEndpoints.push(`https://api.chronosx.com/api/v1/chart/candles?symbol=${cleanSymbol}&timeframe=${timeframe}&strategy_id=${strategyId}`);
-
-        // 3. Configured Backend URL (if not unreachable LAN IP)
+        // 1. Configured Backend URL from ENV
         const envBackend = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/, '');
-        if (envBackend && !envBackend.includes('192.168.')) {
+        if (envBackend) {
             candidateEndpoints.push(`${envBackend}/api/v1/chart/candles?symbol=${cleanSymbol}&timeframe=${timeframe}&strategy_id=${strategyId}`);
         }
 
-        // 4. Additional fallback
-        candidateEndpoints.push(`https://api.thetradermaster.com/api/v1/chart/candles?symbol=${cleanSymbol}&timeframe=${timeframe}&strategy_id=${strategyId}`);
+        // 2. Internal Next.js API route (Proxies to Backend / Supabase)
+        if (typeof window !== 'undefined') {
+            candidateEndpoints.push(`/api/v1/chart/candles?symbol=${cleanSymbol}&timeframe=${timeframe}&strategy_id=${strategyId}`);
+        }
 
         // Try candidates sequentially
         for (const url of candidateEndpoints) {

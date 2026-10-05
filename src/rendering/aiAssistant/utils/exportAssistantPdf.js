@@ -433,30 +433,28 @@ export async function exportAssistantMessageToPdf(msg, defaultPair = 'XAU/USD', 
                 </div>
                 ` : ''}
 
-                <!-- FLOWABLE SECTION CARDS (NO FIXED 2-COL GRID BREAKAGES) -->
-                <div style="display: flex; flex-direction: column; gap: 4px; width: 100%;">
-                    <div style="display: flex; gap: 8px; width: 100%; page-break-inside: avoid; break-inside: avoid;">
-                        <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Overall Trend', 'overall_trend', sections.overall_trend)}</div>
-                        <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Market Structure', 'market_structure', sections.market_structure)}</div>
-                    </div>
-                    <div style="display: flex; gap: 8px; width: 100%; page-break-inside: avoid; break-inside: avoid;">
-                        <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Support & Resistance', 'support_and_resistance', sections.support_and_resistance)}</div>
-                        <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Supply & Demand Zones', 'supply_and_demand_zones', sections.supply_and_demand_zones)}</div>
-                    </div>
-                    <div style="width: 100%; page-break-inside: avoid; break-inside: avoid;">
-                        ${renderVisionSectionCard('Trader Actionable Zones (Trade Plan)', 'trader_actionable_zones', sections.trader_actionable_zones)}
-                    </div>
-                    <div style="display: flex; gap: 8px; width: 100%; page-break-inside: avoid; break-inside: avoid;">
-                        <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Volatility & Price Behavior', 'volatility_and_price_behavior', sections.volatility_and_price_behavior)}</div>
-                        <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Session Behavior', 'session_behavior', sections.session_behavior)}</div>
-                    </div>
-                    <div style="display: flex; gap: 8px; width: 100%; page-break-inside: avoid; break-inside: avoid;">
-                        <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Market Mood & Sentiment', 'market_mood', sections.market_mood)}</div>
-                        <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Candlestick Behavior', 'candlestick_behavior', sections.candlestick_behavior)}</div>
-                    </div>
-                    <div style="width: 100%; page-break-inside: avoid; break-inside: avoid;">
-                        ${renderVisionSectionCard('Chart Patterns & Structural Formations', 'chart_patterns', sections.chart_patterns)}
-                    </div>
+                <!-- FLOWABLE SECTION CARDS (FLAT ROWS FOR ACCURATE PDF PAGINATION) -->
+                <div class="pdfVisionRow" style="display: flex; gap: 8px; width: 100%; margin-bottom: 6px; page-break-inside: avoid; break-inside: avoid;">
+                    <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Overall Trend', 'overall_trend', sections.overall_trend)}</div>
+                    <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Market Structure', 'market_structure', sections.market_structure)}</div>
+                </div>
+                <div class="pdfVisionRow" style="display: flex; gap: 8px; width: 100%; margin-bottom: 6px; page-break-inside: avoid; break-inside: avoid;">
+                    <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Support & Resistance', 'support_and_resistance', sections.support_and_resistance)}</div>
+                    <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Supply & Demand Zones', 'supply_and_demand_zones', sections.supply_and_demand_zones)}</div>
+                </div>
+                <div class="pdfVisionRow" style="width: 100%; margin-bottom: 6px; page-break-inside: avoid; break-inside: avoid;">
+                    ${renderVisionSectionCard('Trader Actionable Zones (Trade Plan)', 'trader_actionable_zones', sections.trader_actionable_zones)}
+                </div>
+                <div class="pdfVisionRow" style="display: flex; gap: 8px; width: 100%; margin-bottom: 6px; page-break-inside: avoid; break-inside: avoid;">
+                    <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Volatility & Price Behavior', 'volatility_and_price_behavior', sections.volatility_and_price_behavior)}</div>
+                    <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Session Behavior', 'session_behavior', sections.session_behavior)}</div>
+                </div>
+                <div class="pdfVisionRow" style="display: flex; gap: 8px; width: 100%; margin-bottom: 6px; page-break-inside: avoid; break-inside: avoid;">
+                    <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Market Mood & Sentiment', 'market_mood', sections.market_mood)}</div>
+                    <div style="flex: 1 1 0; min-width: 0; width: calc(50% - 4px); box-sizing: border-box;">${renderVisionSectionCard('Candlestick Behavior', 'candlestick_behavior', sections.candlestick_behavior)}</div>
+                </div>
+                <div class="pdfVisionRow" style="width: 100%; margin-bottom: 6px; page-break-inside: avoid; break-inside: avoid;">
+                    ${renderVisionSectionCard('Chart Patterns & Structural Formations', 'chart_patterns', sections.chart_patterns)}
                 </div>
             `;
         } else {
@@ -471,12 +469,12 @@ export async function exportAssistantMessageToPdf(msg, defaultPair = 'XAU/USD', 
         const exportContainer = document.createElement('div');
         exportContainer.className = 'aiAssistantPdfReport';
         exportContainer.style.cssText = `
-            width: 680px;
-            max-width: 680px;
+            width: 720px;
+            max-width: 720px;
             background-color: #FFFFFF !important;
             color: #0F172A !important;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            padding: 12px 14px;
+            padding: 10px 12px;
             box-sizing: border-box;
             margin: 0 auto;
             overflow: hidden;
@@ -491,16 +489,8 @@ export async function exportAssistantMessageToPdf(msg, defaultPair = 'XAU/USD', 
                     overflow-wrap: break-word !important;
                     color: #0F172A;
                 }
-                .aiAssistantPdfReport p,
-                .aiAssistantPdfReport li,
-                .aiAssistantPdfReport tr,
-                .aiAssistantPdfReport h1,
-                .aiAssistantPdfReport h2,
-                .aiAssistantPdfReport h3,
-                .aiAssistantPdfReport h4,
-                .aiAssistantPdfReport h5,
-                .aiAssistantPdfReport h6,
                 .aiAssistantPdfReport .pdfSectionCard,
+                .aiAssistantPdfReport .pdfVisionRow,
                 .aiAssistantPdfReport .pdfBlock {
                     page-break-inside: avoid !important;
                     break-inside: avoid !important;
@@ -549,8 +539,8 @@ export async function exportAssistantMessageToPdf(msg, defaultPair = 'XAU/USD', 
             },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
             pagebreak: {
-                mode: ['avoid-all', 'css', 'legacy'],
-                avoid: ['.pdfBlock', '.pdfSectionCard', 'p', 'tr', 'table', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+                mode: ['css', 'legacy'],
+                avoid: ['.pdfBlock', '.pdfSectionCard', '.pdfVisionRow']
             }
         };
 

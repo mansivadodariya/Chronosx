@@ -380,13 +380,23 @@
     }
 
     .downloadFullReportBtn {
-        background: #10b981 !important;
+        background: #00B074 !important;
         color: #ffffff !important;
         border: none !important;
-        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25) !important;
+        box-shadow: 0 2px 8px rgba(0, 176, 116, 0.25) !important;
+
+        svg {
+            color: #ffffff !important;
+            stroke: #ffffff !important;
+        }
+
+        span {
+            color: #ffffff !important;
+        }
 
         &:hover {
-            background: #059669 !important;
+            background: #009864 !important;
+            color: #ffffff !important;
         }
     }
 

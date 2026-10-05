@@ -1,5 +1,6 @@
 import { parseChatMessage } from '@/utils/chatParser';
 import { formatTechnicalProse, isTechnicalJsonPayload } from '@/utils/formatTechnicalProse';
+import { normalizeMarkdownParagraphs } from '../components/MarkdownWidgetRenderer';
 
 export const parseAssistantResponse = (raw) => {
     let envelope = raw?.data || raw;
@@ -113,9 +114,13 @@ export const parseAssistantResponse = (raw) => {
         } catch (_) {}
     }
 
+    const finalShortContent = shortContent || (typeof payload === 'string' && !payload.trim().startsWith('{') ? payload : '');
+    const cleanShortContent = finalShortContent ? normalizeMarkdownParagraphs(finalShortContent) : '';
+    const cleanFullReport = fullReport ? normalizeMarkdownParagraphs(fullReport) : null;
+
     return {
-        shortContent: shortContent || (typeof payload === 'string' && !payload.trim().startsWith('{') ? payload : ''),
-        fullReport: fullReport,
+        shortContent: cleanShortContent,
+        fullReport: cleanFullReport,
         visualData,
         detected_pair,
         detected_timeframe,

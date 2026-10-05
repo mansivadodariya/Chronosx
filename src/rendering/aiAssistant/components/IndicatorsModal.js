@@ -286,7 +286,7 @@ export default function IndicatorsModal({
                                             </div>
 
                                             <div className={styles.rowRightContent}>
-                                                <span className={styles.indicatorCategoryTag}>
+                                                <span className={styles.indicatorCategory}>
                                                     {item.categoryLabel}
                                                 </span>
                                                 {active && (

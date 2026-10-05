@@ -260,10 +260,10 @@ html.light [class*="searchInput"]::placeholder {
 html.light input:focus,
 html.light textarea:focus,
 html.light select:focus,
-html.light [class*="inputField"]:focus {
-  border-color: #18C98B !important;
+html.light [class*="inputField"]:focus,
+html.light [class*="searchInput"]:focus {
   outline: none !important;
-  box-shadow: 0 0 0 3px rgba(24, 201, 139, 0.22) !important;
+  box-shadow: none !important;
 }
 
 /* Light Theme: Calendar Header & Live Countdown Badge Protection */

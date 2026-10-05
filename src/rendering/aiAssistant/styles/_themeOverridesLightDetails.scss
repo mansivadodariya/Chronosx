@@ -86,9 +86,23 @@
         border: 1px solid #cbd5e1 !important;
         box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04) !important;
 
+        &:focus-within {
+            border-color: #94a3b8 !important;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
+        }
+
         .textarea,
         textarea {
             color: #0f172a !important;
+            outline: none !important;
+            box-shadow: none !important;
+            border: none !important;
+
+            &:focus {
+                outline: none !important;
+                box-shadow: none !important;
+                border: none !important;
+            }
 
             &::placeholder {
                 color: #94a3b8 !important;

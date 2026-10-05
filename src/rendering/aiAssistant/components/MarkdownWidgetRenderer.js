@@ -165,15 +165,23 @@ export const InlineCandlestickWidget = React.memo(function InlineCandlestickWidg
     }, [backendResistance, rawOhlc]);
 
     const series = useMemo(() => {
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const candleData = (Array.isArray(rawOhlc) ? rawOhlc : []).map((d) => {
-            const timeVal = d.timestamp
-                ? new Date(d.timestamp).getTime()
+            const timeObj = d.timestamp
+                ? new Date(d.timestamp)
                 : d.time
-                ? (typeof d.time === 'number' ? (d.time > 1e11 ? d.time : d.time * 1000) : new Date(d.time).getTime())
-                : Date.now();
+                ? (typeof d.time === 'number' ? new Date(d.time > 1e11 ? d.time : d.time * 1000) : new Date(d.time))
+                : new Date();
+
+            const isValidTime = !isNaN(timeObj.getTime());
+            const day = isValidTime ? String(timeObj.getDate()).padStart(2, '0') : '';
+            const month = isValidTime ? monthNames[timeObj.getMonth()] || '' : '';
+            const hours = isValidTime ? String(timeObj.getHours()).padStart(2, '0') : '';
+            const mins = isValidTime ? String(timeObj.getMinutes()).padStart(2, '0') : '';
+            const formattedLabel = isValidTime ? `${day} ${month} ${hours}:${mins}` : 'N/A';
 
             return {
-                x: new Date(timeVal),
+                x: formattedLabel,
                 y: [
                     parseFloat(d.open || 0),
                     parseFloat(d.high || 0),
@@ -181,7 +189,7 @@ export const InlineCandlestickWidget = React.memo(function InlineCandlestickWidg
                     parseFloat(d.close || 0)
                 ]
             };
-        }).filter(item => !isNaN(item.x.getTime()) && item.y.every(v => !isNaN(v) && v > 0));
+        }).filter(item => item.x !== 'N/A' && item.y.every(v => !isNaN(v) && v > 0));
 
         return [{
             name: 'Candles',
@@ -231,8 +239,12 @@ export const InlineCandlestickWidget = React.memo(function InlineCandlestickWidg
             },
             theme: { mode: isDark ? 'dark' : 'light' },
             xaxis: {
-                type: 'datetime',
-                labels: { style: { colors: isDark ? 'rgba(255, 255, 255, 0.65)' : '#475569' } },
+                type: 'category',
+                tickAmount: 6,
+                labels: {
+                    rotate: 0,
+                    style: { colors: isDark ? 'rgba(255, 255, 255, 0.65)' : '#475569', fontSize: '10.5px' }
+                },
                 axisBorder: { show: false },
                 axisTicks: { show: false }
             },
@@ -357,42 +369,57 @@ export const InlineSentimentRadarWidget = React.memo(function InlineSentimentRad
     );
 });
 
-// ─── Helper: Format & Clean Inline Markdown Linebreaks ───────────────────────
+// ─── Helper: Format & Clean Inline Markdown Linebreaks & Stray Asterisks ──────
 export function normalizeMarkdownParagraphs(text = '') {
     if (!text) return '';
-    const rawLines = String(text).split('\n');
+    let raw = String(text);
+
+    // 1. Normalize 3+ asterisks to standard bold **
+    raw = raw.replace(/\*{3,}/g, '**');
+
+    // 2. Convert bullet points starting with * or • to standard markdown -
+    raw = raw.replace(/^[ \t]*[*•][ \t]+/gm, '- ');
+
+    // 3. Put Trade Thesis & Final Bias strictly on new paragraphs
+    raw = raw.replace(/([^\n])\s*\*{0,2}Trade Thesis:?\*{0,2}\s*/gi, '$1\n\n**Trade Thesis:** ');
+    raw = raw.replace(/(?:^|\n)\s*\*{0,2}Trade Thesis:?\*{0,2}\s*/gi, '\n\n**Trade Thesis:** ');
+
+    raw = raw.replace(/([^\n])\s*\*{0,2}Final Bias:?\*{0,2}\s*/gi, '$1\n\n**Final Bias:**\n');
+    raw = raw.replace(/(?:^|\n)\s*\*{0,2}Final Bias:?\*{0,2}\s*/gi, '\n\n**Final Bias:**\n');
+
+    // 4. Pipe-separated bias tokens onto bullet lines
+    raw = raw.replace(/\s*\|\s*(\*{0,2}(?:Intraday Bias|Intraday|Swing Bias|Swing|Conviction|Forecast Horizon|Trade Thesis):\s*)/gi, '\n- $1');
+
+    // 5. Standalone bias metrics onto clean bullets
+    raw = raw.replace(/(?:^|\n|[.:!]\s*)\s*[-*•]?\s*\*+\s*(Intraday(?:\s*\([^)]+\))?|Swing(?:\s*\([^)]+\))?|Conviction|Forecast Horizon|Target Level|Stop Loss|Invalidation|Risk\/Reward):?\s*\*+/gi, '\n- **$1:** ');
+
+    // 6. Clean lone single asterisks (*) anywhere in the text (like "*Trade Thesis: XAUUSD*" or "*Final Bias:")
+    raw = raw.replace(/(?<!\*)\*(?!\*)/g, '');
+
+    const rawLines = raw.split('\n');
     const processedLines = [];
 
     for (let i = 0; i < rawLines.length; i++) {
         let line = rawLines[i];
         const trimmed = line.trim();
 
-        // 1. If this is a markdown table row (starts and ends with '|', or is a table separator line), preserve it completely!
+        // If markdown table row or separator, preserve as is
         if ((trimmed.startsWith('|') && trimmed.endsWith('|')) || /^\|?[\s-:]+(\|[\s-:]+)+\|?$/.test(trimmed)) {
             processedLines.push(line);
             continue;
         }
 
-        // 2. Skip empty bullet lines, stray asterisks, or stray divider lines
+        // Skip empty bullet lines or stray divider lines
         if (/^[-*+•]\s*$/.test(trimmed) || /^(\*\*|\*|__|_)\s*$/.test(trimmed) || /^[–—]\s*$/.test(trimmed)) {
             continue;
         }
 
-        // 3. For normal lines, normalize inline section headers only when separated by pipes, punctuation, or newlines
-        line = line
-            // Pipe-separated bias tokens: e.g. "Intraday Bias: Bearish | Swing Bias: Bearish | Conviction: Moderate"
-            .replace(/\s*\|\s*(\*{0,2}(?:Intraday Bias|Swing Bias|Conviction|Forecast Horizon|Trade Thesis):\s*)/gi, '\n- $1')
-            // Separate "Final Bias:" onto a new paragraph when preceded by sentence-ending punctuation or double-asterisk
-            .replace(/(?<=[.:!]\s*|\n|\*\*)\s*(?:\*{0,2}Final Bias:?\*{0,2})\s*/gi, '\n\n**Final Bias:**\n')
-            // Separate "Trade Thesis:" onto a new paragraph when preceded by sentence-ending punctuation
-            .replace(/(?<=[.:!]\s*|\n)\s*(?:\*{0,2}Trade Thesis:?\*{0,2})\s*/gi, '\n\n**Trade Thesis:** ')
-            // Standalone "Forecast Horizon:" metric onto a bullet
-            .replace(/(?<=[.:!|\n]\s*|\*\*)\s*[-*•]?\s*(?:\*{0,2}Forecast Horizon:?\*{0,2})\s*/gi, '\n- Forecast Horizon: ')
-            // Standalone "Conviction:" rating onto a bullet (only when preceded by pipe, punctuation, or start of line)
-            .replace(/(?<=[.:!|\n]\s*)\s*[-*•]?\s*(?:\*{0,2}Conviction:?\*{0,2})\s*(High|Moderate|Low|Strong|Weak|\d+)/gi, '\n- Conviction: $1')
-            // Standalone "Intraday Bias:" or "Swing Bias:" onto a bullet
-            .replace(/(?<=[.:!|\n]\s*)\s*[-*•]?\s*(?:\*{0,2}Intraday Bias:?\*{0,2})\s*/gi, '\n- Intraday Bias: ')
-            .replace(/(?<=[.:!|\n]\s*)\s*[-*•]?\s*(?:\*{0,2}Swing Bias:?\*{0,2})\s*/gi, '\n- Swing Bias: ');
+        // Clean section headers if they were rendered as plain text
+        if (/^Trade Thesis:/i.test(trimmed)) {
+            line = line.replace(/^Trade Thesis:/i, '**Trade Thesis:**');
+        } else if (/^Final Bias:?/i.test(trimmed)) {
+            line = line.replace(/^Final Bias:?/i, '**Final Bias:**');
+        }
 
         const subLines = line.split('\n');
         for (const sub of subLines) {
@@ -402,32 +429,36 @@ export function normalizeMarkdownParagraphs(text = '') {
             let cleanedSub = sub
                 .replace(/\s+\*{2,}$/, '')
                 .replace(/^-\s+\*{2,}\s+/, '- ')
-                .replace(/\*\*\s*\*\*/g, ' ')
                 .replace(/\*{4,}/g, '**');
 
-            // Format bullet items with key: value (e.g. "- **Intraday (1H-4H):** Bearish")
-            // Ensure the key is bold and the value is completely free of stray asterisks / wrapping bold
-            const bulletMatch = cleanedSub.match(/^([ \t]*[-*•]\s*)\*{0,2}([A-Za-z0-9\s()/-]+:)\*{0,2}\s*(.*?)$/);
-            if (bulletMatch) {
-                const prefix = bulletMatch[1];
-                const key = bulletMatch[2].trim();
-                let val = bulletMatch[3].trim();
-
-                val = val
-                    .replace(/^\*{1,2}\s*/, '')
-                    .replace(/\s*\*{1,2}$/, '')
-                    .replace(/\*\*\s*\*\*/g, '')
-                    .trim();
-
-                cleanedSub = `${prefix}**${key}** ${val}`;
+            // Format bullet items:
+            // Case 1: Already has bold key e.g. "- **Momentum:** **1H ADX**..." or "- **Momentum**: **1H ADX**..."
+            const boldKeyColonMatch = cleanedSub.match(/^([ \t]*[-*•]\s*)\*\*([^*\n:]+)(:?\*\*|\*\*:)\s*(.*)$/);
+            if (boldKeyColonMatch) {
+                const prefix = boldKeyColonMatch[1].replace(/[*•]/g, '-');
+                const key = boldKeyColonMatch[2].trim();
+                const val = boldKeyColonMatch[4].trim();
+                cleanedSub = `${prefix}**${key}:** ${val}`;
+            } else {
+                // Case 2: Plain unbolded key with colon e.g. "- Momentum: **1H ADX**..."
+                const plainKeyMatch = cleanedSub.match(/^([ \t]*[-*•]\s*)([A-Za-z0-9\s()/-]{2,35}):\s+(.*)$/);
+                if (plainKeyMatch) {
+                    const prefix = plainKeyMatch[1].replace(/[*•]/g, '-');
+                    const key = plainKeyMatch[2].trim();
+                    const val = plainKeyMatch[3].trim();
+                    cleanedSub = `${prefix}**${key}:** ${val}`;
+                }
             }
+
+            // Clean any remaining lone single asterisks
+            cleanedSub = cleanedSub.replace(/(?<!\*)\*(?!\*)/g, '');
 
             processedLines.push(cleanedSub);
         }
     }
 
     return processedLines.join('\n')
-        .replace(/([^\n])\n(- |\* |\d+\. )/g, '$1\n\n$2')
+        .replace(/([^\n])\n(- |\d+\. )/g, '$1\n\n$2')
         .replace(/\n{3,}/g, '\n\n');
 }
 
@@ -529,7 +560,7 @@ const RenderMarkdownWithWidgets = React.memo(function RenderMarkdownWithWidgets(
                             rehypePlugins={[rehypeRaw]}
                             components={bidiMarkdownComponents}
                         >
-                            {normalizeMarkdownParagraphs(part)}
+                            {part}
                         </ReactMarkdown>
                     </div>
                 );

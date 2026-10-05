@@ -32,7 +32,7 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
     const handleIndicatorChange = (index, newKey) => {
         const def = INDICATOR_DEFINITIONS[newKey] || INDICATOR_DEFINITIONS.ema_crossover;
         const defaultCond = def.conditions[0];
-        const condParams = getConditionParams(defaultCond);
+        const condParams = getConditionParams(newKey, defaultCond);
         const updated = [...entryConditions];
         updated[index] = {
             ...updated[index],
@@ -44,7 +44,8 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
     };
 
     const handleConditionChange = (index, newCondition) => {
-        const condParams = getConditionParams(newCondition);
+        const indicatorKey = entryConditions[index]?.indicatorKey || 'ema_crossover';
+        const condParams = getConditionParams(indicatorKey, newCondition);
         const updated = [...entryConditions];
         updated[index] = {
             ...updated[index],
@@ -54,9 +55,12 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
         onChange('entryConditions', updated);
     };
 
-    const handleParamChange = (index, paramKey, value) => {
+    const handleParamChange = (index, paramKey, value, step = 1) => {
         const updated = [...entryConditions];
-        const parsedVal = value === '' ? '' : Math.max(1, parseInt(value, 10) || 0);
+        let parsedVal = value;
+        if (value !== '') {
+            parsedVal = step < 1 ? parseFloat(value) || 0 : parseInt(value, 10) || 0;
+        }
         updated[index] = {
             ...updated[index],
             params: {
@@ -108,7 +112,7 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
                 {entryConditions.map((cond, index) => {
                     const def = INDICATOR_DEFINITIONS[cond.indicatorKey] || INDICATOR_DEFINITIONS.ema_crossover;
                     const conditionOptions = def.conditions.map(c => ({ value: c, label: c }));
-                    const condParams = getConditionParams(cond.condition);
+                    const condParams = getConditionParams(cond.indicatorKey, cond.condition);
                     const condError = validateEntryCondition(cond);
 
                     return (
@@ -173,9 +177,9 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
 
                             {/* Dynamic Parameters Grid */}
                             <div className={styles.paramGrid}>
-                                {Object.keys(condParams.defaultParams).map(paramKey => {
-                                    const label = condParams.paramLabels?.[paramKey] || paramKey;
-                                    const val = cond.params?.[paramKey] !== undefined ? cond.params[paramKey] : condParams.defaultParams[paramKey];
+                                {(condParams.fields || []).map(field => {
+                                    const { key: paramKey, label, min = 1, max = 1000, step = 1, default: defaultVal } = field;
+                                    const val = cond.params?.[paramKey] !== undefined ? cond.params[paramKey] : defaultVal;
                                     const isInvalid = Boolean(condError);
 
                                     return (
@@ -183,12 +187,13 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
                                             <label className={styles.paramLabel}>{label}</label>
                                             <input
                                                 type="number"
-                                                min="1"
-                                                max={paramKey === 'fastPeriod' ? 500 : 1000}
+                                                min={min}
+                                                max={max}
+                                                step={step}
                                                 className={`${styles.paramInput} ${isInvalid ? styles.inputError : ''}`}
-                                                placeholder={String(condParams.defaultParams[paramKey])}
+                                                placeholder={String(defaultVal)}
                                                 value={val}
-                                                onChange={(e) => handleParamChange(index, paramKey, e.target.value)}
+                                                onChange={(e) => handleParamChange(index, paramKey, e.target.value, step)}
                                             />
                                         </div>
                                     );

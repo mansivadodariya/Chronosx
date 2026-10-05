@@ -72,26 +72,28 @@ export async function fetchGoldCandles(count = 60, fallbackBase = 4308.18) {
     console.warn('[GoldCandles] Internal API fetch error:', err.message);
   }
 
-  // 2. Try external backend URL
-  try {
-    const backendUrl = (process.env.NEXT_PUBLIC_BACKEND_URL || 'https://api.thetradermaster.com').replace(/\/+$/, '');
-    const res = await fetch(`${backendUrl}/api/v1/chart/candles?symbol=XAUUSD&timeframe=1h`, {
-      headers: {
-        'accept': 'application/json',
-        'ngrok-skip-browser-warning': 'true'
-      }
-    });
+  // 2. Try external backend URL from ENV
+  const backendUrl = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/, '');
+  if (backendUrl) {
+    try {
+      const res = await fetch(`${backendUrl}/api/v1/chart/candles?symbol=XAUUSD&timeframe=1h`, {
+        headers: {
+          'accept': 'application/json',
+          'ngrok-skip-browser-warning': 'true'
+        }
+      });
 
-    if (res.ok) {
-      const json = await res.json();
-      const rawList = Array.isArray(json) ? json : (json.candles || json.data || []);
-      if (Array.isArray(rawList) && rawList.length >= 10) {
-        console.info(`[GoldCandles] Loaded ${rawList.length} candles from External Backend (${backendUrl})`);
-        return normalizeCandleList(rawList.slice(-count), count);
+      if (res.ok) {
+        const json = await res.json();
+        const rawList = Array.isArray(json) ? json : (json.candles || json.data || []);
+        if (Array.isArray(rawList) && rawList.length >= 10) {
+          console.info(`[GoldCandles] Loaded ${rawList.length} candles from External Backend (${backendUrl})`);
+          return normalizeCandleList(rawList.slice(-count), count);
+        }
       }
+    } catch (err) {
+      console.warn('[GoldCandles] External backend fetch error:', err.message);
     }
-  } catch (err) {
-    console.warn('[GoldCandles] External backend fetch error:', err.message);
   }
 
   console.info(`[GoldCandles] APIs unavailable/empty. Generated ${count} realistic fallback candles (base: $${fallbackBase})`);

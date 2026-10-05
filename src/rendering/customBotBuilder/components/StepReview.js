@@ -81,14 +81,18 @@ export default function StepReview({ data, onEditStep, onRunBacktest, onDeployBo
                     <div className={styles.reviewContent}>
                         <div className={styles.reviewCondsList}>
                             {entryConditions.map((cond, idx) => {
-                                const def = INDICATOR_DEFINITIONS[cond.indicatorKey];
+                                const def = INDICATOR_DEFINITIONS[cond.indicatorKey] || INDICATOR_DEFINITIONS.ema_crossover;
+                                const paramEntries = Object.entries(cond.params || {});
+                                const paramSummary = paramEntries.length > 0 
+                                    ? `(${paramEntries.map(([k, v]) => `${def?.paramLabels?.[k] || k}: ${v}`).join(', ')})`
+                                    : '';
                                 return (
                                     <div key={cond.id || idx} className={styles.reviewCondRow}>
                                         <span className={styles.condPillNum}>{idx + 1}</span>
                                         <div className={styles.condPillDetails}>
                                             <span className={styles.condPillName}>{def?.name || cond.indicatorKey}</span>
                                             <span className={styles.condPillRule}>
-                                                {cond.condition} {cond.params?.slowPeriod ? `(Fast: ${cond.params.fastPeriod}, Slow: ${cond.params.slowPeriod})` : `(EMA: ${cond.params?.fastPeriod || 20})`}
+                                                {cond.condition} {paramSummary}
                                             </span>
                                         </div>
                                     </div>
@@ -169,67 +173,6 @@ export default function StepReview({ data, onEditStep, onRunBacktest, onDeployBo
                         </div>
                     </div>
                 </div>
-            </div>
-
-            {/* AI Simulation Projected Stats Banner */}
-            <div className={styles.simulationBanner}>
-                <div className={styles.simBannerLeft}>
-                    <div className={styles.simIconGlow}>
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 className={styles.simTitle}>Algorithmic Strategy Backtest Model</h4>
-                        <p className={styles.simSub}>
-                            ChronosX Neural Engine simulation based on 5-year historical tick data on {tradingPair}
-                        </p>
-                    </div>
-                </div>
-                <div className={styles.simMetricsRow}>
-                    <div className={styles.simStat}>
-                        <span className={styles.simStatLabel}>Win Rate</span>
-                        <span className={styles.simStatValGreen}>68.4%</span>
-                    </div>
-                    <div className={styles.simStat}>
-                        <span className={styles.simStatLabel}>Profit Factor</span>
-                        <span className={styles.simStatValGreen}>1.92</span>
-                    </div>
-                    <div className={styles.simStat}>
-                        <span className={styles.simStatLabel}>Sharpe Ratio</span>
-                        <span className={styles.simStatVal}>2.15</span>
-                    </div>
-                    <div className={styles.simStat}>
-                        <span className={styles.simStatLabel}>Max Drawdown</span>
-                        <span className={styles.simStatValRed}>-4.8%</span>
-                    </div>
-                </div>
-            </div>
-
-            {/* Bottom Actions Bar */}
-            <div className={styles.reviewActionsRow}>
-                <button
-                    type="button"
-                    className={styles.backtestBtn}
-                    onClick={onRunBacktest}
-                >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                        <polygon points="5 3 19 12 5 21 5 3" />
-                    </svg>
-                    <span>Run Backtest Simulation</span>
-                </button>
-
-                <button
-                    type="button"
-                    className={styles.deployBotBtn}
-                    onClick={onDeployBot}
-                >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <path d="M5 12h14" />
-                        <path d="m12 5 7 7-7 7" />
-                    </svg>
-                    <span>Deploy & Launch Bot</span>
-                </button>
             </div>
         </div>
     );
