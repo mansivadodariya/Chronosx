@@ -52,112 +52,112 @@ export const INDICATOR_DEFINITIONS = {
             slowPeriod: 'Slow Period'
         }
     },
-    rsi: {
-        id: 'rsi',
-        name: 'Relative Strength Index (RSI)',
-        desc: 'Measures momentum and overbought / oversold market extremes',
-        category: 'Momentum',
-        conditions: [
-            'Crosses Above Oversold (Bullish)',
-            'Crosses Below Overbought (Bearish)',
-            'RSI Greater Than 50 (Uptrend)',
-            'RSI Less Than 50 (Downtrend)',
-            'Bullish Divergence',
-            'Bearish Divergence'
-        ],
-        fields: [
-            { key: 'period', label: 'RSI Period', type: 'number', default: 14, min: 2, max: 100, step: 1 },
-            { key: 'overbought', label: 'Overbought Level', type: 'number', default: 70, min: 50, max: 95, step: 1 },
-            { key: 'oversold', label: 'Oversold Level', type: 'number', default: 30, min: 5, max: 50, step: 1 }
-        ],
-        defaultParams: {
-            period: 14,
-            overbought: 70,
-            oversold: 30
-        },
-        paramLabels: {
-            period: 'RSI Period',
-            overbought: 'Overbought Level',
-            oversold: 'Oversold Level'
-        }
-    },
-    macd: {
-        id: 'macd',
-        name: 'MACD',
-        desc: 'Moving Average Convergence Divergence momentum and trend signals',
-        category: 'Momentum',
-        conditions: [
-            'MACD Line Crosses Above Signal (Bullish)',
-            'MACD Line Crosses Below Signal (Bearish)',
-            'MACD Histogram Turns Positive',
-            'MACD Histogram Turns Negative',
-            'MACD Crosses Above Zero'
-        ],
-        fields: [
-            { key: 'fastEma', label: 'Fast EMA', type: 'number', default: 12, min: 1, max: 200, step: 1 },
-            { key: 'slowEma', label: 'Slow EMA', type: 'number', default: 26, min: 2, max: 500, step: 1 },
-            { key: 'signalPeriod', label: 'Signal Smoothing', type: 'number', default: 9, min: 1, max: 100, step: 1 }
-        ],
-        defaultParams: {
-            fastEma: 12,
-            slowEma: 26,
-            signalPeriod: 9
-        },
-        paramLabels: {
-            fastEma: 'Fast EMA',
-            slowEma: 'Slow EMA',
-            signalPeriod: 'Signal Smoothing'
-        }
-    },
-    bollinger_bands: {
-        id: 'bollinger_bands',
-        name: 'Bollinger Bands',
-        desc: 'Volatility bands indicating dynamic support, resistance, and squeeze breakouts',
-        category: 'Volatility',
-        conditions: [
-            'Price Closes Below Lower Band (Oversold Bounce)',
-            'Price Closes Above Upper Band (Overbought Pullback)',
-            'Bollinger Band Squeeze Breakout (Bullish)',
-            'Bollinger Band Squeeze Breakout (Bearish)',
-            'Price Crosses Middle SMA Line'
-        ],
-        fields: [
-            { key: 'period', label: 'SMA Period', type: 'number', default: 20, min: 2, max: 200, step: 1 },
-            { key: 'stdDev', label: 'Std Deviation', type: 'number', default: 2.0, min: 0.5, max: 5.0, step: 0.1 }
-        ],
-        defaultParams: {
-            period: 20,
-            stdDev: 2.0
-        },
-        paramLabels: {
-            period: 'SMA Period',
-            stdDev: 'Std Deviation'
-        }
-    },
-    supertrend: {
-        id: 'supertrend',
-        name: 'Supertrend',
-        desc: 'ATR-based trend identifier for precise direction flips and trailing stops',
-        category: 'Trend',
-        conditions: [
-            'Supertrend Flips Green (Bullish Entry)',
-            'Supertrend Flips Red (Bearish Entry)',
-            'Price Above Supertrend',
-            'Price Below Supertrend'
-        ],
-        fields: [
-            { key: 'atrPeriod', label: 'ATR Period', type: 'number', default: 10, min: 1, max: 100, step: 1 },
-            { key: 'multiplier', label: 'Multiplier', type: 'number', default: 3.0, min: 0.5, max: 10.0, step: 0.1 }
-        ],
-        defaultParams: {
-            atrPeriod: 10,
-            multiplier: 3.0
-        },
-        paramLabels: {
-            atrPeriod: 'ATR Period',
-            multiplier: 'Multiplier'
-        }
-    }
+    // rsi: {
+    //     id: 'rsi',
+    //     name: 'Relative Strength Index (RSI)',
+    //     desc: 'Measures momentum and overbought / oversold market extremes',
+    //     category: 'Momentum',
+    //     conditions: [
+    //         'Crosses Above Oversold (Bullish)',
+    //         'Crosses Below Overbought (Bearish)',
+    //         'RSI Greater Than 50 (Uptrend)',
+    //         'RSI Less Than 50 (Downtrend)',
+    //         'Bullish Divergence',
+    //         'Bearish Divergence'
+    //     ],
+    //     fields: [
+    //         { key: 'period', label: 'RSI Period', type: 'number', default: 14, min: 2, max: 100, step: 1 },
+    //         { key: 'overbought', label: 'Overbought Level', type: 'number', default: 70, min: 50, max: 95, step: 1 },
+    //         { key: 'oversold', label: 'Oversold Level', type: 'number', default: 30, min: 5, max: 50, step: 1 }
+    //     ],
+    //     defaultParams: {
+    //         period: 14,
+    //         overbought: 70,
+    //         oversold: 30
+    //     },
+    //     paramLabels: {
+    //         period: 'RSI Period',
+    //         overbought: 'Overbought Level',
+    //         oversold: 'Oversold Level'
+    //     }
+    // },
+    // macd: {
+    //     id: 'macd',
+    //     name: 'MACD',
+    //     desc: 'Moving Average Convergence Divergence momentum and trend signals',
+    //     category: 'Momentum',
+    //     conditions: [
+    //         'MACD Line Crosses Above Signal (Bullish)',
+    //         'MACD Line Crosses Below Signal (Bearish)',
+    //         'MACD Histogram Turns Positive',
+    //         'MACD Histogram Turns Negative',
+    //         'MACD Crosses Above Zero'
+    //     ],
+    //     fields: [
+    //         { key: 'fastEma', label: 'Fast EMA', type: 'number', default: 12, min: 1, max: 200, step: 1 },
+    //         { key: 'slowEma', label: 'Slow EMA', type: 'number', default: 26, min: 2, max: 500, step: 1 },
+    //         { key: 'signalPeriod', label: 'Signal Smoothing', type: 'number', default: 9, min: 1, max: 100, step: 1 }
+    //     ],
+    //     defaultParams: {
+    //         fastEma: 12,
+    //         slowEma: 26,
+    //         signalPeriod: 9
+    //     },
+    //     paramLabels: {
+    //         fastEma: 'Fast EMA',
+    //         slowEma: 'Slow EMA',
+    //         signalPeriod: 'Signal Smoothing'
+    //     }
+    // },
+    // bollinger_bands: {
+    //     id: 'bollinger_bands',
+    //     name: 'Bollinger Bands',
+    //     desc: 'Volatility bands indicating dynamic support, resistance, and squeeze breakouts',
+    //     category: 'Volatility',
+    //     conditions: [
+    //         'Price Closes Below Lower Band (Oversold Bounce)',
+    //         'Price Closes Above Upper Band (Overbought Pullback)',
+    //         'Bollinger Band Squeeze Breakout (Bullish)',
+    //         'Bollinger Band Squeeze Breakout (Bearish)',
+    //         'Price Crosses Middle SMA Line'
+    //     ],
+    //     fields: [
+    //         { key: 'period', label: 'SMA Period', type: 'number', default: 20, min: 2, max: 200, step: 1 },
+    //         { key: 'stdDev', label: 'Std Deviation', type: 'number', default: 2.0, min: 0.5, max: 5.0, step: 0.1 }
+    //     ],
+    //     defaultParams: {
+    //         period: 20,
+    //         stdDev: 2.0
+    //     },
+    //     paramLabels: {
+    //         period: 'SMA Period',
+    //         stdDev: 'Std Deviation'
+    //     }
+    // },
+    // supertrend: {
+    //     id: 'supertrend',
+    //     name: 'Supertrend',
+    //     desc: 'ATR-based trend identifier for precise direction flips and trailing stops',
+    //     category: 'Trend',
+    //     conditions: [
+    //         'Supertrend Flips Green (Bullish Entry)',
+    //         'Supertrend Flips Red (Bearish Entry)',
+    //         'Price Above Supertrend',
+    //         'Price Below Supertrend'
+    //     ],
+    //     fields: [
+    //         { key: 'atrPeriod', label: 'ATR Period', type: 'number', default: 10, min: 1, max: 100, step: 1 },
+    //         { key: 'multiplier', label: 'Multiplier', type: 'number', default: 3.0, min: 0.5, max: 10.0, step: 0.1 }
+    //     ],
+    //     defaultParams: {
+    //         atrPeriod: 10,
+    //         multiplier: 3.0
+    //     },
+    //     paramLabels: {
+    //         atrPeriod: 'ATR Period',
+    //         multiplier: 'Multiplier'
+    //     }
+    // }
 };
 
 export const STANDARD_EMA_PAIRS = [
