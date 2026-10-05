@@ -123,7 +123,6 @@
     }
 }
 
-
 .summaryTable {
     display: flex;
     flex-direction: column;
@@ -158,7 +157,6 @@
         }
     }
 }
-
 
 .safeguardBanner {
     display: flex;
@@ -233,104 +231,101 @@
 /* ========================================================================= */
 :global(html.light) .modalCard,
 :global([data-theme='light']) .modalCard {
-    background: #FFFFFF !important;
-    border: 1px solid rgba(24, 201, 139, 0.35) !important;
-    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.15) !important;
-    color: #0F172A !important;
+    background: #FFFFFF;
+    border: 1px solid rgba(24, 201, 139, 0.35);
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.15);
+    color: #0F172A;
 
     .modalHeader {
-        border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+        border-bottom-color: rgba(15, 23, 42, 0.08);
 
         h3 {
-            color: #0F172A !important;
+            color: #0F172A;
         }
     }
 
     .closeBtn {
-        background: #F1F5F9 !important;
-        border: 1px solid rgba(15, 23, 42, 0.12) !important;
-        color: #0F172A !important;
+        background: #F1F5F9;
+        border: 1px solid rgba(15, 23, 42, 0.12);
+        color: #0F172A;
 
         &:hover {
-            background: #E2E8F0 !important;
-            color: #000000 !important;
-            border-color: rgba(15, 23, 42, 0.25) !important;
+            background: #E2E8F0;
+            color: #000000;
+            border-color: rgba(15, 23, 42, 0.25);
         }
 
         svg {
-            stroke: #0F172A !important;
-            color: #0F172A !important;
+            stroke: #0F172A;
+            color: #0F172A;
         }
     }
 
     .planOverviewCard {
-        background: #F8FAFC !important;
-        border-color: rgba(24, 201, 139, 0.25) !important;
+        background: #F8FAFC;
+        border-color: rgba(24, 201, 139, 0.25);
 
         .planDetails {
             h4 {
-                color: #0F172A !important;
+                color: #0F172A;
             }
 
             p {
-                color: #64748B !important;
+                color: #64748B;
             }
         }
 
         .planPriceCol {
             .priceMain {
-                color: #047857 !important;
+                color: #047857;
             }
 
             .validitySub {
-                color: #64748B !important;
+                color: #64748B;
             }
         }
     }
 
-
     .summaryTable {
-        background: #F8FAFC !important;
-        border-color: rgba(15, 23, 42, 0.08) !important;
+        background: #F8FAFC;
+        border-color: rgba(15, 23, 42, 0.08);
 
         .summaryRow {
-            color: #475569 !important;
+            color: #475569;
 
             &.discountRow {
-                color: #047857 !important;
+                color: #047857;
             }
 
             &.totalRow {
-                color: #0F172A !important;
-                border-top-color: rgba(15, 23, 42, 0.1) !important;
+                color: #0F172A;
+                border-top-color: rgba(15, 23, 42, 0.1);
 
                 .totalAmount {
-                    color: #047857 !important;
+                    color: #047857;
                 }
             }
         }
     }
 
-
     .safeguardBanner {
-        background: rgba(24, 201, 139, 0.08) !important;
-        border-color: rgba(24, 201, 139, 0.25) !important;
-        color: #334155 !important;
+        background: rgba(24, 201, 139, 0.08);
+        border-color: rgba(24, 201, 139, 0.25);
+        color: #334155;
     }
 
     .modalFooter {
-        border-top-color: rgba(15, 23, 42, 0.08) !important;
+        border-top-color: rgba(15, 23, 42, 0.08);
 
         .cancelBtn {
-            background: #F1F5F9 !important;
-            border-color: rgba(15, 23, 42, 0.15) !important;
-            color: #334155 !important;
+            background: #F1F5F9;
+            border-color: rgba(15, 23, 42, 0.15);
+            color: #334155;
 
             &:hover {
-                background: #E2E8F0 !important;
-                color: #0F172A !important;
+                background: #E2E8F0;
+                color: #0F172A;
             }
         }
     }
 }
-

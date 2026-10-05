@@ -18,10 +18,28 @@ export default function WhatsappButton() {
         '/contact-us',
         '/terms-and-conditions',
         '/privacy-policy',
-        '/risk-disclosure'
+        '/risk-disclosure',
+        '/plans',
+        '/white-label',
+        '/affiliate-program',
+        '/ai-chart-scanner',
+        '/ai-market-assistant',
+        '/ai-strategy-core',
+        '/ai-strategy-hub',
+        '/ai-trade-advisor',
+        '/ai-trade-audit',
+        '/ai-trading-signal',
+        '/backtesting',
+        '/custom-bot-builder',
+        '/live-market-scanner',
+        '/no-refund-policy',
+        '/supported-brokers'
     ];
 
-    const isPublicPage = pathname && publicLandingPages.includes(pathname);
+    const isPublicPage = pathname && (
+        publicLandingPages.includes(pathname) ||
+        publicLandingPages.some(page => page !== '/' && pathname.startsWith(page))
+    );
 
     // If not a public landing page (i.e. user dashboard, tools, auth, onboarding), hide it completely
     if (!isPublicPage) {

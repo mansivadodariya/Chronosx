@@ -80,9 +80,9 @@ $danger: #F87171;
                 }
 
                 &.active {
-                    background: rgba(24, 201, 139, 0.16) !important;
-                    border-color: rgba(24, 201, 139, 0.5) !important;
-                    color: #18C98B !important;
+                    background: rgba(24, 201, 139, 0.16);
+                    border-color: rgba(24, 201, 139, 0.5);
+                    color: #18C98B;
                     font-weight: 700;
 
                     .tabBadge {
@@ -213,102 +213,104 @@ $danger: #F87171;
                 border-color: #18C98B;
             }
         }
+    }
 }
 
-:global(html.light) .brokerPage {
+:global(html.light) .brokerPage,
+:global([data-theme='light']) .brokerPage {
     .controlsRow {
         .tabs {
             .tabBtn {
-                background: #FFFFFF !important;
-                border: 1px solid #E2E8F0 !important;
-                color: #475569 !important;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+                background: #FFFFFF;
+                border: 1px solid #E2E8F0;
+                color: #475569;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 
                 .tabBadge {
-                    background: #F1F5F9 !important;
-                    color: #475569 !important;
+                    background: #F1F5F9;
+                    color: #475569;
                 }
 
                 &:hover {
-                    background: #F8FAFC !important;
-                    border-color: rgba(24, 201, 139, 0.4) !important;
-                    color: #059669 !important;
+                    background: #F8FAFC;
+                    border-color: rgba(24, 201, 139, 0.4);
+                    color: #059669;
 
                     .tabBadge {
-                        background: rgba(24, 201, 139, 0.15) !important;
-                        color: #047857 !important;
+                        background: rgba(24, 201, 139, 0.15);
+                        color: #047857;
                     }
                 }
 
                 &.active {
-                    background: #18C98B !important;
-                    border-color: #18C98B !important;
-                    color: #040605 !important;
-                    box-shadow: 0 2px 8px rgba(24, 201, 139, 0.3) !important;
+                    background: #18C98B;
+                    border-color: #18C98B;
+                    color: #040605;
+                    box-shadow: 0 2px 8px rgba(24, 201, 139, 0.3);
 
                     .tabBadge {
-                        background: rgba(4, 6, 5, 0.16) !important;
-                        color: #040605 !important;
+                        background: rgba(4, 6, 5, 0.16);
+                        color: #040605;
                     }
                 }
             }
         }
 
         .searchBox {
-            background: #FFFFFF !important;
-            border: 1px solid #E2E8F0 !important;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 
             &:focus-within {
-                border-color: #18C98B !important;
-                box-shadow: 0 0 0 3px rgba(24, 201, 139, 0.15) !important;
+                border-color: #18C98B;
+                box-shadow: 0 0 0 3px rgba(24, 201, 139, 0.15);
             }
 
             input {
-                color: #0F172A !important;
+                color: #0F172A;
 
                 &::placeholder {
-                    color: #94A3B8 !important;
+                    color: #94A3B8;
                 }
             }
 
             .clearSearchBtn {
-                color: #94A3B8 !important;
+                color: #94A3B8;
 
                 &:hover {
-                    color: #0F172A !important;
+                    color: #0F172A;
                 }
             }
         }
     }
 
     .emptyState {
-        background: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
-        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
 
         .emptyIconBox {
-            background: rgba(24, 201, 139, 0.12) !important;
-            border-color: rgba(24, 201, 139, 0.3) !important;
+            background: rgba(24, 201, 139, 0.12);
+            border-color: rgba(24, 201, 139, 0.3);
         }
 
         h3 {
-            color: #0F172A !important;
+            color: #0F172A;
         }
 
         p {
-            color: #64748B !important;
+            color: #64748B;
         }
 
         .resetFiltersBtn {
-            background: #18C98B !important;
-            border-color: #18C98B !important;
-            color: #040605 !important;
+            background: #18C98B;
+            border-color: #18C98B;
+            color: #040605;
 
             &:hover {
-                background: #15b77e !important;
-                border-color: #15b77e !important;
+                background: #15b77e;
+                border-color: #15b77e;
             }
         }
     }
-}}
+}

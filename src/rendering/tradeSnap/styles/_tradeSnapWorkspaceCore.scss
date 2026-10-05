@@ -543,20 +543,20 @@ $success: #10b981;
             }
 
             .radarSvgRingOuter {
-                position: absolute !important;
-                inset: 0 !important;
-                margin: auto !important;
-                width: 76px !important;
-                height: 76px !important;
+                position: absolute;
+                inset: 0;
+                margin: auto;
+                width: 76px;
+                height: 76px;
                 pointer-events: none;
             }
 
             .radarSvgRingInner {
-                position: absolute !important;
-                inset: 0 !important;
-                margin: auto !important;
-                width: 58px !important;
-                height: 58px !important;
+                position: absolute;
+                inset: 0;
+                margin: auto;
+                width: 58px;
+                height: 58px;
                 pointer-events: none;
             }
 

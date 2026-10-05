@@ -274,14 +274,14 @@ $danger: #F87171;
 
     th,
     td {
-        text-align: start !important;
+        text-align: start;
 
         :global(html[dir="rtl"]) & {
-            text-align: right !important;
+            text-align: right;
         }
 
         :global(html[dir="ltr"]) & {
-            text-align: left !important;
+            text-align: left;
         }
     }
 
@@ -422,53 +422,56 @@ $danger: #F87171;
     }
 }
 
-:global(html.light) .container {
-    color: #0F172A !important;
+:global(html.light) .container,
+:global([data-theme='light']) .container {
+    color: #0F172A;
 
     .headerTitleMeta h1,
     .statValue,
     .descCell,
     .paginationInfo {
-        color: #0F172A !important;
+        color: #0F172A;
     }
 
     .headerTitleMeta p,
     .statLabel {
-        color: #475569 !important;
+        color: #475569;
     }
 
     .statCard,
     .tableContainer,
     .tableCard,
     .summaryCard,
+    .card,
+    .tableWrapper,
     .emptyState {
-        background: #FFFFFF !important;
-        border-color: rgba(15, 23, 42, 0.09) !important;
-        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.09);
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
     }
 
     .historyTable {
-        background: #FFFFFF !important;
+        background: #FFFFFF;
 
         th {
-            background: #F1F5F9 !important;
-            color: #334155 !important;
+            background: #F1F5F9;
+            color: #334155;
         }
 
         td {
-            border-bottom-color: rgba(15, 23, 42, 0.06) !important;
-            color: #1E293B !important;
+            border-bottom-color: rgba(15, 23, 42, 0.06);
+            color: #1E293B;
         }
     }
 
     .paginationButton {
-        background: #FFFFFF !important;
-        border-color: rgba(15, 23, 42, 0.15) !important;
-        color: #0F172A !important;
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.15);
+        color: #0F172A;
 
         &:hover:not(:disabled) {
-            background: #F1F5F9 !important;
-            color: #059669 !important;
+            background: #F1F5F9;
+            color: #059669;
         }
     }
 }

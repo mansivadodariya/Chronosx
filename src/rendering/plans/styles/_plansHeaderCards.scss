@@ -7,9 +7,10 @@
     overflow-x: clip;
     color: #FFFFFF;
 
-    :global(html.light) & {
-        background: #F8FAFC !important;
-        color: #0F172A !important;
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        background: #F8FAFC;
+        color: #0F172A;
     }
 
     @include respond-to("md") {
@@ -21,48 +22,48 @@
     }
 
     &.outsidePage {
-        padding: 130px 0 0 0 !important;
+        padding: 130px 0 0 0;
 
         @include respond-to("md") {
-            padding: 110px 0 0 0 !important;
+            padding: 110px 0 0 0;
         }
 
         @include respond-to("sm") {
-            padding: 95px 0 0 0 !important;
+            padding: 95px 0 0 0;
         }
 
         :global(.container) {
-            max-width: 1280px !important;
-            margin: 0 auto !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding-left: 20px;
+            padding-right: 20px;
 
             @include respond-to("sm") {
-                padding-left: 12px !important;
-                padding-right: 12px !important;
+                padding-left: 12px;
+                padding-right: 12px;
             }
         }
     }
 
     &.dashboardPlansPage {
-        padding-top: 10px !important;
-        padding-bottom: 36px !important;
+        padding-top: 10px;
+        padding-bottom: 36px;
 
         @include respond-to("md") {
-            padding-top: 8px !important;
-            padding-bottom: 28px !important;
+            padding-top: 8px;
+            padding-bottom: 28px;
         }
 
         @include respond-to("sm") {
-            padding-top: 4px !important;
-            padding-bottom: 20px !important;
+            padding-top: 4px;
+            padding-bottom: 20px;
         }
 
         :global(.container) {
-            max-width: 100% !important;
-            width: 100% !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
+            max-width: 100%;
+            width: 100%;
+            padding-left: 0;
+            padding-right: 0;
         }
     }
 
@@ -131,8 +132,9 @@
         text-align: center;
         line-height: 1.25;
 
-        :global(html.light) & {
-            color: #0F172A !important;
+        :global(html.light) &,
+        :global([data-theme='light']) & {
+            color: #0F172A;
         }
 
         @include respond-to("sm") {
@@ -333,7 +335,7 @@
         radial-gradient(ellipse 80% 90% at 100% 0%, rgba(24, 201, 139, 0.25) 0%, rgba(16, 185, 129, 0.08) 55%, transparent 80%),
         radial-gradient(ellipse 70% 70% at 0% 100%, rgba(0, 242, 254, 0.14) 0%, transparent 70%),
         #121514;
-    border: 1.5px solid #18C98B !important;
+    border: 1.5px solid #18C98B;
     box-shadow: 0 16px 45px rgba(0, 0, 0, 0.7), 0 0 35px rgba(24, 201, 139, 0.22);
     transform: translateY(-8px);
     z-index: 6;

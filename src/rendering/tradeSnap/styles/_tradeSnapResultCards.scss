@@ -38,8 +38,6 @@
     }
 }
 
-
-
 .timeframeBadge {
     display: inline-flex;
     align-items: center;
@@ -195,11 +193,11 @@
 }
 
 .lossText {
-    color: #F87171 !important;
+    color: #F87171;
 }
 
 .profitText {
-    color: #34D399 !important;
+    color: #34D399;
 }
 
 .targetsGrid {
@@ -375,69 +373,69 @@
 :global([data-theme='light']),
 :global(.light) {
     .resultCard {
-        background: #FFFFFF !important;
-        border-color: rgba(15, 23, 42, 0.12) !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.12);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 
         .resultHeader {
-            border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+            border-bottom-color: rgba(15, 23, 42, 0.08);
 
             h3 {
-                color: #0F172A !important;
+                color: #0F172A;
             }
 
             .timeframeBadge {
-                background: #F1F5F9 !important;
-                color: #475569 !important;
+                background: #F1F5F9;
+                color: #475569;
             }
         }
 
         .noTradeSummaryBox {
-            background: #F8FAFC !important;
-            border-color: rgba(15, 23, 42, 0.08) !important;
+            background: #F8FAFC;
+            border-color: rgba(15, 23, 42, 0.08);
 
             .noTradeText {
-                color: #475569 !important;
+                color: #475569;
             }
 
             .compactSrRow {
-                border-top-color: rgba(15, 23, 42, 0.08) !important;
+                border-top-color: rgba(15, 23, 42, 0.08);
 
                 .compactSrItem {
                     span {
-                        color: #64748B !important;
+                        color: #64748B;
                     }
                     strong {
-                        color: #0F172A !important;
+                        color: #0F172A;
                     }
                 }
             }
         }
 
         .resultCardFooter {
-            background: #F8FAFC !important;
-            border-top-color: rgba(15, 23, 42, 0.08) !important;
+            background: #F8FAFC;
+            border-top-color: rgba(15, 23, 42, 0.08);
         }
 
         .viewDetailsBtn {
-            background: rgba(24, 201, 139, 0.1) !important;
-            border-color: rgba(24, 201, 139, 0.35) !important;
-            color: #047857 !important;
+            background: rgba(24, 201, 139, 0.1);
+            border-color: rgba(24, 201, 139, 0.35);
+            color: #047857;
 
             &:hover {
-                background: #18C98B !important;
-                color: #FFFFFF !important;
+                background: #18C98B;
+                color: #FFFFFF;
             }
         }
 
         .deleteResultBtn {
-            background: rgba(239, 68, 68, 0.08) !important;
-            border-color: rgba(239, 68, 68, 0.25) !important;
-            color: #DC2626 !important;
+            background: rgba(239, 68, 68, 0.08);
+            border-color: rgba(239, 68, 68, 0.25);
+            color: #DC2626;
 
             &:hover {
-                background: #DC2626 !important;
-                color: #FFFFFF !important;
+                background: #DC2626;
+                color: #FFFFFF;
             }
         }
     }
@@ -450,7 +448,6 @@
     padding: 20px;
 }
 
-
 .riskReward {
     display: flex;
     justify-content: space-between;
@@ -462,11 +459,11 @@
 
     span {
         font-weight: 600;
-        color: $text;
+        color: #FFFFFF;
     }
 
     strong {
-        color: $primary;
+        color: #18C98B;
         padding: 4px 10px;
         background: #fff;
         border: 1px solid rgba(24, 201, 139, 0.2);
@@ -479,12 +476,12 @@
         margin: 0 0 8px;
         font-size: 15px;
         font-weight: 600;
-        color: $text;
+        color: #FFFFFF;
     }
 
     p {
         margin: 0;
-        color: $muted;
+        color: rgba(255, 255, 255, 0.6);
         line-height: 1.6;
         white-space: pre-line;
     }
@@ -496,14 +493,8 @@
     background: #F8FAFC;
     border-radius: 8px;
     font-size: 12px;
-    color: $muted;
+    color: rgba(255, 255, 255, 0.6);
     font-style: italic;
-}
-
-.historyList {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
 }
 
 .mobileNotice {
@@ -516,7 +507,7 @@
     max-width: 400px;
     text-align: center;
     padding: 32px 24px;
-    border: 1px solid $border;
+    border: 1px solid rgba(24, 201, 139, 0.35);
     border-radius: 16px;
     background: #fff;
     box-shadow: 0 8px 32px rgba(24, 201, 139, 0.08);
@@ -525,12 +516,12 @@
         margin: 16px 0 8px;
         font-size: 20px;
         font-weight: 700;
-        color: $text;
+        color: #FFFFFF;
     }
 
     p {
         margin: 0;
-        color: $muted;
+        color: rgba(255, 255, 255, 0.6);
         font-size: 14px;
         line-height: 1.5;
     }
@@ -549,6 +540,6 @@
     .mobileMonitor {
         width: 36px;
         height: 36px;
-        color: $primary;
+        color: #18C98B;
     }
 }

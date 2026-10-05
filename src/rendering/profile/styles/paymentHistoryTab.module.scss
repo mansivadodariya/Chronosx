@@ -292,12 +292,12 @@
 
     &:disabled,
     &.btnDisabled {
-        opacity: 0.35 !important;
-        cursor: not-allowed !important;
-        pointer-events: none !important;
-        border-color: rgba(255, 255, 255, 0.06) !important;
-        background: rgba(255, 255, 255, 0.02) !important;
-        color: rgba(255, 255, 255, 0.3) !important;
+        opacity: 0.35;
+        cursor: not-allowed;
+        pointer-events: none;
+        border-color: rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.02);
+        color: rgba(255, 255, 255, 0.3);
     }
 }
 
@@ -353,89 +353,89 @@
 :global([data-theme='light']) .paymentHistoryPanel {
     .panelHeaderRow {
         h3 {
-            color: #0F172A !important;
+            color: #0F172A;
         }
 
         .panelSubtitle {
-            color: #64748B !important;
+            color: #64748B;
         }
     }
 
     .statCard {
-        background: #F8FAFC !important;
-        border: 1px solid rgba(24, 201, 139, 0.22) !important;
+        background: #F8FAFC;
+        border: 1px solid rgba(24, 201, 139, 0.22);
 
         &:hover {
-            background: #F1F5F9 !important;
-            border-color: #18C98B !important;
+            background: #F1F5F9;
+            border-color: #18C98B;
         }
 
         .statLabel {
-            color: #64748B !important;
+            color: #64748B;
         }
 
         .statValue {
-            color: #047857 !important;
+            color: #047857;
         }
     }
 
     .tableWrapper {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(15, 23, 42, 0.08) !important;
-        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
     }
 
     .historyTable {
         th {
-            background: #F8FAFC !important;
-            color: #475569 !important;
-            border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+            background: #F8FAFC;
+            color: #475569;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
         }
 
         td {
-            color: #334155 !important;
-            border-bottom: 1px solid rgba(15, 23, 42, 0.06) !important;
+            color: #334155;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.06);
         }
 
         tr:hover td {
-            background: rgba(24, 201, 139, 0.04) !important;
+            background: rgba(24, 201, 139, 0.04);
         }
     }
 
     .invoiceCol {
-        color: #0F172A !important;
+        color: #0F172A;
     }
 
     .amountText {
-        color: #0F172A !important;
+        color: #0F172A;
     }
 
     .planTierBadge {
-        background: rgba(24, 201, 139, 0.12) !important;
-        color: #047857 !important;
-        border-color: rgba(24, 201, 139, 0.35) !important;
+        background: rgba(24, 201, 139, 0.12);
+        color: #047857;
+        border-color: rgba(24, 201, 139, 0.35);
     }
 
     .creditsBadge {
-        background: rgba(24, 201, 139, 0.12) !important;
-        color: #047857 !important;
-        border-color: rgba(24, 201, 139, 0.35) !important;
+        background: rgba(24, 201, 139, 0.12);
+        color: #047857;
+        border-color: rgba(24, 201, 139, 0.35);
     }
 
     .cregisSub {
-        color: #64748B !important;
+        color: #64748B;
     }
 
     .chainTag {
-        background: #E2E8F0 !important;
-        color: #475569 !important;
+        background: #E2E8F0;
+        color: #475569;
     }
 
     .statusPill {
         &.statusExpired {
-            background: #F1F5F9 !important;
-            color: #64748B !important;
-            border-color: #CBD5E1 !important;
+            background: #F1F5F9;
+            color: #64748B;
+            border-color: #CBD5E1;
         }
     }
 
@@ -445,50 +445,49 @@
             rgba(15, 23, 42, 0.06) 0%,
             rgba(24, 201, 139, 0.18) 50%,
             rgba(15, 23, 42, 0.06) 100%
-        ) !important;
-        background-size: 200% 100% !important;
+        );
+        background-size: 200% 100%;
     }
 
     .downloadBtn {
-        background: #F1F5F9 !important;
-        border: 1px solid rgba(15, 23, 42, 0.14) !important;
-        color: #0F172A !important;
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+        background: #F1F5F9;
+        border: 1px solid rgba(15, 23, 42, 0.14);
+        color: #0F172A;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
 
         &:hover:not(:disabled):not(.btnDisabled) {
-            background: rgba(24, 201, 139, 0.15) !important;
-            border-color: #18C98B !important;
-            color: #047857 !important;
-            box-shadow: 0 2px 8px rgba(24, 201, 139, 0.2) !important;
+            background: rgba(24, 201, 139, 0.15);
+            border-color: #18C98B;
+            color: #047857;
+            box-shadow: 0 2px 8px rgba(24, 201, 139, 0.2);
         }
 
         &:disabled,
         &.btnDisabled {
-            opacity: 0.35 !important;
-            cursor: not-allowed !important;
-            pointer-events: none !important;
-            background: #F1F5F9 !important;
-            border-color: rgba(15, 23, 42, 0.08) !important;
-            color: #94A3B8 !important;
-            box-shadow: none !important;
+            opacity: 0.35;
+            cursor: not-allowed;
+            pointer-events: none;
+            background: #F1F5F9;
+            border-color: rgba(15, 23, 42, 0.08);
+            color: #94A3B8;
+            box-shadow: none;
         }
     }
 
     .emptyState {
-        background: #F8FAFC !important;
-        border-color: rgba(15, 23, 42, 0.12) !important;
+        background: #F8FAFC;
+        border-color: rgba(15, 23, 42, 0.12);
 
         .emptyIcon {
-            color: #94A3B8 !important;
+            color: #94A3B8;
         }
 
         h4 {
-            color: #0F172A !important;
+            color: #0F172A;
         }
 
         p {
-            color: #64748B !important;
+            color: #64748B;
         }
     }
 }
-

@@ -170,28 +170,29 @@
 }
 
 /* Specific Light Mode Rules for Topbar */
-:global(html.light) .topbar {
-    background: #FFFFFF !important;
-    border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+:global(html.light) .topbar,
+:global(html[data-theme="light"]) .topbar {
+    background: #FFFFFF;
+    border-bottom-color: rgba(15, 23, 42, 0.08);
 
     .pageTitle {
-        color: #0F172A !important;
+        color: #0F172A;
     }
 
     .credits,
     .themeToggle {
-        background: #efefef !important;
-        border-color: rgba(15, 23, 42, 0.12) !important;
-        color: #0F172A !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+        background: #efefef;
+        border-color: rgba(15, 23, 42, 0.12);
+        color: #0F172A;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 
         span {
-            color: #047857 !important;
+            color: #047857;
         }
 
         &:hover {
-            background: #F1F5F9 !important;
-            border-color: rgba(24, 201, 139, 0.4) !important;
+            background: #F1F5F9;
+            border-color: rgba(24, 201, 139, 0.4);
         }
     }
 }

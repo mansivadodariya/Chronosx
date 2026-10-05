@@ -1,7 +1,7 @@
 // Section B: Dynamic Bull & Bear Hero Banner
 .heroBanner {
     position: relative;
-    border-radius: 0 !important;
+    border-radius: 0;
     padding: 18px 20px;
     overflow: hidden;
     border: 1px solid;
@@ -28,57 +28,57 @@
 
     @container (max-width: 720px) {
         .bannerContent {
-            flex-direction: column !important;
-            align-items: stretch !important;
-            gap: 16px !important;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 16px;
         }
 
         .bannerLeft {
-            flex-direction: column !important;
-            align-items: center !important;
-            text-align: center !important;
-            width: 100% !important;
-            gap: 12px !important;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            gap: 12px;
         }
 
         .bannerImageContainer {
-            width: 100% !important;
-            max-width: 160px !important;
-            height: 120px !important;
-            min-width: unset !important;
+            width: 100%;
+            max-width: 160px;
+            height: 120px;
+            min-width: unset;
         }
 
         .neutralBannerImages {
-            justify-content: center !important;
-            width: 100% !important;
+            justify-content: center;
+            width: 100%;
         }
 
         .bannerTextCol {
-            align-items: center !important;
-            text-align: center !important;
-            width: 100% !important;
+            align-items: center;
+            text-align: center;
+            width: 100%;
         }
 
         .bannerTagRow,
         .bannerTagRowRed,
         .bannerTagRowAmber {
-            justify-content: center !important;
+            justify-content: center;
         }
 
         .bannerSubtitle {
-            text-align: center !important;
+            text-align: center;
         }
 
         .bannerRight {
-            flex-direction: row !important;
-            width: 100% !important;
-            gap: 10px !important;
+            flex-direction: row;
+            width: 100%;
+            gap: 10px;
 
             .bannerStatCard,
             .bannerStatCardRed,
             .bannerStatCardAmber {
-                flex: 1 1 0 !important;
-                min-width: 0 !important;
+                flex: 1 1 0;
+                min-width: 0;
             }
         }
     }
@@ -88,21 +88,21 @@
 
         .neutralBullImg,
         .neutralBearImg {
-            width: 60px !important;
-            height: 52px !important;
+            width: 60px;
+            height: 52px;
         }
 
         .bannerTitle {
-            font-size: 16px !important;
+            font-size: 16px;
         }
 
         .bannerSubtitle {
-            font-size: 12px !important;
+            font-size: 12px;
         }
 
         .bannerRight {
-            flex-direction: column !important;
-            gap: 8px !important;
+            flex-direction: column;
+            gap: 8px;
         }
     }
 }
@@ -382,7 +382,7 @@
 .bannerStatCard {
     background: var(--stat-card-bg);
     border: 1px solid rgba(16, 185, 129, 0.35);
-    border-radius: 0 !important;
+    border-radius: 0;
     padding: 8px 14px;
     display: flex;
     flex-direction: column;
@@ -419,7 +419,7 @@
 .bannerStatCardRed {
     background: var(--stat-card-bg);
     border: 1px solid rgba(239, 68, 68, 0.35);
-    border-radius: 0 !important;
+    border-radius: 0;
     padding: 8px 14px;
     display: flex;
     flex-direction: column;
@@ -456,7 +456,7 @@
 .bannerStatCardAmber {
     background: var(--stat-card-bg);
     border: 1px solid rgba(14, 165, 233, 0.35);
-    border-radius: 0 !important;
+    border-radius: 0;
     padding: 8px 14px;
     display: flex;
     flex-direction: column;
@@ -542,25 +542,25 @@
 :global(.light),
 :global(.pdfExportLight) {
     .heroBanner {
-        background: #FFFFFF !important;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+        background: #FFFFFF;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 
         .bannerTitle {
-            color: #0F172A !important;
+            color: #0F172A;
         }
 
         .bannerSubtitle {
-            color: #475569 !important;
+            color: #475569;
         }
 
         .bannerStatCard,
         .bannerStatCardRed,
         .bannerStatCardAmber {
-            background: #F8FAFC !important;
-            border-color: rgba(15, 23, 42, 0.1) !important;
+            background: #F8FAFC;
+            border-color: rgba(15, 23, 42, 0.1);
 
             .bannerStatLabel {
-                color: #64748B !important;
+                color: #64748B;
             }
         }
     }

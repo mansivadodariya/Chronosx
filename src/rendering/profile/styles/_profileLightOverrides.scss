@@ -1,16 +1,17 @@
 /* ============================================================
    COMPLETE LIGHT THEME (html.light) FOR PROFILE
    ============================================================ */
-:global(html.light) .profile {
-    color: #0F172A !important;
+:global(html.light) .profile,
+:global([data-theme='light']) .profile {
+    color: #0F172A;
 
     .pageHeader {
         .headerTitleMeta {
             h1 {
-                color: #0F172A !important;
+                color: #0F172A;
             }
             p {
-                color: #475569 !important;
+                color: #475569;
             }
         }
     }
@@ -18,109 +19,109 @@
     /* Left Navigation */
     .leftSidebar {
         .navMenuCard {
-            background: #FFFFFF !important;
-            border: 1px solid rgba(15, 23, 42, 0.09) !important;
-            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+            background: #FFFFFF;
+            border: 1px solid rgba(15, 23, 42, 0.09);
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
         }
     }
 
     .navMenuItem {
-        color: #475569 !important;
+        color: #475569;
 
         .navItemIcon {
-            color: #64748B !important;
+            color: #64748B;
         }
 
         &:hover {
-            background: #F1F5F9 !important;
-            color: #0F172A !important;
+            background: #F1F5F9;
+            color: #0F172A;
 
             .navItemIcon {
-                color: #047857 !important;
+                color: #047857;
             }
         }
     }
 
     .navMenuItemActive {
-        background: rgba(24, 201, 139, 0.12) !important;
-        border-color: rgba(24, 201, 139, 0.35) !important;
-        color: #047857 !important;
-        box-shadow: 0 2px 8px rgba(24, 201, 139, 0.15) !important;
+        background: rgba(24, 201, 139, 0.12);
+        border-color: rgba(24, 201, 139, 0.35);
+        color: #047857;
+        box-shadow: 0 2px 8px rgba(24, 201, 139, 0.15);
 
         .navItemIcon {
-            color: #047857 !important;
-            filter: none !important;
+            color: #047857;
+            filter: none;
         }
     }
 
     /* Hero Profile Card & Personal Details Card */
     .heroProfileCard,
     .personalDetailsCard {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(15, 23, 42, 0.09) !important;
-        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 23, 42, 0.09);
+        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06);
 
         .heroCardHeader {
-            border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+            border-bottom-color: rgba(15, 23, 42, 0.08);
 
             .cardHeaderIcon {
-                background: rgba(24, 201, 139, 0.12) !important;
-                border-color: rgba(24, 201, 139, 0.3) !important;
-                color: #047857 !important;
+                background: rgba(24, 201, 139, 0.12);
+                border-color: rgba(24, 201, 139, 0.3);
+                color: #047857;
             }
 
             .cardHeaderTexts {
-                h3 { color: #0F172A !important; }
-                p { color: #64748B !important; }
+                h3 { color: #0F172A; }
+                p { color: #64748B; }
             }
 
             .editProfileBtn {
-                background: #F8FAFC !important;
-                border-color: rgba(24, 201, 139, 0.4) !important;
-                color: #047857 !important;
+                background: #F8FAFC;
+                border-color: rgba(24, 201, 139, 0.4);
+                color: #047857;
 
                 &:hover {
-                    background: #18C98B !important;
-                    color: #040605 !important;
+                    background: #18C98B;
+                    color: #040605;
                 }
             }
         }
 
         .avatarCircle {
-            background: #F8FAFC !important;
-            border-color: #18C98B !important;
-            box-shadow: 0 4px 16px rgba(24, 201, 139, 0.2) !important;
+            background: #F8FAFC;
+            border-color: #18C98B;
+            box-shadow: 0 4px 16px rgba(24, 201, 139, 0.2);
 
             .avatarInitialsText {
-                color: #047857 !important;
+                color: #047857;
             }
         }
 
         .userMetaDetails {
             .userNameRow h2 {
-                color: #0F172A !important;
+                color: #0F172A;
             }
 
             .userEmailRow {
                 .emailText {
-                    color: #475569 !important;
+                    color: #475569;
                 }
                 .verifiedPill {
-                    background: #DCFCE7 !important;
-                    border-color: #86EFAC !important;
-                    color: #15803D !important;
+                    background: #DCFCE7;
+                    border-color: #86EFAC;
+                    color: #15803D;
                 }
             }
 
             .uidRow {
-                color: #64748B !important;
+                color: #64748B;
             }
 
             .joinedRow {
-                color: #64748B !important;
+                color: #64748B;
 
                 svg {
-                    stroke: #64748B !important;
+                    stroke: #64748B;
                 }
             }
         }
@@ -128,155 +129,155 @@
 
     /* Personal Details Card */
     .personalDetailsCard {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(15, 23, 42, 0.09) !important;
-        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 23, 42, 0.09);
+        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06);
 
         .detailsCardHeader {
-            h3 { color: #0F172A !important; }
+            h3 { color: #0F172A; }
             .cardHeaderIcon {
-                background: rgba(24, 201, 139, 0.12) !important;
-                border-color: rgba(24, 201, 139, 0.3) !important;
-                color: #047857 !important;
+                background: rgba(24, 201, 139, 0.12);
+                border-color: rgba(24, 201, 139, 0.3);
+                color: #047857;
             }
         }
 
         .detailFieldItem,
         .detailPillBox {
-            background: #F8FAFC !important;
-            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+            background: #F8FAFC;
+            border: 1px solid rgba(15, 23, 42, 0.08);
 
             &:hover {
-                background: #F1F5F9 !important;
-                border-color: rgba(24, 201, 139, 0.4) !important;
+                background: #F1F5F9;
+                border-color: rgba(24, 201, 139, 0.4);
             }
 
             .fieldLabel,
             .pillLabel {
-                color: #64748B !important;
+                color: #64748B;
             }
 
             .fieldValue,
             .pillValue {
-                color: #0F172A !important;
+                color: #0F172A;
             }
         }
     }
 
     /* Onboarding Survey & Strategy Profile Card */
     .onboardingSurveyCard {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(15, 23, 42, 0.09) !important;
-        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 23, 42, 0.09);
+        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06);
 
         .surveyCardHeader {
-            border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+            border-bottom-color: rgba(15, 23, 42, 0.08);
 
             .surveyHeaderLeft {
                 .surveyIconPulse {
-                    background: rgba(24, 201, 139, 0.12) !important;
-                    border-color: rgba(24, 201, 139, 0.3) !important;
-                    color: #047857 !important;
+                    background: rgba(24, 201, 139, 0.12);
+                    border-color: rgba(24, 201, 139, 0.3);
+                    color: #047857;
                 }
 
                 .surveyHeaderTexts {
-                    h3 { color: #0F172A !important; }
-                    p { color: #64748B !important; }
+                    h3 { color: #0F172A; }
+                    p { color: #64748B; }
 
                     .calibratedBadge {
-                        background: #DCFCE7 !important;
-                        border-color: #86EFAC !important;
-                        color: #15803D !important;
+                        background: #DCFCE7;
+                        border-color: #86EFAC;
+                        color: #15803D;
 
                         .greenBeacon {
-                            background: #15803D !important;
-                            box-shadow: 0 0 6px rgba(21, 128, 61, 0.6) !important;
+                            background: #15803D;
+                            box-shadow: 0 0 6px rgba(21, 128, 61, 0.6);
                         }
                     }
                 }
             }
 
             .recalibrateBtn {
-                background: #F8FAFC !important;
-                border-color: rgba(24, 201, 139, 0.4) !important;
-                color: #047857 !important;
+                background: #F8FAFC;
+                border-color: rgba(24, 201, 139, 0.4);
+                color: #047857;
 
                 &:hover {
-                    background: #18C98B !important;
-                    color: #040605 !important;
+                    background: #18C98B;
+                    color: #040605;
                 }
             }
         }
 
         .emptySurveyBanner {
-            background: #F8FAFC !important;
-            border-color: rgba(24, 201, 139, 0.4) !important;
+            background: #F8FAFC;
+            border-color: rgba(24, 201, 139, 0.4);
 
             .emptyTexts {
-                h4 { color: #0F172A !important; }
-                p { color: #64748B !important; }
+                h4 { color: #0F172A; }
+                p { color: #64748B; }
             }
         }
 
         .surveyBlockItem {
-            background: #F8FAFC !important;
-            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+            background: #F8FAFC;
+            border: 1px solid rgba(15, 23, 42, 0.08);
 
             &:hover {
-                background: #F1F5F9 !important;
-                border-color: rgba(24, 201, 139, 0.4) !important;
+                background: #F1F5F9;
+                border-color: rgba(24, 201, 139, 0.4);
             }
 
             .blockHead {
-                .blockLabel { color: #64748B !important; }
+                .blockLabel { color: #64748B; }
                 .expBadgePill {
-                    background: #DCFCE7 !important;
-                    border-color: #86EFAC !important;
-                    color: #15803D !important;
+                    background: #DCFCE7;
+                    border-color: #86EFAC;
+                    color: #15803D;
                 }
-                .countBadge { color: #64748B !important; }
+                .countBadge { color: #64748B; }
             }
 
             .blockMainVal {
-                h4 { color: #0F172A !important; }
-                .blockSubDesc { color: #475569 !important; }
+                h4 { color: #0F172A; }
+                .blockSubDesc { color: #475569; }
             }
 
             .blockFooterTag span {
-                background: #DCFCE7 !important;
-                border-color: #86EFAC !important;
-                color: #15803D !important;
+                background: #DCFCE7;
+                border-color: #86EFAC;
+                color: #15803D;
             }
 
             .pillsCluster .emptyTextMuted {
-                color: #94A3B8 !important;
+                color: #94A3B8;
             }
 
             .surveyPillTag,
             .goalPillTag,
             .assetPillTag {
-                background: #FFFFFF !important;
-                border-color: rgba(15, 23, 42, 0.12) !important;
+                background: #FFFFFF;
+                border-color: rgba(15, 23, 42, 0.12);
 
                 &:hover {
-                    border-color: rgba(24, 201, 139, 0.45) !important;
-                    background: rgba(24, 201, 139, 0.06) !important;
+                    border-color: rgba(24, 201, 139, 0.45);
+                    background: rgba(24, 201, 139, 0.06);
                 }
 
                 .pillLabel,
                 .goalText,
                 .assetName {
-                    color: #0F172A !important;
+                    color: #0F172A;
                 }
 
                 .pillTimeframe,
                 .assetCategory {
-                    color: #64748B !important;
+                    color: #64748B;
                 }
 
                 .goalTagBadge {
-                    background: #DCFCE7 !important;
-                    color: #15803D !important;
+                    background: #DCFCE7;
+                    color: #15803D;
                 }
             }
         }
@@ -285,99 +286,99 @@
     /* Right Column */
     .rightSummaryColumn,
     .rightSidebar {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(15, 23, 42, 0.09) !important;
-        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 23, 42, 0.09);
+        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06);
 
         .rightCard {
-            border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+            border-bottom-color: rgba(15, 23, 42, 0.08);
 
             .rightCardTitle {
-                color: #0F172A !important;
+                color: #0F172A;
             }
 
             .summaryMetaRows .summaryRow {
                 .summaryLabel {
-                    color: #64748B !important;
+                    color: #64748B;
                 }
 
                 .summaryActiveTag {
-                    color: #059669 !important;
-                    font-weight: 700 !important;
-                    font-size: 13px !important;
-                    background: transparent !important;
-                    background-color: transparent !important;
-                    border: none !important;
-                    outline: none !important;
-                    box-shadow: none !important;
-                    padding: 0 !important;
+                    color: #059669;
+                    font-weight: 700;
+                    font-size: 13px;
+                    background: transparent;
+                    background-color: transparent;
+                    border: none;
+                    outline: none;
+                    box-shadow: none;
+                    padding: 0;
                 }
 
                 .summaryProTag {
-                    color: #059669 !important;
-                    font-weight: 700 !important;
-                    font-size: 13px !important;
-                    background: transparent !important;
-                    background-color: transparent !important;
-                    border: none !important;
-                    outline: none !important;
-                    box-shadow: none !important;
-                    padding: 0 !important;
+                    color: #059669;
+                    font-weight: 700;
+                    font-size: 13px;
+                    background: transparent;
+                    background-color: transparent;
+                    border: none;
+                    outline: none;
+                    box-shadow: none;
+                    padding: 0;
                 }
             }
 
             .creditsCardBox {
-                background: #F8FAFC !important;
-                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+                background: #F8FAFC;
+                border: 1px solid rgba(15, 23, 42, 0.08);
 
                 .creditsHead {
-                    .creditsLabel { color: #64748B !important; }
-                    .viewPlansBtn { color: #047857 !important; }
+                    .creditsLabel { color: #64748B; }
+                    .viewPlansBtn { color: #047857; }
                 }
 
                 .creditsNumbers .creditsAmount {
-                    color: #0F172A !important;
-                    span { color: #047857 !important; }
+                    color: #0F172A;
+                    span { color: #047857; }
                 }
             }
 
             .verificationList .verifItem {
-                background: #F8FAFC !important;
-                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+                background: #F8FAFC;
+                border: 1px solid rgba(15, 23, 42, 0.08);
 
-                .verifLeft { color: #0F172A !important; }
+                .verifLeft { color: #0F172A; }
                 .verifActionBtn {
-                    background: rgba(24, 201, 139, 0.12) !important;
-                    color: #047857 !important;
+                    background: rgba(24, 201, 139, 0.12);
+                    color: #047857;
                 }
             }
 
             .quickActionsGrid .actionGridBtn {
-                background: #F8FAFC !important;
-                border: 1px solid rgba(15, 23, 42, 0.08) !important;
-                color: #0F172A !important;
+                background: #F8FAFC;
+                border: 1px solid rgba(15, 23, 42, 0.08);
+                color: #0F172A;
 
                 &:hover {
-                    background: #F1F5F9 !important;
-                    border-color: rgba(24, 201, 139, 0.4) !important;
-                    color: #047857 !important;
+                    background: #F1F5F9;
+                    border-color: rgba(24, 201, 139, 0.4);
+                    color: #047857;
                 }
 
                 &.actionDanger:hover {
-                    background: #FEE2E2 !important;
-                    border-color: #EF4444 !important;
-                    color: #DC2626 !important;
+                    background: #FEE2E2;
+                    border-color: #EF4444;
+                    color: #DC2626;
                 }
             }
 
             .logoutActionWrap .logoutBtn {
-                background: #FEF2F2 !important;
-                border-color: rgba(239, 68, 68, 0.25) !important;
-                color: #DC2626 !important;
+                background: #FEF2F2;
+                border-color: rgba(239, 68, 68, 0.25);
+                color: #DC2626;
 
                 &:hover {
-                    background: #EF4444 !important;
-                    color: #FFFFFF !important;
+                    background: #EF4444;
+                    color: #FFFFFF;
                 }
             }
         }
@@ -386,70 +387,70 @@
     /* Tab Content Panels (Security, Activity) */
     .tabContentPanel,
     .tabCardContainer {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(15, 23, 42, 0.09) !important;
-        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 23, 42, 0.09);
+        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06);
 
         .panelHeaderRow h3,
         .cardHeaderBox h3 {
-            color: #0F172A !important;
+            color: #0F172A;
         }
 
         .cardHeaderBox p {
-            color: #64748B !important;
+            color: #64748B;
         }
 
         .securityBannerCard {
-            background: #F8FAFC !important;
-            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+            background: #F8FAFC;
+            border: 1px solid rgba(15, 23, 42, 0.08);
 
             .securityBannerLeft {
                 .shieldIconWrap {
-                    background: rgba(24, 201, 139, 0.12) !important;
-                    border-color: rgba(24, 201, 139, 0.3) !important;
-                    color: #047857 !important;
+                    background: rgba(24, 201, 139, 0.12);
+                    border-color: rgba(24, 201, 139, 0.3);
+                    color: #047857;
                 }
 
                 .bannerTexts {
-                    h4 { color: #0F172A !important; }
-                    p { color: #64748B !important; }
+                    h4 { color: #0F172A; }
+                    p { color: #64748B; }
                 }
             }
 
             .bannerActionBtn {
-                background: #FFFFFF !important;
-                border-color: rgba(24, 201, 139, 0.4) !important;
-                color: #047857 !important;
+                background: #FFFFFF;
+                border-color: rgba(24, 201, 139, 0.4);
+                color: #047857;
 
                 &:hover {
-                    background: #18C98B !important;
-                    color: #040605 !important;
+                    background: #18C98B;
+                    color: #040605;
                 }
             }
         }
 
         .activityTimeline .timelineItem {
-            background: #F8FAFC !important;
-            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+            background: #F8FAFC;
+            border: 1px solid rgba(15, 23, 42, 0.08);
 
             &:hover {
-                background: #F1F5F9 !important;
-                border-color: rgba(24, 201, 139, 0.35) !important;
+                background: #F1F5F9;
+                border-color: rgba(24, 201, 139, 0.35);
             }
 
             .timelineContent {
                 .timelineHeader {
-                    .timelineTitle { color: #0F172A !important; }
-                    .timelineTime { color: #64748B !important; }
+                    .timelineTitle { color: #0F172A; }
+                    .timelineTime { color: #64748B; }
                 }
 
                 .timelineDetails {
-                    color: #475569 !important;
+                    color: #475569;
 
                     .ipBadge {
-                        background: rgba(24, 201, 139, 0.12) !important;
-                        border-color: rgba(24, 201, 139, 0.25) !important;
-                        color: #047857 !important;
+                        background: rgba(24, 201, 139, 0.12);
+                        border-color: rgba(24, 201, 139, 0.25);
+                        color: #047857;
                     }
                 }
             }
@@ -457,122 +458,121 @@
 
         .activityCardsList {
             .activityItemRow {
-                background: #FFFFFF !important;
-                border: 1px solid rgba(15, 23, 42, 0.08) !important;
-                box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+                background: #FFFFFF;
+                border: 1px solid rgba(15, 23, 42, 0.08);
+                box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 
                 &:hover {
-                    background: #F8FAFC !important;
-                    border-color: rgba(24, 201, 139, 0.4) !important;
+                    background: #F8FAFC;
+                    border-color: rgba(24, 201, 139, 0.4);
                 }
 
                 &.activeActivityRow {
-                    background: #F0FDF4 !important;
-                    border-color: rgba(24, 201, 139, 0.35) !important;
+                    background: #F0FDF4;
+                    border-color: rgba(24, 201, 139, 0.35);
 
                     &:hover {
-                        background: #DCFCE7 !important;
+                        background: #DCFCE7;
                     }
                 }
 
                 .activityItemLeft {
                     .activityIconBox {
-                        background: #F1F5F9 !important;
-                        border-color: #E2E8F0 !important;
-                        color: #64748B !important;
+                        background: #F1F5F9;
+                        border-color: #E2E8F0;
+                        color: #64748B;
 
                         &.activeActivityIconBox {
-                            background: rgba(24, 201, 139, 0.12) !important;
-                            border-color: rgba(24, 201, 139, 0.3) !important;
-                            color: #047857 !important;
+                            background: rgba(24, 201, 139, 0.12);
+                            border-color: rgba(24, 201, 139, 0.3);
+                            color: #047857;
                         }
                     }
 
                     .activityMeta {
                         .activityDateRow {
-                            .activityDateText { color: #0F172A !important; }
-                            .dateDotSeparator { color: #94A3B8 !important; }
-                            .activityTimeText { color: #64748B !important; }
+                            .activityDateText { color: #0F172A; }
+                            .dateDotSeparator { color: #94A3B8; }
+                            .activityTimeText { color: #64748B; }
                         }
 
-                        .activityDescText { color: #475569 !important; }
+                        .activityDescText { color: #475569; }
                     }
                 }
 
                 .activityItemRight {
                     .activeSessionBadge {
-                        background: #DCFCE7 !important;
-                        border-color: #86EFAC !important;
-                        color: #15803D !important;
+                        background: #DCFCE7;
+                        border-color: #86EFAC;
+                        color: #15803D;
                     }
 
                     .pastSessionBadge {
-                        background: #F1F5F9 !important;
-                        border-color: #E2E8F0 !important;
-                        color: #64748B !important;
+                        background: #F1F5F9;
+                        border-color: #E2E8F0;
+                        color: #64748B;
                     }
                 }
             }
         }
 
         .emptyActivityState {
-            color: #64748B !important;
+            color: #64748B;
         }
     }
 
     /* Modals */
     .modalContent {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(15, 23, 42, 0.1) !important;
-        box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.15) !important;
-        color: #0F172A !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 23, 42, 0.1);
+        box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.15);
+        color: #0F172A;
 
         .modalHeader {
-            h3 { color: #0F172A !important; }
-            .closeBtn { color: #64748B !important; &:hover { color: #0F172A !important; } }
+            h3 { color: #0F172A; }
+            .closeBtn { color: #64748B; &:hover { color: #0F172A; } }
         }
 
-        p { color: #475569 !important; }
+        p { color: #475569; }
 
         .modalFooter {
             .cancelFormBtn {
-                background: #F1F5F9 !important;
-                border: 1px solid #CBD5E1 !important;
-                color: #334155 !important;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+                background: #F1F5F9;
+                border: 1px solid #CBD5E1;
+                color: #334155;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 
                 &:hover:not(:disabled) {
-                    background: #E2E8F0 !important;
-                    border-color: #94A3B8 !important;
-                    color: #0F172A !important;
+                    background: #E2E8F0;
+                    border-color: #94A3B8;
+                    color: #0F172A;
                 }
             }
 
             .submitModalBtn {
-                background: #18C98B !important;
-                border-color: #18C98B !important;
-                color: #040605 !important;
-                box-shadow: 0 2px 8px rgba(24, 201, 139, 0.25) !important;
+                background: #18C98B;
+                border-color: #18C98B;
+                color: #040605;
+                box-shadow: 0 2px 8px rgba(24, 201, 139, 0.25);
 
                 &:hover:not(:disabled) {
-                    background: #15B77E !important;
-                    border-color: #15B77E !important;
-                    box-shadow: 0 4px 14px rgba(24, 201, 139, 0.35) !important;
+                    background: #15B77E;
+                    border-color: #15B77E;
+                    box-shadow: 0 4px 14px rgba(24, 201, 139, 0.35);
                 }
             }
 
             .confirmLogoutBtn {
-                background: #EF4444 !important;
-                border-color: #EF4444 !important;
-                color: #FFFFFF !important;
-                box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25) !important;
+                background: #EF4444;
+                border-color: #EF4444;
+                color: #FFFFFF;
+                box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
 
                 &:hover:not(:disabled) {
-                    background: #DC2626 !important;
-                    border-color: #DC2626 !important;
+                    background: #DC2626;
+                    border-color: #DC2626;
                 }
             }
         }
     }
 }
-

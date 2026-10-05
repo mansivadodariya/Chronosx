@@ -283,7 +283,7 @@ export default function MyBots() {
                                     <img
                                         src="/assets/images/botai.png"
                                         alt="AI Bot Builder"
-                                        className={styles.cardIllustrationImg}
+                                        className={styles.IllustrationImg}
                                     />
                                 </div>
 
@@ -297,7 +297,7 @@ export default function MyBots() {
                                     <h3 className={styles.cardTitle}>AI Bot Builder</h3>
                                 </div>
 
-                                <div className={styles.cardBody}>
+                                <div className={styles.botBody}>
                                     <p className={styles.cardDescription}>
                                         Describe your trading strategy concept or archetype in plain English. ChronosX AI handles quantitative parameter formulas, indicator conditions, and backtest simulations instantly.
                                     </p>
@@ -333,7 +333,7 @@ export default function MyBots() {
                                     <img
                                         src="/assets/images/botcutom.png"
                                         alt="Custom Bot Builder"
-                                        className={styles.cardIllustrationImg}
+                                        className={styles.IllustrationImg}
                                     />
                                 </div>
 
@@ -349,7 +349,7 @@ export default function MyBots() {
                                     <h3 className={styles.cardTitle}>Custom Bot Builder</h3>
                                 </div>
 
-                                <div className={styles.cardBody}>
+                                <div className={styles.botBody}>
                                     <p className={styles.cardDescription}>
                                         Assemble technical indicators (RSI, EMA, MACD, Bollinger Bands, Order Blocks), define deterministic entry/exit triggers, position sizing, and risk-reward ratios step-by-step.
                                     </p>

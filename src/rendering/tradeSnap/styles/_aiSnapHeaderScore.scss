@@ -58,13 +58,13 @@
 
     :global(.pdfExportLight) &,
     :global(.pdfExportContainer) & {
-        background: #FFFFFF !important;
-        background-color: #FFFFFF !important;
-        padding: 0 !important;
-        box-sizing: border-box !important;
+        background: #FFFFFF;
+        background-color: #FFFFFF;
+        padding: 0;
+        box-sizing: border-box;
 
         .downloadPdfBtn {
-            display: none !important;
+            display: none;
         }
     }
 
@@ -76,7 +76,7 @@
     background: transparent;
     color: var(--text-primary);
     padding: 0;
-    border-radius: 0 !important;
+    border-radius: 0;
     border: none;
     box-sizing: border-box;
     container-type: inline-size;
@@ -88,8 +88,6 @@
         gap: 14px;
     }
 }
-
-
 
 // Top Split Layout (Section D Summary + Section A Technical Score Gauge)
 .topSplitRow {
@@ -108,7 +106,7 @@
 
 @container dashboard (max-width: 580px) {
     .topSplitRow {
-        grid-template-columns: minmax(0, 1fr) !important;
+        grid-template-columns: minmax(0, 1fr);
     }
 }
 
@@ -117,7 +115,7 @@
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     box-shadow: var(--card-shadow);
-    border-radius: 0 !important;
+    border-radius: 0;
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -149,7 +147,7 @@
         border: 1px solid var(--pill-border);
         color: var(--pill-color);
         padding: 4px 10px;
-        border-radius: 0 !important;
+        border-radius: 0;
         font-size: 12px;
         font-weight: 600;
     }
@@ -162,7 +160,7 @@
         font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
-        border-radius: 0 !important;
+        border-radius: 0;
 
         &.validGreen {
             background: rgba(16, 185, 129, 0.15);
@@ -185,7 +183,7 @@
         color: #060706;
         border: 1px solid #18C98B;
         padding: 4px 11px;
-        border-radius: 0 !important;
+        border-radius: 0;
         font-size: 11px;
         font-weight: 700;
         cursor: pointer;
@@ -284,7 +282,7 @@
     background: var(--box-bg);
     border: 1px solid var(--box-border);
     padding: 10px 14px;
-    border-radius: 0 !important;
+    border-radius: 0;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -327,7 +325,7 @@
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     box-shadow: var(--card-shadow);
-    border-radius: 0 !important;
+    border-radius: 0;
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -394,16 +392,16 @@
     :global(.pdfExportLight) &,
     :global(.pdfExportContainer) & {
         .gaugeNeedleLine {
-            stroke: #0F172A !important;
-            filter: drop-shadow(0 0 2px rgba(15, 23, 42, 0.3)) !important;
+            stroke: #0F172A;
+            filter: drop-shadow(0 0 2px rgba(15, 23, 42, 0.3));
         }
 
         .gaugeNeedleTip {
-            fill: #0F172A !important;
+            fill: #0F172A;
         }
 
         .gaugePivotDot {
-            fill: #0F172A !important;
+            fill: #0F172A;
         }
     }
 }
@@ -467,4 +465,3 @@
         color: var(--code-color);
     }
 }
-

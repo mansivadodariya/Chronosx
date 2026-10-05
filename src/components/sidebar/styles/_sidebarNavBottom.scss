@@ -6,11 +6,11 @@
         display: flex;
         flex-direction: column;
         gap: 8px;
-        background: transparent !important;
+        background: transparent;
         border-right: 1px solid rgba(24, 201, 139, 0.127);
         border-top: 1px solid rgba(24, 201, 139, 0.125);
-        border-left: none !important;
-        border-bottom: none !important;
+        border-left: none;
+        border-bottom: none;
         flex-shrink: 0;
 
         /* Upgrade to Pro Card */
@@ -44,13 +44,13 @@
                 align-items: center;
                 justify-content: center;
                 flex-shrink: 0;
-                background: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
+                background: transparent;
+                border: none;
+                box-shadow: none;
 
                 svg {
-                    width: 20px !important;
-                    height: 20px !important;
+                    width: 20px;
+                    height: 20px;
                 }
             }
 
@@ -60,16 +60,16 @@
                 flex-direction: column;
                 margin-left: 10px;
                 line-height: 1.25;
-                background: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
+                background: transparent;
+                border: none;
+                box-shadow: none;
 
                 .upgradeSub {
                     font-size: 12px;
                     color: rgba(255, 255, 255, 0.6);
                     font-family: "Euclid-Regular", sans-serif;
-                    background: transparent !important;
-                    border: none !important;
+                    background: transparent;
+                    border: none;
                 }
 
                 .upgradeMain {
@@ -78,8 +78,8 @@
                     color: #18C98B;
                     font-family: "Euclid-Bold", sans-serif;
                     letter-spacing: 0.3px;
-                    background: transparent !important;
-                    border: none !important;
+                    background: transparent;
+                    border: none;
                 }
             }
 
@@ -98,8 +98,8 @@
                 color: #040605;
 
                 svg {
-                    width: 13px !important;
-                    height: 13px !important;
+                    width: 13px;
+                    height: 13px;
                 }
             }
         }
@@ -108,8 +108,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: transparent !important;
-            border: none !important;
+            background: transparent;
+            border: none;
 
             .compactUpgradeBtn {
                 width: 38px;
@@ -139,8 +139,8 @@
         .profileWrapper {
             position: relative;
             width: 100%;
-            background: transparent !important;
-            border: none !important;
+            background: transparent;
+            border: none;
         }
 
         .userProfileCard {
@@ -200,9 +200,9 @@
                 margin-left: 10px;
                 overflow: hidden;
                 line-height: 1.25;
-                background: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
+                background: transparent;
+                border: none;
+                box-shadow: none;
 
                 .userName {
                     color: #FFFFFF;
@@ -212,8 +212,8 @@
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                    background: transparent !important;
-                    border: none !important;
+                    background: transparent;
+                    border: none;
                 }
 
                 .userSubtitle {
@@ -221,8 +221,8 @@
                     font-size: 12px;
                     font-family: "Euclid-Regular", sans-serif;
                     white-space: nowrap;
-                    background: transparent !important;
-                    border: none !important;
+                    background: transparent;
+                    border: none;
                 }
             }
 
@@ -231,13 +231,13 @@
                 align-items: center;
                 color: #18C98B;
                 flex-shrink: 0;
-                background: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
+                background: transparent;
+                border: none;
+                box-shadow: none;
 
                 svg {
-                    width: 15px !important;
-                    height: 15px !important;
+                    width: 15px;
+                    height: 15px;
                 }
             }
         }
@@ -266,8 +266,8 @@
                 text-align: right;
 
                 &.collapsedMenuDropdown {
-                    right: calc(100% + 10px) !important;
-                    left: auto !important;
+                    right: calc(100% + 10px);
+                    left: auto;
                 }
 
                 .dropdownHeader {
@@ -281,8 +281,8 @@
 
             .dropdownHeader {
                 padding: 4px 6px 8px;
-                background: transparent !important;
-                border: none !important;
+                background: transparent;
+                border: none;
 
                 .dropdownName {
                     color: #FFFFFF;
@@ -290,7 +290,7 @@
                     font-weight: 600;
                     margin: 0 0 2px 0;
                     font-family: "Euclid-SemiBold", sans-serif;
-                    background: transparent !important;
+                    background: transparent;
                 }
 
                 .dropdownEmail {
@@ -300,7 +300,7 @@
                     overflow: hidden;
                     text-overflow: ellipsis;
                     font-family: "Euclid-Regular", sans-serif;
-                    background: transparent !important;
+                    background: transparent;
                 }
             }
 
@@ -308,7 +308,7 @@
                 height: 1px;
                 background: rgba(24, 201, 139, 0.2);
                 margin: 4px 0 6px;
-                border: none !important;
+                border: none;
             }
 
             .dropdownItem {
@@ -328,8 +328,8 @@
                 font-family: "Euclid-Medium", sans-serif;
 
                 svg {
-                    width: 16px !important;
-                    height: 16px !important;
+                    width: 16px;
+                    height: 16px;
                 }
 
                 &:hover {

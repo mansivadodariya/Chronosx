@@ -92,21 +92,22 @@
         }
     }
 
-    :global(html.light) & {
-        background: #18C98B !important;
-        color: #040605 !important;
-        border-color: #18C98B !important;
-        box-shadow: 0 2px 10px rgba(24, 201, 139, 0.25) !important;
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        background: #18C98B;
+        color: #040605;
+        border-color: #18C98B;
+        box-shadow: 0 2px 10px rgba(24, 201, 139, 0.25);
 
         .btnIconBox {
-            background: rgba(0, 0, 0, 0.15) !important;
-            color: #040605 !important;
+            background: rgba(0, 0, 0, 0.15);
+            color: #040605;
         }
 
         &:hover {
-            background: #15B77E !important;
-            border-color: #15B77E !important;
-            box-shadow: 0 4px 14px rgba(24, 201, 139, 0.35) !important;
+            background: #15B77E;
+            border-color: #15B77E;
+            box-shadow: 0 4px 14px rgba(24, 201, 139, 0.35);
         }
     }
 }
@@ -324,15 +325,16 @@
 /* ========================================================================= */
 /* COMPLETE LIGHT MODE OVERRIDES FOR PLANS & PRICING */
 /* ========================================================================= */
-:global(html.light) .plansPage {
-    background: #F8FAFC !important;
-    color: #0F172A !important;
+:global(html.light) .plansPage,
+:global([data-theme='light']) .plansPage {
+    background: #F8FAFC;
+    color: #0F172A;
 
     .eyebrowBadge {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(24, 201, 139, 0.45) !important;
-        color: #047857 !important;
-        box-shadow: 0 4px 18px rgba(24, 201, 139, 0.12) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(24, 201, 139, 0.45);
+        color: #047857;
+        box-shadow: 0 4px 18px rgba(24, 201, 139, 0.12);
     }
 
     .title,
@@ -342,14 +344,14 @@
     .faqHeader h2,
     .faqQuestionRow h3,
     .featureItemText strong {
-        color: #0F172A !important;
+        color: #0F172A;
     }
 
     .goldGradient {
-        color: #18C98B !important;
-        background: none !important;
-        -webkit-background-clip: unset !important;
-        -webkit-text-fill-color: initial !important;
+        color: #18C98B;
+        background: none;
+        -webkit-background-clip: unset;
+        -webkit-text-fill-color: initial;
     }
 
     .subtitle,
@@ -361,20 +363,20 @@
     .disclaimerBox p,
     .subCtaNote,
     .featureItemText {
-        color: #475569 !important;
+        color: #475569;
     }
 
     .tierCategoryRow {
         .tierCategory {
-            color: #047857 !important;
-            font-weight: 800 !important;
+            color: #047857;
+            font-weight: 800;
         }
 
         .creditsTag {
-            background: rgba(24, 201, 139, 0.12) !important;
-            border: 1px solid rgba(24, 201, 139, 0.3) !important;
-            color: #047857 !important;
-            font-weight: 800 !important;
+            background: rgba(24, 201, 139, 0.12);
+            border: 1px solid rgba(24, 201, 139, 0.3);
+            color: #047857;
+            font-weight: 800;
         }
     }
 
@@ -384,153 +386,152 @@
     .comparisonTableWrapper,
     .faqCard,
     .disclaimerBox {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(24, 201, 139, 0.25) !important;
-        box-shadow: 0 6px 25px rgba(15, 23, 42, 0.05) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(24, 201, 139, 0.25);
+        box-shadow: 0 6px 25px rgba(15, 23, 42, 0.05);
     }
 
     .featuredCard {
-        background: #FFFFFF !important;
-        border: 2px solid #18C98B !important;
-        box-shadow: 0 12px 35px rgba(24, 201, 139, 0.18) !important;
+        background: #FFFFFF;
+        border: 2px solid #18C98B;
+        box-shadow: 0 12px 35px rgba(24, 201, 139, 0.18);
     }
 
     .priceContainer {
-        background: #F8FAFC !important;
-        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        background: #F8FAFC;
+        border: 1px solid rgba(15, 23, 42, 0.08);
     }
 
     .cardFeaturesBox {
-        background: #F8FAFC !important;
-        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        background: #F8FAFC;
+        border: 1px solid rgba(15, 23, 42, 0.08);
 
         .featuresHeader {
-            color: #047857 !important;
-            font-weight: 800 !important;
+            color: #047857;
+            font-weight: 800;
         }
 
         .featuresList li {
-            color: #334155 !important;
+            color: #334155;
         }
     }
 
     .buyBtn {
-
         &.featuredBuyBtn,
         &.premiumBuyBtn {
-            background: #18C98B !important;
-            color: #040605 !important;
-            font-weight: 800 !important;
-            box-shadow: 0 4px 18px rgba(24, 201, 139, 0.25) !important;
+            background: #18C98B;
+            color: #040605;
+            font-weight: 800;
+            box-shadow: 0 4px 18px rgba(24, 201, 139, 0.25);
 
             &:hover {
-                background: #15B77E !important;
+                background: #15B77E;
             }
         }
 
         &.basicBuyBtn {
-            background: #F1F5F9 !important;
-            border: 1px solid #E2E8F0 !important;
-            color: #0F172A !important;
-            font-weight: 700 !important;
+            background: #F1F5F9;
+            border: 1px solid #E2E8F0;
+            color: #0F172A;
+            font-weight: 700;
 
             &:hover {
-                background: #E2E8F0 !important;
+                background: #E2E8F0;
             }
         }
     }
 
-    /* 3. Trust & Security Strip (Screenshot Fix 1) */
+    /* 3. Trust & Security Strip */
     .trustStrip {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(24, 201, 139, 0.28) !important;
-        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(24, 201, 139, 0.28);
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
 
         .trustItem {
             .trustIcon {
-                background: #F0FDF4 !important;
-                border: 1px solid rgba(24, 201, 139, 0.35) !important;
-                color: #047857 !important;
+                background: #F0FDF4;
+                border: 1px solid rgba(24, 201, 139, 0.35);
+                color: #047857;
             }
 
             h4 {
-                color: #0F172A !important;
-                font-weight: 700 !important;
+                color: #0F172A;
+                font-weight: 700;
             }
 
             p {
-                color: #475569 !important;
+                color: #475569;
             }
         }
 
         .trustDivider {
-            background: rgba(15, 23, 42, 0.1) !important;
+            background: rgba(15, 23, 42, 0.1);
         }
     }
 
-    /* 4. FAQ Section (Screenshot Fix 2) */
+    /* 4. FAQ Section */
     .faqHeader {
         .faqTag {
-            color: #047857 !important;
-            font-weight: 800 !important;
-            background: transparent !important;
-            background-color: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            padding: 0 !important;
-            margin-bottom: 8px !important;
-            display: block !important;
+            color: #047857;
+            font-weight: 800;
+            background: transparent;
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            margin-bottom: 8px;
+            display: block;
         }
     }
 
     .faqCard {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(24, 201, 139, 0.25) !important;
-        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(24, 201, 139, 0.25);
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
 
         &:hover {
-            border-color: #18C98B !important;
-            background: #F8FAFC !important;
+            border-color: #18C98B;
+            background: #F8FAFC;
         }
 
         .faqQuestionRow {
             h3 {
-                color: #0F172A !important;
+                color: #0F172A;
             }
 
             .faqChevron {
-                color: #047857 !important;
+                color: #047857;
             }
         }
 
         .faqAnswer p {
-            color: #475569 !important;
-            border-top: 1px solid #F1F5F9 !important;
+            color: #475569;
+            border-top: 1px solid #F1F5F9;
         }
     }
 
     .faqCardOpen {
-        border-color: #18C98B !important;
-        background: #FFFFFF !important;
-        box-shadow: 0 6px 22px rgba(24, 201, 139, 0.1) !important;
+        border-color: #18C98B;
+        background: #FFFFFF;
+        box-shadow: 0 6px 22px rgba(24, 201, 139, 0.1);
     }
 
     .billingToggleWrapper,
     .switcherBox {
-        background: #F1F5F9 !important;
-        border-color: rgba(15, 23, 42, 0.1) !important;
+        background: #F1F5F9;
+        border-color: rgba(15, 23, 42, 0.1);
     }
 
     .featureRow {
-        border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+        border-bottom-color: rgba(15, 23, 42, 0.08);
 
         &:hover {
-            background-color: #F8FAFC !important;
+            background-color: #F8FAFC;
         }
     }
 
     .tableColHeader {
-        background: #F8FAFC !important;
-        color: #0F172A !important;
+        background: #F8FAFC;
+        color: #0F172A;
     }
 }

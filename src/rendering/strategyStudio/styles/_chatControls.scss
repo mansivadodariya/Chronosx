@@ -86,14 +86,14 @@
 
 .chatTextarea {
     width: 100%;
-    background: transparent !important;
-    border: none !important;
+    background: transparent;
+    border: none;
     font-size: 16px;
     line-height: 1.55;
     color: #FFFFFF;
     resize: none;
-    outline: none !important;
-    box-shadow: none !important;
+    outline: none;
+    box-shadow: none;
     min-height: 56px;
     max-height: 160px;
     font-family: inherit;
@@ -105,9 +105,9 @@
     &:focus,
     &:focus-visible,
     &:active {
-        outline: none !important;
-        border: none !important;
-        box-shadow: none !important;
+        outline: none;
+        border: none;
+        box-shadow: none;
     }
 
     &::placeholder {
@@ -123,19 +123,19 @@
     }
 
     [data-theme='light'] & {
-        background: transparent !important;
-        border: none !important;
-        outline: none !important;
-        box-shadow: none !important;
-        color: #0F172A !important;
+        background: transparent;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        color: #0F172A;
         &:focus,
         &:focus-visible,
         &:active {
-            outline: none !important;
-            border: none !important;
-            box-shadow: none !important;
+            outline: none;
+            border: none;
+            box-shadow: none;
         }
-        &::placeholder { color: #94A3B8 !important; }
+        &::placeholder { color: #94A3B8; }
     }
 }
 

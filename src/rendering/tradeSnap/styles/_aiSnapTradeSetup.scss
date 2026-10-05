@@ -3,7 +3,7 @@
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     box-shadow: var(--card-shadow);
-    border-radius: 0 !important;
+    border-radius: 0;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -32,7 +32,7 @@
     font-size: 16px;
     font-weight: 900;
     letter-spacing: 0.5px;
-    border-radius: 0 !important;
+    border-radius: 0;
 
     &.actionBuy {
         background: rgba(16, 185, 129, 0.2);
@@ -96,7 +96,7 @@
     background: var(--box-bg);
     border: 1px solid var(--box-border);
     padding: 14px;
-    border-radius: 0 !important;
+    border-radius: 0;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -171,7 +171,7 @@
     background: var(--box-bg);
     border: 1px solid var(--box-border);
     padding: 14px;
-    border-radius: 0 !important;
+    border-radius: 0;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -204,7 +204,7 @@
     background: var(--tp-card-bg);
     border: 1px solid var(--tp-card-border);
     padding: 10px;
-    border-radius: 0 !important;
+    border-radius: 0;
 
     .tpPillTop {
         display: flex;
@@ -230,7 +230,7 @@
     background: var(--pill-bg);
     border: 1px solid var(--pill-border);
     padding: 14px;
-    border-radius: 0 !important;
+    border-radius: 0;
 
     .rationaleTitle {
         font-size: 11px;
@@ -258,71 +258,71 @@
 :global(.light),
 :global(.pdfExportLight) {
     .tradeSignalSetupCard {
-        background: #FFFFFF !important;
-        border-color: rgba(15, 23, 42, 0.12) !important;
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.12);
 
         .cardHeaderRow h3 {
-            color: #0F172A !important;
+            color: #0F172A;
         }
 
         .entryBox {
-            background: #F8FAFC !important;
-            border-color: rgba(15, 23, 42, 0.1) !important;
+            background: #F8FAFC;
+            border-color: rgba(15, 23, 42, 0.1);
 
             .boxLabel {
-                color: #64748B !important;
+                color: #64748B;
             }
 
             .boxPrimaryValue {
-                color: #0F172A !important;
+                color: #0F172A;
             }
 
             .boxSubInfo {
-                color: #64748B !important;
+                color: #64748B;
             }
         }
 
         .slBox {
-            background: rgba(239, 68, 68, 0.05) !important;
-            border-color: rgba(239, 68, 68, 0.2) !important;
+            background: rgba(239, 68, 68, 0.05);
+            border-color: rgba(239, 68, 68, 0.2);
 
             .slLabel {
-                color: #DC2626 !important;
+                color: #DC2626;
             }
 
             .slPrimaryValue {
-                color: #DC2626 !important;
+                color: #DC2626;
             }
         }
 
         .tpSection {
-            background: #F8FAFC !important;
-            border-color: rgba(15, 23, 42, 0.1) !important;
+            background: #F8FAFC;
+            border-color: rgba(15, 23, 42, 0.1);
         }
 
         .tpPillCard {
-            background: #FFFFFF !important;
-            border-color: rgba(16, 185, 129, 0.25) !important;
+            background: #FFFFFF;
+            border-color: rgba(16, 185, 129, 0.25);
 
             .tpPillTop {
-                color: #64748B !important;
+                color: #64748B;
             }
 
             .tpPillVal {
-                color: #047857 !important;
+                color: #047857;
             }
         }
 
         .rationaleBox {
-            background: #F0FDF4 !important;
-            border-color: rgba(16, 185, 129, 0.25) !important;
+            background: #F0FDF4;
+            border-color: rgba(16, 185, 129, 0.25);
 
             .rationaleTitle {
-                color: #047857 !important;
+                color: #047857;
             }
 
             .rationaleText {
-                color: #1E293B !important;
+                color: #1E293B;
             }
         }
     }

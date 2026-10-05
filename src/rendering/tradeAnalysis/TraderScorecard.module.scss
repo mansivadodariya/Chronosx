@@ -588,7 +588,8 @@
 /* ============================================================
    LIGHT MODE THEME OVERRIDES
    ============================================================ */
-:global(html.light) .scorecardContainer {
+:global(html.light) .scorecardContainer,
+:global([data-theme='light']) .scorecardContainer {
 
     .scorecardHeroHeader,
     .gaugeCard,
@@ -596,15 +597,15 @@
     .categoryCard,
     .tipsSectionCard,
     .statementRow {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(15, 23, 42, 0.08) !important;
-        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
     }
 
     .badgeIconBox {
-        background: rgba(24, 201, 139, 0.12) !important;
-        border: 1px solid rgba(24, 201, 139, 0.3) !important;
-        color: #047857 !important;
+        background: rgba(24, 201, 139, 0.12);
+        border: 1px solid rgba(24, 201, 139, 0.3);
+        color: #047857;
     }
 
     .headerTitleRow h2,
@@ -614,7 +615,7 @@
     .gaugeInnerContent .gradeDisplay,
     .gaugeInnerContent .scoreDisplay strong,
     .statementLeft .statementText strong {
-        color: #0F172A !important;
+        color: #0F172A;
     }
 
     .titleInfo p,
@@ -622,107 +623,107 @@
     .periodLabel,
     .gaugeDescription,
     .tipsHeader p {
-        color: #475569 !important;
+        color: #475569;
     }
 
     .titleInfo .badgePill {
-        background: rgba(24, 201, 139, 0.12) !important;
-        border-color: rgba(24, 201, 139, 0.35) !important;
-        color: #047857 !important;
+        background: rgba(24, 201, 139, 0.12);
+        border-color: rgba(24, 201, 139, 0.35);
+        color: #047857;
     }
 
     .statPill {
-        background: #F8FAFC !important;
-        border: 1px solid rgba(15, 23, 42, 0.08) !important;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03) !important;
+        background: #F8FAFC;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
 
         .statPillLabel {
-            color: #64748B !important;
+            color: #64748B;
         }
 
         .statPillValue {
-            color: #047857 !important;
+            color: #047857;
         }
     }
 
     .periodBtn {
-        background: #F8FAFC !important;
-        border: 1px solid rgba(15, 23, 42, 0.1) !important;
-        color: #64748B !important;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03) !important;
+        background: #F8FAFC;
+        border: 1px solid rgba(15, 23, 42, 0.1);
+        color: #64748B;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
 
         &:hover {
-            background: #F1F5F9 !important;
-            color: #0F172A !important;
-            border-color: rgba(24, 201, 139, 0.4) !important;
+            background: #F1F5F9;
+            color: #0F172A;
+            border-color: rgba(24, 201, 139, 0.4);
         }
 
         &.active {
-            background: rgba(24, 201, 139, 0.14) !important;
-            border-color: rgba(24, 201, 139, 0.45) !important;
-            color: #047857 !important;
-            font-weight: 700 !important;
+            background: rgba(24, 201, 139, 0.14);
+            border-color: rgba(24, 201, 139, 0.45);
+            color: #047857;
+            font-weight: 700;
         }
     }
 
     .catGradeBadge {
-        background: rgba(24, 201, 139, 0.12) !important;
-        border: 1px solid rgba(24, 201, 139, 0.35) !important;
-        color: #047857 !important;
+        background: rgba(24, 201, 139, 0.12);
+        border: 1px solid rgba(24, 201, 139, 0.35);
+        color: #047857;
     }
 
     .catTitleCol .catScoreRow {
         .catScoreVal {
-            color: #047857 !important;
+            color: #047857;
         }
 
         .catScoreDenom {
-            color: #64748B !important;
+            color: #64748B;
         }
     }
 
     .highlightItem {
-        color: #166534 !important;
+        color: #166534;
     }
 
     .penaltyItem {
-        color: #92400E !important;
+        color: #92400E;
     }
 
     .tipsHeader .tipsIconCircle {
-        background: rgba(24, 201, 139, 0.12) !important;
-        border: 1px solid rgba(24, 201, 139, 0.3) !important;
-        color: #047857 !important;
+        background: rgba(24, 201, 139, 0.12);
+        border: 1px solid rgba(24, 201, 139, 0.3);
+        color: #047857;
     }
 
     .tipCardItem {
-        background: #F8FAFC !important;
-        border: 1px solid rgba(15, 23, 42, 0.06) !important;
+        background: #F8FAFC;
+        border: 1px solid rgba(15, 23, 42, 0.06);
 
         .tipNumberBadge {
-            background: rgba(24, 201, 139, 0.15) !important;
-            border-color: #18C98B !important;
-            color: #047857 !important;
+            background: rgba(24, 201, 139, 0.15);
+            border-color: #18C98B;
+            color: #047857;
         }
 
         .tipText {
-            color: #334155 !important;
+            color: #334155;
         }
     }
 
     .radarGridPolygon {
-        stroke: rgba(15, 23, 42, 0.1) !important;
+        stroke: rgba(15, 23, 42, 0.1);
     }
 
     .radarAxisLine {
-        stroke: rgba(15, 23, 42, 0.12) !important;
+        stroke: rgba(15, 23, 42, 0.12);
     }
 
     .radarLabel {
-        fill: #64748B !important;
+        fill: #64748B;
     }
 
     .progressBarTrack {
-        background: #E2E8F0 !important;
+        background: #E2E8F0;
     }
 }

@@ -318,111 +318,111 @@
 /* ========================================================================= */
 :global(html.light) .activeSubCard,
 :global([data-theme='light']) .activeSubCard {
-    background: #FFFFFF !important;
-    border-color: rgba(24, 201, 139, 0.35) !important;
-    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08) !important;
+    background: #FFFFFF;
+    border-color: rgba(24, 201, 139, 0.35);
+    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08);
 
     .cardTopRow {
-        border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+        border-bottom-color: rgba(15, 23, 42, 0.08);
     }
 
     .tierBadge {
-        background: rgba(24, 201, 139, 0.1) !important;
-        border-color: rgba(24, 201, 139, 0.35) !important;
-        color: #047857 !important;
+        background: rgba(24, 201, 139, 0.1);
+        border-color: rgba(24, 201, 139, 0.35);
+        color: #047857;
     }
 
     .statusPill {
-        background: rgba(24, 201, 139, 0.1) !important;
-        color: #047857 !important;
+        background: rgba(24, 201, 139, 0.1);
+        color: #047857;
     }
 
     .pulseDot,
     .livePulseDot {
-        background: #047857 !important;
-        box-shadow: 0 0 10px #047857 !important;
+        background: #047857;
+        box-shadow: 0 0 10px #047857;
     }
 
     .planNameHeading {
-        color: #0F172A !important;
+        color: #0F172A;
 
         .bandwidthTag {
-            color: #64748B !important;
+            color: #64748B;
         }
     }
 
     .expiryBadge {
-        color: #475569 !important;
+        color: #475569;
 
         svg {
-            color: #047857 !important;
+            color: #047857;
         }
     }
 
     .liveIndicator {
-        color: #047857 !important;
+        color: #047857;
     }
 
     .metricsSection {
-        border-left-color: rgba(15, 23, 42, 0.08) !important;
+        border-left-color: rgba(15, 23, 42, 0.08);
 
         @media (max-width: 1080px) {
-            border-top-color: rgba(15, 23, 42, 0.08) !important;
+            border-top-color: rgba(15, 23, 42, 0.08);
         }
     }
 
     .metricItem {
         .metricLabel {
-            color: #64748B !important;
+            color: #64748B;
 
             svg {
-                color: #047857 !important;
+                color: #047857;
             }
         }
 
         .metricValue {
-            color: #0F172A !important;
+            color: #0F172A;
 
             .unit {
-                color: #047857 !important;
+                color: #047857;
             }
         }
 
         .metricSub {
-            color: #64748B !important;
+            color: #64748B;
         }
     }
 
     .cardActionRow {
-        border-top-color: rgba(15, 23, 42, 0.08) !important;
+        border-top-color: rgba(15, 23, 42, 0.08);
     }
 
     .safeNotice {
-        color: #475569 !important;
+        color: #475569;
 
         svg {
-            color: #047857 !important;
+            color: #047857;
         }
     }
 
     .invoicesBtn {
-        background: #F1F5F9 !important;
-        border-color: rgba(15, 23, 42, 0.12) !important;
-        color: #0F172A !important;
+        background: #F1F5F9;
+        border-color: rgba(15, 23, 42, 0.12);
+        color: #0F172A;
 
         &:hover {
-            background: #E2E8F0 !important;
-            border-color: rgba(15, 23, 42, 0.25) !important;
+            background: #E2E8F0;
+            border-color: rgba(15, 23, 42, 0.25);
         }
     }
 
     .renewActionBtn {
-        background: #10B981 !important;
-        color: #FFFFFF !important;
+        background: #10B981;
+        color: #FFFFFF;
 
         &:hover {
-            background: #059669 !important;
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3) !important;
+            background: #059669;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
         }
     }
 }

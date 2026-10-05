@@ -1,4 +1,3 @@
-
 // Modal top level so they work outside .tradeSnap context
 .modalOverlay {
     position: fixed;
@@ -139,7 +138,7 @@
     }
 
     :global(.pdfExportContainer) & {
-        display: none !important;
+        display: none;
     }
 }
 
@@ -167,7 +166,7 @@
     }
 
     :global(.pdfExportContainer) & {
-        display: none !important;
+        display: none;
     }
 }
 
@@ -325,10 +324,10 @@
 :global(html.light),
 :global(body.light-theme) {
     .modalBox {
-        background: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
-        box-shadow: 0 24px 64px rgba(15, 23, 42, 0.12), 0 0 1px rgba(15, 23, 42, 0.1) !important;
-        color: #0F172A !important;
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        box-shadow: 0 24px 64px rgba(15, 23, 42, 0.12), 0 0 1px rgba(15, 23, 42, 0.1);
+        color: #0F172A;
 
         scrollbar-color: #10B981 #F1F5F9;
 
@@ -342,83 +341,81 @@
     }
 
     .modalHeader {
-        background: #F8FAFC !important;
-        border-bottom: 1px solid #E2E8F0 !important;
+        background: #F8FAFC;
+        border-bottom: 1px solid #E2E8F0;
 
         h2, h3 {
-            color: #0F172A !important;
+            color: #0F172A;
         }
 
         p {
-            color: #64748B !important;
+            color: #64748B;
         }
     }
 
     .modalClose {
-        background: #F1F5F9 !important;
-        border: 1px solid #CBD5E1 !important;
-        color: #0F172A !important;
-        font-weight: 700 !important;
+        background: #F1F5F9;
+        border: 1px solid #CBD5E1;
+        color: #0F172A;
+        font-weight: 700;
 
         &:hover {
-            background: #E2E8F0 !important;
-            color: #047857 !important;
-            border-color: #10B981 !important;
+            background: #E2E8F0;
+            color: #047857;
+            border-color: #10B981;
         }
     }
 
     .modalBody {
-        color: #1E293B !important;
-        background: #FFFFFF !important;
+        color: #1E293B;
+        background: #FFFFFF;
     }
 
     .modalFooter {
-        background: #F8FAFC !important;
-        border-top: 1px solid #E2E8F0 !important;
+        background: #F8FAFC;
+        border-top: 1px solid #E2E8F0;
     }
 
     .deleteConfirmModalBox {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(239, 68, 68, 0.3) !important;
-        box-shadow: 0 24px 64px rgba(15, 23, 42, 0.15), 0 0 24px rgba(239, 68, 68, 0.1) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        box-shadow: 0 24px 64px rgba(15, 23, 42, 0.15), 0 0 24px rgba(239, 68, 68, 0.1);
     }
 
     .deleteModalCloseBtn {
-        background: #F1F5F9 !important;
-        border-color: #E2E8F0 !important;
-        color: #64748B !important;
+        background: #F1F5F9;
+        border-color: #E2E8F0;
+        color: #64748B;
 
         &:hover {
-            background: #FEE2E2 !important;
-            color: #DC2626 !important;
-            border-color: rgba(220, 38, 38, 0.3) !important;
+            background: #FEE2E2;
+            color: #DC2626;
+            border-color: rgba(220, 38, 38, 0.3);
         }
     }
 
     .deleteIconBadge {
-        background: #FEF2F2 !important;
-        border-color: rgba(239, 68, 68, 0.35) !important;
-        box-shadow: 0 0 16px rgba(239, 68, 68, 0.15) !important;
+        background: #FEF2F2;
+        border-color: rgba(239, 68, 68, 0.35);
+        box-shadow: 0 0 16px rgba(239, 68, 68, 0.15);
     }
 
     .deleteConfirmTitle {
-        color: #0F172A !important;
+        color: #0F172A;
     }
 
     .deleteConfirmMessage {
-        color: #64748B !important;
+        color: #64748B;
     }
 
     .deleteCancelBtn {
-        background: #F1F5F9 !important;
-        border-color: #E2E8F0 !important;
-        color: #475569 !important;
+        background: #F1F5F9;
+        border-color: #E2E8F0;
+        color: #475569;
 
         &:hover {
-            background: #E2E8F0 !important;
-            color: #0F172A !important;
+            background: #E2E8F0;
+            color: #0F172A;
         }
     }
 }
-
-

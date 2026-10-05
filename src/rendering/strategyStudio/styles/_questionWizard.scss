@@ -19,12 +19,12 @@
     flex-direction: column;
     gap: 10px;
     animation: popupFadeIn 0.2s ease;
-    outline: none !important;
+    outline: none;
 
     &:focus,
     &:focus-visible,
     &:focus-within {
-        outline: none !important;
+        outline: none;
     }
 
     [data-theme='light'] & {
@@ -148,11 +148,11 @@
     color: #E2E8F0;
     font-family: inherit;
     width: 100%;
-    outline: none !important;
+    outline: none;
 
     &:focus,
     &:focus-visible {
-        outline: none !important;
+        outline: none;
     }
 
     &:hover:not(.selectedOption) {

@@ -7,7 +7,7 @@
         top: 50%;
         transform: translateY(-50%);
         background: #040D09;
-        color: #18C98B !important;
+        color: #18C98B;
         border: 1px solid rgba(24, 201, 139, 0.4);
         padding: 5px 10px;
         border-radius: 6px;
@@ -113,8 +113,8 @@
             letter-spacing: 0.6px;
             color: rgba(255, 255, 255, 0.5);
             font-family: "Euclid-Bold", sans-serif;
-            background: transparent !important;
-            border: none !important;
+            background: transparent;
+            border: none;
         }
 
         .flyoutItem {
@@ -129,11 +129,11 @@
             font-weight: 500;
             transition: all 0.15s ease;
             font-family: "Euclid-Medium", sans-serif;
-            border: none !important;
+            border: none;
 
             svg {
-                width: 15px !important;
-                height: 15px !important;
+                width: 15px;
+                height: 15px;
                 flex-shrink: 0;
             }
 
@@ -254,237 +254,237 @@
    ============================================================ */
 :global(html.light) .sidebar,
 :global([data-theme='light']) .sidebar {
-    background: #FFFFFF !important;
-    border: none !important;
-    border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
+    background: #FFFFFF;
+    border: none;
+    border-right: 1px solid rgba(15, 23, 42, 0.08);
 
     .logoHeader {
-        background: #FFFFFF !important;
-        border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
-        border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
-        border-left: none !important;
-        border-top: none !important;
+        background: #FFFFFF;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        border-right: 1px solid rgba(15, 23, 42, 0.08);
+        border-left: none;
+        border-top: none;
     }
 
     .quickJumpWrapper {
-        border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
+        border-right: 1px solid rgba(15, 23, 42, 0.08);
     }
 
     .toggleBtn {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(15, 23, 42, 0.16) !important;
-        color: #047857 !important;
-        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.12) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 23, 42, 0.16);
+        color: #047857;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.12);
 
         svg {
-            color: #047857 !important;
-            stroke: #047857 !important;
+            color: #047857;
+            stroke: #047857;
         }
 
         &:hover {
-            background: #F1F5F9 !important;
-            color: #047857 !important;
-            border-color: rgba(24, 201, 139, 0.6) !important;
-            box-shadow: 0 0 14px rgba(24, 201, 139, 0.25) !important;
+            background: #F1F5F9;
+            color: #047857;
+            border-color: rgba(24, 201, 139, 0.6);
+            box-shadow: 0 0 14px rgba(24, 201, 139, 0.25);
 
             svg {
-                color: #047857 !important;
-                stroke: #047857 !important;
+                color: #047857;
+                stroke: #047857;
             }
         }
     }
 
     .tooltip {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(15, 23, 42, 0.12) !important;
-        color: #0F172A !important;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 23, 42, 0.12);
+        color: #0F172A;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1);
 
         &::before {
-            border-color: transparent #FFFFFF transparent transparent !important;
+            border-color: transparent #FFFFFF transparent transparent;
         }
     }
 
     .flyoutMenu {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(15, 23, 42, 0.1) !important;
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 23, 42, 0.1);
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
 
         .flyoutTitle {
-            color: #64748B !important;
-            background: transparent !important;
-            border: none !important;
+            color: #64748B;
+            background: transparent;
+            border: none;
         }
 
         .flyoutItem {
-            color: #334155 !important;
-            background: transparent !important;
-            border: none !important;
+            color: #334155;
+            background: transparent;
+            border: none;
 
             svg {
-                color: #64748B !important;
+                color: #64748B;
             }
 
             &:hover {
-                background: #F1F5F9 !important;
-                color: #047857 !important;
+                background: #F1F5F9;
+                color: #047857;
 
                 svg {
-                    color: #047857 !important;
+                    color: #047857;
                 }
             }
 
             &[data-active='true'] {
-                background: rgba(24, 201, 139, 0.12) !important;
-                color: #047857 !important;
+                background: rgba(24, 201, 139, 0.12);
+                color: #047857;
 
                 svg {
-                    color: #047857 !important;
+                    color: #047857;
                 }
             }
         }
     }
 
     .sidebarmenu {
-        background: transparent !important;
-        border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
-        border-left: none !important;
-        border-top: none !important;
-        border-bottom: none !important;
+        background: transparent;
+        border-right: 1px solid rgba(15, 23, 42, 0.08);
+        border-left: none;
+        border-top: none;
+        border-bottom: none;
 
         .menuGroup {
-            background: transparent !important;
-            border: none !important;
+            background: transparent;
+            border: none;
         }
 
         .menu {
-            background: transparent !important;
-            border: none !important;
-            outline: none !important;
-            color: #475569 !important;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #475569;
 
             .icon {
-                color: #64748B !important;
-                background: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
+                color: #64748B;
+                background: transparent;
+                border: none;
+                box-shadow: none;
             }
 
             span {
-                color: #475569 !important;
-                background: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
+                color: #475569;
+                background: transparent;
+                border: none;
+                box-shadow: none;
             }
 
             .chevron {
-                color: #94A3B8 !important;
-                background: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
+                color: #94A3B8;
+                background: transparent;
+                border: none;
+                box-shadow: none;
             }
 
             &:hover {
-                background: #F1F5F9 !important;
-                border: none !important;
-                outline: none !important;
-                box-shadow: none !important;
+                background: #F1F5F9;
+                border: none;
+                outline: none;
+                box-shadow: none;
 
                 .icon {
-                    color: #047857 !important;
+                    color: #047857;
                 }
 
                 span {
-                    color: #0F172A !important;
+                    color: #0F172A;
                 }
 
                 .chevron {
-                    color: #047857 !important;
+                    color: #047857;
                 }
             }
 
             &.active,
             &[class*="active"],
             &[data-active='true'] {
-                background: rgba(24, 201, 139, 0.12) !important;
-                border: none !important;
-                outline: none !important;
-                box-shadow: 0 2px 8px rgba(24, 201, 139, 0.08) !important;
+                background: rgba(24, 201, 139, 0.12);
+                border: none;
+                outline: none;
+                box-shadow: 0 2px 8px rgba(24, 201, 139, 0.08);
 
                 .icon {
-                    color: #047857 !important;
-                    filter: none !important;
+                    color: #047857;
+                    filter: none;
                 }
 
                 span {
-                    color: #047857 !important;
-                    font-weight: 600 !important;
+                    color: #047857;
+                    font-weight: 600;
                 }
 
                 .chevron {
-                    color: #047857 !important;
+                    color: #047857;
                 }
             }
         }
 
         .subItemsList {
-            border-left-color: rgba(24, 201, 139, 0.3) !important;
-            background: transparent !important;
-            border-right: none !important;
+            border-left-color: rgba(24, 201, 139, 0.3);
+            background: transparent;
+            border-right: none;
 
             .subMenuLink {
-                color: #64748B !important;
-                background: transparent !important;
-                border: none !important;
-                outline: none !important;
+                color: #64748B;
+                background: transparent;
+                border: none;
+                outline: none;
 
                 .subMenuIcon {
-                    color: #64748B !important;
-                    background: transparent !important;
-                    border: none !important;
+                    color: #64748B;
+                    background: transparent;
+                    border: none;
                 }
 
                 span {
-                    color: #64748B !important;
-                    background: transparent !important;
-                    border: none !important;
+                    color: #64748B;
+                    background: transparent;
+                    border: none;
                 }
 
                 &:hover {
-                    background: #F1F5F9 !important;
-                    border: none !important;
-                    outline: none !important;
-                    box-shadow: none !important;
+                    background: #F1F5F9;
+                    border: none;
+                    outline: none;
+                    box-shadow: none;
 
                     .subMenuIcon {
-                        color: #047857 !important;
+                        color: #047857;
                     }
 
                     span {
-                        color: #0F172A !important;
+                        color: #0F172A;
                     }
                 }
 
                 &[data-active='true'] {
-                    background: rgba(24, 201, 139, 0.12) !important;
-                    color: #047857 !important;
-                    border: none !important;
-                    outline: none !important;
-                    box-shadow: none !important;
+                    background: rgba(24, 201, 139, 0.12);
+                    color: #047857;
+                    border: none;
+                    outline: none;
+                    box-shadow: none;
 
                     .subMenuIcon {
-                        color: #047857 !important;
-                        filter: none !important;
+                        color: #047857;
+                        filter: none;
                     }
 
                     span {
-                        color: #047857 !important;
-                        font-weight: 600 !important;
+                        color: #047857;
+                        font-weight: 600;
                     }
 
                     &::after {
-                        background: #18C98B !important;
-                        box-shadow: 0 0 6px rgba(24, 201, 139, 0.4) !important;
+                        background: #18C98B;
+                        box-shadow: 0 0 6px rgba(24, 201, 139, 0.4);
                     }
                 }
             }
@@ -492,171 +492,171 @@
     }
 
     .bottomSection {
-        border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
-        border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
-        border-left: none !important;
-        border-bottom: none !important;
-        background: transparent !important;
+        border-top: 1px solid rgba(15, 23, 42, 0.08);
+        border-right: 1px solid rgba(15, 23, 42, 0.08);
+        border-left: none;
+        border-bottom: none;
+        background: transparent;
 
         .upgradeCard {
-            background: #F8FAFC !important;
-            border: 1px solid rgba(15, 23, 42, 0.08) !important;
-            box-shadow: none !important;
+            background: #F8FAFC;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            box-shadow: none;
 
             &:hover {
-                background: #F1F5F9 !important;
-                border-color: rgba(24, 201, 139, 0.35) !important;
-                box-shadow: 0 4px 14px rgba(24, 201, 139, 0.1) !important;
+                background: #F1F5F9;
+                border-color: rgba(24, 201, 139, 0.35);
+                box-shadow: 0 4px 14px rgba(24, 201, 139, 0.1);
             }
 
             .upgradeIcon {
-                background: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
-                color: #047857 !important;
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                color: #047857;
             }
 
             .upgradeText {
-                background: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
+                background: transparent;
+                border: none;
+                box-shadow: none;
 
                 .upgradeSub {
-                    color: #64748B !important;
-                    background: transparent !important;
-                    border: none !important;
+                    color: #64748B;
+                    background: transparent;
+                    border: none;
                 }
 
                 .upgradeMain {
-                    color: #047857 !important;
-                    background: transparent !important;
-                    border: none !important;
+                    color: #047857;
+                    background: transparent;
+                    border: none;
                 }
             }
         }
 
         .compactUpgradeBox {
-            background: transparent !important;
-            border: none !important;
+            background: transparent;
+            border: none;
 
             .compactUpgradeBtn {
-                background: #F8FAFC !important;
-                border: 1px solid rgba(15, 23, 42, 0.08) !important;
+                background: #F8FAFC;
+                border: 1px solid rgba(15, 23, 42, 0.08);
 
                 &:hover {
-                    background: #F1F5F9 !important;
-                    border-color: rgba(24, 201, 139, 0.35) !important;
+                    background: #F1F5F9;
+                    border-color: rgba(24, 201, 139, 0.35);
                 }
             }
         }
 
         .profileWrapper {
-            background: transparent !important;
-            border: none !important;
+            background: transparent;
+            border: none;
         }
 
         .userProfileCard {
-            background: #F8FAFC !important;
-            border: 1px solid rgba(15, 23, 42, 0.08) !important;
-            box-shadow: none !important;
+            background: #F8FAFC;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            box-shadow: none;
 
             &:hover {
-                background: #F1F5F9 !important;
-                border-color: rgba(24, 201, 139, 0.35) !important;
+                background: #F1F5F9;
+                border-color: rgba(24, 201, 139, 0.35);
             }
 
             .avatarBox {
-                background: rgba(24, 201, 139, 0.15) !important;
-                border: none !important;
+                background: rgba(24, 201, 139, 0.15);
+                border: none;
 
                 .avatarInitials {
-                    color: #047857 !important;
-                    background: transparent !important;
+                    color: #047857;
+                    background: transparent;
                 }
             }
 
             .userInfo {
-                background: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
+                background: transparent;
+                border: none;
+                box-shadow: none;
 
                 .userName {
-                    color: #0F172A !important;
-                    background: transparent !important;
-                    border: none !important;
+                    color: #0F172A;
+                    background: transparent;
+                    border: none;
                 }
 
                 .userSubtitle {
-                    color: #64748B !important;
-                    background: transparent !important;
-                    border: none !important;
+                    color: #64748B;
+                    background: transparent;
+                    border: none;
                 }
             }
 
             .chevronBox {
-                color: #047857 !important;
-                background: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
+                color: #047857;
+                background: transparent;
+                border: none;
+                box-shadow: none;
             }
         }
 
         .profileMenuDropdown {
-            background: #FFFFFF !important;
-            border: 1px solid rgba(15, 23, 42, 0.1) !important;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12) !important;
+            background: #FFFFFF;
+            border: 1px solid rgba(15, 23, 42, 0.1);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
 
             .dropdownHeader {
-                background: transparent !important;
-                border: none !important;
+                background: transparent;
+                border: none;
 
                 .dropdownName {
-                    color: #0F172A !important;
-                    background: transparent !important;
+                    color: #0F172A;
+                    background: transparent;
                 }
 
                 .dropdownEmail {
-                    color: #64748B !important;
-                    background: transparent !important;
+                    color: #64748B;
+                    background: transparent;
                 }
             }
 
             .dropdownDivider {
-                background: rgba(15, 23, 42, 0.07) !important;
-                border: none !important;
+                background: rgba(15, 23, 42, 0.07);
+                border: none;
             }
 
             .dropdownItem {
-                color: #334155 !important;
-                background: transparent !important;
-                border: none !important;
+                color: #334155;
+                background: transparent;
+                border: none;
 
                 svg {
-                    stroke: #64748B !important;
+                    stroke: #64748B;
                 }
 
                 &:hover {
-                    background: #F1F5F9 !important;
-                    color: #047857 !important;
+                    background: #F1F5F9;
+                    color: #047857;
 
                     svg {
-                        stroke: #047857 !important;
+                        stroke: #047857;
                     }
                 }
 
                 &.logoutOption {
-                    color: #DC2626 !important;
+                    color: #DC2626;
 
                     svg {
-                        stroke: #DC2626 !important;
+                        stroke: #DC2626;
                     }
 
                     &:hover {
-                        background: #FEE2E2 !important;
-                        color: #B91C1C !important;
+                        background: #FEE2E2;
+                        color: #B91C1C;
 
                         svg {
-                            stroke: #B91C1C !important;
+                            stroke: #B91C1C;
                         }
                     }
                 }
@@ -665,26 +665,27 @@
     }
 }
 
-:global(html.light) .confirmBox {
-    background: #FFFFFF !important;
-    border-color: rgba(15, 23, 42, 0.1) !important;
-    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.1) !important;
+:global(html.light) .confirmBox,
+:global([data-theme='light']) .confirmBox {
+    background: #FFFFFF;
+    border-color: rgba(15, 23, 42, 0.1);
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.1);
 
     h3 {
-        color: #0F172A !important;
+        color: #0F172A;
     }
 
     p {
-        color: #475569 !important;
+        color: #475569;
     }
 
     .cancelBtn {
-        background: #F1F5F9 !important;
-        border-color: rgba(15, 23, 42, 0.15) !important;
-        color: #0F172A !important;
+        background: #F1F5F9;
+        border-color: rgba(15, 23, 42, 0.15);
+        color: #0F172A;
 
         &:hover {
-            background: #E2E8F0 !important;
+            background: #E2E8F0;
         }
     }
 }

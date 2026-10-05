@@ -208,7 +208,7 @@
     border: 1px solid rgba(24, 201, 139, 0.35);
 
     .digit {
-        color: #18c98b !important;
+        color: #18c98b;
         text-shadow: 0 0 16px rgba(24, 201, 139, 0.4);
     }
 }
@@ -283,62 +283,62 @@
 :global(html.light) .clockWrapper,
 :global([data-theme='light']) .clockWrapper {
     .flipCard {
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1) !important;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1);
     }
 
     .upperCard,
     .fallingTopLeaf {
-        background: linear-gradient(180deg, #F8FAFC 0%, #EDF2F7 100%) !important;
-        border-color: rgba(15, 23, 42, 0.12) !important;
+        background: linear-gradient(180deg, #F8FAFC 0%, #EDF2F7 100%);
+        border-color: rgba(15, 23, 42, 0.12);
 
         .digit {
-            color: #0F172A !important;
+            color: #0F172A;
         }
     }
 
     .lowerCard,
     .fallingBottomLeaf {
-        background: linear-gradient(180deg, #EDF2F7 0%, #E2E8F0 100%) !important;
-        border-color: rgba(15, 23, 42, 0.1) !important;
+        background: linear-gradient(180deg, #EDF2F7 0%, #E2E8F0 100%);
+        border-color: rgba(15, 23, 42, 0.1);
 
         .digit {
-            color: #0F172A !important;
+            color: #0F172A;
         }
     }
 
     .splitLine {
-        background: rgba(15, 23, 42, 0.14) !important;
-        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+        background: rgba(15, 23, 42, 0.14);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
     }
 
     .notchLeft,
     .notchRight {
-        background: #FFFFFF !important;
-        border-color: rgba(15, 23, 42, 0.15) !important;
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.15);
     }
 
     .secondsCard {
-        border-color: rgba(24, 201, 139, 0.5) !important;
+        border-color: rgba(24, 201, 139, 0.5);
 
         .digit {
-            color: #047857 !important;
-            text-shadow: none !important;
+            color: #047857;
+            text-shadow: none;
         }
     }
 
     .unitLabel {
-        color: #64748B !important;
+        color: #64748B;
     }
 
     .colonSeparator {
-        color: #047857 !important;
+        color: #047857;
     }
 
     .progressBarTrack {
-        background: rgba(15, 23, 42, 0.08) !important;
+        background: rgba(15, 23, 42, 0.08);
     }
 
     .progressMeta {
-        color: #047857 !important;
+        color: #047857;
     }
 }

@@ -464,35 +464,36 @@
 }
 
 /* ── Light Mode Overrides ── */
-:global(html.light) {
+:global(html.light),
+:global([data-theme='light']) {
     .brokerHeroBanner {
-        background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%) !important;
-        border-color: #CBD5E1 !important;
-        box-shadow: 0 10px 35px rgba(15, 23, 42, 0.08) !important;
+        background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+        border-color: #CBD5E1;
+        box-shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
 
         .heroLeftCol {
             .heroTitle {
-                color: #0F172A !important;
+                color: #0F172A;
             }
 
             .heroSubtitle {
-                color: #475569 !important;
+                color: #475569;
             }
 
             .metricsGrid {
-                border-top-color: #E2E8F0 !important;
+                border-top-color: #E2E8F0;
 
                 .metricCard {
-                    background: #F8FAFC !important;
-                    border-color: #E2E8F0 !important;
+                    background: #F8FAFC;
+                    border-color: #E2E8F0;
 
                     .metricTexts {
                         .metricVal {
-                            color: #0F172A !important;
+                            color: #0F172A;
                         }
 
                         .metricLbl {
-                            color: #059669 !important;
+                            color: #059669;
                         }
                     }
                 }
@@ -501,36 +502,36 @@
 
         .heroRightCol {
             .telemetryCard {
-                background: #FFFFFF !important;
-                border-color: #CBD5E1 !important;
-                box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06) !important;
+                background: #FFFFFF;
+                border-color: #CBD5E1;
+                box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
 
                 .telemetryHeader {
-                    border-bottom-color: #F1F5F9 !important;
+                    border-bottom-color: #F1F5F9;
 
                     .telemetryTag {
-                        color: #64748B !important;
+                        color: #64748B;
                     }
                 }
 
                 .telemetryStatsList {
                     .telemetryStatRow {
                         .rowLabel {
-                            color: #64748B !important;
+                            color: #64748B;
                         }
 
                         .rowValue {
-                            color: #0F172A !important;
+                            color: #0F172A;
 
                             &.greenVal {
-                                color: #059669 !important;
+                                color: #059669;
                             }
                         }
                     }
                 }
 
                 .telemetryFooterNote {
-                    color: #94A3B8 !important;
+                    color: #94A3B8;
                 }
             }
         }

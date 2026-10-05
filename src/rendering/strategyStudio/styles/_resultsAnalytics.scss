@@ -654,14 +654,14 @@
     width: 100%;
 
     :global(.apexcharts-point-annotations text) {
-        font-family: inherit !important;
+        font-family: inherit;
         filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.9));
         cursor: default;
     }
 
     :global(.apexcharts-point-annotations rect) {
-        fill: transparent !important;
-        stroke: none !important;
+        fill: transparent;
+        stroke: none;
     }
 }
 

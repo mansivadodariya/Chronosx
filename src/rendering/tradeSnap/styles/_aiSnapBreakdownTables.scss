@@ -4,7 +4,7 @@
     border: 1px solid var(--card-border);
     box-shadow: var(--card-shadow);
     padding: 20px;
-    border-radius: 0 !important;
+    border-radius: 0;
 }
 
 .tabNavRow {
@@ -32,14 +32,14 @@
     &.tabNavActive {
         color: var(--pill-color);
         border-bottom-color: #18C98B;
-        border-radius: 0 !important;
+        border-radius: 0;
     }
 }
 
 .tabContentCard {
     background: var(--box-bg);
     border: 1px solid var(--box-border);
-    border-radius: 0 !important;
+    border-radius: 0;
     overflow: hidden;
 }
 
@@ -121,53 +121,53 @@
     margin-top: 12px;
 
     .tabContentCard {
-        background: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
     }
 
     .breakdownTable {
-        page-break-inside: auto !important;
-        break-inside: auto !important;
-        border-collapse: collapse !important;
+        page-break-inside: auto;
+        break-inside: auto;
+        border-collapse: collapse;
 
         tr {
-            page-break-inside: avoid !important;
-            break-inside: avoid !important;
-            break-inside: avoid-page !important;
+            page-break-inside: avoid;
+            break-inside: avoid;
+            break-inside: avoid-page;
         }
 
         th {
-            background: #F8FAFC !important;
-            color: #0F172A !important;
-            border-bottom: 1px solid #E2E8F0 !important;
+            background: #F8FAFC;
+            color: #0F172A;
+            border-bottom: 1px solid #E2E8F0;
         }
 
         td {
-            background: #FFFFFF !important;
-            color: #1E293B !important;
-            border-bottom: 1px solid #E2E8F0 !important;
-            page-break-inside: avoid !important;
-            break-inside: avoid !important;
+            background: #FFFFFF ;
+            color: #1E293B ;
+            border-bottom: 1px solid #E2E8F0 ;
+            page-break-inside: avoid ;
+            break-inside: avoid ;
         }
 
         .tableNameCell {
-            color: #0F172A !important;
+            color: #0F172A;
         }
 
         .tableValCell {
-            color: #047857 !important;
+            color: #047857;
         }
 
         .supportCell {
-            color: #059669 !important;
+            color: #059669;
         }
 
         .resistanceCell {
-            color: #DC2626 !important;
+            color: #DC2626;
         }
 
         .pivotMainCell {
-            color: #0284C7 !important;
+            color: #0284C7;
         }
     }
 }
@@ -176,9 +176,9 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-    break-inside: avoid-page !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    break-inside: avoid-page;
     margin-bottom: 14px;
 }
 
@@ -203,14 +203,14 @@
 :global(.pdfExportLight) .indicatorPivotSection > .tabContentCard,
 :global(.pdfExportContainer) .tabNavRow,
 :global(.pdfExportContainer) .indicatorPivotSection > .tabContentCard {
-    display: none !important;
+    display: none;
 }
 
 :global(.pdfExportLight) .pdfFullBreakdown,
 :global(.pdfExportContainer) .pdfFullBreakdown {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 18px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
 }
 
 /* ============================================================
@@ -223,65 +223,65 @@
 :global(.pdfExportLight),
 :global(.pdfExportContainer) {
     .indicatorPivotSection {
-        background: #FFFFFF !important;
-        border-color: rgba(15, 23, 42, 0.12) !important;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.12);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 
         h3,
         .sectionHeaderRow h3 {
-            color: #0F172A !important;
+            color: #0F172A;
         }
     }
 
     .tabNavBtn {
-        background: #F1F5F9 !important;
-        border-color: rgba(15, 23, 42, 0.12) !important;
-        color: #475569 !important;
+        background: #F1F5F9;
+        border-color: rgba(15, 23, 42, 0.12);
+        color: #475569;
 
         &.tabNavActive {
-            background: #FFFFFF !important;
-            color: #047857 !important;
-            border-color: #059669 !important;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+            background: #FFFFFF;
+            color: #047857;
+            border-color: #059669;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
         }
     }
 
     .tabContentCard {
-        background: #FFFFFF !important;
-        border-color: rgba(15, 23, 42, 0.12) !important;
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.12);
     }
 
     .breakdownTable {
         th {
-            background: #F8FAFC !important;
-            color: #0F172A !important;
-            border-bottom: 1px solid #E2E8F0 !important;
+            background: #F8FAFC;
+            color: #0F172A;
+            border-bottom: 1px solid #E2E8F0;
         }
 
         td {
-            background: #FFFFFF !important;
-            color: #1E293B !important;
-            border-bottom: 1px solid #E2E8F0 !important;
+            background: #FFFFFF;
+            color: #1E293B;
+            border-bottom: 1px solid #E2E8F0;
         }
 
         .tableNameCell {
-            color: #0F172A !important;
+            color: #0F172A;
         }
 
         .tableValCell {
-            color: #047857 !important;
+            color: #047857;
         }
 
         .supportCell {
-            color: #059669 !important;
+            color: #059669;
         }
 
         .resistanceCell {
-            color: #DC2626 !important;
+            color: #DC2626;
         }
 
         .pivotMainCell {
-            color: #0284C7 !important;
+            color: #0284C7;
         }
     }
 }

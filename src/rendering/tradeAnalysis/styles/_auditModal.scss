@@ -643,15 +643,6 @@
         grid-template-columns: 1fr;
     }
 
-    .reportSuccessBannerCard {
-        flex-direction: column;
-        align-items: flex-start;
-
-        .bannerGraphicRight {
-            display: none;
-        }
-    }
-
     .topMetricsRow {
         grid-template-columns: repeat(2, 1fr);
     }

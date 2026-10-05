@@ -37,9 +37,9 @@
 
         [data-theme='light'] &,
         :global(html.light) & {
-            background: rgba(24, 201, 139, 0.14) !important;
-            border: 1px solid rgba(24, 201, 139, 0.3) !important;
-            border-radius: 9px !important;
+            background: rgba(24, 201, 139, 0.14);
+            border: 1px solid rgba(24, 201, 139, 0.3);
+            border-radius: 9px;
         }
     }
 
@@ -57,7 +57,7 @@
 
         [data-theme='light'] &,
         :global(html.light) & {
-            color: #0F172A !important;
+            color: #0F172A;
         }
     }
 }
