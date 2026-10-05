@@ -141,7 +141,6 @@ export default function GuidedBuilderSection({ refProp }) {
                         <option value="M5">5 Minutes (M5)</option>
                         <option value="M15">15 Minutes (M15)</option>
                         <option value="H1">1 Hour (H1)</option>
-                        <option value="H4">4 Hours (H4)</option>
                       </select>
                     </div>
                     <div className={`${styles.formGroup} ${styles.fullWidth}`}>

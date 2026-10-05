@@ -9,30 +9,36 @@
 
 .tabNavRow {
     display: flex;
-    gap: 4px;
-    border-bottom: 1px solid var(--card-border);
+    align-items: center;
+    gap: 8px;
     margin-bottom: 16px;
     overflow-x: auto;
+    padding-bottom: 2px;
 }
 
 .tabNavBtn {
-    padding: 10px 16px;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
+    padding: 6px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted, #94A3B8);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
-    border-bottom: 2px solid transparent;
+    border-radius: 9999px;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 
     &:hover {
-        color: var(--title-color);
+        color: var(--title-color, #F8FAFC);
+        background: rgba(255, 255, 255, 0.1);
     }
 
     &.tabNavActive {
-        color: var(--pill-color);
-        border-bottom-color: #18C98B;
-        border-radius: 0;
+        background: #00B074 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #00B074 !important;
+        border-radius: 9999px !important;
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(0, 176, 116, 0.28);
     }
 }
 
@@ -175,11 +181,11 @@
 .pdfBreakdownBlock {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     page-break-inside: avoid;
     break-inside: avoid;
     break-inside: avoid-page;
-    margin-bottom: 14px;
+    margin-bottom: 20px;
 }
 
 .pdfSubHeading {
@@ -191,6 +197,8 @@
     display: flex;
     align-items: center;
     gap: 6px;
+    margin-top: 4px;
+    margin-bottom: 10px;
 
     :global(html.dark) &,
     :global([data-theme='dark']) & {
@@ -208,9 +216,19 @@
 
 :global(.pdfExportLight) .pdfFullBreakdown,
 :global(.pdfExportContainer) .pdfFullBreakdown {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
+    display: block !important;
+    width: 100% !important;
+    margin-top: 14px !important;
+}
+
+:global(.pdfExportLight) .pdfBreakdownBlock,
+:global(.pdfExportContainer) .pdfBreakdownBlock {
+    display: block !important;
+    width: 100% !important;
+    margin-bottom: 20px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    break-inside: avoid-page !important;
 }
 
 /* ============================================================
@@ -233,16 +251,27 @@
         }
     }
 
+    .tabNavRow {
+        border-bottom: none;
+    }
+
     .tabNavBtn {
         background: #F1F5F9;
-        border-color: rgba(15, 23, 42, 0.12);
+        border: 1px solid rgba(15, 23, 42, 0.08);
         color: #475569;
+        border-radius: 9999px;
+
+        &:hover {
+            background: #E2E8F0;
+            color: #0F172A;
+        }
 
         &.tabNavActive {
-            background: #FFFFFF;
-            color: #047857;
-            border-color: #059669;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+            background: #00B074 !important;
+            color: #FFFFFF !important;
+            border: 1px solid #00B074 !important;
+            border-radius: 9999px !important;
+            box-shadow: 0 2px 8px rgba(0, 176, 116, 0.28);
         }
     }
 

@@ -63,10 +63,13 @@ export default function StrategyDropdown({ strategies: propStrategies = [], sele
         async function fetchStrategies() {
             setLoading(true);
             try {
-                const getBackendBase = () => {
+                const getApiBase = () => {
                     if (process.env.NEXT_PUBLIC_BACKEND_URL) {
                         return process.env.NEXT_PUBLIC_BACKEND_URL.replace(/\/+$/, '');
                     }
+                    if (process.env.NEXT_PUBLIC_API_URL) {
+                        return process.env.NEXT_PUBLIC_API_URL.replace(/\/+$/, '');
+                    }
                     const wsUrl = process.env.NEXT_PUBLIC_WS_URL || process.env.NEXT_PUBLIC_WS_LIVE_URL;
                     if (wsUrl) {
                         try {
@@ -75,28 +78,15 @@ export default function StrategyDropdown({ strategies: propStrategies = [], sele
                             return `${proto}//${parsed.host}`;
                         } catch (_) {}
                     }
-                    return '';
+                    return 'http://192.168.0.153:8000';
                 };
 
-                const getWsHttpBase = () => {
-                    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || process.env.NEXT_PUBLIC_WS_LIVE_URL;
-                    if (wsUrl) {
-                        try {
-                            const parsed = new URL(wsUrl);
-                            const proto = parsed.protocol === 'wss:' ? 'https:' : 'http:';
-                            return `${proto}//${parsed.host}`;
-                        } catch (_) {}
-                    }
-                    return null;
-                };
-
-                const primaryBase = getBackendBase();
-                const fallbackBase = getWsHttpBase() || primaryBase;
+                const apiBase = getApiBase();
                 let res;
                 try {
                     const controller = new AbortController();
                     const timeoutId = setTimeout(() => controller.abort(), 4000);
-                    res = await fetch(`${primaryBase}/api/v1/chart/strategies`, {
+                    res = await fetch(`${apiBase}/api/v1/chart/strategies`, {
                         signal: controller.signal,
                         headers: { 
                             'accept': 'application/json',
@@ -106,12 +96,12 @@ export default function StrategyDropdown({ strategies: propStrategies = [], sele
                     clearTimeout(timeoutId);
                     if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 } catch (e) {
-                    // Fallback to internal proxy or direct fallback API
+                    // Fallback to internal proxy
                     try {
                         res = await fetch('/api/v1/chart/strategies');
                         if (!res.ok) throw new Error('Proxy failed');
                     } catch (err2) {
-                        res = await fetch(`${fallbackBase}/api/v1/chart/strategies`, {
+                        res = await fetch(`${apiBase}/api/v1/chart/strategies`, {
                             headers: { 
                                 'accept': 'application/json',
                                 'ngrok-skip-browser-warning': 'true'

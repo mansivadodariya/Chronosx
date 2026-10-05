@@ -4,7 +4,7 @@ import React from 'react';
 import styles from '../customBotBuilder.module.scss';
 import { INDICATOR_DEFINITIONS, RISK_LEVELS } from '../constants';
 
-export default function StepReview({ data, onEditStep, onRunBacktest, onDeployBot }) {
+export default function StepReview({ data, onEditStep, onRunBacktest, onDeployBot, isDeploying = false }) {
     const {
         botName,
         description,
@@ -16,7 +16,6 @@ export default function StepReview({ data, onEditStep, onRunBacktest, onDeployBo
         stopLossPips,
         trailingStop,
         trailingDistance,
-        trailingStep,
         riskLevel,
         lotSize,
         maxOpenPositions,
@@ -80,24 +79,34 @@ export default function StepReview({ data, onEditStep, onRunBacktest, onDeployBo
                     </div>
                     <div className={styles.reviewContent}>
                         <div className={styles.reviewCondsList}>
-                            {entryConditions.map((cond, idx) => {
-                                const def = INDICATOR_DEFINITIONS[cond.indicatorKey] || INDICATOR_DEFINITIONS.ema_crossover;
-                                const paramEntries = Object.entries(cond.params || {});
-                                const paramSummary = paramEntries.length > 0 
-                                    ? `(${paramEntries.map(([k, v]) => `${def?.paramLabels?.[k] || k}: ${v}`).join(', ')})`
-                                    : '';
-                                return (
-                                    <div key={cond.id || idx} className={styles.reviewCondRow}>
-                                        <span className={styles.condPillNum}>{idx + 1}</span>
-                                        <div className={styles.condPillDetails}>
-                                            <span className={styles.condPillName}>{def?.name || cond.indicatorKey}</span>
-                                            <span className={styles.condPillRule}>
-                                                {cond.condition} {paramSummary}
-                                            </span>
+                            {entryConditions && entryConditions.length > 0 ? (
+                                entryConditions.map((cond, idx) => {
+                                    const def = INDICATOR_DEFINITIONS[cond.indicatorKey] || INDICATOR_DEFINITIONS.ema_crossover;
+                                    const paramEntries = Object.entries(cond.params || {});
+                                    const paramSummary = paramEntries.length > 0 
+                                        ? `(${paramEntries.map(([k, v]) => `${def?.paramLabels?.[k] || k}: ${v}`).join(', ')})`
+                                        : '';
+                                    return (
+                                        <div key={cond.id || idx} className={styles.reviewCondRow}>
+                                            <span className={styles.condPillNum}>{idx + 1}</span>
+                                            <div className={styles.condPillDetails}>
+                                                <span className={styles.condPillName}>{def?.name || cond.indicatorKey}</span>
+                                                <span className={styles.condPillRule}>
+                                                    {cond.condition} {paramSummary}
+                                                </span>
+                                            </div>
                                         </div>
+                                    );
+                                })
+                            ) : (
+                                <div className={styles.reviewCondRow}>
+                                    <div className={styles.condPillDetails}>
+                                        <span className={styles.condPillRule} style={{ color: '#94A3B8' }}>
+                                            No entry conditions configured
+                                        </span>
                                     </div>
-                                );
-                            })}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -131,7 +140,7 @@ export default function StepReview({ data, onEditStep, onRunBacktest, onDeployBo
                         <div className={styles.trailingStatusRow}>
                             <span className={styles.trailingStatusDot} data-active={trailingStop ? 'true' : 'false'} />
                             <span className={styles.trailingStatusText}>
-                                Trailing Stop: {trailingStop ? `Enabled (${trailingDistance}p dist, ${trailingStep}p step)` : 'Disabled'}
+                                Trailing Stop: {trailingStop ? `Enabled (${trailingDistance || 0} pips)` : 'Disabled'}
                             </span>
                         </div>
                     </div>

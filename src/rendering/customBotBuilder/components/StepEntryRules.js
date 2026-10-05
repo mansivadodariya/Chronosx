@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from '../customBotBuilder.module.scss';
-import { INDICATOR_DEFINITIONS, getConditionParams, validateEntryCondition } from '../constants';
+import { INDICATOR_DEFINITIONS, getConditionParams, getNextEmaDefaults, validateEntryCondition } from '../constants';
 import CustomSelect from './CustomSelect';
 
 export default function StepEntryRules({ data, errors = {}, onChange }) {
@@ -14,17 +14,17 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
     }));
 
     const handleAddCondition = () => {
+        const emaDefaults = getNextEmaDefaults(entryConditions, -1, false);
         const newCondition = {
             id: 'cond_' + Date.now(),
             indicatorKey: 'ema_crossover',
             condition: 'Golden Cross (Fast > Slow)',
-            params: { fastPeriod: 9, slowPeriod: 21 }
+            params: { ...emaDefaults }
         };
         onChange('entryConditions', [...entryConditions, newCondition]);
     };
 
     const handleRemoveCondition = (indexToRemove) => {
-        if (entryConditions.length <= 1) return;
         const updated = entryConditions.filter((_, idx) => idx !== indexToRemove);
         onChange('entryConditions', updated);
     };
@@ -32,7 +32,7 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
     const handleIndicatorChange = (index, newKey) => {
         const def = INDICATOR_DEFINITIONS[newKey] || INDICATOR_DEFINITIONS.ema_crossover;
         const defaultCond = def.conditions[0];
-        const condParams = getConditionParams(newKey, defaultCond);
+        const condParams = getConditionParams(newKey, defaultCond, entryConditions, index);
         const updated = [...entryConditions];
         updated[index] = {
             ...updated[index],
@@ -45,12 +45,24 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
 
     const handleConditionChange = (index, newCondition) => {
         const indicatorKey = entryConditions[index]?.indicatorKey || 'ema_crossover';
-        const condParams = getConditionParams(indicatorKey, newCondition);
+        const currentCond = entryConditions[index]?.condition || '';
+        const currentParams = entryConditions[index]?.params || {};
+        const isOldSingle = currentCond.includes('Price Above') || currentCond.includes('Price Below');
+        const isNewSingle = newCondition.includes('Price Above') || newCondition.includes('Price Below');
+
+        let newParams;
+        if (indicatorKey === 'ema_crossover' && isOldSingle === isNewSingle) {
+            newParams = { ...currentParams };
+        } else {
+            const condParams = getConditionParams(indicatorKey, newCondition, entryConditions, index);
+            newParams = { ...condParams.defaultParams };
+        }
+
         const updated = [...entryConditions];
         updated[index] = {
             ...updated[index],
             condition: newCondition,
-            params: { ...condParams.defaultParams }
+            params: newParams
         };
         onChange('entryConditions', updated);
     };
@@ -73,26 +85,28 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
 
     return (
         <div className={styles.stepContentWrapper}>
-            {/* Trigger Switcher Row */}
-            <div className={styles.triggerSwitchRow}>
-                <span className={styles.triggerLabel}>Trigger when</span>
-                <div className={styles.triggerButtonGroup}>
-                    <button
-                        type="button"
-                        className={`${styles.triggerBtn} ${triggerMode === 'ALL' ? styles.triggerBtnActive : ''}`}
-                        onClick={() => onChange('triggerMode', 'ALL')}
-                    >
-                        ALL conditions met
-                    </button>
-                    <button
-                        type="button"
-                        className={`${styles.triggerBtn} ${triggerMode === 'ANY' ? styles.triggerBtnActive : ''}`}
-                        onClick={() => onChange('triggerMode', 'ANY')}
-                    >
-                        ANY condition met
-                    </button>
+            {/* Trigger Switcher Row (Shown when 2+ conditions configured) */}
+            {entryConditions.length > 1 && (
+                <div className={styles.triggerSwitchRow}>
+                    <span className={styles.triggerLabel}>Trigger when</span>
+                    <div className={styles.triggerButtonGroup}>
+                        <button
+                            type="button"
+                            className={`${styles.triggerBtn} ${triggerMode === 'ALL' ? styles.triggerBtnActive : ''}`}
+                            onClick={() => onChange('triggerMode', 'ALL')}
+                        >
+                            ALL conditions met
+                        </button>
+                        <button
+                            type="button"
+                            className={`${styles.triggerBtn} ${triggerMode === 'ANY' ? styles.triggerBtnActive : ''}`}
+                            onClick={() => onChange('triggerMode', 'ANY')}
+                        >
+                            ANY condition met
+                        </button>
+                    </div>
                 </div>
-            </div>
+            )}
 
             {errors.entryConditions && (
                 <span className={styles.errorHelperText}>
@@ -107,34 +121,49 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
                 </span>
             )}
 
-            {/* List of Condition Cards */}
-            <div className={styles.conditionsList}>
-                {entryConditions.map((cond, index) => {
-                    const def = INDICATOR_DEFINITIONS[cond.indicatorKey] || INDICATOR_DEFINITIONS.ema_crossover;
-                    const conditionOptions = def.conditions.map(c => ({ value: c, label: c }));
-                    const condParams = getConditionParams(cond.indicatorKey, cond.condition);
-                    const condError = validateEntryCondition(cond);
+            {/* Empty State when no conditions added */}
+            {entryConditions.length === 0 && (
+                <div className={styles.emptyConditionsCard}>
+                    <div className={styles.emptyIconWrap}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                        </svg>
+                    </div>
+                    <div className={styles.emptyTextWrap}>
+                        <h5>No Entry Conditions Configured</h5>
+                        <p>Click "+ Add Entry Condition" below to configure your technical entry signals (e.g. EMA, RSI, MACD).</p>
+                    </div>
+                </div>
+            )}
 
-                    return (
-                        <div key={cond.id || index} className={styles.conditionCard}>
-                            {/* Card Header */}
-                            <div className={styles.conditionCardHeader}>
-                                <div className={styles.headerLeft}>
-                                    <span className={styles.dragHandle} title="Reorder condition">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                                            <circle cx="9" cy="6" r="1.5" />
-                                            <circle cx="15" cy="6" r="1.5" />
-                                            <circle cx="9" cy="12" r="1.5" />
-                                            <circle cx="15" cy="12" r="1.5" />
-                                            <circle cx="9" cy="18" r="1.5" />
-                                            <circle cx="15" cy="18" r="1.5" />
-                                        </svg>
-                                    </span>
-                                    <span className={styles.condIndex}>{index + 1}</span>
-                                    <span className={styles.condHeaderTitle}>{def.name}</span>
-                                    <span className={styles.condHeaderCondition}>— {cond.condition}</span>
-                                </div>
-                                {entryConditions.length > 1 && (
+            {/* List of Condition Cards */}
+            {entryConditions.length > 0 && (
+                <div className={styles.conditionsList}>
+                    {entryConditions.map((cond, index) => {
+                        const def = INDICATOR_DEFINITIONS[cond.indicatorKey] || INDICATOR_DEFINITIONS.ema_crossover;
+                        const conditionOptions = def.conditions.map(c => ({ value: c, label: c }));
+                        const condParams = getConditionParams(cond.indicatorKey, cond.condition, entryConditions, index);
+                        const condError = validateEntryCondition(cond, entryConditions, index);
+
+                        return (
+                            <div key={cond.id || index} className={styles.conditionCard}>
+                                {/* Card Header */}
+                                <div className={styles.conditionCardHeader}>
+                                    <div className={styles.headerLeft}>
+                                        <span className={styles.dragHandle} title="Reorder condition">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                                <circle cx="9" cy="6" r="1.5" />
+                                                <circle cx="15" cy="6" r="1.5" />
+                                                <circle cx="9" cy="12" r="1.5" />
+                                                <circle cx="15" cy="12" r="1.5" />
+                                                <circle cx="9" cy="18" r="1.5" />
+                                                <circle cx="15" cy="18" r="1.5" />
+                                            </svg>
+                                        </span>
+                                        <span className={styles.condIndex}>{index + 1}</span>
+                                        <span className={styles.condHeaderTitle}>{def.name}</span>
+                                        <span className={styles.condHeaderCondition}>— {cond.condition}</span>
+                                    </div>
                                     <button
                                         type="button"
                                         className={styles.deleteCondBtn}
@@ -148,10 +177,9 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
                                             <line x1="14" y1="11" x2="14" y2="17" />
                                         </svg>
                                     </button>
-                                )}
-                            </div>
+                                </div>
 
-                            {/* Dropdowns Row: Indicator & Condition using CustomSelect */}
+                                {/* Dropdowns Row: Indicator & Condition using CustomSelect */}
                             <div className={styles.gridTwoCols}>
                                 <div className={styles.formGroup}>
                                     <label className={styles.formLabel}>Indicator</label>
@@ -216,7 +244,8 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
                         </div>
                     );
                 })}
-            </div>
+                </div>
+            )}
 
             {/* Add Condition Button */}
             <button

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/components/toast';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,6 +16,7 @@ import StepRisk from './components/StepRisk';
 import StepReview from './components/StepReview';
 import StepFooterNav from './components/StepFooterNav';
 import { validateEntryCondition } from './constants';
+import { botBuilderApi } from '@/lib/botBuilderApi';
 
 const INITIAL_FORM_DATA = {
     botName: '',
@@ -23,24 +24,16 @@ const INITIAL_FORM_DATA = {
     tradingPair: '',
     timeframe: '',
     triggerMode: 'ALL',
-    entryConditions: [
-        {
-            id: 'cond_1',
-            indicatorKey: 'ema_crossover',
-            condition: 'Golden Cross (Fast > Slow)',
-            params: { fastPeriod: 9, slowPeriod: 21 }
-        }
-    ],
+    entryConditions: [],
     takeProfitPips: '',
     stopLossPips: '',
     trailingStop: false,
     trailingDistance: '',
-    trailingStep: '',
-    riskLevel: '',
-    lotSize: '',
-    maxOpenPositions: '',
-    riskPerTrade: '',
-    maxDailyLoss: ''
+    riskLevel: 'medium',
+    lotSize: 0.1,
+    maxOpenPositions: 3,
+    riskPerTrade: 2,
+    maxDailyLoss: 5
 };
 
 function validateStep(step, data) {
@@ -67,7 +60,7 @@ function validateStep(step, data) {
             errors.entryConditions = 'Please add at least one entry condition';
         } else {
             for (let i = 0; i < data.entryConditions.length; i++) {
-                const condErr = validateEntryCondition(data.entryConditions[i]);
+                const condErr = validateEntryCondition(data.entryConditions[i], data.entryConditions, i);
                 if (condErr) {
                     errors.entryConditions = `Condition #${i + 1}: ${condErr}`;
                     break;
@@ -86,9 +79,6 @@ function validateStep(step, data) {
         if (data.trailingStop) {
             if (!data.trailingDistance || Number(data.trailingDistance) <= 0) {
                 errors.trailingDistance = 'Trailing distance must be greater than 0 pips';
-            }
-            if (!data.trailingStep || Number(data.trailingStep) <= 0) {
-                errors.trailingStep = 'Trailing step must be greater than 0 pips';
             }
         }
     }
@@ -122,6 +112,11 @@ export default function CustomBotBuilderView() {
     const [formData, setFormData] = useState(INITIAL_FORM_DATA);
     const [errors, setErrors] = useState({});
     const [isSimulating, setIsSimulating] = useState(false);
+    const [isDeploying, setIsDeploying] = useState(false);
+
+    const isCurrentStepValid = useMemo(() => {
+        return validateStep(currentStep, formData).isValid;
+    }, [currentStep, formData]);
 
     const handleFormChange = (field, value) => {
         setFormData(prev => ({
@@ -184,7 +179,7 @@ export default function CustomBotBuilderView() {
         }, 1200);
     };
 
-    const handleDeployBot = () => {
+    const handleDeployBot = async () => {
         for (let s = 1; s <= 4; s++) {
             const { isValid, errors: validationErrors } = validateStep(s, formData);
             if (!isValid) {
@@ -195,33 +190,47 @@ export default function CustomBotBuilderView() {
             }
         }
 
-        const newBot = {
-            id: 'custom_bot_' + Date.now(),
-            name: formData.botName || 'Custom Algo Bot',
-            symbol: formData.tradingPair || 'EUR/USD',
-            timeframe: formData.timeframe || '1h',
-            type: 'Custom Bot',
-            status: 'active',
-            winRate: '68.4%',
-            profitFactor: '1.92',
-            totalPnl: '+$0.00',
-            lotSize: formData.lotSize || 0.1,
-            riskLevel: formData.riskLevel || 'medium',
-            createdAt: new Date().toISOString()
-        };
+        setIsDeploying(true);
+        toast.loading('Deploying bot strategy to execution engine...', { id: 'deploy-bot-toast' });
 
         try {
-            const current = JSON.parse(localStorage.getItem('chronosx_user_bots') || '[]');
-            current.unshift(newBot);
-            localStorage.setItem('chronosx_user_bots', JSON.stringify(current));
-            toast.success(`Custom Bot "${newBot.name}" deployed successfully!`);
+            // POST /api/v1/bot-builder/strategies with base url from ENV
+            const apiResult = await botBuilderApi.createStrategy(formData);
+
+            const botId = apiResult?.data?.id || apiResult?.data?.strategy_id || ('custom_bot_' + Date.now());
+            const newBot = {
+                id: botId,
+                name: formData.botName || 'Custom Algo Bot',
+                symbol: formData.tradingPair || 'EUR/USD',
+                timeframe: formData.timeframe || '1h',
+                type: 'Custom Bot',
+                status: 'active',
+                winRate: '68.4%',
+                profitFactor: '1.92',
+                totalPnl: '+$0.00',
+                lotSize: formData.lotSize || 0.1,
+                riskLevel: formData.riskLevel || 'medium',
+                createdAt: new Date().toISOString(),
+                rawStrategy: apiResult?.data || null
+            };
+
+            try {
+                const current = JSON.parse(localStorage.getItem('chronosx_user_bots') || '[]');
+                current.unshift(newBot);
+                localStorage.setItem('chronosx_user_bots', JSON.stringify(current));
+            } catch (storageErr) {
+                console.warn('LocalStorage save notice:', storageErr);
+            }
+
+            toast.success(`Custom Bot "${newBot.name}" deployed successfully!`, { id: 'deploy-bot-toast' });
             setTimeout(() => {
                 router.push('/my-bots');
             }, 800);
         } catch (e) {
-            console.error('Error saving bot:', e);
-            toast.success('Bot saved successfully!');
-            router.push('/my-bots');
+            console.error('Error deploying bot:', e);
+            toast.error(e.message || 'Failed to deploy bot strategy', { id: 'deploy-bot-toast' });
+        } finally {
+            setIsDeploying(false);
         }
     };
 
@@ -285,6 +294,7 @@ export default function CustomBotBuilderView() {
                                 onEditStep={(step) => setCurrentStep(step)}
                                 onRunBacktest={handleRunBacktest}
                                 onDeployBot={handleDeployBot}
+                                isDeploying={isDeploying}
                             />
                         )}
                     </motion.div>
@@ -298,6 +308,8 @@ export default function CustomBotBuilderView() {
                 onPrev={handlePrev}
                 onNext={handleNext}
                 onDeploy={handleDeployBot}
+                isDeploying={isDeploying}
+                isNextDisabled={!isCurrentStepValid}
             />
         </div>
     );

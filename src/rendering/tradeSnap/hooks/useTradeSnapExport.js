@@ -74,7 +74,7 @@ export function useTradeSnapExport() {
                             }
                         });
 
-                        // 4. Hide tab rows and expand all 4 breakdown tables in the clone
+                        // 4. Hide tab rows and expand all 4 breakdown tables in the clone with pure block layout
                         clonedDoc.querySelectorAll('.tabNavRow, [class*="tabNavRow"]').forEach((el) => {
                             el.style.display = 'none';
                         });
@@ -82,9 +82,9 @@ export function useTradeSnapExport() {
                             el.style.display = 'none';
                         });
                         clonedDoc.querySelectorAll('.pdfFullBreakdown, [class*="pdfFullBreakdown"]').forEach((el) => {
-                            el.style.display = 'flex';
-                            el.style.flexDirection = 'column';
-                            el.style.gap = '16px';
+                            el.style.setProperty('display', 'block', 'important');
+                            el.style.setProperty('width', '100%', 'important');
+                            el.style.setProperty('margin-top', '14px', 'important');
                         });
 
                         // 5. Ensure no scrollbars or clipped heights in the clone
@@ -124,13 +124,20 @@ export function useTradeSnapExport() {
                                 td, th {
                                     page-break-inside: avoid !important;
                                     break-inside: avoid !important;
+                                    break-inside: avoid-page !important;
                                 }
-                                table {
-                                    page-break-inside: auto !important;
-                                    break-inside: auto !important;
+                                table, .breakdownTable, [class*="breakdownTable"], .tabContentCard, [class*="tabContentCard"], .tableWrapper, [class*="tableWrapper"] {
+                                    page-break-inside: avoid !important;
+                                    break-inside: avoid !important;
+                                    break-inside: avoid-page !important;
                                     border-collapse: collapse !important;
                                 }
                                 thead {
+                                    page-break-inside: avoid !important;
+                                    break-inside: avoid !important;
+                                    page-break-after: avoid !important;
+                                    break-after: avoid !important;
+                                    break-after: avoid-page !important;
                                     display: table-header-group !important;
                                 }
                                 tbody {
@@ -140,12 +147,28 @@ export function useTradeSnapExport() {
                                     page-break-inside: avoid !important;
                                     break-inside: avoid !important;
                                     break-inside: avoid-page !important;
-                                    margin-bottom: 16px !important;
+                                    display: block !important;
+                                    width: 100% !important;
+                                    margin-bottom: 20px !important;
                                 }
-                                .pdfSubHeading, [class*="pdfSubHeading"], h1, h2, h3, h4 {
+                                .pdfSubHeading, [class*="pdfSubHeading"] {
                                     page-break-after: avoid !important;
                                     break-after: avoid !important;
                                     break-after: avoid-page !important;
+                                    page-break-inside: avoid !important;
+                                    break-inside: avoid !important;
+                                    break-inside: avoid-page !important;
+                                    margin-top: 4px !important;
+                                    margin-bottom: 10px !important;
+                                }
+                                h1, h2, h3, h4, .sectionHeaderRow, [class*="sectionHeaderRow"] {
+                                    page-break-after: avoid !important;
+                                    break-after: avoid !important;
+                                    break-after: avoid-page !important;
+                                    page-break-inside: avoid !important;
+                                    break-inside: avoid !important;
+                                    break-inside: avoid-page !important;
+                                    margin-bottom: 16px !important;
                                 }
                                 .technicalGaugeCard, [class*="technicalGaugeCard"],
                                 .bullBearHero, [class*="bullBearHero"],
@@ -158,9 +181,19 @@ export function useTradeSnapExport() {
                                     break-inside: avoid !important;
                                     break-inside: avoid-page !important;
                                 }
-                                .indicatorPivotSection, [class*="indicatorPivotSection"],
-                                .pdfFullBreakdown, [class*="pdfFullBreakdown"],
-                                .tableWrapper, [class*="tableWrapper"] {
+                                .indicatorPivotSection, [class*="indicatorPivotSection"] {
+                                    page-break-before: always !important;
+                                    break-before: page !important;
+                                    break-before: always !important;
+                                    page-break-inside: auto !important;
+                                    break-inside: auto !important;
+                                    overflow: visible !important;
+                                    max-height: none !important;
+                                    height: auto !important;
+                                }
+                                .pdfFullBreakdown, [class*="pdfFullBreakdown"] {
+                                    display: block !important;
+                                    width: 100% !important;
                                     page-break-inside: auto !important;
                                     break-inside: auto !important;
                                     overflow: visible !important;
@@ -171,8 +204,12 @@ export function useTradeSnapExport() {
                         `;
                         clonedDoc.head.appendChild(styleEl);
 
-                        // 8. Explicitly apply inline avoid rules on all rows and cards
-                        clonedDoc.querySelectorAll('tr').forEach((row) => {
+                        // 8. Explicitly apply inline avoid & break-before rules
+                        clonedDoc.querySelectorAll('.indicatorPivotSection, [class*="indicatorPivotSection"]').forEach((el) => {
+                            el.style.setProperty('page-break-before', 'always', 'important');
+                            el.style.setProperty('break-before', 'page', 'important');
+                        });
+                        clonedDoc.querySelectorAll('tr, th, td, table, thead, [class*="breakdownTable"], [class*="tabContentCard"], [class*="tableWrapper"]').forEach((row) => {
                             row.style.setProperty('page-break-inside', 'avoid', 'important');
                             row.style.setProperty('break-inside', 'avoid', 'important');
                             row.style.setProperty('break-inside', 'avoid-page', 'important');
@@ -181,16 +218,39 @@ export function useTradeSnapExport() {
                             block.style.setProperty('page-break-inside', 'avoid', 'important');
                             block.style.setProperty('break-inside', 'avoid', 'important');
                             block.style.setProperty('break-inside', 'avoid-page', 'important');
+                            block.style.setProperty('display', 'block', 'important');
+                            block.style.setProperty('width', '100%', 'important');
+                        });
+                        clonedDoc.querySelectorAll('.pdfSubHeading, [class*="pdfSubHeading"], .sectionHeaderRow, [class*="sectionHeaderRow"]').forEach((hdr) => {
+                            hdr.style.setProperty('page-break-after', 'avoid', 'important');
+                            hdr.style.setProperty('break-after', 'avoid', 'important');
+                            hdr.style.setProperty('break-after', 'avoid-page', 'important');
                         });
                     }
                 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
                 pagebreak: {
-                    mode: ['css', 'legacy'],
+                    mode: ['avoid-all', 'css', 'legacy'],
+                    before: [
+                        '.indicatorPivotSection',
+                        '[class*="indicatorPivotSection"]'
+                    ],
                     avoid: [
                         'tr',
+                        'th',
+                        'td',
+                        'table',
+                        'thead',
+                        '.breakdownTable',
+                        '[class*="breakdownTable"]',
                         '.pdfBreakdownBlock',
                         '[class*="pdfBreakdownBlock"]',
+                        '.tabContentCard',
+                        '[class*="tabContentCard"]',
+                        '.sectionHeaderRow',
+                        '[class*="sectionHeaderRow"]',
+                        '.pdfSubHeading',
+                        '[class*="pdfSubHeading"]',
                         '.technicalGaugeCard',
                         '[class*="technicalGaugeCard"]',
                         '.tradeSignalSetupCard',
@@ -203,6 +263,8 @@ export function useTradeSnapExport() {
                         '[class*="bullBearHero"]',
                         '.heroBanner',
                         '[class*="heroBanner"]',
+                        '.summaryHeaderGrid',
+                        '[class*="summaryHeaderGrid"]',
                         'svg',
                         'canvas',
                         'figure'

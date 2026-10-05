@@ -24,7 +24,6 @@ export const TIMEFRAMES = [
     { value: '5m', label: '5 Minutes (M5)' },
     { value: '15m', label: '15 Minutes (M15)' },
     { value: '1h', label: '1 Hour (H1)' },
-    { value: '4h', label: '4 Hours (H4)' },
     { value: '1d', label: '1 Day (D1)' }
 ];
 
@@ -161,17 +160,74 @@ export const INDICATOR_DEFINITIONS = {
     }
 };
 
-export function getConditionParams(indicatorKey = 'ema_crossover', condition = '') {
-    const def = INDICATOR_DEFINITIONS[indicatorKey] || INDICATOR_DEFINITIONS.ema_crossover;
+export const STANDARD_EMA_PAIRS = [
+    { fastPeriod: 9, slowPeriod: 21 },
+    { fastPeriod: 50, slowPeriod: 200 },
+    { fastPeriod: 20, slowPeriod: 50 },
+    { fastPeriod: 12, slowPeriod: 26 }
+];
 
-    // Special single EMA override if EMA Crossover is set to Price Above/Below
-    if (indicatorKey === 'ema_crossover' && (condition?.includes('Price Above') || condition?.includes('Price Below'))) {
+export const STANDARD_SINGLE_EMA_PERIODS = [20, 50, 200, 100];
+
+export function getNextEmaDefaults(existingConditions = [], excludeIndex = -1, isSingleEma = false) {
+    if (isSingleEma) {
+        const usedPeriods = new Set(
+            existingConditions
+                .filter((c, idx) => idx !== excludeIndex && c.indicatorKey === 'ema_crossover' && (c.condition?.includes('Price Above') || c.condition?.includes('Price Below')))
+                .map(c => Number(c.params?.fastPeriod))
+                .filter(Boolean)
+        );
+        const nextPeriod = STANDARD_SINGLE_EMA_PERIODS.find(p => !usedPeriods.has(p)) || 20;
+        return { fastPeriod: nextPeriod };
+    }
+
+    const otherEmaConditions = existingConditions.filter((c, idx) => {
+        if (idx === excludeIndex) return false;
+        if (c.indicatorKey !== 'ema_crossover') return false;
+        return !c.condition?.includes('Price Above') && !c.condition?.includes('Price Below');
+    });
+
+    const usedPairs = new Set(
+        otherEmaConditions.map(c => `${Number(c.params?.fastPeriod)}_${Number(c.params?.slowPeriod)}`)
+    );
+
+    const nextPair = STANDARD_EMA_PAIRS.find(p => !usedPairs.has(`${p.fastPeriod}_${p.slowPeriod}`)) 
+        || STANDARD_EMA_PAIRS[otherEmaConditions.length % STANDARD_EMA_PAIRS.length] 
+        || { fastPeriod: 50, slowPeriod: 200 };
+
+    return {
+        fastPeriod: nextPair.fastPeriod,
+        slowPeriod: nextPair.slowPeriod
+    };
+}
+
+export function getConditionParams(indicatorKey = 'ema_crossover', condition = '', existingConditions = [], excludeIndex = -1) {
+    const def = INDICATOR_DEFINITIONS[indicatorKey] || INDICATOR_DEFINITIONS.ema_crossover;
+    const isSingleEma = indicatorKey === 'ema_crossover' && (condition?.includes('Price Above') || condition?.includes('Price Below'));
+
+    if (isSingleEma) {
+        const defaults = getNextEmaDefaults(existingConditions, excludeIndex, true);
         return {
             fields: [
-                { key: 'fastPeriod', label: 'EMA Period', type: 'number', default: 20, min: 1, max: 1000, step: 1 }
+                { key: 'fastPeriod', label: 'EMA Period', type: 'number', default: defaults.fastPeriod, min: 1, max: 1000, step: 1 }
             ],
-            defaultParams: { fastPeriod: 20 },
+            defaultParams: defaults,
             paramLabels: { fastPeriod: 'EMA Period' }
+        };
+    }
+
+    if (indicatorKey === 'ema_crossover') {
+        const defaults = getNextEmaDefaults(existingConditions, excludeIndex, false);
+        return {
+            fields: [
+                { key: 'fastPeriod', label: 'Fast Period', type: 'number', default: defaults.fastPeriod, min: 1, max: 500, step: 1 },
+                { key: 'slowPeriod', label: 'Slow Period', type: 'number', default: defaults.slowPeriod, min: 2, max: 1000, step: 1 }
+            ],
+            defaultParams: defaults,
+            paramLabels: {
+                fastPeriod: 'Fast Period',
+                slowPeriod: 'Slow Period'
+            }
         };
     }
 
@@ -182,7 +238,7 @@ export function getConditionParams(indicatorKey = 'ema_crossover', condition = '
     };
 }
 
-export function validateEntryCondition(cond) {
+export function validateEntryCondition(cond, allConditions = [], currentIndex = -1) {
     if (!cond) return null;
     const { indicatorKey = 'ema_crossover', condition, params = {} } = cond;
     const def = INDICATOR_DEFINITIONS[indicatorKey] || INDICATOR_DEFINITIONS.ema_crossover;
@@ -203,6 +259,19 @@ export function validateEntryCondition(cond) {
         if (!params.slowPeriod || isNaN(slow) || slow < 2) return 'Slow Period must be at least 2';
         if (slow > 1000) return 'Slow Period cannot exceed 1000';
         if (fast >= slow) return `Fast Period (${fast}) must be less than Slow Period (${slow})`;
+
+        // Check duplicate EMA crossover periods across other conditions
+        if (Array.isArray(allConditions) && allConditions.length > 1) {
+            const hasDuplicate = allConditions.some((other, idx) => {
+                if (idx === currentIndex || !other || other.indicatorKey !== 'ema_crossover') return false;
+                const otherIsSingle = other.condition?.includes('Price Above') || other.condition?.includes('Price Below');
+                if (otherIsSingle) return false;
+                return Number(other.params?.fastPeriod) === fast && Number(other.params?.slowPeriod) === slow;
+            });
+            if (hasDuplicate) {
+                return `Duplicate EMA (${fast}/${slow}). Use distinct periods (e.g. 9/21, 50/200, 20/50)`;
+            }
+        }
         return null;
     }
 

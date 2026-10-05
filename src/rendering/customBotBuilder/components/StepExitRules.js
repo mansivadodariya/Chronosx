@@ -16,7 +16,7 @@ function ErrorAlertIcon() {
 }
 
 export default function StepExitRules({ data, errors = {}, onChange }) {
-    const { takeProfitPips, stopLossPips, trailingStop, trailingDistance, trailingStep } = data;
+    const { takeProfitPips, stopLossPips, trailingStop, trailingDistance } = data;
 
     return (
         <div className={styles.stepContentWrapper}>
@@ -100,15 +100,12 @@ export default function StepExitRules({ data, errors = {}, onChange }) {
                     <div className={styles.trailingLeft}>
                         <div className={styles.exitIconBoxCyan}>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                                <circle cx="12" cy="12" r="10" />
+                                <circle cx="12" cy="12" r="6" />
+                                <circle cx="12" cy="12" r="2" />
                             </svg>
                         </div>
-                        <div>
-                            <h3 className={styles.exitCardTitle}>Trailing Stop (Optional)</h3>
-                            <span className={styles.exitHelperText}>
-                                Lock in profits by dynamically adjusting your stop loss as price advances in your favor
-                            </span>
-                        </div>
+                        <h3 className={styles.exitCardTitle}>Trailing Stop</h3>
                     </div>
 
                     <label className={styles.switchWrapper}>
@@ -122,15 +119,15 @@ export default function StepExitRules({ data, errors = {}, onChange }) {
                 </div>
 
                 {trailingStop && (
-                    <div className={styles.trailingParamsRow}>
+                    <div className={styles.trailingBody}>
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>
-                                Trailing Distance (Pips) <span className={styles.requiredStar}>*</span>
+                                Trailing distance (pips)
                             </label>
                             <input
                                 type="number"
                                 className={`${styles.textInput} ${errors.trailingDistance ? styles.inputError : ''}`}
-                                placeholder="e.g. 20"
+                                placeholder="e.g. 15"
                                 value={trailingDistance}
                                 onChange={(e) => onChange('trailingDistance', e.target.value)}
                             />
@@ -140,25 +137,9 @@ export default function StepExitRules({ data, errors = {}, onChange }) {
                                     {errors.trailingDistance}
                                 </span>
                             )}
-                        </div>
-
-                        <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>
-                                Trailing Step (Pips) <span className={styles.requiredStar}>*</span>
-                            </label>
-                            <input
-                                type="number"
-                                className={`${styles.textInput} ${errors.trailingStep ? styles.inputError : ''}`}
-                                placeholder="e.g. 5"
-                                value={trailingStep}
-                                onChange={(e) => onChange('trailingStep', e.target.value)}
-                            />
-                            {errors.trailingStep && (
-                                <span className={styles.errorHelperText}>
-                                    <ErrorAlertIcon />
-                                    {errors.trailingStep}
-                                </span>
-                            )}
+                            <span className={styles.exitHelperText}>
+                                Stop loss moves in your favor, locking in profits as price moves
+                            </span>
                         </div>
                     </div>
                 )}

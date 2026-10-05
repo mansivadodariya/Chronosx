@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { unifiedSocket } from '@/lib/unifiedSocket';
+import { unifiedSocket, getWsEndpointUrl } from '@/lib/unifiedSocket';
 
 // Pair Metadata Registry
 export const PAIR_METADATA_MAP = {
@@ -255,16 +255,8 @@ export function createSetupFromRealCandles(symbol, candleData) {
     };
 }
 
-export const getStrategyWebSocketUrl = () => {
-    if (typeof window === 'undefined') return '';
-    const envWs = process.env.NEXT_PUBLIC_WS_URL || process.env.NEXT_PUBLIC_WS_LIVE_URL;
-    if (envWs) {
-        return envWs.includes('?') ? envWs : `${envWs}?symbol=EURUSD&timeframe=1h&strategy_id=default`;
-    }
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://127.0.0.1:8000';
-    const proto = backendUrl.startsWith('https') ? 'wss:' : 'ws:';
-    const host = backendUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '');
-    return `${proto}//${host}/api/v1/ws/live?symbol=EURUSD&timeframe=1h&strategy_id=default`;
+export const getStrategyWebSocketUrl = (symbol = 'EURUSD', timeframe = '1h', strategyId = 'default') => {
+    return getWsEndpointUrl(symbol, timeframe, strategyId, 'strategy');
 };
 
 export function useStrategyStream() {
@@ -480,7 +472,7 @@ export function useStrategyStream() {
             window.addEventListener('liveCandleUpdate', onLiveCandleEvent);
         }
 
-        unifiedSocket.ensureConnected();
+        unifiedSocket.ensureConnected('strategy');
 
         return () => {
             isUnmountingRef.current = true;

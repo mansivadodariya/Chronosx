@@ -86,15 +86,15 @@ export default function TradeSnap() {
     useEffect(() => {
         const check = () => {
             const userAgent = typeof navigator !== 'undefined' ? (navigator.userAgent || '') : '';
-            const isMobile = /iPhone|iPad|iPod|Android|Mobile/i.test(userAgent) ||
-                (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 2 && /Macintosh/i.test(userAgent));
+            const isSmallMobile = window.innerWidth < 768 && /iPhone|iPod|Android.*Mobile/i.test(userAgent);
             
             const hasDisplayMedia = typeof navigator !== 'undefined' &&
                 !!navigator.mediaDevices &&
                 typeof navigator.mediaDevices.getDisplayMedia === 'function';
 
-            setIsDesktop(window.innerWidth >= 1024 && !isMobile);
-            setIsScreenShareSupported(hasDisplayMedia && !isMobile);
+            // Allow desktop and wide viewports (including 1440px screens) full access to AI Chart Scanner
+            setIsDesktop(window.innerWidth >= 768 || !isSmallMobile);
+            setIsScreenShareSupported(hasDisplayMedia);
         };
         check();
         window.addEventListener('resize', check);

@@ -46,11 +46,19 @@ export function normalizeTimeframe(tf) {
     return s;
 }
 
-export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategyId = 'default') {
+export function normalizeWsBase(url = '') {
+    if (!url) return '';
+    let u = url.split('?')[0].replace(/\/+$/, '');
+    u = u.replace(/\/live$/, '').replace(/\/strategy$/, '');
+    return u;
+}
+
+export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategyId = 'default', endpoint = 'live') {
     const cleanSym = cleanPairSymbol(symbol);
     const normTf = normalizeTimeframe(timeframe);
     const stratId = strategyId || 'default';
     const qs = `?symbol=${cleanSym}&timeframe=${normTf}&strategy_id=${stratId}`;
+    const ep = endpoint === 'strategy' ? 'strategy' : 'live';
 
     const isHttps = typeof window !== 'undefined' && window.location?.protocol === 'https:';
     const candidates = [];
@@ -63,14 +71,14 @@ export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategy
     };
 
     if (envWs) {
-        let cleanBase = envWs.split('?')[0];
+        let cleanBase = normalizeWsBase(envWs);
         if (isPublicHost(cleanBase) || isHttps) {
             cleanBase = cleanBase.replace(/^ws:\/\//, 'wss://');
-            candidates.push(`${cleanBase}${qs}`);
+            candidates.push(`${cleanBase}/${ep}${qs}`);
         } else {
-            candidates.push(`${cleanBase}${qs}`);
+            candidates.push(`${cleanBase}/${ep}${qs}`);
             if (cleanBase.startsWith('ws://')) {
-                candidates.push(`${cleanBase.replace(/^ws:\/\//, 'wss://')}${qs}`);
+                candidates.push(`${cleanBase.replace(/^ws:\/\//, 'wss://')}/${ep}${qs}`);
             }
         }
     }
@@ -80,30 +88,29 @@ export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategy
         const isHttp = backendUrl.startsWith('http://');
         const host = backendUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '');
         if (isPublicHost(host) || isHttps || !isHttp) {
-            candidates.push(`wss://${host}/api/v1/ws/live${qs}`);
+            candidates.push(`wss://${host}/api/v1/ws/${ep}${qs}`);
         } else {
-            candidates.push(`ws://${host}/api/v1/ws/live${qs}`);
-            candidates.push(`wss://${host}/api/v1/ws/live${qs}`);
+            candidates.push(`ws://${host}/api/v1/ws/${ep}${qs}`);
+            candidates.push(`wss://${host}/api/v1/ws/${ep}${qs}`);
         }
     }
 
-
     if (!isHttps) {
-        candidates.push(`ws://192.168.0.153:8000/api/v1/ws/live${qs}`);
-        candidates.push(`wss://192.168.0.153:8000/api/v1/ws/live${qs}`);
+        candidates.push(`ws://192.168.0.153:8000/api/v1/ws/${ep}${qs}`);
+        candidates.push(`wss://192.168.0.153:8000/api/v1/ws/${ep}${qs}`);
 
         if (typeof window !== 'undefined' && window.location) {
             const host = window.location.hostname || '127.0.0.1';
             if (host !== '192.168.0.153' && (host.includes('localhost') || host.includes('127.0.0.1'))) {
-                candidates.push(`ws://${host}:8000/api/v1/ws/live${qs}`);
-                candidates.push(`wss://${host}:8000/api/v1/ws/live${qs}`);
+                candidates.push(`ws://${host}:8000/api/v1/ws/${ep}${qs}`);
+                candidates.push(`wss://${host}:8000/api/v1/ws/${ep}${qs}`);
             }
         }
 
-        candidates.push(`ws://127.0.0.1:8000/api/v1/ws/live${qs}`);
+        candidates.push(`ws://127.0.0.1:8000/api/v1/ws/${ep}${qs}`);
     } else if (typeof window !== 'undefined' && window.location) {
         const host = window.location.host;
-        candidates.push(`wss://${host}/api/v1/ws/live${qs}`);
+        candidates.push(`wss://${host}/api/v1/ws/${ep}${qs}`);
     }
 
     // Remove duplicates while preserving order
@@ -115,10 +122,11 @@ export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategy
     return unique;
 }
 
-export function getWsEndpointUrl(symbol = 'XAUUSD', timeframe = 'H1', strategyId = 'default') {
-    const list = getWsCandidateUrls(symbol, timeframe, strategyId);
+export function getWsEndpointUrl(symbol = 'XAUUSD', timeframe = 'H1', strategyId = 'default', endpoint = 'live') {
+    const ep = endpoint === 'strategy' ? 'strategy' : 'live';
+    const list = getWsCandidateUrls(symbol, timeframe, strategyId, ep);
     const defaultProto = typeof window !== 'undefined' && window.location?.protocol === 'https:' ? 'wss' : 'ws';
-    return list[0] || `${defaultProto}://127.0.0.1:8000/api/v1/ws/live?symbol=${cleanPairSymbol(symbol)}&timeframe=${normalizeTimeframe(timeframe)}&strategy_id=${strategyId || 'default'}`;
+    return list[0] || `${defaultProto}://127.0.0.1:8000/api/v1/ws/${ep}?symbol=${cleanPairSymbol(symbol)}&timeframe=${normalizeTimeframe(timeframe)}&strategy_id=${strategyId || 'default'}`;
 }
 
 function safeCloseSocket(ws) {
@@ -143,6 +151,7 @@ class UnifiedSocketManager {
         this.currentSymbol = 'XAUUSD';
         this.currentTimeframe = 'H1';
         this.currentStrategyId = 'default';
+        this.currentEndpoint = 'live'; // 'live' | 'strategy'
 
         this.priceListeners = new Set();
         this.candleListeners = new Set();
@@ -159,6 +168,16 @@ class UnifiedSocketManager {
         this.lastPacketTime = 0;
         this.lastPriceUpdate = null;
         this.retryCount = 0;
+    }
+
+    setEndpoint(ep) {
+        const newEp = ep === 'strategy' ? 'strategy' : 'live';
+        if (this.currentEndpoint !== newEp) {
+            this.currentEndpoint = newEp;
+            if (this.socket) {
+                this.connect(newEp);
+            }
+        }
     }
 
     setKnownPrice(symbol, price) {
@@ -203,8 +222,14 @@ class UnifiedSocketManager {
         return this.priceListeners.size + this.candleListeners.size + this.strategyListeners.size;
     }
 
-    ensureConnected() {
+    ensureConnected(endpoint) {
         if (typeof window === 'undefined') return;
+
+        if (endpoint && endpoint !== this.currentEndpoint) {
+            this.currentEndpoint = endpoint;
+            this.connect(endpoint);
+            return;
+        }
 
         if (this.disconnectTimer) {
             clearTimeout(this.disconnectTimer);
@@ -220,8 +245,12 @@ class UnifiedSocketManager {
         this.connect();
     }
 
-    connect() {
+    connect(endpoint) {
         if (typeof window === 'undefined') return;
+
+        if (endpoint) {
+            this.currentEndpoint = endpoint === 'strategy' ? 'strategy' : 'live';
+        }
 
         if (this.socket) {
             safeCloseSocket(this.socket);
@@ -233,7 +262,7 @@ class UnifiedSocketManager {
             this.connectionTimeoutTimer = null;
         }
 
-        const candidates = getWsCandidateUrls(this.currentSymbol, this.currentTimeframe, this.currentStrategyId);
+        const candidates = getWsCandidateUrls(this.currentSymbol, this.currentTimeframe, this.currentStrategyId, this.currentEndpoint);
         const wsUrl = candidates[this.candidateIndex % candidates.length];
         this.setStatus('connecting');
 
@@ -608,7 +637,7 @@ class UnifiedSocketManager {
     }
 
     /**
-     * Subscribe to strategy alerts & indicators
+     * Subscribe to strategy alerts & indicators (connects to /api/v1/ws/strategy)
      */
     subscribeStrategy(callback, symbolFilter, strategyId) {
         if (typeof callback !== 'function') return () => {};
@@ -619,7 +648,8 @@ class UnifiedSocketManager {
         if (symbolFilter || strategyId) {
             this.switchSubscription({ symbol: symbolFilter, strategyId });
         }
-        this.ensureConnected();
+        this.setEndpoint('strategy');
+        this.ensureConnected('strategy');
 
         return () => {
             this.strategyListeners.delete(sub);

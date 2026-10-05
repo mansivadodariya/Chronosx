@@ -69,7 +69,21 @@
     box-shadow: 0 2px 14px rgba(24, 201, 139, 0.35);
     transition: all 0.2s ease;
 
-    &:hover {
+    &:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+        box-shadow: none !important;
+        background: rgba(255, 255, 255, 0.12) !important;
+        color: rgba(255, 255, 255, 0.45) !important;
+        transform: none !important;
+
+        :global(html.light) & {
+            background: #E2E8F0 !important;
+            color: #94A3B8 !important;
+        }
+    }
+
+    &:not(:disabled):hover {
         background: #20E39F;
         transform: translateY(-1px);
         box-shadow: 0 4px 20px rgba(24, 201, 139, 0.5);

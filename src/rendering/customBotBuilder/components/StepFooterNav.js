@@ -3,7 +3,7 @@
 import React from 'react';
 import styles from '../customBotBuilder.module.scss';
 
-export default function StepFooterNav({ currentStep, totalSteps = 5, onPrev, onNext, onDeploy }) {
+export default function StepFooterNav({ currentStep, totalSteps = 5, onPrev, onNext, onDeploy, isDeploying = false, isNextDisabled = false }) {
     const isFirstStep = currentStep === 1;
     const isLastStep = currentStep === totalSteps;
 
@@ -13,7 +13,7 @@ export default function StepFooterNav({ currentStep, totalSteps = 5, onPrev, onN
                 type="button"
                 className={styles.prevBtn}
                 onClick={onPrev}
-                disabled={isFirstStep}
+                disabled={isFirstStep || isDeploying}
             >
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <path d="M19 12H5" />
@@ -31,8 +31,9 @@ export default function StepFooterNav({ currentStep, totalSteps = 5, onPrev, onN
                     type="button"
                     className={styles.nextBtn}
                     onClick={onDeploy}
+                    disabled={isDeploying || isNextDisabled}
                 >
-                    <span>Deploy Bot</span>
+                    <span>{isDeploying ? 'Deploying...' : 'Deploy Bot'}</span>
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                         <polyline points="20 6 9 17 4 12" />
                     </svg>
@@ -42,6 +43,7 @@ export default function StepFooterNav({ currentStep, totalSteps = 5, onPrev, onN
                     type="button"
                     className={styles.nextBtn}
                     onClick={onNext}
+                    disabled={isNextDisabled || isDeploying}
                 >
                     <span>Next</span>
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
