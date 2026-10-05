@@ -71,7 +71,9 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
         const updated = [...entryConditions];
         let parsedVal = value;
         if (value !== '') {
-            parsedVal = step < 1 ? parseFloat(value) || 0 : parseInt(value, 10) || 0;
+            const clean = String(value).replace(step < 1 ? /[^0-9.]/g : /[^0-9]/g, '');
+            const num = step < 1 ? parseFloat(clean) : parseInt(clean, 10);
+            parsedVal = isNaN(num) ? '' : Math.max(0, num);
         }
         updated[index] = {
             ...updated[index],
@@ -215,9 +217,14 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
                                             <label className={styles.paramLabel}>{label}</label>
                                             <input
                                                 type="number"
-                                                min={min}
+                                                min={Math.max(0, min)}
                                                 max={max}
                                                 step={step}
+                                                onKeyDown={(e) => {
+                                                    if (['-', '+', 'e', 'E'].includes(e.key)) {
+                                                        e.preventDefault();
+                                                    }
+                                                }}
                                                 className={`${styles.paramInput} ${isInvalid ? styles.inputError : ''}`}
                                                 placeholder={String(defaultVal)}
                                                 value={val}

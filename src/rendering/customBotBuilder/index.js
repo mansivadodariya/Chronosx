@@ -119,9 +119,18 @@ export default function CustomBotBuilderView() {
     }, [currentStep, formData]);
 
     const handleFormChange = (field, value) => {
+        let sanitizedValue = value;
+        const numericFields = ['takeProfitPips', 'stopLossPips', 'trailingDistance', 'lotSize', 'maxOpenPositions', 'riskPerTrade', 'maxDailyLoss'];
+        if (numericFields.includes(field) && value !== '' && value !== undefined && value !== null) {
+            const num = Number(value);
+            if (!isNaN(num)) {
+                sanitizedValue = Math.max(0, num);
+            }
+        }
+
         setFormData(prev => ({
             ...prev,
-            [field]: value
+            [field]: sanitizedValue
         }));
 
         if (errors[field]) {

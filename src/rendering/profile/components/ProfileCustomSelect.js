@@ -13,6 +13,7 @@ export default function ProfileCustomSelect({
 }) {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const menuRef = useRef(null);
 
     // Normalize options format: array of strings or { value, label }
     const normalizedOptions = options.map((opt) => {
@@ -46,6 +47,13 @@ export default function ProfileCustomSelect({
         };
     }, [isOpen]);
 
+    const handleMenuWheel = (e) => {
+        e.stopPropagation();
+        if (menuRef.current) {
+            menuRef.current.scrollTop += e.deltaY;
+        }
+    };
+
     const handleSelect = (val) => {
         if (disabled) return;
         onChange(val);
@@ -76,7 +84,13 @@ export default function ProfileCustomSelect({
             </button>
 
             {isOpen && (
-                <div className={styles.customSelectMenu} role="listbox">
+                <div
+                    ref={menuRef}
+                    className={styles.customSelectMenu}
+                    onWheel={handleMenuWheel}
+                    role="listbox"
+                    tabIndex={-1}
+                >
                     {normalizedOptions.map((opt) => {
                         const isSelected = opt.value === value || String(opt.value) === String(value);
                         return (

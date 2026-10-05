@@ -80,6 +80,25 @@ export const parseProfitFactorFromStrategy = (item) => {
     return '1.00';
 };
 
+export const parseCreationType = (item) => {
+    if (!item) return 'ai';
+    const cType = item.creation_type || item.creationType || item.created_by || item.builder_type || item.source_type;
+    if (cType) {
+        const lower = String(cType).toLowerCase();
+        if (lower.includes('manual') || lower.includes('custom') || lower.includes('rule')) {
+            return 'manual';
+        }
+        if (lower.includes('ai') || lower.includes('advisor') || lower.includes('copilot') || lower.includes('chat')) {
+            return 'ai';
+        }
+    }
+    const typeStr = String(item.type || item.strategy_type || item.category || '').toLowerCase();
+    if (typeStr.includes('custom') || typeStr.includes('manual')) {
+        return 'manual';
+    }
+    return 'ai';
+};
+
 export const mapStrategyToBot = (item, idx) => {
     const id = item.strategy_id || item.id || `strat_${idx}_${Date.now()}`;
     const name = item.strategy_name || item.name || `AI Strategy #${idx + 1}`;
@@ -97,6 +116,7 @@ export const mapStrategyToBot = (item, idx) => {
     const pattern = item.pattern || item.entry_pattern || '';
     const description = item.description || item.trade_reasoning?.rationale || 'Algorithmic quantitative strategy.';
     const createdAt = item.created_at || item.updated_at || '';
+    const creationType = parseCreationType(item);
 
     const winRate = parseWinRateFromStrategy(item);
     const totalPnl = parsePnlFromStrategy(item);
@@ -118,6 +138,8 @@ export const mapStrategyToBot = (item, idx) => {
         pattern,
         description,
         createdAt,
+        creationType,
+        creation_type: creationType,
         winRate,
         profitFactor,
         totalPnl,

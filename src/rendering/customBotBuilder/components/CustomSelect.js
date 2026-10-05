@@ -14,6 +14,7 @@ export default function CustomSelect({
 }) {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const menuRef = useRef(null);
 
     // Normalize options format: array of strings or { value, label, category, desc }
     const normalizedOptions = options.map((opt) => {
@@ -42,6 +43,24 @@ export default function CustomSelect({
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isOpen]);
+
+    // Auto-scroll selected item into view when dropdown opens
+    useEffect(() => {
+        if (isOpen && menuRef.current) {
+            const selectedEl = menuRef.current.querySelector(`.${styles.optionSelected}`);
+            if (selectedEl) {
+                selectedEl.scrollIntoView({ block: 'nearest' });
+            }
+        }
+    }, [isOpen]);
+
+    const handleMenuWheel = (e) => {
+        // Ensure seamless mouse wheel scrolling on the dropdown menu
+        e.stopPropagation();
+        if (menuRef.current) {
+            menuRef.current.scrollTop += e.deltaY;
+        }
+    };
 
     const handleSelect = (val) => {
         if (disabled) return;
@@ -106,7 +125,13 @@ export default function CustomSelect({
             </button>
 
             {isOpen && (
-                <div className={styles.customSelectMenu} role="listbox">
+                <div
+                    ref={menuRef}
+                    className={styles.customSelectMenu}
+                    onWheel={handleMenuWheel}
+                    role="listbox"
+                    tabIndex={-1}
+                >
                     {normalizedOptions.length === 0 ? (
                         <div className={styles.emptyOptions}>No options available</div>
                     ) : (

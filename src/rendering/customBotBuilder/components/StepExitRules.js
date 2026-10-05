@@ -18,6 +18,26 @@ function ErrorAlertIcon() {
 export default function StepExitRules({ data, errors = {}, onChange }) {
     const { takeProfitPips, stopLossPips, trailingStop, trailingDistance } = data;
 
+    const preventNegativeKeys = (e) => {
+        if (['-', '+', 'e', 'E'].includes(e.key)) {
+            e.preventDefault();
+        }
+    };
+
+    const handlePositiveNumber = (field, rawVal) => {
+        if (rawVal === '') {
+            onChange(field, '');
+            return;
+        }
+        const clean = String(rawVal).replace(/[^0-9.]/g, '');
+        const num = parseFloat(clean);
+        if (!isNaN(num)) {
+            onChange(field, Math.max(0, num));
+        } else {
+            onChange(field, '');
+        }
+    };
+
     return (
         <div className={styles.stepContentWrapper}>
             {/* Take Profit & Stop Loss 2-Card Grid */}
@@ -41,10 +61,13 @@ export default function StepExitRules({ data, errors = {}, onChange }) {
                         </label>
                         <input
                             type="number"
+                            min="0.1"
+                            step="1"
+                            onKeyDown={preventNegativeKeys}
                             className={`${styles.textInput} ${errors.takeProfitPips ? styles.inputError : ''}`}
                             placeholder="e.g. 50"
                             value={takeProfitPips}
-                            onChange={(e) => onChange('takeProfitPips', e.target.value)}
+                            onChange={(e) => handlePositiveNumber('takeProfitPips', e.target.value)}
                         />
                         {errors.takeProfitPips && (
                             <span className={styles.errorHelperText}>
@@ -76,10 +99,13 @@ export default function StepExitRules({ data, errors = {}, onChange }) {
                         </label>
                         <input
                             type="number"
+                            min="0.1"
+                            step="1"
+                            onKeyDown={preventNegativeKeys}
                             className={`${styles.textInput} ${errors.stopLossPips ? styles.inputError : ''}`}
                             placeholder="e.g. 25"
                             value={stopLossPips}
-                            onChange={(e) => onChange('stopLossPips', e.target.value)}
+                            onChange={(e) => handlePositiveNumber('stopLossPips', e.target.value)}
                         />
                         {errors.stopLossPips && (
                             <span className={styles.errorHelperText}>
@@ -126,10 +152,13 @@ export default function StepExitRules({ data, errors = {}, onChange }) {
                             </label>
                             <input
                                 type="number"
+                                min="0.1"
+                                step="1"
+                                onKeyDown={preventNegativeKeys}
                                 className={`${styles.textInput} ${errors.trailingDistance ? styles.inputError : ''}`}
                                 placeholder="e.g. 15"
                                 value={trailingDistance}
-                                onChange={(e) => onChange('trailingDistance', e.target.value)}
+                                onChange={(e) => handlePositiveNumber('trailingDistance', e.target.value)}
                             />
                             {errors.trailingDistance && (
                                 <span className={styles.errorHelperText}>

@@ -15,6 +15,7 @@ export default function WhiteLabelCustomSelect({
 }) {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const menuRef = useRef(null);
 
     // Normalize options format
     const normalizedOptions = options.map((opt) => {
@@ -43,6 +44,13 @@ export default function WhiteLabelCustomSelect({
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isOpen]);
+
+    const handleMenuWheel = (e) => {
+        e.stopPropagation();
+        if (menuRef.current) {
+            menuRef.current.scrollTop += e.deltaY;
+        }
+    };
 
     const handleSelect = (val) => {
         if (disabled) return;
@@ -77,7 +85,11 @@ export default function WhiteLabelCustomSelect({
             </button>
 
             {isOpen && (
-                <div className={styles.customSelectDropdown}>
+                <div
+                    ref={menuRef}
+                    className={styles.customSelectDropdown}
+                    onWheel={handleMenuWheel}
+                >
                     <ul className={styles.selectOptionsList} role="listbox">
                         {normalizedOptions.map((opt) => {
                             const isSelected = selectedOption && selectedOption.value === opt.value;

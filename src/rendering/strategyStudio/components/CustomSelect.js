@@ -14,6 +14,7 @@ export default function CustomSelect({
 }) {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const menuRef = useRef(null);
 
     // Normalize options format: array of strings or { value, label }
     const normalizedOptions = options.map((opt) => {
@@ -46,6 +47,13 @@ export default function CustomSelect({
         };
     }, [isOpen]);
 
+    const handleMenuWheel = (e) => {
+        e.stopPropagation();
+        if (menuRef.current) {
+            menuRef.current.scrollTop += e.deltaY;
+        }
+    };
+
     const handleSelect = (val) => {
         onChange(val);
         setIsOpen(false);
@@ -74,8 +82,11 @@ export default function CustomSelect({
 
             {isOpen && (
                 <div
+                    ref={menuRef}
                     className={`${styles.customSelectMenu} ${align === 'right' ? styles.alignRight : ''}`}
+                    onWheel={handleMenuWheel}
                     role="listbox"
+                    tabIndex={-1}
                 >
                     {normalizedOptions.map((opt) => {
                         const isSelected = opt.value === value || String(opt.value) === String(value);

@@ -17,10 +17,12 @@ const BrokersSection = dynamic(() => import('./brokersSection'))
 const GlobalNetworkMap = dynamic(() => import('./globalNetworkMap'))
 const Testimonials = dynamic(() => import('./testimonials'))
 const ReadytoPut = dynamic(() => import('./readytoPut'))
+const WelcomeModal = dynamic(() => import('@/components/welcomeModal'))
 
 export default function HomePage() {
     return (
         <div className={styles.homeWrapper}>
+            <WelcomeModal />
             <Herobanner />
             <div className={styles.contentSections}>
                 <Capabilities />

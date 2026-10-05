@@ -3,6 +3,14 @@
 import React from 'react';
 import styles from '../styles/strategyStudio.module.scss';
 import CustomSelect from './CustomSelect';
+import CustomDatePicker from '@/components/customDatePicker';
+import {
+    getTodayDateStr,
+    getPastYearsDateStr,
+    addYearsToStr,
+    handleFromDateChangeConstrained,
+    handleToDateChangeConstrained
+} from '@/utils/dateRangeUtils';
 import {
     ChartTrendIcon,
     ClockIntervalIcon,
@@ -50,6 +58,36 @@ export default function StudioToolbar({
     onRunBacktest,
     loading
 }) {
+    // 3-Year past limit & 1-Year maximum range difference
+    const todayStr = getTodayDateStr();
+    const threeYearsAgoStr = getPastYearsDateStr(3);
+
+    // Dynamic min/max bounds for From date input
+    const fromMinAttr = toDate
+        ? (addYearsToStr(toDate, -1) > threeYearsAgoStr ? addYearsToStr(toDate, -1) : threeYearsAgoStr)
+        : threeYearsAgoStr;
+    const fromMaxAttr = toDate ? (toDate < todayStr ? toDate : todayStr) : todayStr;
+
+    // Dynamic min/max bounds for To date input
+    const toMinAttr = fromDate
+        ? (fromDate > threeYearsAgoStr ? fromDate : threeYearsAgoStr)
+        : threeYearsAgoStr;
+    const toMaxAttr = fromDate
+        ? (addYearsToStr(fromDate, 1) < todayStr ? addYearsToStr(fromDate, 1) : todayStr)
+        : todayStr;
+
+    const handleFromChange = (val) => {
+        const { from, to } = handleFromDateChangeConstrained(val, toDate, 1, 3);
+        if (setFromDate) setFromDate(from);
+        if (setToDate && to !== toDate) setToDate(to);
+    };
+
+    const handleToChange = (val) => {
+        const { from, to } = handleToDateChangeConstrained(val, fromDate, 1, 3);
+        if (setToDate) setToDate(to);
+        if (setFromDate && from !== fromDate) setFromDate(from);
+    };
+
     return (
         <div className={styles.studioToolbar}>
             <div className={styles.toolbarParams}>
@@ -92,11 +130,13 @@ export default function StudioToolbar({
                         <span>From</span>
                     </div>
                     <div className={styles.paramControlWrap}>
-                        <input
-                            type="date"
+                        <CustomDatePicker
                             value={fromDate}
-                            onChange={(e) => setFromDate(e.target.value)}
-                            style={{ width: '135px' }}
+                            min={fromMinAttr}
+                            max={fromMaxAttr}
+                            onChange={handleFromChange}
+                            width="135px"
+                            placeholder="Select Date"
                         />
                     </div>
                 </div>
@@ -108,11 +148,13 @@ export default function StudioToolbar({
                         <span>To</span>
                     </div>
                     <div className={styles.paramControlWrap}>
-                        <input
-                            type="date"
+                        <CustomDatePicker
                             value={toDate}
-                            onChange={(e) => setToDate(e.target.value)}
-                            style={{ width: '135px' }}
+                            min={toMinAttr}
+                            max={toMaxAttr}
+                            onChange={handleToChange}
+                            width="135px"
+                            placeholder="Select Date"
                         />
                     </div>
                 </div>
@@ -126,8 +168,27 @@ export default function StudioToolbar({
                     <div className={styles.paramControlWrap}>
                         <input
                             type="number"
+                            min="1"
+                            onKeyDown={(e) => {
+                                if (['-', '+', 'e', 'E'].includes(e.key)) {
+                                    e.preventDefault();
+                                }
+                            }}
                             value={capital}
-                            onChange={(e) => setCapital(Number(e.target.value))}
+                            onChange={(e) => {
+                                const val = e.target.value;
+                                if (val === '') {
+                                    setCapital('');
+                                    return;
+                                }
+                                const clean = String(val).replace(/[^0-9]/g, '');
+                                const num = parseInt(clean, 10);
+                                if (!isNaN(num)) {
+                                    setCapital(Math.max(1, num));
+                                } else {
+                                    setCapital('');
+                                }
+                            }}
                             style={{ width: '90px' }}
                         />
                     </div>
@@ -145,6 +206,11 @@ export default function StudioToolbar({
                             step="0.01"
                             min="0.01"
                             max="1"
+                            onKeyDown={(e) => {
+                                if (['-', '+', 'e', 'E'].includes(e.key)) {
+                                    e.preventDefault();
+                                }
+                            }}
                             placeholder="0.01"
                             value={quantity}
                             onChange={(e) => {
@@ -153,17 +219,18 @@ export default function StudioToolbar({
                                     setQuantity('');
                                     return;
                                 }
-                                const num = parseFloat(val);
+                                const clean = String(val).replace(/[^0-9.]/g, '');
+                                const num = parseFloat(clean);
                                 if (!isNaN(num)) {
                                     if (num > 1) {
                                         setQuantity(1);
                                     } else if (num < 0) {
                                         setQuantity(0.01);
                                     } else {
-                                        setQuantity(val);
+                                        setQuantity(clean);
                                     }
                                 } else {
-                                    setQuantity(val);
+                                    setQuantity(clean);
                                 }
                             }}
                             onBlur={(e) => {

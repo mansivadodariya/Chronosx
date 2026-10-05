@@ -25,6 +25,7 @@ export default function MyBots() {
     const [bots, setBots] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filterStatus, setFilterStatus] = useState('all');
+    const [filterCreationType, setFilterCreationType] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [selectedStrategyDetail, setSelectedStrategyDetail] = useState(null);
@@ -183,13 +184,15 @@ export default function MyBots() {
 
     const filteredBots = bots.filter((b) => {
         const matchStatus = filterStatus === 'all' || b.status === filterStatus;
+        const matchCreationType = filterCreationType === 'all' || b.creationType === filterCreationType;
         const q = searchQuery.toLowerCase().trim();
         const matchSearch = !q ||
             (b.name && b.name.toLowerCase().includes(q)) ||
             (b.symbol && b.symbol.toLowerCase().includes(q)) ||
             (b.type && b.type.toLowerCase().includes(q)) ||
-            (b.pattern && b.pattern.toLowerCase().includes(q));
-        return matchStatus && matchSearch;
+            (b.pattern && b.pattern.toLowerCase().includes(q)) ||
+            (b.creationType && b.creationType.toLowerCase().includes(q));
+        return matchStatus && matchCreationType && matchSearch;
     });
 
     const hasAiBotPermission = checkPermissionInSet(visibleTabNames, 'ai bot builder');
@@ -198,6 +201,8 @@ export default function MyBots() {
     const isSingleCard = (hasAiBotPermission ? 1 : 0) + (hasCustomBotPermission ? 1 : 0) === 1;
 
     const activeCount = bots.filter((b) => b.status === 'active').length;
+    const aiCount = bots.filter((b) => b.creationType === 'ai').length;
+    const manualCount = bots.filter((b) => b.creationType === 'manual').length;
     const totalPnL = bots.reduce((acc, b) => {
         const numeric = parseFloat(String(b.totalPnl).replace(/[^0-9.-]+/g, '')) || 0;
         return acc + numeric;
@@ -428,8 +433,11 @@ export default function MyBots() {
                         <div className={styles.filterPills}>
                             <button
                                 type="button"
-                                className={`${styles.filterPill} ${filterStatus === 'all' ? styles.activePill : ''}`}
-                                onClick={() => setFilterStatus('all')}
+                                className={`${styles.filterPill} ${filterStatus === 'all' && filterCreationType === 'all' ? styles.activePill : ''}`}
+                                onClick={() => {
+                                    setFilterStatus('all');
+                                    setFilterCreationType('all');
+                                }}
                             >
                                 All ({bots.length})
                             </button>
@@ -446,6 +454,23 @@ export default function MyBots() {
                                 onClick={() => setFilterStatus('paused')}
                             >
                                 Paused ({bots.length - activeCount})
+                            </button>
+                            <div className={styles.filterDivider} />
+                            <button
+                                type="button"
+                                className={`${styles.filterPill} ${filterCreationType === 'ai' ? styles.activeAiPill : ''}`}
+                                onClick={() => setFilterCreationType(prev => prev === 'ai' ? 'all' : 'ai')}
+                                title="Filter bots generated via AI"
+                            >
+                                AI Bots ({aiCount})
+                            </button>
+                            <button
+                                type="button"
+                                className={`${styles.filterPill} ${filterCreationType === 'manual' ? styles.activeManualPill : ''}`}
+                                onClick={() => setFilterCreationType(prev => prev === 'manual' ? 'all' : 'manual')}
+                                title="Filter bots created manually"
+                            >
+                                Manual / Custom Bots ({manualCount})
                             </button>
                         </div>
 
@@ -475,6 +500,9 @@ export default function MyBots() {
                                                 <span className={styles.timeframeBadge}>{bot.timeframe || '15m'}</span>
                                                 <span className={`${styles.directionBadge} ${bot.direction?.toLowerCase() === 'short' ? styles.shortBadge : styles.longBadge}`}>
                                                     {bot.direction || 'Long'}
+                                                </span>
+                                                <span className={`${styles.creationTypeBadge} ${bot.creationType === 'ai' ? styles.creationBadgeAi : styles.creationBadgeManual}`}>
+                                                    {bot.creationType === 'ai' ? 'AI Bots' : 'Manual'}
                                                 </span>
                                                 <span className={styles.typeBadge}>{bot.type || 'AI STRATEGY'}</span>
                                             </div>

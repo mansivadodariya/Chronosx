@@ -19,6 +19,26 @@ function ErrorAlertIcon() {
 export default function StepRisk({ data, errors = {}, onChange }) {
     const { riskLevel, lotSize, maxOpenPositions, riskPerTrade, maxDailyLoss } = data;
 
+    const preventNegativeKeys = (e) => {
+        if (['-', '+', 'e', 'E'].includes(e.key)) {
+            e.preventDefault();
+        }
+    };
+
+    const handlePositiveNumber = (field, rawVal, isInt = false) => {
+        if (rawVal === '') {
+            onChange(field, '');
+            return;
+        }
+        const clean = String(rawVal).replace(isInt ? /[^0-9]/g : /[^0-9.]/g, '');
+        const num = isInt ? parseInt(clean, 10) : parseFloat(clean);
+        if (!isNaN(num)) {
+            onChange(field, Math.max(0, num));
+        } else {
+            onChange(field, '');
+        }
+    };
+
     const handleSelectPreset = (preset) => {
         onChange('riskLevel', preset.id);
         onChange('lotSize', preset.lotSize);
@@ -63,10 +83,11 @@ export default function StepRisk({ data, errors = {}, onChange }) {
                             step="0.01"
                             min="0.01"
                             max="10.0"
+                            onKeyDown={preventNegativeKeys}
                             className={`${styles.riskNumberInput} ${errors.lotSize ? styles.inputError : ''}`}
                             placeholder="e.g. 0.10"
                             value={lotSize}
-                            onChange={(e) => onChange('lotSize', e.target.value)}
+                            onChange={(e) => handlePositiveNumber('lotSize', e.target.value)}
                         />
                     </div>
                     {errors.lotSize && (
@@ -108,10 +129,12 @@ export default function StepRisk({ data, errors = {}, onChange }) {
                             type="number"
                             min="1"
                             max="20"
+                            step="1"
+                            onKeyDown={preventNegativeKeys}
                             className={`${styles.riskNumberInput} ${errors.maxOpenPositions ? styles.inputError : ''}`}
                             placeholder="e.g. 3"
                             value={maxOpenPositions}
-                            onChange={(e) => onChange('maxOpenPositions', e.target.value)}
+                            onChange={(e) => handlePositiveNumber('maxOpenPositions', e.target.value, true)}
                         />
                     </div>
                     {errors.maxOpenPositions && (
@@ -153,10 +176,11 @@ export default function StepRisk({ data, errors = {}, onChange }) {
                                 min="0.1"
                                 max="20"
                                 step="0.5"
+                                onKeyDown={preventNegativeKeys}
                                 className={`${styles.riskNumberInput} ${errors.riskPerTrade ? styles.inputError : ''}`}
                                 placeholder="e.g. 2.0"
                                 value={riskPerTrade}
-                                onChange={(e) => onChange('riskPerTrade', e.target.value)}
+                                onChange={(e) => handlePositiveNumber('riskPerTrade', e.target.value)}
                             />
                             <span className={styles.unitSuffix}>%</span>
                         </div>
@@ -201,10 +225,11 @@ export default function StepRisk({ data, errors = {}, onChange }) {
                                 min="1"
                                 max="50"
                                 step="1"
+                                onKeyDown={preventNegativeKeys}
                                 className={`${styles.riskNumberInput} ${errors.maxDailyLoss ? styles.inputError : ''}`}
                                 placeholder="e.g. 5.0"
                                 value={maxDailyLoss}
-                                onChange={(e) => onChange('maxDailyLoss', e.target.value)}
+                                onChange={(e) => handlePositiveNumber('maxDailyLoss', e.target.value)}
                             />
                             <span className={styles.unitSuffix}>%</span>
                         </div>
