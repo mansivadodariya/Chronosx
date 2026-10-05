@@ -42,20 +42,17 @@ export function getDynamicStepInfo(msg, allMessages, defaultCurrentStep = 2, def
         return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
     }
 
-    if (msg.step || msg.step_number) {
-        const stepNum = parseInt(msg.step || msg.step_number, 10);
-        const total = msg.total_steps || defaultTotalSteps;
-        const title = msg.step_title || STEP_TITLES[stepNum - 1] || 'Strategy Requirements';
-        const progress = Math.min(100, Math.max(15, Math.round((stepNum / total) * 100)));
-        return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
+    if (msg.step != null || msg.step_number != null) {
+        const rawStep = msg.step ?? msg.step_number;
+        const stepNum = parseInt(rawStep, 10);
+        if (!isNaN(stepNum) && stepNum > 0) {
+            const total = msg.total_steps || defaultTotalSteps;
+            const title = msg.step_title || STEP_TITLES[stepNum - 1] || 'Strategy Requirements';
+            const progress = Math.min(100, Math.max(15, Math.round((stepNum / total) * 100)));
+            return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
+        }
     }
 
-    const aiMessages = (allMessages || []).filter((m) => m.role === 'ai');
-    const aiIndex = aiMessages.indexOf(msg);
-    const stepNum = Math.min(4, Math.max(1, aiIndex >= 0 ? aiIndex + 1 : defaultCurrentStep));
-    const total = 4;
-    const title = STEP_TITLES[stepNum - 1] || 'Strategy Requirements';
-    const progress = Math.min(100, Math.max(25, Math.round((stepNum / total) * 100)));
-
-    return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
+    // If step is null or not provided in API response, do not show step progress bar
+    return null;
 }

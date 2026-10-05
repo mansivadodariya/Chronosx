@@ -183,7 +183,6 @@ export default function MyBots() {
     };
 
     const filteredBots = bots.filter((b) => {
-        const matchStatus = filterStatus === 'all' || b.status === filterStatus;
         const matchCreationType = filterCreationType === 'all' || b.creationType === filterCreationType;
         const q = searchQuery.toLowerCase().trim();
         const matchSearch = !q ||
@@ -192,7 +191,7 @@ export default function MyBots() {
             (b.type && b.type.toLowerCase().includes(q)) ||
             (b.pattern && b.pattern.toLowerCase().includes(q)) ||
             (b.creationType && b.creationType.toLowerCase().includes(q));
-        return matchStatus && matchCreationType && matchSearch;
+        return matchCreationType && matchSearch;
     });
 
     const hasAiBotPermission = checkPermissionInSet(visibleTabNames, 'ai bot builder');
@@ -218,18 +217,7 @@ export default function MyBots() {
                 subtitle="Manage, monitor, and deploy your algorithmic trading bots with real-time performance analytics."
                 rightAction={
                     <div className={styles.headerActions}>
-                        <button
-                            type="button"
-                            className={styles.refreshBtn}
-                            onClick={loadUserStrategies}
-                            title="Refresh Strategies"
-                            disabled={loading}
-                        >
-                            <svg className={loading ? styles.spinIcon : ''} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-                            </svg>
-                            <span>{loading ? 'Refreshing...' : 'Refresh'}</span>
-                        </button>
+                        
                         <button
                             type="button"
                             className={styles.createBtn}
@@ -433,41 +421,23 @@ export default function MyBots() {
                         <div className={styles.filterPills}>
                             <button
                                 type="button"
-                                className={`${styles.filterPill} ${filterStatus === 'all' && filterCreationType === 'all' ? styles.activePill : ''}`}
-                                onClick={() => {
-                                    setFilterStatus('all');
-                                    setFilterCreationType('all');
-                                }}
+                                className={`${styles.filterPill} ${filterCreationType === 'all' ? styles.activePill : ''}`}
+                                onClick={() => setFilterCreationType('all')}
                             >
                                 All ({bots.length})
                             </button>
                             <button
                                 type="button"
-                                className={`${styles.filterPill} ${filterStatus === 'active' ? styles.activePill : ''}`}
-                                onClick={() => setFilterStatus('active')}
-                            >
-                                Active ({activeCount})
-                            </button>
-                            <button
-                                type="button"
-                                className={`${styles.filterPill} ${filterStatus === 'paused' ? styles.activePill : ''}`}
-                                onClick={() => setFilterStatus('paused')}
-                            >
-                                Paused ({bots.length - activeCount})
-                            </button>
-                            <div className={styles.filterDivider} />
-                            <button
-                                type="button"
-                                className={`${styles.filterPill} ${filterCreationType === 'ai' ? styles.activeAiPill : ''}`}
-                                onClick={() => setFilterCreationType(prev => prev === 'ai' ? 'all' : 'ai')}
+                                className={`${styles.filterPill} ${filterCreationType === 'ai' ? styles.activePill : ''}`}
+                                onClick={() => setFilterCreationType('ai')}
                                 title="Filter bots generated via AI"
                             >
                                 AI Bots ({aiCount})
                             </button>
                             <button
                                 type="button"
-                                className={`${styles.filterPill} ${filterCreationType === 'manual' ? styles.activeManualPill : ''}`}
-                                onClick={() => setFilterCreationType(prev => prev === 'manual' ? 'all' : 'manual')}
+                                className={`${styles.filterPill} ${filterCreationType === 'manual' ? styles.activePill : ''}`}
+                                onClick={() => setFilterCreationType('manual')}
                                 title="Filter bots created manually"
                             >
                                 Manual / Custom Bots ({manualCount})
@@ -637,8 +607,8 @@ export default function MyBots() {
                             <h3 className={styles.noResultsTitle}>No Matching Strategies Found</h3>
                             <p className={styles.noResultsDesc}>
                                 {searchQuery
-                                    ? <>No trading strategies matched your search &ldquo;<strong>{searchQuery}</strong>&rdquo;{filterStatus !== 'all' ? ` in ${filterStatus} status` : ''}.</>
-                                    : <>No trading strategies found with status &ldquo;<strong>{filterStatus}</strong>&rdquo;.</>
+                                    ? <>No trading strategies matched your search &ldquo;<strong>{searchQuery}</strong>&rdquo;{filterCreationType !== 'all' ? ` in ${filterCreationType === 'ai' ? 'AI Bots' : 'Manual / Custom Bots'}` : ''}.</>
+                                    : <>No trading strategies found in &ldquo;<strong>{filterCreationType === 'ai' ? 'AI Bots' : 'Manual / Custom Bots'}</strong>&rdquo;.</>
                                 }
                             </p>
                             <div className={styles.noResultsActions}>
@@ -647,7 +617,7 @@ export default function MyBots() {
                                     className={styles.clearSearchBtn}
                                     onClick={() => {
                                         setSearchQuery('');
-                                        setFilterStatus('all');
+                                        setFilterCreationType('all');
                                     }}
                                 >
                                     <span>Reset Filters & Search</span>

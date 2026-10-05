@@ -510,6 +510,7 @@ export default function AdvisorChatView({
                                                 {/* Dynamic Step Indicator Badge */}
                                                 {(() => {
                                                     const stepInfo = getDynamicStepInfo(msg, messages, currentStep, totalSteps);
+                                                    if (!stepInfo) return null;
                                                     return (
                                                         <div className={styles.stepIndicatorPill}>
                                                             <div className={styles.stepIndicatorLeft}>
