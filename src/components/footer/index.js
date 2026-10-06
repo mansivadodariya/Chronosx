@@ -152,7 +152,9 @@ export default function Footer() {
         </div>
 
         <div className={styles.disclaimerSection}>
-          <p><strong>ChronosX Financial Technologies FZ-LLC</strong> | Dubai Silicon Oasis, IFZA Business Park, Building A1, Dubai, United Arab Emirates (UAE). Reg No: FZ-LLC-2024-CX8901.</p>
+          <div className={styles.companyRegLine} dir="ltr">
+            <strong>ChronosX Financial Technologies FZ-LLC</strong> | Dubai Silicon Oasis, IFZA Business Park, Building A1, Dubai, United Arab Emirates (UAE). Reg No: FZ-LLC-2024-CX8901
+          </div>
           <p>{t('footer.disclaimerP1')}</p>
           <p>{t('footer.disclaimerP2')}</p>
           <p>{t('footer.disclaimerP3')}</p>

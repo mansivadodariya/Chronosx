@@ -53,8 +53,8 @@ export default function Testimonials() {
     }
   ];
 
-  // Triple array for perfectly seamless continuous scroll
-  const marqueeItems = [...testimonialsData, ...testimonialsData, ...testimonialsData];
+  // Quadruple array for seamless infinite continuous scroll on any screen size
+  const marqueeItems = [...testimonialsData, ...testimonialsData, ...testimonialsData, ...testimonialsData];
 
   return (
     <div className={styles.testimonials}>
@@ -67,13 +67,13 @@ export default function Testimonials() {
         />
       </div>
       {/* Standard Width Marquee with Foggy Edge Layers */}
-      <div className={styles.marqueeWrapper}>
+      <div className={styles.marqueeWrapper} dir="ltr">
         <div className={styles.fogLeft}></div>
         <div className={styles.fogRight}></div>
 
-        <div className={styles.marqueeTrack}>
+        <div className={styles.marqueeTrack} dir="ltr">
           {marqueeItems.map((item, index) => (
-            <div key={index} className={styles.card}>
+            <div key={index} className={styles.card} dir="ltr">
               <div className={styles.stars}>
                 {[...Array(item.rating)].map((_, i) => (
                   <img key={i} src="/assets/icons/star.svg" alt="star" />
@@ -97,3 +97,4 @@ export default function Testimonials() {
     </div>
   );
 }
+

@@ -161,10 +161,10 @@ export default function BeforeAfterComparison() {
 
         {/* Standardized Header */}
         <SectionHeader
-          badge="ALGORITHM COMPARISON"
-          title1="See the Difference."
-          title2="Raw Chart vs ChronosX Algo."
-          description="Transform noisy raw market price action into institutional trade execution setups. Drag the slider to reveal high-impact AI Buy/Sell signals, liquidity sweeps, and multi-timeframe backtest confluence."
+          badge={t('homeSections.comparison.badge', 'ALGORITHM COMPARISON')}
+          title1={t('homeSections.comparison.title1', 'See the Difference.')}
+          title2={t('homeSections.comparison.title2', 'Raw Chart vs ChronosX Algo.')}
+          description={t('homeSections.comparison.description', 'Transform noisy raw market price action into institutional trade execution setups. Drag the slider to reveal high-impact AI Buy/Sell signals, liquidity sweeps, and multi-timeframe backtest confluence.')}
         />
 
         {/* Interactive Comparison Card Container */}
@@ -178,7 +178,7 @@ export default function BeforeAfterComparison() {
 
           {/* LAYER 1: BEFORE (Raw Candlestick Chart ONLY) */}
           <div className={styles.layerBefore}>
-            <div className={styles.badgeBefore}>BEFORE</div>
+            <div className={styles.badgeBefore}>{t('homeSections.comparison.before', 'BEFORE')}</div>
 
             <svg viewBox={`0 0 ${width} ${height}`} className={styles.svgChart} preserveAspectRatio="none">
               {/* Background Fine Grid Lines */}
@@ -219,7 +219,7 @@ export default function BeforeAfterComparison() {
             className={styles.layerAfter}
             style={{ clipPath: `polygon(${sliderPos}% 0, 100% 0, 100% 100%, ${sliderPos}% 100%)` }}
           >
-            <div className={styles.badgeAfter}>CHRONOSX ALGORITHM</div>
+            <div className={styles.badgeAfter}>{t('homeSections.comparison.after', 'CHRONOSX ALGORITHM')}</div>
 
             <svg viewBox={`0 0 ${width} ${height}`} className={styles.svgChart} preserveAspectRatio="none">
               <defs>
@@ -287,7 +287,7 @@ export default function BeforeAfterComparison() {
               <g transform={`translate(${padding.left + 2 * candleWidth - 40}, ${priceToY(545) - 40})`} filter="url(#sellBadgeGlow)">
                 <rect width="80" height="27" rx="6" fill="url(#sellBadgeGrad)" stroke="rgba(255, 255, 255, 0.28)" strokeWidth="0.8" />
                 <polygon points="40,32 35,27 45,27" fill="#BE123C" />
-                <text x="40" y="11.5" fill="#FFFFFF" fontSize="8" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="800" letterSpacing="0.6" textAnchor="middle">SELL SIGNAL</text>
+                <text x="40" y="11.5" fill="#FFFFFF" fontSize="8" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="800" letterSpacing="0.6" textAnchor="middle">{t('homeSections.comparison.sellSignal', 'SELL SIGNAL')}</text>
                 <text x="40" y="22.5" fill="#A7F3D0" fontSize="9.5" fontFamily="system-ui, -apple-system, monospace" fontWeight="800" textAnchor="middle">$545.00</text>
               </g>
               <line x1={padding.left + 2 * candleWidth} y1={priceToY(472)} x2={padding.left + 8 * candleWidth} y2={priceToY(472)} stroke="#EF5350" strokeDasharray="3 3" strokeWidth="1" />
@@ -305,7 +305,7 @@ export default function BeforeAfterComparison() {
               <g transform={`translate(${padding.left + 27 * candleWidth - 40}, ${priceToY(410) + 10})`} filter="url(#buyBadgeGlow)">
                 <polygon points="40,-5 35,0 45,0" fill="#10B981" />
                 <rect width="80" height="27" rx="6" fill="url(#buyBadgeGrad)" stroke="rgba(255, 255, 255, 0.28)" strokeWidth="0.8" />
-                <text x="40" y="11.5" fill="#FFFFFF" fontSize="8" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="800" letterSpacing="0.6" textAnchor="middle">BUY SIGNAL</text>
+                <text x="40" y="11.5" fill="#FFFFFF" fontSize="8" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="800" letterSpacing="0.6" textAnchor="middle">{t('homeSections.comparison.buySignal', 'BUY SIGNAL')}</text>
                 <text x="40" y="22.5" fill="#E6FFFA" fontSize="9.5" fontFamily="system-ui, -apple-system, monospace" fontWeight="800" textAnchor="middle">$410.00</text>
               </g>
 
@@ -325,7 +325,7 @@ export default function BeforeAfterComparison() {
               <g transform={`translate(${padding.left + 42 * candleWidth - 40}, ${priceToY(585) - 40})`} filter="url(#sellBadgeGlow)">
                 <rect width="80" height="27" rx="6" fill="url(#sellBadgeGrad)" stroke="rgba(255, 255, 255, 0.28)" strokeWidth="0.8" />
                 <polygon points="40,32 35,27 45,27" fill="#BE123C" />
-                <text x="40" y="11.5" fill="#FFFFFF" fontSize="8" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="800" letterSpacing="0.6" textAnchor="middle">SELL SIGNAL</text>
+                <text x="40" y="11.5" fill="#FFFFFF" fontSize="8" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="800" letterSpacing="0.6" textAnchor="middle">{t('homeSections.comparison.sellSignal', 'SELL SIGNAL')}</text>
                 <text x="40" y="22.5" fill="#A7F3D0" fontSize="9.5" fontFamily="system-ui, -apple-system, monospace" fontWeight="800" textAnchor="middle">$585.00</text>
               </g>
 
@@ -341,7 +341,7 @@ export default function BeforeAfterComparison() {
               <g transform={`translate(${padding.left + 50 * candleWidth - 40}, ${priceToY(460) + 10})`} filter="url(#buyBadgeGlow)">
                 <polygon points="40,-5 35,0 45,0" fill="#10B981" />
                 <rect width="80" height="27" rx="6" fill="url(#buyBadgeGrad)" stroke="rgba(255, 255, 255, 0.28)" strokeWidth="0.8" />
-                <text x="40" y="11.5" fill="#FFFFFF" fontSize="8" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="800" letterSpacing="0.6" textAnchor="middle">BUY SIGNAL</text>
+                <text x="40" y="11.5" fill="#FFFFFF" fontSize="8" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="800" letterSpacing="0.6" textAnchor="middle">{t('homeSections.comparison.buySignal', 'BUY SIGNAL')}</text>
                 <text x="40" y="22.5" fill="#E6FFFA" fontSize="9.5" fontFamily="system-ui, -apple-system, monospace" fontWeight="800" textAnchor="middle">$462.00</text>
               </g>
 
@@ -355,51 +355,51 @@ export default function BeforeAfterComparison() {
               {/* Parameters Table */}
               <div className={styles.hudTableWrapper}>
                 <div className={styles.hudTableHeader}>
-                  <span>MTF</span>
-                  <span>Parameters</span>
-                  <span>Data</span>
+                  <span>{t('homeSections.comparison.mtf', 'MTF')}</span>
+                  <span>{t('homeSections.comparison.parameters', 'Parameters')}</span>
+                  <span>{t('homeSections.comparison.data', 'Data')}</span>
                 </div>
                 <div className={styles.hudTableRow}>
                   <span className={styles.tfBadge}>5M</span>
-                  <span>Sentiment Range</span>
+                  <span>{t('homeSections.comparison.sentimentRange', 'Sentiment Range')}</span>
                   <span className={styles.valGreen}>28.38%</span>
                 </div>
                 <div className={styles.hudTableRow}>
                   <span className={styles.tfBadge}>M15</span>
-                  <span>Footprint</span>
+                  <span>{t('homeSections.comparison.footprint', 'Footprint')}</span>
                   <span className={styles.valRed}>15.57%</span>
                 </div>
                 <div className={styles.hudTableRow}>
                   <span className={styles.tfBadge}>M30</span>
-                  <span>Trend Strength</span>
+                  <span>{t('homeSections.comparison.trendStrength', 'Trend Strength')}</span>
                   <span className={styles.valRed}>19.14%</span>
                 </div>
                 <div className={styles.hudTableRow}>
                   <span className={styles.tfBadge}>1H</span>
-                  <span>Condition</span>
-                  <span className={styles.valRed}>Bearish</span>
+                  <span>{t('homeSections.comparison.condition', 'Condition')}</span>
+                  <span className={styles.valRed}>{t('homeSections.comparison.bearish', 'Bearish')}</span>
                 </div>
                 <div className={styles.hudTableRow}>
                   <span className={styles.tfBadge}>4H</span>
-                  <span>Optimal Sensitivity</span>
+                  <span>{t('homeSections.comparison.optimalSensitivity', 'Optimal Sensitivity')}</span>
                   <span className={styles.valWhite}>2</span>
                 </div>
               </div>
 
               {/* Backtest Win Rate Table */}
               <div className={styles.backtestTable}>
-                <div className={styles.btHeader}>Backtest Table</div>
+                <div className={styles.btHeader}>{t('homeSections.comparison.backtestTable', 'Backtest Table')}</div>
                 <div className={styles.btGrid}>
                   <div>
-                    <span className={styles.btLabel}>TP1 %</span>
+                    <span className={styles.btLabel}>% TP1</span>
                     <span className={styles.btVal}>78.13%</span>
                   </div>
                   <div>
-                    <span className={styles.btLabel}>TP2 %</span>
+                    <span className={styles.btLabel}>% TP2</span>
                     <span className={styles.btVal}>65.63%</span>
                   </div>
                   <div>
-                    <span className={styles.btLabel}>TP3 %</span>
+                    <span className={styles.btLabel}>% TP3</span>
                     <span className={styles.btVal}>50%</span>
                   </div>
                 </div>
@@ -408,8 +408,8 @@ export default function BeforeAfterComparison() {
               {/* Trend Strength Meter */}
               <div className={styles.trendStrengthBox}>
                 <div className={styles.tsHeader}>
-                  <span>Trend Strength</span>
-                  <span className={styles.tsLabel}>Bullish Momentum</span>
+                  <span>{t('homeSections.comparison.trendStrength', 'Trend Strength')}</span>
+                  <span className={styles.tsLabel}>{t('homeSections.comparison.bullishMomentum', 'Bullish Momentum')}</span>
                 </div>
                 <div className={styles.tsMeterBar}>
                   <div className={styles.tsMeterFill} style={{ width: '44.8%' }} />
@@ -434,7 +434,7 @@ export default function BeforeAfterComparison() {
 
           {/* Drag Pill Badge */}
           <div className={styles.dragBadgePill}>
-            <span>Drag to compare</span>
+            <span>{t('homeSections.comparison.dragToCompare', 'Drag to compare')}</span>
           </div>
 
         </div>

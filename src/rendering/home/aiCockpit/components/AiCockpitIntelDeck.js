@@ -78,9 +78,9 @@ export default React.memo(function AiCockpitIntelDeck({
 
           <div className={styles.sliderTrackWrapper}>
             <div className={styles.sliderRangeHeader}>
-              <span>{t('homeSections.aiCockpit.sliderMin', 'ACCUMULATION')}</span>
-              <span className={styles.rangeCenterText}>{t('homeSections.aiCockpit.sliderCenter', 'MOMENTUM GAUGE')}</span>
-              <span>{t('homeSections.aiCockpit.sliderMax', 'EXPANSION')}</span>
+              <span>{t('homeSections.aiCockpit.sliderMin', 'SWING')}</span>
+              <span className={styles.rangeCenterText}>{t('homeSections.aiCockpit.sliderCenter', 'SIGNAL CONVICTION')}</span>
+              <span>{t('homeSections.aiCockpit.sliderMax', 'SCALPING')}</span>
             </div>
             <div className={styles.sliderTrack}>
               <motion.div

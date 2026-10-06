@@ -6,6 +6,7 @@ import { useStreamingText } from '../utils/streamingRenderer';
 import { sanitizeRawJsonText } from '../utils/chatTextFormatter';
 import { renderFormattedMarkdown } from '../utils/markdownRenderer';
 import { getStoredUser, getStoredUserId, hydrateUserFromProfile } from '@/lib/authSession';
+import { useLanguage } from '@/context/LanguageContext';
 import InteractiveQuestionWizard from './InteractiveQuestionWizard';
 import ReadyToProceedCard from './ReadyToProceedCard';
 import { getDynamicStepInfo, DYNAMIC_LOADING_STAGES } from '../utils/chatUiHelpers';
@@ -118,6 +119,7 @@ export default function AdvisorChatView({
     const exploreTextareaRef = useRef(null);
     const completedStreamsRef = useRef(new Set());
     const [, forceUpdate] = useState(0);
+    const { t } = useLanguage();
 
     // Explore / Strategy popup states
     const [isStrategyMenuOpen, setIsStrategyMenuOpen] = useState(false);
@@ -168,6 +170,18 @@ export default function AdvisorChatView({
         const fullName = [firstName, lastName].filter(Boolean).join(' ');
         return fullName || user?.name || user?.full_name || user?.email?.split('@')[0] || 'Trader';
     }, [user]);
+
+    // Dynamic greeting based on current time of day
+    const dynamicGreeting = useMemo(() => {
+        const hour = new Date().getHours();
+        if (hour >= 5 && hour < 12) {
+            return t('strategyStudio.greetingMorning', 'Good morning, trader');
+        }
+        if (hour >= 12 && hour < 17) {
+            return t('strategyStudio.greetingAfternoon', 'Good afternoon, trader');
+        }
+        return t('strategyStudio.greetingEvening', 'Good evening, trader');
+    }, [t]);
 
     const scrollToBottom = useCallback((smooth = true) => {
         if (chatScrollContainerRef.current) {
@@ -326,7 +340,7 @@ export default function AdvisorChatView({
 
                         {/* Greeting Hero */}
                         <h1 className={styles.greetingTitleLarge}>
-                            Good morning, trader •
+                            • {dynamicGreeting}
                         </h1>
                         <div className={styles.greetingSubName}>
                             {userName}

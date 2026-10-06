@@ -102,12 +102,32 @@ const getNavSections = (t) => [
   }
 ];
 
-/** Match current route to nav item (handles trailing slashes and nested paths). */
+const SUPPORTED_LOCALES = ['en', 'ar', 'ary', 'es', 'ru', 'zh', 'vi', 'id', 'fil', 'arabic', 'spanish', 'russian', 'chinese', 'vietnamese', 'indonesian', 'filipino', 'darija'];
+
+function stripLocalePrefix(path) {
+  if (!path) return '/';
+  const clean = path.split('?')[0].replace(/\/$/, '') || '/';
+  const parts = clean.split('/').filter(Boolean);
+  if (parts.length > 0 && SUPPORTED_LOCALES.includes(parts[0].toLowerCase())) {
+    const withoutLocale = '/' + parts.slice(1).join('/');
+    return withoutLocale === '' ? '/' : withoutLocale;
+  }
+  return clean;
+}
+
+function getLocalizedHref(href, lang) {
+  if (!href || href.startsWith('http')) return href;
+  const clean = stripLocalePrefix(href);
+  const currentLang = lang || 'en';
+  return clean === '/' ? `/${currentLang}` : `/${currentLang}${clean}`;
+}
+
+/** Match current route to nav item (handles trailing slashes, locale prefixes, and nested paths). */
 function isNavItemActive(pathname, href, search = '') {
   if (!pathname || !href) return false;
-  const current = pathname.split('?')[0].replace(/\/$/, '') || '/';
-  const target = href.replace(/\/$/, '') || '/';
-  if (current === target || current.startsWith(`${target}/`)) return true;
+  const current = stripLocalePrefix(pathname);
+  const target = stripLocalePrefix(href);
+  if (current === target || (target !== '/' && current.startsWith(`${target}/`))) return true;
 
   // Handle /backtest and /backtesting route matching to AI Trading Bot or AI Trading Signal
   if (current === '/backtest' || current === '/backtesting') {
@@ -134,7 +154,7 @@ function isNavItemActive(pathname, href, search = '') {
   return false;
 }
 
-const NavItem = ({ item, pathname, onNavigate, isCollapsed }) => {
+const NavItem = ({ item, pathname, onNavigate, isCollapsed, language }) => {
   const Icon = item.icon;
   const router = useRouter();
   const [currentSearch, setCurrentSearch] = useState('');
@@ -164,7 +184,8 @@ const NavItem = ({ item, pathname, onNavigate, isCollapsed }) => {
             data-active={isActive ? 'true' : undefined}
             onClick={() => {
               if (item.subItems && item.subItems.length > 0) {
-                const targetHref = item.subItems.find(s => !s.isExternal)?.href || item.subItems[0].href;
+                const rawTarget = item.subItems.find(s => !s.isExternal)?.href || item.subItems[0].href;
+                const targetHref = getLocalizedHref(rawTarget, language);
                 if (typeof window !== 'undefined' && pathname !== targetHref) {
                   window.dispatchEvent(new CustomEvent('page:loading:start'));
                 }
@@ -205,7 +226,7 @@ const NavItem = ({ item, pathname, onNavigate, isCollapsed }) => {
                   return (
                     <Link
                       key={sub.href}
-                      href={sub.href}
+                      href={getLocalizedHref(sub.href, language)}
                       className={styles.flyoutLink}
                       data-active={isSubActive ? 'true' : undefined}
                       onClick={(e) => {
@@ -234,7 +255,8 @@ const NavItem = ({ item, pathname, onNavigate, isCollapsed }) => {
           data-active={isActive ? 'true' : undefined}
           onClick={() => {
             if (item.subItems && item.subItems.length > 0) {
-              const targetHref = item.subItems.find(s => !s.isExternal)?.href || item.subItems[0].href;
+              const rawTarget = item.subItems.find(s => !s.isExternal)?.href || item.subItems[0].href;
+              const targetHref = getLocalizedHref(rawTarget, language);
               if (!isAnySubActive && pathname !== targetHref) {
                 // If not currently on any subpage, open and navigate to first internal subitem
                 setIsOpen(true);
@@ -291,7 +313,7 @@ const NavItem = ({ item, pathname, onNavigate, isCollapsed }) => {
               return (
                 <Link
                   key={sub.href}
-                  href={sub.href}
+                  href={getLocalizedHref(sub.href, language)}
                   className={styles.subMenuLink}
                   data-active={isSubActive ? 'true' : undefined}
                   onClick={onNavigate}
@@ -311,7 +333,7 @@ const NavItem = ({ item, pathname, onNavigate, isCollapsed }) => {
 
   return (
     <Link
-      href={item.href}
+      href={getLocalizedHref(item.href, language)}
       className={styles.menu}
       data-active={isActive ? 'true' : undefined}
       aria-current={isActive ? 'page' : undefined}
@@ -430,55 +452,23 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
   };
 
   const ROUTE_TAB_MAP = {
-    '/dashboard': 'Dashboard',
-    '/chart-scanner': 'AI Chart Scanner',
-    '/ai-chart-scanner': 'AI Chart Scanner',
-    '/trade-audit': 'AI Past Trade Analyzer',
-    '/ai-trade-audit': 'AI Past Trade Analyzer',
-    '/trade-advisor': 'AI Past Trade Analyzer',
-    '/ai-trade-advisor': 'AI Past Trade Analyzer',
-    '/my-bots': 'My Bots',
-    '/ai-bot-builder': 'AI Bot Builder',
-    '/manual-bot-builder': 'Custom Bot Builder',
-    '/custom-bot-builder': 'Custom Bot Builder',
-    '/bot-library': 'Browse Bots Library',
-    '/browse-bots': 'Browse Bots Library',
-    '/bot-builder': 'AI Bot Builder',
-    '/strategy-studio': 'AI Bot Builder',
-    '/ai-strategy-studio': 'AI Bot Builder',
-    '/backtest': 'Backtest',
-    '/backtesting': 'Backtest',
-    '/market-assistant': 'AI Market Assistant',
-    '/ai-market-assistant': 'AI Market Assistant',
-    '/trading-signal': 'AI Trading Signal',
-    '/ai-trading-signal': 'AI Trading Signal',
-    '/strategy-hub': 'AI Trading Signal',
-    '/ai-strategy-hub': 'AI Trading Signal',
-    '/strategy-core': 'AI Trading Signal',
-    '/ai-strategy-core': 'AI Trading Signal',
-    '/strategy-hub/live': 'Signal Terminal',
-    '/strategy-hub/strategy': 'Strategy Signal',
-    '/strategy-signal': 'Strategy Signal',
-    '/predefined-strategies': 'Predefined Strategies',
-    '/live-scanner': 'Signal Terminal',
-    '/live-market-scanner': 'Signal Terminal',
-    '/signal-terminal': 'Signal Terminal',
-    '/tools': 'Tools',
-    '/calendar': 'Economic Calendar',
-    '/economic-calendar': 'Economic Calendar',
-    '/calculator': 'Forex Calculator',
-    '/forex-calculator': 'Forex Calculator',
-    '/news': 'Market News',
-    '/market-news': 'Market News',
-    '/credit-history': 'Credit History',
-    '/plans': 'Subscription Plans',
-    '/subscription-plans': 'Subscription Plans',
-    '/broker': 'Associated Brokers',
-    '/brokers': 'Associated Brokers',
-    '/affiliate': 'Affiliate',
-    '/dashboard/affiliate': 'Affiliate',
-    '/profile': 'Profile',
-    '/settings': 'Profile',
+    '/dashboard': 'Dashboard', '/chart-scanner': 'AI Chart Scanner', '/ai-chart-scanner': 'AI Chart Scanner',
+    '/trade-audit': 'AI Past Trade Analyzer', '/ai-trade-audit': 'AI Past Trade Analyzer',
+    '/trade-advisor': 'AI Past Trade Analyzer', '/ai-trade-advisor': 'AI Past Trade Analyzer',
+    '/my-bots': 'My Bots', '/ai-bot-builder': 'AI Bot Builder', '/manual-bot-builder': 'Custom Bot Builder',
+    '/custom-bot-builder': 'Custom Bot Builder', '/bot-library': 'Browse Bots Library', '/browse-bots': 'Browse Bots Library',
+    '/bot-builder': 'AI Bot Builder', '/strategy-studio': 'AI Bot Builder', '/ai-strategy-studio': 'AI Bot Builder',
+    '/backtest': 'Backtest', '/backtesting': 'Backtest', '/market-assistant': 'AI Market Assistant',
+    '/ai-market-assistant': 'AI Market Assistant', '/trading-signal': 'AI Trading Signal', '/ai-trading-signal': 'AI Trading Signal',
+    '/strategy-hub': 'AI Trading Signal', '/ai-strategy-hub': 'AI Trading Signal', '/strategy-core': 'AI Trading Signal',
+    '/ai-strategy-core': 'AI Trading Signal', '/strategy-hub/live': 'Signal Terminal', '/strategy-hub/strategy': 'Strategy Signal',
+    '/strategy-signal': 'Strategy Signal', '/predefined-strategies': 'Predefined Strategies',
+    '/live-scanner': 'Signal Terminal', '/live-market-scanner': 'Signal Terminal', '/signal-terminal': 'Signal Terminal',
+    '/tools': 'Tools', '/calendar': 'Economic Calendar', '/economic-calendar': 'Economic Calendar',
+    '/calculator': 'Forex Calculator', '/forex-calculator': 'Forex Calculator', '/news': 'Market News',
+    '/market-news': 'Market News', '/credit-history': 'Credit History', '/plans': 'Subscription Plans',
+    '/subscription-plans': 'Subscription Plans', '/broker': 'Associated Brokers', '/brokers': 'Associated Brokers',
+    '/affiliate': 'Affiliate', '/dashboard/affiliate': 'Affiliate', '/profile': 'Profile', '/settings': 'Profile',
   };
 
   const rawSections = getNavSections(t);
@@ -640,6 +630,7 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
                     pathname={pathname}
                     onNavigate={handleNavigate}
                     isCollapsed={isCollapsed}
+                    language={language}
                   />
                 ))}
               </div>

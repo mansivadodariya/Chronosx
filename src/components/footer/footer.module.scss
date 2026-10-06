@@ -158,7 +158,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            text-align: left;
+            text-align: start;
 
             .brandLogo {
                 display: flex;
@@ -185,7 +185,7 @@
                 line-height: 1.65;
                 margin: 0 0 18px 0;
                 max-width: 330px;
-                text-align: left;
+                text-align: start;
                 @include font-normal;
             }
 
@@ -221,7 +221,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            text-align: left;
+            text-align: start;
 
             h4 {
                 color: #6EE7B7;
@@ -232,12 +232,13 @@
                 margin: 0 0 20px 0;
                 font-family: var(--font-plus-jakarta), sans-serif;
                 position: relative;
+                text-align: start;
 
                 &::after {
                     content: '';
                     position: absolute;
                     bottom: -6px;
-                    left: 0;
+                    inset-inline-start: 0;
                     width: 24px;
                     height: 2px;
                     background: #18c98b;
@@ -252,6 +253,7 @@
                 display: flex;
                 flex-direction: column;
                 gap: 13px;
+                text-align: start;
 
                 li {
                     a {
@@ -260,11 +262,16 @@
                         text-decoration: none;
                         transition: all 0.25s ease;
                         display: inline-block;
+                        text-align: start;
                         @include font-normal;
 
                         &:hover {
                             color: #6EE7B7;
                             transform: translateX(4px);
+
+                            :global(html[dir="rtl"]) & {
+                                transform: translateX(-4px);
+                            }
                         }
                     }
                 }
@@ -278,11 +285,29 @@
         display: flex;
         flex-direction: column;
         gap: 14px;
-        text-align: left;
+        text-align: start;
 
         @include respond-to("sm") {
             margin-bottom: 26px;
             gap: 12px;
+        }
+
+        .companyRegLine {
+            color: #8c8881;
+            font-size: 12px;
+            line-height: 1.6;
+            direction: ltr;
+            unicode-bidi: isolate;
+            text-align: start;
+
+            :global(html[dir="rtl"]) & {
+                text-align: right;
+            }
+
+            strong {
+                color: #d1d5db;
+                font-weight: 700;
+            }
         }
 
         p {
@@ -290,6 +315,7 @@
             font-size: 11.8px;
             line-height: 1.65;
             margin: 0;
+            text-align: start;
             @include font-normal;
 
             @include respond-to("sm") {
@@ -313,6 +339,7 @@
             color: #8a867f;
             margin-top: 4px;
             font-size: 12px;
+            text-align: start;
 
             a {
                 color: #18c98b;
@@ -443,6 +470,14 @@
         }
 
         .disclaimerSection {
+            .companyRegLine {
+                color: #64748B !important;
+
+                strong {
+                    color: #0F172A !important;
+                }
+            }
+
             p {
                 color: #64748B !important;
 

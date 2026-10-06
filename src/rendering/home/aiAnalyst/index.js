@@ -5,11 +5,13 @@ import styles from './aiAnalyst.module.scss';
 import SectionHeader from '@/components/sectionHeader';
 import StreamingText from '@/components/streamingText';
 import { useTheme } from '@/context/ThemeContext';
+import { useLanguage } from '@/context/LanguageContext';
 import StreamingWords from './components/StreamingWords';
 import DedicatedChartRenderer from './components/DedicatedChartRenderer';
 import { tabPresets, tabKeys, featurePoints } from './constants/analystData';
 export default function AiAnalyst() {
   const { theme } = useTheme();
+  const { t } = useLanguage();
   const terminalLogo = theme === 'light' ? '/assets/logo/darklogo.png' : '/assets/logo/logo.png';
   const [activeSidebarTab, setActiveSidebarTab] = useState('chat');
   const [messages, setMessages] = useState([]);
@@ -279,12 +281,12 @@ export default function AiAnalyst() {
                   <div className={styles.brandTitleRow}>
                     <img src={terminalLogo} alt="ChronosX" className={styles.terminalLogoImg} />
                     <span className={styles.headerDivider}>|</span>
-                    <span className={styles.headerSubtitle}>AI MARKET ASSISTANT</span>
+                    <span className={styles.headerSubtitle}>{t('homeSections.aiAnalyst.aiAssistantTitle', 'AI MARKET ASSISTANT')}</span>
                   </div>
 
                   <div className={styles.onlineStatusBadge}>
                     <span className={styles.statusDotGreen} />
-                    <span className={styles.statusLabel}>AI ONLINE</span>
+                    <span className={styles.statusLabel}>{t('homeSections.aiAnalyst.aiOnline', 'AI ONLINE')}</span>
                   </div>
                 </header>
 
@@ -314,7 +316,7 @@ export default function AiAnalyst() {
                               </svg>
                             </div>
                             <div className={styles.userBubbleBody}>
-                              <div className={styles.userHeaderName}>You</div>
+                              <div className={styles.userHeaderName}>{t('homeSections.aiAnalyst.userYou', 'You')}</div>
                               <div className={styles.userQueryText}>{msg.text}</div>
                               <div className={styles.userTimestampRow}>
                                 <span>{msg.time || "10:24 AM"}</span>
@@ -334,14 +336,14 @@ export default function AiAnalyst() {
                                     <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z"/>
                                   </svg>
                                 </div>
-                                <span className={styles.aiBotName}>ChronosX Assistant</span>
+                                <span className={styles.aiBotName}>{t('homeSections.aiAnalyst.botName', 'ChronosX Assistant')}</span>
                                 <span className={styles.verifiedSignalBadge}>
                                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                                     <circle cx="12" cy="12" r="10"/>
                                     <line x1="12" y1="8" x2="12" y2="16"/>
                                     <line x1="8" y1="12" x2="16" y2="12"/>
                                   </svg>
-                                  VERIFIED SIGNAL
+                                  {t('homeSections.aiAnalyst.verifiedSignal', 'VERIFIED SIGNAL')}
                                 </span>
                               </div>
 
@@ -390,7 +392,7 @@ export default function AiAnalyst() {
                                   <line x1="16" y1="13" x2="8" y2="13"/>
                                   <line x1="16" y1="17" x2="8" y2="17"/>
                                 </svg>
-                                Sources
+                                {t('homeSections.aiAnalyst.sources', 'Sources')}
                               </div>
 
                               {msg.pills?.map((pill, pIdx) => (
@@ -424,7 +426,7 @@ export default function AiAnalyst() {
                           <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z"/>
                         </svg>
                       </div>
-                      <span className={styles.thinkingText}>SCANNING INSTITUTIONAL ORDER FLOW & VOLUMES...</span>
+                      <span className={styles.thinkingText}>{t('homeSections.aiAnalyst.scanningFlow', 'SCANNING INSTITUTIONAL ORDER FLOW & VOLUMES...')}</span>
                     </motion.div>
                   )}
                 </div>
@@ -441,7 +443,7 @@ export default function AiAnalyst() {
                     type="text"
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
-                    placeholder="Ask ChronosX Assistant anything..."
+                    placeholder={t('homeSections.aiAnalyst.inputPlaceholder', 'Ask ChronosX Assistant anything...')}
                     className={styles.terminalInput}
                   />
 
@@ -477,23 +479,26 @@ export default function AiAnalyst() {
           >
             <SectionHeader
               align="left"
-              badge="CHRONOSX · AI MARKET ASSISTANT"
-              title1="AI on Top of Verified Data."
-              title2="Not Instead of It."
-              description="Raw signals and setups originate from real-time market data and quantitative algorithms. ChronosX translates complex charts into plain English—explaining exactly why a setup triggered, filtering market scans, and validating your risk parameters in milliseconds."
+              badge={t('homeSections.aiAnalyst.badge', 'CHRONOSX · AI MARKET ASSISTANT')}
+              title1={t('homeSections.aiAnalyst.title1', 'AI on Top of Verified Data.')}
+              title2={t('homeSections.aiAnalyst.title2', 'Not Instead of It.')}
+              description={t('homeSections.aiAnalyst.description', 'Raw signals and setups originate from real-time market data and quantitative algorithms. ChronosX translates complex charts into plain English—explaining exactly why a setup triggered, filtering market scans, and validating your risk parameters in milliseconds.')}
             />
 
             {/* Feature List Points */}
             <div className={styles.featureList}>
-              {featurePoints.map((item, index) => (
-                <div key={index} className={styles.featureItem}>
-                  <div className={styles.numBadge}>{item.num}</div>
-                  <div className={styles.featureContent}>
-                    <h3>{item.title}</h3>
-                    <p>{item.desc}</p>
+              {featurePoints.map((item, index) => {
+                const pointNum = index + 1;
+                return (
+                  <div key={index} className={styles.featureItem}>
+                    <div className={styles.numBadge}>{item.num}</div>
+                    <div className={styles.featureContent}>
+                      <h3>{t(`homeSections.aiAnalyst.point${pointNum}Title`, item.title)}</h3>
+                      <p>{t(`homeSections.aiAnalyst.point${pointNum}Desc`, item.desc)}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </motion.div>
 

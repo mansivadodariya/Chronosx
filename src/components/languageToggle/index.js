@@ -127,33 +127,26 @@ export default function LanguageToggle({ className = '', variant = 'default' }) 
     const vh = window.innerHeight;
 
     const isSmall = vw < 540;
-    const targetWidth = isSmall ? Math.min(vw - 20, 330) : Math.min(vw - 24, 460);
+    const targetWidth = isSmall ? Math.min(vw - 20, 330) : Math.min(vw - 24, 490);
 
-    let left;
-    if (isRtl) {
-      if (rect.left + targetWidth > vw - 12) {
-        left = Math.max(10, vw - targetWidth - 12);
-      } else {
-        left = Math.max(10, rect.left);
-      }
-    } else {
-      if (rect.right - targetWidth < 12) {
-        left = Math.max(10, rect.left);
-        if (left + targetWidth > vw - 12) {
-          left = Math.max(10, vw - targetWidth - 12);
-        }
-      } else {
-        left = rect.right - targetWidth;
-      }
+    // Dynamic alignment: right-anchor with button, clamped within viewport edges
+    let left = rect.right - targetWidth;
+    if (left < 12) {
+      left = 12;
+    }
+    if (left + targetWidth > vw - 12) {
+      left = Math.max(12, vw - targetWidth - 12);
     }
 
     const spaceBelow = vh - rect.bottom - 12;
-    const top = rect.bottom + 6;
+    const top = rect.bottom + 8;
 
     setMenuPosition({
       position: 'fixed',
       top: `${top}px`,
       left: `${left}px`,
+      right: 'auto',
+      bottom: 'auto',
       width: `${targetWidth}px`,
       maxHeight: `${Math.max(180, spaceBelow)}px`,
       zIndex: 99999,
@@ -193,11 +186,11 @@ export default function LanguageToggle({ className = '', variant = 'default' }) 
   };
 
   const handleSelectLanguage = (lang) => {
-    setLanguage(lang);
+    setLanguage(lang, false);
     setIsOpen(false);
 
     try {
-      const currentPath = pathname || (typeof window !== 'undefined' ? window.location.pathname : '/');
+      const currentPath = (typeof window !== 'undefined' ? window.location.pathname : pathname) || '/';
       const segments = currentPath.split('/').filter(Boolean);
       const firstSeg = segments[0]?.toLowerCase();
       const isFirstSegLocale = ['en', 'ar', 'ary', 'es', 'ru', 'zh', 'vi', 'id', 'fil', 'arabic', 'spanish', 'russian', 'chinese', 'vietnamese', 'indonesian', 'filipino', 'darija'].includes(firstSeg);

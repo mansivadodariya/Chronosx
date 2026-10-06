@@ -448,7 +448,7 @@ export default function MarketIntelligence() {
               {/* BACK: Deep Specifications */}
               <div className={`${styles.cardFace} ${styles.cardBack}`}>
                 <div className={styles.backHeader}>
-                  <span className={styles.backLayerTag}>LAYER 01 — TIMEFRAME CONFLUENCE</span>
+                  <span className={styles.backLayerTag}>{t('homeSections.marketIntelligence.layer1Tag', 'LAYER 01 — TIMEFRAME CONFLUENCE')}</span>
                   <span className={styles.flipHint}>{t('homeSections.marketIntelligence.hoverPreview', 'Hover to preview')}</span>
                 </div>
 
@@ -460,21 +460,21 @@ export default function MarketIntelligence() {
                 <div className={styles.specList}>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
-                    <span>4-Timeframe Cascade Structure Sync (15M / 1H / 4H / 1D)</span>
+                    <span>{t('homeSections.marketIntelligence.card1Spec1', '4-Timeframe Cascade Structure Sync (15M / 1H / 4H / 1D)')}</span>
                   </div>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
-                    <span>100% Non-Repainting Confirmation Engine</span>
+                    <span>{t('homeSections.marketIntelligence.card1Spec2', '100% Non-Repainting Confirmation Engine')}</span>
                   </div>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
-                    <span>False-Breakout Noise Rejection Filter</span>
+                    <span>{t('homeSections.marketIntelligence.card1Spec3', 'False-Breakout Noise Rejection Filter')}</span>
                   </div>
                 </div>
 
                 <div className={styles.backFooter}>
-                  <span className={styles.metricTitle}>Confluence Rating</span>
-                  <span className={styles.metricValue}>94.8% ALIGNMENT RATING</span>
+                  <span className={styles.metricTitle}>{t('homeSections.marketIntelligence.card1MetricTitle', 'Confluence Rating')}</span>
+                  <span className={styles.metricValue}>{t('homeSections.marketIntelligence.card1MetricVal', '94.8% ALIGNMENT RATING')}</span>
                 </div>
               </div>
 
@@ -517,7 +517,7 @@ export default function MarketIntelligence() {
               {/* BACK: Deep Specifications */}
               <div className={`${styles.cardFace} ${styles.cardBack}`}>
                 <div className={styles.backHeader}>
-                  <span className={styles.backLayerTag}>LAYER 02 — SMART MONEY FLOW</span>
+                  <span className={styles.backLayerTag}>{t('homeSections.marketIntelligence.layer2Tag', 'LAYER 02 — SMART MONEY FLOW')}</span>
                   <span className={styles.flipHint}>{t('homeSections.marketIntelligence.hoverPreview', 'Hover to preview')}</span>
                 </div>
 
@@ -529,21 +529,21 @@ export default function MarketIntelligence() {
                 <div className={styles.specList}>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
-                    <span>Graded Institutional Order Block (OB) Validation</span>
+                    <span>{t('homeSections.marketIntelligence.card2Spec1', 'Graded Institutional Order Block (OB) Validation')}</span>
                   </div>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
-                    <span>Fair Value Gap (FVG) Mitigation Detection</span>
+                    <span>{t('homeSections.marketIntelligence.card2Spec2', 'Fair Value Gap (FVG) Mitigation Detection')}</span>
                   </div>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
-                    <span>Liquidity Sweep & Stop-Hunt Tracking</span>
+                    <span>{t('homeSections.marketIntelligence.card2Spec3', 'Liquidity Sweep & Stop-Hunt Tracking')}</span>
                   </div>
                 </div>
 
                 <div className={styles.backFooter}>
-                  <span className={styles.metricTitle}>OB Reversal Strength</span>
-                  <span className={styles.metricValue}>GRADE AAA (94.2%)</span>
+                  <span className={styles.metricTitle}>{t('homeSections.marketIntelligence.card2MetricTitle', 'OB Reversal Strength')}</span>
+                  <span className={styles.metricValue}>{t('homeSections.marketIntelligence.card2MetricVal', 'GRADE AAA (94.2%)')}</span>
                 </div>
               </div>
 
@@ -584,7 +584,7 @@ export default function MarketIntelligence() {
               {/* BACK: Deep Specifications */}
               <div className={`${styles.cardFace} ${styles.cardBack}`}>
                 <div className={styles.backHeader}>
-                  <span className={styles.backLayerTag}>LAYER 03 — EXECUTION TIMING</span>
+                  <span className={styles.backLayerTag}>{t('homeSections.marketIntelligence.layer3Tag', 'LAYER 03 — EXECUTION TIMING')}</span>
                   <span className={styles.flipHint}>{t('homeSections.marketIntelligence.hoverPreview', 'Hover to preview')}</span>
                 </div>
 
@@ -596,21 +596,21 @@ export default function MarketIntelligence() {
                 <div className={styles.specList}>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
-                    <span>Dynamic Volatility Squeeze Bands (Expansion / Compression)</span>
+                    <span>{t('homeSections.marketIntelligence.card3Spec1', 'Dynamic Volatility Squeeze Bands (Expansion / Compression)')}</span>
                   </div>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
-                    <span>Institutional Volume Pulse Engine</span>
+                    <span>{t('homeSections.marketIntelligence.card3Spec2', 'Institutional Volume Pulse Engine')}</span>
                   </div>
                   <div className={styles.specItem}>
                     <span className={styles.specDot}>✦</span>
-                    <span>Automated TP/SL Mapping with Minimum 1:2.5+ R:R Filter</span>
+                    <span>{t('homeSections.marketIntelligence.card3Spec3', 'Automated TP/SL Mapping with Minimum 1:2.5+ R:R Filter')}</span>
                   </div>
                 </div>
 
                 <div className={styles.backFooter}>
-                  <span className={styles.metricTitle}>Target Risk-to-Reward</span>
-                  <span className={styles.metricValue}>2.85 : 1 AVG R:R</span>
+                  <span className={styles.metricTitle}>{t('homeSections.marketIntelligence.card3MetricTitle', 'Target Risk-to-Reward')}</span>
+                  <span className={styles.metricValue}>{t('homeSections.marketIntelligence.card3MetricVal', '2.85 : 1 AVG R:R')}</span>
                 </div>
               </div>
 

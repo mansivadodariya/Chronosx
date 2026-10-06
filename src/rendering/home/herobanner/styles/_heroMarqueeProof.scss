@@ -6,6 +6,8 @@
         overflow: hidden;
         padding: 14px 0;
         z-index: 5;
+        direction: ltr !important;
+        unicode-bidi: isolate;
         -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
         mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
 
@@ -28,6 +30,7 @@
         width: 100%;
         overflow: hidden;
         padding: 10px 0;
+        direction: ltr !important;
     }
 
     .heroMarqueeTrack {
@@ -36,6 +39,7 @@
         gap: 12px;
         width: max-content;
         will-change: transform;
+        direction: ltr !important;
         animation: heroMarqueeScroll 38s linear infinite;
 
         &:hover {
@@ -48,6 +52,8 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        direction: ltr !important;
+        text-align: left !important;
         background: linear-gradient(135deg, rgba(8, 24, 18, 0.98) 0%, rgba(4, 14, 10, 0.98) 100%);
         border: 1px solid rgba(24, 201, 139, 0.25);
         border-radius: 12px;
@@ -57,6 +63,7 @@
         overflow: visible;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
 
         &:hover {
             background: linear-gradient(135deg, rgba(12, 34, 25, 0.98) 0%, rgba(6, 20, 14, 0.98) 100%);

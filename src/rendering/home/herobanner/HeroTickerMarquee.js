@@ -159,15 +159,16 @@ export default function HeroTickerMarquee() {
   });
 
   return (
-    <div className={styles.heroMarqueeWrapper} aria-label="Live Market Assets Ticker">
-      <div className={styles.marqueeTrackWrapper}>
-        <div className={styles.heroMarqueeTrack}>
+    <div className={styles.heroMarqueeWrapper} aria-label="Live Market Assets Ticker" dir="ltr">
+      <div className={styles.marqueeTrackWrapper} dir="ltr">
+        <div className={styles.heroMarqueeTrack} dir="ltr">
           {marqueeItems.map((item, idx) => {
             const data = getAssetData(item);
             return (
               <div
                 key={`hero-ticker-${idx}`}
                 className={styles.heroTickerCard}
+                dir="ltr"
                 onClick={() => navigateFeature(router, '/ai-chart-scanner', '/chart-scanner')}
               >
                 <TickerCardLogo

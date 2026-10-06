@@ -23,10 +23,10 @@ export default function GlobalNetworkMap() {
     <section className={styles.networkMapSection}>
       <div className="container">
         <SectionHeader
-          badge="GLOBAL INFRASTRUCTURE"
-          title1="Ultra Low-Latency"
-          title2="AI Execution Mesh"
-          description="Connected directly to tier-1 liquidity providers and major financial exchanges worldwide for institutional-grade signal speed."
+          badge={t('homeSections.globalNetworkMap.badge', 'GLOBAL INFRASTRUCTURE')}
+          title1={t('homeSections.globalNetworkMap.title1', 'Ultra Low-Latency')}
+          title2={t('homeSections.globalNetworkMap.title2', 'AI Execution Mesh')}
+          description={t('homeSections.globalNetworkMap.description', 'Connected directly to tier-1 liquidity providers and major financial exchanges worldwide for institutional-grade signal speed.')}
         />
 
         <div className={styles.mapCard}>

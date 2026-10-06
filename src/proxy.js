@@ -198,6 +198,16 @@ export function proxy(request) {
   if (normalizedPathname === "/ai-trade-audit" || normalizedPathname.startsWith("/ai-trade-audit/")) {
     return NextResponse.redirect(new URL(`${prefixLang}${normalizedPathname.replace("/ai-trade-audit", "/ai-trade-advisor")}`, request.url));
   }
+  if (
+    normalizedPathname === "/predefine-strategy" ||
+    normalizedPathname === "/predefined-strategy" ||
+    normalizedPathname === "/predefine-strategies" ||
+    normalizedPathname.startsWith("/predefine-strategy/") ||
+    normalizedPathname.startsWith("/predefined-strategy/") ||
+    normalizedPathname.startsWith("/predefine-strategies/")
+  ) {
+    return NextResponse.redirect(new URL(`${prefixLang}/predefined-strategies`, request.url));
+  }
 
   // --- 4. Protected Route & Auth Redirections ---
   const isProtected = PROTECTED_PREFIXES.some((p) => normalizedPathname === p || normalizedPathname.startsWith(`${p}/`));

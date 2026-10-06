@@ -102,6 +102,8 @@
     position: relative;
     padding: 18px 0;
     z-index: 5;
+    direction: ltr !important;
+    unicode-bidi: isolate;
     mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
   }
@@ -149,12 +151,14 @@
     display: flex;
     gap: 24px;
     width: max-content;
-    animation: marqueeContinuous 36s linear infinite;
+    direction: ltr !important;
+    animation: marqueeContinuous 45s linear infinite;
 
     &:hover {
       animation-play-state: paused;
     }
   }
+
 
   .card {
     width: 380px;
@@ -299,7 +303,7 @@
     }
 
     100% {
-      transform: translateX(-33.333%);
+      transform: translateX(-50%);
     }
   }
 }

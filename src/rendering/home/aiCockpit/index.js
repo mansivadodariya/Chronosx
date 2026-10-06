@@ -86,10 +86,10 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
         {/* Section Header */}
         {!isHero && showHeader && (
           <SectionHeader
-            badge="AI INTELLIGENCE COCKPIT"
-            title1="Real-Time Live Terminal."
-            title2="Predictive Cockpit."
-            description="Institutional-grade real-time market engine. Stream live gold tick candles, track composite AI conviction scores, and monitor volume flows in one unified terminal."
+            badge={t('homeSections.aiCockpit.badge', 'AI INTELLIGENCE COCKPIT')}
+            title1={t('homeSections.aiCockpit.title1', 'Real-Time Live Terminal.')}
+            title2={t('homeSections.aiCockpit.title2', 'Predictive Cockpit.')}
+            description={t('homeSections.aiCockpit.description', 'Institutional-grade real-time market engine. Stream live gold tick candles, track composite AI conviction scores, and monitor volume flows in one unified terminal.')}
           />
         )}
 
@@ -137,7 +137,7 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
 
                 <div className={styles.strategyBadge}>
                   <span className={styles.beaconDot} />
-                  <span>AI LIVE FEED</span>
+                  <span>{t('homeSections.aiCockpit.aiLiveFeed', 'AI LIVE FEED')}</span>
                 </div>
               </div>
 
@@ -158,7 +158,7 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
               <div className={styles.cockpitTopBreadcrumb}>
                 <div className={styles.breadcrumbTitle}>
                   <span className={styles.arrowLeft}>‹</span>
-                  <span className={styles.parentName}>HEAT LIST</span>
+                  <span className={styles.parentName}>{t('homeSections.aiCockpit.heatList', 'HEAT LIST')}</span>
                   <span className={styles.slash}>/</span>
                   <span className={styles.activeAssetTicker}>XAUUSD</span>
                 </div>
@@ -167,7 +167,7 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
                   <svg className={styles.starSvg} width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                   </svg>
-                  <span>IN WATCHLIST</span>
+                  <span>{t('homeSections.aiCockpit.inWatchlist', 'IN WATCHLIST')}</span>
                 </div>
               </div>
 
@@ -183,13 +183,14 @@ export default function AiCockpit({ isHero = false, showHeader = true }) {
                       <h3 className={styles.assetTickerText}>XAUUSD</h3>
                       <span className={styles.liveStatusPill}>
                         <span className={styles.liveGreenBeacon} />
-                        LIVE
+                        {t('homeSections.aiCockpit.liveStatus', 'LIVE')}
                       </span>
                     </div>
-                    <p className={styles.assetSubDetails}>Gold Spot · Commodities · Precious Metals</p>
+                    <p className={styles.assetSubDetails}>{t('homeSections.aiCockpit.goldSpotDetails', 'Gold Spot · Commodities · Precious Metals')}</p>
                   </div>
                 </div>
               </div>
+
 
               {/* Massive Live Price Row */}
               <div className={styles.hugePriceRow}>

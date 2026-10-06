@@ -132,9 +132,9 @@ export default function TradingProfileAnalysisCard({
             </div>
 
             {/* Preferred Markets & Sessions Chips (Separate Dedicated Rows) */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '6px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '10px' }}>
                 {/* Row 1: Preferred Pairs */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 12px', alignItems: 'center' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 14px', alignItems: 'center' }}>
                     <span style={{ fontSize: '13px', color: isLight ? '#475569' : '#94A3B8', fontWeight: 600, minWidth: '105px' }}>{t('profile.preferredPairs', 'Preferred Pairs:')}</span>
                     {pairs.map((p) => (
                         <span
@@ -149,16 +149,17 @@ export default function TradingProfileAnalysisCard({
                                 color: isLight ? '#047857' : '#18C98B',
                                 display: 'inline-flex',
                                 alignItems: 'center',
+                                gap: '8px',
                             }}
                         >
                             <TradingViewPairIcon pair={p} size={16} />
-                            <span>{p}</span>
+                            <span style={{ unicodeBidi: 'isolate', letterSpacing: '0.3px' }}>{p}</span>
                         </span>
                     ))}
                 </div>
 
                 {/* Row 2: Sessions */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 12px', alignItems: 'center' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 14px', alignItems: 'center' }}>
                     <span style={{ fontSize: '13px', color: isLight ? '#475569' : '#94A3B8', fontWeight: 600, minWidth: '105px' }}>{t('profile.sessions', 'Sessions:')}</span>
                     {sessions.map((s) => (
                         <span
@@ -173,10 +174,11 @@ export default function TradingProfileAnalysisCard({
                                 color: isLight ? '#334155' : '#CBD5E1',
                                 display: 'inline-flex',
                                 alignItems: 'center',
+                                gap: '8px',
                             }}
                         >
                             <SessionIcon session={s} size={16} />
-                            <span>{s}</span>
+                            <span style={{ unicodeBidi: 'isolate', letterSpacing: '0.3px' }}>{s}</span>
                         </span>
                     ))}
                 </div>

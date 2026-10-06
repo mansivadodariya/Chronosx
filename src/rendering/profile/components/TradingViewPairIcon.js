@@ -187,14 +187,16 @@ export function TradingViewPairIcon({ pair, size = 18 }) {
     if (!config) {
         return (
             <span
+                dir="ltr"
                 style={{
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     width: `${size}px`,
                     height: `${size}px`,
-                    marginRight: '8px',
-                    flexShrink: 0
+                    marginInlineEnd: '6px',
+                    flexShrink: 0,
+                    direction: 'ltr',
                 }}
             >
                 {FLAG_ICONS.GLOBE}
@@ -209,6 +211,7 @@ export function TradingViewPairIcon({ pair, size = 18 }) {
 
     return (
         <span
+            dir="ltr"
             style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -216,8 +219,9 @@ export function TradingViewPairIcon({ pair, size = 18 }) {
                 flexShrink: 0,
                 width: `${totalWidth}px`,
                 height: `${size}px`,
-                marginRight: '8px',
-                verticalAlign: 'middle'
+                marginInlineEnd: '6px',
+                verticalAlign: 'middle',
+                direction: 'ltr',
             }}
         >
             <span
@@ -264,6 +268,7 @@ export function SessionIcon({ session, size = 18 }) {
 
     return (
         <span
+            dir="ltr"
             style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -273,8 +278,9 @@ export function SessionIcon({ session, size = 18 }) {
                 borderRadius: '50%',
                 flexShrink: 0,
                 boxShadow: '0 0 2px rgba(0,0,0,0.6)',
-                marginRight: '8px',
-                verticalAlign: 'middle'
+                marginInlineEnd: '6px',
+                verticalAlign: 'middle',
+                direction: 'ltr',
             }}
         >
             {icon}
