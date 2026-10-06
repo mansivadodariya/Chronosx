@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from '../customBotBuilder.module.scss';
-import { STEPS } from '../constants';
+import { getSteps } from '../constants';
+import { useLanguage } from '@/context/LanguageContext';
 
 function renderStepIcon(iconType) {
     switch (iconType) {
@@ -53,10 +54,13 @@ function renderStepIcon(iconType) {
 }
 
 export default function StepperHeader({ currentStep, onSelectStep }) {
+    const { t } = useLanguage();
+    const steps = useMemo(() => getSteps(t), [t]);
+
     return (
         <div className={styles.stepperContainer}>
             <div className={styles.stepperTrack}>
-                {STEPS.map((step, index) => {
+                {steps.map((step, index) => {
                     const isCompleted = currentStep > step.id;
                     const isActive = currentStep === step.id;
                     const isAccessible = currentStep >= step.id;
@@ -81,7 +85,7 @@ export default function StepperHeader({ currentStep, onSelectStep }) {
                                 <span className={styles.stepPillLabel}>{step.label}</span>
                             </button>
 
-                            {index < STEPS.length - 1 && (
+                            {index < steps.length - 1 && (
                                 <div
                                     className={`${styles.stepConnector} ${isCompleted ? styles.stepConnectorActive : ''}`}
                                 />

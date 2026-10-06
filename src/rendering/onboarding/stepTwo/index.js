@@ -1,7 +1,8 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import classNames from 'classnames';
 import styles from './stepTwo.module.scss';
+import { useLanguage } from '@/context/LanguageContext';
 
 // SVG Vector Icons
 const AnalyzeIcon = () => (
@@ -55,54 +56,56 @@ const MarketScannerIcon = () => (
     </svg>
 );
 
-const HELP_OPTIONS = [
+const getHelpOptions = (t) => [
     {
         id: 'analyze_trades',
-        title: 'AI Chart Scanner',
-        desc: 'Upload chart screenshots for instant institutional level detection, order block analysis, and conviction scoring.',
+        title: t('onboarding.step3.scanner.title', 'AI Chart Scanner'),
+        desc: t('onboarding.step3.scanner.desc', 'Upload chart screenshots for instant institutional level detection, order block analysis, and conviction scoring.'),
         icon: AnalyzeIcon,
-        tag: 'Vision OCR & ML Model',
+        tag: t('onboarding.step3.scanner.tag', 'Vision OCR & ML Model'),
     },
     {
         id: 'ask_ai',
-        title: 'AI Market Assistant',
-        desc: 'Conversational strategy validation grounded in live market feeds, scanner telemetry, and zero false confidence.',
+        title: t('onboarding.step3.assistant.title', 'AI Market Assistant'),
+        desc: t('onboarding.step3.assistant.desc', 'Conversational strategy validation grounded in live market feeds, scanner telemetry, and zero false confidence.'),
         icon: AskAiIcon,
-        tag: 'Grounded Live Telemetry',
+        tag: t('onboarding.step3.assistant.tag', 'Grounded Live Telemetry'),
     },
     {
         id: 'build_strategies',
-        title: 'AI Trading Signal',
-        desc: 'Design, configure, and automate rule-based confluence triggers across multi-timeframe cascades.',
+        title: t('onboarding.step3.signals.title', 'AI Trading Signal'),
+        desc: t('onboarding.step3.signals.desc', 'Design, configure, and automate rule-based confluence triggers across multi-timeframe cascades.'),
         icon: BrainIcon,
-        tag: 'Algorithmic Rules',
+        tag: t('onboarding.step3.signals.tag', 'Algorithmic Rules'),
     },
     {
         id: 'backtest_strategies',
-        title: 'Historical Backtesting',
-        desc: 'Stress test your setups across years of verified tick-level market data before risking capital.',
+        title: t('onboarding.step3.backtest.title', 'Historical Backtesting'),
+        desc: t('onboarding.step3.backtest.desc', 'Stress test your setups across years of verified tick-level market data before risking capital.'),
         icon: FlaskIcon,
-        tag: 'Sub-ms Simulation',
+        tag: t('onboarding.step3.backtest.tag', 'Sub-ms Simulation'),
     },
     {
         id: 'leak_detection',
-        title: 'AI Past Trade Analyzer',
-        desc: 'Analyze closed trading journals to pinpoint psychological leaks, revenge trading, and expectancy drag.',
+        title: t('onboarding.step3.journal.title', 'AI Past Trade Analyzer'),
+        desc: t('onboarding.step3.journal.desc', 'Analyze closed trading journals to pinpoint psychological leaks, revenge trading, and expectancy drag.'),
         icon: ShieldLeakIcon,
-        tag: 'Behavioral Diagnostics',
+        tag: t('onboarding.step3.journal.tag', 'Behavioral Diagnostics'),
     },
     {
         id: 'realtime_scanner',
-        title: 'Signal Terminal',
-        desc: 'Filter 1,000+ instruments for high-probability liquidity grabs, fair value gaps, and momentum breakouts.',
+        title: t('onboarding.step3.terminal.title', 'Signal Terminal'),
+        desc: t('onboarding.step3.terminal.desc', 'Filter 1,000+ instruments for high-probability liquidity grabs, fair value gaps, and momentum breakouts.'),
         icon: MarketScannerIcon,
-        tag: 'Zero-Lag Feeds',
+        tag: t('onboarding.step3.terminal.tag', 'Zero-Lag Feeds'),
     },
 ];
 
 export default function StepTwo({ selectedOptions: controlledOptions, onToggleOption }) {
+    const { t } = useLanguage();
     const [internalOptions, setInternalOptions] = useState([]);
     const selectedOptions = controlledOptions !== undefined ? controlledOptions : internalOptions;
+    const helpOptions = useMemo(() => getHelpOptions(t), [t]);
 
     const handleToggle = (id) => {
         if (onToggleOption) {
@@ -120,19 +123,19 @@ export default function StepTwo({ selectedOptions: controlledOptions, onToggleOp
             <div className={styles.headerSection}>
                 <div className={styles.tagBadge}>
                     <span className={styles.tagDot} />
-                    <span>PLATFORM INTENT · STEP 03</span>
+                    <span>{t('onboarding.step3.badge', 'CAPABILITIES · STEP 03')}</span>
                 </div>
                 <h1 className={styles.mainTitle}>
-                    What do you want <span className={styles.accentText}>ChronosX to power?</span>
+                    {t('onboarding.step3.title', 'How would you like')} <span className={styles.accentText}>{t('onboarding.step3.titleAccent', 'ChronosX to help?')}</span>
                 </h1>
                 <p className={styles.subtitle}>
-                    Select the key AI modules and institutional tools you want highlighted on your workspace.
+                    {t('onboarding.step3.subtitle', 'Choose the AI toolsets and workflows you want tailored to your trading terminal.')}
                 </p>
             </div>
 
             {/* 6 Grid Platform Goals Cards */}
             <div className={styles.optionsGrid}>
-                {HELP_OPTIONS.map((opt) => {
+                {helpOptions.map((opt) => {
                     const isSelected = selectedOptions.includes(opt.id);
                     const IconComponent = opt.icon;
 

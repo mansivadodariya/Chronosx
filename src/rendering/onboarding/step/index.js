@@ -1,7 +1,8 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import classNames from 'classnames';
 import styles from './step.module.scss';
+import { useLanguage } from '@/context/LanguageContext';
 
 const SproutIcon = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,44 +35,46 @@ const TrophyIcon = () => (
     </svg>
 );
 
-const EXPERIENCE_OPTIONS = [
+const getExperienceOptions = (t) => [
     {
         id: 'beginner',
-        badge: 'LEVEL 01',
-        title: 'Beginner',
-        desc: 'New to Forex or financial markets. Looking for guided trade validation & learning.',
-        tag: 'Guided AI Analysis',
+        badge: t('onboarding.step1.beginner.badge', 'LEVEL 01'),
+        title: t('onboarding.step1.beginner.title', 'Beginner'),
+        desc: t('onboarding.step1.beginner.desc', 'New to Forex or financial markets. Looking for guided trade validation & learning.'),
+        tag: t('onboarding.step1.beginner.tag', 'Guided AI Analysis'),
         icon: SproutIcon,
     },
     {
         id: 'intermediate',
-        badge: 'LEVEL 02',
-        title: 'Intermediate',
-        desc: '1–3 years active trading experience. Looking to sharpen edge and verify setups.',
-        tag: 'Scanner & Key Levels',
+        badge: t('onboarding.step1.intermediate.badge', 'LEVEL 02'),
+        title: t('onboarding.step1.intermediate.title', 'Intermediate'),
+        desc: t('onboarding.step1.intermediate.desc', '1–3 years active trading experience. Looking to sharpen edge and verify setups.'),
+        tag: t('onboarding.step1.intermediate.tag', 'Scanner & Key Levels'),
         icon: GrowthChartIcon,
     },
     {
         id: 'advanced',
-        badge: 'LEVEL 03',
-        title: 'Advanced',
-        desc: 'Consistent trader utilizing technical models, price action, and orderflow confluence.',
-        tag: 'Cascade Timeframes',
+        badge: t('onboarding.step1.advanced.badge', 'LEVEL 03'),
+        title: t('onboarding.step1.advanced.title', 'Advanced'),
+        desc: t('onboarding.step1.advanced.desc', 'Consistent trader utilizing technical models, price action, and orderflow confluence.'),
+        tag: t('onboarding.step1.advanced.tag', 'Cascade Timeframes'),
         icon: LightningIcon,
     },
     {
         id: 'professional',
-        badge: 'INSTITUTIONAL',
-        title: 'Professional',
-        desc: 'Prop firm funded or full-time market participant focused on algorithmic precision.',
-        tag: 'MT5 Sub-ms Sync',
+        badge: t('onboarding.step1.professional.badge', 'INSTITUTIONAL'),
+        title: t('onboarding.step1.professional.title', 'Professional'),
+        desc: t('onboarding.step1.professional.desc', 'Prop firm funded or full-time market participant focused on algorithmic precision.'),
+        tag: t('onboarding.step1.professional.tag', 'MT5 Sub-ms Sync'),
         icon: TrophyIcon,
     },
 ];
 
 export default function Step({ selectedLevel: controlledLevel, onSelectLevel }) {
+    const { t } = useLanguage();
     const [internalLevel, setInternalLevel] = useState('');
     const selectedLevel = controlledLevel !== undefined ? controlledLevel : internalLevel;
+    const experienceOptions = useMemo(() => getExperienceOptions(t), [t]);
 
     const handleSelect = (id) => {
         if (onSelectLevel) {
@@ -87,19 +90,19 @@ export default function Step({ selectedLevel: controlledLevel, onSelectLevel }) 
             <div className={styles.headerSection}>
                 <div className={styles.tagBadge}>
                     <span className={styles.tagDot} />
-                    <span>EXPERIENCE PROFILE · STEP 01</span>
+                    <span>{t('onboarding.step1.badge', 'EXPERIENCE PROFILE · STEP 01')}</span>
                 </div>
                 <h1 className={styles.mainTitle}>
-                    What is your <span className={styles.accentText}>trading experience?</span>
+                    {t('onboarding.step1.title', 'What is your')} <span className={styles.accentText}>{t('onboarding.step1.titleAccent', 'trading experience?')}</span>
                 </h1>
                 <p className={styles.subtitle}>
-                    ChronosX calibrates its AI advisor, risk telemetry, and scanner thresholds to your exact experience level.
+                    {t('onboarding.step1.subtitle', 'ChronosX calibrates its AI advisor, risk telemetry, and scanner thresholds to your exact experience level.')}
                 </p>
             </div>
 
             {/* 4 Professional Experience Cards Grid */}
             <div className={styles.cardsGrid}>
-                {EXPERIENCE_OPTIONS.map((opt) => {
+                {experienceOptions.map((opt) => {
                     const isSelected = selectedLevel === opt.id;
                     const IconComponent = opt.icon;
 

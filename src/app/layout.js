@@ -147,9 +147,8 @@ export default function RootLayout({ children }) {
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <Script
+        <script
           id="theme-initializer"
-          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               try {
@@ -157,11 +156,28 @@ export default function RootLayout({ children }) {
                 document.documentElement.classList.add(storedTheme);
                 document.documentElement.setAttribute('data-theme', storedTheme);
 
-                var storedLang = localStorage.getItem('app_language');
-                if (storedLang === 'ar') {
-                  document.documentElement.setAttribute('lang', 'ar');
-                  document.documentElement.setAttribute('dir', 'rtl');
+                var pathSeg = (window.location.pathname.split('/')[1] || '').toLowerCase();
+                var queryMatch = ((window.location.search.match(/[?&](?:lang|locale)=([a-zA-Z_-]+)/) || [])[1] || '').toLowerCase();
+                var aliases = {
+                  ar: 'ar', arabic: 'ar',
+                  ary: 'ary', darija: 'ary', moroccan: 'ary',
+                  es: 'es', spanish: 'es', espanol: 'es',
+                  ru: 'ru', russian: 'ru',
+                  zh: 'zh', chinese: 'zh',
+                  vi: 'vi', vietnamese: 'vi',
+                  id: 'id', indonesian: 'id',
+                  fil: 'fil', filipino: 'fil', tagalog: 'fil', ph: 'fil',
+                  en: 'en', english: 'en'
+                };
+                var matched = aliases[queryMatch] || aliases[pathSeg];
+                var storedLang = matched || localStorage.getItem('app_language') || (document.cookie.match(/app_language=([a-z]+)/) || [])[1] || 'en';
+                var canonical = aliases[storedLang] || 'en';
+                if (matched) {
+                  localStorage.setItem('app_language', canonical);
+                  document.cookie = 'app_language=' + canonical + '; path=/; max-age=31536000; SameSite=Lax';
                 }
+                document.documentElement.setAttribute('lang', canonical);
+                document.documentElement.setAttribute('dir', (canonical === 'ar' || canonical === 'ary') ? 'rtl' : 'ltr');
               } catch (_) {}
             `,
           }}

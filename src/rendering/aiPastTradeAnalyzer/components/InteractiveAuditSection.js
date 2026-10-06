@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SAMPLE_TRADES } from '../constants/sampleTrades';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../aiPastTradeAnalyzer.module.scss';
 
 export default function InteractiveAuditSection({
@@ -11,6 +12,8 @@ export default function InteractiveAuditSection({
     isScanning,
     scanProgress
 }) {
+    const { t } = useLanguage();
+
     return (
         <section className={styles.auditSection}>
             <div className="container">
@@ -18,11 +21,11 @@ export default function InteractiveAuditSection({
                     {/* LEFT COLUMN: WHAT YOU'LL GET PILLARS */}
                     <div className={styles.pillarsCol}>
                         <div className={styles.sectionBadge}>
-                            <span>✦ VALUE DRIVERS</span>
+                            <span>{t('aiAuditPillars.badge', '✦ VALUE DRIVERS')}</span>
                         </div>
-                        <h2 className={styles.columnTitle}>WHAT YOU'LL GET</h2>
+                        <h2 className={styles.columnTitle}>{t('aiAuditPillars.title', "WHAT YOU'LL GET")}</h2>
                         <p className={styles.columnSubtitle}>
-                            Stop guessing why you lost. Discover exactly what ChronosX analyzes on your chart:
+                            {t('aiAuditPillars.subtitle', 'Stop guessing why you lost. Discover exactly what ChronosX analyzes on your chart:')}
                         </p>
 
                         <div className={styles.pillarsList}>
@@ -35,8 +38,8 @@ export default function InteractiveAuditSection({
                                     </svg>
                                 </div>
                                 <div className={styles.itemBody}>
-                                    <h4>Trade Breakdown</h4>
-                                    <p>Entry, exit, position size, RR, and outcome metrics.</p>
+                                    <h4>{t('aiAuditPillars.pillar1Title', 'Trade Breakdown')}</h4>
+                                    <p>{t('aiAuditPillars.pillar1Desc', 'Entry, exit, position size, RR, and outcome metrics.')}</p>
                                 </div>
                             </div>
 
@@ -50,8 +53,8 @@ export default function InteractiveAuditSection({
                                     </svg>
                                 </div>
                                 <div className={styles.itemBody}>
-                                    <h4>Mistake Identification</h4>
-                                    <p>AI highlights what went wrong and why instead of just seeing WIN or LOSS.</p>
+                                    <h4>{t('aiAuditPillars.pillar2Title', 'Mistake Identification')}</h4>
+                                    <p>{t('aiAuditPillars.pillar2Desc', 'AI highlights what went wrong and why instead of just seeing WIN or LOSS.')}</p>
                                 </div>
                             </div>
 
@@ -65,8 +68,8 @@ export default function InteractiveAuditSection({
                                     </svg>
                                 </div>
                                 <div className={styles.itemBody}>
-                                    <h4>Market Context Review</h4>
-                                    <p>Understand market conditions, trends, and support/resistance during your trade.</p>
+                                    <h4>{t('aiAuditPillars.pillar3Title', 'Market Context Review')}</h4>
+                                    <p>{t('aiAuditPillars.pillar3Desc', 'Understand market conditions, trends, and support/resistance during your trade.')}</p>
                                 </div>
                             </div>
 
@@ -78,8 +81,8 @@ export default function InteractiveAuditSection({
                                     </svg>
                                 </div>
                                 <div className={styles.itemBody}>
-                                    <h4>Risk Management Check</h4>
-                                    <p>Evaluate your risk, lot size, and stop-loss placement.</p>
+                                    <h4>{t('aiAuditPillars.pillar4Title', 'Risk Management Check')}</h4>
+                                    <p>{t('aiAuditPillars.pillar4Desc', 'Evaluate your risk, lot size, and stop-loss placement.')}</p>
                                 </div>
                             </div>
 
@@ -92,8 +95,8 @@ export default function InteractiveAuditSection({
                                     </svg>
                                 </div>
                                 <div className={styles.itemBody}>
-                                    <h4>Improvement Tips</h4>
-                                    <p>Actionable suggestions to improve your execution on future trades.</p>
+                                    <h4>{t('aiAuditPillars.pillar5Title', 'Improvement Tips')}</h4>
+                                    <p>{t('aiAuditPillars.pillar5Desc', 'Actionable suggestions to improve your execution on future trades.')}</p>
                                 </div>
                             </div>
 
@@ -107,8 +110,8 @@ export default function InteractiveAuditSection({
                                     </svg>
                                 </div>
                                 <div className={styles.itemBody}>
-                                    <h4>Overall Score</h4>
-                                    <p>Get a performance score and consistency insights.</p>
+                                    <h4>{t('aiAuditPillars.pillar6Title', 'Confidence Rating')}</h4>
+                                    <p>{t('aiAuditPillars.pillar6Desc', 'Know if you followed your plan or traded out of emotion.')}</p>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +121,7 @@ export default function InteractiveAuditSection({
                     <div className={styles.auditResultCol}>
                         {/* Preset Selector Tabs */}
                         <div className={styles.presetTabsWrap}>
-                            <span className={styles.presetLabel}>TRY SAMPLE AUDITS:</span>
+                            <span className={styles.presetLabel}>{t('aiAuditPillars.sampleAudits', 'TRY SAMPLE AUDITS:')}</span>
                             <div className={styles.presetTabs}>
                                 {SAMPLE_TRADES.map((trade) => (
                                     <button
@@ -140,7 +143,7 @@ export default function InteractiveAuditSection({
                             {/* Header */}
                             <div className={styles.auditCardHeader}>
                                 <div className={styles.auditCardTitleGroup}>
-                                    <span className={styles.auditHeaderTag}>ANALYSIS RESULT</span>
+                                    <span className={styles.auditHeaderTag}>{t('aiAuditPillars.resultTag', 'ANALYSIS RESULT')}</span>
                                     <h3 className={styles.auditPairTitle}>
                                         {selectedTrade.title} <span className={styles.tfBadge}>{selectedTrade.timeframe}</span>
                                     </h3>
@@ -162,8 +165,8 @@ export default function InteractiveAuditSection({
                                     >
                                         <div className={styles.scannerAnimationBox}>
                                             <div className={styles.scanSpinner} />
-                                            <h4>AI NEURAL AUDIT IN PROGRESS</h4>
-                                            <p>Analyzing candlestick wicks, order blocks &amp; risk-to-reward ratio...</p>
+                                            <h4>{t('aiAuditPillars.scanningTitle', 'AI NEURAL AUDIT IN PROGRESS')}</h4>
+                                            <p>{t('aiAuditPillars.scanningDesc', 'Analyzing candlestick wicks, order blocks & risk-to-reward ratio...')}</p>
                                             <div className={styles.scanProgressBar}>
                                                 <div
                                                     className={styles.scanProgressFill}
@@ -233,7 +236,7 @@ export default function InteractiveAuditSection({
                                 {/* Annotated Badge: Wrong Entry */}
                                 <div className={styles.wrongEntryCallout}>
                                     <div className={styles.calloutPillRed}>
-                                        <span>Wrong Entry</span>
+                                        <span>{t('aiAuditPillars.wrongEntry', 'Wrong Entry')}</span>
                                     </div>
                                     <div className={styles.calloutPointerRed} />
                                 </div>
@@ -242,7 +245,7 @@ export default function InteractiveAuditSection({
                                 <div className={styles.betterEntryCallout}>
                                     <div className={styles.calloutPointerGreen} />
                                     <div className={styles.calloutPillGreen}>
-                                        <span>Better Entry</span>
+                                        <span>{t('aiAuditPillars.betterEntry', 'Better Entry')}</span>
                                     </div>
                                 </div>
                             </div>
@@ -251,7 +254,7 @@ export default function InteractiveAuditSection({
                             <div className={styles.metricsBar}>
                                 {/* Metric 1 */}
                                 <div className={styles.metricItem}>
-                                    <span className={styles.metricLabel}>RESULT</span>
+                                    <span className={styles.metricLabel}>{t('aiAuditPillars.resultLabel', 'RESULT')}</span>
                                     <span className={selectedTrade.result.includes('WIN') ? styles.winResult : styles.lossResult}>
                                         {selectedTrade.result} ({selectedTrade.percent})
                                     </span>
@@ -261,7 +264,7 @@ export default function InteractiveAuditSection({
 
                                 {/* Metric 2 */}
                                 <div className={styles.metricItem}>
-                                    <span className={styles.metricLabel}>RISK REWARD</span>
+                                    <span className={styles.metricLabel}>{t('aiAuditPillars.riskRewardLabel', 'RISK REWARD')}</span>
                                     <span className={styles.metricVal}>{selectedTrade.rr}</span>
                                 </div>
 
@@ -269,12 +272,12 @@ export default function InteractiveAuditSection({
 
                                 {/* Metric 3 */}
                                 <div className={styles.metricItem}>
-                                    <span className={styles.metricLabel}>SCORE</span>
+                                    <span className={styles.metricLabel}>{t('aiAuditPillars.scoreLabel', 'SCORE')}</span>
                                     <div className={styles.scoreWrap}>
                                         <span className={styles.scoreNumber}>{selectedTrade.score}</span>
                                         <span className={styles.scoreOutOf}>/ 100</span>
                                         <span className={styles.scoreTag}>
-                                            {selectedTrade.score >= 70 ? 'Good' : 'Average'}
+                                            {selectedTrade.score >= 70 ? t('aiAuditPillars.scoreGood', 'Good') : t('aiAuditPillars.scoreAvg', 'Average')}
                                         </span>
                                     </div>
                                 </div>
@@ -286,7 +289,7 @@ export default function InteractiveAuditSection({
                                 <div className={styles.bentoCardWrong}>
                                     <div className={styles.bentoHeader}>
                                         <span className={styles.bentoIconRed}>✕</span>
-                                        <h4>WHAT WENT WRONG</h4>
+                                        <h4>{t('aiAuditPillars.whatWentWrong', 'WHAT WENT WRONG')}</h4>
                                     </div>
                                     <ul className={styles.bentoList}>
                                         {selectedTrade.mistakes.map((item, idx) => (
@@ -302,7 +305,7 @@ export default function InteractiveAuditSection({
                                 <div className={styles.bentoCardImprove}>
                                     <div className={styles.bentoHeader}>
                                         <span className={styles.bentoIconGreen}>✓</span>
-                                        <h4>HOW TO IMPROVE</h4>
+                                        <h4>{t('aiAuditPillars.howToImprove', 'HOW TO IMPROVE')}</h4>
                                     </div>
                                     <ul className={styles.bentoList}>
                                         {selectedTrade.improvements.map((item, idx) => (
@@ -318,7 +321,7 @@ export default function InteractiveAuditSection({
                             {/* Coach Philosophy Note */}
                             <div className={styles.auditFooterNote}>
                                 <span className={styles.goldQuoteIcon}>“</span>
-                                <p>The goal isn't to blame the trader. It's to make the next trade better.</p>
+                                <p>{t('aiAuditPillars.philosophyNote', "The goal isn't to blame the trader. It's to make the next trade better.")}</p>
                             </div>
                         </div>
                     </div>

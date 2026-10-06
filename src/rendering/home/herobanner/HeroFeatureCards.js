@@ -29,7 +29,7 @@ export default function HeroFeatureCards() {
             <h3 className={styles.cardTitle}>
               {t('header.products.chartScanner.title', 'AI Chart Scanner')}
             </h3>
-            <span className={styles.cardMiniBadge}>VISION</span>
+            <span className={styles.cardMiniBadge}>{t('homeSections.hero.cards.visionBadge', 'VISION')}</span>
           </div>
           <p className={styles.cardDesc}>
             {t('homeSections.hero.cards.analysisDesc', 'Multi-timeframe technical pattern detection and neural OCR chart vision.')}
@@ -53,7 +53,7 @@ export default function HeroFeatureCards() {
             <h3 className={styles.cardTitle}>
               {t('header.products.strategyHub.title', 'AI Trading Signal')}
             </h3>
-            <span className={styles.cardMiniBadge}>Platform</span>
+            <span className={styles.cardMiniBadge}>{t('homeSections.hero.cards.platformBadge', 'PLATFORM')}</span>
           </div>
           <p className={styles.cardDesc}>
             {t('homeSections.hero.cards.strategyDesc', 'Execute live market intelligence, algorithmic playbooks, and quant signals.')}
@@ -77,7 +77,7 @@ export default function HeroFeatureCards() {
             <h3 className={styles.cardTitle}>
               {t('header.tradingTools.tradeAudit.title', 'AI Past Trade Analyzer')}
             </h3>
-            <span className={styles.cardMiniBadge}>ADVISOR</span>
+            <span className={styles.cardMiniBadge}>{t('homeSections.hero.cards.advisorBadge', 'ADVISOR')}</span>
           </div>
           <p className={styles.cardDesc}>
             {t('homeSections.hero.cards.riskDesc', 'Review historical trading data to evaluate performance, win rates, and max drawdowns.')}

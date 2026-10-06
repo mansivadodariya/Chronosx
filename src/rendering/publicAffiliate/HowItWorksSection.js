@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './publicAffiliate.module.scss';
 
 const STEPS = [
@@ -23,14 +24,15 @@ const STEPS = [
 ];
 
 export default function HowItWorksSection({ refProp, onJoinClick }) {
+  const { t } = useLanguage();
   return (
     <section ref={refProp} className={styles.howItWorksSection}>
       <div className="container">
         <SectionHeader
-          badge="HOW IT WORKS"
+          badge={t('publicAffiliate.howItWorksBadge', 'HOW IT WORKS')}
           title1="Three Simple Steps to"
           title2="Start Earning"
-          description="Join the ChronosX affiliate program, share your unique referral link, and earn commissions when qualifying activity is generated through your referrals."
+          description={t('publicAffiliate.howItWorksSubtitle', 'Join the ChronosX affiliate program, share your unique referral link, and earn commissions when qualifying activity is generated through your referrals.')}
         />
 
         <div className={styles.stepsGrid}>

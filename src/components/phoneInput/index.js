@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import PhoneInputLib, { getCountryCallingCode } from 'react-phone-number-input';
 import { isValidPhoneNumber } from 'libphonenumber-js/min';
 import 'react-phone-number-input/style.css';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './phoneInput.module.scss';
 
 /**
@@ -10,6 +11,7 @@ import styles from './phoneInput.module.scss';
  */
 const CustomCountrySelect = ({ value, onChange, options, disabled, iconComponent: FlagIcon }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const { t } = useLanguage();
     const [search, setSearch] = useState('');
     const containerRef = useRef(null);
     const searchInputRef = useRef(null);
@@ -117,7 +119,7 @@ const CustomCountrySelect = ({ value, onChange, options, disabled, iconComponent
                         <input
                             ref={searchInputRef}
                             type="text"
-                            placeholder="Search country or code..."
+                            placeholder={t('components.phone.searchCountryOrCode', 'Search country or code...')}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             className={styles.searchInput}
@@ -128,7 +130,7 @@ const CustomCountrySelect = ({ value, onChange, options, disabled, iconComponent
                                 type="button"
                                 className={styles.clearSearchBtn}
                                 onClick={() => setSearch('')}
-                                title="Clear"
+                                title={t('components.phone.clear', 'Clear')}
                             >
                                 ✕
                             </button>
@@ -141,7 +143,7 @@ const CustomCountrySelect = ({ value, onChange, options, disabled, iconComponent
                         onWheel={handleWheelScroll}
                     >
                         {filteredOptions.length === 0 ? (
-                            <div className={styles.noResults}>No countries found</div>
+                            <div className={styles.noResults}>{t('components.phone.noCountriesFound', 'No countries found')}</div>
                         ) : (
                             filteredOptions.map((opt) => {
                                 const isSelected = opt.value === value;
@@ -187,6 +189,7 @@ const CustomCountrySelect = ({ value, onChange, options, disabled, iconComponent
  * PhoneInput — webapp version
  */
 export default function PhoneInput({
+
     label,
     value,
     onChange,

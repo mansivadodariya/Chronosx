@@ -4,8 +4,10 @@ import React, { useState, useMemo } from 'react';
 import styles from '../calculator.module.scss';
 import { PAIRS_CONFIG } from '../config';
 import CustomDropdown from './CustomDropdown';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function PivotCalculator() {
+    const { t } = useLanguage();
     const pairOptions = Object.keys(PAIRS_CONFIG);
     const defaultP = PAIRS_CONFIG['XAU/USD']?.defaultPrice || 4308.18;
     const [pivotPair, setPivotPair] = useState('XAU/USD');
@@ -16,9 +18,9 @@ export default function PivotCalculator() {
     const [pivotOpen, setPivotOpen] = useState(String(defaultP.toFixed(2)));
 
     const PIVOT_MODELS = [
-        { value: 'standard', label: 'Standard Floor Pivot' },
-        { value: 'fibonacci', label: 'Fibonacci Pivot Points' },
-        { value: 'camarilla', label: 'Camarilla High-Frequency' },
+        { value: 'standard', label: t('calculator.modelStandard', 'Standard Floor Pivot') },
+        { value: 'fibonacci', label: t('calculator.modelFib', 'Fibonacci Pivot Points') },
+        { value: 'camarilla', label: t('calculator.modelCamarilla', 'Camarilla High-Frequency') },
     ];
 
     const pivotResult = useMemo(() => {
@@ -85,13 +87,13 @@ export default function PivotCalculator() {
         <div className={styles.calculatorCardGrid}>
             <div className={styles.formCard}>
                 <div className={styles.cardHeader}>
-                    <h2>Pivot Point Parameters</h2>
-                    <span>MULTI-FORMULA</span>
+                    <h2>{t('calculator.pivotParams', 'Pivot Point Parameters')}</h2>
+                    <span>{t('calculator.multiFormula', 'MULTI-FORMULA')}</span>
                 </div>
 
                 <div className={styles.inputsGrid}>
                     <div className={styles.inputGroup}>
-                        <label>Instrument / Asset Preset</label>
+                        <label>{t('calculator.instrumentPreset', 'Instrument / Asset Preset')}</label>
                         <CustomDropdown
                             options={pairOptions}
                             value={pivotPair}
@@ -109,7 +111,7 @@ export default function PivotCalculator() {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Pivot Calculation Model</label>
+                        <label>{t('calculator.calculationModel', 'Pivot Calculation Model')}</label>
                         <CustomDropdown
                             options={PIVOT_MODELS}
                             value={pivotType}
@@ -118,7 +120,7 @@ export default function PivotCalculator() {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Session High (H)</label>
+                        <label>{t('calculator.highPrice', 'Session High (H)')}</label>
                         <input
                             type="number"
                             step="0.0001"
@@ -129,7 +131,7 @@ export default function PivotCalculator() {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Session Low (L)</label>
+                        <label>{t('calculator.lowPrice', 'Session Low (L)')}</label>
                         <input
                             type="number"
                             step="0.0001"
@@ -140,7 +142,7 @@ export default function PivotCalculator() {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Session Close (C)</label>
+                        <label>{t('calculator.closePrice', 'Session Close (C)')}</label>
                         <input
                             type="number"
                             step="0.0001"
@@ -152,7 +154,7 @@ export default function PivotCalculator() {
 
                     {pivotType === 'woodie' && (
                         <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
-                            <label>Session Open (O) <span className={styles.hint}>(Required for Woodie Model)</span></label>
+                            <label>{t('calculator.openPrice', 'Session Open (O)')} <span className={styles.hint}>({t('calculator.woodieHint', 'Required for Woodie Model')})</span></label>
                             <input
                                 type="number"
                                 step="0.0001"
@@ -166,7 +168,7 @@ export default function PivotCalculator() {
 
                 <div className={styles.actionBtnRow}>
                     <button type="button" className={styles.calculateBtn}>
-                        <span>Calculate Pivot Levels</span>
+                        <span>{t('calculator.calculateBtn', 'Calculate Pivot Levels')}</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                     </button>
                 </div>
@@ -175,58 +177,58 @@ export default function PivotCalculator() {
             <div className={styles.resultsCard}>
                 <div>
                     <div className={styles.resultHeader}>
-                        <h3>{pivotType.toUpperCase()} Pivot Levels</h3>
+                        <h3>{pivotType.toUpperCase()} {t('calculator.pivotPoints', 'Pivot Levels')}</h3>
                     </div>
 
                     <table className={styles.levelsTable}>
                         <thead>
                             <tr>
-                                <th>Level</th>
-                                <th>Price Target</th>
+                                <th>{t('calculator.levelHeader', 'Level')}</th>
+                                <th>{t('calculator.priceTargetHeader', 'Price Target')}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {pivotResult.r4 !== undefined && (
                                 <tr className={styles.resistanceRow}>
-                                    <td>Resistance 4 (R4)</td>
+                                    <td>{t('calculator.resistance', 'Resistance')} 4 (R4)</td>
                                     <td>{pivotResult.r4.toFixed(4)}</td>
                                 </tr>
                             )}
                             {pivotResult.r3 !== undefined && (
                                 <tr className={styles.resistanceRow}>
-                                    <td>Resistance 3 (R3)</td>
+                                    <td>{t('calculator.resistance', 'Resistance')} 3 (R3)</td>
                                     <td>{pivotResult.r3.toFixed(4)}</td>
                                 </tr>
                             )}
                             <tr className={styles.resistanceRow}>
-                                <td>Resistance 2 (R2)</td>
+                                <td>{t('calculator.resistance', 'Resistance')} 2 (R2)</td>
                                 <td>{pivotResult.r2.toFixed(4)}</td>
                             </tr>
                             <tr className={styles.resistanceRow}>
-                                <td>Resistance 1 (R1)</td>
+                                <td>{t('calculator.resistance', 'Resistance')} 1 (R1)</td>
                                 <td>{pivotResult.r1.toFixed(4)}</td>
                             </tr>
                             <tr className={styles.pivotRow}>
-                                <td>Pivot Point (PP)</td>
+                                <td>{t('calculator.pivotLevel', 'Pivot Point (PP)')}</td>
                                 <td>{pivotResult.pp.toFixed(4)}</td>
                             </tr>
                             <tr className={styles.supportRow}>
-                                <td>Support 1 (S1)</td>
+                                <td>{t('calculator.support', 'Support')} 1 (S1)</td>
                                 <td>{pivotResult.s1.toFixed(4)}</td>
                             </tr>
                             <tr className={styles.supportRow}>
-                                <td>Support 2 (S2)</td>
+                                <td>{t('calculator.support', 'Support')} 2 (S2)</td>
                                 <td>{pivotResult.s2.toFixed(4)}</td>
                             </tr>
                             {pivotResult.s3 !== undefined && (
                                 <tr className={styles.supportRow}>
-                                    <td>Support 3 (S3)</td>
+                                    <td>{t('calculator.support', 'Support')} 3 (S3)</td>
                                     <td>{pivotResult.s3.toFixed(4)}</td>
                                 </tr>
                             )}
                             {pivotResult.s4 !== undefined && (
                                 <tr className={styles.supportRow}>
-                                    <td>Support 4 (S4)</td>
+                                    <td>{t('calculator.support', 'Support')} 4 (S4)</td>
                                     <td>{pivotResult.s4.toFixed(4)}</td>
                                 </tr>
                             )}
@@ -235,7 +237,7 @@ export default function PivotCalculator() {
                 </div>
 
                 <div className={styles.formulaNote}>
-                    <strong>Usage:</strong> Levels above PP act as intraday resistance, levels below act as institutional support.
+                    <strong>{t('calculator.usageLabel', 'Usage:')}</strong> {t('calculator.pivotUsageNote', 'Levels above PP act as intraday resistance, levels below act as institutional support.')}
                 </div>
             </div>
         </div>

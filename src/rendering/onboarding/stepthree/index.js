@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import styles from './stepthree.module.scss';
+import { useLanguage } from '@/context/LanguageContext';
 
 // High-Definition Official Currency Flag and Asset Vector Icons
 const EurUsdIcon = () => (
@@ -276,68 +277,70 @@ const UsdChfIcon = () => (
     </div>
 );
 
-const MARKET_OPTIONS = [
+const getMarketOptions = (t) => [
     {
         id: 'eur_usd',
         title: 'EUR / USD',
-        category: 'FOREX MAJOR',
+        category: t('onboarding.step4.categories.forexMajor', 'FOREX MAJOR'),
         desc: 'Euro vs. US Dollar',
         icon: EurUsdIcon,
     },
     {
         id: 'gbp_usd',
         title: 'GBP / USD',
-        category: 'FOREX MAJOR',
+        category: t('onboarding.step4.categories.forexMajor', 'FOREX MAJOR'),
         desc: 'British Pound vs. US Dollar',
         icon: GbpUsdIcon,
     },
     {
         id: 'usd_jpy',
         title: 'USD / JPY',
-        category: 'FOREX MAJOR',
+        category: t('onboarding.step4.categories.forexMajor', 'FOREX MAJOR'),
         desc: 'US Dollar vs. Japanese Yen',
         icon: UsdJpyIcon,
     },
     {
         id: 'xau_usd',
         title: 'XAU / USD (Gold)',
-        category: 'COMMODITIES',
+        category: t('onboarding.step4.tabs.commodities', 'COMMODITIES'),
         desc: 'Spot Gold vs. US Dollar',
         icon: GoldIcon,
     },
     {
         id: 'gbp_jpy',
         title: 'GBP / JPY',
-        category: 'FOREX CROSS',
+        category: t('onboarding.step4.forexCross', 'FOREX CROSS'),
         desc: 'British Pound vs. Japanese Yen',
         icon: GbpJpyIcon,
     },
     {
         id: 'aud_usd',
         title: 'AUD / USD',
-        category: 'FOREX MAJOR',
+        category: t('onboarding.step4.categories.forexMajor', 'FOREX MAJOR'),
         desc: 'Australian Dollar vs. US Dollar',
         icon: AudUsdIcon,
     },
     {
         id: 'usd_cad',
         title: 'USD / CAD',
-        category: 'FOREX MAJOR',
+        category: t('onboarding.step4.categories.forexMajor', 'FOREX MAJOR'),
         desc: 'US Dollar vs. Canadian Dollar',
         icon: UsdCadIcon,
     },
     {
         id: 'usd_chf',
         title: 'USD / CHF',
-        category: 'FOREX MAJOR',
+        category: t('onboarding.step4.categories.forexMajor', 'FOREX MAJOR'),
         desc: 'US Dollar vs. Swiss Franc',
         icon: UsdChfIcon,
     },
 ];
 
 export default function Stepthree({ selectedOptions: controlledOptions, onToggleOption }) {
+    const { t } = useLanguage();
     const [internalOptions, setInternalOptions] = useState([]);
     const selectedOptions = controlledOptions !== undefined ? controlledOptions : internalOptions;
+    const marketOptions = React.useMemo(() => getMarketOptions(t), [t]);
 
     const handleToggle = (id) => {
         if (onToggleOption) {
@@ -355,19 +358,19 @@ export default function Stepthree({ selectedOptions: controlledOptions, onToggle
             <div className={styles.headerSection}>
                 <div className={styles.tagBadge}>
                     <span className={styles.tagDot} />
-                    <span>MARKET SELECTION · STEP 04</span>
+                    <span>{t('onboarding.step4.badge', 'WATCHLIST SETUP · STEP 04')}</span>
                 </div>
                 <h1 className={styles.mainTitle}>
-                    Which markets <span className={styles.accentText}>do you trade?</span>
+                    {t('onboarding.step4.title', 'Which markets do you')} <span className={styles.accentText}>{t('onboarding.step4.titleAccent', 'trade most often?')}</span>
                 </h1>
                 <p className={styles.subtitle}>
-                    Pick your priority financial instruments. ChronosX will stream live data and priority scanner alerts for these pairs.
+                    {t('onboarding.step4.subtitle', 'Select your core asset classes and preferred pairs for real-time telemetry prioritization.')}
                 </p>
             </div>
 
             {/* 8 Grid Market Pairs */}
             <div className={styles.marketsGrid}>
-                {MARKET_OPTIONS.map((opt) => {
+                {marketOptions.map((opt) => {
                     const isSelected = selectedOptions.includes(opt.id);
                     const IconComponent = opt.icon;
 
@@ -416,7 +419,7 @@ export default function Stepthree({ selectedOptions: controlledOptions, onToggle
                     <line x1="12" y1="16" x2="12" y2="12" />
                     <line x1="12" y1="8" x2="12.01" y2="8" />
                 </svg>
-                <span>You can customize your watched instruments anytime from Dashboard Settings.</span>
+                <span>{t('onboarding.step4.notice', 'You can customize your watched instruments anytime from Dashboard Settings.')}</span>
             </div>
         </div>
     );

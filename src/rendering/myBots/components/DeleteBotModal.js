@@ -1,9 +1,12 @@
 'use client';
 
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../myBots.module.scss';
 
 export default function DeleteBotModal({ isOpen, bot, onClose, onConfirm, isDeleting }) {
+    const { t } = useLanguage();
+
     if (!isOpen || !bot) return null;
 
     return (
@@ -21,10 +24,10 @@ export default function DeleteBotModal({ isOpen, bot, onClose, onConfirm, isDele
                     </svg>
                 </div>
 
-                <h3 className={styles.deleteModalTitle}>Delete Strategy?</h3>
+                <h3 className={styles.deleteModalTitle}>{t('myBots.deleteModalTitle', 'Delete Strategy?')}</h3>
 
                 <p className={styles.deleteModalDesc}>
-                    Are you sure you want to permanently delete this strategy bot?
+                    {t('myBots.deleteModalDesc', 'Are you sure you want to permanently delete this strategy bot?')}
                     <br />
                     <span className={styles.deleteStrategyTag}>
                         {bot.name || 'Unnamed Strategy'}
@@ -38,7 +41,7 @@ export default function DeleteBotModal({ isOpen, bot, onClose, onConfirm, isDele
                         onClick={onClose}
                         disabled={isDeleting}
                     >
-                        Cancel
+                        {t('myBots.cancel', 'Cancel')}
                     </button>
                     <button
                         type="button"
@@ -46,7 +49,7 @@ export default function DeleteBotModal({ isOpen, bot, onClose, onConfirm, isDele
                         onClick={onConfirm}
                         disabled={isDeleting}
                     >
-                        {isDeleting ? 'Deleting...' : 'Delete Strategy'}
+                        {isDeleting ? t('myBots.deleting', 'Deleting...') : t('myBots.confirmDelete', 'Delete Strategy')}
                     </button>
                 </div>
             </div>

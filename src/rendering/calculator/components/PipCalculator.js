@@ -4,8 +4,10 @@ import React, { useState, useMemo } from 'react';
 import styles from '../calculator.module.scss';
 import { PAIRS_CONFIG, CURRENCIES, RATES_TO_USD } from '../config';
 import CustomDropdown from './CustomDropdown';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function PipCalculator({ onCopy, copied }) {
+    const { t } = useLanguage();
     const [pipPair, setPipPair] = useState('XAU/USD');
     const [pipAmount, setPipAmount] = useState('10');
     const [pipLots, setPipLots] = useState('1.0');
@@ -46,13 +48,13 @@ export default function PipCalculator({ onCopy, copied }) {
         <div className={styles.calculatorCardGrid}>
             <div className={styles.formCard}>
                 <div className={styles.cardHeader}>
-                    <h2>Pip Value Parameters</h2>
-                    <span>REAL-TIME FORMULA</span>
+                    <h2>{t('calculator.pipValueParams', 'Pip Value Parameters')}</h2>
+                    <span>{t('calculator.realTimeFormula', 'REAL-TIME FORMULA')}</span>
                 </div>
 
                 <div className={styles.inputsGrid}>
                     <div className={styles.inputGroup}>
-                        <label>Instrument / Currency Pair</label>
+                        <label>{t('calculator.instrumentPair', 'Instrument / Currency Pair')}</label>
                         <CustomDropdown
                             options={pairOptions}
                             value={pipPair}
@@ -64,7 +66,7 @@ export default function PipCalculator({ onCopy, copied }) {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Account Base Currency</label>
+                        <label>{t('calculator.accountBaseCurrency', 'Account Base Currency')}</label>
                         <CustomDropdown
                             options={CURRENCIES}
                             value={pipCurrency}
@@ -74,7 +76,7 @@ export default function PipCalculator({ onCopy, copied }) {
 
                     <div className={styles.inputGroup}>
                         <label>
-                            Trade Size (Lots)
+                            {t('calculator.tradeSizeLots', 'Trade Size (Lots)')}
                             <span className={styles.hint}>{pipLots} Lot = {(parseFloat(pipLots || 0) * (PAIRS_CONFIG[pipPair]?.contractSize || 100000)).toLocaleString()} units</span>
                         </label>
                         <input
@@ -100,7 +102,7 @@ export default function PipCalculator({ onCopy, copied }) {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Number of Pips</label>
+                        <label>{t('calculator.numberOfPips', 'Number of Pips')}</label>
                         <input
                             type="number"
                             step="1"
@@ -125,7 +127,7 @@ export default function PipCalculator({ onCopy, copied }) {
 
                     <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
                         <label>
-                            Pip Size Standard
+                            {t('calculator.pipSizeStandard', 'Pip Size Standard')}
                             <span className={styles.hint}>Auto-detected: {PAIRS_CONFIG[pipPair]?.pipSize}</span>
                         </label>
                         <input
@@ -140,7 +142,7 @@ export default function PipCalculator({ onCopy, copied }) {
 
                 <div className={styles.actionBtnRow}>
                     <button type="button" className={styles.calculateBtn}>
-                        <span>Calculate Pip Value</span>
+                        <span>{t('calculator.calcPipValue', 'Calculate Pip Value')}</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                     </button>
                 </div>
@@ -149,7 +151,7 @@ export default function PipCalculator({ onCopy, copied }) {
             <div className={styles.resultsCard}>
                 <div>
                     <div className={styles.resultHeader}>
-                        <h3>Total Pip Value</h3>
+                        <h3>{t('calculator.totalPipValue', 'Total Pip Value')}</h3>
                         <button
                             type="button"
                             className={styles.copyBtn}
@@ -158,19 +160,19 @@ export default function PipCalculator({ onCopy, copied }) {
                             {copied ? (
                                 <>
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                                    <span>Copied</span>
+                                    <span>{t('calculator.copied', 'Copied')}</span>
                                 </>
                             ) : (
                                 <>
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
-                                    <span>Copy</span>
+                                    <span>{t('calculator.copy', 'Copy')}</span>
                                 </>
                             )}
                         </button>
                     </div>
 
                     <div className={styles.primaryResultBlock}>
-                        <div className={styles.resultLabel}>Total Pip Value ({pipAmount} Pips)</div>
+                        <div className={styles.resultLabel}>{t('calculator.totalPipValue', 'Total Pip Value')} ({pipAmount} Pips)</div>
                         <div className={styles.resultValue}>
                             {pipCurrency} {pipResult.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </div>
@@ -181,21 +183,19 @@ export default function PipCalculator({ onCopy, copied }) {
 
                     <div className={styles.breakdownList}>
                         <div className={styles.breakdownItem}>
-                            <span>Position Volume</span>
+                            <span>{t('calculator.positionVolume', 'Position Volume')}</span>
                             <span>{pipResult.units.toLocaleString()} Units</span>
                         </div>
                         <div className={styles.breakdownItem}>
-                            <span>Single Pip Value</span>
+                            <span>{t('calculator.singlePipValue', 'Single Pip Value')}</span>
                             <span>{pipCurrency} {pipResult.onePip.toFixed(2)}</span>
                         </div>
                         <div className={styles.breakdownItem}>
-                            <span>Decimal Increment</span>
+                            <span>{t('calculator.decimalIncrement', 'Decimal Increment')}</span>
                             <span>{pipResult.pipSize}</span>
                         </div>
                     </div>
                 </div>
-
-       
             </div>
         </div>
     );

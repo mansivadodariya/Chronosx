@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+
 import Modal from '@/rendering/tradeSnap/Modal';
 import Loader from '@/components/loader';
 import RemoveIcon from '@/icons/removeIcon';
@@ -28,21 +29,21 @@ export default function AssistantModals({
             <Modal
                 open={confirmDeleteOpen}
                 onClose={closeDeleteConfirm}
-                title="Delete history item?"
-                description="This action cannot be undone."
+                title={t('aiAssistant.deleteConfirmTitle', 'Delete history item?')}
+                description={t('aiAssistant.deleteConfirmDesc', 'This action cannot be undone.')}
                 footer={
                     <>
                         <button type="button" className={styles.modalCancelBtn} onClick={closeDeleteConfirm}>
-                            Cancel
+                            {t('aiAssistant.cancel', 'Cancel')}
                         </button>
                         <button type="button" className={styles.modalDeleteBtn} onClick={handleConfirmDelete}>
-                            Delete
+                            {t('aiAssistant.delete', 'Delete')}
                         </button>
                     </>
                 }
             >
                 <p className={styles.modalText}>
-                    Are you sure you want to delete this {pendingDeleteItem?.type === 'chat' ? 'chat' : 'blog'} history item?
+                    {t('aiAssistant.deleteConfirmBody', 'Are you sure you want to delete this history item?')}
                 </p>
             </Modal>
 
@@ -56,7 +57,7 @@ export default function AssistantModals({
                         {loadingHistory ? (
                             <Loader centered />
                         ) : chatHistory.length === 0 ? (
-                            <div className={styles.noHistory}>No past questions found</div>
+                            <div className={styles.noHistory}>{t('aiAssistant.noHistoryFound', 'No past questions found')}</div>
                         ) : (
                             chatHistory.map((item, index) => (
                                 <div

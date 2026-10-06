@@ -318,21 +318,21 @@ export default function Profile() {
         const lastName = form.last_name.trim();
 
         if (!firstName) {
-            errs.first_name = 'First name is required.';
+            errs.first_name = t('profile.firstNameRequired', 'First name is required.');
         } else if (firstName.length < 2) {
-            errs.first_name = 'First name must be at least 2 characters.';
+            errs.first_name = t('profile.firstNameMinLength', 'First name must be at least 2 characters.');
         }
 
         if (!lastName) {
-            errs.last_name = 'Last name is required.';
+            errs.last_name = t('profile.lastNameRequired', 'Last name is required.');
         } else if (lastName.length < 2) {
-            errs.last_name = 'Last name must be at least 2 characters.';
+            errs.last_name = t('profile.lastNameMinLength', 'Last name must be at least 2 characters.');
         }
 
         if (!form.phone_number) {
-            errs.phone_number = 'Phone number is required.';
+            errs.phone_number = t('profile.phoneRequired', 'Phone number is required.');
         } else if (!isValidPhoneNumber(form.phone_number)) {
-            errs.phone_number = 'Enter a valid phone number.';
+            errs.phone_number = t('profile.phoneInvalid', 'Enter a valid phone number.');
         }
 
         return errs;
@@ -492,7 +492,7 @@ export default function Profile() {
         <div className={styles.profile}>
             {/* Top Page Header */}
             <CommonSectionHeader
-                badge="TRADER PROFILE & SECURITY SUITE"
+                badge={t('profile.badge', 'TRADER PROFILE & SECURITY SUITE')}
                 badgeIcon={
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />

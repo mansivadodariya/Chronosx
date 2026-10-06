@@ -36,31 +36,31 @@ const INITIAL_FORM_DATA = {
     maxDailyLoss: 5
 };
 
-function validateStep(step, data) {
+function validateStep(step, data, t) {
     const errors = {};
 
     if (step === 1) {
         if (!data.botName || !data.botName.trim()) {
-            errors.botName = 'Bot name is required';
+            errors.botName = t ? t('botBuilder.validation.botNameRequired', 'Bot name is required') : 'Bot name is required';
         } else if (data.botName.trim().length < 3) {
-            errors.botName = 'Bot name must be at least 3 characters';
+            errors.botName = t ? t('botBuilder.validation.botNameMin', 'Bot name must be at least 3 characters') : 'Bot name must be at least 3 characters';
         }
 
         if (!data.tradingPair) {
-            errors.tradingPair = 'Please select a trading pair';
+            errors.tradingPair = t ? t('botBuilder.validation.selectPair', 'Please select a trading pair') : 'Please select a trading pair';
         }
 
         if (!data.timeframe) {
-            errors.timeframe = 'Please select a timeframe';
+            errors.timeframe = t ? t('botBuilder.validation.selectTimeframe', 'Please select a timeframe') : 'Please select a timeframe';
         }
     }
 
     if (step === 2) {
         if (!data.entryConditions || data.entryConditions.length === 0) {
-            errors.entryConditions = 'Please add at least one entry condition';
+            errors.entryConditions = t ? t('botBuilder.validation.addEntryCondition', 'Please add at least one entry condition') : 'Please add at least one entry condition';
         } else {
             for (let i = 0; i < data.entryConditions.length; i++) {
-                const condErr = validateEntryCondition(data.entryConditions[i], data.entryConditions, i);
+                const condErr = validateEntryCondition(data.entryConditions[i], data.entryConditions, i, t);
                 if (condErr) {
                     errors.entryConditions = `Condition #${i + 1}: ${condErr}`;
                     break;
@@ -71,10 +71,10 @@ function validateStep(step, data) {
 
     if (step === 3) {
         if (!data.takeProfitPips || Number(data.takeProfitPips) <= 0) {
-            errors.takeProfitPips = 'Take Profit must be greater than 0 pips';
+            errors.takeProfitPips = t ? t('botBuilder.validation.tpRequired', 'Take Profit (pips) is required') : 'Take Profit must be greater than 0 pips';
         }
         if (!data.stopLossPips || Number(data.stopLossPips) <= 0) {
-            errors.stopLossPips = 'Stop Loss must be greater than 0 pips';
+            errors.stopLossPips = t ? t('botBuilder.validation.slRequired', 'Stop Loss (pips) is required') : 'Stop Loss must be greater than 0 pips';
         }
         if (data.trailingStop) {
             if (!data.trailingDistance || Number(data.trailingDistance) <= 0) {
@@ -115,8 +115,8 @@ export default function CustomBotBuilderView() {
     const [isDeploying, setIsDeploying] = useState(false);
 
     const isCurrentStepValid = useMemo(() => {
-        return validateStep(currentStep, formData).isValid;
-    }, [currentStep, formData]);
+        return validateStep(currentStep, formData, t).isValid;
+    }, [currentStep, formData, t]);
 
     const handleFormChange = (field, value) => {
         let sanitizedValue = value;
@@ -247,10 +247,10 @@ export default function CustomBotBuilderView() {
         <div className={styles.builderContainer}>
             {/* Common Section Header */}
             <CommonSectionHeader
-                badge="CHRONOSX QUANT SUITE"
+                badge={t('botBuilder.badge', 'CHRONOSX QUANT SUITE')}
                 icon={<CustomBotIcon width={26} height={26} />}
                 title={t('nav.customBotBuilder', 'Custom Bot Builder')}
-                subtitle="Build custom algorithmic trading bots step-by-step with technical entry signals, exit targets, and risk parameters."
+                subtitle={t('botBuilder.subtitle', 'Build custom algorithmic trading bots step-by-step with technical entry signals, exit targets, and risk parameters.')}
             />
 
             {/* Stepper Header Bar */}

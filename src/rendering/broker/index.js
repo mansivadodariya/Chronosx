@@ -135,8 +135,8 @@ export default function BrokerPage({ isPublic = false }) {
                                     </svg>
                                 </div>
                                 <div className={styles.metricTexts}>
-                                    <span className={styles.metricVal}>Tier-1 Regulated</span>
-                                    <span className={styles.metricLbl}>Verified Security</span>
+                                    <span className={styles.metricVal}>{t('broker.tier1Regulated', 'Tier-1 Regulated')}</span>
+                                    <span className={styles.metricLbl}>{t('broker.verifiedSecurity', 'Verified Security')}</span>
                                 </div>
                             </div>
 
@@ -148,7 +148,7 @@ export default function BrokerPage({ isPublic = false }) {
                                 </div>
                                 <div className={styles.metricTexts}>
                                     <span className={styles.metricVal}>&lt; 15ms Latency</span>
-                                    <span className={styles.metricLbl}>Direct MT5 Bridge</span>
+                                    <span className={styles.metricLbl}>{t('broker.directBridge', 'Direct MT5 Bridge')}</span>
                                 </div>
                             </div>
 
@@ -159,8 +159,8 @@ export default function BrokerPage({ isPublic = false }) {
                                     </svg>
                                 </div>
                                 <div className={styles.metricTexts}>
-                                    <span className={styles.metricVal}>Volume Rebates</span>
-                                    <span className={styles.metricLbl}>Auto AI Credits / Lot</span>
+                                    <span className={styles.metricVal}>{t('broker.volumeRebates', 'Volume Rebates')}</span>
+                                    <span className={styles.metricLbl}>{t('broker.autoCredits', 'Auto AI Credits / Lot')}</span>
                                 </div>
                             </div>
 
@@ -176,8 +176,8 @@ export default function BrokerPage({ isPublic = false }) {
                                     </svg>
                                 </div>
                                 <div className={styles.metricTexts}>
-                                    <span className={styles.metricVal}>FIX 4.4 Engine</span>
-                                    <span className={styles.metricLbl}>STP / ECN Direct</span>
+                                    <span className={styles.metricVal}>{t('broker.fixEngine', 'FIX 4.4 Engine')}</span>
+                                    <span className={styles.metricLbl}>{t('broker.stpEcn', 'STP / ECN Direct')}</span>
                                 </div>
                             </div>
                         </div>
@@ -207,7 +207,7 @@ export default function BrokerPage({ isPublic = false }) {
                     <SearchIcon />
                     <input
                         type="text"
-                        placeholder="Search brokers, regulations, or servers..."
+                        placeholder={t('broker.searchBrokers', 'Search brokers, regulations, or servers...')}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -246,7 +246,7 @@ export default function BrokerPage({ isPublic = false }) {
                             <line x1="21" y1="21" x2="16.65" y2="16.65" />
                         </svg>
                     </div>
-                    <h3>No verified brokers found</h3>
+                    <h3>{t('broker.noBrokersFound', 'No verified brokers found')}</h3>
                     <p>No broker or platform matching &quot;{searchQuery}&quot; in category &quot;{selectedTab}&quot;.</p>
                     <button type="button" onClick={() => { setSearchQuery(''); setSelectedTab('All'); }} className={styles.resetFiltersBtn}>
                         Reset Filters
@@ -261,7 +261,7 @@ export default function BrokerPage({ isPublic = false }) {
                         <div className={styles.connectModalHeader}>
                             <div>
                                 <h3>Connect {connectModalBroker.name}</h3>
-                                <p>Link your MT5 credentials to enable automated trade telemetry and AI audit sync.</p>
+                                <p>{t('broker.linkCredentialsDesc', 'Link your MT5 credentials to enable automated trade telemetry and AI audit sync.')}</p>
                             </div>
                             <button
                                 type="button"
@@ -277,18 +277,18 @@ export default function BrokerPage({ isPublic = false }) {
 
                         <form onSubmit={handleModalSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                             <div className={styles.connectFormGroup}>
-                                <label>Broker Server</label>
+                                <label>{t('broker.serverLabel', 'Broker Server')}</label>
                                 <input
                                     type="text"
                                     value={server}
                                     onChange={(e) => setServer(e.target.value)}
-                                    placeholder="e.g. Server-Live01"
+                                    placeholder={t('broker.serverPlaceholder', 'e.g. Server-Live01')}
                                     required
                                 />
                             </div>
 
                             <div className={styles.connectFormGroup}>
-                                <label>MT5 Login ID (Account Number)</label>
+                                <label>{t('broker.loginIdLabel', 'MT5 Login ID (Account Number)')}</label>
                                 <input
                                     type="text"
                                     value={loginId}
@@ -299,7 +299,7 @@ export default function BrokerPage({ isPublic = false }) {
                             </div>
 
                             <div className={styles.connectFormGroup}>
-                                <label>Investor / Read Password</label>
+                                <label>{t('broker.investorPasswordLabel', 'Investor / Read Password')}</label>
                                 <input
                                     type="password"
                                     value={password}
@@ -310,7 +310,7 @@ export default function BrokerPage({ isPublic = false }) {
                             </div>
 
                             <p style={{ fontSize: '11px', color: '#64748B', margin: 0, lineHeight: 1.4 }}>
-                                Security notice: We recommend entering your MT5 <strong>read-only / investor password</strong>. Your credentials are encrypted in-transit.
+                                Security notice: We recommend entering your MT5 <strong>{t('broker.readOnlyDesc', 'read-only / investor password')}</strong>. Your credentials are encrypted in-transit.
                             </p>
 
                             <div className={styles.modalActionsRow}>

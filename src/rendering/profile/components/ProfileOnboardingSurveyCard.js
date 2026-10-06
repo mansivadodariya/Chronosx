@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../profile.module.scss';
 import { TradingViewPairIcon } from './TradingViewPairIcon';
 
@@ -168,7 +169,7 @@ export default function ProfileOnboardingSurveyCard({ onboardingData, t }) {
                                     );
                                 })
                             ) : (
-                                <span className={styles.emptyTextMuted}>No styles selected</span>
+                                <span className={styles.emptyTextMuted}>{t('profile.noStylesSelected', 'No styles selected')}</span>
                             )}
                         </div>
                     </div>
@@ -191,7 +192,7 @@ export default function ProfileOnboardingSurveyCard({ onboardingData, t }) {
                                     );
                                 })
                             ) : (
-                                <span className={styles.emptyTextMuted}>No specific objectives set</span>
+                                <span className={styles.emptyTextMuted}>{t('profile.noObjectivesSet', 'No specific objectives set')}</span>
                             )}
                         </div>
                     </div>
@@ -219,7 +220,7 @@ export default function ProfileOnboardingSurveyCard({ onboardingData, t }) {
                                     );
                                 })
                             ) : (
-                                <span className={styles.emptyTextMuted}>All major global assets</span>
+                                <span className={styles.emptyTextMuted}>{t('profile.allMajorAssets', 'All major global assets')}</span>
                             )}
                         </div>
                     </div>

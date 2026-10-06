@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './publicAffiliate.module.scss';
 
 export default function ReferralLinkWidget() {
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [showQrModal, setShowQrModal] = useState(false);
   const referralLink = "https://chronosx.com/signup?ref=YOUR-CODE";
@@ -32,10 +34,10 @@ export default function ReferralLinkWidget() {
     <section className={styles.referralWidgetSection}>
       <div className="container">
         <SectionHeader
-          badge="YOUR REFERRAL LINK"
+          badge={t('publicAffiliate.referralLinkBadge', 'YOUR REFERRAL LINK')}
           title1="One-Click Instant"
           title2="Social Sharing"
-          description="Share your unique referral link across social media, trading communities, websites, and direct channels. Make it easy to share ChronosX wherever your audience is active."
+          description={t('publicAffiliate.referralLinkSubtitle', 'Share your unique referral link across social media, trading communities, websites, and direct channels. Make it easy to share ChronosX wherever your audience is active.')}
         />
 
         <div className={styles.widgetContainer}>

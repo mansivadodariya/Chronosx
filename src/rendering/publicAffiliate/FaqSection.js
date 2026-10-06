@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './publicAffiliate.module.scss';
 
 const FAQS = [
@@ -40,6 +41,7 @@ const FAQS = [
 ];
 
 export default function FaqSection() {
+  const { t } = useLanguage();
   const [openIndex, setOpenIndex] = useState(0);
 
   const toggleFaq = (index) => {
@@ -50,10 +52,10 @@ export default function FaqSection() {
     <section className={styles.faqSection}>
       <div className="container">
         <SectionHeader
-          badge="FAQ"
+          badge={t('publicAffiliate.faqBadge', 'FAQ')}
           title1="Common"
           title2="Questions"
-          description="Find answers to the most frequently asked questions about the ChronosX Affiliate Program."
+          description={t('publicAffiliate.faqSubtitle', 'Find answers to the most frequently asked questions about the ChronosX Affiliate Program.')}
         />
 
         <div className={styles.faqAccordionList}>

@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './publicAffiliate.module.scss';
 
 const TESTIMONIALS = [
@@ -26,14 +27,15 @@ const TESTIMONIALS = [
 ];
 
 export default function TestimonialsSection() {
+  const { t } = useLanguage();
   return (
     <section className={styles.testimonialsSection}>
       <div className="container">
         <SectionHeader
-          badge="SUCCESS STORIES"
+          badge={t('publicAffiliate.testimonialsBadge', 'SUCCESS STORIES')}
           title1="What Our"
           title2="Affiliates Say"
-          description="Hear from partners using the ChronosX Affiliate Program to share the platform with their audience and manage their referral activity."
+          description={t('publicAffiliate.testimonialsSubtitle', 'Hear from partners using the ChronosX Affiliate Program to share the platform with their audience and manage their referral activity.')}
         />
 
         <div className={styles.testimonialsGrid}>

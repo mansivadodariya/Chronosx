@@ -3,9 +3,12 @@
 import React from 'react';
 import Image from 'next/image';
 import { SAMPLE_TRADES } from '../constants/sampleTrades';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../aiPastTradeAnalyzer.module.scss';
 
 export default function CockpitStage({ selectedTrade, onSelectPreset }) {
+    const { t } = useLanguage();
+
     return (
         <div className={styles.cockpitFrame}>
             <div className={styles.cockpitTopGlow} />
@@ -14,7 +17,7 @@ export default function CockpitStage({ selectedTrade, onSelectPreset }) {
             <div className={styles.cockpitNavHeader}>
                 <div className={styles.cockpitBrand}>
                     <span className={styles.cockpitDotGreen} />
-                    <span className={styles.cockpitTitleText}>CHRONOSX // NEURAL AUDITOR COCKPIT</span>
+                    <span className={styles.cockpitTitleText}>{t('aiPastTradeAnalyzer.cockpit.title', 'CHRONOSX // NEURAL AUDITOR COCKPIT')}</span>
                 </div>
 
                 {/* Quick Preset Selector */}
@@ -32,9 +35,9 @@ export default function CockpitStage({ selectedTrade, onSelectPreset }) {
                 </div>
 
                 <div className={styles.cockpitTelemetryBadge}>
-                    <span>SPEED: <strong>1.2s</strong></span>
+                    <span>{t('aiPastTradeAnalyzer.cockpit.speed', 'SPEED:')} <strong>1.2s</strong></span>
                     <span className={styles.telemetryDivider}>|</span>
-                    <span>ACCURACY: <strong>99.4%</strong></span>
+                    <span>{t('aiPastTradeAnalyzer.cockpit.accuracy', 'ACCURACY:')} <strong>99.4%</strong></span>
                 </div>
             </div>
 
@@ -43,7 +46,7 @@ export default function CockpitStage({ selectedTrade, onSelectPreset }) {
                 {/* 1. Left Telemetry Column */}
                 <div className={styles.telemetryColLeft}>
                     <div className={styles.telemetryCard}>
-                        <span className={styles.telemetryLabel}>TRADE OUTCOME</span>
+                        <span className={styles.telemetryLabel}>{t('aiPastTradeAnalyzer.cockpit.tradeOutcome', 'TRADE OUTCOME')}</span>
                         <div className={selectedTrade.result.includes('WIN') ? styles.winBig : styles.lossBig}>
                             {selectedTrade.result}
                         </div>
@@ -51,7 +54,7 @@ export default function CockpitStage({ selectedTrade, onSelectPreset }) {
                     </div>
 
                     <div className={styles.telemetryCard}>
-                        <span className={styles.telemetryLabel}>EXECUTION SCORE</span>
+                        <span className={styles.telemetryLabel}>{t('aiPastTradeAnalyzer.cockpit.executionScore', 'EXECUTION SCORE')}</span>
                         <div className={styles.scoreRow}>
                             <span className={styles.scoreBig}>{selectedTrade.score}</span>
                             <span className={styles.scoreMax}>/ 100</span>
@@ -62,7 +65,7 @@ export default function CockpitStage({ selectedTrade, onSelectPreset }) {
                     </div>
 
                     <div className={styles.telemetryCard}>
-                        <span className={styles.telemetryLabel}>RISK REWARD RATIO</span>
+                        <span className={styles.telemetryLabel}>{t('aiPastTradeAnalyzer.cockpit.riskRewardRatio', 'RISK REWARD RATIO')}</span>
                         <div className={styles.rrVal}>{selectedTrade.rr}</div>
                     </div>
                 </div>
@@ -84,12 +87,12 @@ export default function CockpitStage({ selectedTrade, onSelectPreset }) {
                         {/* Floating Interactive Callout Badges */}
                         <div className={styles.pinWrongEntry}>
                             <span className={styles.pinDotRed} />
-                            <span>Wrong Entry: {selectedTrade.wrongEntryPrice}</span>
+                            <span>{t('aiPastTradeAnalyzer.interactive.wrongEntry', 'Wrong Entry')}: {selectedTrade.wrongEntryPrice}</span>
                         </div>
 
                         <div className={styles.pinBetterEntry}>
                             <span className={styles.pinDotGreen} />
-                            <span>Better Entry: {selectedTrade.betterEntryPrice}</span>
+                            <span>{t('aiPastTradeAnalyzer.interactive.betterEntry', 'Better Entry')}: {selectedTrade.betterEntryPrice}</span>
                         </div>
                     </div>
                 </div>
@@ -97,7 +100,7 @@ export default function CockpitStage({ selectedTrade, onSelectPreset }) {
                 {/* 3. Right: Diagnostic Findings & Action Plan */}
                 <div className={styles.diagnosticColRight}>
                     <div className={styles.diagHeader}>
-                        <span className={styles.diagBadge}>AI DIAGNOSTIC FINDINGS</span>
+                        <span className={styles.diagBadge}>{t('aiPastTradeAnalyzer.cockpit.diagnosticFindings', 'AI DIAGNOSTIC FINDINGS')}</span>
                     </div>
 
                     <p className={styles.verdictText}>
@@ -108,7 +111,7 @@ export default function CockpitStage({ selectedTrade, onSelectPreset }) {
                     <div className={styles.mistakeHighlightBox}>
                         <div className={styles.boxTitleRow}>
                             <span className={styles.boxDotRed}>✕</span>
-                            <h5>PRIMARY EXECUTION FLAW</h5>
+                            <h5>{t('aiPastTradeAnalyzer.cockpit.primaryFlaw', 'PRIMARY EXECUTION FLAW')}</h5>
                         </div>
                         <p>{selectedTrade.mistakes[0]}</p>
                     </div>
@@ -117,7 +120,7 @@ export default function CockpitStage({ selectedTrade, onSelectPreset }) {
                     <div className={styles.improveHighlightBox}>
                         <div className={styles.boxTitleRow}>
                             <span className={styles.boxDotGreen}>✓</span>
-                            <h5>ACTIONABLE FIX</h5>
+                            <h5>{t('aiPastTradeAnalyzer.cockpit.actionableFix', 'ACTIONABLE FIX')}</h5>
                         </div>
                         <p>{selectedTrade.improvements[0]}</p>
                     </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './customDatePicker.module.scss';
 import {
     formatDateStr,
@@ -21,6 +22,7 @@ const MONTH_SHORT = [
 const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
 export default function CustomDatePicker({
+
     value = '',
     onChange,
     min = '',
@@ -30,6 +32,7 @@ export default function CustomDatePicker({
     align = 'left',
     disabled = false
 }) {
+    const { t } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
     const [viewMode, setViewMode] = useState('days'); // 'days' | 'monthsYears'
     const containerRef = useRef(null);
@@ -228,7 +231,7 @@ export default function CustomDatePicker({
                             type="button"
                             className={styles.navButton}
                             onClick={handlePrevMonth}
-                            aria-label="Previous Month"
+                            aria-label={t('components.datePicker.previousMonth', 'Previous Month')}
                         >
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="15 18 9 12 15 6" />
@@ -250,7 +253,7 @@ export default function CustomDatePicker({
                             type="button"
                             className={styles.navButton}
                             onClick={handleNextMonth}
-                            aria-label="Next Month"
+                            aria-label={t('components.datePicker.nextMonth', 'Next Month')}
                         >
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="9 18 15 12 9 6" />

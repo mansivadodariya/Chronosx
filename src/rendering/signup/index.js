@@ -33,10 +33,10 @@ const UserIcon = '/assets/icons/user.svg';
 const EmailIcon = '/assets/icons/sms.svg';
 const Lock = '/assets/icons/lock.svg';
 
-const HERO_FEATURES = [
+const getHeroFeatures = (t) => [
     {
-        title: 'AI Chart Scanner',
-        desc: 'Instant neural OCR pattern detection',
+        title: t('auth.heroFeatures.scannerTitle', 'AI Chart Scanner'),
+        desc: t('auth.heroFeatures.scannerDesc', 'Instant neural OCR pattern detection'),
         icon: (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 3v18h18" />
@@ -50,8 +50,8 @@ const HERO_FEATURES = [
         badge: '98.4%'
     },
     {
-        title: 'Signal Terminal',
-        desc: 'Real-time breakout & momentum radar',
+        title: t('auth.heroFeatures.terminalTitle', 'Signal Terminal'),
+        desc: t('auth.heroFeatures.terminalDesc', 'Real-time breakout & momentum radar'),
         icon: (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
@@ -60,8 +60,8 @@ const HERO_FEATURES = [
         badge: 'LIVE'
     },
     {
-        title: 'AI Market Assistant',
-        desc: '24/7 conversational market copilot',
+        title: t('auth.heroFeatures.assistantTitle', 'AI Market Assistant'),
+        desc: t('auth.heroFeatures.assistantDesc', '24/7 conversational market copilot'),
         icon: (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
@@ -73,8 +73,8 @@ const HERO_FEATURES = [
         badge: 'COPILOT'
     },
     {
-        title: 'AI Trading Signal',
-        desc: 'Algorithmic quantitative playbooks',
+        title: t('auth.heroFeatures.signalTitle', 'AI Trading Signal'),
+        desc: t('auth.heroFeatures.signalDesc', 'Algorithmic quantitative playbooks'),
         icon: (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 12h3l3-7 4 14 3-8 2 4h4" />
@@ -85,8 +85,8 @@ const HERO_FEATURES = [
         badge: 'QUANT'
     },
     {
-        title: 'Bank-Level Encryption',
-        desc: '256-bit non-custodial protocol security',
+        title: t('auth.heroFeatures.encryptionTitle', 'Bank-Level Encryption'),
+        desc: t('auth.heroFeatures.encryptionDesc', '256-bit non-custodial protocol security'),
         icon: (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -102,6 +102,7 @@ const Signup = () => {
     const { t } = useLanguage();
     const { theme } = useTheme();
     const Logo = theme === 'light' ? LightLogo : DarkLogo;
+    const heroFeatures = React.useMemo(() => getHeroFeatures(t), [t]);
     const codeFromQuery = searchParams.get('ref') || searchParams.get('code') || searchParams.get('referral_code') || '';
     const redirectTo = getAuthRedirectTarget(searchParams);
 
@@ -110,10 +111,10 @@ const Signup = () => {
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setActiveFeatureIndex((prev) => (prev + 1) % HERO_FEATURES.length);
+            setActiveFeatureIndex((prev) => (prev + 1) % heroFeatures.length);
         }, 2800);
         return () => clearInterval(timer);
-    }, []);
+    }, [heroFeatures.length]);
 
 
     // Capture and persist referral code for 30 days
@@ -397,17 +398,17 @@ const Signup = () => {
                                 {/* Header & Subtitle (Aligned with Landing Page) */}
                                 <div className={styles.leftTextGroup}>
                                     <h2 className={styles.leftTitle}>
-                                        Trade Smarter with <br />
-                                        <span className={styles.highlightText}>AI That Never Sleeps</span>
+                                        {t('auth.hero.titleLine1', 'Trade Smarter with')} <br />
+                                        <span className={styles.highlightText}>{t('auth.hero.titleHighlight', 'AI That Never Sleeps')}</span>
                                     </h2>
                                     <p className={styles.leftSubtitle}>
-                                        Get real-time AI trading signals, market insights, and trade recommendations across Forex, Stocks, and Global Markets.
+                                        {t('auth.hero.subtitle', 'Get real-time AI trading signals, market insights, and trade recommendations across Forex, Stocks, and Global Markets.')}
                                     </p>
                                 </div>
 
                                 {/* 5 Feature Highlight Pills with Auto-Cycling Animation */}
                                 <div className={styles.featurePillList}>
-                                    {HERO_FEATURES.map((feat, idx) => {
+                                    {heroFeatures.map((feat, idx) => {
                                         const isActive = activeFeatureIndex === idx;
                                         return (
                                             <div
@@ -433,7 +434,7 @@ const Signup = () => {
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                                 </svg>
-                                <span>256-Bit Encrypted &amp; Non-Custodial</span>
+                                <span>{t('auth.hero.securityNotice', '256-Bit Encrypted & Non-Custodial')}</span>
                             </div>
                         </div>
                     </div>
@@ -490,8 +491,8 @@ const Signup = () => {
                             ) : (
                                 <>
                                     <div className={styles.formHeader}>
-                                        <h1 className={styles.formTitle}>Sign Up Account</h1>
-                                        <p className={styles.formSubtitle}>Enter your personal data to create your account.</p>
+                                        <h1 className={styles.formTitle}>{t('auth.signup.title', 'Sign Up Account')}</h1>
+                                        <p className={styles.formSubtitle}>{t('auth.signup.subtitle', 'Enter your personal data to create your account.')}</p>
                                     </div>
 
                                     <form onSubmit={handleSubmit} noValidate>
@@ -499,9 +500,9 @@ const Signup = () => {
                                             {/* First Name & Last Name in 2 columns */}
                                             <div className={styles.twoCol}>
                                                 <Input
-                                                    label="First Name"
+                                                    label={t('auth.signup.firstName', 'First Name')}
                                                     icon={UserIcon}
-                                                    placeholder="eg. John"
+                                                    placeholder={t('auth.signup.firstNamePlaceholder', 'eg. John')}
                                                     name="first_name"
                                                     value={form.first_name}
                                                     onChange={set('first_name')}
@@ -510,9 +511,9 @@ const Signup = () => {
                                                     autoComplete="given-name"
                                                 />
                                                 <Input
-                                                    label="Last Name"
+                                                    label={t('auth.signup.lastName', 'Last Name')}
                                                     icon={UserIcon}
-                                                    placeholder="eg. Francisco"
+                                                    placeholder={t('auth.signup.lastNamePlaceholder', 'eg. Francisco')}
                                                     name="last_name"
                                                     value={form.last_name}
                                                     onChange={set('last_name')}
@@ -523,9 +524,9 @@ const Signup = () => {
                                             </div>
 
                                             <Input
-                                                label="Email"
+                                                label={t('auth.signup.email', 'Email')}
                                                 icon={EmailIcon}
-                                                placeholder="eg. johndoe@gmail.com"
+                                                placeholder={t('auth.login.emailPlaceholder', 'eg. johndoe@gmail.com')}
                                                 type="email"
                                                 name="email"
                                                 value={form.email}
@@ -536,8 +537,8 @@ const Signup = () => {
                                             />
 
                                             <PhoneInput
-                                                label="Phone Number"
-                                                placeholder="eg. +1 234 567 890"
+                                                label={t('auth.signup.phone', 'Phone Number')}
+                                                placeholder={t('auth.signup.phonePlaceholder', 'eg. +1 234 567 890')}
                                                 value={form.phone_number}
                                                 onChange={setPhone}
                                                 error={errors.phone_number}
@@ -547,9 +548,9 @@ const Signup = () => {
                                             <div className={styles.twoCol}>
                                                 <div>
                                                     <Input
-                                                        label="Password"
+                                                        label={t('auth.login.passwordLabel', 'Password')}
                                                         icon={Lock}
-                                                        placeholder="Enter your password"
+                                                        placeholder={t('auth.login.passwordPlaceholder', 'Enter your password')}
                                                         type="password"
                                                         name="password"
                                                         value={form.password}
@@ -558,13 +559,13 @@ const Signup = () => {
                                                         maxLength={50}
                                                         autoComplete="new-password"
                                                     />
-                                                    <span className={styles.fieldHint}>Must be at least 8 characters</span>
+                                                    <span className={styles.fieldHint}>{t('auth.signup.passwordHint', 'Must be at least 8 characters')}</span>
                                                 </div>
 
                                                 <Input
-                                                    label="Confirm Password"
+                                                    label={t('auth.signup.confirmPassword', 'Confirm Password')}
                                                     icon={Lock}
-                                                    placeholder="Confirm your password"
+                                                    placeholder={t('auth.signup.confirmPasswordPlaceholder', 'Confirm your password')}
                                                     type="password"
                                                     name="confirmPassword"
                                                     value={form.confirmPassword}
@@ -576,9 +577,9 @@ const Signup = () => {
                                             </div>
 
                                             <Input
-                                                label="Referral Code (Optional)"
+                                                label={t('auth.signup.referralCode', 'Referral Code (Optional)')}
                                                 icon={UserIcon}
-                                                placeholder="Enter referral code"
+                                                placeholder={t('auth.signup.referralPlaceholder', 'Enter referral code')}
                                                 name="referral_code"
                                                 value={form.referral_code}
                                                 onChange={set('referral_code')}
@@ -592,13 +593,13 @@ const Signup = () => {
                                                 className={styles.submitBtn}
                                                 disabled={loading}
                                             >
-                                                {loading ? 'Creating account...' : 'Sign Up'}
+                                                {loading ? t('auth.signup.creatingAccount', 'Creating account...') : t('auth.signup.submitBtn', 'Sign Up')}
                                             </button>
                                         </div>
                                     </form>
 
                                     <div className={styles.orDivider}>
-                                        <span>Or</span>
+                                        <span>{t('auth.login.or', 'Or')}</span>
                                     </div>
 
                                     {/* Social Login Button Row */}
@@ -610,7 +611,7 @@ const Signup = () => {
 
                                     <div className={styles.accountBottomLink}>
                                         <p>
-                                            Already have an account? <Link href="/login">Log In</Link>
+                                            {t('auth.signup.alreadyHaveAccount', 'Already have an account?')} <Link href="/login">{t('auth.signup.logInLink', 'Log In')}</Link>
                                         </p>
                                     </div>
                                 </>

@@ -5,7 +5,8 @@ import styles from '../aiSnapDashboard.module.scss';
 import { CopyIcon, BellIcon, FlameIcon } from '@/icons/aiSnapIcons';
 import { toast } from '@/components/toast';
 
-export default function PatternsKeyLevelsCard({ patternsDetected }) {
+export default function PatternsKeyLevelsCard({
+ patternsDetected }) {
     const [copiedLevel, setCopiedLevel] = useState(null);
 
     const supportLevels = (patternsDetected?.support_levels && patternsDetected.support_levels.length > 0)

@@ -233,11 +233,24 @@ export default function FavoriteCoins() {
   const marqueeRow1 = [...row1Assets, ...row1Assets, ...row1Assets];
   const marqueeRow2 = [...row2Assets, ...row2Assets, ...row2Assets];
 
+  const signalMap = {
+    'BULLISH': t('homeSections.favoriteCoins.signals.bullish', 'BULLISH'),
+    'BEARISH': t('homeSections.favoriteCoins.signals.bearish', 'BEARISH'),
+    'STRONG BUY': t('homeSections.favoriteCoins.signals.strongBuy', 'STRONG BUY'),
+    'CONFLUENCE': t('homeSections.favoriteCoins.signals.confluence', 'CONFLUENCE'),
+    'MOMENTUM': t('homeSections.favoriteCoins.signals.momentum', 'MOMENTUM'),
+    'BREAKOUT': t('homeSections.favoriteCoins.signals.breakout', 'BREAKOUT'),
+    'BUY': t('homeSections.favoriteCoins.signals.buy', 'BUY'),
+    'RANGE': t('homeSections.favoriteCoins.signals.range', 'RANGE'),
+    'TREND': t('homeSections.favoriteCoins.signals.trend', 'TREND'),
+    'STABLE': t('homeSections.favoriteCoins.signals.stable', 'STABLE'),
+  };
+
   const getAssetData = (item) => ({
     price: item.price,
     change: item.change,
     isUp: item.isUp,
-    signal: item.signal
+    signal: signalMap[item.signal] || item.signal
   });
 
   return (
@@ -245,11 +258,11 @@ export default function FavoriteCoins() {
       <div className="container">
         {/* Section Header */}
         <SectionHeader
-          badge="TRADINGVIEW VERIFIED SYMBOLS · LIVE MARKETS"
-          title1="Trade your"
-          title2="favorite pairs & assets"
+          badge={t('homeSections.favoriteCoins.badge', 'TRADINGVIEW VERIFIED SYMBOLS · LIVE MARKETS')}
+          title1={t('homeSections.favoriteCoins.title1', 'Trade your')}
+          title2={t('homeSections.favoriteCoins.title2', 'favorite pairs & assets')}
           breakLine={false}
-          description="Sub-second real-time neural telemetry across Forex, Indices, and Commodities with institutional AI signals."
+          description={t('homeSections.favoriteCoins.description', 'Sub-second real-time neural telemetry across Forex, Indices, and Commodities with institutional AI signals.')}
         />
       </div>
 
@@ -340,7 +353,7 @@ export default function FavoriteCoins() {
             className={styles.ctaBtn}
             onClick={() => authNavigate(router, '/chart-scanner')}
           >
-            <span>SIGN UP &amp; START SCANNING</span>
+            <span>{t('homeSections.favoriteCoins.ctaBtn', 'SIGN UP & START SCANNING')}</span>
             <ArrowRightIcon />
           </button>
         </motion.div>

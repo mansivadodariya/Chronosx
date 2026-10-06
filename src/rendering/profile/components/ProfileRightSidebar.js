@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+
 import styles from '../profile.module.scss';
 
 export default function ProfileRightSidebar({
@@ -23,12 +24,12 @@ export default function ProfileRightSidebar({
 
                 <div className={styles.summaryMetaRows}>
                     <div className={styles.summaryRow}>
-                        <span className={styles.summaryLabel}>Account Status</span>
-                        <span className={styles.summaryActiveTag}>Active ✓</span>
+                        <span className={styles.summaryLabel}>{t('profile.accountStatus', 'Account Status')}</span>
+                        <span className={styles.summaryActiveTag}>{t('profile.activeStatus', 'Active ✓')}</span>
                     </div>
                     <div className={styles.summaryRow}>
-                        <span className={styles.summaryLabel}>Total Referrals</span>
-                        <span className={styles.summaryProTag}>{referralCount} Ref{referralCount !== 1 ? 's' : ''}</span>
+                        <span className={styles.summaryLabel}>{t('profile.totalReferrals', 'Total Referrals')}</span>
+                        <span className={styles.summaryProTag}>{t('profile.referralsCount', '{{count}} Refs', { count: referralCount })}</span>
                     </div>
                 </div>
 
@@ -66,7 +67,7 @@ export default function ProfileRightSidebar({
                             </svg>
                             <span>{t('profile.emailVerification', 'Email Verification')}</span>
                         </div>
-                        <span className={styles.verifStatusGreen}>Verified ✓</span>
+                        <span className={styles.verifStatusGreen}>{t('profile.verified', 'Verified ✓')}</span>
                     </div>
 
                     {/* Phone Number Verification */}
@@ -87,14 +88,14 @@ export default function ProfileRightSidebar({
                             <span>{t('profile.phoneVerification', 'Phone Verification')}</span>
                         </div>
                         {isPhoneVerified ? (
-                            <span className={styles.verifStatusGreen}>Verified ✓</span>
+                            <span className={styles.verifStatusGreen}>{t('profile.verified', 'Verified ✓')}</span>
                         ) : (
                             <button
                                 type="button"
                                 className={styles.verifActionBtn}
                                 onClick={onVerifyPhoneClick}
                             >
-                                Verify Now →
+                                {t('profile.verifyNow', 'Verify Now →')}
                             </button>
                         )}
                     </div>
@@ -110,7 +111,7 @@ export default function ProfileRightSidebar({
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                         </svg>
-                        <span>Change Password</span>
+                        <span>{t('profile.changePassword', 'Change Password')}</span>
                     </button>
 
                     <button type="button" className={styles.actionGridBtn} onClick={() => setActiveTab('credit_history')}>
@@ -118,7 +119,7 @@ export default function ProfileRightSidebar({
                             <rect x="2" y="5" width="20" height="14" rx="2" />
                             <line x1="2" y1="10" x2="22" y2="10" />
                         </svg>
-                        <span>Credit History</span>
+                        <span>{t('creditHistory.title', 'Credit History')}</span>
                     </button>
 
                     <button type="button" className={styles.actionGridBtn} onClick={() => setActiveTab('activity_log')}>
@@ -126,7 +127,7 @@ export default function ProfileRightSidebar({
                             <circle cx="12" cy="12" r="10" />
                             <polyline points="12 6 12 12 16 14" />
                         </svg>
-                        <span>Activity Log</span>
+                        <span>{t('profile.recentActivity', 'Activity Log')}</span>
                     </button>
 
                     <button type="button" className={styles.actionGridBtn} onClick={() => setActiveTab('profile')}>
@@ -134,7 +135,7 @@ export default function ProfileRightSidebar({
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                         </svg>
-                        <span>Edit Profile</span>
+                        <span>{t('profile.editProfile', 'Edit Profile')}</span>
                     </button>
 
                     <button type="button" className={`${styles.actionGridBtn}`} onClick={() => setShowLogoutConfirm(true)}>
@@ -143,7 +144,7 @@ export default function ProfileRightSidebar({
                             <polyline points="16 17 21 12 16 7" />
                             <line x1="21" y1="12" x2="9" y2="12" />
                         </svg>
-                        <span>Log Out</span>
+                        <span>{t('profile.logOut', 'Log Out')}</span>
                     </button>
                 </div>
             </div>
@@ -157,8 +158,8 @@ export default function ProfileRightSidebar({
                         </svg>
                     </div>
                     <div className={styles.secPriorityTexts}>
-                        <h5>Your security is our priority</h5>
-                        <p>We use bank-level encryption to protect your data.</p>
+                        <h5>{t('profile.securityPriorityTitle', 'Your security is our priority')}</h5>
+                        <p>{t('profile.securityPriorityDesc', 'We use bank-level encryption to protect your data.')}</p>
                     </div>
                 </div>
             </div>

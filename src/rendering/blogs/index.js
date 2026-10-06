@@ -53,7 +53,7 @@ export default function BlogsListing() {
                         </svg>
                         <input
                             type="text"
-                            placeholder="Search trading guides, order blocks, risk models, XAUUSD..."
+                            placeholder={t('blogs.searchPlaceholder', 'Search trading guides, order blocks, risk models, XAUUSD...')}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
@@ -101,7 +101,7 @@ export default function BlogsListing() {
                                 </div>
 
                                 <div className={styles.readMoreLink}>
-                                    <span>Read Full Analysis</span>
+                                    <span>{t('blogs.readFull', 'Read Full Analysis')}</span>
                                     <svg className={styles.readMoreArrow} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                         <path d="M5 12h14M12 5l7 7-7 7" />
                                     </svg>
@@ -136,7 +136,7 @@ export default function BlogsListing() {
                             <line x1="12" y1="16" x2="12.01" y2="16" />
                         </svg>
                         <h3>No research articles found</h3>
-                        <p>Try searching for a different keyword or resetting category filters.</p>
+                        <p>{t('blogs.tryReset', 'Try searching for a different keyword or resetting category filters.')}</p>
                         <button type="button" onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}>
                             Reset Filters
                         </button>

@@ -164,7 +164,7 @@ export default function AboutUs() {
                     initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                    aria-label="Key Institutional Metrics"
+                    aria-label={t('aboutUs.keyMetrics', 'Key Institutional Metrics')}
                 >
                     <div className={styles.metricsGrid}>
                         {METRICS.map((metric, index) => (
@@ -207,13 +207,13 @@ export default function AboutUs() {
                                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                                 </svg>
                             </div>
-                            <h3 className={styles.missionCardTitle}>Our Mission</h3>
+                            <h3 className={styles.missionCardTitle}>{t('aboutUs.missionTitle', 'Our Mission')}</h3>
                             <p className={styles.missionCardDesc}>
                                 To democratize hedge-fund caliber machine learning tools. We believe every trader deserves access to instant chart OCR vision, high-probability pattern detection, and autonomous risk management without paying prohibitive institutional software fees.
                             </p>
                             <div className={styles.missionHighlight}>
                                 <span className={styles.checkIcon}>✓</span>
-                                <span>Zero information asymmetry for all traders</span>
+                                <span>{t('aboutUs.missionDesc', 'Zero information asymmetry for all traders')}</span>
                             </div>
                         </motion.div>
 
@@ -234,13 +234,13 @@ export default function AboutUs() {
                                     <circle cx="12" cy="12" r="4" />
                                 </svg>
                             </div>
-                            <h3 className={styles.missionCardTitle}>Our Vision</h3>
+                            <h3 className={styles.missionCardTitle}>{t('aboutUs.visionTitle', 'Our Vision')}</h3>
                             <p className={styles.missionCardDesc}>
                                 A unified financial technology ecosystem where human trading intuition is seamlessly augmented by real-time neural networks. By eliminating emotional bias, we enable traders to achieve superior risk-adjusted consistency across dynamic market cycles.
                             </p>
                             <div className={styles.missionHighlight}>
                                 <span className={styles.checkIcon}>✓</span>
-                                <span>Augmented human intelligence with AI precision</span>
+                                <span>{t('aboutUs.visionDesc', 'Augmented human intelligence with AI precision')}</span>
                             </div>
                         </motion.div>
                     </div>

@@ -1,7 +1,8 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import classNames from 'classnames';
 import styles from './stepOne.module.scss';
+import { useLanguage } from '@/context/LanguageContext';
 
 // Clean SVG Vector Icons
 const ScalpingIcon = () => (
@@ -47,54 +48,56 @@ const QuestionIcon = () => (
     </svg>
 );
 
-const TRADE_OPTIONS = [
+const getTradeOptions = (t) => [
     {
         id: 'scalping',
-        timeframe: '1M – 5M EXECUTIONS',
-        label: 'Scalping',
-        desc: 'Rapid momentum trades targeting small pip increments with high frequency.',
+        timeframe: t('onboarding.step2.scalping.timeframe', '1M – 5M EXECUTIONS'),
+        label: t('onboarding.step2.scalping.label', 'Scalping'),
+        desc: t('onboarding.step2.scalping.desc', 'Rapid momentum trades targeting small pip increments with high frequency.'),
         icon: ScalpingIcon,
     },
     {
         id: 'day_trading',
-        timeframe: '15M – 1H INTRADAY',
-        label: 'Day Trading',
-        desc: 'Positions opened and closed within the same trading session, zero overnight risk.',
+        timeframe: t('onboarding.step2.dayTrading.timeframe', '15M – 1H INTRADAY'),
+        label: t('onboarding.step2.dayTrading.label', 'Day Trading'),
+        desc: t('onboarding.step2.dayTrading.desc', 'Positions opened and closed within the same trading session, zero overnight risk.'),
         icon: DayTradingIcon,
     },
     {
         id: 'swing_trading',
-        timeframe: '4H – DAILY SETUPS',
-        label: 'Swing Trading',
-        desc: 'Multi-day trends capturing larger institutional market structure legs.',
+        timeframe: t('onboarding.step2.swingTrading.timeframe', '4H – DAILY SETUPS'),
+        label: t('onboarding.step2.swingTrading.label', 'Swing Trading'),
+        desc: t('onboarding.step2.swingTrading.desc', 'Multi-day trends capturing larger institutional market structure legs.'),
         icon: SwingTradingIcon,
     },
     {
         id: 'position_trading',
-        timeframe: 'WEEKLY – MONTHLY MACRO',
-        label: 'Position Trading',
-        desc: 'Long-term macroeconomic positioning based on fundamental rate differentials.',
+        timeframe: t('onboarding.step2.positionTrading.timeframe', 'WEEKLY – MONTHLY MACRO'),
+        label: t('onboarding.step2.positionTrading.label', 'Position Trading'),
+        desc: t('onboarding.step2.positionTrading.desc', 'Long-term macroeconomic positioning based on fundamental rate differentials.'),
         icon: PositionTradingIcon,
     },
     {
         id: 'algorithmic',
-        timeframe: 'AUTOMATED & SIGNALS',
-        label: 'Algorithmic / Quantitative',
-        desc: 'Rule-based strategy execution, indicators, and systematic scanner alerts.',
+        timeframe: t('onboarding.step2.algorithmic.timeframe', 'AUTOMATED & SIGNALS'),
+        label: t('onboarding.step2.algorithmic.label', 'Algorithmic / Quantitative'),
+        desc: t('onboarding.step2.algorithmic.desc', 'Rule-based strategy execution, indicators, and systematic scanner alerts.'),
         icon: AlgoIcon,
     },
     {
         id: 'figuring_out',
-        timeframe: 'EXPLORATORY',
-        label: "I'm Exploring / Learning",
-        desc: 'Discovering optimal timeframes and finding the best match for my schedule.',
+        timeframe: t('onboarding.step2.exploring.timeframe', 'EXPLORATORY'),
+        label: t('onboarding.step2.exploring.label', "I'm Exploring / Learning"),
+        desc: t('onboarding.step2.exploring.desc', 'Discovering optimal timeframes and finding the best match for my schedule.'),
         icon: QuestionIcon,
     },
 ];
 
 export default function StepOne({ selectedOptions: controlledOptions, onToggleOption }) {
+    const { t } = useLanguage();
     const [internalOptions, setInternalOptions] = useState([]);
     const selectedOptions = controlledOptions !== undefined ? controlledOptions : internalOptions;
+    const tradeOptions = useMemo(() => getTradeOptions(t), [t]);
 
     const handleToggle = (id) => {
         if (onToggleOption) {
@@ -112,19 +115,19 @@ export default function StepOne({ selectedOptions: controlledOptions, onToggleOp
             <div className={styles.headerSection}>
                 <div className={styles.tagBadge}>
                     <span className={styles.tagDot} />
-                    <span>TRADING HORIZON · STEP 02</span>
+                    <span>{t('onboarding.step2.badge', 'EXECUTION HORIZON · STEP 02')}</span>
                 </div>
                 <h1 className={styles.mainTitle}>
-                    How do you <span className={styles.accentText}>usually trade?</span>
+                    {t('onboarding.step2.title', 'What is your primary')} <span className={styles.accentText}>{t('onboarding.step2.titleAccent', 'trading style?')}</span>
                 </h1>
                 <p className={styles.subtitle}>
-                    Select all strategies and timeframes that apply to your trading style.
+                    {t('onboarding.step2.subtitle', 'Select one or more styles. ChronosX configures strategy models and alert cadences accordingly.')}
                 </p>
             </div>
 
             {/* 6 Grid Trading Style Cards */}
             <div className={styles.optionsGrid}>
-                {TRADE_OPTIONS.map((opt) => {
+                {tradeOptions.map((opt) => {
                     const isSelected = selectedOptions.includes(opt.id);
                     const IconComponent = opt.icon;
 

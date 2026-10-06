@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import styles from './languageToggle.module.scss';
@@ -110,6 +111,8 @@ const LANGUAGES = [
 ];
 
 export default function LanguageToggle({ className = '', variant = 'default' }) {
+  const router = useRouter();
+  const pathname = usePathname();
   const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [menuPosition, setMenuPosition] = useState({});
@@ -128,15 +131,12 @@ export default function LanguageToggle({ className = '', variant = 'default' }) 
 
     let left;
     if (isRtl) {
-      // In RTL, the button is located near the start (left) in user topbar, or right in public header.
-      // If expanding rightwards exceeds viewport - 12:
       if (rect.left + targetWidth > vw - 12) {
         left = Math.max(10, vw - targetWidth - 12);
       } else {
         left = Math.max(10, rect.left);
       }
     } else {
-      // In LTR, align dropdown right edge with button right edge
       if (rect.right - targetWidth < 12) {
         left = Math.max(10, rect.left);
         if (left + targetWidth > vw - 12) {
@@ -195,6 +195,18 @@ export default function LanguageToggle({ className = '', variant = 'default' }) 
   const handleSelectLanguage = (lang) => {
     setLanguage(lang);
     setIsOpen(false);
+
+    try {
+      const currentPath = pathname || (typeof window !== 'undefined' ? window.location.pathname : '/');
+      const segments = currentPath.split('/').filter(Boolean);
+      const firstSeg = segments[0]?.toLowerCase();
+      const isFirstSegLocale = ['en', 'ar', 'ary', 'es', 'ru', 'zh', 'vi', 'id', 'fil', 'arabic', 'spanish', 'russian', 'chinese', 'vietnamese', 'indonesian', 'filipino', 'darija'].includes(firstSeg);
+      const cleanSegments = isFirstSegLocale ? segments.slice(1) : segments;
+      const newPath = cleanSegments.length > 0 ? `/${lang}/${cleanSegments.join('/')}` : `/${lang}`;
+      router.push(newPath);
+    } catch (e) {
+      console.warn('Could not navigate to localized path:', e);
+    }
   };
 
   const currentLang = LANGUAGES.find((l) => l.code === language) || LANGUAGES[0];

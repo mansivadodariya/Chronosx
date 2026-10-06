@@ -86,7 +86,8 @@ const safeJson = (v) => {
     } catch { return null; }
 };
 
-export default function PredefinedStrategyCard({ strategy, isLight: isLightProp, onCopy }) {
+export default function PredefinedStrategyCard({
+ strategy, isLight: isLightProp, onCopy }) {
     const { theme } = useTheme();
     const isLight = isLightProp !== undefined ? isLightProp : theme === 'light';
     const [copied, setCopied] = useState(false);
@@ -212,6 +213,7 @@ export default function PredefinedStrategyCard({ strategy, isLight: isLightProp,
     };
 
     const router = useRouter();
+    const { t } = useLanguage();
 
     const handleRunBacktest = () => {
         const stratId = strategy.strategy_id || strategy.id || strategy._id || raw?.strategy_id || raw?.id || 'predefined';
@@ -314,29 +316,29 @@ export default function PredefinedStrategyCard({ strategy, isLight: isLightProp,
                     <div className={`${styles.statBox} ${styles.statBoxWin}`}>
                         <span className={styles.statIcon}><TargetIcon /></span>
                         <span className={styles.statValue}>{target} pts</span>
-                        <span className={styles.statLabel}>Target</span>
+                        <span className={styles.statLabel}>{t('components.strategyCard.target', 'Target')}</span>
                     </div>
                     <div className={`${styles.statBox} ${styles.statBoxLoss}`}>
                         <span className={styles.statIcon}><TrendDownIcon /></span>
                         <span className={styles.statValue}>{stopLoss} pts</span>
-                        <span className={styles.statLabel}>Stop Loss</span>
+                        <span className={styles.statLabel}>{t('components.strategyCard.stopLoss', 'Stop Loss')}</span>
                     </div>
                     <div className={`${styles.statBox} ${styles.statBoxPips}`}>
                         <span className={styles.statIcon}><TrendUpIcon /></span>
                         <span className={styles.statValue}>{winRate.toFixed(1)}%</span>
-                        <span className={styles.statLabel}>Win Rate</span>
+                        <span className={styles.statLabel}>{t('components.strategyCard.winRate', 'Win Rate')}</span>
                     </div>
                     <div className={`${styles.statBox} ${styles.statBoxConf}`}>
                         <span className={styles.statIcon}><BarChartIcon /></span>
                         <span className={styles.statValue}>{completedTrades}</span>
-                        <span className={styles.statLabel}>Trades</span>
+                        <span className={styles.statLabel}>{t('components.strategyCard.trades', 'Trades')}</span>
                     </div>
                 </div>
 
                 {/* 5. Win Rate Progress Bar */}
                 <div className={styles.winRateSection}>
                     <div className={styles.winRateHeader}>
-                        <span className={styles.winRateLabel}>Win Rate</span>
+                        <span className={styles.winRateLabel}>{t('components.strategyCard.winRate', 'Win Rate')}</span>
                         <span className={styles.winRatePct}>{winRate}%</span>
                     </div>
                     <div className={styles.progressTrack}>
@@ -354,10 +356,10 @@ export default function PredefinedStrategyCard({ strategy, isLight: isLightProp,
                     type="button"
                     className={styles.btnRunBacktest}
                     onClick={handleRunBacktest}
-                    title="Run Backtest on /backtest"
+                    title={t('components.strategyCard.runBacktestAria', 'Run Backtest on /backtest')}
                 >
                     <RocketIcon />
-                    <span>Run Backtest</span>
+                    <span>{t('components.strategyCard.runBacktest', 'Run Backtest')}</span>
                 </button>
             </div>
         </div>

@@ -4,8 +4,10 @@ import React, { useState, useMemo } from 'react';
 import styles from '../calculator.module.scss';
 import { PAIRS_CONFIG } from '../config';
 import CustomDropdown from './CustomDropdown';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function FibonacciCalculator() {
+    const { t } = useLanguage();
     const pairOptions = Object.keys(PAIRS_CONFIG);
     const defaultP = PAIRS_CONFIG['XAU/USD']?.defaultPrice || 4308.18;
     const [fibPair, setFibPair] = useState('XAU/USD');
@@ -60,13 +62,13 @@ export default function FibonacciCalculator() {
         <div className={styles.calculatorCardGrid}>
             <div className={styles.formCard}>
                 <div className={styles.cardHeader}>
-                    <h2>Fibonacci Price Swing Parameters</h2>
-                    <span>GOLDEN RATIO</span>
+                    <h2>{t('calculator.fibonacciParams', 'Fibonacci Price Swing Parameters')}</h2>
+                    <span>{t('calculator.goldenRatio', 'GOLDEN RATIO')}</span>
                 </div>
 
                 <div className={styles.inputsGrid}>
                     <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
-                        <label>Instrument / Asset Preset</label>
+                        <label>{t('calculator.instrumentPreset', 'Instrument / Asset Preset')}</label>
                         <CustomDropdown
                             options={pairOptions}
                             value={fibPair}
@@ -82,27 +84,27 @@ export default function FibonacciCalculator() {
                     </div>
 
                     <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
-                        <label>Trend Direction</label>
+                        <label>{t('calculator.trendDirection', 'Trend Direction')}</label>
                         <div className={styles.toggleSwitchRow}>
                             <button
                                 type="button"
                                 className={`${styles.switchBtn} ${fibTrend === 'up' ? styles.buyActive : ''}`}
                                 onClick={() => setFibTrend('up')}
                             >
-                                ↑ Uptrend / Bullish Swing (Low → High)
+                                {t('calculator.uptrendLabel', '↑ Uptrend / Bullish Swing (Low → High)')}
                             </button>
                             <button
                                 type="button"
                                 className={`${styles.switchBtn} ${fibTrend === 'down' ? styles.sellActive : ''}`}
                                 onClick={() => setFibTrend('down')}
                             >
-                                ↓ Downtrend / Bearish Swing (High → Low)
+                                {t('calculator.downtrendLabel', '↓ Downtrend / Bearish Swing (High → Low)')}
                             </button>
                         </div>
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Swing High Price (H)</label>
+                        <label>{t('calculator.swingHigh', 'Swing High Price (H)')}</label>
                         <input
                             type="number"
                             step="0.0001"
@@ -113,7 +115,7 @@ export default function FibonacciCalculator() {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Swing Low Price (L)</label>
+                        <label>{t('calculator.swingLow', 'Swing Low Price (L)')}</label>
                         <input
                             type="number"
                             step="0.0001"
@@ -126,7 +128,7 @@ export default function FibonacciCalculator() {
 
                 <div className={styles.actionBtnRow}>
                     <button type="button" className={styles.calculateBtn}>
-                        <span>Compute Fibonacci Levels</span>
+                        <span>{t('calculator.computeFibLevels', 'Compute Fibonacci Levels')}</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                     </button>
                 </div>
@@ -135,17 +137,17 @@ export default function FibonacciCalculator() {
             <div className={styles.resultsCard}>
                 <div>
                     <div className={styles.resultHeader}>
-                        <h3>Fibonacci Levels Breakdown</h3>
+                        <h3>{t('calculator.fibBreakdown', 'Fibonacci Levels Breakdown')}</h3>
                     </div>
 
                     <h4 style={{ fontSize: '13px', color: '#18C98B', margin: '0 0 8px', textTransform: 'uppercase' }}>
-                        Retracement Targets
+                        {t('calculator.retracementTargets', 'Retracement Targets')}
                     </h4>
                     <table className={styles.levelsTable}>
                         <thead>
                             <tr>
-                                <th>Level Ratio</th>
-                                <th>Target Price</th>
+                                <th>{t('calculator.levelRatio', 'Level Ratio')}</th>
+                                <th>{t('calculator.targetPrice', 'Target Price')}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -157,30 +159,10 @@ export default function FibonacciCalculator() {
                             ))}
                         </tbody>
                     </table>
-{/* 
-                    <h4 style={{ fontSize: '13px', color: '#38BDF8', margin: '18px 0 8px', textTransform: 'uppercase' }}>
-                        Extension Targets
-                    </h4>
-                    <table className={styles.levelsTable}>
-                        <thead>
-                            <tr>
-                                <th>Extension Ratio</th>
-                                <th>Target Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {fibResult.extensions.map((e, i) => (
-                                <tr key={i} className={e.isGolden ? styles.goldenRatio : ''}>
-                                    <td>{e.level}</td>
-                                    <td>{e.price.toFixed(4)}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table> */}
                 </div>
 
                 <div className={styles.formulaNote}>
-                    <strong>Golden Ratio (61.8% / 161.8%):</strong> Prime institutional reversal and take-profit expansion zones.
+                    <strong>{t('calculator.goldenRatioDesc', 'Golden Ratio (61.8% / 161.8%):')}</strong> {t('calculator.goldenRatioExpl', 'Prime institutional reversal and take-profit expansion zones.')}
                 </div>
             </div>
         </div>

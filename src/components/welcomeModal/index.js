@@ -1,70 +1,69 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import Link from 'next/link';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { isUserLoggedIn } from '@/lib/authRedirect';
 import { getStoredUser } from '@/lib/authSession';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './welcomeModal.module.scss';
-
-const TOUR_STEPS = [
-    {
-        step: 1,
-        tag: 'GETTING STARTED',
-        title: 'Welcome to ChronosX!',
-        subtitle: 'Sign up with email or Google to activate your institutional AI trading desk & neural market feed.',
-        badge: 'Quick 30s Signup',
-        actionText: 'Create Account',
-        actionHref: '/signup',
-    },
-    {
-        step: 2,
-        tag: 'SECURITY & VERIFICATION',
-        title: 'Verify & Secure Your Session',
-        subtitle: 'Confirm your email & password to lock in encrypted session keys, 2FA protection, and trade alerts.',
-        badge: '256-Bit Encryption',
-        actionText: 'Next Step',
-        actionHref: null,
-    },
-    {
-        step: 3,
-        tag: 'STARTER CREDITS',
-        title: 'Use Complimentary Credits',
-        subtitle: 'Test drive the AI Chart Scanner, Custom Bot Builder, and Live Radar with default starter credits.',
-        badge: 'Free Credits Active',
-        actionText: 'Try AI Tools',
-        actionHref: '/ai-cockpit',
-    },
-    {
-        step: 4,
-        tag: 'AUTOMATION & TRADING',
-        title: 'Deploy Automated Bots',
-        subtitle: 'Connect your broker or launch algorithmic strategies with 1-click execution and precision risk rules.',
-        badge: '40+ Brokers Supported',
-        actionText: 'Get Started',
-        actionHref: '/signup',
-    },
-];
 
 export default function WelcomeModal({ autoShowDelay = 1200 }) {
     const router = useRouter();
+    const { t } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
     const [currentStep, setCurrentStep] = useState(0);
-    const [isHovered, setIsHovered] = useState(false);
     const [dontShowAgain, setDontShowAgain] = useState(false);
-    const timerRef = useRef(null);
+
+    const tourSteps = useMemo(() => [
+        {
+            step: 1,
+            tag: t('welcomeModal.step1.tag', 'GETTING STARTED'),
+            title: t('welcomeModal.step1.title', 'Welcome to ChronosX!'),
+            subtitle: t('welcomeModal.step1.subtitle', 'Sign up with email or Google to activate your institutional AI trading desk & neural market feed.'),
+            badge: t('welcomeModal.step1.badge', 'Quick 30s Signup'),
+            actionText: t('welcomeModal.step1.actionText', 'Create Account'),
+            actionHref: '/signup',
+        },
+        {
+            step: 2,
+            tag: t('welcomeModal.step2.tag', 'SECURITY & VERIFICATION'),
+            title: t('welcomeModal.step2.title', 'Verify & Secure Your Session'),
+            subtitle: t('welcomeModal.step2.subtitle', 'Confirm your email & password to lock in encrypted session keys, 2FA protection, and trade alerts.'),
+            badge: t('welcomeModal.step2.badge', '256-Bit Encryption'),
+            actionText: t('welcomeModal.step2.actionText', 'Next Step'),
+            actionHref: null,
+        },
+        {
+            step: 3,
+            tag: t('welcomeModal.step3.tag', 'STARTER CREDITS'),
+            title: t('welcomeModal.step3.title', 'Use Complimentary Credits'),
+            subtitle: t('welcomeModal.step3.subtitle', 'Test drive the AI Chart Scanner, Custom Bot Builder, and Live Radar with default starter credits.'),
+            badge: t('welcomeModal.step3.badge', 'Free Credits Active'),
+            actionText: t('welcomeModal.step3.actionText', 'Try AI Tools'),
+            actionHref: '/ai-cockpit',
+        },
+        {
+            step: 4,
+            tag: t('welcomeModal.step4.tag', 'AUTOMATION & TRADING'),
+            title: t('welcomeModal.step4.title', 'Deploy Automated Bots'),
+            subtitle: t('welcomeModal.step4.subtitle', 'Connect your broker or launch algorithmic strategies with 1-click execution and precision risk rules.'),
+            badge: t('welcomeModal.step4.badge', '40+ Brokers Supported'),
+            actionText: t('welcomeModal.step4.actionText', 'Get Started'),
+            actionHref: '/signup',
+        },
+    ], [t]);
 
     // Dynamic greeting based on current time
     const timeGreeting = useMemo(() => {
         const hour = new Date().getHours();
-        if (hour >= 5 && hour < 12) return 'Good morning';
-        if (hour >= 12 && hour < 17) return 'Good afternoon';
-        if (hour >= 17 && hour < 22) return 'Good evening';
-        return 'Good night';
-    }, []);
+        if (hour >= 5 && hour < 12) return t('welcomeModal.greetings.morning', 'Good morning');
+        if (hour >= 12 && hour < 17) return t('welcomeModal.greetings.afternoon', 'Good afternoon');
+        if (hour >= 17 && hour < 22) return t('welcomeModal.greetings.evening', 'Good evening');
+        return t('welcomeModal.greetings.night', 'Good night');
+    }, [t]);
 
     // Check user & session state
     useEffect(() => {
@@ -109,18 +108,16 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
         };
     }, [autoShowDelay]);
 
-    // Auto-advance walkthrough tour every 4.5 seconds for new users (paused on hover)
+    // Auto-advance walkthrough tour every 4.5 seconds for new users
     useEffect(() => {
-        if (!isOpen || isLoggedIn || isHovered) return;
+        if (!isOpen || isLoggedIn) return;
 
-        timerRef.current = setInterval(() => {
-            setCurrentStep((prev) => (prev + 1) % TOUR_STEPS.length);
+        const timer = setTimeout(() => {
+            setCurrentStep((prev) => (prev + 1) % tourSteps.length);
         }, 4500);
 
-        return () => {
-            if (timerRef.current) clearInterval(timerRef.current);
-        };
-    }, [isOpen, isLoggedIn, isHovered]);
+        return () => clearTimeout(timer);
+    }, [isOpen, isLoggedIn, currentStep, tourSteps.length]);
 
     // Handle modal close
     const handleClose = useCallback(() => {
@@ -162,7 +159,7 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
     };
 
     const handleNextStep = () => {
-        if (currentStep < TOUR_STEPS.length - 1) {
+        if (currentStep < tourSteps.length - 1) {
             setCurrentStep((prev) => prev + 1);
         } else {
             navigateTo('/signup');
@@ -189,7 +186,7 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
         return displayName.substring(0, 2).toUpperCase();
     }, [displayName]);
 
-    const activeStepData = TOUR_STEPS[currentStep];
+    const activeStepData = tourSteps[currentStep] || tourSteps[0];
 
     return (
         <AnimatePresence>
@@ -216,15 +213,13 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
                             exit={{ opacity: 0, scale: 0.94, y: 16 }}
                             transition={{ type: 'spring', damping: 25, stiffness: 320 }}
                             onClick={(e) => e.stopPropagation()}
-                            onMouseEnter={() => setIsHovered(true)}
-                            onMouseLeave={() => setIsHovered(false)}
                         >
                             {/* Close Button */}
                             <button
                                 type="button"
                                 className={styles.closeBtn}
                                 onClick={handleClose}
-                                aria-label="Close modal"
+                                aria-label={t('welcomeModal.closeModal', 'Close modal')}
                             >
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                                     <line x1="18" y1="6" x2="6" y2="18" />
@@ -250,7 +245,7 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
                                     {/* Content Area */}
                                     <div className={styles.tourContent}>
                                         <div className={styles.stepIndicatorTag}>
-                                            <span>STEP {currentStep + 1} OF {TOUR_STEPS.length}</span>
+                                            <span>{t('welcomeModal.stepIndicator', 'STEP {{current}} OF {{total}}', { current: currentStep + 1, total: tourSteps.length })}</span>
                                             <span className={styles.dotSeparator}>•</span>
                                             <span className={styles.stepThemeLabel}>{activeStepData.tag}</span>
                                         </div>
@@ -271,16 +266,16 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
 
                                         {/* Auto-Scroll Interactive Dots Indicator */}
                                         <div className={styles.dotsRow}>
-                                            {TOUR_STEPS.map((s, idx) => (
+                                            {tourSteps.map((s, idx) => (
                                                 <button
                                                     key={idx}
                                                     type="button"
                                                     className={`${styles.dotItem} ${idx === currentStep ? styles.dotActive : ''}`}
                                                     onClick={() => setCurrentStep(idx)}
-                                                    aria-label={`Go to step ${idx + 1}`}
+                                                    aria-label={t('welcomeModal.goToStep', 'Go to step {{step}}', { step: idx + 1 })}
                                                 >
                                                     {idx === currentStep && (
-                                                        <span className={styles.dotProgressBar} />
+                                                        <span key={`progress-${currentStep}`} className={styles.dotProgressBar} />
                                                     )}
                                                 </button>
                                             ))}
@@ -293,7 +288,7 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
                                                 className={styles.skipBtn}
                                                 onClick={handleClose}
                                             >
-                                                Skip tour
+                                                {t('welcomeModal.skipTour', 'Skip tour')}
                                             </button>
 
                                             <button
@@ -301,7 +296,7 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
                                                 className={styles.continueBtn}
                                                 onClick={handleNextStep}
                                             >
-                                                <span>{currentStep === TOUR_STEPS.length - 1 ? 'Get Started' : 'Continue'}</span>
+                                                <span>{currentStep === tourSteps.length - 1 ? t('welcomeModal.getStarted', 'Get Started') : t('welcomeModal.continue', 'Continue')}</span>
                                                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                                                     <line x1="5" y1="12" x2="19" y2="12" />
                                                     <polyline points="12 5 19 12 12 19" />
@@ -334,7 +329,7 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
                                                 <span className={styles.highlightGradient}>{displayName}</span>!
                                             </h3>
                                             <p className={styles.backSubtitle}>
-                                                Your institutional trading workspace is active. Neural signal confluence and algorithmic engines are synced.
+                                                {t('welcomeModal.backSubtitle', 'Your institutional trading workspace is active. Neural signal confluence and algorithmic engines are synced.')}
                                             </p>
                                         </div>
 
@@ -352,12 +347,12 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
                                             <div className={styles.profileDetails}>
                                                 <div className={styles.nameRow}>
                                                     <span className={styles.proName}>{displayName}</span>
-                                                    <span className={styles.proBadge}>PRO TRADER</span>
+                                                    <span className={styles.proBadge}>{t('welcomeModal.proTrader', 'PRO TRADER')}</span>
                                                 </div>
                                                 {userEmail && <span className={styles.proEmail}>{userEmail}</span>}
                                             </div>
                                             <div className={styles.latencyBadge}>
-                                                <span className={styles.latencyLabel}>Latency</span>
+                                                <span className={styles.latencyLabel}>{t('welcomeModal.latency', 'Latency')}</span>
                                                 <span className={styles.latencyVal}>18ms</span>
                                             </div>
                                         </div>
@@ -374,8 +369,8 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
                                                     </svg>
                                                 </div>
                                                 <div className={styles.featInfo}>
-                                                    <h4>Main Dashboard</h4>
-                                                    <p>Portfolio overview & analytics</p>
+                                                    <h4>{t('welcomeModal.mainDashboardTitle', 'Main Dashboard')}</h4>
+                                                    <p>{t('welcomeModal.mainDashboardDesc', 'Portfolio overview & analytics')}</p>
                                                 </div>
                                                 <span className={styles.featArrow}>→</span>
                                             </div>
@@ -387,8 +382,8 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
                                                     </svg>
                                                 </div>
                                                 <div className={styles.featInfo}>
-                                                    <h4>Live AI Cockpit</h4>
-                                                    <p>Institutional signal flow</p>
+                                                    <h4>{t('welcomeModal.aiCockpitTitle', 'Live AI Cockpit')}</h4>
+                                                    <p>{t('welcomeModal.aiCockpitDesc', 'Institutional signal flow')}</p>
                                                 </div>
                                                 <span className={styles.featArrow}>→</span>
                                             </div>
@@ -403,8 +398,8 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
                                                     </svg>
                                                 </div>
                                                 <div className={styles.featInfo}>
-                                                    <h4>Custom Bot Builder</h4>
-                                                    <p>Automate execution rules</p>
+                                                    <h4>{t('welcomeModal.customBotBuilderTitle', 'Custom Bot Builder')}</h4>
+                                                    <p>{t('welcomeModal.customBotBuilderDesc', 'Automate execution rules')}</p>
                                                 </div>
                                                 <span className={styles.featArrow}>→</span>
                                             </div>
@@ -417,8 +412,8 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
                                                     </svg>
                                                 </div>
                                                 <div className={styles.featInfo}>
-                                                    <h4>AI Chart Scanner</h4>
-                                                    <p>Pattern breakout vision</p>
+                                                    <h4>{t('welcomeModal.aiChartScannerTitle', 'AI Chart Scanner')}</h4>
+                                                    <p>{t('welcomeModal.aiChartScannerDesc', 'Pattern breakout vision')}</p>
                                                 </div>
                                                 <span className={styles.featArrow}>→</span>
                                             </div>
@@ -431,7 +426,7 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
                                                 className={styles.launchTerminalBtn}
                                                 onClick={() => navigateTo('/dashboard')}
                                             >
-                                                <span>Launch Terminal Dashboard</span>
+                                                <span>{t('welcomeModal.launchTerminal', 'Launch Terminal Dashboard')}</span>
                                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                                                     <line x1="5" y1="12" x2="19" y2="12" />
                                                     <polyline points="12 5 19 12 12 19" />
@@ -450,9 +445,9 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
                                         checked={dontShowAgain}
                                         onChange={(e) => setDontShowAgain(e.target.checked)}
                                     />
-                                    <span>Don&apos;t show this again</span>
+                                    <span>{t('welcomeModal.dontShowAgain', "Don't show this again")}</span>
                                 </label>
-                                <span className={styles.securedTag}>256-Bit SSL Institutional</span>
+                                <span className={styles.securedTag}>{t('welcomeModal.securedTag', '256-Bit SSL Institutional')}</span>
                             </div>
                         </motion.div>
                     </div>

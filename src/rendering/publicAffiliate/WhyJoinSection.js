@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './publicAffiliate.module.scss';
 
 const REASONS = [
@@ -65,14 +66,15 @@ const REASONS = [
 ];
 
 export default function WhyJoinSection() {
+  const { t } = useLanguage();
   return (
     <section className={styles.whyJoinSection}>
       <div className="container">
         <SectionHeader
-          badge="WHY JOIN"
+          badge={t('publicAffiliate.whyJoinBadge', 'WHY JOIN')}
           title1="Why Become a"
           title2="ChronosX Affiliate?"
-          description="Whether you are a trader, educator, content creator, community manager, or partner, ChronosX gives you the tools to build and manage your referral network."
+          description={t('publicAffiliate.whyJoinSubtitle', 'Whether you are a trader, educator, content creator, community manager, or partner, ChronosX gives you the tools to build and manage your referral network.')}
         />
 
         <div className={styles.whyJoinGrid}>

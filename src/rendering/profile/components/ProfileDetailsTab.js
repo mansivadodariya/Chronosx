@@ -67,7 +67,7 @@ export default function ProfileDetailsTab({
                         <div className={styles.userEmailRow}>
                             <span className={styles.emailText}>{form.email || 'johndoe@email.com'}</span>
                             <span className={styles.verifiedPill}>
-                                Verified ✓
+                                {t('profile.verified', 'Verified ✓')}
                             </span>
                         </div>
                         <div className={styles.metaBadgesRow}>
@@ -79,7 +79,7 @@ export default function ProfileDetailsTab({
                                     <line x1="8" y1="2" x2="8" y2="6" />
                                     <line x1="3" y1="10" x2="21" y2="10" />
                                 </svg>
-                                <span>Joined on {userCreatedAt}</span>
+                                <span>{t('profile.joinedOn', 'Joined on {{date}}', { date: userCreatedAt })}</span>
                             </div>
                         </div>
                     </div>
@@ -104,7 +104,7 @@ export default function ProfileDetailsTab({
                         </div>
                         <div className={styles.detailFieldItem}>
                             <span className={styles.fieldLabel}>{t('profile.phoneNumber', 'Phone Number')}</span>
-                            <span className={styles.fieldValue}>{form.phone_number || 'Not provided'}</span>
+                            <span className={styles.fieldValue}>{form.phone_number || t('profile.notProvided', 'Not provided')}</span>
                         </div>
                     </div>
                 ) : (

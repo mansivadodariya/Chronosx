@@ -406,10 +406,10 @@ export default function MarketIntelligence() {
 
         {/* Section Header */}
         <SectionHeader
-          badge="CHRONOSX CORE ENGINE"
-          title1="Three Layers of Market"
-          title2="Intelligence."
-          description="ChronosX stacks multi-timeframe trend alignment, smart money liquidity flow, and AI execution filters into one synchronized institutional engine."
+          badge={t('homeSections.marketIntelligence.badge', 'CHRONOSX CORE ENGINE')}
+          title1={t('homeSections.marketIntelligence.title1', 'Three Layers of Market')}
+          title2={t('homeSections.marketIntelligence.title2', 'Intelligence.')}
+          description={t('homeSections.marketIntelligence.description', 'ChronosX stacks multi-timeframe trend alignment, smart money liquidity flow, and AI execution filters into one synchronized institutional engine.')}
         />
 
         {/* 3-Column Interactive Moving Cards with Hover Flip */}
@@ -426,10 +426,10 @@ export default function MarketIntelligence() {
               {/* FRONT: Live Canvas 1 (fc1c) */}
               <div className={styles.cardFace}>
                 <div className={styles.terminalHeader}>
-                  <span className={styles.terminalTitle}>MULTI-TIMEFRAME · CHRONOSX AI</span>
+                  <span className={styles.terminalTitle}>{t('homeSections.marketIntelligence.card1Title', 'MULTI-TIMEFRAME · CHRONOSX AI')}</span>
                   <div className={styles.liveBadge}>
                     <span className={styles.liveDot}></span>
-                    <span>LIVE</span>
+                    <span>{t('homeSections.marketIntelligence.live', 'LIVE')}</span>
                   </div>
                 </div>
 
@@ -440,7 +440,7 @@ export default function MarketIntelligence() {
                 <div className={styles.terminalFooter}>
                   <span className={styles.footLeft}>4H • 1H • 15M</span>
                   <span className={styles.footRight}>
-                    ▲ ALIGNED BULLISH
+                    {t('homeSections.marketIntelligence.alignedBullish', '▲ ALIGNED BULLISH')}
                   </span>
                 </div>
               </div>
@@ -449,12 +449,12 @@ export default function MarketIntelligence() {
               <div className={`${styles.cardFace} ${styles.cardBack}`}>
                 <div className={styles.backHeader}>
                   <span className={styles.backLayerTag}>LAYER 01 — TIMEFRAME CONFLUENCE</span>
-                  <span className={styles.flipHint}>Hover to preview</span>
+                  <span className={styles.flipHint}>{t('homeSections.marketIntelligence.hoverPreview', 'Hover to preview')}</span>
                 </div>
 
-                <h3 className={styles.backTitle}>Multi-Timeframe Trend Cascade</h3>
+                <h3 className={styles.backTitle}>{t('homeSections.marketIntelligence.card1BackTitle', 'Multi-Timeframe Trend Cascade')}</h3>
                 <p className={styles.backDesc}>
-                  Simultaneously cross-examines 15m, 1H, 4H, and Daily market cycles in real time. Eliminates counter-trend fakeouts by requiring macro trend alignment before confirming any setup.
+                  {t('homeSections.marketIntelligence.card1BackDesc', 'Simultaneously cross-examines 15m, 1H, 4H, and Daily market cycles in real time. Eliminates counter-trend fakeouts by requiring macro trend alignment before confirming any setup.')}
                 </p>
 
                 <div className={styles.specList}>
@@ -493,10 +493,10 @@ export default function MarketIntelligence() {
               {/* FRONT: Live Canvas 2 (fc2c) */}
               <div className={styles.cardFace}>
                 <div className={styles.terminalHeader}>
-                  <span className={styles.terminalTitle}>ORDER FLOW · TRADESNAP AI</span>
+                  <span className={styles.terminalTitle}>{t('homeSections.marketIntelligence.card2Title', 'ORDER FLOW · TRADESNAP AI')}</span>
                   <div className={styles.liveBadge}>
                     <span className={styles.liveDot}></span>
-                    <span>LIVE</span>
+                    <span>{t('homeSections.marketIntelligence.live', 'LIVE')}</span>
                   </div>
                 </div>
 
@@ -518,12 +518,12 @@ export default function MarketIntelligence() {
               <div className={`${styles.cardFace} ${styles.cardBack}`}>
                 <div className={styles.backHeader}>
                   <span className={styles.backLayerTag}>LAYER 02 — SMART MONEY FLOW</span>
-                  <span className={styles.flipHint}>Hover to preview</span>
+                  <span className={styles.flipHint}>{t('homeSections.marketIntelligence.hoverPreview', 'Hover to preview')}</span>
                 </div>
 
-                <h3 className={styles.backTitle}>Institutional Order Flow & Liquidity</h3>
+                <h3 className={styles.backTitle}>{t('homeSections.marketIntelligence.card2BackTitle', 'Institutional Order Flow & Liquidity')}</h3>
                 <p className={styles.backDesc}>
-                  Tracks institutional accumulation, liquidity stop-runs, and algorithmic price imbalances. Identifies high-conviction Order Blocks (OB) and Fair Value Gaps (FVG) where institutions step in.
+                  {t('homeSections.marketIntelligence.card2BackDesc', 'Tracks institutional accumulation, liquidity stop-runs, and algorithmic price imbalances. Identifies high-conviction Order Blocks (OB) and Fair Value Gaps (FVG) where institutions step in.')}
                 </p>
 
                 <div className={styles.specList}>
@@ -562,10 +562,10 @@ export default function MarketIntelligence() {
               {/* FRONT: Live Canvas 3 (fc3c) */}
               <div className={styles.cardFace}>
                 <div className={styles.terminalHeader}>
-                  <span className={styles.terminalTitle}>SIGNAL FILTER · CHRONOSX PRO</span>
+                  <span className={styles.terminalTitle}>{t('homeSections.marketIntelligence.card3Title', 'SIGNAL FILTER · CHRONOSX PRO')}</span>
                   <div className={styles.liveBadge}>
                     <span className={styles.liveDot}></span>
-                    <span>LIVE</span>
+                    <span>{t('homeSections.marketIntelligence.live', 'LIVE')}</span>
                   </div>
                 </div>
 
@@ -576,7 +576,7 @@ export default function MarketIntelligence() {
                 <div className={styles.terminalFooter}>
                   <span className={styles.footLeft}>WaveTrend + Squeeze Pro</span>
                   <span className={`${styles.footRight} ${styles.buySignal}`}>
-                    ● BUY SIGNAL
+                    {t('homeSections.marketIntelligence.buySignal', '● BUY SIGNAL')}
                   </span>
                 </div>
               </div>
@@ -585,12 +585,12 @@ export default function MarketIntelligence() {
               <div className={`${styles.cardFace} ${styles.cardBack}`}>
                 <div className={styles.backHeader}>
                   <span className={styles.backLayerTag}>LAYER 03 — EXECUTION TIMING</span>
-                  <span className={styles.flipHint}>Hover to preview</span>
+                  <span className={styles.flipHint}>{t('homeSections.marketIntelligence.hoverPreview', 'Hover to preview')}</span>
                 </div>
 
-                <h3 className={styles.backTitle}>Momentum & Volumetric Squeeze</h3>
+                <h3 className={styles.backTitle}>{t('homeSections.marketIntelligence.card3BackTitle', 'Momentum & Volumetric Squeeze')}</h3>
                 <p className={styles.backDesc}>
-                  Monitors momentum exhaustion, volatility expansion bands, and real-time volume pulses to pinpoint optimal entry timing with asymmetric risk-to-reward.
+                  {t('homeSections.marketIntelligence.card3BackDesc', 'Monitors momentum exhaustion, volatility expansion bands, and real-time volume pulses to pinpoint optimal entry timing with asymmetric risk-to-reward.')}
                 </p>
 
                 <div className={styles.specList}>

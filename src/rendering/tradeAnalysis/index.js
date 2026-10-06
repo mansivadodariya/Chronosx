@@ -18,10 +18,12 @@ import SidebarStatsColumn from './components/SidebarStatsColumn';
 import AnalysisHistoryModal from './components/AnalysisHistoryModal';
 import TradeAuditModal from './components/TradeAuditModal';
 import AnalysisLoadingOverlay from './components/AnalysisLoadingOverlay';
+import { useLanguage } from '@/context/LanguageContext';
 import { useTradeAnalysisStore } from '@/context/toolState';
 import { useTradeAnalysisExport } from './hooks/useTradeAnalysisExport';
 
 export default function TradeAnalysis() {
+    const { t } = useLanguage();
     const fileInputRef = useRef(null);
     const { exportToPdf, isExporting } = useTradeAnalysisExport();
     const {
@@ -307,7 +309,7 @@ export default function TradeAnalysis() {
         <div className={styles.container}>
             {/* 1. TOP PAGE HEADER */}
             <CommonSectionHeader
-                badge="STATEMENT AUDIT & BEHAVIORAL QUANT"
+                badge={t('tradeAnalysis.badge', 'STATEMENT AUDIT & BEHAVIORAL QUANT')}
                 badgeIcon={
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="18" y1="20" x2="18" y2="10" />
@@ -315,8 +317,8 @@ export default function TradeAnalysis() {
                         <line x1="6" y1="20" x2="6" y2="14" />
                     </svg>
                 }
-                title="AI Past Trade Analyzer"
-                subtitle="Upload your broker statement (MT4, MT5, cTrader, CSV) to reveal execution leaks, win-rate edge, and psychological biases."
+                title={t('tradeAnalysis.title', 'AI Past Trade Analyzer')}
+                subtitle={t('tradeAnalysis.subtitle', 'Upload your broker statement (MT4, MT5, cTrader, CSV) to reveal execution leaks, win-rate edge, and psychological biases.')}
                 isCard={true}
             />
 
@@ -413,28 +415,28 @@ export default function TradeAnalysis() {
                                     className={`${styles.tabBtn} ${activeTab === 'scorecard' ? styles.active : ''}`}
                                     onClick={() => setActiveTab('scorecard')}
                                 >
-                                    <span>Trader Scorecard</span>
+                                    <span>{t('tradeAnalysis.scorecardTab', 'Trader Scorecard')}</span>
                                 </button>
                                 <button
                                     type="button"
                                     className={`${styles.tabBtn} ${activeTab === 'overview' ? styles.active : ''}`}
                                     onClick={() => setActiveTab('overview')}
                                 >
-                                    <span>Overview & Analytics</span>
+                                    <span>{t('tradeAnalysis.overviewTab', 'Overview & Analytics')}</span>
                                 </button>
                                 <button
                                     type="button"
                                     className={`${styles.tabBtn} ${activeTab === 'ledger' ? styles.active : ''}`}
                                     onClick={() => setActiveTab('ledger')}
                                 >
-                                    <span>Trade Ledger ({totalTradesCount})</span>
+                                    <span>{t('tradeAnalysis.ledgerTab', 'Trade Ledger')} ({totalTradesCount})</span>
                                 </button>
                                 <button
                                     type="button"
                                     className={`${styles.tabBtn} ${activeTab === 'report' ? styles.active : ''}`}
                                     onClick={() => setActiveTab('report')}
                                 >
-                                    <span>AI Narrative Report</span>
+                                    <span>{t('tradeAnalysis.narrativeTab', 'AI Narrative Report')}</span>
                                 </button>
                             </motion.div>
 

@@ -5,38 +5,38 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from './breakoutDetection.module.scss';
 import SectionHeader from '@/components/sectionHeader';
 
-const stepsData = [
-  {
-    step: '01',
-    title: 'Track the Key Level.',
-    desc: 'ChronosX continuously maps key multi-day resistance and liquidity pools. Real-time telemetry detects when price approaches major decision zones.',
-    ticker: 'XAU/USD · Bullish Momentum',
-    status: 'APPROACHING RESISTANCE',
-    stage: 1
-  },
-  {
-    step: '02',
-    title: 'Institutional Volume Break.',
-    desc: 'When price breaks resistance backed by an institutional volume surge, the AI confirms order-flow strength and elevates the conviction score to High Bullish.',
-    ticker: 'XAU/USD · Breakout Confirmed',
-    status: 'BREAKOUT CONFIRMED · HIGH CONVICTION',
-    stage: 2
-  },
-  {
-    step: '03',
-    title: 'Instant Signal Dispatch.',
-    desc: 'A verified signal trigger hits your terminal and phone the exact millisecond the candle closes. By the time the rest of the market notices the news, you’re already in position.',
-    ticker: 'XAU/USD · Signal Active',
-    status: 'BREAKOUT CONFIRMED · HIGH CONVICTION',
-    stage: 3
-  }
-];
-
 export default function BreakoutDetection() {
   const { t } = useLanguage();
   const [activeStep, setActiveStep] = useState(0);
   const containerRef = useRef(null);
   const stepRefs = useRef([]);
+
+  const stepsData = [
+    {
+      step: '01',
+      title: t('homeSections.breakoutDetection.step1Title', 'Track the Key Level.'),
+      desc: t('homeSections.breakoutDetection.step1Desc', 'ChronosX continuously maps key multi-day resistance and liquidity pools. Real-time telemetry detects when price approaches major decision zones.'),
+      ticker: 'XAU/USD · Bullish Momentum',
+      status: t('homeSections.breakoutDetection.statusApproaching', 'APPROACHING RESISTANCE'),
+      stage: 1
+    },
+    {
+      step: '02',
+      title: t('homeSections.breakoutDetection.step2Title', 'Institutional Volume Break.'),
+      desc: t('homeSections.breakoutDetection.step2Desc', 'When price breaks resistance backed by an institutional volume surge, the AI confirms order-flow strength and elevates the conviction score to High Bullish.'),
+      ticker: 'XAU/USD · Breakout Confirmed',
+      status: t('homeSections.breakoutDetection.statusConfirmed', 'BREAKOUT CONFIRMED · HIGH CONVICTION'),
+      stage: 2
+    },
+    {
+      step: '03',
+      title: t('homeSections.breakoutDetection.step3Title', 'Instant Signal Dispatch.'),
+      desc: t('homeSections.breakoutDetection.step3Desc', 'A verified signal trigger hits your terminal and phone the exact millisecond the candle closes. By the time the rest of the market notices the news, you’re already in position.'),
+      ticker: 'XAU/USD · Signal Active',
+      status: t('homeSections.breakoutDetection.statusActive', 'BREAKOUT CONFIRMED · HIGH CONVICTION'),
+      stage: 3
+    }
+  ];
 
   useEffect(() => {
     let ticking = false;
@@ -104,10 +104,10 @@ export default function BreakoutDetection() {
             <div className={styles.stickyContent}>
               <SectionHeader
                 align="left"
-                badge="REAL-TIME BREAKOUT DETECTION"
-                title1="Catch the Move the"
-                title2="Second it Happens."
-                description="Follow an institutional setup from early approach to volume validation and instant signal dispatch in real time."
+                badge={t('homeSections.breakoutDetection.badge', 'REAL-TIME BREAKOUT DETECTION')}
+                title1={t('homeSections.breakoutDetection.title1', 'Catch the Move the')}
+                title2={t('homeSections.breakoutDetection.title2', 'Second it Happens.')}
+                description={t('homeSections.breakoutDetection.description', 'Follow an institutional setup from early approach to volume validation and instant signal dispatch in real time.')}
               />
 
               {/* Pinned Interactive Chart Card */}
@@ -168,7 +168,7 @@ export default function BreakoutDetection() {
                         className={`${styles.resistanceLine} ${activeStep >= 1 ? styles.resistanceBroken : ''}`}
                       />
                       <text x="555" y="183" textAnchor="end" className={styles.resistanceLabel}>
-                        {activeStep >= 1 ? 'SUPPORT' : 'KEY RESISTANCE'}
+                        {activeStep >= 1 ? t('homeSections.breakoutDetection.support', 'SUPPORT') : t('homeSections.breakoutDetection.keyResistance', 'KEY RESISTANCE')}
                       </text>
                     </g>
 
@@ -249,14 +249,14 @@ export default function BreakoutDetection() {
                         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                       >
                         <div className={styles.toastTopRow}>
-                          <span className={styles.toastBadge}>RESISTANCE BREAK</span>
-                          <span className={styles.toastTime}>JUST NOW</span>
+                          <span className={styles.toastBadge}>{t('homeSections.capabilities.resistanceBreak', 'RESISTANCE BREAK')}</span>
+                          <span className={styles.toastTime}>{t('homeSections.breakoutDetection.justNow', 'JUST NOW')}</span>
                         </div>
                         <div className={styles.toastMainTitle}>
                           XAU/USD
                         </div>
                         <div className={styles.toastSubtitle}>
-                          Resistance Break Confirmed
+                          {t('homeSections.breakoutDetection.toastConfirmed', 'Resistance Break Confirmed')}
                         </div>
                       </motion.div>
                     )}

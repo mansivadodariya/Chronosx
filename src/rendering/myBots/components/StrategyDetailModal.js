@@ -1,9 +1,12 @@
 'use client';
 
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../myBots.module.scss';
 
 export default function StrategyDetailModal({ strategy, onClose, onSimulate, onRunBacktest }) {
+    const { t } = useLanguage();
+
     if (!strategy) return null;
 
     return (
@@ -18,7 +21,7 @@ export default function StrategyDetailModal({ strategy, onClose, onSimulate, onR
                                 {strategy.direction}
                             </span>
                             <span className={`${styles.creationTypeBadge} ${strategy.creationType === 'ai' ? styles.creationBadgeAi : styles.creationBadgeManual}`}>
-                                {strategy.creationType === 'ai' ? 'AI Bots' : 'Manual / Custom Bots'}
+                                {strategy.creationType === 'ai' ? t('myBots.filterAi', 'AI Bots') : t('myBots.filterManual', 'Manual / Custom Bots')}
                             </span>
                         </div>
                         <h3 className={styles.modalStratTitle}>{strategy.name}</h3>
@@ -34,41 +37,41 @@ export default function StrategyDetailModal({ strategy, onClose, onSimulate, onR
                 <div className={styles.strategyModalBody}>
                     {strategy.description && (
                         <div className={styles.detailBlock}>
-                            <span className={styles.detailLabel}>RATIONALE & ARCHETYPE</span>
+                            <span className={styles.detailLabel}>{t('myBots.rationale', 'RATIONALE & ARCHETYPE')}</span>
                             <p className={styles.detailText}>{strategy.description}</p>
                         </div>
                     )}
 
                     {strategy.rawStrategy?.trade_reasoning?.rule_summary && (
                         <div className={styles.detailBlock}>
-                            <span className={styles.detailLabel}>EXECUTION RULE SUMMARY</span>
+                            <span className={styles.detailLabel}>{t('myBots.ruleSummary', 'EXECUTION RULE SUMMARY')}</span>
                             <p className={styles.detailText}>{strategy.rawStrategy.trade_reasoning.rule_summary}</p>
                         </div>
                     )}
 
                     {strategy.rawStrategy?.trade_reasoning?.market_regime && (
                         <div className={styles.detailBlock}>
-                            <span className={styles.detailLabel}>MARKET REGIME & CONTEXT</span>
+                            <span className={styles.detailLabel}>{t('myBots.marketRegime', 'MARKET REGIME & CONTEXT')}</span>
                             <p className={styles.detailText}>{strategy.rawStrategy.trade_reasoning.market_regime}</p>
                         </div>
                     )}
 
                     <div className={styles.specGrid}>
                         <div className={styles.specItem}>
-                            <span>Take Profit</span>
+                            <span>{t('myBots.takeProfit', 'Take Profit')}</span>
                             <strong>{strategy.tp}</strong>
                         </div>
                         <div className={styles.specItem}>
-                            <span>Stop Loss</span>
+                            <span>{t('myBots.stopLoss', 'Stop Loss')}</span>
                             <strong>{strategy.sl}</strong>
                         </div>
                         <div className={styles.specItem}>
-                            <span>Risk / Reward</span>
+                            <span>{t('myBots.riskReward', 'Risk / Reward')}</span>
                             <strong>{strategy.riskReward}</strong>
                         </div>
                         <div className={styles.specItem}>
-                            <span>Position Sizing</span>
-                            <strong>{strategy.lots} Lots</strong>
+                            <span>{t('myBots.positionSizing', 'Position Sizing')}</span>
+                            <strong>{strategy.lots} {t('myBots.lots', 'Lots')}</strong>
                         </div>
                     </div>
                 </div>
@@ -90,7 +93,7 @@ export default function StrategyDetailModal({ strategy, onClose, onSimulate, onR
                                 <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
                                 <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
                             </svg>
-                            <span>Run Backtest</span>
+                            <span>{t('myBots.runBacktest', 'Run Backtest')}</span>
                         </button>
                     </div>
                 )}

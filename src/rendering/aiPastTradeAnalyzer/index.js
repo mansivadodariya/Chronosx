@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { toast } from '@/components/toast';
 import CommonCta from '@/components/commonCta';
+import { useLanguage } from '@/context/LanguageContext';
 import { SAMPLE_TRADES } from './constants/sampleTrades';
 import HeroBannerSection from './components/HeroBannerSection';
 import CockpitStage from './components/CockpitStage';
@@ -12,6 +13,7 @@ import InteractiveAuditSection from './components/InteractiveAuditSection';
 import styles from './aiPastTradeAnalyzer.module.scss';
 
 export default function AiPastTradeAnalyzer() {
+    const { t } = useLanguage();
     const [selectedTrade, setSelectedTrade] = useState(SAMPLE_TRADES[0]);
     const [isScanning, setIsScanning] = useState(false);
     const [scanProgress, setScanProgress] = useState(0);
@@ -103,11 +105,11 @@ export default function AiPastTradeAnalyzer() {
 
             {/* 4. BOTTOM CALL TO ACTION BANNER (COMMON CTA COMPONENT) */}
             <CommonCta
-                badge="TURN YOUR PAST TRADES INTO PROFITS"
-                title1="Transform Your Trading Journal"
-                title2="with Institutional AI Auditing"
-                description="Stop repeating the same mistakes. Let AI guide you to become a better, smarter, and more consistent trader."
-                primaryBtnText="START YOUR ANALYSIS"
+                badge={t('tradeAudit.ctaBadge', 'AI AUDIT TECHNOLOGY')}
+                title1={t('tradeAudit.ctaTitle1', 'Stop Repeating Trading Mistakes')}
+                title2={t('tradeAudit.ctaTitle2', 'Start Auditing Every Execution')}
+                description={t('tradeAudit.ctaDesc', 'Upload your historical trade logs and screenshots. Receive immediate quantified feedback on risk sizing, invalid entries, and missed profits.')}
+                primaryBtnText={t('tradeAudit.startAnalyzingNow', 'START YOUR ANALYSIS')}
                 primaryBtnAction={scrollToAudit}
                 primaryBtnIcon={
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">

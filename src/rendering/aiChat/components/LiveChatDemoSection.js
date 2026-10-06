@@ -5,74 +5,84 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import SectionHeader from '@/components/sectionHeader';
 import { useLanguage } from '@/context/LanguageContext';
-import { authNavigate } from '@/lib/authRedirect';
 import { QUICK_PROMPTS } from '../constants/aiChatData';
+import { authNavigate } from '@/lib/authRedirect';
 import styles from '../aiChat.module.scss';
 
 export default function LiveChatDemoSection({
-    demoRef,
-    selectedPrompt,
+    demoSectionRef,
+    activePromptId,
     onSelectPrompt,
     isGenerating,
+    onCopySetup,
     customInput,
     setCustomInput,
-    onCustomSubmit,
-    onCopySetup
+    onCustomSubmit
 }) {
     const router = useRouter();
     const { t } = useLanguage();
+    const selectedPrompt = QUICK_PROMPTS.find(p => p.id === activePromptId) || QUICK_PROMPTS[0];
 
     return (
-        <section ref={demoRef} id="live-demo" className={styles.liveDemoSection}>
+        <section ref={demoSectionRef} className={styles.demoSection}>
             <div className="container">
                 <SectionHeader
-                    badge={t('aiChat.demoBadge', 'LIVE INTERACTIVE CHAT DEMO')}
+                    badge={t('aiChat.demoBadge', 'LIVE INTERACTIVE SIMULATION')}
                     title1={t('aiChat.demoTitle1', 'EXPERIENCE THE')}
-                    title2={t('aiChat.demoTitle2', 'AI COPILOT IN ACTION')}
-                    description={t('aiChat.demoSubtitle', 'Inspect zero-delay price quotes, automated support/resistance levels, and calculated risk-to-reward setups.')}
+                    title2={t('aiChat.demoTitle2', 'INTELLIGENT TRADING COPILOT')}
+                    description={t('aiChat.demoSubtitle', 'Select institutional prompt presets below to observe real-time MT5 tick analysis and execution calculations.')}
                     align="center"
                 />
 
-                {/* Interactive Cockpit Container */}
-                <div className={styles.terminalCockpit}>
-                    {/* Terminal Top Window Bar */}
-                    <div className={styles.terminalHeader}>
-                        <div className={styles.terminalControls}>
-                            <span className={`${styles.dot} ${styles.dotRed}`} />
-                            <span className={`${styles.dot} ${styles.dotYellow}`} />
-                            <span className={`${styles.dot} ${styles.dotGreen}`} />
-                            <span className={styles.terminalBrand}>
-                                CHRONOSX // AI TRADING COPILOT TERMINAL
-                            </span>
-                        </div>
+                {/* 3. PROMPT PRESET SELECTOR BUTTONS */}
+                <div className={styles.presetButtonsRow}>
+                    {QUICK_PROMPTS.map((prompt) => {
+                        const isActive = activePromptId === prompt.id;
+                        return (
+                            <button
+                                key={prompt.id}
+                                type="button"
+                                onClick={() => onSelectPrompt(prompt.id)}
+                                className={`${styles.presetBtn} ${isActive ? styles.presetActive : ''}`}
+                            >
+                                <span className={styles.presetIcon}>{prompt.icon}</span>
+                                <div className={styles.presetMeta}>
+                                    <span className={styles.presetLabel}>{prompt.label}</span>
+                                    <span className={styles.presetCategory}>{prompt.category}</span>
+                                </div>
+                            </button>
+                        );
+                    })}
+                </div>
 
-                        {/* Preset Tabs Switcher */}
-                        <div className={styles.terminalTabs}>
-                            {QUICK_PROMPTS.map((p) => (
-                                <button
-                                    key={p.id}
-                                    type="button"
-                                    onClick={() => onSelectPrompt(p)}
-                                    className={`${styles.termTabBtn} ${selectedPrompt.id === p.id ? styles.termTabActive : ''}`}
-                                >
-                                    {p.demoData.pair}
-                                </button>
-                            ))}
+                {/* 4. LIVE INTERACTIVE CHAT TERMINAL / WORKSPACE */}
+                <div className={styles.chatTerminalCard}>
+                    {/* Terminal Top Window Bar */}
+                    <div className={styles.terminalWindowBar}>
+                        <div className={styles.windowControls}>
+                            <span className={styles.controlDotRed} />
+                            <span className={styles.controlDotYellow} />
+                            <span className={styles.controlDotGreen} />
                         </div>
+                        <div className={styles.terminalTitle}>
+                            <span className={styles.terminalLiveDot} />
+                            <span>CHRONOSX QUANT DESK // MT5 LIVE STREAM ({selectedPrompt.demoData.pair})</span>
+                        </div>
+                        <div className={styles.terminalStatus}>STATUS: READY</div>
                     </div>
 
-                    {/* Terminal Chat Stream Area */}
-                    <div className={styles.chatStreamArea}>
-                        {/* 1. Trader Question Bubble */}
-                        <div className={styles.traderMessageRow}>
+                    {/* Terminal Message Stream Body */}
+                    <div className={styles.terminalMessageStream}>
+                        {/* 1. Trader User Message */}
+                        <div className={styles.userMessageRow}>
                             <div className={styles.traderAvatar}>
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                                     <circle cx="12" cy="7" r="4" />
                                 </svg>
                             </div>
                             <div className={styles.traderBubble}>
-                                <div className={styles.bubbleSender}>Trader</div>
+                                <div className={styles.bubbleSender}>{t('aiChat.demo.trader', 'Trader')}</div>
                                 <p className={styles.bubbleText}>
                                     &ldquo;{selectedPrompt.demoData.userPrompt}&rdquo;
                                 </p>
@@ -93,8 +103,8 @@ export default function LiveChatDemoSection({
                             <div className={styles.aiResponseCard}>
                                 <div className={styles.aiCardHeader}>
                                     <div className={styles.aiSenderInfo}>
-                                        <span className={styles.aiName}>AI Assistant</span>
-                                        <span className={styles.aiTag}>QUANT COPILOT</span>
+                                        <span className={styles.aiName}>{t('aiChat.demo.aiAssistant', 'AI Assistant')}</span>
+                                        <span className={styles.aiTag}>{t('aiChat.demo.quantCopilot', 'QUANT COPILOT')}</span>
                                         <span className={styles.aiPairBadge}>{selectedPrompt.demoData.pair}</span>
                                     </div>
 
@@ -102,13 +112,13 @@ export default function LiveChatDemoSection({
                                         type="button"
                                         onClick={onCopySetup}
                                         className={styles.copyBtn}
-                                        title="Copy Trade Setup to Clipboard"
+                                        title={t('aiChat.demo.copySetupAria', 'Copy Trade Setup to Clipboard')}
                                     >
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                             <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
                                             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                                         </svg>
-                                        <span>Copy Setup</span>
+                                        <span>{t('aiChat.demo.copySetup', 'Copy Setup')}</span>
                                     </button>
                                 </div>
 
@@ -126,7 +136,7 @@ export default function LiveChatDemoSection({
                                                 <span />
                                                 <span />
                                             </div>
-                                            <p>Analyzing live MT5 tick streams &amp; computing optimal parameters...</p>
+                                            <p>{t('aiChat.demo.analyzingTicks', 'Analyzing live MT5 tick streams & computing optimal parameters...')}</p>
                                         </motion.div>
                                     ) : (
                                         <motion.div
@@ -149,24 +159,24 @@ export default function LiveChatDemoSection({
                                             {/* Core Market Telemetry Grid */}
                                             <div className={styles.telemetryGrid}>
                                                 <div className={styles.telemetryItem}>
-                                                    <span className={styles.telLabel}>Current Live Price</span>
+                                                    <span className={styles.telLabel}>{t('aiChat.demo.currentLivePrice', 'Current Live Price')}</span>
                                                     <span className={styles.telPrice}>{selectedPrompt.demoData.price}</span>
                                                 </div>
 
                                                 <div className={styles.telemetryItem}>
-                                                    <span className={styles.telLabel}>Trend Direction</span>
+                                                    <span className={styles.telLabel}>{t('aiChat.demo.trendDirection', 'Trend Direction')}</span>
                                                     <span className={selectedPrompt.demoData.trendType === 'bullish' ? styles.telBullish : styles.telNeutral}>
                                                         ● {selectedPrompt.demoData.trend}
                                                     </span>
                                                 </div>
 
                                                 <div className={styles.telemetryItem}>
-                                                    <span className={styles.telLabel}>Resistance Levels</span>
+                                                    <span className={styles.telLabel}>{t('aiChat.demo.resistanceLevels', 'Resistance Levels')}</span>
                                                     <span className={styles.telVal}>{selectedPrompt.demoData.resistance}</span>
                                                 </div>
 
                                                 <div className={styles.telemetryItem}>
-                                                    <span className={styles.telLabel}>Support Levels</span>
+                                                    <span className={styles.telLabel}>{t('aiChat.demo.supportLevels', 'Support Levels')}</span>
                                                     <span className={styles.telVal}>{selectedPrompt.demoData.support}</span>
                                                 </div>
                                             </div>
@@ -180,32 +190,32 @@ export default function LiveChatDemoSection({
                                                             <circle cx="12" cy="6" r="2" />
                                                         </svg>
                                                     </div>
-                                                    <h5>TRADE SETUP PLAN:</h5>
+                                                    <h5>{t('aiChat.demo.setupPlan', 'TRADE SETUP PLAN:')}</h5>
                                                 </div>
 
                                                 <div className={styles.planItemsGrid}>
                                                     <div className={styles.planRow}>
-                                                        <span className={styles.planKey}>Entry Zone:</span>
+                                                        <span className={styles.planKey}>{t('aiChat.demo.entryZone', 'Entry Zone:')}</span>
                                                         <span className={styles.planValHighlight}>{selectedPrompt.demoData.setup.entryZone}</span>
                                                     </div>
 
                                                     <div className={styles.planRow}>
-                                                        <span className={styles.planKey}>Stop Loss:</span>
+                                                        <span className={styles.planKey}>{t('aiChat.demo.stopLoss', 'Stop Loss:')}</span>
                                                         <span className={styles.planValSl}>{selectedPrompt.demoData.setup.stopLoss}</span>
                                                     </div>
 
                                                     <div className={styles.planRow}>
-                                                        <span className={styles.planKey}>Take Profit 1:</span>
+                                                        <span className={styles.planKey}>{t('aiChat.demo.tp1', 'Take Profit 1:')}</span>
                                                         <span className={styles.planValTp}>{selectedPrompt.demoData.setup.takeProfit1}</span>
                                                     </div>
 
                                                     <div className={styles.planRow}>
-                                                        <span className={styles.planKey}>Take Profit 2:</span>
+                                                        <span className={styles.planKey}>{t('aiChat.demo.tp2', 'Take Profit 2:')}</span>
                                                         <span className={styles.planValTp}>{selectedPrompt.demoData.setup.takeProfit2}</span>
                                                     </div>
 
                                                     <div className={styles.planRow}>
-                                                        <span className={styles.planKey}>Risk-Reward Ratio:</span>
+                                                        <span className={styles.planKey}>{t('aiChat.demo.rrr', 'Risk-Reward Ratio:')}</span>
                                                         <span className={styles.planValRrr}>{selectedPrompt.demoData.setup.rrr}</span>
                                                     </div>
                                                 </div>
@@ -221,23 +231,23 @@ export default function LiveChatDemoSection({
                                                                 <polyline points="9 12 11 14 15 10" />
                                                             </svg>
                                                         </div>
-                                                        <h5>POSITION SIZING &amp; MATHEMATICAL AUDIT</h5>
+                                                        <h5>{t('aiChat.demo.positionSizingAudit', 'POSITION SIZING & MATHEMATICAL AUDIT')}</h5>
                                                     </div>
                                                     <div className={styles.calcGrid}>
                                                         <div className={styles.calcItem}>
-                                                            <span>Balance:</span>
+                                                            <span>{t('aiChat.demo.balance', 'Balance:')}</span>
                                                             <strong>{selectedPrompt.demoData.calcMetrics.accountBalance}</strong>
                                                         </div>
                                                         <div className={styles.calcItem}>
-                                                            <span>Risk Allocation:</span>
+                                                            <span>{t('aiChat.demo.riskAllocation', 'Risk Allocation:')}</span>
                                                             <strong>{selectedPrompt.demoData.calcMetrics.riskPercent} ({selectedPrompt.demoData.calcMetrics.dollarRisk})</strong>
                                                         </div>
                                                         <div className={styles.calcItem}>
-                                                            <span>Stop Loss:</span>
+                                                            <span>{t('aiChat.demo.stopLoss', 'Stop Loss:')}</span>
                                                             <strong>{selectedPrompt.demoData.calcMetrics.stopLossPips}</strong>
                                                         </div>
                                                         <div className={styles.calcItem}>
-                                                            <span>Exact Lot Size:</span>
+                                                            <span>{t('aiChat.demo.exactLotSize', 'Exact Lot Size:')}</span>
                                                             <strong className={styles.lotHighlight}>{selectedPrompt.demoData.calcMetrics.recommendedLots}</strong>
                                                         </div>
                                                     </div>
@@ -265,7 +275,7 @@ export default function LiveChatDemoSection({
                                                     </svg>
                                                 </div>
                                                 <p>
-                                                    <strong>Note:</strong> {selectedPrompt.demoData.note}
+                                                    <strong>{t('aiChat.demo.note', 'Note:')}</strong> {selectedPrompt.demoData.note}
                                                 </p>
                                             </div>
                                         </motion.div>
@@ -285,7 +295,7 @@ export default function LiveChatDemoSection({
                             </div>
                             <input
                                 type="text"
-                                placeholder="Type your trading question or pair analysis request here..."
+                                placeholder={t('aiChat.demo.inputPlaceholder', 'Type your trading question or pair analysis request here...')}
                                 value={customInput}
                                 onChange={(e) => setCustomInput(e.target.value)}
                                 className={styles.chatInputField}
@@ -295,7 +305,7 @@ export default function LiveChatDemoSection({
                                 onClick={() => authNavigate(router, '/market-assistant')}
                                 className={styles.launchFullDeskBtn}
                             >
-                                <span>Open in Live AI Desk</span>
+                                <span>{t('aiChat.demo.openInDesk', 'Open in Live AI Desk')}</span>
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                     <line x1="5" y1="12" x2="19" y2="12" />
                                     <polyline points="12 5 19 12 12 19" />

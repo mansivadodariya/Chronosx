@@ -2,11 +2,12 @@
 
 import React from 'react';
 import styles from '../profile.module.scss';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function ProfileSecurityTab({
     setShowPasswordModal,
-    t
 }) {
+    const { t } = useLanguage();
     return (
         <div className={styles.tabContentPanel}>
             <div className={styles.panelHeaderRow}>
@@ -20,8 +21,8 @@ export default function ProfileSecurityTab({
                         </svg>
                     </div>
                     <div className={styles.bannerTexts}>
-                        <h4>Account Password &amp; Encryption</h4>
-                        <p>Change your account password regularly to keep your trading account secure.</p>
+                        <h4>{t('profile.accountPasswordEncryption', 'Account Password & Encryption')}</h4>
+                        <p>{t('profile.securityBannerDesc', 'Change your account password regularly to keep your trading account secure.')}</p>
                     </div>
                 </div>
                 <button

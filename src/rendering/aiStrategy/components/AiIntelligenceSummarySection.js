@@ -1,11 +1,13 @@
 'use client';
 
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../aiStrategy.module.scss';
 import { getBidiProps } from '@/lib/bidi';
 import { BrainRobotIcon } from '@/icons/analysisIcons';
 
 export default function AiIntelligenceSummarySection({
+
     aiSummary = {},
     t
 }) {

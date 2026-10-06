@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../aiStrategy.module.scss';
 import SpeedometerGauge from './SpeedometerGauge';
 import { IndicatorIcon, CircleCheckIcon, formatValue } from '@/icons/analysisIcons';
@@ -121,9 +122,9 @@ export default function TrendSection({
                     <div className={styles.evidenceHeaderTag}>
                         <div className={styles.evidenceTitleWrap}>
                             <span className={styles.evidenceTagDot} />
-                            <span className={styles.evidenceTitleText}>TREND EVIDENCE</span>
+                            <span className={styles.evidenceTitleText}>{t('aiStrategy.trendEvidence', 'TREND EVIDENCE')}</span>
                         </div>
-                        <span className={styles.evidenceVerifiedBadge}>CONFLUENCE</span>
+                        <span className={styles.evidenceVerifiedBadge}>{t('aiStrategy.confluence', 'CONFLUENCE')}</span>
                     </div>
                     <ul className={styles.domainEvidenceList}>
                         {evidenceList.map((item, idx) => (

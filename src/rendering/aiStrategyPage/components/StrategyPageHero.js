@@ -22,9 +22,9 @@ export default function StrategyPageHero({
                     <SectionHeader
                         as="h1"
                         badge={t('strategyPage.heroBadge', 'INSTITUTIONAL QUANTITATIVE FEED')}
-                        title1={t('strategyPage.heroTitle1', 'Live Analysis Feed & Quantitative')}
-                        title2={t('strategyPage.heroTitle2', 'AI Strategy Generator.')}
-                        description={t('strategyPage.heroSubtitle', 'Experience real-time institutional FX intelligence. Select custom algorithmic strategies, track live 100-point Technical Scores across major pairs, and execute data-backed trades with multi-factor confluence.')}
+                        title1={t('strategyPage.heroTitle1', 'AI Strategy Analysis &')}
+                        title2={t('strategyPage.heroTitle2', 'Multi-Pillar Market Intelligence')}
+                        description={t('strategyPage.heroSubtitle', 'Transform complex cross-asset market flow into actionable algorithmic execution setups. Powered by real-time indicator confluence and strict mathematical risk models.')}
                         align="center"
                     />
 
@@ -37,13 +37,14 @@ export default function StrategyPageHero({
                     >
                         <button
                             type="button"
-                            onClick={() => authNavigate(router, '/signal-terminal')}
+                            onClick={() => authNavigate(router, '/market-assistant')}
                             className={styles.heroPrimaryBtn}
                         >
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                            <span>{t('aiStrategy.launchLiveFeed', 'LAUNCH LIVE ANALYSIS FEED')}</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
                             </svg>
-                            <span>LAUNCH LIVE ANALYSIS FEED</span>
                         </button>
 
                         <button
@@ -51,28 +52,28 @@ export default function StrategyPageHero({
                             onClick={scrollToDemo}
                             className={styles.heroSecondaryBtn}
                         >
-                            <span>EXPLORE 100-POINT SCORING</span>
+                            <span>{t('aiStrategy.explore100Pt', 'EXPLORE 100-POINT SCORING')}</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path d="M12 5v14M19 12l-7 7-7-7" />
                             </svg>
                         </button>
                     </motion.div>
 
-                    {/* Key Interface Highlights (Value Badges) */}
+                    {/* Value Proposition Badges */}
                     <motion.div
-                        className={styles.highlightsGrid}
+                        className={styles.valueBadgesRow}
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.3 }}
                     >
-                        {valueBadges.map((item) => (
-                            <div key={item.id} className={styles.highlightCard}>
-                                <div className={`${styles.highlightIconBox} ${styles[item.colorClass]}`}>
-                                    {item.icon}
+                        {valueBadges.map((badge, idx) => (
+                            <div key={idx} className={styles.valueBadgeCard}>
+                                <div className={`${styles.badgeIconWrap} ${styles[badge.iconStyle]}`}>
+                                    {badge.icon}
                                 </div>
-                                <div className={styles.highlightContent}>
-                                    <h4>{item.title}</h4>
-                                    <p>{item.desc}</p>
+                                <div className={styles.badgeContent}>
+                                    <h4>{badge.title}</h4>
+                                    <p>{badge.desc}</p>
                                 </div>
                             </div>
                         ))}

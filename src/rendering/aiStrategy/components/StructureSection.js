@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../aiStrategy.module.scss';
 import { IndicatorIcon, CircleCheckIcon, formatValue } from '@/icons/analysisIcons';
 
@@ -87,7 +88,7 @@ export default function StructureSection({
                             />
                         </div>
                         <div className={styles.structScoreCardBottom}>
-                            <span className={styles.structSentimentTag} style={{ color: '#18C98B' }}>NEUTRAL CONFLUENCE</span>
+                            <span className={styles.structSentimentTag} style={{ color: '#18C98B' }}>{t('aiStrategy.neutralConfluence', 'NEUTRAL CONFLUENCE')}</span>
                             <span className={styles.structPctText}>{progressPct}%</span>
                         </div>
                     </div>
@@ -118,7 +119,7 @@ export default function StructureSection({
                     <div className={styles.evidenceHeaderTag}>
                         <div className={styles.evidenceTitleWrap}>
                             <span className={styles.evidenceTagDot} />
-                            <span className={styles.evidenceTitleText}>STRUCTURE EVIDENCE</span>
+                            <span className={styles.evidenceTitleText}>{t('aiStrategy.structureEvidence', 'STRUCTURE EVIDENCE')}</span>
                         </div>
                         <span className={styles.evidenceVerifiedBadge}>KEY LEVELS</span>
                     </div>

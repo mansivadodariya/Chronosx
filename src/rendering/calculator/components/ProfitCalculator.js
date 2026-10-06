@@ -4,7 +4,10 @@ import React, { useState, useMemo } from 'react';
 import styles from '../calculator.module.scss';
 import { PAIRS_CONFIG, CURRENCIES, RATES_TO_USD } from '../config';
 import CustomDropdown from './CustomDropdown';
+import { useLanguage } from '@/context/LanguageContext';
+
 export default function ProfitCalculator({ onCopy, copied }) {
+    const { t } = useLanguage();
     const defaultPairData = PAIRS_CONFIG['XAU/USD'] || {};
     const defaultP = defaultPairData.defaultPrice || 4308.18;
     const [profitPair, setProfitPair] = useState('XAU/USD');
@@ -56,33 +59,33 @@ export default function ProfitCalculator({ onCopy, copied }) {
         <div className={styles.calculatorCardGrid}>
             <div className={styles.formCard}>
                 <div className={styles.cardHeader}>
-                    <h2>Trade Outcome & Risk Parameters</h2>
-                    <span>P&L ANALYSIS</span>
+                    <h2>{t('calculator.tradeOutcomeParams', 'Trade Outcome & Risk Parameters')}</h2>
+                    <span>{t('calculator.pnlAnalysis', 'P&L ANALYSIS')}</span>
                 </div>
 
                 <div className={styles.inputsGrid}>
                     <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
-                        <label>Order Direction</label>
+                        <label>{t('calculator.orderDirection', 'Order Direction')}</label>
                         <div className={styles.toggleSwitchRow}>
                             <button
                                 type="button"
                                 className={`${styles.switchBtn} ${profitOrderType === 'buy' ? styles.buyActive : ''}`}
                                 onClick={() => setProfitOrderType('buy')}
                             >
-                                ▲ BUY (Long Position)
+                                ▲ {t('calculator.buyLong', 'BUY (Long Position)')}
                             </button>
                             <button
                                 type="button"
                                 className={`${styles.switchBtn} ${profitOrderType === 'sell' ? styles.sellActive : ''}`}
                                 onClick={() => setProfitOrderType('sell')}
                             >
-                                ▼ SELL (Short Position)
+                                ▼ {t('calculator.sellShort', 'SELL (Short Position)')}
                             </button>
                         </div>
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Instrument</label>
+                        <label>{t('calculator.instrument', 'Instrument')}</label>
                         <CustomDropdown
                             options={pairOptions}
                             value={profitPair}
@@ -99,7 +102,7 @@ export default function ProfitCalculator({ onCopy, copied }) {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Account Base Currency</label>
+                        <label>{t('calculator.accountBaseCurrency', 'Account Base Currency')}</label>
                         <CustomDropdown
                             options={CURRENCIES}
                             value={profitCurrency}
@@ -108,7 +111,7 @@ export default function ProfitCalculator({ onCopy, copied }) {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Trade Size (Lots)</label>
+                        <label>{t('calculator.tradeSizeLots', 'Trade Size (Lots)')}</label>
                         <input
                             type="number"
                             step="0.01"
@@ -119,7 +122,7 @@ export default function ProfitCalculator({ onCopy, copied }) {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Entry / Open Price</label>
+                        <label>{t('calculator.entryOpenPrice', 'Entry / Open Price')}</label>
                         <input
                             type="number"
                             step="0.0001"
@@ -130,7 +133,7 @@ export default function ProfitCalculator({ onCopy, copied }) {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Take Profit / Exit Price</label>
+                        <label>{t('calculator.takeProfitExitPrice', 'Take Profit / Exit Price')}</label>
                         <input
                             type="number"
                             step="0.0001"
@@ -142,8 +145,8 @@ export default function ProfitCalculator({ onCopy, copied }) {
 
                     <div className={styles.inputGroup}>
                         <label>
-                            Stop Loss Price (Optional for R:R)
-                            <span className={styles.hint}>Calculates Risk to Reward Ratio</span>
+                            {t('calculator.stopLossPrice', 'Stop Loss Price (Optional for R:R)')}
+                            <span className={styles.hint}>{t('calculator.calcRrr', 'Calculates Risk to Reward Ratio')}</span>
                         </label>
                         <input
                             type="number"
@@ -157,7 +160,7 @@ export default function ProfitCalculator({ onCopy, copied }) {
 
                 <div className={styles.actionBtnRow}>
                     <button type="button" className={styles.calculateBtn}>
-                        <span>Calculate Profit & Loss</span>
+                        <span>{t('calculator.calcProfitLoss', 'Calculate Profit & Loss')}</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                     </button>
                 </div>
@@ -166,7 +169,7 @@ export default function ProfitCalculator({ onCopy, copied }) {
             <div className={styles.resultsCard}>
                 <div>
                     <div className={styles.resultHeader}>
-                        <h3>Net Profit / Loss</h3>
+                        <h3>{t('calculator.netProfitLoss', 'Net Profit / Loss')}</h3>
                         <button
                             type="button"
                             className={styles.copyBtn}
@@ -175,19 +178,19 @@ export default function ProfitCalculator({ onCopy, copied }) {
                             {copied ? (
                                 <>
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                                    <span>Copied</span>
+                                    <span>{t('calculator.copied', 'Copied')}</span>
                                 </>
                             ) : (
                                 <>
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
-                                    <span>Copy</span>
+                                    <span>{t('calculator.copy', 'Copy')}</span>
                                 </>
                             )}
                         </button>
                     </div>
 
                     <div className={styles.primaryResultBlock}>
-                        <div className={styles.resultLabel}>Expected Net Return</div>
+                        <div className={styles.resultLabel}>{t('calculator.expectedNetReturn', 'Expected Net Return')}</div>
                         <div className={`${styles.resultValue} ${profitResult.isProfit ? styles.positive : styles.negative}`}>
                             {profitResult.isProfit ? '+' : ''}{profitCurrency} {profitResult.profit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </div>
@@ -198,25 +201,23 @@ export default function ProfitCalculator({ onCopy, copied }) {
 
                     <div className={styles.breakdownList}>
                         <div className={styles.breakdownItem}>
-                            <span>Pips Moved</span>
+                            <span>{t('calculator.pipsMoved', 'Pips Moved')}</span>
                             <span>{profitResult.pips >= 0 ? '+' : ''}{profitResult.pips.toFixed(1)} Pips</span>
                         </div>
                         {profitResult.riskRewardRatio && (
                             <div className={styles.breakdownItem}>
-                                <span>Risk / Reward Ratio</span>
+                                <span>{t('calculator.riskRewardRatio', 'Risk / Reward Ratio')}</span>
                                 <span style={{ color: '#18C98B' }}>1 : {profitResult.riskRewardRatio}</span>
                             </div>
                         )}
                         {profitResult.riskAmount > 0 && (
                             <div className={styles.breakdownItem}>
-                                <span>Max Capital at Risk</span>
+                                <span>{t('calculator.maxCapitalAtRisk', 'Max Capital at Risk')}</span>
                                 <span style={{ color: '#FF7070' }}>{profitCurrency} {profitResult.riskAmount.toFixed(2)}</span>
                             </div>
                         )}
                     </div>
                 </div>
-
-    
             </div>
         </div>
     );

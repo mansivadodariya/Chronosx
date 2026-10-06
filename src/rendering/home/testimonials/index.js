@@ -5,53 +5,54 @@ import { motion } from 'framer-motion';
 import styles from './testimonials.module.scss';
 import SectionHeader from '@/components/sectionHeader';
 
-const testimonialsData = [
-  {
-    rating: 5,
-    quote: '"The signals are sharp and the AI analysis explains the reasoning behind every setup. My entries have never been cleaner."',
-    initials: 'DM',
-    name: 'Daniel Mercer',
-    role: 'Full-Time Forex Trader'
-  },
-  {
-    rating: 5,
-    quote: '"I upload a chart, get a full trade plan with entry, target and risk in seconds. It replaced hours of manual work."',
-    initials: 'AR',
-    name: 'Aisha Rahman',
-    role: 'Swing Trader'
-  },
-  {
-    rating: 5,
-    quote: '"Risk management tools alone are worth it. The AI keeps me disciplined and out of low-quality trades."',
-    initials: 'MR',
-    name: 'Marcus Reed',
-    role: 'Prop Firm Trader'
-  },
-  {
-    rating: 5,
-    quote: '"The breakout confirmation alerts caught the entire gold surge before the London open. Absolute game changer."',
-    initials: 'LS',
-    name: 'Liam Sterling',
-    role: 'Commodities Trader'
-  },
-  {
-    rating: 5,
-    quote: '"Having institutional heat list rankings mapped alongside raw price action completely eliminated second-guessing."',
-    initials: 'EV',
-    name: 'Elena Vasilev',
-    role: 'Quant Trader'
-  },
-  {
-    rating: 5,
-    quote: '"Backtesting my custom ICT strategies against 5 years of tick data gave me the edge I needed to get funded."',
-    initials: 'LB',
-    name: 'Lucas Bennett',
-    role: 'Funded Account Trader'
-  }
-];
-
 export default function Testimonials() {
   const { t } = useLanguage();
+
+  const testimonialsData = [
+    {
+      rating: 5,
+      quote: t('homeSections.testimonials.quote1', '"The signals are sharp and the AI analysis explains the reasoning behind every setup. My entries have never been cleaner."'),
+      initials: 'DM',
+      name: 'Daniel Mercer',
+      role: t('homeSections.testimonials.role1', 'Full-Time Forex Trader')
+    },
+    {
+      rating: 5,
+      quote: t('homeSections.testimonials.quote2', '"I upload a chart, get a full trade plan with entry, target and risk in seconds. It replaced hours of manual work."'),
+      initials: 'AR',
+      name: 'Aisha Rahman',
+      role: t('homeSections.testimonials.role2', 'Swing Trader')
+    },
+    {
+      rating: 5,
+      quote: t('homeSections.testimonials.quote3', '"Risk management tools alone are worth it. The AI keeps me disciplined and out of low-quality trades."'),
+      initials: 'MR',
+      name: 'Marcus Reed',
+      role: t('homeSections.testimonials.role3', 'Prop Firm Trader')
+    },
+    {
+      rating: 5,
+      quote: t('homeSections.testimonials.quote4', '"The breakout confirmation alerts caught the entire gold surge before the London open. Absolute game changer."'),
+      initials: 'LS',
+      name: 'Liam Sterling',
+      role: t('homeSections.testimonials.role4', 'Commodities Trader')
+    },
+    {
+      rating: 5,
+      quote: t('homeSections.testimonials.quote5', '"Having institutional heat list rankings mapped alongside raw price action completely eliminated second-guessing."'),
+      initials: 'EV',
+      name: 'Elena Vasilev',
+      role: t('homeSections.testimonials.role5', 'Quant Trader')
+    },
+    {
+      rating: 5,
+      quote: t('homeSections.testimonials.quote6', '"Backtesting my custom ICT strategies against 5 years of tick data gave me the edge I needed to get funded."'),
+      initials: 'LB',
+      name: 'Lucas Bennett',
+      role: t('homeSections.testimonials.role6', 'Funded Account Trader')
+    }
+  ];
+
   // Triple array for perfectly seamless continuous scroll
   const marqueeItems = [...testimonialsData, ...testimonialsData, ...testimonialsData];
 
@@ -59,10 +60,10 @@ export default function Testimonials() {
     <div className={styles.testimonials}>
       <div className='container'>
         <SectionHeader
-          badge="TESTIMONIALS"
-          title1="Used by Serious"
-          title2="Forex Traders"
-          description="Real reviews from active traders using ChronosX."
+          badge={t('homeSections.testimonials.badge', 'TESTIMONIALS')}
+          title1={t('homeSections.testimonials.title1', 'Used by Serious')}
+          title2={t('homeSections.testimonials.title2', 'Forex Traders')}
+          description={t('homeSections.testimonials.description', 'Real reviews from active traders using ChronosX.')}
         />
       </div>
       {/* Standard Width Marquee with Foggy Edge Layers */}

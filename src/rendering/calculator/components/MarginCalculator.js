@@ -4,8 +4,10 @@ import React, { useState, useMemo } from 'react';
 import styles from '../calculator.module.scss';
 import { PAIRS_CONFIG, CURRENCIES, LEVERAGES, RATES_TO_USD } from '../config';
 import CustomDropdown from './CustomDropdown';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function MarginCalculator({ onCopy, copied }) {
+    const { t } = useLanguage();
     const [marginPair, setMarginPair] = useState('XAU/USD');
     const [marginLots, setMarginLots] = useState('1.0');
     const [marginLeverage, setMarginLeverage] = useState(100);
@@ -43,13 +45,13 @@ export default function MarginCalculator({ onCopy, copied }) {
         <div className={styles.calculatorCardGrid}>
             <div className={styles.formCard}>
                 <div className={styles.cardHeader}>
-                    <h2>Margin Requirement Parameters</h2>
-                    <span>LEVERAGE CALC</span>
+                    <h2>{t('calculator.marginRequirementParams', 'Margin Requirement Parameters')}</h2>
+                    <span>{t('calculator.leverageCalc', 'LEVERAGE CALC')}</span>
                 </div>
 
                 <div className={styles.inputsGrid}>
                     <div className={styles.inputGroup}>
-                        <label>Instrument / Asset</label>
+                        <label>{t('calculator.instrumentAsset', 'Instrument / Asset')}</label>
                         <CustomDropdown
                             options={pairOptions}
                             value={marginPair}
@@ -61,7 +63,7 @@ export default function MarginCalculator({ onCopy, copied }) {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Account Base Currency</label>
+                        <label>{t('calculator.accountBaseCurrency', 'Account Base Currency')}</label>
                         <CustomDropdown
                             options={CURRENCIES}
                             value={marginCurrency}
@@ -70,7 +72,7 @@ export default function MarginCalculator({ onCopy, copied }) {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Account Leverage</label>
+                        <label>{t('calculator.accountLeverage', 'Account Leverage')}</label>
                         <CustomDropdown
                             options={LEVERAGES}
                             value={marginLeverage}
@@ -79,7 +81,7 @@ export default function MarginCalculator({ onCopy, copied }) {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label>Trade Size (Lots)</label>
+                        <label>{t('calculator.tradeSizeLots', 'Trade Size (Lots)')}</label>
                         <input
                             type="number"
                             step="0.01"
@@ -102,7 +104,7 @@ export default function MarginCalculator({ onCopy, copied }) {
                     </div>
 
                     <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
-                        <label>Current Market Price</label>
+                        <label>{t('calculator.currentMarketPrice', 'Current Market Price')}</label>
                         <input
                             type="number"
                             step="0.0001"
@@ -115,7 +117,7 @@ export default function MarginCalculator({ onCopy, copied }) {
 
                 <div className={styles.actionBtnRow}>
                     <button type="button" className={styles.calculateBtn}>
-                        <span>Calculate Required Margin</span>
+                        <span>{t('calculator.calcRequiredMargin', 'Calculate Required Margin')}</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                     </button>
                 </div>
@@ -124,7 +126,7 @@ export default function MarginCalculator({ onCopy, copied }) {
             <div className={styles.resultsCard}>
                 <div>
                     <div className={styles.resultHeader}>
-                        <h3>Required Margin</h3>
+                        <h3>{t('calculator.requiredMarginLabel', 'Required Margin')}</h3>
                         <button
                             type="button"
                             className={styles.copyBtn}
@@ -133,19 +135,21 @@ export default function MarginCalculator({ onCopy, copied }) {
                             {copied ? (
                                 <>
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                                    <span>Copied</span>
+                                    <span>{t('calculator.copied', 'Copied')}</span>
                                 </>
                             ) : (
                                 <>
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
-                                    <span>Copy</span>
+                                    <span>{t('calculator.copy', 'Copy')}</span>
                                 </>
                             )}
                         </button>
                     </div>
 
                     <div className={styles.primaryResultBlock}>
-                        <div className={styles.resultLabel}>Required Margin ({marginLots} Lot @ 1:{marginLeverage})</div>
+                        <div className={styles.resultLabel}>
+                            {t('calculator.requiredMarginLabel', 'Required Margin')} ({marginLots} Lot @ 1:{marginLeverage})
+                        </div>
                         <div className={styles.resultValue}>
                             {marginCurrency} {marginResult.requiredMargin.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </div>
@@ -156,17 +160,15 @@ export default function MarginCalculator({ onCopy, copied }) {
 
                     <div className={styles.breakdownList}>
                         <div className={styles.breakdownItem}>
-                            <span>Notional Position Value</span>
+                            <span>{t('calculator.notionalPositionValue', 'Notional Position Value')}</span>
                             <span>{marginCurrency} {marginResult.notionalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         </div>
                         <div className={styles.breakdownItem}>
-                            <span>Effective Leverage</span>
+                            <span>{t('calculator.effectiveLeverage', 'Effective Leverage')}</span>
                             <span>1 : {marginResult.leverage}</span>
                         </div>
                     </div>
                 </div>
-
-        
             </div>
         </div>
     );

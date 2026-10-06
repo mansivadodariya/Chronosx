@@ -136,7 +136,7 @@ export default function MarketNews() {
             {/* Hero Header */}
             <CommonSectionHeader
                 as="h1"
-                badge="LIVE MACRO CATALYST FEED"
+                badge={t('news.liveFeed', 'LIVE MACRO CATALYST FEED')}
                 badgeIcon={
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
@@ -164,7 +164,7 @@ export default function MarketNews() {
                         </svg>
                         <input
                             type="text"
-                            placeholder="Search by currency pair, symbol, or macro event (e.g. USD/CAD, Oil, Fed)..."
+                            placeholder={t('news.searchPlaceholder', 'Search by currency pair, symbol, or macro event (e.g. USD/CAD, Oil, Fed)...')}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
@@ -196,7 +196,7 @@ export default function MarketNews() {
                             <svg className={refreshing ? styles.spinning : ''} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                 <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
                             </svg>
-                            <span>Refresh</span>
+                            <span>{t('news.refresh', 'Refresh')}</span>
                         </button>
                     </div>
                 </div>
@@ -225,7 +225,7 @@ export default function MarketNews() {
             {loading ? (
                 <div className={styles.loadingState}>
                     <div className={styles.spinner} />
-                    <p>Loading real-time institutional intelligence stream...</p>
+                    <p>{t('news.loadingFeed', 'Loading real-time institutional intelligence stream...')}</p>
                 </div>
             ) : filteredNews.length === 0 ? (
                 <div className={styles.emptyState}>
@@ -235,7 +235,7 @@ export default function MarketNews() {
                         <line x1="12" y1="16" x2="12.01" y2="16" />
                     </svg>
                     <h3>No market events match your filters</h3>
-                    <p>Try clearing search keywords or enabling all categories.</p>
+                    <p>{t('news.tryClearing', 'Try clearing search keywords or enabling all categories.')}</p>
                     <button type="button" onClick={() => { setSearchQuery(''); setSelectedCategory('ALL'); }}>
                         Reset Filters
                     </button>
@@ -299,7 +299,7 @@ export default function MarketNews() {
                                                 <circle cx="12" cy="12" r="10" />
                                                 <path d="M12 16v-4M12 8h.01" />
                                             </svg>
-                                            <span>AI Deep-Dive</span>
+                                            <span>{t('news.aiDeepDive', 'AI Deep-Dive')}</span>
                                         </button>
 
                                         {item.link && (
@@ -308,7 +308,7 @@ export default function MarketNews() {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className={styles.sourceLink}
-                                                title="View Original Source"
+                                                title={t('news.viewSource', 'View Original Source')}
                                             >
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
@@ -335,11 +335,11 @@ export default function MarketNews() {
                                 {loadingMore ? (
                                     <>
                                         <div className={styles.spinner} style={{ width: 16, height: 16, borderWidth: 2 }} />
-                                        <span>Loading More Catalysts...</span>
+                                        <span>{t('news.loadingMore', 'Loading More Catalysts...')}</span>
                                     </>
                                 ) : (
                                     <>
-                                        <span>Load More Catalysts</span>
+                                        <span>{t('news.loadMore', 'Load More Catalysts')}</span>
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                             <path d="M12 5v14M5 12l7 7 7-7" />
                                         </svg>
@@ -447,13 +447,13 @@ export default function MarketNews() {
                                 <div className={styles.scenariosBox}>
                                     {selectedNews.analysis_data.scenario_analysis.if_event_strengthens && (
                                         <div className={styles.scenarioItem}>
-                                            <strong>[+] If Event Strengthens:</strong>
+                                            <strong>{t('news.ifStrengthens', '[+] If Event Strengthens:')}</strong>
                                             <span>{selectedNews.analysis_data.scenario_analysis.if_event_strengthens}</span>
                                         </div>
                                     )}
                                     {selectedNews.analysis_data.scenario_analysis.if_event_fades && (
                                         <div className={styles.scenarioItem}>
-                                            <strong>[-] If Event Fades:</strong>
+                                            <strong>{t('news.ifFades', '[-] If Event Fades:')}</strong>
                                             <span>{selectedNews.analysis_data.scenario_analysis.if_event_fades}</span>
                                         </div>
                                     )}

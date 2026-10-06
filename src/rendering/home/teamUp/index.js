@@ -5,35 +5,36 @@ import { motion } from 'framer-motion';
 import styles from './teamUp.module.scss';
 import SectionHeader from '@/components/sectionHeader';
 
-const pillars = [
-  {
-    icon: '/assets/icons/hex-chart.svg?v=2',
-    title: 'Tier-1 Liquidity Access',
-    stat: 'FROM 0.0 PIPS',
-    desc: 'Tap directly into deep institutional order books with raw spreads and zero hidden markups.'
-  },
-  {
-    icon: '/assets/icons/hex-shield.svg?v=2',
-    title: 'Regulated Broker Partners',
-    stat: 'FCA · ASIC · CySEC',
-    desc: 'Connect seamlessly to fully licensed brokerages featuring segregated client accounts and top-tier compliance.'
-  },
-  {
-    icon: '/assets/icons/hex-speed.svg?v=2',
-    title: 'Ultra-Low Latency Routing',
-    stat: '< 12MS LATENCY',
-    desc: 'High-speed fiber cross-connects co-located at London (LD4) and New York (NY4) financial data centers.'
-  },
-  {
-    icon: '/assets/icons/hex-users.svg?v=2',
-    title: 'Institutional Scale & Uptime',
-    stat: '$4.2B+ ANALYZED',
-    desc: 'Enterprise-grade AI analytical engine with 99.99% uptime, processing high-volume tick data across global sessions.'
-  }
-];
-
 export default function TeamUp() {
   const { t } = useLanguage();
+
+  const pillars = [
+    {
+      icon: '/assets/icons/hex-chart.svg?v=2',
+      title: t('homeSections.teamUp.pillar1Title', 'Tier-1 Liquidity Access'),
+      stat: t('homeSections.teamUp.pillar1Stat', 'FROM 0.0 PIPS'),
+      desc: t('homeSections.teamUp.pillar1Desc', 'Tap directly into deep institutional order books with raw spreads and zero hidden markups.')
+    },
+    {
+      icon: '/assets/icons/hex-shield.svg?v=2',
+      title: t('homeSections.teamUp.pillar2Title', 'Regulated Broker Partners'),
+      stat: t('homeSections.teamUp.pillar2Stat', 'FCA · ASIC · CySEC'),
+      desc: t('homeSections.teamUp.pillar2Desc', 'Connect seamlessly to fully licensed brokerages featuring segregated client accounts and top-tier compliance.')
+    },
+    {
+      icon: '/assets/icons/hex-speed.svg?v=2',
+      title: t('homeSections.teamUp.pillar3Title', 'Ultra-Low Latency Routing'),
+      stat: t('homeSections.teamUp.pillar3Stat', '< 12MS LATENCY'),
+      desc: t('homeSections.teamUp.pillar3Desc', 'High-speed fiber cross-connects co-located at London (LD4) and New York (NY4) financial data centers.')
+    },
+    {
+      icon: '/assets/icons/hex-users.svg?v=2',
+      title: t('homeSections.teamUp.pillar4Title', 'Institutional Scale & Uptime'),
+      stat: t('homeSections.teamUp.pillar4Stat', '$4.2B+ ANALYZED'),
+      desc: t('homeSections.teamUp.pillar4Desc', 'Enterprise-grade AI analytical engine with 99.99% uptime, processing high-volume tick data across global sessions.')
+    }
+  ];
+
   return (
     <section className={styles.teamUp} aria-label="Supported Brokers and Platforms">
 
@@ -50,10 +51,10 @@ export default function TeamUp() {
           >
             <SectionHeader
               align="left"
-              badge="INSTITUTIONAL INFRASTRUCTURE"
-              title1="Direct Market Access to"
-              title2="World-Class Liquidity."
-              description="Direct connectivity to Tier-1 institutional liquidity providers, high-speed matching engines, and regulated broker bridges—ensuring unmatched speed, ultra-tight spreads, and zero-compromise execution."
+              badge={t('homeSections.teamUp.badge', 'INSTITUTIONAL INFRASTRUCTURE')}
+              title1={t('homeSections.teamUp.title1', 'Direct Market Access to')}
+              title2={t('homeSections.teamUp.title2', 'World-Class Liquidity.')}
+              description={t('homeSections.teamUp.description', 'Direct connectivity to Tier-1 institutional liquidity providers, high-speed matching engines, and regulated broker bridges—ensuring unmatched speed, ultra-tight spreads, and zero-compromise execution.')}
             />
           </motion.div>
 
@@ -95,9 +96,9 @@ export default function TeamUp() {
               transition={{ duration: 0.3 }}
             >
               <div className={styles.bannerInfo}>
-                <span className={styles.verifiedTag}>ENTERPRISE SECURITY VAULT</span>
-                <h4>100% NON-CUSTODIAL & SEGREGATED</h4>
-                <p><strong>You maintain 100% custody of your trading capital.</strong> ChronosX operates purely as an analytical AI layer and bridge. We never hold, manage, or custody user funds—your capital remains securely deposited with your regulated MT5 broker.</p>
+                <span className={styles.verifiedTag}>{t('homeSections.teamUp.vaultTag', 'ENTERPRISE SECURITY VAULT')}</span>
+                <h4>{t('homeSections.teamUp.vaultTitle', '100% NON-CUSTODIAL & SEGREGATED')}</h4>
+                <p>{t('homeSections.teamUp.vaultBody', 'You maintain 100% custody of your trading capital. ChronosX operates purely as an analytical AI layer and bridge. We never hold, manage, or custody user funds—your capital remains securely deposited with your regulated MT5 broker.')}</p>
               </div>
               <div className={styles.shieldVisual}>
                 <svg width="100" height="90" viewBox="0 0 100 90" fill="none" className={styles.shieldSvg} aria-hidden="true">

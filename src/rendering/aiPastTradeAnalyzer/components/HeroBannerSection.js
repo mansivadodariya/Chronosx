@@ -100,7 +100,7 @@ export default function HeroBannerSection({ scrollToAudit }) {
                             onClick={scrollToAudit}
                             className={styles.heroPrimaryBtn}
                         >
-                            <span>START ANALYZING NOW</span>
+                            <span>{t('tradeAudit.startAnalyzingNow', 'START ANALYZING NOW')}</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                 <line x1="5" y1="12" x2="19" y2="12" />
                                 <polyline points="12 5 19 12 12 19" />
@@ -112,7 +112,7 @@ export default function HeroBannerSection({ scrollToAudit }) {
                             onClick={() => authNavigate(router, '/dashboard')}
                             className={styles.heroSecondaryBtn}
                         >
-                            <span>EXPLORE CHRONOSX</span>
+                            <span>{t('tradeAudit.exploreChronosX', 'EXPLORE CHRONOSX')}</span>
                         </button>
                     </motion.div>
                 </div>

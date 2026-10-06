@@ -1,10 +1,20 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { getTranslation } from '@/locales';
 
 export default function GlobalError({ error, reset }) {
+  const [lang, setLang] = useState('en');
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('app_language');
+      if (stored) setLang(stored);
+    } catch (_) {}
+  }, []);
+
   return (
-    <html lang="en">
+    <html lang={lang} dir={lang === 'ar' || lang === 'ary' ? 'rtl' : 'ltr'}>
       <body style={{
         margin: 0,
         padding: 0,
@@ -38,15 +48,16 @@ export default function GlobalError({ error, reset }) {
               borderRadius: '50%',
               backgroundColor: '#EF4444',
             }} />
-            CRITICAL TELEMETRY INTERRUPTION
+            {getTranslation(lang, 'errors.global.tag', 'CRITICAL TELEMETRY INTERRUPTION')}
           </div>
 
           <h1 style={{ fontSize: '36px', fontWeight: '800', margin: '0 0 16px 0', color: '#FFFFFF' }}>
-            System Core <span style={{ color: '#18C98B' }}>Recalibrating</span>
+            {getTranslation(lang, 'errors.global.headingPrefix', 'System Core')}{' '}
+            <span style={{ color: '#18C98B' }}>{getTranslation(lang, 'errors.global.recalibrating', 'Recalibrating')}</span>
           </h1>
 
           <p style={{ color: '#9C9A96', fontSize: '15px', lineHeight: '1.6', marginBottom: '32px' }}>
-            The root layout encountered an unexpected state. Our infrastructure is maintaining session telemetry while the subsystem reboots.
+            {getTranslation(lang, 'errors.global.desc', 'The root layout encountered an unexpected state. Our infrastructure is maintaining session telemetry while the subsystem reboots.')}
           </p>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
@@ -64,7 +75,7 @@ export default function GlobalError({ error, reset }) {
                 cursor: 'pointer',
               }}
             >
-              RELOAD DESK
+              {getTranslation(lang, 'errors.global.reload', 'RELOAD DESK')}
             </button>
             <a
               href="/"
@@ -79,7 +90,7 @@ export default function GlobalError({ error, reset }) {
                 textDecoration: 'none',
               }}
             >
-              RETURN HOME
+              {getTranslation(lang, 'errors.global.returnHome', 'RETURN HOME')}
             </a>
           </div>
         </div>

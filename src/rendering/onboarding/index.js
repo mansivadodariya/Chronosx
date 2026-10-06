@@ -15,6 +15,7 @@ import {
 } from '@/lib/authSession';
 import { supabase } from '@/lib/supabaseClient';
 import PointerGlow from '@/components/pointerGlow';
+import { useLanguage } from '@/context/LanguageContext';
 
 // SVG Icons for Header & Footer
 const SkipIcon = () => (
@@ -33,6 +34,7 @@ const ShieldCheckIcon = () => (
 
 export default function Onboarding() {
     const router = useRouter();
+    const { t } = useLanguage();
     const [currentStep, setCurrentStep] = useState(1);
     const [checkingStatus, setCheckingStatus] = useState(true);
 
@@ -185,7 +187,7 @@ export default function Onboarding() {
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', zIndex: 10 }}>
                     <div style={{ width: '40px', height: '40px', border: '3.5px solid rgba(24, 201, 139, 0.2)', borderTopColor: '#18C98B', borderRadius: '50%', animation: 'spin 0.85s linear infinite' }} />
                     <p style={{ color: '#A0AEC0', fontSize: '13.5px', margin: 0, fontWeight: 600, letterSpacing: '0.3px' }}>
-                        Verifying profile status...
+                        {t('onboarding.verifying', 'Verifying profile status...')}
                     </p>
                 </div>
             </div>
@@ -205,7 +207,7 @@ export default function Onboarding() {
             <div className={styles.topHeader}>
                 <button type="button" className={styles.skipBtn} onClick={handleSkip}>
                     <SkipIcon />
-                    <span>Skip for now</span>
+                    <span>{t('onboarding.skip', 'Skip for now')}</span>
                 </button>
 
                 <div className={styles.stepperContainer}>
@@ -293,7 +295,7 @@ export default function Onboarding() {
                 </div>
 
                 <div className={styles.stepCount}>
-                    <span>Step {currentStep} of 4</span>
+                    <span>{t('onboarding.stepCount', 'Step {{current}} of {{total}}', { current: currentStep, total: 4 })}</span>
                 </div>
             </div>
 
@@ -331,14 +333,14 @@ export default function Onboarding() {
                     {currentStep === 1 ? (
                         <div className={styles.securityNotice}>
                             <ShieldCheckIcon />
-                            <span>Your answers are private and secure</span>
+                            <span>{t('onboarding.securityNotice', 'Your answers are private and secure')}</span>
                         </div>
                     ) : (
                         <button type="button" className={styles.backBtn} onClick={handleBack}>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                                 <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
-                            <span>Back</span>
+                            <span>{t('onboarding.back', 'Back')}</span>
                         </button>
                     )}
                 </div>
@@ -350,7 +352,7 @@ export default function Onboarding() {
                     disabled={!isCurrentStepValid}
                     aria-disabled={!isCurrentStepValid}
                 >
-                    <span>{currentStep === 4 ? 'Get Started' : 'Next'}</span>
+                    <span>{currentStep === 4 ? t('onboarding.getStarted', 'Get Started') : t('onboarding.next', 'Next')}</span>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                         <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="#0A0807" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>

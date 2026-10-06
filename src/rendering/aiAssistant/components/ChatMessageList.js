@@ -15,11 +15,11 @@ import { formatTechnicalProse, isTechnicalJsonPayload } from '@/utils/formatTech
 import { exportAssistantMessageToPdf } from '../utils/exportAssistantPdf';
 import styles from '../aiAssistant.module.scss';
 
-const ANALYZING_ASSISTANT_PHRASES = [
-    'Analyzing market structure & price action...',
-    'Evaluating technical indicators & key levels...',
-    'Scanning liquidity pools & order imbalances...',
-    'Synthesizing multi-timeframe trade outlook...',
+const getAnalyzingPhrases = (t) => [
+    t ? t('aiAssistant.analyzingPhrase1', 'Analyzing market structure & price action...') : 'Analyzing market structure & price action...',
+    t ? t('aiAssistant.analyzingPhrase2', 'Evaluating technical indicators & key levels...') : 'Evaluating technical indicators & key levels...',
+    t ? t('aiAssistant.analyzingPhrase3', 'Scanning liquidity pools & order imbalances...') : 'Scanning liquidity pools & order imbalances...',
+    t ? t('aiAssistant.analyzingPhrase4', 'Synthesizing multi-timeframe trade outlook...') : 'Synthesizing multi-timeframe trade outlook...',
 ];
 
 const ChatMessageList = React.memo(function ChatMessageList({
@@ -37,6 +37,7 @@ const ChatMessageList = React.memo(function ChatMessageList({
     handleOptionClick
 }) {
     const [phraseIndex, setPhraseIndex] = React.useState(0);
+    const analyzingPhrases = React.useMemo(() => getAnalyzingPhrases(t), [t]);
 
     React.useEffect(() => {
         if (!pendingRequest) {
@@ -45,11 +46,11 @@ const ChatMessageList = React.memo(function ChatMessageList({
         }
 
         const interval = setInterval(() => {
-            setPhraseIndex((prev) => (prev + 1) % ANALYZING_ASSISTANT_PHRASES.length);
+            setPhraseIndex((prev) => (prev + 1) % analyzingPhrases.length);
         }, 1600);
 
         return () => clearInterval(interval);
-    }, [pendingRequest]);
+    }, [pendingRequest, analyzingPhrases.length]);
 
     return (
         <div 
@@ -208,7 +209,7 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                                                 style={{ color: '#FFFFFF' }}
                                                             >
                                                                 <DownloadIcon size={15} />
-                                                                <span style={{ color: '#FFFFFF' }}>Download Full Report (PDF)</span>
+                                                                <span style={{ color: '#FFFFFF' }}>{t ? t('aiAssistant.downloadFullReportPdf', 'Download Full Report (PDF)') : 'Download Full Report (PDF)'}</span>
                                                             </button>
                                                         </div>
                                                     </div>
@@ -232,7 +233,7 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                                                 style={{ padding: '6px 12px', fontSize: '11.5px', color: '#FFFFFF' }}
                                                             >
                                                                 <DownloadIcon size={13} />
-                                                                <span style={{ color: '#FFFFFF' }}>Download Report (PDF)</span>
+                                                                <span style={{ color: '#FFFFFF' }}>{t ? t('aiAssistant.downloadReportPdf', 'Download Report (PDF)') : 'Download Report (PDF)'}</span>
                                                             </button>
                                                         </div>
                                                     )}
@@ -284,7 +285,7 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                 <span></span>
                             </div>
                             <span className={styles.analyzingStatusText}>
-                                {ANALYZING_ASSISTANT_PHRASES[phraseIndex]}
+                                {analyzingPhrases[phraseIndex]}
                             </span>
                         </div>
                     </div>

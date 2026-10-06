@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './publicAffiliate.module.scss';
 
 const STATS = [
@@ -12,14 +13,15 @@ const STATS = [
 ];
 
 export default function StatsSection() {
+  const { t } = useLanguage();
   return (
     <section className={styles.statsSection}>
       <div className="container">
         <SectionHeader
-          badge="GROW WITH CHRONOSX"
+          badge={t('publicAffiliate.growBadge', 'GROW WITH CHRONOSX')}
           title1="Build Your Network."
           title2="Track Your Growth."
-          description="Use your affiliate dashboard to monitor your referral activity, earnings, pending commissions, and withdrawals."
+          description={t('publicAffiliate.growSubtitle', 'Use your affiliate dashboard to monitor your referral activity, earnings, pending commissions, and withdrawals.')}
         />
 
         <div className={styles.statsGrid}>

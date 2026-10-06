@@ -96,7 +96,7 @@ export default function CreditHistory({ embedMode = false }) {
         <div className={styles.container}>
             {!embedMode && (
                 <CommonSectionHeader
-                    badge="CREDIT VAULT & AUDIT LOG"
+                    badge={t('creditHistory.badge', 'CREDIT VAULT & AUDIT LOG')}
                     badgeIcon={
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="12" cy="12" r="9" />

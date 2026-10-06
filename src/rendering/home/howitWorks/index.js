@@ -5,52 +5,51 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from './howitWorks.module.scss';
 import Link from 'next/link';
 import SectionHeader from '@/components/sectionHeader';
-const steps = [
-  {
-    step: '01',
-    label: 'Creating account',
-    icon: '01',
-    title: 'Create Account',
-  },
-  {
-    step: '02',
-    label: 'Linking Top Brokers',
-    icon: '02',
-    title: 'Link Top Brokers',
-  },
-  {
-    step: '03',
-    label: 'Scanning market structure',
-    icon: '03',
-    title: 'Ask the AI',
-  },
-  {
-    step: '04',
-    label: 'Replenishing credits',
-    icon: '04',
-    title: 'Trade & Replenish',
-  }
-];
-
 export default function HowitWorks() {
   const { t } = useLanguage();
   const [activeStep, setActiveStep] = useState(0);
   const [isIntro, setIsIntro] = useState(true);
-  // Phase 1 (intro label) → Phase 2 (simulation) after 1.4s
+
+  const steps = [
+    {
+      step: '01',
+      label: t('homeSections.howItWorks.creatingAccount', 'Creating account'),
+      icon: '01',
+      title: t('homeSections.howItWorks.createAccount', 'Create Account'),
+    },
+    {
+      step: '02',
+      label: t('homeSections.howItWorks.linkingBrokers', 'Linking Top Brokers'),
+      icon: '02',
+      title: t('homeSections.howItWorks.linkTopBrokers', 'Link Top Brokers'),
+    },
+    {
+      step: '03',
+      label: t('homeSections.howItWorks.scanningMarket', 'Scanning market structure'),
+      icon: '03',
+      title: t('homeSections.howItWorks.askAi', 'Ask the AI'),
+    },
+    {
+      step: '04',
+      label: t('homeSections.howItWorks.replenishingCredits', 'Replenishing credits'),
+      icon: '04',
+      title: t('homeSections.howItWorks.tradeReplenish', 'Trade & Replenish'),
+    }
+  ];
 
   useEffect(() => {
     setIsIntro(true);
-    const t = setTimeout(() => setIsIntro(false), 1400);
-    return () => clearTimeout(t);
+    const tm = setTimeout(() => setIsIntro(false), 1400);
+    return () => clearTimeout(tm);
   }, [activeStep]);
 
   // Auto-cycle every 6.5s
   useEffect(() => {
-    const t = setInterval(() => {
+    const tm = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % steps.length);
     }, 6500);
-    return () => clearInterval(t);
-  }, []);
+    return () => clearInterval(tm);
+  }, [steps.length]);
 
   const current = steps[activeStep];
 
@@ -63,14 +62,14 @@ export default function HowitWorks() {
           <div className={styles.left}>
             <SectionHeader
               align="left"
-              badge="MT5 BROKER INTEGRATION"
-              title1="Trade Your Edge."
-              title2="Earn Credits. Never Pay for AI."
-              description="Every trade you execute automatically refills your AI analysis credits—giving you unlimited access to institutional market scans, signals, and strategy playbooks for free."
+              badge={t('homeSections.howItWorks.badge', 'MT5 BROKER INTEGRATION')}
+              title1={t('homeSections.howItWorks.title1', 'Trade Your Edge.')}
+              title2={t('homeSections.howItWorks.title2', 'Earn Credits. Never Pay for AI.')}
+              description={t('homeSections.howItWorks.description', 'Every trade you execute automatically refills your AI analysis credits—giving you unlimited access to institutional market scans, signals, and strategy playbooks for free.')}
             />
 
             <Link href="/signup" className={styles.cta}>
-              Get Started Free <span>&rarr;</span>
+              {t('homeSections.howItWorks.getStartedFree', 'Get Started Free')} <span>&rarr;</span>
             </Link>
 
             {/* Step dots indicator */}
@@ -119,25 +118,25 @@ export default function HowitWorks() {
                       <div className={styles.sim}>
                         <div className={styles.simHead}>
                           <span className={styles.numTag}>01</span>
-                          <span className={styles.simTitle}>Create Free Account</span>
-                          <span className={styles.statusGreen}>● ACTIVE</span>
+                          <span className={styles.simTitle}>{t('homeSections.howItWorks.createAccount', 'Create Free Account')}</span>
+                          <span className={styles.statusGreen}>● {t('homeSections.howItWorks.active', 'ACTIVE')}</span>
                         </div>
                         <div className={styles.form}>
-                          <div className={styles.lbl}>EMAIL ADDRESS</div>
+                          <div className={styles.lbl}>{t('homeSections.howItWorks.emailAddress', 'EMAIL ADDRESS')}</div>
                           <div className={styles.input}>
                             <span>trader@institutional.com</span>
                             <span className={styles.cursor}>|</span>
                           </div>
                           <div className={styles.btn}>
-                            <span>INITIALIZE AI WORKSPACE</span>
+                            <span>{t('homeSections.howItWorks.initWorkspace', 'INITIALIZE AI WORKSPACE')}</span>
                             <span>&rarr;</span>
                           </div>
                         </div>
                         <div className={styles.alert}>
                           <div className={styles.check}>✓</div>
                           <div>
-                            <strong>Instant Email Verification</strong>
-                            <span className={styles.alertSub}>+10 Welcome Starter Credits Claimed</span>
+                            <strong>{t('homeSections.howItWorks.instantEmailVerif', 'Instant Email Verification')}</strong>
+                            <span className={styles.alertSub}>{t('homeSections.howItWorks.welcomeCredits', '+10 Welcome Starter Credits Claimed')}</span>
                           </div>
                         </div>
                       </div>
@@ -148,26 +147,26 @@ export default function HowitWorks() {
                       <div className={styles.sim}>
                         <div className={styles.simHead}>
                           <span className={styles.numTag}>02</span>
-                          <span className={styles.simTitle}>Link MT5 Broker Account</span>
-                          <span className={styles.statusGreen}>● BRIDGE SYNCED</span>
+                          <span className={styles.simTitle}>{t('homeSections.howItWorks.linkTopBrokers', 'Link MT5 Broker Account')}</span>
+                          <span className={styles.statusGreen}>● {t('homeSections.howItWorks.bridgeSynced', 'BRIDGE SYNCED')}</span>
                         </div>
                         <div className={styles.brokerRow}>
                           <div className={styles.brokerLogo}>TB</div>
                           <div>
                             <h4>TOP BROKERS</h4>
-                            <p>Server: MT5-LiveBridge01</p>
+                            <p>{t('homeSections.howItWorks.server', 'Server: MT5-LiveBridge01')}</p>
                           </div>
                         </div>
                         <div className={styles.mt5Row}>
-                          <span>MT5 ID:</span>
-                          <strong>12849021 (Authenticated)</strong>
+                          <span>{t('homeSections.howItWorks.mt5Id', 'MT5 ID:')}</span>
+                          <strong>12849021 ({t('homeSections.howItWorks.authenticated', 'Authenticated')})</strong>
                           <span>🔒</span>
                         </div>
                         <div className={styles.reward}>
                           <span className={styles.star}>✦</span>
                           <div>
-                            <strong>+50 AI CREDITS UNLOCKED</strong>
-                            <p>Direct MT5 Bridge Sync &middot; Auto-Refill on Completed Trades</p>
+                            <strong>{t('homeSections.howItWorks.creditsUnlocked', '+50 AI CREDITS UNLOCKED')}</strong>
+                            <p>{t('homeSections.howItWorks.autoRefill', 'Direct MT5 Bridge Sync · Auto-Refill on Completed Trades')}</p>
                           </div>
                         </div>
                       </div>
@@ -179,7 +178,7 @@ export default function HowitWorks() {
                         <div className={styles.simHead}>
                           <span className={styles.numTag}>03</span>
                           <span className={styles.simTitle}>TradeSnap AI &middot; XAU/USD</span>
-                          <span className={styles.signal}>▲ BUY SIGNAL</span>
+                          <span className={styles.signal}>▲ {t('homeSections.howItWorks.buySignal', 'BUY SIGNAL')}</span>
                         </div>
                         <div className={styles.chart}>
                           <div className={styles.sessions}>
@@ -210,8 +209,8 @@ export default function HowitWorks() {
                       <div className={styles.sim}>
                         <div className={styles.simHead}>
                           <span className={styles.numTag}>04</span>
-                          <span className={styles.simTitle}>Perpetual Credit Engine</span>
-                          <span className={styles.statusGold}>● LIFETIME LOOP</span>
+                          <span className={styles.simTitle}>{t('homeSections.howItWorks.tradeReplenish', 'Perpetual Credit Engine')}</span>
+                          <span className={styles.statusGold}>● {t('homeSections.howItWorks.lifetimeLoop', 'LIFETIME LOOP')}</span>
                         </div>
                         <div className={styles.loop}>
                           <div className={styles.ring1} />
@@ -219,17 +218,17 @@ export default function HowitWorks() {
                           <div className={styles.loopCenter}>
                             <span className={styles.loopIcon}>⟳</span>
                             <span className={styles.loopNum}>+50</span>
-                            <span className={styles.loopLabel}>CREDITS REFRESHED</span>
+                            <span className={styles.loopLabel}>{t('homeSections.howItWorks.creditsRefreshed', 'CREDITS REFRESHED')}</span>
                           </div>
                         </div>
                         <div className={styles.meta}>
                           <div className={styles.metaRow}>
-                            <span>Trade Execution:</span>
-                            <strong className={styles.green}>Verified on Top Brokers MT5</strong>
+                            <span>{t('homeSections.howItWorks.tradeExecution', 'Trade Execution:')}</span>
+                            <strong className={styles.green}>{t('homeSections.howItWorks.verifiedBroker', 'Verified on Top Brokers MT5')}</strong>
                           </div>
                           <div className={styles.metaRow}>
-                            <span>Credit Top-Up:</span>
-                            <strong className={styles.gold}>Free Instant Refill (+50)</strong>
+                            <span>{t('homeSections.howItWorks.creditTopUp', 'Credit Top-Up:')}</span>
+                            <strong className={styles.gold}>{t('homeSections.howItWorks.freeRefill', 'Free Instant Refill (+50)')}</strong>
                           </div>
                         </div>
                       </div>

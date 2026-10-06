@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../profile.module.scss';
 
 /**
@@ -167,7 +168,7 @@ export default function AiAssessmentCard({
                 <div className={styles.assessmentSubsection}>
                     <div className={styles.subsectionTitle}>
                         <span className={styles.accentDot} />
-                        <h4>Risk Management Framework</h4>
+                        <h4>{t('profile.riskFramework', 'Risk Management Framework')}</h4>
                     </div>
                     <div className={styles.riskMetricsGrid4}>
                         {riskFramework.recommended_position_sizing && (

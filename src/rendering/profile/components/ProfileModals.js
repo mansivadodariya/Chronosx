@@ -8,6 +8,7 @@ import FirebasePhoneModal from '@/components/firebasePhoneModal';
 import { toast } from '@/components/toast';
 import { profileApi } from '@/lib/api';
 import { clearAuthSession } from '@/lib/authSession';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../profile.module.scss';
 
 const Lock = '/assets/icons/lock.svg';
@@ -28,8 +29,11 @@ export default function ProfileModals({
     phoneNumber,
     performSaveProfile,
     router,
-    t
+    t: parentT
 }) {
+    const { t: localT } = useLanguage();
+    const t = parentT || localT;
+
     const handleUpdatePassword = async () => {
         if (!passwordForm.current) {
             toast.error('Please enter your current password');
@@ -84,12 +88,12 @@ export default function ProfileModals({
                             onClick={(e) => e.stopPropagation()}
                         >
                             <div className={styles.modalHeader}>
-                                <h3>Change Password</h3>
+                                <h3>{t('profile.changePassword', 'Change Password')}</h3>
                                 <button type="button" onClick={() => setShowPasswordModal(false)} className={styles.closeBtn}>✕</button>
                             </div>
                             <div className={styles.modalBody}>
                                 <Input
-                                    label="Current Password"
+                                    label={t('profile.currentPassword', 'Current Password')}
                                     icon={Lock}
                                     type="password"
                                     name="currentPassword"
@@ -98,7 +102,7 @@ export default function ProfileModals({
                                     placeholder="••••••••"
                                 />
                                 <Input
-                                    label="New Password"
+                                    label={t('profile.newPassword', 'New Password')}
                                     icon={Lock}
                                     type="password"
                                     name="newPassword"
@@ -107,7 +111,7 @@ export default function ProfileModals({
                                     placeholder="••••••••"
                                 />
                                 <Input
-                                    label="Confirm Password"
+                                    label={t('profile.confirmPassword', 'Confirm Password')}
                                     icon={Lock}
                                     type="password"
                                     name="confirmPassword"
@@ -134,7 +138,7 @@ export default function ProfileModals({
                                     disabled={passwordUpdating}
                                     onClick={handleUpdatePassword}
                                 >
-                                    {passwordUpdating ? "Updating..." : "Update Password"}
+                                    {passwordUpdating ? t('common.updating', 'Updating...') : t('profile.updatePassword', 'Update Password')}
                                 </button>
                             </div>
                         </motion.div>

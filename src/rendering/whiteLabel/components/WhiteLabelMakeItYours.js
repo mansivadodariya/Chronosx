@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../whiteLabel.module.scss';
 
 const CUSTOMIZATION_POINTS = [
@@ -53,14 +54,15 @@ const CUSTOMIZATION_POINTS = [
 ];
 
 export default function WhiteLabelMakeItYours() {
+    const { t } = useLanguage();
     return (
         <section className={styles.customizationSection}>
             <div className={styles.container}>
                 {/* Centered Section Header */}
                 <SectionHeader
-                    badge="Your Brand, Your Platform"
+                    badge={t('whiteLabel.makeItYoursBadge', 'Your Brand, Your Platform')}
                     title="Make the Experience Yours."
-                    description="Your users shouldn't feel like they're using someone else's product. The experience should belong completely to your brand."
+                    description={t('whiteLabel.makeItYoursSubtitle', "Your users shouldn't feel like they're using someone else's product. The experience should belong completely to your brand.")}
                     align="center"
                     className={styles.makeItYoursHeader}
                 />
@@ -100,7 +102,7 @@ export default function WhiteLabelMakeItYours() {
                         <div className={styles.customizationMockupWrap}>
                             <Image
                                 src="/assets/images/customization-suite.png"
-                                alt="ChronosX Brand Customization Suite Mockup"
+                                alt={t('whiteLabel.mockupAlt', 'ChronosX Brand Customization Suite Mockup')}
                                 width={800}
                                 height={600}
                                 priority

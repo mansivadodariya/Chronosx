@@ -2,8 +2,12 @@
 
 import styles from '../tradeSnap.module.scss';
 import { PlayIcon } from '@/icons/tradeSnapIcons';
+import { useLanguage } from '@/context/LanguageContext';
 
-export default function TradeSnapGuidePanel({ onStartSharing, t }) {
+export default function TradeSnapGuidePanel({ onStartSharing, t: parentT }) {
+    const { t: localT } = useLanguage();
+    const t = parentT || localT;
+
     const steps = [
         {
             num: '01',
@@ -23,7 +27,7 @@ export default function TradeSnapGuidePanel({ onStartSharing, t }) {
             num: '02',
             title: t('tradeSnap.guideStep2Title', 'Share Screen or Window'),
             desc: t('tradeSnap.guideStep2Desc', 'Click "Start Sharing" and select your chart tab, browser window, or entire monitor.'),
-            tags: ['Full Screen', 'Chrome Tab', 'App Window'],
+            tags: [t('tradeSnap.tagFullScreen', 'Full Screen'), t('tradeSnap.tagChromeTab', 'Chrome Tab'), t('tradeSnap.tagAppWindow', 'App Window')],
             icon: (
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M23 7l-7 5 7 5V7z" />
@@ -35,7 +39,7 @@ export default function TradeSnapGuidePanel({ onStartSharing, t }) {
             num: '03',
             title: t('tradeSnap.guideStep3Title', 'Instant AI Technical Scan'),
             desc: t('tradeSnap.guideStep3Desc', 'Capture snapshots or enable Auto-Capture to get real-time pattern detection & trade setups.'),
-            tags: ['SMC Order Blocks', 'Entry/SL/TP', 'Bull/Bear Bias'],
+            tags: [t('tradeSnap.tagSmc', 'SMC Order Blocks'), t('tradeSnap.tagEntry', 'Entry/SL/TP'), t('tradeSnap.tagBias', 'Bull/Bear Bias')],
             icon: (
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
@@ -46,10 +50,10 @@ export default function TradeSnapGuidePanel({ onStartSharing, t }) {
     ];
 
     const capabilities = [
-        { label: 'Sub-Second OCR Vision', desc: 'Auto-reads price, pair & timeframe' },
-        { label: 'SMC & Liquidity Mapping', desc: 'FVG, order blocks & breaker levels' },
-        { label: 'Automated Auto-Intervals', desc: 'Hands-free scans every 1 to 120 mins' },
-        { label: 'Confidence & Risk Scoring', desc: 'Dynamic R:R with invalidation zones' }
+        { label: t('tradeSnap.capOcr', 'Sub-Second OCR Vision'), desc: t('tradeSnap.capOcrDesc', 'Auto-reads price, pair & timeframe') },
+        { label: t('tradeSnap.capSmc', 'SMC & Liquidity Mapping'), desc: t('tradeSnap.capSmcDesc', 'FVG, order blocks & breaker levels') },
+        { label: t('tradeSnap.capAuto', 'Automated Auto-Intervals'), desc: t('tradeSnap.capAutoDesc', 'Hands-free scans every 1 to 120 mins') },
+        { label: t('tradeSnap.capRisk', 'Confidence & Risk Scoring'), desc: t('tradeSnap.capRiskDesc', 'Dynamic R:R with invalidation zones') }
     ];
 
     return (

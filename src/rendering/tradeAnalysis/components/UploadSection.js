@@ -2,11 +2,11 @@
 
 import React from 'react';
 import styles from '../tradeAnalysis.module.scss';
+import { useLanguage } from '@/context/LanguageContext';
 import {
     PdfIcon,
     UploadIcon,
     CheckIcon,
-    SparklesIcon,
     HistoryIcon,
     LockIcon,
     TargetIcon,
@@ -23,6 +23,8 @@ export default function UploadSection({
     handleFilesSelected,
     loading
 }) {
+    const { t } = useLanguage();
+
     return (
         <div className={styles.fullWidthUploadSection}>
             {/* 1. Next-Gen 4-Step Pipeline Stepper */}
@@ -33,8 +35,8 @@ export default function UploadSection({
                         <span className={styles.pulseHalo} />
                     </div>
                     <div className={styles.stepMeta}>
-                        <span className={styles.stepTitle}>Statement Ingestion</span>
-                        <span className={styles.stepSub}>XLSX</span>
+                        <span className={styles.stepTitle}>{t('tradeAnalysis.pipelineStep1Title', 'Statement Ingestion')}</span>
+                        <span className={styles.stepSub}>{t('tradeAnalysis.pipelineStep1Sub', 'XLSX / CSV')}</span>
                     </div>
                 </div>
 
@@ -48,8 +50,8 @@ export default function UploadSection({
                         <span className={styles.stepNum}>02</span>
                     </div>
                     <div className={styles.stepMeta}>
-                        <span className={styles.stepTitle}>Neural Extraction</span>
-                        <span className={styles.stepSub}>Executions, lots & SL/TP</span>
+                        <span className={styles.stepTitle}>{t('tradeAnalysis.pipelineStep2Title', 'Neural Extraction')}</span>
+                        <span className={styles.stepSub}>{t('tradeAnalysis.pipelineStep2Sub', 'Executions, lots & SL/TP')}</span>
                     </div>
                 </div>
 
@@ -63,8 +65,8 @@ export default function UploadSection({
                         <span className={styles.stepNum}>03</span>
                     </div>
                     <div className={styles.stepMeta}>
-                        <span className={styles.stepTitle}>Behavioral Audit</span>
-                        <span className={styles.stepSub}>Leaks, tilt & bias detection</span>
+                        <span className={styles.stepTitle}>{t('tradeAnalysis.pipelineStep3Title', 'Behavioral Audit')}</span>
+                        <span className={styles.stepSub}>{t('tradeAnalysis.pipelineStep3Sub', 'Leaks, tilt & bias detection')}</span>
                     </div>
                 </div>
 
@@ -78,8 +80,8 @@ export default function UploadSection({
                         <span className={styles.stepNum}>04</span>
                     </div>
                     <div className={styles.stepMeta}>
-                        <span className={styles.stepTitle}>Executive Scorecard</span>
-                        <span className={styles.stepSub}>Win-rate, R:R & playbook</span>
+                        <span className={styles.stepTitle}>{t('tradeAnalysis.pipelineStep4Title', 'Executive Scorecard')}</span>
+                        <span className={styles.stepSub}>{t('tradeAnalysis.pipelineStep4Sub', 'Win-rate, R:R & playbook')}</span>
                     </div>
                 </div>
             </div>
@@ -112,11 +114,9 @@ export default function UploadSection({
                     </div>
 
                     <div className={styles.uploadHeadingGroup}>
-                        <h2>Drop Your Trading Statement Here</h2>
-                        <p>Drag & drop your account report or browse files from your computer to run a deep AI audit.</p>
+                        <h2>{t('tradeAnalysis.dropzoneTitle', 'Upload MT4 / MT5 / cTrader Trading Statement')}</h2>
+                        <p>{t('tradeAnalysis.dropzoneSubtitle', 'Drag & drop your trading statement (CSV or XLSX) or click to browse files')}</p>
                     </div>
-
-       
 
                     {/* Action Button Row */}
                     <div className={styles.uploadButtonRow}>
@@ -127,28 +127,27 @@ export default function UploadSection({
                             disabled={loading}
                         >
                             <UploadIcon />
-                            <span>{loading ? 'Processing Statement...' : 'Choose Statement File'}</span>
+                            <span>{loading ? t('tradeAnalysis.uploading', 'Processing Statement...') : t('tradeAnalysis.selectFilesBtn', 'Choose Statement File')}</span>
                         </button>
                     </div>
 
-                    <span className={styles.dragDropText}>Supported format: Excel (XLSX)</span>
+                    <span className={styles.dragDropText}>{t('tradeAnalysis.supportedFormats', 'Supported: MetaTrader 4, MetaTrader 5, cTrader, TradingView CSV, Binance, Bybit')}</span>
 
                     <div className={styles.securityNotice}>
                         <LockIcon />
-                        <span>256-Bit Encrypted Client-Side Processing • Private & Confidential</span>
+                        <span>{t('tradeAnalysis.enginePillar1', 'Zero Data Retention: Processed in memory')}</span>
                     </div>
                 </div>
 
                 {/* Right Box: Neural Data Extraction Engine */}
                 <div className={styles.extractionCard}>
-   
                     <div className={styles.matrixHeader}>
                         <div className={styles.matrixBadge}>
                             <TargetIcon />
                         </div>
                         <div>
-                            <h4>Neural Data Extraction Engine</h4>
-                            <p>Multi-broker statement normalization into institutional analytics</p>
+                            <h4>{t('tradeAnalysis.engineTitle', 'Neural Extraction & Execution Engine')}</h4>
+                            <p>{t('tradeAnalysis.engineSub', 'Instant quantitative parsing and behavioral edge audit across all historical orders.')}</p>
                         </div>
                     </div>
 
@@ -156,35 +155,35 @@ export default function UploadSection({
                     <div className={styles.checklistGrid}>
                         <div className={styles.checkItem}>
                             <div className={styles.checkIconBox}><CheckIcon /></div>
-                            <span>Entry & Exit Precision</span>
+                            <span>{t('tradeAnalysis.entryPrecision', 'Entry & Exit Precision')}</span>
                         </div>
                         <div className={styles.checkItem}>
                             <div className={styles.checkIconBox}><CheckIcon /></div>
-                            <span>Risk-to-Reward (R:R)</span>
+                            <span>{t('tradeAnalysis.riskToReward', 'Risk-to-Reward (R:R)')}</span>
                         </div>
                         <div className={styles.checkItem}>
                             <div className={styles.checkIconBox}><CheckIcon /></div>
-                            <span>Position Size & Lot Scale</span>
+                            <span>{t('tradeAnalysis.posSizing', 'Position Size & Lot Scale')}</span>
                         </div>
                         <div className={styles.checkItem}>
                             <div className={styles.checkIconBox}><CheckIcon /></div>
-                            <span>Exact Execution Timestamps</span>
+                            <span>{t('tradeAnalysis.timestamps', 'Exact Execution Timestamps')}</span>
                         </div>
                         <div className={styles.checkItem}>
                             <div className={styles.checkIconBox}><CheckIcon /></div>
-                            <span>Net PnL & Drawdown Curve</span>
+                            <span>{t('tradeAnalysis.drawdownCurve', 'Net PnL & Drawdown Curve')}</span>
                         </div>
                         <div className={styles.checkItem}>
                             <div className={styles.checkIconBox}><CheckIcon /></div>
-                            <span>Commission, Swap & Slippage</span>
+                            <span>{t('tradeAnalysis.commissionSlippage', 'Commission, Swap & Slippage')}</span>
                         </div>
                         <div className={styles.checkItem}>
                             <div className={styles.checkIconBox}><CheckIcon /></div>
-                            <span>Session & Market Hours</span>
+                            <span>{t('tradeAnalysis.marketHours', 'Session & Market Hours')}</span>
                         </div>
                         <div className={styles.checkItem}>
                             <div className={styles.checkIconBox}><CheckIcon /></div>
-                            <span>Order Types (Market/Limit)</span>
+                            <span>{t('tradeAnalysis.orderTypes', 'Order Types (Market/Limit)')}</span>
                         </div>
                     </div>
                 </div>
@@ -194,40 +193,40 @@ export default function UploadSection({
             <div className={styles.whatYouGetBox}>
                 <div className={styles.sectionHeadingRow}>
                     <div>
-                        <h3>What The Neural Audit Delivers</h3>
-                        <p>Institutional-grade analysis designed to eliminate capital leaks and compound edge</p>
+                        <h3>{t('tradeAnalysis.neuralAuditDelivers', 'What The Neural Audit Delivers')}</h3>
+                        <p>{t('tradeAnalysis.deliversSub', 'Institutional-grade analysis designed to eliminate capital leaks and compound edge')}</p>
                     </div>
                 </div>
                 <div className={styles.featureGrid}>
                     <div className={styles.featureCard}>
                         <div className={styles.featIconBox}><TargetIcon /></div>
                         <div className={styles.featText}>
-                            <h5>Execution Leak Detection</h5>
-                            <p>Detect revenge trading, premature exits, moving stop-losses, and overleveraging before they erode equity.</p>
+                            <h5>{t('tradeAnalysis.leakDetection', 'Execution Leak Detection')}</h5>
+                            <p>{t('tradeAnalysis.leakDesc', 'Detect revenge trading, premature exits, moving stop-losses, and overleveraging before they erode equity.')}</p>
                         </div>
                     </div>
 
                     <div className={styles.featureCard}>
                         <div className={styles.featIconBox}><ScaleIcon /></div>
                         <div className={styles.featText}>
-                            <h5>Mathematical Edge & R:R</h5>
-                            <p>Rigorous breakdown of your expectancy, profit factor, Kelly criterion sizing, and win/loss asymmetry.</p>
+                            <h5>{t('tradeAnalysis.mathEdge', 'Mathematical Edge & R:R')}</h5>
+                            <p>{t('tradeAnalysis.mathDesc', 'Rigorous breakdown of your expectancy, profit factor, Kelly criterion sizing, and win/loss asymmetry.')}</p>
                         </div>
                     </div>
 
                     <div className={styles.featureCard}>
                         <div className={styles.featIconBox}><HistoryIcon /></div>
                         <div className={styles.featText}>
-                            <h5>Psychology & Tilt Mapping</h5>
-                            <p>Isolate day-of-week tilt, time-of-day drawdown, session fatigue, and emotional holding patterns.</p>
+                            <h5>{t('tradeAnalysis.psychTilt', 'Psychology & Tilt Mapping')}</h5>
+                            <p>{t('tradeAnalysis.psychDesc', 'Isolate day-of-week tilt, time-of-day drawdown, session fatigue, and emotional holding patterns.')}</p>
                         </div>
                     </div>
 
                     <div className={styles.featureCard}>
                         <div className={styles.featIconBox}><BarChartIcon /></div>
                         <div className={styles.featText}>
-                            <h5>Actionable Trade Playbook</h5>
-                            <p>Synthesizes a concrete, prioritized checklist of rules tailored specifically to your historical executions.</p>
+                            <h5>{t('tradeAnalysis.playbook', 'Actionable Trade Playbook')}</h5>
+                            <p>{t('tradeAnalysis.playbookDesc', 'Synthesizes a concrete, prioritized checklist of rules tailored specifically to your historical executions.')}</p>
                         </div>
                     </div>
                 </div>

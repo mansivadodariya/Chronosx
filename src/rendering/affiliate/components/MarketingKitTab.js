@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import { CopyIcon, SparkleIcon, ExternalLinkIcon } from './AffiliateIcons';
 
 export function MarketingKitTab({ styles, t, handleCopyText }) {

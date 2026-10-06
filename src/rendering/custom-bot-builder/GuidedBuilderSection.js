@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './customBotBuilder.module.scss';
 
 const NoCodeIcon = () => (
@@ -38,15 +39,8 @@ const BacktestIcon = () => (
   </svg>
 );
 
-const WIZARD_STEPS = [
-  { id: 1, name: "Basics" },
-  { id: 2, name: "Entry Rules" },
-  { id: 3, name: "Exit Rules" },
-  { id: 4, name: "Risk" },
-  { id: 5, name: "Review" }
-];
-
 export default function GuidedBuilderSection({ refProp }) {
+  const { t } = useLanguage();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     botName: "My Scalper Bot",
@@ -59,6 +53,14 @@ export default function GuidedBuilderSection({ refProp }) {
     takeProfit: "40 pips",
     riskPercent: "1.0%"
   });
+
+  const wizardSteps = [
+    { id: 1, name: t('guidedBuilder.stepBasics', 'Basics') },
+    { id: 2, name: t('guidedBuilder.stepEntry', 'Entry Rules') },
+    { id: 3, name: t('guidedBuilder.stepExit', 'Exit Rules') },
+    { id: 4, name: t('guidedBuilder.stepRisk', 'Risk') },
+    { id: 5, name: t('guidedBuilder.stepReview', 'Review') }
+  ];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -76,16 +78,16 @@ export default function GuidedBuilderSection({ refProp }) {
     <section ref={refProp} className={styles.guidedBuilderSection}>
       <div className="container">
         <SectionHeader
-          badge="CUSTOM BOT BUILDER"
-          title1="Build Your Bot. Your Rules."
-          title2="Your Complete Control."
-          description="Prefer a more structured approach? Use the guided bot builder to configure your bot step-by-step — from the initial setup to risk management and final review."
+          badge={t('guidedBuilder.badge', 'CUSTOM BOT BUILDER')}
+          title1={t('guidedBuilder.title1', 'Build Your Bot. Your Rules.')}
+          title2={t('guidedBuilder.title2', 'Your Complete Control.')}
+          description={t('guidedBuilder.description', 'Prefer a more structured approach? Use the guided bot builder to configure your bot step-by-step — from the initial setup to risk management and final review.')}
         />
 
         <div className={styles.guidedWizardContainer}>
           {/* Progress Bar */}
           <div className={styles.wizardProgressBar}>
-            {WIZARD_STEPS.map((step) => (
+            {wizardSteps.map((step) => (
               <div
                 key={step.id}
                 className={`${styles.stepProgressNode} ${
@@ -117,7 +119,7 @@ export default function GuidedBuilderSection({ refProp }) {
 
                   <div className={styles.formGrid}>
                     <div className={styles.formGroup}>
-                      <label>Bot Name</label>
+                      <label>{t('guidedBuilder.botNameLabel', 'Bot Name')}</label>
                       <input
                         type="text"
                         name="botName"
@@ -127,7 +129,7 @@ export default function GuidedBuilderSection({ refProp }) {
                       />
                     </div>
                     <div className={styles.formGroup}>
-                      <label>Trading Pair</label>
+                      <label>{t('guidedBuilder.pairLabel', 'Trading Pair')}</label>
                       <select name="pair" value={formData.pair} onChange={handleChange}>
                         <option value="EUR/USD">EUR/USD</option>
                         <option value="GBP/USD">GBP/USD</option>
@@ -136,7 +138,7 @@ export default function GuidedBuilderSection({ refProp }) {
                       </select>
                     </div>
                     <div className={styles.formGroup}>
-                      <label>Timeframe</label>
+                      <label>{t('guidedBuilder.tfLabel', 'Timeframe')}</label>
                       <select name="timeframe" value={formData.timeframe} onChange={handleChange}>
                         <option value="M5">5 Minutes (M5)</option>
                         <option value="M15">15 Minutes (M15)</option>
@@ -144,7 +146,7 @@ export default function GuidedBuilderSection({ refProp }) {
                       </select>
                     </div>
                     <div className={`${styles.formGroup} ${styles.fullWidth}`}>
-                      <label>Description</label>
+                      <label>{t('guidedBuilder.descLabel', 'Description')}</label>
                       <textarea
                         name="description"
                         rows="2"
@@ -172,11 +174,11 @@ export default function GuidedBuilderSection({ refProp }) {
                   <div className={styles.stepHeaderSub}>Define exactly when your bot should enter a trade based on your selected conditions.</div>
                   <div className={styles.formGrid}>
                     <div className={styles.formGroup}>
-                      <label>Primary Indicator</label>
+                      <label>{t('guidedBuilder.indicatorLabel', 'Primary Indicator')}</label>
                       <input type="text" name="indicator" value={formData.indicator} onChange={handleChange} />
                     </div>
                     <div className={styles.formGroup}>
-                      <label>Entry Condition</label>
+                      <label>{t('guidedBuilder.conditionLabel', 'Entry Condition')}</label>
                       <input type="text" name="condition" value={formData.condition} onChange={handleChange} />
                     </div>
                   </div>
@@ -195,11 +197,11 @@ export default function GuidedBuilderSection({ refProp }) {
                   <div className={styles.stepHeaderSub}>Configure when the bot should close a trade, including SL, TP, and trailing exits.</div>
                   <div className={styles.formGrid}>
                     <div className={styles.formGroup}>
-                      <label>Stop-Loss (SL)</label>
+                      <label>{t('guidedBuilder.slLabel', 'Stop-Loss (SL)')}</label>
                       <input type="text" name="stopLoss" value={formData.stopLoss} onChange={handleChange} />
                     </div>
                     <div className={styles.formGroup}>
-                      <label>Take-Profit (TP)</label>
+                      <label>{t('guidedBuilder.tpLabel', 'Take-Profit (TP)')}</label>
                       <input type="text" name="takeProfit" value={formData.takeProfit} onChange={handleChange} />
                     </div>
                   </div>
@@ -218,7 +220,7 @@ export default function GuidedBuilderSection({ refProp }) {
                   <div className={styles.stepHeaderSub}>Define how much risk your bot should take and position exposure controls.</div>
                   <div className={styles.formGrid}>
                     <div className={styles.formGroup}>
-                      <label>Risk Per Trade (%)</label>
+                      <label>{t('guidedBuilder.riskLabel', 'Risk Per Trade (%)')}</label>
                       <input type="text" name="riskPercent" value={formData.riskPercent} onChange={handleChange} />
                     </div>
                     <div className={styles.formGroup}>
@@ -261,10 +263,10 @@ export default function GuidedBuilderSection({ refProp }) {
                 disabled={currentStep === 1}
                 style={{ opacity: currentStep === 1 ? 0.4 : 1, cursor: currentStep === 1 ? 'not-allowed' : 'pointer' }}
               >
-                ← PREVIOUS
+                {t('guidedBuilder.prevBtn', '← PREVIOUS')}
               </button>
               <button className={styles.heroPrimaryBtn} onClick={handleNext}>
-                {currentStep === 5 ? 'CREATE & BACKTEST →' : 'NEXT →'}
+                {currentStep === 5 ? t('guidedBuilder.reviewBtn', 'CREATE & BACKTEST →') : t('guidedBuilder.nextBtn', 'NEXT →')}
               </button>
             </div>
           </div>

@@ -484,7 +484,12 @@ export default function DashboardMarketOverview({ initialItems = [], userId = ''
         return items.filter(i => (i.category || '').toLowerCase() === activeTab.toLowerCase());
     }, [items, activeTab]);
 
-    const categories = ['Popular', 'Forex', 'Crypto', 'Commodities'];
+    const categories = [
+        { id: 'Popular', label: t('dashboard.popular', 'Popular') },
+        { id: 'Forex', label: t('dashboard.forex', 'Forex') },
+        { id: 'Crypto', label: t('dashboard.crypto', 'Crypto') },
+        { id: 'Commodities', label: t('dashboard.commodities', 'Commodities') }
+    ];
 
     return (
         <div className={styles.marketOverviewColumn}>
@@ -508,12 +513,12 @@ export default function DashboardMarketOverview({ initialItems = [], userId = ''
                 <div className={styles.overviewTabsRow}>
                     {categories.map((tab) => (
                         <button
-                            key={tab}
+                            key={tab.id}
                             type="button"
-                            onClick={() => setActiveTab(tab)}
-                            className={`${styles.overviewTabBtn} ${activeTab === tab ? styles.overviewTabActive : ''}`}
+                            onClick={() => setActiveTab(tab.id)}
+                            className={`${styles.overviewTabBtn} ${activeTab === tab.id ? styles.overviewTabActive : ''}`}
                         >
-                            {tab}
+                            {tab.label}
                         </button>
                     ))}
                 </div>
@@ -523,10 +528,10 @@ export default function DashboardMarketOverview({ initialItems = [], userId = ''
             <div className={styles.marketOverviewCard}>
                 <div className={styles.overviewTableWrapper}>
                     <div className={styles.overviewTableHeader}>
-                        <div className={styles.colInstrument}>Instrument</div>
-                        <div className={styles.colPrice}>Price</div>
-                        <div className={styles.colTrend}>Sparkline Trend</div>
-                        <div className={styles.colChange}>24h Change</div>
+                        <div className={styles.colInstrument}>{t('dashboard.instrument', 'Instrument')}</div>
+                        <div className={styles.colPrice}>{t('dashboard.price', 'Price')}</div>
+                        <div className={styles.colTrend}>{t('dashboard.sparklineTrend', 'Sparkline Trend')}</div>
+                        <div className={styles.colChange}>{t('dashboard.change24h', '24h Change')}</div>
                     </div>
 
                     <div className={styles.overviewTableBody}>

@@ -38,7 +38,7 @@ export default function ChatHeroSection({ scrollToDemo }) {
                             onClick={() => authNavigate(router, '/market-assistant')}
                             className={styles.heroPrimaryBtn}
                         >
-                            <span>LAUNCH AI CHAT NOW</span>
+                            <span>{t('aiChat.hero.launchBtn', 'LAUNCH AI CHAT NOW')}</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                 <line x1="5" y1="12" x2="19" y2="12" />
                                 <polyline points="12 5 19 12 12 19" />
@@ -50,7 +50,7 @@ export default function ChatHeroSection({ scrollToDemo }) {
                             onClick={scrollToDemo}
                             className={styles.heroSecondaryBtn}
                         >
-                            <span>VIEW LIVE DEMO</span>
+                            <span>{t('aiChat.hero.viewDemoBtn', 'VIEW LIVE DEMO')}</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path d="M12 5v14M19 12l-7 7-7-7" />
                             </svg>
@@ -69,8 +69,8 @@ export default function ChatHeroSection({ scrollToDemo }) {
                             <div className={styles.badgeIconWrap}>
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <circle cx="12" cy="12" r="10" />
-                                    <circle cx="12" cy="12" r="6" />
-                                    <circle cx="12" cy="12" r="2" />
+                                    <circle cx="12" cy="6" r="6" />
+                                    <circle cx="12" cy="2" r="2" />
                                     <line x1="12" y1="2" x2="12" y2="4" />
                                     <line x1="12" y1="20" x2="12" y2="22" />
                                     <line x1="2" y1="12" x2="4" y2="12" />
@@ -78,8 +78,8 @@ export default function ChatHeroSection({ scrollToDemo }) {
                                 </svg>
                             </div>
                             <div className={styles.badgeContent}>
-                                <h4>Institutional Technical Analysis</h4>
-                                <p>EMAs, SuperTrend &amp; Pivot Point engines</p>
+                                <h4>{t('aiChat.hero.techAnalysis', 'Institutional Technical Analysis')}</h4>
+                                <p>{t('aiChat.hero.techAnalysisDesc', 'EMAs, SuperTrend & Pivot Point engines')}</p>
                             </div>
                         </div>
 
@@ -92,8 +92,8 @@ export default function ChatHeroSection({ scrollToDemo }) {
                                 </svg>
                             </div>
                             <div className={styles.badgeContent}>
-                                <h4>Automated Risk &amp; Position Sizing</h4>
-                                <p>Capital preservation &amp; strict RRR logic</p>
+                                <h4>{t('aiChat.hero.riskSizing', 'Automated Risk & Position Sizing')}</h4>
+                                <p>{t('aiChat.hero.riskSizingDesc', 'Capital preservation & strict RRR logic')}</p>
                             </div>
                         </div>
 
@@ -108,8 +108,8 @@ export default function ChatHeroSection({ scrollToDemo }) {
                                 </svg>
                             </div>
                             <div className={styles.badgeContent}>
-                                <h4>Multi-Timeframe Trend Insights</h4>
-                                <p>From M1/M15 scalps to H4/Daily swing models</p>
+                                <h4>{t('aiChat.hero.trendInsights', 'Multi-Timeframe Trend Insights')}</h4>
+                                <p>{t('aiChat.hero.trendInsightsDesc', 'From M1/M15 scalps to H4/Daily swing models')}</p>
                             </div>
                         </div>
                     </motion.div>

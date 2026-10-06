@@ -2,8 +2,10 @@
 import React, { useState, useRef } from 'react';
 import styles from './animatedAreaChart.module.scss';
 import classNames from 'classnames';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function AnimatedAreaChart({
+
   height = 440,
   isBackground = false,
   dataPoints = [
@@ -34,6 +36,7 @@ export default function AnimatedAreaChart({
   ]
 }) {
   const svgRef = useRef(null);
+  const { t } = useLanguage();
   const [activePoint, setActivePoint] = useState({
     x: 965,
     y: 140,
@@ -90,19 +93,19 @@ export default function AnimatedAreaChart({
         <div className={styles.tooltipCard}>
           <div className={styles.badgeLive}>
             <span className={styles.dot} />
-            <span>REAL-TIME ENGINE</span>
+            <span>{t('components.chart.realTimeEngine', 'REAL-TIME ENGINE')}</span>
           </div>
           <div className={styles.tooltipDivider} />
           <div className={styles.tooltipItem}>
-            <span className={styles.label}>AI ACCURACY</span>
+            <span className={styles.label}>{t('components.chart.aiAccuracy', 'AI ACCURACY')}</span>
           </div>
           <div className={styles.tooltipDivider} />
           <div className={styles.tooltipItem}>
-            <span className={styles.label}>CURRENT PRICE</span>
+            <span className={styles.label}>{t('components.chart.currentPrice', 'CURRENT PRICE')}</span>
           </div>
           <div className={styles.tooltipDivider} />
           <div className={styles.tooltipItem}>
-            <span className={styles.label}>TIMEFRAME</span>
+            <span className={styles.label}>{t('components.chart.timeframe', 'TIMEFRAME')}</span>
           </div>
         </div>
       )}

@@ -31,10 +31,10 @@ const LightLogo = '/assets/logo/darklogo.png';
 const UserIcon = '/assets/icons/user.svg';
 const Lock = '/assets/icons/lock.svg';
 
-const HERO_FEATURES = [
+const getHeroFeatures = (t) => [
     {
-        title: 'AI Chart Scanner',
-        desc: 'Instant neural OCR pattern detection',
+        title: t('auth.heroFeatures.scannerTitle', 'AI Chart Scanner'),
+        desc: t('auth.heroFeatures.scannerDesc', 'Instant neural OCR pattern detection'),
         icon: (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 3v18h18" />
@@ -48,8 +48,8 @@ const HERO_FEATURES = [
         badge: '98.4%'
     },
     {
-        title: 'Signal Terminal',
-        desc: 'Real-time breakout & momentum radar',
+        title: t('auth.heroFeatures.terminalTitle', 'Signal Terminal'),
+        desc: t('auth.heroFeatures.terminalDesc', 'Real-time breakout & momentum radar'),
         icon: (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
@@ -58,8 +58,8 @@ const HERO_FEATURES = [
         badge: 'LIVE'
     },
     {
-        title: 'AI Market Assistant',
-        desc: '24/7 conversational market copilot',
+        title: t('auth.heroFeatures.assistantTitle', 'AI Market Assistant'),
+        desc: t('auth.heroFeatures.assistantDesc', '24/7 conversational market copilot'),
         icon: (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
@@ -71,8 +71,8 @@ const HERO_FEATURES = [
         badge: 'COPILOT'
     },
     {
-        title: 'AI Trading Signal',
-        desc: 'Algorithmic quantitative playbooks',
+        title: t('auth.heroFeatures.signalTitle', 'AI Trading Signal'),
+        desc: t('auth.heroFeatures.signalDesc', 'Algorithmic quantitative playbooks'),
         icon: (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 12h3l3-7 4 14 3-8 2 4h4" />
@@ -83,8 +83,8 @@ const HERO_FEATURES = [
         badge: 'QUANT'
     },
     {
-        title: 'Bank-Level Encryption',
-        desc: '256-bit non-custodial protocol security',
+        title: t('auth.heroFeatures.encryptionTitle', 'Bank-Level Encryption'),
+        desc: t('auth.heroFeatures.encryptionDesc', '256-bit non-custodial protocol security'),
         icon: (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -100,6 +100,7 @@ const Login = () => {
     const { t } = useLanguage();
     const { theme } = useTheme();
     const Logo = theme === 'light' ? LightLogo : DarkLogo;
+    const heroFeatures = React.useMemo(() => getHeroFeatures(t), [t]);
     const redirectTo = getAuthRedirectTarget(searchParams);
     const [form, setForm] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({});
@@ -110,10 +111,10 @@ const Login = () => {
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setActiveFeatureIndex((prev) => (prev + 1) % HERO_FEATURES.length);
+            setActiveFeatureIndex((prev) => (prev + 1) % heroFeatures.length);
         }, 2800);
         return () => clearInterval(timer);
-    }, []);
+    }, [heroFeatures.length]);
 
     // States for phone step after Google Sign-in
     const [pendingPhoneUserId, setPendingPhoneUserId] = useState('');
@@ -363,17 +364,17 @@ const Login = () => {
                                 {/* Header & Subtitle (Aligned with Landing Page) */}
                                 <div className={styles.leftTextGroup}>
                                     <h2 className={styles.leftTitle}>
-                                        Trade Smarter with <br />
-                                        <span className={styles.highlightText}>AI That Never Sleeps</span>
+                                        {t('auth.hero.titleLine1', 'Trade Smarter with')} <br />
+                                        <span className={styles.highlightText}>{t('auth.hero.titleHighlight', 'AI That Never Sleeps')}</span>
                                     </h2>
                                     <p className={styles.leftSubtitle}>
-                                        Get real-time AI trading signals, market insights, and trade recommendations across Forex, Stocks, and Global Markets.
+                                        {t('auth.hero.subtitle', 'Get real-time AI trading signals, market insights, and trade recommendations across Forex, Stocks, and Global Markets.')}
                                     </p>
                                 </div>
 
                                 {/* 5 Feature Highlight Pills with Auto-Cycling Animation */}
                                 <div className={styles.featurePillList}>
-                                    {HERO_FEATURES.map((feat, idx) => {
+                                    {heroFeatures.map((feat, idx) => {
                                         const isActive = activeFeatureIndex === idx;
                                         return (
                                             <div
@@ -399,7 +400,7 @@ const Login = () => {
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                                 </svg>
-                                <span>256-Bit Encrypted &amp; Non-Custodial</span>
+                                <span>{t('auth.hero.securityNotice', '256-Bit Encrypted & Non-Custodial')}</span>
                             </div>
                         </div>
                     </div>
@@ -456,17 +457,17 @@ const Login = () => {
                             ) : (
                                 <>
                                     <div className={styles.formHeader}>
-                                        <h1 className={styles.formTitle}>Log In Account</h1>
-                                        <p className={styles.formSubtitle}>Enter your credentials to access your account.</p>
+                                        <h1 className={styles.formTitle}>{t('auth.login.title', 'Log In Account')}</h1>
+                                        <p className={styles.formSubtitle}>{t('auth.login.subtitle', 'Enter your credentials to access your account.')}</p>
                                     </div>
 
 
                                     <form onSubmit={handleSubmit} noValidate>
                                         <div className={styles.spacingGrid}>
                                             <Input
-                                                label="Email or Username"
+                                                label={t('auth.login.emailOrUsername', 'Email or Username')}
                                                 icon={UserIcon}
-                                                placeholder="eg. johndoe@gmail.com"
+                                                placeholder={t('auth.login.emailPlaceholder', 'eg. johndoe@gmail.com')}
                                                 type="email"
                                                 name="email"
                                                 value={form.email}
@@ -478,9 +479,9 @@ const Login = () => {
 
                                             <div>
                                                 <Input
-                                                    label="Password"
+                                                    label={t('auth.login.passwordLabel', 'Password')}
                                                     icon={Lock}
-                                                    placeholder="Enter your password"
+                                                    placeholder={t('auth.login.passwordPlaceholder', 'Enter your password')}
                                                     type="password"
                                                     name="password"
                                                     value={form.password}
@@ -490,7 +491,7 @@ const Login = () => {
                                                     autoComplete="current-password"
                                                 />
                                                 <div className={styles.forgotRow}>
-                                                    <Link href="/forgot-password">Forgot password?</Link>
+                                                    <Link href="/forgot-password">{t('auth.login.forgotPassword', 'Forgot password?')}</Link>
                                                 </div>
                                             </div>
 
@@ -499,13 +500,13 @@ const Login = () => {
                                                 className={styles.submitBtn}
                                                 disabled={loading}
                                             >
-                                                {loading ? 'Logging in...' : 'Log In'}
+                                                {loading ? t('auth.login.loggingIn', 'Logging in...') : t('auth.login.submitBtn', 'Log In')}
                                             </button>
                                         </div>
                                     </form>
 
                                     <div className={styles.orDivider}>
-                                        <span>Or</span>
+                                        <span>{t('auth.login.or', 'Or')}</span>
                                     </div>
 
                                     {/* Social Login Header Row */}
@@ -517,7 +518,7 @@ const Login = () => {
 
                                     <div className={styles.accountBottomLink}>
                                         <p>
-                                            Don&apos;t have an account? <Link href="/signup">Sign Up</Link>
+                                            {t('auth.login.noAccount', "Don't have an account?")} <Link href="/signup">{t('auth.login.signUpLink', 'Sign Up')}</Link>
                                         </p>
                                     </div>
                                 </>

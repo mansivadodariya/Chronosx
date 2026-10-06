@@ -52,12 +52,65 @@ const MAINTENANCE_EXCLUDED_PREFIXES = [
   "/maintenance",
 ];
 
+// Language route aliases (e.g. /arabic, /spanish, /ar, /ru, /zh)
+const LANGUAGE_ALIASES = {
+  en: "en",
+  english: "en",
+  ar: "ar",
+  arabic: "ar",
+  ary: "ary",
+  darija: "ary",
+  moroccan: "ary",
+  "moroccan-arabic": "ary",
+  es: "es",
+  spanish: "es",
+  espanol: "es",
+  ru: "ru",
+  russian: "ru",
+  zh: "zh",
+  chinese: "zh",
+  mandarin: "zh",
+  vi: "vi",
+  vietnamese: "vi",
+  id: "id",
+  indonesian: "id",
+  fil: "fil",
+  filipino: "fil",
+  tagalog: "fil",
+  ph: "fil",
+};
+
 export function proxy(request) {
   const { pathname, searchParams } = request.nextUrl;
   const token = request.cookies.get("auth_token")?.value;
   const isLoggedIn = Boolean(token);
 
-  // --- Dynamic Maintenance Mode Check ---
+  // --- 1. Language Path Prefix Detection & Normalization ---
+  const pathSegments = pathname.split("/").filter(Boolean);
+  const firstSegment = pathSegments[0]?.toLowerCase();
+  const matchedLocale = LANGUAGE_ALIASES[firstSegment];
+
+  let normalizedPathname = pathname;
+  if (matchedLocale && !pathname.startsWith("/api/")) {
+    const remainingSegments = pathSegments.slice(1);
+    normalizedPathname = remainingSegments.length > 0 ? "/" + remainingSegments.join("/") : "/";
+  }
+
+
+  // If no locale prefix is present on a non-API route, redirect to include the active language (e.g. /en/..., /ar/...)
+  if (!matchedLocale && !pathname.startsWith("/api/")) {
+    const cookieLang = request.cookies.get("app_language")?.value || request.cookies.get("NEXT_LOCALE")?.value;
+    const targetLang = (cookieLang && LANGUAGE_ALIASES[cookieLang.toLowerCase()]) || "en";
+    const localizedPath = pathname === "/" ? `/${targetLang}` : `/${targetLang}${pathname}`;
+    const redirectUrl = new URL(localizedPath, request.url);
+    redirectUrl.search = request.nextUrl.search;
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  const prefixLang = matchedLocale ? `/${matchedLocale}` : "/en";
+
+
+  // --- 2. Dynamic Maintenance Mode Check ---
   const isMaintenanceEnv =
     process.env.MAINTENANCE_MODE === "true" ||
     process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
@@ -76,13 +129,12 @@ export function proxy(request) {
     bypassParam === "true";
 
   const isExcludedFromMaintenance = MAINTENANCE_EXCLUDED_PREFIXES.some(
-    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`) || pathname.startsWith(prefix)
+    (prefix) => normalizedPathname === prefix || normalizedPathname.startsWith(`${prefix}/`) || normalizedPathname.startsWith(prefix)
   );
 
   // If site is in maintenance mode and not bypassed
   if (isMaintenanceActive && !isBypassed && !isExcludedFromMaintenance) {
-    // Return 503 for API routes
-    if (pathname.startsWith("/api/")) {
+    if (normalizedPathname.startsWith("/api/")) {
       return NextResponse.json(
         {
           error: "Service Temporarily Unavailable",
@@ -99,8 +151,7 @@ export function proxy(request) {
       );
     }
 
-    // Rewrite page requests to /maintenance with 503 status code for SEO safety
-    const maintenanceUrl = new URL("/maintenance", request.url);
+    const maintenanceUrl = new URL(`${prefixLang}/maintenance`, request.url);
     return NextResponse.rewrite(maintenanceUrl, {
       status: 503,
       headers: {
@@ -110,67 +161,77 @@ export function proxy(request) {
     });
   }
 
-  // Redirect /broker to /brokers
-  if (pathname === "/broker") {
-    return NextResponse.redirect(new URL("/brokers", request.url));
+  // --- 3. Route Aliases & Standardizations ---
+  if (normalizedPathname === "/broker") {
+    return NextResponse.redirect(new URL(`${prefixLang}/brokers`, request.url));
   }
-  if (pathname.startsWith("/broker/")) {
-    return NextResponse.redirect(new URL(pathname.replace("/broker/", "/brokers/"), request.url));
+  if (normalizedPathname.startsWith("/broker/")) {
+    return NextResponse.redirect(new URL(`${prefixLang}${normalizedPathname.replace("/broker/", "/brokers/")}`, request.url));
   }
-
-  if (pathname === "/tools") {
-    return NextResponse.redirect(new URL("/calculator", request.url));
+  if (normalizedPathname === "/tools") {
+    return NextResponse.redirect(new URL(`${prefixLang}/calculator`, request.url));
   }
-
-  // Redirect legacy / old route names to new standardized route names
-  if (pathname === "/strategy-hub/strategy") {
-    return NextResponse.redirect(new URL("/strategy-signal", request.url));
+  if (normalizedPathname === "/strategy-hub/strategy") {
+    return NextResponse.redirect(new URL(`${prefixLang}/strategy-signal`, request.url));
   }
-  if (pathname === "/strategy-hub/live") {
-    return NextResponse.redirect(new URL("/signal-terminal", request.url));
+  if (normalizedPathname === "/strategy-hub/live") {
+    return NextResponse.redirect(new URL(`${prefixLang}/signal-terminal`, request.url));
   }
-  if (pathname === "/strategy-hub" || pathname.startsWith("/strategy-hub/")) {
-    return NextResponse.redirect(new URL(pathname.replace("/strategy-hub", "/strategy-core"), request.url));
+  if (normalizedPathname === "/strategy-hub" || normalizedPathname.startsWith("/strategy-hub/")) {
+    return NextResponse.redirect(new URL(`${prefixLang}${normalizedPathname.replace("/strategy-hub", "/strategy-core")}`, request.url));
   }
-  if (pathname === "/ai-strategy-hub" || pathname.startsWith("/ai-strategy-hub/")) {
-    return NextResponse.redirect(new URL(pathname.replace("/ai-strategy-hub", "/ai-trading-signal"), request.url));
+  if (normalizedPathname === "/ai-strategy-hub" || normalizedPathname.startsWith("/ai-strategy-hub/")) {
+    return NextResponse.redirect(new URL(`${prefixLang}${normalizedPathname.replace("/ai-strategy-hub", "/ai-trading-signal")}`, request.url));
   }
-  if (pathname === "/ai-strategy-core" || pathname.startsWith("/ai-strategy-core/")) {
-    return NextResponse.redirect(new URL(pathname.replace("/ai-strategy-core", "/ai-trading-signal"), request.url));
+  if (normalizedPathname === "/ai-strategy-core" || normalizedPathname.startsWith("/ai-strategy-core/")) {
+    return NextResponse.redirect(new URL(`${prefixLang}${normalizedPathname.replace("/ai-strategy-core", "/ai-trading-signal")}`, request.url));
   }
-  if (pathname === "/live-scanner" || pathname.startsWith("/live-scanner/")) {
-    return NextResponse.redirect(new URL(pathname.replace("/live-scanner", "/signal-terminal"), request.url));
+  if (normalizedPathname === "/live-scanner" || normalizedPathname.startsWith("/live-scanner/")) {
+    return NextResponse.redirect(new URL(`${prefixLang}${normalizedPathname.replace("/live-scanner", "/signal-terminal")}`, request.url));
   }
-  if (pathname === "/live-market-scanner" || pathname.startsWith("/live-market-scanner/")) {
-    return NextResponse.redirect(new URL(pathname.replace("/live-market-scanner", "/signal-terminal"), request.url));
+  if (normalizedPathname === "/live-market-scanner" || normalizedPathname.startsWith("/live-market-scanner/")) {
+    return NextResponse.redirect(new URL(`${prefixLang}${normalizedPathname.replace("/live-market-scanner", "/signal-terminal")}`, request.url));
   }
-  if (pathname === "/trade-audit" || pathname.startsWith("/trade-audit/")) {
-    return NextResponse.redirect(new URL(pathname.replace("/trade-audit", "/trade-advisor"), request.url));
+  if (normalizedPathname === "/trade-audit" || normalizedPathname.startsWith("/trade-audit/")) {
+    return NextResponse.redirect(new URL(`${prefixLang}${normalizedPathname.replace("/trade-audit", "/trade-advisor")}`, request.url));
   }
-  if (pathname === "/ai-trade-audit" || pathname.startsWith("/ai-trade-audit/")) {
-    return NextResponse.redirect(new URL(pathname.replace("/ai-trade-audit", "/ai-trade-advisor"), request.url));
+  if (normalizedPathname === "/ai-trade-audit" || normalizedPathname.startsWith("/ai-trade-audit/")) {
+    return NextResponse.redirect(new URL(`${prefixLang}${normalizedPathname.replace("/ai-trade-audit", "/ai-trade-advisor")}`, request.url));
   }
 
-  const isProtected = PROTECTED_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`));
-  const isAuthRoute = AUTH_ROUTES.some((p) => pathname === p || pathname.startsWith(`${p}/`));
+  // --- 4. Protected Route & Auth Redirections ---
+  const isProtected = PROTECTED_PREFIXES.some((p) => normalizedPathname === p || normalizedPathname.startsWith(`${p}/`));
+  const isAuthRoute = AUTH_ROUTES.some((p) => normalizedPathname === p || normalizedPathname.startsWith(`${p}/`));
 
   if (isProtected && !isLoggedIn) {
-    const loginUrl = new URL("/login", request.url);
+    const loginUrl = new URL(`${prefixLang}/login`, request.url);
     loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
   if (isAuthRoute && isLoggedIn) {
-    let redirectTarget = request.nextUrl.searchParams.get("redirect") || "/dashboard";
+    let redirectTarget = request.nextUrl.searchParams.get("redirect") || `${prefixLang}/dashboard`;
     if (
       redirectTarget === "/onboarding" ||
       redirectTarget === "/steper" ||
       redirectTarget.startsWith("/onboarding") ||
       redirectTarget.startsWith("/steper")
     ) {
-      redirectTarget = "/dashboard";
+      redirectTarget = `${prefixLang}/dashboard`;
     }
     return NextResponse.redirect(new URL(redirectTarget, request.url));
+  }
+
+  // --- 5. Rewrite Localized Path to Canonical Next.js Page ---
+  if (matchedLocale && !pathname.startsWith("/api/")) {
+    const targetUrl = new URL(normalizedPathname, request.url);
+    targetUrl.search = request.nextUrl.search;
+
+    const response = NextResponse.rewrite(targetUrl);
+    response.cookies.set("app_language", matchedLocale, { path: "/", maxAge: 31536000, sameSite: "lax" });
+    response.cookies.set("NEXT_LOCALE", matchedLocale, { path: "/", maxAge: 31536000, sameSite: "lax" });
+    response.headers.set("x-chronosx-lang", matchedLocale);
+    return response;
   }
 
   return NextResponse.next();

@@ -1,10 +1,12 @@
-export const STEPS = [
-    { id: 1, label: 'Basics', icon: 'sliders' },
-    { id: 2, label: 'Entry Rules', icon: 'pulse' },
-    { id: 3, label: 'Exit Rules', icon: 'target' },
-    { id: 4, label: 'Risk', icon: 'shield' },
-    { id: 5, label: 'Review', icon: 'eye' }
+export const getSteps = (t) => [
+    { id: 1, label: t ? t('botBuilder.steps.basics', 'Basics') : 'Basics', icon: 'sliders' },
+    { id: 2, label: t ? t('botBuilder.steps.entryRules', 'Entry Rules') : 'Entry Rules', icon: 'pulse' },
+    { id: 3, label: t ? t('botBuilder.steps.exitRules', 'Exit Rules') : 'Exit Rules', icon: 'target' },
+    { id: 4, label: t ? t('botBuilder.steps.risk', 'Risk') : 'Risk', icon: 'shield' },
+    { id: 5, label: t ? t('botBuilder.steps.review', 'Review') : 'Review', icon: 'eye' }
 ];
+
+export const STEPS = getSteps(null);
 
 export const TRADING_PAIRS = [
     { value: 'EUR/USD', label: 'EUR/USD', category: 'Forex' },
@@ -19,13 +21,15 @@ export const TRADING_PAIRS = [
     { value: 'NAS100', label: 'NAS100 (Nasdaq)', category: 'Indices' }
 ];
 
-export const TIMEFRAMES = [
-    { value: '1m', label: '1 Minute (M1)' },
-    { value: '5m', label: '5 Minutes (M5)' },
-    { value: '15m', label: '15 Minutes (M15)' },
-    { value: '1h', label: '1 Hour (H1)' },
-    { value: '1d', label: '1 Day (D1)' }
+export const getTimeframes = (t) => [
+    { value: '1m', label: t ? t('botBuilder.timeframes.m1', '1 Minute (M1)') : '1 Minute (M1)' },
+    { value: '5m', label: t ? t('botBuilder.timeframes.m5', '5 Minutes (M5)') : '5 Minutes (M5)' },
+    { value: '15m', label: t ? t('botBuilder.timeframes.m15', '15 Minutes (M15)') : '15 Minutes (M15)' },
+    { value: '1h', label: t ? t('botBuilder.timeframes.h1', '1 Hour (H1)') : '1 Hour (H1)' },
+    { value: '1d', label: t ? t('botBuilder.timeframes.d1', '1 Day (D1)') : '1 Day (D1)' }
 ];
+
+export const TIMEFRAMES = getTimeframes(null);
 
 export const INDICATOR_DEFINITIONS = {
     ema_crossover: {
@@ -238,10 +242,9 @@ export function getConditionParams(indicatorKey = 'ema_crossover', condition = '
     };
 }
 
-export function validateEntryCondition(cond, allConditions = [], currentIndex = -1) {
+export function validateEntryCondition(cond, allConditions = [], currentIndex = -1, t = null) {
     if (!cond) return null;
     const { indicatorKey = 'ema_crossover', condition, params = {} } = cond;
-    const def = INDICATOR_DEFINITIONS[indicatorKey] || INDICATOR_DEFINITIONS.ema_crossover;
 
     if (indicatorKey === 'ema_crossover') {
         const isSingle = condition?.includes('Price Above') || condition?.includes('Price Below');
@@ -249,16 +252,16 @@ export function validateEntryCondition(cond, allConditions = [], currentIndex = 
         const slow = Number(params.slowPeriod);
 
         if (isSingle) {
-            if (!params.fastPeriod || isNaN(fast) || fast < 1) return 'EMA Period must be at least 1';
-            if (fast > 1000) return 'EMA Period cannot exceed 1000';
+            if (!params.fastPeriod || isNaN(fast) || fast < 1) return t ? t('botBuilder.validation.emaMin', 'EMA Period must be at least 1') : 'EMA Period must be at least 1';
+            if (fast > 1000) return t ? t('botBuilder.validation.emaMax', 'EMA Period cannot exceed 1000') : 'EMA Period cannot exceed 1000';
             return null;
         }
 
-        if (!params.fastPeriod || isNaN(fast) || fast < 1) return 'Fast Period must be at least 1';
-        if (fast > 500) return 'Fast Period cannot exceed 500';
-        if (!params.slowPeriod || isNaN(slow) || slow < 2) return 'Slow Period must be at least 2';
-        if (slow > 1000) return 'Slow Period cannot exceed 1000';
-        if (fast >= slow) return `Fast Period (${fast}) must be less than Slow Period (${slow})`;
+        if (!params.fastPeriod || isNaN(fast) || fast < 1) return t ? t('botBuilder.validation.fastMin', 'Fast Period must be at least 1') : 'Fast Period must be at least 1';
+        if (fast > 500) return t ? t('botBuilder.validation.fastMax', 'Fast Period cannot exceed 500') : 'Fast Period cannot exceed 500';
+        if (!params.slowPeriod || isNaN(slow) || slow < 2) return t ? t('botBuilder.validation.slowMin', 'Slow Period must be at least 2') : 'Slow Period must be at least 2';
+        if (slow > 1000) return t ? t('botBuilder.validation.slowMax', 'Slow Period cannot exceed 1000') : 'Slow Period cannot exceed 1000';
+        if (fast >= slow) return t ? t('botBuilder.validation.fastLessThanSlow', 'Fast Period ({{fast}}) must be less than Slow Period ({{slow}})', { fast, slow }) : `Fast Period (${fast}) must be less than Slow Period (${slow})`;
 
         // Check duplicate EMA crossover periods across other conditions
         if (Array.isArray(allConditions) && allConditions.length > 1) {
@@ -269,58 +272,20 @@ export function validateEntryCondition(cond, allConditions = [], currentIndex = 
                 return Number(other.params?.fastPeriod) === fast && Number(other.params?.slowPeriod) === slow;
             });
             if (hasDuplicate) {
-                return `Duplicate EMA (${fast}/${slow}). Use distinct periods (e.g. 9/21, 50/200, 20/50)`;
+                return t ? t('botBuilder.validation.duplicateEma', 'Duplicate EMA ({{fast}}/{{slow}}). Use distinct periods (e.g. 9/21, 50/200, 20/50)', { fast, slow }) : `Duplicate EMA (${fast}/${slow}). Use distinct periods (e.g. 9/21, 50/200, 20/50)`;
             }
         }
-        return null;
-    }
-
-    if (indicatorKey === 'rsi') {
-        const period = Number(params.period);
-        const overbought = Number(params.overbought);
-        const oversold = Number(params.oversold);
-        if (!period || isNaN(period) || period < 2 || period > 100) return 'RSI Period must be between 2 and 100';
-        if (!overbought || isNaN(overbought) || overbought < 50 || overbought > 95) return 'Overbought Level must be between 50 and 95';
-        if (!oversold || isNaN(oversold) || oversold < 5 || oversold > 50) return 'Oversold Level must be between 5 and 50';
-        if (oversold >= overbought) return 'Oversold level must be lower than Overbought level';
-        return null;
-    }
-
-    if (indicatorKey === 'macd') {
-        const fast = Number(params.fastEma);
-        const slow = Number(params.slowEma);
-        const signal = Number(params.signalPeriod);
-        if (!fast || isNaN(fast) || fast < 1) return 'Fast EMA must be at least 1';
-        if (!slow || isNaN(slow) || slow < 2) return 'Slow EMA must be at least 2';
-        if (fast >= slow) return 'Fast EMA must be less than Slow EMA';
-        if (!signal || isNaN(signal) || signal < 1) return 'Signal Period must be at least 1';
-        return null;
-    }
-
-    if (indicatorKey === 'bollinger_bands') {
-        const period = Number(params.period);
-        const stdDev = Number(params.stdDev);
-        if (!period || isNaN(period) || period < 2) return 'SMA Period must be at least 2';
-        if (!stdDev || isNaN(stdDev) || stdDev < 0.5 || stdDev > 5) return 'Standard Deviation must be between 0.5 and 5.0';
-        return null;
-    }
-
-    if (indicatorKey === 'supertrend') {
-        const atr = Number(params.atrPeriod);
-        const mult = Number(params.multiplier);
-        if (!atr || isNaN(atr) || atr < 1) return 'ATR Period must be at least 1';
-        if (!mult || isNaN(mult) || mult < 0.5 || mult > 10) return 'Multiplier must be between 0.5 and 10.0';
         return null;
     }
 
     return null;
 }
 
-export const RISK_LEVELS = [
+export const getRiskLevels = (t) => [
     {
         id: 'low',
-        title: 'Low',
-        subtitle: 'Conservative',
+        title: t ? t('botBuilder.risk.low.title', 'Low') : 'Low',
+        subtitle: t ? t('botBuilder.risk.low.sub', 'Conservative') : 'Conservative',
         lotSize: 0.05,
         maxOpen: 2,
         riskPerTrade: 1,
@@ -328,8 +293,8 @@ export const RISK_LEVELS = [
     },
     {
         id: 'medium',
-        title: 'Medium',
-        subtitle: 'Balanced',
+        title: t ? t('botBuilder.risk.medium.title', 'Medium') : 'Medium',
+        subtitle: t ? t('botBuilder.risk.medium.sub', 'Balanced') : 'Balanced',
         lotSize: 0.1,
         maxOpen: 3,
         riskPerTrade: 2,
@@ -337,8 +302,8 @@ export const RISK_LEVELS = [
     },
     {
         id: 'high',
-        title: 'High',
-        subtitle: 'Aggressive',
+        title: t ? t('botBuilder.risk.high.title', 'High') : 'High',
+        subtitle: t ? t('botBuilder.risk.high.sub', 'Aggressive') : 'Aggressive',
         lotSize: 0.5,
         maxOpen: 5,
         riskPerTrade: 4,
@@ -346,11 +311,13 @@ export const RISK_LEVELS = [
     },
     {
         id: 'aggressive',
-        title: 'Aggressive',
-        subtitle: 'Most open to trade',
+        title: t ? t('botBuilder.risk.aggressive.title', 'Aggressive') : 'Aggressive',
+        subtitle: t ? t('botBuilder.risk.aggressive.sub', 'Most open to trade') : 'Most open to trade',
         lotSize: 1.0,
         maxOpen: 8,
         riskPerTrade: 6,
         maxDailyLoss: 15
     }
 ];
+
+export const RISK_LEVELS = getRiskLevels(null);

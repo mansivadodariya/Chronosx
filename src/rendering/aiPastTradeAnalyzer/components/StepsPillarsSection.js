@@ -19,8 +19,8 @@ export default function StepsPillarsSection() {
                         </svg>
                     </div>
                     <div className={styles.bentoContent}>
-                        <h4>Instant AI Analysis</h4>
-                        <p>Get detailed execution and risk feedback in seconds.</p>
+                        <h4>{t('aiPastTradeAnalyzer.steps.instantAnalysis', 'Instant AI Analysis')}</h4>
+                        <p>{t('aiPastTradeAnalyzer.steps.instantAnalysisDesc', 'Get detailed execution and risk feedback in seconds.')}</p>
                     </div>
                 </div>
 
@@ -33,8 +33,8 @@ export default function StepsPillarsSection() {
                         </svg>
                     </div>
                     <div className={styles.bentoContent}>
-                        <h4>Spot Critical Mistakes</h4>
-                        <p>Identify timing errors, stop-loss flaws &amp; FOMO entries.</p>
+                        <h4>{t('aiPastTradeAnalyzer.steps.spotMistakes', 'Spot Critical Mistakes')}</h4>
+                        <p>{t('aiPastTradeAnalyzer.steps.spotMistakesDesc', 'Identify timing errors, stop-loss flaws & FOMO entries.')}</p>
                     </div>
                 </div>
 
@@ -46,8 +46,8 @@ export default function StepsPillarsSection() {
                         </svg>
                     </div>
                     <div className={styles.bentoContent}>
-                        <h4>Improve &amp; Grow</h4>
-                        <p>Actionable insights to level up your trading consistency.</p>
+                        <h4>{t('aiPastTradeAnalyzer.steps.improveGrow', 'Improve & Grow')}</h4>
+                        <p>{t('aiPastTradeAnalyzer.steps.improveGrowDesc', 'Actionable insights to level up your trading consistency.')}</p>
                     </div>
                 </div>
             </div>
@@ -77,9 +77,9 @@ export default function StepsPillarsSection() {
                                     <line x1="12" y1="3" x2="12" y2="15" />
                                 </svg>
                             </div>
-                            <h3 className={styles.stepTitle}>UPLOAD TRADE SCREENSHOT</h3>
+                            <h3 className={styles.stepTitle}>{t('aiPastTradeAnalyzer.steps.uploadScreenshot', 'UPLOAD TRADE SCREENSHOT')}</h3>
                             <p className={styles.stepDesc}>
-                                Upload a screenshot of your closed trade from any preferred platform. Your chart. Your execution.
+                                {t('aiPastTradeAnalyzer.steps.uploadScreenshotDesc', 'Upload a screenshot of your closed trade from any preferred platform. Your chart. Your execution.')}
                             </p>
                         </div>
 
@@ -99,9 +99,9 @@ export default function StepsPillarsSection() {
                                     <path d="M12 6v6l4 2" />
                                 </svg>
                             </div>
-                            <h3 className={styles.stepTitle}>AI ANALYZES YOUR TRADE</h3>
+                            <h3 className={styles.stepTitle}>{t('aiPastTradeAnalyzer.steps.analyzesTrade', 'AI ANALYZES YOUR TRADE')}</h3>
                             <p className={styles.stepDesc}>
-                                Our AI scans your entry, exit, risk management, market structure, and surrounding price context in seconds.
+                                {t('aiPastTradeAnalyzer.steps.analyzesTradeDesc', 'Our AI scans your entry, exit, risk management, market structure, and surrounding price context in seconds.')}
                             </p>
                         </div>
 
@@ -124,9 +124,9 @@ export default function StepsPillarsSection() {
                                     <polyline points="10 9 9 9 8 9" />
                                 </svg>
                             </div>
-                            <h3 className={styles.stepTitle}>GET DETAILED FEEDBACK</h3>
+                            <h3 className={styles.stepTitle}>{t('aiPastTradeAnalyzer.steps.getFeedback', 'GET DETAILED FEEDBACK')}</h3>
                             <p className={styles.stepDesc}>
-                                Receive a complete breakdown with identified execution mistakes, actionable improvements, and tips.
+                                {t('aiPastTradeAnalyzer.steps.getFeedbackDesc', 'Receive a complete breakdown with identified execution mistakes, actionable improvements, and tips.')}
                             </p>
                         </div>
                     </div>

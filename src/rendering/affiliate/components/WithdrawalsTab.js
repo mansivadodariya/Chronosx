@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import { WalletCryptoIcon, CopyIcon, ExternalLinkIcon } from './AffiliateIcons';
 
 export function WithdrawalsTab({

@@ -19,10 +19,10 @@ export default function Capabilities() {
         {/* Section Header */}
         <SectionHeader
           align="split"
-          badge="PLATFORM CAPABILITIES"
-          title1="Four Tools."
-          title2="One Intelligent Cockpit."
-          description="Four integrated AI modules. One unified workflow. Scan high-conviction setups, consult your real-time AI advisor, deploy verified strategies, and simulate performance before putting capital at risk."
+          badge={t('homeSections.capabilities.badge', 'PLATFORM CAPABILITIES')}
+          title1={t('homeSections.capabilities.title1', 'Four Tools.')}
+          title2={t('homeSections.capabilities.title2', 'One Intelligent Cockpit.')}
+          description={t('homeSections.capabilities.description', 'Four integrated AI modules. One unified workflow. Scan high-conviction setups, consult your real-time AI advisor, deploy verified strategies, and simulate performance before putting capital at risk.')}
         />
 
         {/* Connected Cockpit Grid Container */}
@@ -253,9 +253,9 @@ export default function Capabilities() {
                   <div className={styles.widgetTopRow}>
                     <div className={styles.liveTag}>
                       <span className={styles.goldBeacon}></span>
-                      LIVE CONVICTION
+                      {t('homeSections.capabilities.liveConviction', 'LIVE CONVICTION')}
                     </div>
-                    <span className={styles.subMeta}>1,000+ PAIRS SCANNED</span>
+                    <span className={styles.subMeta}>{t('homeSections.capabilities.pairsScanned', '1,000+ PAIRS SCANNED')}</span>
                   </div>
 
                   <div className={styles.convictionList}>
@@ -329,7 +329,7 @@ export default function Capabilities() {
               <div className={styles.cardRightAnim}>
                 <div className={`${styles.widgetBox} ${hoveredIndex === 2 ? styles.widgetActive : ''}`}>
                   <div className={styles.widgetTopRow}>
-                    <span className={styles.resLabel}>RESISTANCE BREAK</span>
+                    <span className={styles.resLabel}>{t('homeSections.capabilities.resistanceBreak', 'RESISTANCE BREAK')}</span>
                     <span className={`${styles.momText} ${hoveredIndex === 2 ? styles.momActive : ''}`}>MOM 0.86</span>
                   </div>
 
@@ -469,7 +469,7 @@ export default function Capabilities() {
               <div className={styles.cardRightAnim}>
                 <div className={`${styles.widgetBox} ${hoveredIndex === 3 ? styles.widgetActive : ''}`}>
                   <div className={styles.widgetTopRow}>
-                    <span className={styles.equityLabel}>EQUITY CURVE · ILLUSTRATIVE</span>
+                    <span className={styles.equityLabel}>{t('homeSections.capabilities.equityCurve', 'EQUITY CURVE · ILLUSTRATIVE')}</span>
                     <span className={styles.sampleBadge}>SAMPLE</span>
                   </div>
 
@@ -536,15 +536,15 @@ export default function Capabilities() {
                       transition={{ duration: 0.35, delay: 0.2 }}
                     >
                       <div className={`${styles.statPill} ${hoveredIndex === 3 ? styles.statPillActive : ''}`}>
-                        <span className={styles.statTitle}>WIN</span>
+                        <span className={styles.statTitle}>{t('homeSections.capabilities.win', 'WIN')}</span>
                         <span className={styles.statNum}>64%</span>
                       </div>
                       <div className={`${styles.statPill} ${hoveredIndex === 3 ? styles.statPillActive : ''}`}>
-                        <span className={styles.statTitle}>MAX DD</span>
+                        <span className={styles.statTitle}>{t('homeSections.capabilities.maxDd', 'MAX DD')}</span>
                         <span className={styles.statNum}>-8.2%</span>
                       </div>
                       <div className={`${styles.statPill} ${hoveredIndex === 3 ? styles.statPillActive : ''}`}>
-                        <span className={styles.statTitle}>TRADES</span>
+                        <span className={styles.statTitle}>{t('homeSections.capabilities.trades', 'TRADES')}</span>
                         <span className={styles.statNum}>124</span>
                       </div>
                     </motion.div>

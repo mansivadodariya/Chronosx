@@ -3,9 +3,9 @@
 import React from 'react';
 import styles from '../profile.module.scss';
 
-function formatLoginEntry(entry, idx, total) {
+function formatLoginEntry(entry, idx, total, t) {
     let timestamp = null;
-    let description = 'Successful WebApp Authentication';
+    let description = t ? t('profile.authSuccess', 'Successful WebApp Authentication') : 'Successful WebApp Authentication';
 
     if (typeof entry === 'string') {
         timestamp = new Date(entry);
@@ -55,7 +55,7 @@ export default function ProfileActivityLogTab({
             {displayLogins.length > 0 ? (
                 <div className={styles.activityCardsList}>
                     {displayLogins.map((entry, idx) => {
-                        const { dateStr, timeStr, description, isActive } = formatLoginEntry(entry, idx, displayLogins.length);
+                        const { dateStr, timeStr, description, isActive } = formatLoginEntry(entry, idx, displayLogins.length, t);
                         return (
                             <div key={idx} className={`${styles.activityItemRow} ${isActive ? styles.activeActivityRow : ''}`}>
                                 <div className={styles.activityItemLeft}>
@@ -68,7 +68,7 @@ export default function ProfileActivityLogTab({
                                     </div>
                                     <div className={styles.activityMeta}>
                                         <div className={styles.activityDateRow}>
-                                            <span className={styles.activityDateText}>{dateStr || 'Unknown Date'}</span>
+                                            <span className={styles.activityDateText}>{dateStr || t('profile.unknownDate', 'Unknown Date')}</span>
                                             {timeStr && (
                                                 <>
                                                     <span className={styles.dateDotSeparator}>•</span>

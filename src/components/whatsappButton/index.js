@@ -1,10 +1,12 @@
 "use client";
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './whatsappButton.module.scss';
 
 import { usePathname } from 'next/navigation';
 
 export default function WhatsappButton() {
+    const { t } = useLanguage();
     const pathname = usePathname();
 
     const publicLandingPages = [
@@ -63,7 +65,7 @@ export default function WhatsappButton() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.whatsappBtn}
-                aria-label="Chat on WhatsApp"
+                aria-label={t('components.whatsapp.chatOnWhatsapp', 'Chat on WhatsApp')}
             >
                 <div className={styles.tooltip}>Chat with us</div>
                 <div className={styles.pulseRing}></div>

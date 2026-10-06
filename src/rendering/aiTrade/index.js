@@ -3,6 +3,7 @@
 import React, { useState, useRef } from 'react';
 import { toast } from '@/components/toast';
 import CommonCta from '@/components/commonCta';
+import { useLanguage } from '@/context/LanguageContext';
 import { SAMPLE_PRESETS } from './constants/aiTradeData';
 import TradeHeroSection from './components/TradeHeroSection';
 import HowItWorksSection from './components/HowItWorksSection';
@@ -12,6 +13,7 @@ import TradeComparisonFaqSection from './components/TradeComparisonFaqSection';
 import styles from './aiTrade.module.scss';
 
 export default function AiTrade() {
+    const { t } = useLanguage();
     const [selectedPreset, setSelectedPreset] = useState(SAMPLE_PRESETS[0]);
     const [isScanning, setIsScanning] = useState(false);
     const [scanProgress, setScanProgress] = useState(0);
@@ -133,11 +135,11 @@ Trade Rationale: ${selectedPreset.rationale}
 
             {/* 8. BOTTOM CALL TO ACTION */}
             <CommonCta
-                badge="INSTITUTIONAL PRECISION OCR"
-                title1="Transform Any Chart Into"
-                title2="Actionable Trade Plans"
-                description="Upload screenshots from TradingView, MT4/5, or any mobile broker app. Get high-conviction trade signals with exact Entry, SL, and multi-TP setups."
-                primaryBtnText="START SCANNING NOW"
+                badge={t('aiTrade.ctaBadge', 'INSTITUTIONAL PRECISION OCR')}
+                title1={t('aiTrade.ctaTitle1', 'Transform Any Chart Into')}
+                title2={t('aiTrade.ctaTitle2', 'Actionable Trade Plans')}
+                description={t('aiTrade.ctaDesc', 'Upload screenshots from TradingView, MT4/5, or any mobile broker app. Get high-conviction trade signals with exact Entry, SL, and multi-TP setups.')}
+                primaryBtnText={t('aiTrade.startScanningNow', 'START SCANNING NOW')}
                 primaryBtnAction="/chart-scanner"
                 primaryBtnIcon={
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -145,7 +147,7 @@ Trade Rationale: ${selectedPreset.rationale}
                         <polyline points="12 5 19 12 12 19" />
                     </svg>
                 }
-                secondaryBtnText="TRY DEMO SCANNER"
+                secondaryBtnText={t('aiTrade.tryDemoScanner', 'TRY DEMO SCANNER')}
                 secondaryBtnAction={scrollToDemo}
             />
         </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../aiStrategy.module.scss';
 import { IndicatorIcon, CircleCheckIcon, formatValue } from '@/icons/analysisIcons';
 

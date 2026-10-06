@@ -40,7 +40,7 @@ export default function AccessDeniedScreen() {
                 {/* Status Badge */}
                 <div className={styles.statusBadge}>
                     <span className={styles.pulseDot} />
-                    <span>MODULE OFFLINE • ACCESS RESTRICTED</span>
+                    <span>{t('accessDenied.badge', 'MODULE OFFLINE • ACCESS RESTRICTED')}</span>
                 </div>
 
                 {/* Cyber Lock Visual */}
@@ -61,12 +61,12 @@ export default function AccessDeniedScreen() {
 
                 {/* Headings */}
                 <h1 className={styles.title}>
-                    Feature Offline or{' '}
-                    <span className={styles.emeraldGradient}>Access Restricted</span>
+                    {t('accessDenied.titlePrefix', 'Feature Offline or')}{' '}
+                    <span className={styles.emeraldGradient}>{t('accessDenied.titleHighlight', 'Access Restricted')}</span>
                 </h1>
 
                 <p className={styles.description}>
-                    This tool or module is currently disabled by administrator or undergoing scheduled recalibration.
+                    {t('accessDenied.description', 'This tool or module is currently disabled by administrator or undergoing scheduled recalibration.')}
                 </p>
 
                 {/* Action Buttons */}
@@ -78,7 +78,7 @@ export default function AccessDeniedScreen() {
                             <rect width="7" height="9" x="14" y="12" rx="1" />
                             <rect width="7" height="5" x="3" y="16" rx="1" />
                         </svg>
-                        <span>Back to Dashboard</span>
+                        <span>{t('accessDenied.backToDashboard', 'Back to Dashboard')}</span>
                     </Link>
 
                     <button 
@@ -89,7 +89,7 @@ export default function AccessDeniedScreen() {
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="m15 18-6-6 6-6" />
                         </svg>
-                        <span>Go Back</span>
+                        <span>{t('accessDenied.goBack', 'Go Back')}</span>
                     </button>
                 </div>
             </motion.div>

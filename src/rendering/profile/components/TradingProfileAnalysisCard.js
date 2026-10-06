@@ -5,12 +5,13 @@ import styles from '../profile.module.scss';
 import AiAssessmentCard from './AiAssessmentCard';
 import { TradingViewPairIcon, SessionIcon } from './TradingViewPairIcon';
 import { useTheme } from '@/context/ThemeContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function TradingProfileAnalysisCard({
     tradingProfileData,
     onOpenModal,
-    t
 }) {
+    const { t } = useLanguage();
     const { theme } = useTheme();
     const isLight = theme === 'light';
     const dataObj = tradingProfileData?.data || tradingProfileData || {};
@@ -54,8 +55,8 @@ export default function TradingProfileAnalysisCard({
                         </svg>
                     </div>
                     <div>
-                        <h3>AI Trading Profile & Strategy Alignment</h3>
-                        <p>Real-time algorithmic risk parameters, capital allocation, and market session routing.</p>
+                        <h3>{t('profile.aiTradingProfileTitle', 'AI Trading Profile & Strategy Alignment')}</h3>
+                        <p>{t('profile.aiTradingProfileDesc', 'Real-time algorithmic risk parameters, capital allocation, and market session routing.')}</p>
                     </div>
                 </div>
 
@@ -69,14 +70,14 @@ export default function TradingProfileAnalysisCard({
                         <path d="M19 16L20.2 19.3L23.5 20.5L20.2 21.7L19 25L17.8 21.7L14.5 20.5L17.8 19.3L19 16Z" opacity="0.85" />
                         <path d="M5 2L5.8 4.2L8 5L5.8 5.8L5 8L4.2 5.8L2 5L4.2 4.2L5 2Z" opacity="0.85" />
                     </svg>
-                    <span>{hasProfile ? 'Generate / Re-analyze Profile' : 'Generate Trading Profile'}</span>
+                    <span>{hasProfile ? t('profile.reanalyzeProfile', 'Generate / Re-analyze Profile') : t('profile.generateProfile', 'Generate Trading Profile')}</span>
                 </button>
             </div>
 
             {/* 4 Metrics Tiles */}
             <div className={styles.metricsGrid4}>
                 <div className={styles.metricTile}>
-                    <span className={styles.tileLabel}>Risk Tolerance</span>
+                    <span className={styles.tileLabel}>{t('profile.riskTolerance', 'Risk Tolerance')}</span>
                     <span className={styles.tileValue} style={{ color: '#18C98B' }}>
                         {risk.risk_capacity || risk.risk_tolerance || 'Moderate'}
                     </span>
@@ -86,7 +87,7 @@ export default function TradingProfileAnalysisCard({
                 </div>
 
                 <div className={styles.metricTile}>
-                    <span className={styles.tileLabel}>Trading Style</span>
+                    <span className={styles.tileLabel}>{t('profile.tradingStyle', 'Trading Style')}</span>
                     <span className={styles.tileValue}>
                         {personal.trading_style || 'Day Trading'}
                     </span>
@@ -96,7 +97,7 @@ export default function TradingProfileAnalysisCard({
                 </div>
 
                 <div className={styles.metricTile}>
-                    <span className={styles.tileLabel}>Active Capital</span>
+                    <span className={styles.tileLabel}>{t('profile.activeCapital', 'Active Capital')}</span>
                     <span className={styles.tileValue}>
                         ${initialCap.toLocaleString()}
                     </span>
@@ -106,7 +107,7 @@ export default function TradingProfileAnalysisCard({
                 </div>
 
                 <div className={styles.metricTile}>
-                    <span className={styles.tileLabel}>Target Return</span>
+                    <span className={styles.tileLabel}>{t('profile.targetReturn', 'Target Return')}</span>
                     <span className={styles.tileValue} style={{ color: '#00F2FE' }}>
                         {goals.monthly_return_rate || goals.monthly_return_target || '5%'} / mo
                     </span>
@@ -119,7 +120,7 @@ export default function TradingProfileAnalysisCard({
             {/* 12-Month Financial Projection Track */}
             <div className={styles.projectionCard}>
                 <div className={styles.projectionHeader}>
-                    <span>{targetMonths}-Month Target Growth Horizon</span>
+                    <span>{t('profile.monthTargetGrowth', '{{months}}-Month Target Growth Horizon', { months: targetMonths })}</span>
                     <span>Initial: <strong>${initialCap.toLocaleString()}</strong> ➔ Target: <strong>${profitGoal.toLocaleString()}</strong></span>
                 </div>
                 <div className={styles.projectionTrack}>
@@ -134,7 +135,7 @@ export default function TradingProfileAnalysisCard({
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '6px' }}>
                 {/* Row 1: Preferred Pairs */}
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 12px', alignItems: 'center' }}>
-                    <span style={{ fontSize: '13px', color: isLight ? '#475569' : '#94A3B8', fontWeight: 600, minWidth: '105px' }}>Preferred Pairs:</span>
+                    <span style={{ fontSize: '13px', color: isLight ? '#475569' : '#94A3B8', fontWeight: 600, minWidth: '105px' }}>{t('profile.preferredPairs', 'Preferred Pairs:')}</span>
                     {pairs.map((p) => (
                         <span
                             key={p}
@@ -158,7 +159,7 @@ export default function TradingProfileAnalysisCard({
 
                 {/* Row 2: Sessions */}
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 12px', alignItems: 'center' }}>
-                    <span style={{ fontSize: '13px', color: isLight ? '#475569' : '#94A3B8', fontWeight: 600, minWidth: '105px' }}>Sessions:</span>
+                    <span style={{ fontSize: '13px', color: isLight ? '#475569' : '#94A3B8', fontWeight: 600, minWidth: '105px' }}>{t('profile.sessions', 'Sessions:')}</span>
                     {sessions.map((s) => (
                         <span
                             key={s}

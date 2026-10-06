@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styles from '../aiStrategy.module.scss';
+import { useLanguage } from '@/context/LanguageContext';
 import {
     TrendArrowIcon,
     TrendBoxIcon,
@@ -13,8 +14,8 @@ export default function IndicatorsBreakdownSection({
     trendAnalysis = {},
     momentum = {},
     scoreColor,
-    t
 }) {
+    const { t } = useLanguage();
     const isBullish = trendAnalysis.direction?.toLowerCase().includes('bull') || trendAnalysis.direction?.toLowerCase().includes('buy');
 
     return (

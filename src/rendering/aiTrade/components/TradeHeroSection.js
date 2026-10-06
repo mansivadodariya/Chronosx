@@ -44,7 +44,7 @@ export default function TradeHeroSection({ scrollToDemo }) {
                                 <polyline points="17 8 12 3 7 8" />
                                 <line x1="12" y1="3" x2="12" y2="15" />
                             </svg>
-                            <span>ANALYZE MY CHART</span>
+                            <span>{t('aiTrade.analyzeMyChart', 'ANALYZE MY CHART')}</span>
                         </button>
 
                         <button
@@ -52,7 +52,7 @@ export default function TradeHeroSection({ scrollToDemo }) {
                             onClick={scrollToDemo}
                             className={styles.heroSecondaryBtn}
                         >
-                            <span>TRY LIVE SCREEN ANALYSIS</span>
+                            <span>{t('aiTrade.tryLiveAnalysis', 'TRY LIVE SCREEN ANALYSIS')}</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path d="M12 5v14M19 12l-7 7-7-7" />
                             </svg>

@@ -4,6 +4,7 @@ import { motion, useMotionValue, useMotionTemplate } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { authNavigate } from '@/lib/authRedirect';
 import SectionHeader from '@/components/sectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './commonCta.module.scss';
 import classNames from 'classnames';
 
@@ -15,11 +16,11 @@ const ArrowRightIcon = () => (
 );
 
 export default function CommonCta({
-  badge = "INSTANT INSTITUTIONAL ACCESS",
-  title1 = "Ready to Bring AI to",
-  title2 = "Your Trading Desk?",
-  description = "Experience institutional-grade AI chart intelligence, pattern detection, and quantitative strategies in just a few minutes.",
-  primaryBtnText = "GET STARTED NOW",
+  badge,
+  title1,
+  title2,
+  description,
+  primaryBtnText,
   primaryBtnAction = "/dashboard",
   primaryBtnIcon,
   secondaryBtnText,
@@ -28,6 +29,13 @@ export default function CommonCta({
   className = ""
 }) {
   const router = useRouter();
+  const { t } = useLanguage();
+
+  const resolvedBadge = badge || t('components.commonCta.badge', 'INSTANT INSTITUTIONAL ACCESS');
+  const resolvedTitle1 = title1 || t('components.commonCta.title1', 'Ready to Bring AI to');
+  const resolvedTitle2 = title2 !== undefined ? title2 : t('components.commonCta.title2', 'Your Trading Desk?');
+  const resolvedDesc = description || t('components.commonCta.subtitle', 'Experience institutional-grade AI chart intelligence, pattern detection, and quantitative strategies in just a few minutes.');
+  const resolvedPrimaryText = primaryBtnText || t('common.getStartedNow', 'GET STARTED NOW');
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -97,10 +105,10 @@ export default function CommonCta({
         <div className="container">
           <div className={styles.content}>
             <SectionHeader
-              badge={badge}
-              title1={title1}
-              title2={title2}
-              description={description}
+              badge={resolvedBadge}
+              title1={resolvedTitle1}
+              title2={resolvedTitle2}
+              description={resolvedDesc}
             />
 
             <motion.div
@@ -115,7 +123,7 @@ export default function CommonCta({
                 className={styles.ctaPrimaryBtn}
                 onClick={handlePrimaryClick}
               >
-                <span>{primaryBtnText}</span>
+                <span>{resolvedPrimaryText}</span>
                 {primaryBtnIcon || <ArrowRightIcon />}
               </button>
 

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
+
 import SymbolIcon from '@/icons/symbolIcon';
 import TickerSearchDropdown from '@/components/TickerSearchDropdown';
 import DownIcon from '@/icons/downIcon';

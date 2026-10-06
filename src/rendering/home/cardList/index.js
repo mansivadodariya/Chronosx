@@ -3,49 +3,51 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { navigateFeature } from '@/lib/authRedirect';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './cardList.module.scss';
 import RightIcon from '@/icons/rightIcon';
 
-const gridData = [
-    {
-        icon: '/assets/icons/signals.svg',
-        title: 'AI CHART SCANNER',
-        desc: 'Multi-timeframe technical pattern detection & neural OCR chart vision.',
-        publicPath: '/ai-chart-scanner',
-        dashboardPath: '/chart-scanner'
-    },
-    {
-        icon: '/assets/icons/chat-square.svg',
-        title: 'AI MARKET ASSISTANT',
-        desc: 'Ask AI about markets, strategies, signals, and trading decisions.',
-        publicPath: '/ai-market-assistant',
-        dashboardPath: '/market-assistant'
-    },
-    {
-        icon: '/assets/icons/strategy-builder.svg',
-        title: 'SIGNAL TERMINAL',
-        desc: 'Real-time breakout scanner, momentum radar & algorithmic signals.',
-        publicPath: '/live-market-scanner',
-        dashboardPath: '/signal-terminal'
-    },
-    {
-        icon: '/assets/icons/strategy-builder.svg',
-        title: 'AI TRADING SIGNAL',
-        desc: 'Build, backtest, and deploy algorithmic trading playbooks with AI.',
-        publicPath: '/ai-trading-signal',
-        dashboardPath: '/trading-signal'
-    },
-    {
-        icon: '/assets/icons/analysis.svg',
-        title: 'AI PAST TRADE ANALYZER',
-        desc: 'Deep algorithmic trade audit, performance review, and leak elimination.',
-        publicPath: '/ai-trade-advisor',
-        dashboardPath: '/trade-advisor'
-    }
-];
-
 export default function CardList() {
     const router = useRouter();
+    const { t } = useLanguage();
+
+    const gridData = [
+        {
+            icon: '/assets/icons/signals.svg',
+            title: t('header.products.chartScanner.title', 'AI CHART SCANNER'),
+            desc: t('homeSections.hero.cards.analysisDesc', 'Multi-timeframe technical pattern detection & neural OCR chart vision.'),
+            publicPath: '/ai-chart-scanner',
+            dashboardPath: '/chart-scanner'
+        },
+        {
+            icon: '/assets/icons/chat-square.svg',
+            title: t('header.products.marketAssistant.title', 'AI MARKET ASSISTANT'),
+            desc: t('header.products.marketAssistant.desc', 'Ask AI about markets, strategies, signals, and trading decisions.'),
+            publicPath: '/ai-market-assistant',
+            dashboardPath: '/market-assistant'
+        },
+        {
+            icon: '/assets/icons/strategy-builder.svg',
+            title: t('header.products.signalTerminal.title', 'SIGNAL TERMINAL'),
+            desc: t('header.products.signalTerminal.desc', 'Real-time breakout scanner, momentum radar & algorithmic signals.'),
+            publicPath: '/live-market-scanner',
+            dashboardPath: '/signal-terminal'
+        },
+        {
+            icon: '/assets/icons/strategy-builder.svg',
+            title: t('header.products.strategyHub.title', 'AI TRADING SIGNAL'),
+            desc: t('header.products.strategyHub.desc', 'Build, backtest, and deploy algorithmic trading playbooks with AI.'),
+            publicPath: '/ai-trading-signal',
+            dashboardPath: '/trading-signal'
+        },
+        {
+            icon: '/assets/icons/analysis.svg',
+            title: t('header.tradingTools.tradeAudit.title', 'AI PAST TRADE ANALYZER'),
+            desc: t('header.tradingTools.tradeAudit.desc', 'Deep algorithmic trade audit, performance review, and leak elimination.'),
+            publicPath: '/ai-trade-advisor',
+            dashboardPath: '/trade-advisor'
+        }
+    ];
 
     const handleCardClick = (item) => {
         router.push(item.publicPath);

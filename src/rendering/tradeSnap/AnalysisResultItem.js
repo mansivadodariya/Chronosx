@@ -38,7 +38,8 @@ function formatTradeCall(tradeCall) {
         .join(' ');
 }
 
-export default function AnalysisResultItem({ trade, index, onViewDetails, onDelete }) {
+export default function AnalysisResultItem({
+ trade, index, onViewDetails, onDelete }) {
     const { t } = useLanguage();
     if (!trade) return null;
     const call = (trade.trade_call || trade.signal_type || trade.action || '').toLowerCase();
@@ -167,11 +168,11 @@ export default function AnalysisResultItem({ trade, index, onViewDetails, onDele
                         {hasSr && (
                             <div className={styles.compactSrRow}>
                                 <div className={styles.compactSrItem}>
-                                    <span>Support:</span>
+                                    <span>{t('tradeSnap.support', 'Support:')}</span>
                                     <strong>{supportVal}</strong>
                                 </div>
                                 <div className={styles.compactSrItem}>
-                                    <span>Resistance:</span>
+                                    <span>{t('tradeSnap.resistance', 'Resistance:')}</span>
                                     <strong>{resistanceVal}</strong>
                                 </div>
                             </div>

@@ -48,15 +48,36 @@ export function isUserLoggedIn() {
     }
 }
 
+function getActiveLocalePrefix() {
+    if (typeof window === 'undefined') return '';
+    try {
+        const segments = window.location.pathname.split('/').filter(Boolean);
+        const first = segments[0]?.toLowerCase();
+        const known = [
+            'en', 'ar', 'ary', 'es', 'ru', 'zh', 'vi', 'id', 'fil',
+            'arabic', 'spanish', 'russian', 'chinese', 'vietnamese',
+            'indonesian', 'filipino', 'darija', 'english'
+        ];
+        if (first && known.includes(first)) {
+            return `/${first}`;
+        }
+    } catch (_) {}
+    return '';
+}
+
 /**
  * Returns the destination href for a CTA button or link.
- * If the user is logged in, returns the target path directly.
+ * If the user is logged in, returns the target path directly (with locale prefix if present).
  * Otherwise returns /login?redirect=<target> so login bounces them back.
  */
 export function getAuthHref(targetPath = '/dashboard') {
-    const validTarget = targetPath && targetPath !== '/' ? targetPath : '/dashboard';
-    if (typeof window === 'undefined') return `/login?redirect=${encodeURIComponent(validTarget)}`;
-    return isUserLoggedIn() ? validTarget : `/login?redirect=${encodeURIComponent(validTarget)}`;
+    const prefix = getActiveLocalePrefix();
+    const cleanTarget = targetPath && targetPath !== '/' ? targetPath : '/dashboard';
+    const localizedTarget = cleanTarget.startsWith(prefix) ? cleanTarget : `${prefix}${cleanTarget}`;
+    const loginPath = `${prefix}/login`;
+
+    if (typeof window === 'undefined') return `${loginPath}?redirect=${encodeURIComponent(localizedTarget)}`;
+    return isUserLoggedIn() ? localizedTarget : `${loginPath}?redirect=${encodeURIComponent(localizedTarget)}`;
 }
 
 /**
@@ -64,8 +85,7 @@ export function getAuthHref(targetPath = '/dashboard') {
  * Pass a Next.js router instance or fallback to window.location.
  */
 export function authNavigate(router, targetPath = '/dashboard') {
-    const validTarget = targetPath && targetPath !== '/' ? targetPath : '/dashboard';
-    const destination = getAuthHref(validTarget);
+    const destination = getAuthHref(targetPath);
     if (router && typeof router.push === 'function') {
         router.push(destination);
     } else if (typeof window !== 'undefined') {
@@ -79,8 +99,10 @@ export function authNavigate(router, targetPath = '/dashboard') {
  * - If user is logged out: publicPath (e.g. /ai-trade)
  */
 export function getFeatureHref(publicPath, dashboardPath) {
-    if (typeof window === 'undefined') return publicPath;
-    return isUserLoggedIn() ? dashboardPath : publicPath;
+    const prefix = getActiveLocalePrefix();
+    const target = isUserLoggedIn() ? dashboardPath : publicPath;
+    if (!target) return prefix || '/';
+    return target.startsWith(prefix) ? target : `${prefix}${target}`;
 }
 
 /**
@@ -88,11 +110,12 @@ export function getFeatureHref(publicPath, dashboardPath) {
  * otherwise navigates to publicPath if user is logged out.
  */
 export function navigateFeature(router, publicPath, dashboardPath) {
-    const destination = isUserLoggedIn() ? dashboardPath : publicPath;
+    const destination = getFeatureHref(publicPath, dashboardPath);
     if (router && typeof router.push === 'function') {
         router.push(destination);
     } else if (typeof window !== 'undefined') {
         window.location.assign(destination);
     }
 }
+
 

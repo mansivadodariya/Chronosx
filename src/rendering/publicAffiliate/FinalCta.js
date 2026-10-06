@@ -1,9 +1,11 @@
 "use client";
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import { motion } from 'framer-motion';
 import styles from './publicAffiliate.module.scss';
 
 export default function FinalCta({ onJoinClick, onTiersClick }) {
+  const { t } = useLanguage();
   return (
     <section className={styles.finalCtaSection}>
       <div className="container">
@@ -14,8 +16,8 @@ export default function FinalCta({ onJoinClick, onTiersClick }) {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <span className={styles.ctaTag}>CHRONOSX AFFILIATE PROGRAM</span>
-          <h2 className={styles.ctaHeadline}>Start Earning Recurring Commissions Today</h2>
+          <span className={styles.ctaTag}>{t('publicAffiliate.programTitle', 'CHRONOSX AFFILIATE PROGRAM')}</span>
+          <h2 className={styles.ctaHeadline}>{t('publicAffiliate.programSubtitle', 'Start Earning Recurring Commissions Today')}</h2>
           <p className={styles.ctaSub}>
             Join hundreds of partners sharing ChronosX with their network.
           </p>

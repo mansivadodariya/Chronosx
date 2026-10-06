@@ -30,6 +30,45 @@ export const SUPPORTED_LOCALES = ['en', 'ar', 'ary', 'es', 'ru', 'zh', 'vi', 'id
 /** RTL locale codes */
 export const RTL_LOCALES = ['ar', 'ary'];
 
+/** Language URL aliases mapping (e.g. /arabic -> 'ar', /spanish -> 'es') */
+export const LANGUAGE_ALIASES = {
+  en: 'en',
+  english: 'en',
+  ar: 'ar',
+  arabic: 'ar',
+  ary: 'ary',
+  darija: 'ary',
+  moroccan: 'ary',
+  'moroccan-arabic': 'ary',
+  es: 'es',
+  spanish: 'es',
+  espanol: 'es',
+  ru: 'ru',
+  russian: 'ru',
+  zh: 'zh',
+  chinese: 'zh',
+  mandarin: 'zh',
+  vi: 'vi',
+  vietnamese: 'vi',
+  id: 'id',
+  indonesian: 'id',
+  fil: 'fil',
+  filipino: 'fil',
+  tagalog: 'fil',
+  ph: 'fil',
+};
+
+/**
+ * Normalizes any language code, slug, alias or URL param into a valid canonical locale code.
+ * @param {string} str
+ * @returns {string|null}
+ */
+export function normalizeLocale(str) {
+  if (!str || typeof str !== 'string') return null;
+  const clean = str.trim().toLowerCase().replace(/^[/?#]+/, '').split(/[/&#?]/)[0];
+  return LANGUAGE_ALIASES[clean] || (SUPPORTED_LOCALES.includes(clean) ? clean : null);
+}
+
 /**
  * Dynamically load dictionary for a given locale if not yet cached.
  *

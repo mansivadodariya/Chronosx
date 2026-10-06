@@ -95,7 +95,7 @@ export default function FirebasePhoneModal({
             setConfirmationResult(result);
             setStep('otp');
             setResendCooldown(30);
-            toast.success(t('auth.smsSentToast', `SMS verification code sent to ${phoneToUse}`));
+            toast.success(t('auth.smsSentToast', 'SMS verification code sent to {{phone}}', { phone: phoneToUse }));
 
             setTimeout(() => {
                 if (inputRefs.current[0]) inputRefs.current[0].focus();
