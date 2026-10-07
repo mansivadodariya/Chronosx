@@ -37,9 +37,9 @@ export default function HeroFeatureCards() {
         </div>
       </div>
 
-      {/* 2. Center Card: AI Trading Signal (Tilted Angle) */}
+      {/* 2. Center Card: AI Trading Signal */}
       <div
-        className={`${styles.featureCard} ${styles.cardTilted}`}
+        className={`${styles.featureCard} ${styles.cardNormal}`}
         onClick={() => authNavigate(router, '/trading-signal')}
         role="button"
         tabIndex={0}

@@ -1,3 +1,4 @@
+import { headers, cookies } from "next/headers";
 import { Anton, Plus_Jakarta_Sans, Roboto } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
@@ -7,6 +8,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import SmoothScrollProvider from "@/components/smoothScroll";
 import ClientOnlyWidgets from "@/components/ClientOnlyWidgets";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { normalizeLocale, SUPPORTED_LOCALES, RTL_LOCALES } from "@/locales";
 
 const antonSans = Anton({
   variable: "--font-anton",
@@ -98,7 +100,22 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  let lang = 'en';
+  try {
+    const headerStore = await headers();
+    const headerLang = headerStore.get('x-chronosx-lang');
+    const cookieStore = await cookies();
+    const cookieLang = cookieStore.get('app_language')?.value || cookieStore.get('NEXT_LOCALE')?.value;
+    const candidate = normalizeLocale(headerLang || cookieLang);
+    if (candidate && SUPPORTED_LOCALES.includes(candidate)) {
+      lang = candidate;
+    }
+  } catch (_) {}
+
+  const isRtl = RTL_LOCALES.includes(lang);
+  const dir = isRtl ? 'rtl' : 'ltr';
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -139,7 +156,7 @@ export default function RootLayout({ children }) {
   };
 
   return (
-    <html lang="en" className={`${antonSans.variable} ${robotoSans.variable} ${plusSans.variable}`} suppressHydrationWarning>
+    <html lang={lang} dir={dir} className={`${antonSans.variable} ${robotoSans.variable} ${plusSans.variable}`} suppressHydrationWarning>
       <head>
         <script
           id="organization-jsonld"
@@ -169,8 +186,8 @@ export default function RootLayout({ children }) {
                   en: 'en', english: 'en'
                 };
                 var matched = aliases[queryMatch] || aliases[pathSeg];
-                var storedLang = matched || localStorage.getItem('app_language') || (document.cookie.match(/app_language=([a-z]+)/) || [])[1] || 'en';
-                var canonical = aliases[storedLang] || 'en';
+                var storedLang = matched || localStorage.getItem('app_language') || (document.cookie.match(/app_language=([a-z]+)/) || [])[1] || '${lang}';
+                var canonical = aliases[storedLang] || '${lang}';
                 if (matched) {
                   localStorage.setItem('app_language', canonical);
                   document.cookie = 'app_language=' + canonical + '; path=/; max-age=31536000; SameSite=Lax';
@@ -197,7 +214,7 @@ export default function RootLayout({ children }) {
           }}
         />
         <ThemeProvider>
-          <LanguageProvider>
+          <LanguageProvider initialLanguage={lang}>
             <ToastProvider>
               <SmoothScrollProvider>
                 <GoogleAnalytics />

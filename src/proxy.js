@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getMaintenanceStatus } from "@/lib/maintenanceService";
 
 // Routes that require a logged-in user
 const PROTECTED_PREFIXES = [
@@ -49,6 +50,7 @@ const MAINTENANCE_EXCLUDED_PREFIXES = [
   "/favicon",
   "/icon",
   "/api/health",
+  "/api/maintenance",
   "/maintenance",
 ];
 
@@ -80,43 +82,23 @@ const LANGUAGE_ALIASES = {
   ph: "fil",
 };
 
-export function proxy(request) {
+export async function proxy(request) {
   const { pathname, searchParams } = request.nextUrl;
   const token = request.cookies.get("auth_token")?.value;
   const isLoggedIn = Boolean(token);
 
-  // --- 1. Language Path Prefix Detection & Normalization ---
-  const pathSegments = pathname.split("/").filter(Boolean);
-  const firstSegment = pathSegments[0]?.toLowerCase();
-  const matchedLocale = LANGUAGE_ALIASES[firstSegment];
-
-  let normalizedPathname = pathname;
-  if (matchedLocale && !pathname.startsWith("/api/")) {
-    const remainingSegments = pathSegments.slice(1);
-    normalizedPathname = remainingSegments.length > 0 ? "/" + remainingSegments.join("/") : "/";
-  }
-
-
-  // If no locale prefix is present on a non-API route, redirect to include the active language (e.g. /en/..., /ar/...)
-  if (!matchedLocale && !pathname.startsWith("/api/")) {
-    const cookieLang = request.cookies.get("app_language")?.value || request.cookies.get("NEXT_LOCALE")?.value;
-    const targetLang = (cookieLang && LANGUAGE_ALIASES[cookieLang.toLowerCase()]) || "en";
-    const localizedPath = pathname === "/" ? `/${targetLang}` : `/${targetLang}${pathname}`;
-    const redirectUrl = new URL(localizedPath, request.url);
-    redirectUrl.search = request.nextUrl.search;
-    return NextResponse.redirect(redirectUrl);
-  }
-
-  const prefixLang = matchedLocale ? `/${matchedLocale}` : "/en";
-
-
-  // --- 2. Dynamic Maintenance Mode Check ---
+  // --- 1. Dynamic Maintenance Mode Check (Highest Priority) ---
+  const maintenanceStatus = await getMaintenanceStatus();
   const isMaintenanceEnv =
     process.env.MAINTENANCE_MODE === "true" ||
     process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
   const forceMaintenanceCookie = request.cookies.get("chronosx_maintenance")?.value === "true";
   const forceMaintenanceQuery = searchParams.get("force_maintenance") === "true";
-  const isMaintenanceActive = isMaintenanceEnv || forceMaintenanceCookie || forceMaintenanceQuery;
+  const isMaintenanceActive =
+    maintenanceStatus.isActive ||
+    isMaintenanceEnv ||
+    forceMaintenanceCookie ||
+    forceMaintenanceQuery;
 
   // Check Developer / Admin Bypass Key
   const bypassParam = searchParams.get("bypass_maintenance");
@@ -129,12 +111,12 @@ export function proxy(request) {
     bypassParam === "true";
 
   const isExcludedFromMaintenance = MAINTENANCE_EXCLUDED_PREFIXES.some(
-    (prefix) => normalizedPathname === prefix || normalizedPathname.startsWith(`${prefix}/`) || normalizedPathname.startsWith(prefix)
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`) || pathname.startsWith(prefix)
   );
 
-  // If site is in maintenance mode and not bypassed
+  // If site is in maintenance mode and not bypassed, immediately lock all routes
   if (isMaintenanceActive && !isBypassed && !isExcludedFromMaintenance) {
-    if (normalizedPathname.startsWith("/api/")) {
+    if (pathname.startsWith("/api/")) {
       return NextResponse.json(
         {
           error: "Service Temporarily Unavailable",
@@ -151,7 +133,7 @@ export function proxy(request) {
       );
     }
 
-    const maintenanceUrl = new URL(`${prefixLang}/maintenance`, request.url);
+    const maintenanceUrl = new URL("/maintenance", request.url);
     return NextResponse.rewrite(maintenanceUrl, {
       status: 503,
       headers: {
@@ -160,6 +142,38 @@ export function proxy(request) {
       },
     });
   }
+
+  // --- 2. Language Path Prefix Detection & Normalization ---
+  const pathSegments = pathname.split("/").filter(Boolean);
+  const firstSegment = pathSegments[0]?.toLowerCase();
+  const matchedLocale = LANGUAGE_ALIASES[firstSegment];
+  const cookieLang = request.cookies.get("app_language")?.value || request.cookies.get("NEXT_LOCALE")?.value;
+  const preferredLang = (cookieLang && LANGUAGE_ALIASES[cookieLang.toLowerCase()]) || null;
+
+  let normalizedPathname = pathname;
+  if (matchedLocale && !pathname.startsWith("/api/")) {
+    const remainingSegments = pathSegments.slice(1);
+    normalizedPathname = remainingSegments.length > 0 ? "/" + remainingSegments.join("/") : "/";
+  }
+
+  // If user has a non-en saved language preference in cookies, but hit a default /en/... route on refresh, bounce to preferred language
+  if (matchedLocale === "en" && preferredLang && preferredLang !== "en" && !pathname.startsWith("/api/")) {
+    const localizedPath = normalizedPathname === "/" ? `/${preferredLang}` : `/${preferredLang}${normalizedPathname}`;
+    const redirectUrl = new URL(localizedPath, request.url);
+    redirectUrl.search = request.nextUrl.search;
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  // If no locale prefix is present on a non-API route, redirect to include the active language (e.g. /ar/..., /es/...)
+  if (!matchedLocale && !pathname.startsWith("/api/")) {
+    const targetLang = preferredLang || "en";
+    const localizedPath = pathname === "/" ? `/${targetLang}` : `/${targetLang}${pathname}`;
+    const redirectUrl = new URL(localizedPath, request.url);
+    redirectUrl.search = request.nextUrl.search;
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  const prefixLang = matchedLocale ? `/${matchedLocale}` : (preferredLang ? `/${preferredLang}` : "/en");
 
   // --- 3. Route Aliases & Standardizations ---
   if (normalizedPathname === "/broker") {
@@ -237,7 +251,14 @@ export function proxy(request) {
     const targetUrl = new URL(normalizedPathname, request.url);
     targetUrl.search = request.nextUrl.search;
 
-    const response = NextResponse.rewrite(targetUrl);
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set("x-chronosx-lang", matchedLocale);
+
+    const response = NextResponse.rewrite(targetUrl, {
+      request: {
+        headers: requestHeaders,
+      },
+    });
     response.cookies.set("app_language", matchedLocale, { path: "/", maxAge: 31536000, sameSite: "lax" });
     response.cookies.set("NEXT_LOCALE", matchedLocale, { path: "/", maxAge: 31536000, sameSite: "lax" });
     response.headers.set("x-chronosx-lang", matchedLocale);

@@ -2069,7 +2069,7 @@
   },
   "maintenance": {
     "systemRestored": "系统已恢复在线 • 正在重定向...",
-    "systemRecalibration": "系统校准中 • 状态码 HTTP 503",
+    "systemRecalibration": "平台计划升级维护中",
     "titlePrefix": "正在升级神经元",
     "titleHighlight": "交易底层架构",
     "desc": "我们正在部署高频模型升级和数据库实时同步，以确保零延迟执行和精准形态识别。"

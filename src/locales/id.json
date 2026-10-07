@@ -2069,7 +2069,7 @@
   },
   "maintenance": {
     "systemRestored": "SISTEM ONLINE • MENGALIHKAN...",
-    "systemRecalibration": "REKALIBRASI SISTEM SEDANG BERLANGSUNG • HTTP 503",
+    "systemRecalibration": "PEMBARUAN SISTEM SEDANG BERLANGSUNG",
     "titlePrefix": "Meningkatkan Infrastruktur",
     "titleHighlight": "Trading Neural",
     "desc": "Kami sedang menerapkan pembaruan model frekuensi tinggi dan sinkronisasi database untuk memastikan eksekusi tanpa latensi."

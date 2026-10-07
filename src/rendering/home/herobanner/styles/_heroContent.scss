@@ -260,6 +260,15 @@
                 &:first-child {
                     margin-left: 0;
                 }
+
+                :global([dir="rtl"]) & {
+                    margin-left: 0;
+                    margin-right: -7px;
+
+                    &:first-child {
+                        margin-right: 0;
+                    }
+                }
             }
         }
 
@@ -268,6 +277,10 @@
             flex-direction: column;
             text-align: left;
             line-height: 1.25;
+
+            :global([dir="rtl"]) & {
+                text-align: right;
+            }
 
             .trustHighlight {
                 color: #FFFFFF;
@@ -424,30 +437,22 @@
     .cardFeatured,
     .cardTilted {
         width: 100%;
-        transform: rotate(-3.5deg) translateZ(0);
+        transform: translateZ(0);
         background: rgba(14, 22, 18, 0.94);
         border-color: rgba(255, 255, 255, 0.14);
-        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
 
         &:hover {
             border-color: rgba(24, 201, 139, 0.55);
             background: rgba(18, 28, 23, 0.98);
-            box-shadow: 0 20px 48px rgba(24, 201, 139, 0.22), 0 0 0 1px rgba(24, 201, 139, 0.3);
-            transform: rotate(-3.5deg) translateY(-5px) translateZ(0);
+            box-shadow: 0 16px 40px rgba(24, 201, 139, 0.22), 0 0 0 1px rgba(24, 201, 139, 0.3);
+            transform: translateY(-5px) translateZ(0);
 
             .cardIconBox {
                 background: rgba(24, 201, 139, 0.18);
                 border-color: rgba(24, 201, 139, 0.55);
-            }
-        }
-
-        @include respond-to("tab") {
-            transform: rotate(-1.5deg) translateZ(0);
-
-            &:hover {
-                transform: rotate(-1.5deg) translateY(-4px) translateZ(0);
             }
         }
 
@@ -491,6 +496,10 @@
         text-align: left;
         gap: 3px;
         flex: 1;
+
+        :global([dir="rtl"]) & {
+            text-align: right;
+        }
     }
 
     .cardHeaderRow {

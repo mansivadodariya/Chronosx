@@ -21,92 +21,8 @@ import { toast } from '@/components/toast';
 import { strategyStudioApi } from './utils/strategyApi';
 import { parseRoundTrips } from './utils/backtestEngine';
 import { sanitizeRawJsonText } from './utils/chatTextFormatter';
-
-const normalizeInterval = (tf) => {
-    if (!tf) return null;
-    const s = String(tf).toLowerCase().trim();
-    if (s === '1d' || s === '1day' || s === 'd1' || s === 'daily' || s === 'day') return '1day';
-    if (s === '60m' || s === '60min' || s === '1h' || s === 'h1' || s === '1hr' || s === '1hour') return '60min';
-    if (s === '30m' || s === '30min' || s === 'm30') return '30min';
-    if (s === '15m' || s === '15min' || s === 'm15') return '15min';
-    if (s === '5m' || s === '5min' || s === 'm5') return '5min';
-    if (s.includes('min')) return s;
-    return `${s}min`;
-};
-
-const normalizeSymbol = (sym) => {
-    if (!sym) return null;
-    if (Array.isArray(sym)) sym = sym[0];
-    const s = String(sym).toUpperCase().replace(/[\/\-_]/g, '').trim();
-    const map = {
-        'GOLD': 'XAUUSD',
-        'BTC': 'BTCUSD',
-        'ETH': 'ETHUSD',
-        'SOL': 'SOLUSD'
-    };
-    return map[s] || s;
-};
-
-const extractParamsFromChatAndContext = ({ text = '', extraData = null, draft = null, strategy = null, messages = [] }) => {
-    const res = {};
-
-    // 1. Direct from draft & strategy
-    if (draft?.instrument || draft?.symbol) res.symbol = normalizeSymbol(draft.instrument || draft.symbol);
-    if (draft?.timeframe || draft?.interval) res.interval = normalizeInterval(draft.timeframe || draft.interval);
-    if (draft?.capital || draft?.inital_capital) res.capital = Number(draft.capital || draft.inital_capital);
-    if (draft?.quantity || draft?.lots) res.quantity = Math.min(Math.max(parseFloat(draft.quantity || draft.lots) || 0.01, 0.01), 1);
-
-    if (strategy?.stock_name || strategy?.symbol) res.symbol = res.symbol || normalizeSymbol(strategy.stock_name || strategy.symbol);
-    if (strategy?.interval || strategy?.timeframe) res.interval = res.interval || normalizeInterval(strategy.interval || strategy.timeframe);
-
-    // 2. From QA answers in the wizard
-    const qaItems = extraData?.qaList || [];
-    qaItems.forEach((qa) => {
-        const str = `${qa.answer || ''} ${qa.label || ''} ${qa.value || ''} ${qa.question || ''}`;
-        
-        const symMatch = str.match(/\b(GBPJPY|EURJPY|EURUSD|GBPUSD|USDCAD|XAUUSD|BTCUSD|ETHUSD|US30|SOLUSD|AUDUSD|NZDUSD|USDJPY|EURGBP|NAS100)\b/i);
-        if (symMatch && !res.symbol) res.symbol = normalizeSymbol(symMatch[1]);
-
-        const intvMatch = str.match(/\b(1day|1d|daily|60min|1h|1hr|30min|30m|15min|15m|5min|5m)\b/i);
-        if (intvMatch && !res.interval) res.interval = normalizeInterval(intvMatch[1]);
-
-        const capMatch = str.match(/\$?\s*([0-9]{3,7})\s*(?:capital|balance|usd|\$)/i);
-        if (capMatch && !res.capital) res.capital = Number(capMatch[1]);
-
-        const qtyMatch = str.match(/\b(0\.01|0\.05|0\.10|0\.1|0\.50|0\.5|1\.00|1)\s*(?:lots?|micro|mini|std)?\b/i);
-        if (qtyMatch && !res.quantity) res.quantity = parseFloat(qtyMatch[1]);
-    });
-
-    // 3. From text and recent messages in reverse order
-    const allTexts = [text];
-    if (Array.isArray(messages)) {
-        for (let i = messages.length - 1; i >= Math.max(0, messages.length - 8); i--) {
-            const m = messages[i];
-            if (m?.text) allTexts.push(m.text);
-            if (m?.draft?.instrument && !res.symbol) res.symbol = normalizeSymbol(m.draft.instrument);
-            if (m?.draft?.timeframe && !res.interval) res.interval = normalizeInterval(m.draft.timeframe);
-        }
-    }
-
-    const combined = allTexts.join(' ');
-
-    if (!res.symbol) {
-        const symMatch = combined.match(/\b(GBPJPY|EURJPY|EURUSD|GBPUSD|USDCAD|XAUUSD|BTCUSD|ETHUSD|US30|SOLUSD|AUDUSD|NZDUSD|USDJPY|EURGBP|NAS100)\b/i);
-        if (symMatch) res.symbol = normalizeSymbol(symMatch[1]);
-    }
-
-    if (!res.interval) {
-        const intvMatch = combined.match(/\b(1day|1d|daily|60min|1h|1hr|30min|30m|15min|15m|5min|5m)\b/i);
-        if (intvMatch) res.interval = normalizeInterval(intvMatch[1]);
-    }
-
-    if (!res.capital) {
-        const capMatch = combined.match(/\$?\s*([0-9]{4,7})\s*(?:capital|balance|usd|\$)/i);
-        if (capMatch) res.capital = Number(capMatch[1]);
-    }
-
-    return res;
-};
+import { saveStudioSession, loadStudioSession, clearStudioSession } from './utils/sessionPersistence';
+import { normalizeInterval, normalizeSymbol, extractParamsFromChatAndContext } from './utils/paramExtractor';
 
 export default function StrategyStudio() {
     // Strategy Parameters (Toolbar & Execution)
@@ -139,24 +55,6 @@ export default function StrategyStudio() {
     const isSendingRef = useRef(false);
     const lastSendRef = useRef({ time: 0, text: '' });
 
-    // Initialize session ID and date ranges on mount
-    useEffect(() => {
-        const newId = (typeof crypto !== 'undefined' && crypto.randomUUID)
-            ? crypto.randomUUID()
-            : 'sess_' + Math.random().toString(36).substring(2, 9);
-        setSessionId(newId);
-
-        // Default 60-day window ending yesterday
-        const today = new Date();
-        const yest = new Date(today);
-        yest.setDate(yest.getDate() - 1);
-        const sixtyDaysAgo = new Date(today);
-        sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 61);
-
-        setFromDate(sixtyDaysAgo.toISOString().split('T')[0]);
-        setToDate(yest.toISOString().split('T')[0]);
-    }, []);
-
     const handleToast = useCallback((msg) => {
         toast.success(msg, {
             style: {
@@ -186,34 +84,114 @@ export default function StrategyStudio() {
         if (strat.quantity || strat.lots) setQuantity(parseFloat(strat.quantity || strat.lots));
     }, []);
 
-    // Check if strategy was selected from My Bots dashboard
+    // Initialize session ID and date ranges or restore from localStorage on mount
     useEffect(() => {
+        // 1. Check if strategy was selected from My Bots dashboard or Predefined Strategies
+        let incomingStrategy = null;
         try {
             if (typeof window !== 'undefined') {
                 const saved = sessionStorage.getItem('active_selected_strategy');
                 if (saved) {
-                    const parsed = JSON.parse(saved);
+                    incomingStrategy = JSON.parse(saved);
                     sessionStorage.removeItem('active_selected_strategy');
-                    if (parsed) {
-                        const strat = parsed.config || parsed.blueprint || parsed;
-                        setCurrentStrategy(strat);
-                        syncToolbarFromStrategy(strat);
-                        const name = parsed.strategy_name || parsed.name || 'AI Strategy';
-                        const sym = normalizeSymbol(parsed.symbol || parsed.stock_name) || 'BTCUSD';
-                        const tf = normalizeInterval(parsed.timeframe || parsed.interval) || '15min';
-                        setMessages([
-                            {
-                                role: 'ai',
-                                text: `Loaded quantitative strategy **"${name}"** on **${sym} (${tf})**.\n\n` +
-                                    (parsed.trade_reasoning?.rationale ? `> **Rationale:** ${parsed.trade_reasoning.rationale}\n\n` : '') +
-                                    `Parameters and indicator rules have been calibrated. You can ask me to refine any parameters, or click **"Run Backtest"** to simulate historical performance.`
-                            }
-                        ]);
-                    }
                 }
             }
         } catch (_) { }
+
+        if (incomingStrategy) {
+            const strat = incomingStrategy.config || incomingStrategy.blueprint || incomingStrategy;
+            setCurrentStrategy(strat);
+            syncToolbarFromStrategy(strat);
+            const name = incomingStrategy.strategy_name || incomingStrategy.name || 'AI Strategy';
+            const sym = normalizeSymbol(incomingStrategy.symbol || incomingStrategy.stock_name) || 'BTCUSD';
+            const tf = normalizeInterval(incomingStrategy.timeframe || incomingStrategy.interval) || '15min';
+            const newId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+                ? crypto.randomUUID()
+                : 'sess_' + Math.random().toString(36).substring(2, 9);
+            setSessionId(newId);
+            setMessages([
+                {
+                    role: 'ai',
+                    text: `Loaded quantitative strategy **"${name}"** on **${sym} (${tf})**.\n\n` +
+                        (incomingStrategy.trade_reasoning?.rationale ? `> **Rationale:** ${incomingStrategy.trade_reasoning.rationale}\n\n` : '') +
+                        `Parameters and indicator rules have been calibrated. You can ask me to refine any parameters, or click **"Run Backtest"** to simulate historical performance.`
+                }
+            ]);
+            return;
+        }
+
+        // 2. Try restoring existing ongoing Bot conversation and parameters from localStorage
+        const cachedSession = loadStudioSession();
+        if (cachedSession && cachedSession.sessionId) {
+            setSessionId(cachedSession.sessionId);
+            if (Array.isArray(cachedSession.messages) && cachedSession.messages.length > 0) {
+                setMessages(cachedSession.messages);
+            }
+            if (cachedSession.currentDraft) setCurrentDraft(cachedSession.currentDraft);
+            if (cachedSession.currentStrategy) setCurrentStrategy(cachedSession.currentStrategy);
+            if (cachedSession.results) setResults(cachedSession.results);
+            if (Array.isArray(cachedSession.roundTrips)) setRoundTrips(cachedSession.roundTrips);
+            if (cachedSession.executedParams) setExecutedParams(cachedSession.executedParams);
+            if (cachedSession.symbol) setSymbol(cachedSession.symbol);
+            if (cachedSession.interval) setInterval(cachedSession.interval);
+            if (cachedSession.capital) setCapital(cachedSession.capital);
+            if (cachedSession.quantity) setQuantity(cachedSession.quantity);
+            if (cachedSession.marketMode) setMarketMode(cachedSession.marketMode);
+            if (cachedSession.fromDate) setFromDate(cachedSession.fromDate);
+            if (cachedSession.toDate) setToDate(cachedSession.toDate);
+        } else {
+            const newId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+                ? crypto.randomUUID()
+                : 'sess_' + Math.random().toString(36).substring(2, 9);
+            setSessionId(newId);
+
+            // Default 60-day window ending yesterday
+            const today = new Date();
+            const yest = new Date(today);
+            yest.setDate(yest.getDate() - 1);
+            const sixtyDaysAgo = new Date(today);
+            sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 61);
+
+            setFromDate(sixtyDaysAgo.toISOString().split('T')[0]);
+            setToDate(yest.toISOString().split('T')[0]);
+        }
     }, [syncToolbarFromStrategy]);
+
+    // Automatically persist Bot chat session to localStorage whenever state updates
+    useEffect(() => {
+        if (!sessionId) return;
+        saveStudioSession({
+            sessionId,
+            messages,
+            currentDraft,
+            currentStrategy,
+            results,
+            roundTrips,
+            executedParams,
+            symbol,
+            interval,
+            fromDate,
+            toDate,
+            capital,
+            quantity,
+            marketMode
+        });
+    }, [
+        sessionId,
+        messages,
+        currentDraft,
+        currentStrategy,
+        results,
+        roundTrips,
+        executedParams,
+        symbol,
+        interval,
+        fromDate,
+        toDate,
+        capital,
+        quantity,
+        marketMode
+    ]);
 
     /**
      * Send message to Strategy Advisor (/wizard/chat)
@@ -432,6 +410,7 @@ export default function StrategyStudio() {
     };
 
     const handleNewChat = () => {
+        clearStudioSession();
         const newId = (typeof crypto !== 'undefined' && crypto.randomUUID)
             ? crypto.randomUUID()
             : 'sess_' + Math.random().toString(36).substring(2, 9);

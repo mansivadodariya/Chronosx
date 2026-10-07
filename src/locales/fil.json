@@ -2069,7 +2069,7 @@
   },
   "maintenance": {
     "systemRestored": "ONLINE ANG SISTEMA • NAGRE-REDIRECT...",
-    "systemRecalibration": "KASALUKUYANG NAGRE-RECALIBRATE ANG SISTEMA • HTTP 503",
+    "systemRecalibration": "KASALUKUYANG NAG-A-UPGRADE ANG SISTEMA",
     "titlePrefix": "Ina-upgrade ang Neural",
     "titleHighlight": "Trading Infrastructure",
     "desc": "Naglulunsad kami ng mga update sa high-frequency model upang matiyak ang zero-latency na pagpapatupad."

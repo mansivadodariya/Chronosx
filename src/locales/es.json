@@ -2069,7 +2069,7 @@
   },
   "maintenance": {
     "systemRestored": "SISTEMA EN LÍNEA • REDIRIGIENDO...",
-    "systemRecalibration": "RECALIBRACIÓN DEL SISTEMA EN CURSO • HTTP 503",
+    "systemRecalibration": "ACTUALIZACIÓN PROGRAMADA EN CURSO",
     "titlePrefix": "Actualizando Infraestructura",
     "titleHighlight": "Neuronal de Trading",
     "desc": "Estamos desplegando actualizaciones de modelos de alta frecuencia y sincronizaciones de bases de datos para garantizar una ejecución sin latencia."

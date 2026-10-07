@@ -1,13 +1,13 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { getMaintenanceStatus } from '@/lib/maintenanceService';
 
 /**
  * Health check & telemetry endpoint for monitors, load balancers,
  * and the maintenance mode auto-recovery system.
  */
 export async function GET(request) {
-  const isMaintenance =
-    process.env.MAINTENANCE_MODE === 'true' ||
-    process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'true';
+  const maintenance = await getMaintenanceStatus();
+  const isMaintenance = maintenance.isActive;
 
   const { searchParams } = new URL(request.url);
   const detailed = searchParams.get('detailed') === 'true';
@@ -18,6 +18,7 @@ export async function GET(request) {
     timestamp: new Date().toISOString(),
     uptime: Math.floor(process.uptime ? process.uptime() : 0),
     environment: process.env.NODE_ENV || 'production',
+    settings: maintenance.settings || null,
   };
 
   if (detailed) {

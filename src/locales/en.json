@@ -2068,9 +2068,9 @@
   },
   "maintenance": {
     "systemRestored": "SYSTEM ONLINE • REDIRECTING...",
-    "systemRecalibration": "SYSTEM RECALIBRATION IN PROGRESS • HTTP 503",
-    "titlePrefix": "Upgrading Neural",
-    "titleHighlight": "Trading Infrastructure",
+    "systemRecalibration": "SCHEDULED PLATFORM UPGRADE IN PROGRESS",
+    "titlePrefix": "Under",
+    "titleHighlight": "Maintenance",
     "desc": "We are deploying high-frequency model updates and database synchronizations to ensure zero-latency execution and optimal pattern recognition."
   },
   "predefinedStrategies": {

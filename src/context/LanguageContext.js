@@ -14,39 +14,92 @@ const LanguageContext = createContext({
   tDynamic: (item, keyEn) => '',
 });
 
-export const LanguageProvider = ({ children }) => {
-  const [language, setLanguageState] = useState('en');
+export const LanguageProvider = ({ children, initialLanguage = 'en' }) => {
+  const [language, setLanguageState] = useState(() => {
+    // 1. If server passed a valid initialLanguage, use it immediately
+    if (initialLanguage && SUPPORTED_LOCALES.includes(initialLanguage)) {
+      return initialLanguage;
+    }
+    if (typeof window !== 'undefined') {
+      try {
+        // 2. Check URL path prefix (e.g. /ar/dashboard -> 'ar')
+        const pathSegments = window.location.pathname.split('/').filter(Boolean);
+        if (pathSegments.length > 0) {
+          const pathLang = normalizeLocale(pathSegments[0]);
+          if (pathLang && SUPPORTED_LOCALES.includes(pathLang)) {
+            return pathLang;
+          }
+        }
+
+        // 3. Check query param (?lang=ar)
+        const urlParams = new URLSearchParams(window.location.search);
+        const langQuery = urlParams.get('lang') || urlParams.get('locale');
+        if (langQuery) {
+          const qLang = normalizeLocale(langQuery);
+          if (qLang && SUPPORTED_LOCALES.includes(qLang)) {
+            return qLang;
+          }
+        }
+
+        // 4. Check localStorage
+        const stored = localStorage.getItem('app_language');
+        const canonical = normalizeLocale(stored);
+        if (canonical && SUPPORTED_LOCALES.includes(canonical)) {
+          return canonical;
+        }
+
+        // 5. Check cookies
+        const cookieMatch = document.cookie.match(/(?:^|;\s*)(?:app_language|NEXT_LOCALE)=([^;]+)/);
+        if (cookieMatch) {
+          const cLang = normalizeLocale(decodeURIComponent(cookieMatch[1]));
+          if (cLang && SUPPORTED_LOCALES.includes(cLang)) {
+            return cLang;
+          }
+        }
+      } catch (_) {}
+    }
+    return 'en';
+  });
   const [, setLoadedVersion] = useState(0);
 
   useEffect(() => {
     try {
       let detectedLang = null;
 
-      // 1. Check URL query parameter (e.g. ?lang=arabic or ?lang=ar)
+      // 1. Check URL path prefix FIRST (e.g. /arabic, /ar, /es)
       if (typeof window !== 'undefined') {
+        const pathSegments = window.location.pathname.split('/').filter(Boolean);
+        if (pathSegments.length > 0) {
+          detectedLang = normalizeLocale(pathSegments[0]);
+        }
+      }
+
+      // 2. Check URL query parameter (e.g. ?lang=arabic or ?lang=ar)
+      if (!detectedLang && typeof window !== 'undefined') {
         const urlParams = new URLSearchParams(window.location.search);
         const langQuery = urlParams.get('lang') || urlParams.get('locale');
         if (langQuery) {
           detectedLang = normalizeLocale(langQuery);
         }
+      }
 
-        // 2. Check URL path prefix (e.g. /arabic or /ar or /spanish)
+      // 3. Check user's saved preference in localStorage or cookie
+      if (!detectedLang && typeof window !== 'undefined') {
+        let storedLang = localStorage.getItem('app_language');
+        if (storedLang === 'ph') storedLang = 'fil';
+        detectedLang = normalizeLocale(storedLang);
+
         if (!detectedLang) {
-          const pathSegments = window.location.pathname.split('/').filter(Boolean);
-          if (pathSegments.length > 0) {
-            detectedLang = normalizeLocale(pathSegments[0]);
+          const cookieMatch = document.cookie.match(/(?:^|;\s*)(?:app_language|NEXT_LOCALE)=([^;]+)/);
+          if (cookieMatch) {
+            detectedLang = normalizeLocale(decodeURIComponent(cookieMatch[1]));
           }
         }
       }
 
-      // 3. Fallback to localStorage or cookie
-      if (!detectedLang) {
-        let storedLang = localStorage.getItem('app_language');
-        if (storedLang === 'ph') storedLang = 'fil';
-        detectedLang = normalizeLocale(storedLang);
-      }
-
-      const activeLang = detectedLang && SUPPORTED_LOCALES.includes(detectedLang) ? detectedLang : 'en';
+      const activeLang = detectedLang && SUPPORTED_LOCALES.includes(detectedLang) 
+        ? detectedLang 
+        : (initialLanguage && SUPPORTED_LOCALES.includes(initialLanguage) ? initialLanguage : 'en');
 
       setLanguageState(activeLang);
       localStorage.setItem('app_language', activeLang);
@@ -57,6 +110,19 @@ export const LanguageProvider = ({ children }) => {
       document.documentElement.setAttribute('lang', activeLang);
       document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
 
+      // Sync address bar URL prefix to match active language without reloading
+      if (typeof window !== 'undefined' && window.history && window.history.replaceState) {
+        const pathSegments = window.location.pathname.split('/').filter(Boolean);
+        const firstSeg = pathSegments[0]?.toLowerCase();
+        const existingLang = normalizeLocale(firstSeg);
+        if (existingLang && existingLang !== activeLang) {
+          const cleanSegments = pathSegments.slice(1);
+          const newPath = cleanSegments.length > 0 ? `/${activeLang}/${cleanSegments.join('/')}` : `/${activeLang}`;
+          const targetFull = `${newPath}${window.location.search}${window.location.hash}`;
+          window.history.replaceState({ lang: activeLang }, '', targetFull);
+        }
+      }
+
       if (activeLang !== 'en' && !translations[activeLang]) {
         loadLocaleData(activeLang).then(() => {
           setLoadedVersion((v) => v + 1);
@@ -65,7 +131,7 @@ export const LanguageProvider = ({ children }) => {
     } catch (e) {
       console.warn('Could not initialize language context:', e);
     }
-  }, []);
+  }, [initialLanguage]);
 
   const setLanguage = useCallback((lang, updateUrl = true) => {
     const canonical = normalizeLocale(lang);

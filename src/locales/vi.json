@@ -2069,7 +2069,7 @@
   },
   "maintenance": {
     "systemRestored": "HỆ THỐNG TRỰC TUYẾN • ĐANG CHUYỂN HƯỚNG...",
-    "systemRecalibration": "ĐANG HIỆU CHUẨN HỆ THỐNG • HTTP 503",
+    "systemRecalibration": "ĐANG NÂNG CẤP HỆ THỐNG",
     "titlePrefix": "Đang nâng cấp cơ sở",
     "titleHighlight": "Hạ tầng giao dịch nơ-ron",
     "desc": "Chúng tôi đang triển khai cập nhật mô hình tần suất cao và đồng bộ cơ sở dữ liệu để đảm bảo khớp lệnh không độ trễ."
