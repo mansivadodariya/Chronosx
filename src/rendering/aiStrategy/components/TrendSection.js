@@ -13,6 +13,7 @@ export default function TrendSection({
     trendScore = 19,
     maxScore = 25,
 }) {
+    const { t } = useLanguage();
     const defaultTrendItems = [
         { label: 'SMA_10', value: 4424.65534, action: 'Bullish' },
         { label: 'SMA_20', value: 4402.51831, action: 'Bullish' },

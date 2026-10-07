@@ -233,23 +233,7 @@ export async function fetchVisibleTabNames(force = false) {
 }
 
 export function useTabPermission(tabName) {
-  const [isAllowed, setIsAllowed] = useState(() => {
-    if (typeof window === 'undefined') return true;
-    try {
-      if (cachedVisibleTabs) {
-        return checkPermissionInSet(cachedVisibleTabs, tabName);
-      }
-      const stored = sessionStorage.getItem('visible_tab_names');
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          const set = new Set(parsed.map(normalizeTabName));
-          return checkPermissionInSet(set, tabName);
-        }
-      }
-    } catch { /* ignore */ }
-    return true;
-  });
+  const [isAllowed, setIsAllowed] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
@@ -257,6 +241,21 @@ export function useTabPermission(tabName) {
       if (!isMounted || !set) return;
       setIsAllowed(checkPermissionInSet(set, tabName));
     };
+
+    if (cachedVisibleTabs) {
+      setIsAllowed(checkPermissionInSet(cachedVisibleTabs, tabName));
+    } else {
+      try {
+        const stored = sessionStorage.getItem('visible_tab_names');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const set = new Set(parsed.map(normalizeTabName));
+            setIsAllowed(checkPermissionInSet(set, tabName));
+          }
+        }
+      } catch { /* ignore */ }
+    }
 
     listeners.add(update);
     fetchVisibleTabNames().then(set => {

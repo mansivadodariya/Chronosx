@@ -2081,7 +2081,7 @@
   },
   "welcomeModal": {
     "stepIndicator": "STEP {{current}} OF {{total}}",
-    "skipTour": "Skip tour",
+    "skipTour": "Skip",
     "continue": "Continue",
     "getStarted": "Get Started",
     "closeModal": "Close modal",
@@ -2214,10 +2214,10 @@
   },
   "errors": {
     "boundary": {
-      "tag": "TEMPORARY SYSTEM DISRUPTION • ERROR 500",
-      "headingPrefix": "Telemetry Stream",
-      "headingHighlight": "Interrupted",
-      "description": "A runtime anomaly was detected in this segment. The neural engine is attempting auto-recovery. You can retry the operation or return to the main desk.",
+      "tag": "AUTO-RECONNECTING • LIVE SYNC",
+      "headingPrefix": "We Will",
+      "headingHighlight": "Connect Soon",
+      "description": "Establishing a secure connection with the live telemetry engine. Your session and settings are safely preserved. You can retry connection or return to your main desk.",
       "retry": "RETRY CONNECTION",
       "dashboard": "DASHBOARD"
     },

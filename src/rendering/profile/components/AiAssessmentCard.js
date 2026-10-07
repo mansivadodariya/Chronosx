@@ -97,6 +97,7 @@ export default function AiAssessmentCard({
     analysis,
     className = ''
 }) {
+    const { t } = useLanguage();
     const data = parseAnalysisPayload(analysis);
     if (!data) return null;
 

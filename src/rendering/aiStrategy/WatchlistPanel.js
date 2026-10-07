@@ -331,7 +331,9 @@ export default function WatchlistPanel({ selectedSymbol, onSelectSymbol, globalT
             <div className={styles.watchlistItemsList}>
                 {filteredPairs.length > 0 ? (
                     filteredPairs.map(pair => {
-                        const isSelected = pair.replace('/', '').replace(' ', '').toUpperCase() === selectedSymbol.replace('/', '').replace(' ', '').toUpperCase();
+                        const isSelected = selectedSymbol
+                            ? pair.replace('/', '').replace(' ', '').toUpperCase() === selectedSymbol.replace('/', '').replace(' ', '').toUpperCase()
+                            : false;
 
                         return (
                             <WatchlistItem

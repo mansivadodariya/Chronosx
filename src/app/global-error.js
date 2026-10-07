@@ -34,9 +34,9 @@ export default function GlobalError({ error, reset }) {
             gap: '8px',
             padding: '6px 16px',
             borderRadius: '99px',
-            backgroundColor: 'rgba(239, 68, 68, 0.1)',
-            border: '1px solid rgba(239, 68, 68, 0.35)',
-            color: '#F87171',
+            backgroundColor: 'rgba(24, 201, 139, 0.1)',
+            border: '1px solid rgba(24, 201, 139, 0.35)',
+            color: '#18C98B',
             fontSize: '12px',
             fontWeight: 'bold',
             letterSpacing: '1px',
@@ -46,18 +46,18 @@ export default function GlobalError({ error, reset }) {
               width: '6px',
               height: '6px',
               borderRadius: '50%',
-              backgroundColor: '#EF4444',
+              backgroundColor: '#18C98B',
             }} />
-            {getTranslation(lang, 'errors.global.tag', 'CRITICAL TELEMETRY INTERRUPTION')}
+            {getTranslation(lang, 'errors.global.tag', 'AUTO-RECONNECTING • LIVE SYNC')}
           </div>
 
           <h1 style={{ fontSize: '36px', fontWeight: '800', margin: '0 0 16px 0', color: '#FFFFFF' }}>
-            {getTranslation(lang, 'errors.global.headingPrefix', 'System Core')}{' '}
-            <span style={{ color: '#18C98B' }}>{getTranslation(lang, 'errors.global.recalibrating', 'Recalibrating')}</span>
+            {getTranslation(lang, 'errors.boundary.headingPrefix', 'We Will')}{' '}
+            <span style={{ color: '#18C98B' }}>{getTranslation(lang, 'errors.boundary.headingHighlight', 'Connect Soon')}</span>
           </h1>
 
           <p style={{ color: '#9C9A96', fontSize: '15px', lineHeight: '1.6', marginBottom: '32px' }}>
-            {getTranslation(lang, 'errors.global.desc', 'The root layout encountered an unexpected state. Our infrastructure is maintaining session telemetry while the subsystem reboots.')}
+            {getTranslation(lang, 'errors.global.desc', 'Establishing a secure connection with the live telemetry engine. Your session and settings are safely preserved.')}
           </p>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>

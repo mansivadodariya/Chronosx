@@ -7,10 +7,12 @@ import { getBidiProps } from '@/lib/bidi';
 import { BrainRobotIcon } from '@/icons/analysisIcons';
 
 export default function AiIntelligenceSummarySection({
-
     aiSummary = {},
-    t
+    t: propT
 }) {
+    const { t: hookT } = useLanguage();
+    const t = propT || hookT;
+
     if (!aiSummary || (!aiSummary.headline && !aiSummary.trend && !aiSummary.momentum)) {
         return null;
     }

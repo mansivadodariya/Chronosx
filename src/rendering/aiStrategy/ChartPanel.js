@@ -197,24 +197,26 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
             }
             chartRef.current.priceLines = [];
 
-            if (nearestSupport !== undefined && nearestSupport !== null) {
+            const numSupport = Number(nearestSupport);
+            if (nearestSupport !== undefined && nearestSupport !== null && !isNaN(numSupport) && isFinite(numSupport)) {
                 const sLine = series.candle.createPriceLine({
-                    price: nearestSupport,
+                    price: numSupport,
                     color: 'rgba(38, 166, 154, 0.8)',
                     lineWidth: 1,
                     lineStyle: 2,
-                    title: `S: ${nearestSupport.toFixed(4)}`,
+                    title: `S: ${numSupport.toFixed(4)}`,
                 });
                 chartRef.current.priceLines.push(sLine);
             }
 
-            if (nearestResistance !== undefined && nearestResistance !== null) {
+            const numResistance = Number(nearestResistance);
+            if (nearestResistance !== undefined && nearestResistance !== null && !isNaN(numResistance) && isFinite(numResistance)) {
                 const rLine = series.candle.createPriceLine({
-                    price: nearestResistance,
+                    price: numResistance,
                     color: 'rgba(239, 83, 80, 0.8)',
                     lineWidth: 1,
                     lineStyle: 2,
-                    title: `R: ${nearestResistance.toFixed(4)}`,
+                    title: `R: ${numResistance.toFixed(4)}`,
                 });
                 chartRef.current.priceLines.push(rLine);
             }

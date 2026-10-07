@@ -12,6 +12,7 @@ export default function StructureSection({
     structureScore = 12,
     maxScore = 25,
 }) {
+    const { t } = useLanguage();
     const defaultStructure = {
         nearestSupport: 4418.71769,
         nearestResistance: 4439.31457,

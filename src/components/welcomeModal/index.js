@@ -288,7 +288,7 @@ export default function WelcomeModal({ autoShowDelay = 1200 }) {
                                                 className={styles.skipBtn}
                                                 onClick={handleClose}
                                             >
-                                                {t('welcomeModal.skipTour', 'Skip tour')}
+                                                {t('welcomeModal.skipTour', 'Skip')}
                                             </button>
 
                                             <button
