@@ -7,6 +7,10 @@ import { supabase } from '@/lib/supabaseClient';
 import { useLanguage } from '@/context/LanguageContext';
 import styles from './maintenanceGuard.module.scss';
 
+let statusInFlightPromise = null;
+let lastStatusFetchTime = 0;
+let cachedStatus = false;
+
 export default function MaintenanceGuard() {
   const [isMaintenance, setIsMaintenance] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
@@ -23,23 +27,47 @@ export default function MaintenanceGuard() {
     return false;
   };
 
-  const fetchStatus = useCallback(async () => {
+  const fetchStatus = useCallback(async (force = false) => {
     try {
-      if (supabase) {
-        const { data, error } = await supabase
-          .from('system_settings')
-          .select('value')
-          .eq('key', 'maintenance_mode')
-          .single();
-
-        if (!error && data) {
-          setIsMaintenance(evaluateMaintenance(data.value));
-        }
+      if (!supabase) return;
+      const now = Date.now();
+      if (!force && now - lastStatusFetchTime < 15000 && !statusInFlightPromise) {
+        setIsMaintenance(cachedStatus);
+        return;
       }
-    } catch (_) {}
+      if (statusInFlightPromise) {
+        const val = await statusInFlightPromise;
+        setIsMaintenance(val);
+        return;
+      }
+
+      statusInFlightPromise = (async () => {
+        try {
+          const { data, error } = await supabase
+            .from('system_settings')
+            .select('value')
+            .eq('key', 'maintenance_mode')
+            .single();
+
+          if (!error && data) {
+            const active = evaluateMaintenance(data.value);
+            cachedStatus = active;
+            lastStatusFetchTime = Date.now();
+            return active;
+          }
+        } catch (_) {}
+        return cachedStatus;
+      })();
+
+      const finalVal = await statusInFlightPromise;
+      statusInFlightPromise = null;
+      setIsMaintenance(finalVal);
+    } catch (_) {
+      statusInFlightPromise = null;
+    }
   }, []);
 
-  // 1. Initial status fetch & Supabase Realtime Listener (instant sync without refresh)
+  // 1. Initial status fetch & Supabase Realtime Listener (instant sync without polling)
   useEffect(() => {
     fetchStatus();
 
@@ -56,6 +84,7 @@ export default function MaintenanceGuard() {
             const row = payload?.new;
             if (row && (row.key === 'maintenance_mode' || row.key === undefined)) {
               const active = evaluateMaintenance(row.value);
+              cachedStatus = active;
               setIsMaintenance(active);
             }
           }
@@ -72,12 +101,14 @@ export default function MaintenanceGuard() {
     };
   }, [fetchStatus]);
 
-  // 2. Periodic background verification
+  // 2. Periodic verification ONLY while maintenance screen is actively showing
   useEffect(() => {
+    if (!isMaintenance) return;
+
     const interval = setInterval(() => {
       setPollCountdown((prev) => {
         if (prev <= 1) {
-          fetchStatus();
+          fetchStatus(true);
           return 15;
         }
         return prev - 1;
@@ -85,7 +116,7 @@ export default function MaintenanceGuard() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [fetchStatus]);
+  }, [fetchStatus, isMaintenance]);
 
   // 3. Pointer Glow Mouse Move Tracker
   const handleMouseMove = useCallback((e) => {

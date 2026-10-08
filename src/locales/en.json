@@ -2560,7 +2560,15 @@
     "publishStrategy": "Publish Strategy",
     "greetingMorning": "Good morning, trader",
     "greetingAfternoon": "Good afternoon, trader",
-    "greetingEvening": "Good evening, trader"
+    "greetingEvening": "Good evening, trader",
+    "history": "History",
+    "chatHistory": "Chat History",
+    "noHistory": "No previous chats found",
+    "noHistoryDesc": "Your strategy conversations and models will appear here.",
+    "searchHistory": "Search chats...",
+    "deleteChat": "Delete chat",
+    "startChat": "Start a New Chat",
+    "newChat": "New Chat"
   },
   "legal": {
     "termsTitle": "Terms and Conditions",

@@ -303,7 +303,9 @@ export const fxApi = {
                 image_base64: arg1.image_base64 || null,
                 stream: arg1.stream ?? false,
                 ...(arg1.user_id ? { user_id: arg1.user_id } : {}),
-                ...(arg1.conversation_id ? { conversation_id: arg1.conversation_id } : {})
+                ...(arg1.conversation_id ? { conversation_id: arg1.conversation_id } : {}),
+                ...(arg1.session_id ? { session_id: arg1.session_id } : {}),
+                ...(arg1.sessionId ? { session_id: arg1.sessionId } : {})
             };
         } else {
             payload = {

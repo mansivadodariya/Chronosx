@@ -2561,7 +2561,15 @@
     "publishStrategy": "نشر الاستراتيجية",
     "greetingMorning": "صباح الخير، أيها المتداول",
     "greetingAfternoon": "مساء الخير، أيها المتداول",
-    "greetingEvening": "مساء الخير، أيها المتداول"
+    "greetingEvening": "مساء الخير، أيها المتداول",
+    "history": "السجل",
+    "chatHistory": "سجل المحادثات",
+    "noHistory": "ماكاينش محادثات سابقة",
+    "noHistoryDesc": "المحادثات والنماذج ديال الاستراتيجيات غادي يظهروا هنا.",
+    "searchHistory": "بحث فالمحادثات...",
+    "deleteChat": "مسح المحادثة",
+    "startChat": "بدا محادثة جديدة",
+    "newChat": "محادثة جديدة"
   },
   "legal": {
     "termsTitle": "الشروط والأحكام",

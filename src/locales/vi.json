@@ -2561,7 +2561,15 @@
     "publishStrategy": "Xuất bản chiến lược",
     "greetingMorning": "Chào buổi sáng, nhà giao dịch",
     "greetingAfternoon": "Chào buổi chiều, nhà giao dịch",
-    "greetingEvening": "Chào buổi tối, nhà giao dịch"
+    "greetingEvening": "Chào buổi tối, nhà giao dịch",
+    "history": "Lịch sử",
+    "chatHistory": "Lịch sử trò chuyện",
+    "noHistory": "Không tìm thấy đoạn trò chuyện nào",
+    "noHistoryDesc": "Các cuộc hội thoại chiến lược của bạn sẽ xuất hiện ở đây.",
+    "searchHistory": "Tìm kiếm đoạn chat...",
+    "deleteChat": "Xóa đoạn chat",
+    "startChat": "Bắt đầu cuộc trò chuyện mới",
+    "newChat": "Cuộc trò chuyện mới"
   },
   "legal": {
     "termsTitle": "Điều Khoản & Điều Kiện",

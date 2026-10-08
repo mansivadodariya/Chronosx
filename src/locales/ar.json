@@ -2561,7 +2561,15 @@
     "publishStrategy": "نشر الاستراتيجية",
     "greetingMorning": "صباح الخير، أيها المتداول",
     "greetingAfternoon": "طاب مساؤك، أيها المتداول",
-    "greetingEvening": "مساء الخير، أيها المتداول"
+    "greetingEvening": "مساء الخير، أيها المتداول",
+    "history": "السجل",
+    "chatHistory": "سجل المحادثات",
+    "noHistory": "لم يتم العثور على محادثات سابقة",
+    "noHistoryDesc": "ستظهر محادثاتك ونماذج استراتيجياتك السابقة هنا.",
+    "searchHistory": "البحث في المحادثات...",
+    "deleteChat": "حذف المحادثة",
+    "startChat": "بدء محادثة جديدة",
+    "newChat": "محادثة جديدة"
   },
   "legal": {
     "termsTitle": "الشروط والأحكام",

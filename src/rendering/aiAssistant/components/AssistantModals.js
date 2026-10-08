@@ -18,6 +18,7 @@ export default function AssistantModals({
     loadingHistory,
     chatHistory,
     selectedChat,
+    currentConversationId,
     handleSelectChat,
     openDeleteConfirm,
     getQuestionText,
@@ -59,23 +60,28 @@ export default function AssistantModals({
                         ) : chatHistory.length === 0 ? (
                             <div className={styles.noHistory}>{t('aiAssistant.noHistoryFound', 'No past questions found')}</div>
                         ) : (
-                            chatHistory.map((item, index) => (
-                                <div
-                                    className={`${styles.messageBox} ${selectedChat === item ? styles.selectedBox : ''}`}
-                                    key={item.id || index}
-                                    onClick={() => handleSelectChat(item)}
-                                >
-                                    <p {...getBidiProps(getQuestionText(item), styles.truncate)}>
-                                        {getQuestionText(item)}
-                                    </p>
+                            chatHistory.map((item, index) => {
+                                const sessionId = item?.session_id || item?.sessionId || item?.conversation_id || item?.id || item?.history_id || item?._id;
+                                const isSelected = selectedChat === item || (currentConversationId && sessionId && String(currentConversationId) === String(sessionId));
+                                return (
                                     <div
-                                        className={styles.icon}
-                                        onClick={(e) => openDeleteConfirm(e, 'chat', index, item)}
+                                        className={`${styles.messageBox} ${isSelected ? styles.selectedBox : ''}`}
+                                        key={sessionId || index}
+                                        onClick={() => handleSelectChat(item)}
+                                        data-session-id={sessionId || undefined}
                                     >
-                                        <RemoveIcon />
+                                        <p {...getBidiProps(getQuestionText(item), styles.truncate)}>
+                                            {getQuestionText(item)}
+                                        </p>
+                                        <div
+                                            className={styles.icon}
+                                            onClick={(e) => openDeleteConfirm(e, 'chat', index, item)}
+                                        >
+                                            <RemoveIcon />
+                                        </div>
                                     </div>
-                                </div>
-                            ))
+                                );
+                            })
                         )}
                     </div>
                 </div>

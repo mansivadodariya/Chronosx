@@ -2561,7 +2561,15 @@
     "publishStrategy": "Publikasikan Strategi",
     "greetingMorning": "Selamat pagi, trader",
     "greetingAfternoon": "Selamat siang, trader",
-    "greetingEvening": "Selamat malam, trader"
+    "greetingEvening": "Selamat malam, trader",
+    "history": "Riwayat",
+    "chatHistory": "Riwayat Obrolan",
+    "noHistory": "Tidak ada obrolan sebelumnya",
+    "noHistoryDesc": "Percakapan dan model strategi Anda akan muncul di sini.",
+    "searchHistory": "Cari obrolan...",
+    "deleteChat": "Hapus obrolan",
+    "startChat": "Mulai Obrolan Baru",
+    "newChat": "Obrolan Baru"
   },
   "legal": {
     "termsTitle": "Syarat dan Ketentuan",

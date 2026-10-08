@@ -28,6 +28,7 @@ import {
     InfoCircleIcon,
     RightArrowSelectedIcon,
     PlusIcon,
+    ClockIntervalIcon,
     TacticalRouteIcon
 } from './StudioIcons';
 
@@ -103,6 +104,8 @@ export default function AdvisorChatView({
     setInput,
     onSend,
     onNewChat,
+    onOpenHistory,
+    historyCount = 0,
     loading,
     currentDraft,
     onGenerateFromDraft,
@@ -326,7 +329,27 @@ export default function AdvisorChatView({
     };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden', position: 'relative' }}>
+            {/* ── TOP RIGHT HEADER ACTIONS (History) ── */}
+            <div className={styles.advisorChatTopHeader}>
+                <div className={styles.advisorChatTopRight}>
+                    {onOpenHistory && (
+                        <button
+                            type="button"
+                            className={styles.btnHistory}
+                            onClick={onOpenHistory}
+                            title="View chat history"
+                        >
+                            <ClockIntervalIcon size={15} color="#18C98B" />
+                            <span>{t('strategyStudio.history', 'History')}</span>
+                            {historyCount > 0 && (
+                                <span className={styles.historyCountBadge}>{historyCount}</span>
+                            )}
+                        </button>
+                    )}
+                </div>
+            </div>
+
             {isInitialStartingView ? (
                 /* ── INITIAL EXPLORE HOME SCREEN (IMAGE 1 & 2) ── */
                 <div className={styles.studioHomeWrapper}>
@@ -340,7 +363,7 @@ export default function AdvisorChatView({
 
                         {/* Greeting Hero */}
                         <h1 className={styles.greetingTitleLarge}>
-                            • {dynamicGreeting}
+                            {dynamicGreeting}
                         </h1>
                         <div className={styles.greetingSubName}>
                             {userName}
@@ -382,15 +405,17 @@ export default function AdvisorChatView({
                                 </div>
                             )}
                             <div className={styles.exploreCardBottom}>
-                                <button
-                                    type="button"
-                                    className={styles.btnNewChat}
-                                    onClick={onNewChat}
-                                    title="Start a new chat session"
-                                >
-                                    <PlusIcon size={14} />
-                                    <span>New Chat</span>
-                                </button>
+                                <div className={styles.cardBottomActionsLeft}>
+                                    <button
+                                        type="button"
+                                        className={styles.btnNewChat}
+                                        onClick={onNewChat}
+                                        title="Start a new chat session"
+                                    >
+                                        <PlusIcon size={14} />
+                                        <span>{t('strategyStudio.newChat', 'New Chat')}</span>
+                                    </button>
+                                </div>
                                 <button
                                     type="button"
                                     className={`${styles.circularSubmitBtn} ${input.trim() ? styles.activeBtn : ''}`}
@@ -560,7 +585,7 @@ export default function AdvisorChatView({
                                             (msg.step_badge || '').toLowerCase().includes('step 5')
                                         );
 
-                                        const isReviewOrConfirmStage = !isAlreadyGenerated && Boolean(
+                                        const isReviewOrConfirmStage = !isAlreadyGenerated && !msg.isError && Boolean(
                                             msg.draft ||
                                             (msg.text || '').toLowerCase().includes('confirm to proceed') ||
                                             (msg.text || '').toLowerCase().includes('chart elements? just let me know') ||
@@ -576,17 +601,16 @@ export default function AdvisorChatView({
 
                                         const showReadyToProceedCard = showActionOptions &&
                                             !isUser &&
+                                            !msg.isError &&
+                                            (msg.draft || currentDraft) &&
                                             isReviewOrConfirmStage &&
                                             !hasSubsequentCreation &&
                                             !generatingStrategy;
 
                                         if (!showReadyToProceedCard) return null;
 
-                                        const effectiveDraft = msg.draft || currentDraft || {
-                                            name: 'EMA Crossover Strategy',
-                                            instrument: 'XAUUSD',
-                                            strategy_type: 'EMA Crossover'
-                                        };
+                                        const effectiveDraft = msg.draft || currentDraft;
+                                        if (!effectiveDraft) return null;
 
                                         return (
                                             <ReadyToProceedCard
@@ -618,7 +642,7 @@ export default function AdvisorChatView({
                     {/* ── BOTTOM CHAT BAR WITH DOCKED INTERACTIVE QUESTION WIZARD (IMAGE 1 & 2) ── */}
                     <div className={styles.bottomChatInputBar}>
                         {/* Interactive Step-by-Step Question Wizard Docked Above Input Field */}
-                        {!isOptionBoxDismissed && !loading && isLatestAiMessage && isLatestAiStreamCompleted && (
+                        {!isOptionBoxDismissed && !loading && isLatestAiMessage && isLatestAiStreamCompleted && !latestAiMessage?.isError && (
                             <InteractiveQuestionWizard
                                 latestAiMessage={latestAiMessage}
                                 messages={messages}
@@ -666,15 +690,17 @@ export default function AdvisorChatView({
                                 </div>
                             )}
                             <div className={styles.chatCardBottom}>
-                                <button
-                                    type="button"
-                                    className={styles.btnNewChat}
-                                    onClick={onNewChat}
-                                    title="Start a new chat session"
-                                >
-                                    <PlusIcon size={14} />
-                                    <span>New Chat</span>
-                                </button>
+                                <div className={styles.cardBottomActionsLeft}>
+                                    <button
+                                        type="button"
+                                        className={styles.btnNewChat}
+                                        onClick={onNewChat}
+                                        title="Start a new chat session"
+                                    >
+                                        <PlusIcon size={14} />
+                                        <span>{t('strategyStudio.newChat', 'New Chat')}</span>
+                                    </button>
+                                </div>
                                 <button
                                     type="button"
                                     className={`${styles.circularSubmitBtn} ${input.trim() ? styles.activeBtn : ''}`}

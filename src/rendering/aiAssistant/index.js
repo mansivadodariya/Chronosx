@@ -574,6 +574,7 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
                 loadingHistory={loadingHistory}
                 chatHistory={chatHistory}
                 selectedChat={selectedChat}
+                currentConversationId={currentConversationId}
                 handleSelectChat={handleSelectChat}
                 openDeleteConfirm={openDeleteConfirm}
                 getQuestionText={getQuestionText}

@@ -52,7 +52,7 @@ export default function InteractiveQuestionWizard({
 
     // Parse questions list from latest AI message & omit already answered questions
     const questionsList = useMemo(() => {
-        if (!latestAiMessage) return [];
+        if (!latestAiMessage || latestAiMessage.isError || latestAiMessage.role === 'user') return [];
         let raw = [];
         if (latestAiMessage.questions && Array.isArray(latestAiMessage.questions) && latestAiMessage.questions.length > 0) {
             raw = latestAiMessage.questions;
@@ -189,7 +189,7 @@ export default function InteractiveQuestionWizard({
         }
     }, [isCustomSelected, currentIndex, selectedOptionIndex]);
 
-    if (!activeQuestion || activeOptions.length === 0 || loading) {
+    if (!activeQuestion || activeOptions.length === 0 || loading || latestAiMessage?.isError) {
         return null;
     }
 

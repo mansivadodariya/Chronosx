@@ -47,10 +47,14 @@ export const strategyStudioApi = {
             const apiBase = getApiBase();
             const currentUserId = userId || getStoredUserId() || undefined;
             const payload = {
-                session_id: sessionId,
-                message,
-                ...(currentUserId ? { user_id: currentUserId } : {})
+                message: (message || '').trim()
             };
+            if (sessionId) {
+                payload.session_id = sessionId;
+            }
+            if (currentUserId) {
+                payload.user_id = currentUserId;
+            }
             if (answers && Array.isArray(answers) && answers.length > 0) {
                 payload.answers = answers;
             }
@@ -59,103 +63,93 @@ export const strategyStudioApi = {
                 headers: getAuthHeaders(),
                 body: JSON.stringify(payload)
             });
+
+            const json = await res.json().catch(() => null);
+            if (res.ok && json) {
+                return json;
+            }
+
+            const errorDetail = json?.detail || json?.message || json?.error || (res.status === 422 ? 'Unable to process input format. Please refine your query or try again.' : 'The Strategy Advisor service is currently unavailable. Please try again later.');
+            return {
+                status: "error",
+                isError: true,
+                message: typeof errorDetail === 'string' ? errorDetail : 'The Strategy Advisor service is currently unavailable. Please try again later.'
+            };
+        } catch (err) {
+            console.warn("Backend /wizard/chat unreachable:", err.message);
+            return {
+                status: "error",
+                isError: true,
+                message: "Unable to connect to the AI Strategy Advisor service. Please check your connection and try again shortly."
+            };
+        }
+    },
+
+    /**
+     * Fetch list of chat sessions for user
+     * GET /backtest/v1/wizard/chat-sessions/{user_id}?limit=30
+     */
+    getChatSessions: async (userId, limit = 30) => {
+        try {
+            const apiBase = getApiBase();
+            const currentUserId = userId || getStoredUserId();
+            if (!currentUserId) return { status: "success", data: [] };
+            const res = await fetch(`${apiBase}/wizard/chat-sessions/${currentUserId}?limit=${limit}`, {
+                headers: getAuthHeaders()
+            });
             if (res.ok) {
                 const json = await res.json();
                 return json;
             }
         } catch (err) {
-            console.warn("Backend /wizard/chat unreachable, using dynamic fallback engine:", err.message);
+            console.warn("Backend /wizard/chat-sessions unreachable:", err.message);
         }
+        return { status: "success", data: [] };
+    },
 
-        // Conversational Fallback Advisor Engine
-        const msg = (message || "").toLowerCase();
-        let reply = "";
-        let suggestions = [];
-        let options = [];
-        let question = "Do you have specific trading conditions in mind, or would you like us to design the best strategy for you?";
-        let draft = null;
-        let complete = false;
-
-        if (msg.includes("ema") || msg.includes("moving average") || msg.includes("cross")) {
-            reply = "A 9 EMA crossing over 21 EMA provides clear directional momentum signals on 30m charts. I've calibrated a EURUSD setup with 20-pip TP and 10-pip SL.";
-            suggestions = ["Run Backtest Now", "Switch to 1hr timeframe", "Add RSI Filter"];
-            options = [
-                { title: "Run Backtest Now", description: "Simulate strategy performance across 60-day historical candles." },
-                { title: "Design for me", description: "We'll optimize indicators and SL/TP risk parameters automatically." },
-                { title: "I have my own conditions", description: "Define custom moving average periods and filters." }
-            ];
-            question = "Would you like to run backtest simulation immediately or fine-tune indicators?";
-            draft = {
-                instrument: "EURUSD",
-                timeframe: "30min",
-                entry_pattern: "EMA Crossover",
-                target_pips: 20,
-                stoploss_pips: 10
-            };
-            complete = true;
-        } else if (msg.includes("dca") || msg.includes("btc") || msg.includes("grid")) {
-            reply = "Dynamic Dollar-Cost Averaging (DCA) with grid scaling accumulates positions at systematic intervals. Configured with 5 grid tiers on 15m intervals with 1.5% profit rebalance targets.";
-            suggestions = ["Run Backtest Now", "Tighten Grid Spacing", "Adjust Tier Volume"];
-            options = [
-                { title: "Run Backtest Now", description: "Simulate DCA grid execution on historical pricing." },
-                { title: "Design for me", description: "Automatically calculate optimal step distance and take profit." },
-                { title: "I have my own conditions", description: "Customize base order size, safety orders, and scale." }
-            ];
-            question = "Do you want to test this DCA configuration with 10,000 capital?";
-            draft = {
-                instrument: "BTCUSD",
-                timeframe: "15min",
-                entry_pattern: "DCA Grid Accumulation",
-                target_pips: 45,
-                stoploss_pips: 25
-            };
-            complete = true;
-        } else if (msg.includes("backtest") || msg.includes("last")) {
-            reply = "Loaded your last formulated quantitative strategy (EMA 20/50 Trend Confluence on XAUUSD 15m). Prepared for historical candle execution.";
-            suggestions = ["Run Backtest Now", "Change Timeframe to 30m", "Adjust Stop Loss"];
-            options = [
-                { title: "Run Backtest Now", description: "Execute simulation on 60 days of historical M15 candle bars." },
-                { title: "Design for me", description: "Calibrate risk/reward ratio to 1:2.5 before testing." },
-                { title: "I have my own conditions", description: "Specify start date, stoploss pips, and capital." }
-            ];
-            question = "Ready to simulate this strategy across historical market candles?";
-            draft = {
-                instrument: "XAUUSD",
-                timeframe: "15min",
-                entry_pattern: "EMA Trend Confluence",
-                target_pips: 40,
-                stoploss_pips: 20
-            };
-            complete = true;
-        } else {
-            reply = `Understood! I'm configuring an algorithmic strategy blueprint for "${message}". What primary market or timeframe do you prefer?`;
-            suggestions = ["XAUUSD 15min", "EURUSD 1hr", "GBPUSD 15min", "Trend Following", "Scalping"];
-            options = [
-                { title: "Design for me", description: "We'll create a tailored trading strategy for you." },
-                { title: "I have my own conditions", description: "You define your own entry and exit rules." }
-            ];
-            question = "Do you have specific trading conditions in mind, or would you like us to design the best strategy for you?";
-            draft = {
-                instrument: "XAUUSD",
-                timeframe: "15min",
-                entry_pattern: "Momentum Breakout",
-                target_pips: 30,
-                stoploss_pips: 15
-            };
-            complete = true;
-        }
-
-        return {
-            status: "success",
-            data: {
-                reply,
-                suggestions,
-                options,
-                question,
-                draft,
-                complete
+    /**
+     * Get specific session messages
+     * GET /backtest/v1/wizard/chat-sessions/{user_id}?session_id={session_id}
+     */
+    getSessionMessages: async (userId, sessionId) => {
+        try {
+            const apiBase = getApiBase();
+            const currentUserId = userId || getStoredUserId();
+            if (!currentUserId || !sessionId) return { status: "error", data: null };
+            const res = await fetch(`${apiBase}/wizard/chat-sessions/${currentUserId}?session_id=${sessionId}`, {
+                headers: getAuthHeaders()
+            });
+            if (res.ok) {
+                const json = await res.json();
+                return json;
             }
-        };
+        } catch (err) {
+            console.warn("Backend /wizard/chat-sessions with session_id unreachable:", err.message);
+        }
+        return { status: "error", data: null };
+    },
+
+    /**
+     * Delete a chat session
+     * DELETE /backtest/v1/wizard/chat-sessions/{user_id}/{session_id}
+     */
+    deleteChatSession: async (userId, sessionId) => {
+        try {
+            const apiBase = getApiBase();
+            const currentUserId = userId || getStoredUserId();
+            if (!currentUserId || !sessionId) return { status: "error" };
+            const res = await fetch(`${apiBase}/wizard/chat-sessions/${currentUserId}/${sessionId}`, {
+                method: "DELETE",
+                headers: getAuthHeaders()
+            });
+            if (res.ok) {
+                const json = await res.json();
+                return json;
+            }
+        } catch (err) {
+            console.warn("Backend delete chat session unreachable:", err.message);
+        }
+        return { status: "error" };
     },
 
     /**

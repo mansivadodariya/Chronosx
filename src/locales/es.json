@@ -2613,7 +2613,15 @@
     "publishStrategy": "Publicar Estrategia",
     "greetingMorning": "Buenos días, trader",
     "greetingAfternoon": "Buenas tardes, trader",
-    "greetingEvening": "Buenas noches, trader"
+    "greetingEvening": "Buenas noches, trader",
+    "history": "Historial",
+    "chatHistory": "Historial de Chat",
+    "noHistory": "No se encontraron chats anteriores",
+    "noHistoryDesc": "Tus conversaciones y modelos de estrategia aparecerán aquí.",
+    "searchHistory": "Buscar chats...",
+    "deleteChat": "Eliminar chat",
+    "startChat": "Iniciar un nuevo chat",
+    "newChat": "Nuevo chat"
   },
   "legal": {
     "termsTitle": "Términos y Condiciones",

@@ -2561,7 +2561,15 @@
     "publishStrategy": "发布策略",
     "greetingMorning": "早上好，交易员",
     "greetingAfternoon": "下午好，交易员",
-    "greetingEvening": "晚上好，交易员"
+    "greetingEvening": "晚上好，交易员",
+    "history": "历史记录",
+    "chatHistory": "聊天历史",
+    "noHistory": "未找到之前的聊天记录",
+    "noHistoryDesc": "您的策略对话与模型将显示在此处。",
+    "searchHistory": "搜索聊天...",
+    "deleteChat": "删除聊天",
+    "startChat": "发起新对话",
+    "newChat": "新建对话"
   },
   "legal": {
     "termsTitle": "服务条款与协议",

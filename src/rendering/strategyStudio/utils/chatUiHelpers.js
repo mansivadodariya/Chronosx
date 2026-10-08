@@ -13,6 +13,7 @@ export const DYNAMIC_LOADING_STAGES = [
 ];
 
 export function getDynamicStepInfo(msg, allMessages, defaultCurrentStep = 2, defaultTotalSteps = 4) {
+    if (!msg || msg.isError || msg.role === 'user') return null;
     if (msg.step_badge) {
         const match = msg.step_badge.match(/Step\s*(\d+)/i);
         const stepNum = match ? parseInt(match[1], 10) : defaultCurrentStep;

@@ -2561,7 +2561,15 @@
     "publishStrategy": "Опубликовать стратегию",
     "greetingMorning": "Доброе утро, трейдер",
     "greetingAfternoon": "Добрый день, трейдер",
-    "greetingEvening": "Добрый вечер, трейдер"
+    "greetingEvening": "Добрый вечер, трейдер",
+    "history": "История",
+    "chatHistory": "История чатов",
+    "noHistory": "Предыдущие чаты не найдены",
+    "noHistoryDesc": "Ваши диалоги по стратегиям и модели будут отображаться здесь.",
+    "searchHistory": "Поиск чатов...",
+    "deleteChat": "Удалить чат",
+    "startChat": "Начать новый чат",
+    "newChat": "Новый чат"
   },
   "legal": {
     "termsTitle": "Условия и положения",

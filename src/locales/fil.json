@@ -2561,7 +2561,15 @@
     "publishStrategy": "I-publish ang Diskarte",
     "greetingMorning": "Magandang umaga, trader",
     "greetingAfternoon": "Magandang hapon, trader",
-    "greetingEvening": "Magandang gabi, trader"
+    "greetingEvening": "Magandang gabi, trader",
+    "history": "Kasaysayan",
+    "chatHistory": "Kasaysayan ng Chat",
+    "noHistory": "Walang nahanap na nakaraang chat",
+    "noHistoryDesc": "Lalabas dito ang iyong mga pag-uusap sa estratehiya at mga modelo.",
+    "searchHistory": "Maghanap ng chat...",
+    "deleteChat": "Burahin ang chat",
+    "startChat": "Magsimula ng Bagong Chat",
+    "newChat": "Bagong Chat"
   },
   "legal": {
     "termsTitle": "Mga Tuntunin at Kundisyon",

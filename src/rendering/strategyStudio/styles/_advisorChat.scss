@@ -1,3 +1,21 @@
+.advisorChatTopHeader {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 12px 24px 4px;
+    box-sizing: border-box;
+    z-index: 20;
+    flex-shrink: 0;
+}
+
+.advisorChatTopRight {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
 .activeChatInnerContainer {
     display: flex;
     flex-direction: column;

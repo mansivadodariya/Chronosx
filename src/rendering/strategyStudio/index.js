@@ -7,6 +7,8 @@ import StudioToolbar from './components/StudioToolbar';
 import AdvisorChatView from './components/AdvisorChatView';
 import BacktestResultsView from './components/BacktestResultsView';
 import SimulationProgressLoader from './components/SimulationProgressLoader';
+import ChatHistoryDrawer from './components/ChatHistoryDrawer';
+import useStrategyChatHistory from './hooks/useStrategyChatHistory';
 import {
     BotBrainIcon,
     RefreshResetIcon,
@@ -39,13 +41,30 @@ export default function StrategyStudio() {
     const [isJsonModalOpen, setIsJsonModalOpen] = useState(false);
 
     // AI Advisor Chat States
-    const [sessionId, setSessionId] = useState('');
     const [messages, setMessages] = useState([]);
     const [chatInput, setChatInput] = useState('');
     const [advisorLoading, setAdvisorLoading] = useState(false);
     const [currentDraft, setCurrentDraft] = useState(null);
     const [currentStrategy, setCurrentStrategy] = useState(null);
     const [generatingStrategy, setGeneratingStrategy] = useState(false);
+
+    // Chat History Management Hook
+    const {
+        currentSessionId,
+        setCurrentSessionId,
+        historyList,
+        isHistoryOpen,
+        setIsHistoryOpen,
+        historyLoading,
+        loadHistoryList,
+        handleNewChat: resetHistoryChat,
+        handleSelectHistorySession,
+        handleDeleteSession
+    } = useStrategyChatHistory({
+        setMessages,
+        setCurrentDraft,
+        setCurrentStrategy
+    });
 
     // Backtest Simulation Results
     const [simulationLoading, setSimulationLoading] = useState(false);
@@ -55,6 +74,18 @@ export default function StrategyStudio() {
     const isSendingRef = useRef(false);
     const lastSendRef = useRef({ time: 0, text: '' });
 
+    // Initialize date ranges on mount
+    useEffect(() => {
+        // Default 60-day window ending yesterday
+        const today = new Date();
+        const yest = new Date(today);
+        yest.setDate(yest.getDate() - 1);
+        const sixtyDaysAgo = new Date(today);
+        sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 61);
+
+        setFromDate(sixtyDaysAgo.toISOString().split('T')[0]);
+        setToDate(yest.toISOString().split('T')[0]);
+    }, []);
     const handleToast = useCallback((msg) => {
         toast.success(msg, {
             style: {
@@ -108,7 +139,7 @@ export default function StrategyStudio() {
             const newId = (typeof crypto !== 'undefined' && crypto.randomUUID)
                 ? crypto.randomUUID()
                 : 'sess_' + Math.random().toString(36).substring(2, 9);
-            setSessionId(newId);
+            setCurrentSessionId(newId);
             setMessages([
                 {
                     role: 'ai',
@@ -123,7 +154,7 @@ export default function StrategyStudio() {
         // 2. Try restoring existing ongoing Bot conversation and parameters from localStorage
         const cachedSession = loadStudioSession();
         if (cachedSession && cachedSession.sessionId) {
-            setSessionId(cachedSession.sessionId);
+            setCurrentSessionId(cachedSession.sessionId);
             if (Array.isArray(cachedSession.messages) && cachedSession.messages.length > 0) {
                 setMessages(cachedSession.messages);
             }
@@ -143,7 +174,7 @@ export default function StrategyStudio() {
             const newId = (typeof crypto !== 'undefined' && crypto.randomUUID)
                 ? crypto.randomUUID()
                 : 'sess_' + Math.random().toString(36).substring(2, 9);
-            setSessionId(newId);
+            setCurrentSessionId(newId);
 
             // Default 60-day window ending yesterday
             const today = new Date();
@@ -155,13 +186,13 @@ export default function StrategyStudio() {
             setFromDate(sixtyDaysAgo.toISOString().split('T')[0]);
             setToDate(yest.toISOString().split('T')[0]);
         }
-    }, [syncToolbarFromStrategy]);
+    }, [syncToolbarFromStrategy, setCurrentSessionId]);
 
     // Automatically persist Bot chat session to localStorage whenever state updates
     useEffect(() => {
-        if (!sessionId) return;
+        if (!currentSessionId) return;
         saveStudioSession({
-            sessionId,
+            sessionId: currentSessionId,
             messages,
             currentDraft,
             currentStrategy,
@@ -177,7 +208,7 @@ export default function StrategyStudio() {
             marketMode
         });
     }, [
-        sessionId,
+        currentSessionId,
         messages,
         currentDraft,
         currentStrategy,
@@ -273,14 +304,18 @@ export default function StrategyStudio() {
 
         try {
             const res = await strategyStudioApi.chatWithAdvisor({
-                sessionId,
+                sessionId: currentSessionId,
                 message: text,
                 answers: qaList
             });
 
-            if (res.status === 'success' || res.success || res.data) {
+            if (res && !res.isError && (res.status === 'success' || res.success || res.data || res.reply)) {
                 const resultData = res.data || res;
-                const rawReply = resultData.reply || res.reply || 'I have analyzed your request and updated the strategy model.';
+                if (!currentSessionId && (resultData.session_id || res.session_id)) {
+                    setCurrentSessionId(resultData.session_id || res.session_id);
+                    loadHistoryList();
+                }
+                const rawReply = resultData.reply || res.reply || 'I have analyzed your strategy request.';
                 const reply = sanitizeRawJsonText(rawReply);
                 const suggestions = resultData.suggestions || res.suggestions || [];
                 const options = resultData.options || [];
@@ -327,23 +362,29 @@ export default function StrategyStudio() {
                     }
                 ]);
             } else {
+                const errorMsg = res?.message || res?.detail || 'The AI Strategy Advisor is temporarily unavailable. Please try again shortly.';
                 setMessages((prev) => [
                     ...prev,
                     {
                         role: 'ai',
-                        text: res.message || 'Strategy blueprint updated with requested parameters.',
-                        suggestions: res.suggestions || ['Run Backtest Now']
+                        isError: true,
+                        text: errorMsg
                     }
                 ]);
             }
         } catch (err) {
             console.error('Advisor Chat Error:', err);
+            const errorMsg = err?.response?.data?.detail 
+                || err?.response?.data?.message 
+                || err?.message 
+                || 'The AI Strategy Advisor is temporarily unavailable. Please try again shortly.';
+
             setMessages((prev) => [
                 ...prev,
                 {
                     role: 'ai',
-                    text: 'I calibrated the EMA strategy rules and risk framework. You can run backtest or refine entry conditions.',
-                    suggestions: ['Run Backtest Now']
+                    isError: true,
+                    text: typeof errorMsg === 'string' ? errorMsg : 'The AI Strategy Advisor is temporarily unavailable. Please try again shortly.'
                 }
             ]);
         } finally {
@@ -368,7 +409,7 @@ export default function StrategyStudio() {
 
         try {
             const res = await strategyStudioApi.generateStrategy({
-                sessionId,
+                sessionId: currentSessionId,
                 draft: { ...draft, name: finalName },
                 strategyName: finalName
             });
@@ -409,16 +450,10 @@ export default function StrategyStudio() {
         }
     };
 
-    const handleNewChat = () => {
+    const handleNewChat = useCallback(() => {
         clearStudioSession();
-        const newId = (typeof crypto !== 'undefined' && crypto.randomUUID)
-            ? crypto.randomUUID()
-            : 'sess_' + Math.random().toString(36).substring(2, 9);
-        setSessionId(newId);
-        setMessages([]);
+        resetHistoryChat();
         setChatInput('');
-        setCurrentDraft(null);
-        setCurrentStrategy(null);
         setResults(null);
         setRoundTrips([]);
         setExecutedParams(null);
@@ -426,7 +461,7 @@ export default function StrategyStudio() {
         setGeneratingStrategy(false);
         setAdvisorLoading(false);
         setSimulationLoading(false);
-    };
+    }, [resetHistoryChat]);
 
     /**
      * Execute Backtest Simulation
@@ -618,6 +653,8 @@ export default function StrategyStudio() {
                         setInput={setChatInput}
                         onSend={handleSendMessage}
                         onNewChat={handleNewChat}
+                        onOpenHistory={() => setIsHistoryOpen(true)}
+                        historyCount={historyList.length}
                         loading={advisorLoading}
                         currentDraft={currentDraft}
                         onGenerateFromDraft={handleGenerateFromDraft}
@@ -707,6 +744,17 @@ export default function StrategyStudio() {
                     </div>
                 )}
             </div>
+            {/* Chat History Slide-over Drawer */}
+            <ChatHistoryDrawer
+                isOpen={isHistoryOpen}
+                onClose={() => setIsHistoryOpen(false)}
+                historyList={historyList}
+                loading={historyLoading}
+                currentSessionId={currentSessionId}
+                onSelectSession={handleSelectHistorySession}
+                onDeleteSession={handleDeleteSession}
+                onNewChat={handleNewChat}
+            />
         </div>
     );
 }

@@ -93,7 +93,7 @@ export function useCreateAiAssistantStore() {
     }, []);
 
     const handleSelectChat = useCallback(async (item) => {
-        const convId = item?.id || item?.conversation_id || item?.history_id || item?._id || item?.question_id || item?.uuid;
+        const convId = item?.session_id || item?.sessionId || item?.conversation_id || item?.id || item?.history_id || item?._id || item?.question_id || item?.uuid;
         setHistoryModalOpen(false);
         setSelectedChat(item);
         setCurrentConversationId(convId || null);
@@ -275,7 +275,10 @@ export function useCreateAiAssistantStore() {
                 image_base64: activeAttachment?.url || null,
                 stream: false,
                 ...(activeUid ? { user_id: activeUid } : {}),
-                ...(currentConversationId ? { conversation_id: currentConversationId } : {})
+                ...(currentConversationId ? {
+                    conversation_id: currentConversationId,
+                    session_id: currentConversationId
+                } : {})
             };
 
             const rawResp = await fxApi.chat(chatPayload);
@@ -296,8 +299,9 @@ export function useCreateAiAssistantStore() {
                 notifyCreditsUpdated();
                 fetchChatHistory(activeUid);
             }
-            if (rawResp?.conversation_id) {
-                setCurrentConversationId(rawResp.conversation_id);
+            const newSessionId = rawResp?.session_id || rawResp?.sessionId || rawResp?.conversation_id || rawResp?.id;
+            if (newSessionId) {
+                setCurrentConversationId(newSessionId);
             }
         } catch (err) {
             if (activeRequestIdRef.current !== requestId) return;
