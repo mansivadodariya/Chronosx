@@ -11,17 +11,7 @@ function CheckmarkSvg() {
     );
 }
 
-function computeDynamicStrategyName(draft) {
-    if (!draft) return 'EMA Crossover EURUSD Strategy';
-    if (draft.name && !draft.name.toLowerCase().includes('momentum scalping')) {
-        return draft.name;
-    }
-    if (draft.strategy_name) return draft.strategy_name;
-
-    const sym = (draft.instrument || draft.symbol || (Array.isArray(draft.stock_name) ? draft.stock_name[0] : draft.stock_name) || 'EURUSD').toUpperCase();
-    const type = draft.strategy_type || draft.category || draft.pattern || 'EMA Crossover';
-    return `${type} ${sym} Strategy`;
-}
+import { computeDynamicStrategyName } from '../utils/strategyNaming';
 
 /**
  * ReadyToProceedCard — Displays the Strategy Name input & actions (Screenshot 1 Top)

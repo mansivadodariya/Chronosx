@@ -6,9 +6,12 @@
     grid-template-columns: 1fr 580px;
     gap: 16px;
     align-items: stretch;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 
-    @include respond-to('xl') {
-        grid-template-columns: 1fr 520px;
+    @media (max-width: 1400px) {
+        grid-template-columns: 1fr 480px;
     }
 
     @include respond-to('lg') {

@@ -1,25 +1,32 @@
-'use client';
-
 import React from 'react';
 import styles from '../customBotBuilder.module.scss';
 import { INDICATOR_DEFINITIONS, getConditionParams, getNextEmaDefaults, validateEntryCondition } from '../constants';
 import CustomSelect from './CustomSelect';
 
-export default function StepEntryRules({ data, errors = {}, onChange }) {
+export default function StepEntryRules({ data, errors = {}, onChange, indicators }) {
     const { triggerMode, entryConditions = [] } = data;
+    const activeIndicators = indicators || {};
 
-    const indicatorOptions = Object.keys(INDICATOR_DEFINITIONS).map(key => ({
-        value: key,
-        label: INDICATOR_DEFINITIONS[key].name
-    }));
+    const indicatorOptions = Object.keys(activeIndicators)
+        .filter(key => activeIndicators[key] && activeIndicators[key].isActive !== false)
+        .map(key => ({
+            value: key,
+            label: activeIndicators[key].name || key
+        }));
 
     const handleAddCondition = () => {
-        const emaDefaults = getNextEmaDefaults(entryConditions, -1, false);
+        const availableKeys = Object.keys(activeIndicators);
+        const defaultKey = activeIndicators.ema_crossover ? 'ema_crossover' : (availableKeys[0] || 'ema_crossover');
+        const emaDefaults = defaultKey === 'ema_crossover' ? getNextEmaDefaults(entryConditions, -1, false) : {};
+        const def = activeIndicators[defaultKey] || INDICATOR_DEFINITIONS[defaultKey] || INDICATOR_DEFINITIONS.ema_crossover;
+        const defaultCond = (def.conditions && def.conditions[0]) || 'Golden Cross (Fast > Slow)';
+        const condParams = getConditionParams(defaultKey, defaultCond, entryConditions, -1);
+
         const newCondition = {
             id: 'cond_' + Date.now(),
-            indicatorKey: 'ema_crossover',
-            condition: 'Golden Cross (Fast > Slow)',
-            params: { ...emaDefaults }
+            indicatorKey: defaultKey,
+            condition: defaultCond,
+            params: { ...(condParams.defaultParams || {}), ...emaDefaults }
         };
         onChange('entryConditions', [...entryConditions, newCondition]);
     };
@@ -30,8 +37,8 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
     };
 
     const handleIndicatorChange = (index, newKey) => {
-        const def = INDICATOR_DEFINITIONS[newKey] || INDICATOR_DEFINITIONS.ema_crossover;
-        const defaultCond = def.conditions[0];
+        const def = activeIndicators[newKey] || activeIndicators.ema_crossover || INDICATOR_DEFINITIONS.ema_crossover;
+        const defaultCond = (def.conditions && def.conditions[0]) || 'Standard Signal';
         const condParams = getConditionParams(newKey, defaultCond, entryConditions, index);
         const updated = [...entryConditions];
         updated[index] = {
@@ -139,11 +146,10 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
             )}
 
             {/* List of Condition Cards */}
-            {entryConditions.length > 0 && (
                 <div className={styles.conditionsList}>
                     {entryConditions.map((cond, index) => {
-                        const def = INDICATOR_DEFINITIONS[cond.indicatorKey] || INDICATOR_DEFINITIONS.ema_crossover;
-                        const conditionOptions = def.conditions.map(c => ({ value: c, label: c }));
+                        const def = activeIndicators[cond.indicatorKey] || activeIndicators.ema_crossover || INDICATOR_DEFINITIONS.ema_crossover;
+                        const conditionOptions = (def?.conditions || ['Standard Signal']).map(c => ({ value: c, label: c }));
                         const condParams = getConditionParams(cond.indicatorKey, cond.condition, entryConditions, index);
                         const condError = validateEntryCondition(cond, entryConditions, index);
 
@@ -252,7 +258,7 @@ export default function StepEntryRules({ data, errors = {}, onChange }) {
                     );
                 })}
                 </div>
-            )}
+          
 
             {/* Add Condition Button */}
             <button

@@ -284,12 +284,13 @@ html.light .children-wrapper {
   width: calc(100% - 68px);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
 
   .children-wrapper,
   .sidebar-wrapper.collapsed~.children-wrapper,
   .user-layout.collapsed .children-wrapper {
     width: 100% !important;
+    max-width: 100% !important;
     margin-left: 0 !important;
   }
 }

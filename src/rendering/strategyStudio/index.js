@@ -25,6 +25,7 @@ import { parseRoundTrips } from './utils/backtestEngine';
 import { sanitizeRawJsonText } from './utils/chatTextFormatter';
 import { saveStudioSession, loadStudioSession, clearStudioSession } from './utils/sessionPersistence';
 import { normalizeInterval, normalizeSymbol, extractParamsFromChatAndContext } from './utils/paramExtractor';
+import { computeDynamicStrategyName } from './utils/strategyNaming';
 
 export default function StrategyStudio() {
     // Strategy Parameters (Toolbar & Execution)
@@ -398,7 +399,7 @@ export default function StrategyStudio() {
      */
     const handleGenerateFromDraft = async (draft, customName = '') => {
         if (!draft || generatingStrategy) return;
-        const finalName = customName || draft.name || `${draft.instrument || 'EUR/USD'} Momentum Scalping`;
+        const finalName = customName || draft.name || draft.strategy_name || computeDynamicStrategyName(draft, messages);
 
         // Append user action message "Create Strategy"
         setMessages((prev) => [

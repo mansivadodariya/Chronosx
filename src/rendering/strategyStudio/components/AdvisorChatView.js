@@ -31,10 +31,7 @@ import {
     ClockIntervalIcon,
     TacticalRouteIcon
 } from './StudioIcons';
-
-const STRATEGY_EXPLORE_OPTIONS = [
-    'Build an EMA crossover strategy'
-];
+import { fetchIndicatorsFromSupabase, getStrategyExploreSuggestions } from '@/lib/indicatorsData';
 
 const EXPLORE_TAGLINES = [
     'Trade with data. Execute with discipline.',
@@ -129,16 +126,28 @@ export default function AdvisorChatView({
     const [isOptionBoxDismissed, setIsOptionBoxDismissed] = useState(false);
     const [user, setUser] = useState(null);
 
+    const [dynamicOptions, setDynamicOptions] = useState(() => getStrategyExploreSuggestions());
+
+    useEffect(() => {
+        let isMounted = true;
+        fetchIndicatorsFromSupabase().then((indicators) => {
+            if (isMounted && indicators) {
+                setDynamicOptions(getStrategyExploreSuggestions(indicators));
+            }
+        }).catch(() => {});
+        return () => { isMounted = false; };
+    }, []);
+
     // As-you-type suggestion dropdown
     const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(0);
     const typedSuggestions = useMemo(() => {
         const trimmed = input.trim().toLowerCase();
         if (!trimmed) return [];
-        return STRATEGY_EXPLORE_OPTIONS.filter((opt) => {
+        return dynamicOptions.filter((opt) => {
             const optLower = opt.toLowerCase();
             return optLower.includes(trimmed) && optLower !== trimmed;
-        });
-    }, [input]);
+        }).slice(0, 5);
+    }, [input, dynamicOptions]);
     const showTypedSuggestions = typedSuggestions.length > 0;
 
     useEffect(() => {
@@ -458,7 +467,7 @@ export default function AdvisorChatView({
                                     </button>
                                 </div>
                                 <div className={styles.popupOptionsList}>
-                                    {STRATEGY_EXPLORE_OPTIONS.map((opt, optIdx) => (
+                                    {dynamicOptions.map((opt, optIdx) => (
                                         <button
                                             key={optIdx}
                                             type="button"

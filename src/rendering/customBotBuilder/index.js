@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/components/toast';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -15,7 +15,8 @@ import StepExitRules from './components/StepExitRules';
 import StepRisk from './components/StepRisk';
 import StepReview from './components/StepReview';
 import StepFooterNav from './components/StepFooterNav';
-import { validateEntryCondition } from './constants';
+import { validateEntryCondition, INDICATOR_DEFINITIONS } from './constants';
+import { fetchIndicatorsFromSupabase } from '@/lib/indicatorsData';
 import { botBuilderApi } from '@/lib/botBuilderApi';
 
 const INITIAL_FORM_DATA = {
@@ -111,8 +112,19 @@ export default function CustomBotBuilderView() {
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState(INITIAL_FORM_DATA);
     const [errors, setErrors] = useState({});
+    const [indicators, setIndicators] = useState({});
     const [isSimulating, setIsSimulating] = useState(false);
     const [isDeploying, setIsDeploying] = useState(false);
+
+    useEffect(() => {
+        let isMounted = true;
+        fetchIndicatorsFromSupabase(true).then((data) => {
+            if (isMounted && data) {
+                setIndicators(data);
+            }
+        }).catch(() => {});
+        return () => { isMounted = false; };
+    }, []);
 
     const isCurrentStepValid = useMemo(() => {
         return validateStep(currentStep, formData, t).isValid;
@@ -281,6 +293,7 @@ export default function CustomBotBuilderView() {
                                 data={formData}
                                 errors={errors}
                                 onChange={handleFormChange}
+                                indicators={indicators}
                             />
                         )}
                         {currentStep === 3 && (
