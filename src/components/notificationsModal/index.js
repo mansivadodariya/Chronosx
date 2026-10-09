@@ -1,16 +1,20 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
 import {
     fetchUserNotifications,
     markNotificationAsRead,
-    markAllNotificationsAsRead
+    markAllNotificationsAsRead,
+    executeNotificationRedirect
 } from '@/services/notificationService';
+import { getStoredUserId } from '@/lib/authSession';
 import styles from './notificationsModal.module.scss';
 
 export default function NotificationsModal({ isOpen, onClose, userId, onUnreadCountChanged }) {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
+    const router = useRouter();
     const [activeTab, setActiveTab] = useState('unread'); // 'unread' | 'read'
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [notifications, setNotifications] = useState([]);
@@ -108,6 +112,19 @@ export default function NotificationsModal({ isOpen, onClose, userId, onUnreadCo
     const handleMarkAsRead = async (item) => {
         if (!item || item.is_read) return;
         handleDismissItem(null, item);
+    };
+
+    const handleItemClick = (item) => {
+        if (!item) return;
+        if (!item.is_read) {
+            handleMarkAsRead(item);
+        }
+        onClose?.();
+        executeNotificationRedirect(item, {
+            router,
+            language,
+            isLoggedIn: Boolean(userId || getStoredUserId()),
+        });
     };
 
     const handleMarkAllRead = async () => {
@@ -230,7 +247,7 @@ export default function NotificationsModal({ isOpen, onClose, userId, onUnreadCo
                                 <div
                                     key={item.id}
                                     className={`${styles.notificationCard} ${!item.is_read ? styles.unreadCard : ''} ${dismissingIds.has(item.id) ? styles.slidingOut : ''}`}
-                                    onClick={() => handleMarkAsRead(item)}
+                                    onClick={() => handleItemClick(item)}
                                 >
                                     <div className={styles.cardHeader}>
                                         <span className={styles.cardCatTag}>{item.category || item.event_type || 'SYSTEM'}</span>

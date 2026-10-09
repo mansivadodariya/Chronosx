@@ -3,7 +3,7 @@ import { notificationsApi } from '@/lib/api';
 
 /**
  * 1. Fetch Website Updates Only (Announcements & Feature Releases)
- * Use this on announcement banners, what's new modals, or changelog pages
+ * Use this on your announcement banner, what's new modal, or changelog page:
  */
 export async function fetchWebsiteUpdates(page = 1, limit = 20) {
     if (!supabase) return { data: [], total: 0 };
@@ -22,6 +22,7 @@ export async function fetchWebsiteUpdates(page = 1, limit = 20) {
             console.error('Error fetching website updates:', error);
             return { data: [], total: 0 };
         }
+
         return { data: data || [], total: count || 0 };
     } catch (err) {
         console.error('Error fetching website updates exception:', err);
@@ -31,7 +32,8 @@ export async function fetchWebsiteUpdates(page = 1, limit = 20) {
 
 /**
  * 2. Fetch User Notification Feed (User-Specific + Global Broadcasts)
- * Use this for the Notification Bell Dropdown or Notification Center
+ * Use this for the Notification Bell Dropdown or Notification Center page.
+ * It fetches both private user alerts and global broadcasts:
  */
 export async function fetchUserNotifications(userId, { page = 1, limit = 20, category = null, readStatus = null } = {}) {
     if (!supabase || !userId) return { data: [], total: 0 };
@@ -64,11 +66,11 @@ export async function fetchUserNotifications(userId, { page = 1, limit = 20, cat
 
         // Optional: filter by category if selected
         if (category && category !== 'all') {
-            // Support matching case-insensitively or normalized category slugs
-            query = query.ilike('category', category.replace(/\s+/g, '_'));
+            query = query.eq('category', category);
         }
 
         const { data, count, error } = await query;
+
         if (error) {
             console.error('Error fetching notifications:', error);
             return { data: [], total: 0 };
@@ -105,7 +107,7 @@ export async function fetchUserNotifications(userId, { page = 1, limit = 20, cat
 
 /**
  * 3. Fetch Unread Count Badge
- * Use this to display the red/green notification badge on the bell icon
+ * Use this to display the red notification badge on the bell icon:
  */
 export async function getUnreadCount(userId) {
     if (!supabase || !userId) return 0;
@@ -127,7 +129,7 @@ export async function getUnreadCount(userId) {
             `)
             .is('user_id', null);
 
-        if (err1 && err2) return 0;
+        if (err1 || err2) return 0;
 
         const broadcastUnread = (broadcasts || []).filter(
             (b) => !b.user_notification_reads || !b.user_notification_reads.some((r) => r.user_id === userId)
@@ -141,72 +143,175 @@ export async function getUnreadCount(userId) {
 }
 
 /**
- * 4. Mark Single Notification As Read
+ * 4. Mark Single Notification As Read via Backend API
+ * Uses backend endpoint: POST /api/v1/notifications/:id/read
  */
-export async function markNotificationAsRead(notificationId, userId, isBroadcast = false) {
+export async function markNotificationAsRead(notificationId) {
     if (!notificationId) return;
-
-    // 1. Attempt backend API call
     try {
-        await notificationsApi?.markAsRead?.(notificationId);
-    } catch (_) {}
-
-    // 2. Ensure Supabase is updated
-    if (supabase && userId) {
-        try {
-            if (isBroadcast) {
-                await supabase
-                    .from('user_notification_reads')
-                    .upsert({
-                        notification_id: notificationId,
-                        user_id: userId,
-                        read_at: new Date().toISOString()
-                    }, { onConflict: 'notification_id,user_id' });
-            } else {
-                await supabase
-                    .from('user_notifications')
-                    .update({ is_read: true })
-                    .eq('id', notificationId);
-            }
-        } catch (err) {
-            console.warn('Supabase mark read fallback notice:', err);
-        }
+        return await notificationsApi.markAsRead(notificationId);
+    } catch (err) {
+        console.error('Error marking notification as read via API:', err);
     }
 }
 
 /**
- * 5. Mark All Notifications As Read
+ * 5. Mark All Notifications As Read via Backend API
+ * Uses backend endpoint: POST /api/v1/notifications/read-all
  */
-export async function markAllNotificationsAsRead(userId, currentNotifications = []) {
-    // 1. Attempt backend API call
+export async function markAllNotificationsAsRead() {
     try {
-        await notificationsApi?.markAllAsRead?.();
-    } catch (_) {}
-
-    // 2. Ensure Supabase is updated
-    if (supabase && userId) {
-        try {
-            // Mark all private unread
-            await supabase
-                .from('user_notifications')
-                .update({ is_read: true })
-                .eq('user_id', userId)
-                .eq('is_read', false);
-
-            // Mark any unread broadcasts
-            const broadcastItems = currentNotifications.filter(n => n.is_broadcast && !n.is_read);
-            if (broadcastItems.length > 0) {
-                const inserts = broadcastItems.map(item => ({
-                    notification_id: item.id,
-                    user_id: userId,
-                    read_at: new Date().toISOString()
-                }));
-                await supabase
-                    .from('user_notification_reads')
-                    .upsert(inserts, { onConflict: 'notification_id,user_id' });
-            }
-        } catch (err) {
-            console.warn('Supabase mark all read fallback notice:', err);
-        }
+        return await notificationsApi.markAllAsRead();
+    } catch (err) {
+        console.error('Error marking all notifications as read via API:', err);
     }
 }
+
+const SUPPORTED_LOCALES = ['en', 'ar', 'ary', 'es', 'ru', 'zh', 'vi', 'id', 'fil', 'arabic', 'spanish', 'russian', 'chinese', 'vietnamese', 'indonesian', 'filipino', 'darija'];
+
+const PROTECTED_PREFIXES = [
+    '/dashboard',
+    '/chart-scanner',
+    '/trade-advisor',
+    '/trade-audit',
+    '/market-assistant',
+    '/signal-terminal',
+    '/live-scanner',
+    '/strategy-core',
+    '/trading-signal',
+    '/ai-trading-signal',
+    '/strategy-signal',
+    '/predefined-strategies',
+    '/strategy-hub',
+    '/my-bots',
+    '/ai-bot-builder',
+    '/manual-bot-builder',
+    '/bot-library',
+    '/browse-bots',
+    '/calendar',
+    '/calculator',
+    '/news',
+    '/tools',
+    '/credit-history',
+    '/broker',
+    '/brokers',
+    '/profile',
+    '/settings',
+    '/onboarding',
+    '/steper',
+];
+
+function stripLocalePrefix(path) {
+    if (!path) return '/';
+    const clean = path.split('?')[0].replace(/\/$/, '') || '/';
+    const parts = clean.split('/').filter(Boolean);
+    if (parts.length > 0 && SUPPORTED_LOCALES.includes(parts[0].toLowerCase())) {
+        const withoutLocale = '/' + parts.slice(1).join('/');
+        return withoutLocale === '' ? '/' : withoutLocale;
+    }
+    return clean;
+}
+
+export function getLocalizedHref(href, lang) {
+    if (!href || href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//')) return href;
+    const [pathname, search] = href.split('?');
+    const clean = stripLocalePrefix(pathname);
+    const currentLang = lang || 'en';
+    const localizedPath = clean === '/' ? `/${currentLang}` : `/${currentLang}${clean}`;
+    return search ? `${localizedPath}?${search}` : localizedPath;
+}
+
+export function isProtectedRoute(path) {
+    if (!path || path.startsWith('http://') || path.startsWith('https://') || path.startsWith('//')) return false;
+    const clean = stripLocalePrefix(path.split('?')[0]);
+    return PROTECTED_PREFIXES.some(prefix => clean === prefix || clean.startsWith(`${prefix}/`));
+}
+
+export function getNotificationRedirectUrl(notification) {
+    if (!notification) return null;
+
+    // 1. Direct properties on notification object
+    const direct = notification.redirect_url || notification.url || notification.link || notification.route || notification.action_url || notification.href;
+    if (direct && typeof direct === 'string' && direct.trim()) {
+        return direct.trim();
+    }
+
+    // 2. Properties in data payload
+    let data = notification.data;
+    if (typeof data === 'string') {
+        try {
+            data = JSON.parse(data);
+        } catch (_) {
+            data = null;
+        }
+    }
+    if (data && typeof data === 'object') {
+        const dataUrl = data.redirect_url || data.url || data.link || data.route || data.action_url || data.href || data.target || data.path;
+        if (dataUrl && typeof dataUrl === 'string' && dataUrl.trim()) {
+            return dataUrl.trim();
+        }
+    }
+
+    // 3. Fallback based on category or event_type
+    const cat = String(notification.category || notification.event_type || '').toLowerCase().trim();
+    if (cat === 'trade_signals' || cat === 'trade_signal') return '/trading-signal';
+    if (cat === 'ai_strategy' || cat === 'strategy') return '/my-bots';
+    if (cat === 'chart_scanner' || cat === 'scanner') return '/chart-scanner';
+    if (cat === 'trade_advisor' || cat === 'trade_audit') return '/trade-advisor';
+    if (cat === 'market_assistant') return '/market-assistant';
+    if (cat === 'brokers' || cat === 'associated_brokers') return '/brokers';
+    if (cat === 'plans' || cat === 'subscription_plans') return '/subscription-plans';
+    if (cat === 'affiliate' || cat === 'affiliate_program') return '/affiliate';
+    if (cat === 'profile' || cat === 'settings') return '/profile';
+    if (cat === 'tools' || cat === 'economic_calendar') return '/calendar';
+    if (cat === 'forex_calculator') return '/calculator';
+
+    return null;
+}
+
+/**
+ * Executes proper redirection for a notification click:
+ * - If external URL: opens safely in a new tab.
+ * - If logged in and internal route: navigates directly to localized destination.
+ * - If NOT logged in and protected route: redirects to /login?redirect=<target> so user lands on target after login.
+ */
+export function executeNotificationRedirect(notification, { router, language, isLoggedIn, onComplete } = {}) {
+    if (!notification) return;
+
+    const targetUrl = getNotificationRedirectUrl(notification);
+    if (!targetUrl) {
+        onComplete?.();
+        return;
+    }
+
+    // External link handling
+    if (targetUrl.startsWith('http://') || targetUrl.startsWith('https://') || targetUrl.startsWith('//')) {
+        onComplete?.();
+        if (typeof window !== 'undefined') {
+            window.open(targetUrl, '_blank', 'noopener,noreferrer');
+        }
+        return;
+    }
+
+    const isUserLoggedIn = typeof isLoggedIn === 'boolean'
+        ? isLoggedIn
+        : Boolean(typeof window !== 'undefined' && (localStorage.getItem('user') || localStorage.getItem('user_id') || localStorage.getItem('access_token') || sessionStorage.getItem('access_token')));
+
+    const isProtected = isProtectedRoute(targetUrl);
+
+    let destination = targetUrl;
+    if (isProtected && !isUserLoggedIn) {
+        destination = `/login?redirect=${encodeURIComponent(targetUrl)}`;
+    }
+
+    const localizedDestination = getLocalizedHref(destination, language);
+
+    onComplete?.();
+
+    if (router && typeof router.push === 'function') {
+        router.push(localizedDestination);
+    } else if (typeof window !== 'undefined') {
+        window.location.href = localizedDestination;
+    }
+}
+

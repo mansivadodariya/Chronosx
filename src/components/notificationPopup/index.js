@@ -1,11 +1,15 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useLanguage } from '@/context/LanguageContext';
 import {
     fetchUserNotifications,
     fetchWebsiteUpdates,
     markNotificationAsRead,
-    markAllNotificationsAsRead
+    markAllNotificationsAsRead,
+    executeNotificationRedirect,
+    getNotificationRedirectUrl
 } from '@/services/notificationService';
 import { getStoredUserId } from '@/lib/authSession';
 import styles from './notificationPopup.module.scss';
@@ -28,15 +32,45 @@ function saveDismissedGuestUpdate(id) {
             current.push(id);
             localStorage.setItem('chronosx_dismissed_updates', JSON.stringify(current));
         }
-    } catch (_) {}
+    } catch (_) { }
+}
+
+function formatCategory(raw) {
+    if (!raw) return 'Website Update';
+    const s = String(raw).trim().toLowerCase();
+    if (s === 'website_updates' || s === 'website_update') return 'Website Update';
+    if (s === 'trade_signals' || s === 'trade_signal') return 'Trade Signal';
+    if (s === 'ai_strategy' || s === 'strategy') return 'AI Strategy';
+    if (s === 'chart_scanner' || s === 'scanner') return 'Chart Scanner';
+    if (s === 'system_alert' || s === 'system') return 'System Alert';
+    if (s === 'announcement' || s === 'announcements') return 'Announcement';
+    return s.replace(/[_-]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 export default function NotificationPopup({ userId: propUserId, onOpenFullModal }) {
+    const pathname = usePathname();
+    const router = useRouter();
+    const { language } = useLanguage();
     const [unreadQueue, setUnreadQueue] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isSlidingOut, setIsSlidingOut] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const [activeUserId, setActiveUserId] = useState(propUserId || '');
+
+    const isAuthRoute = Boolean(
+        pathname && (
+            pathname.includes('/login') ||
+            pathname.includes('/signup') ||
+            pathname.includes('/register') ||
+            pathname.includes('/forgot-password') ||
+            pathname.includes('/reset-password') ||
+            pathname.includes('/verify-email') ||
+            pathname.includes('/verify-otp') ||
+            pathname.includes('/onboarding') ||
+            pathname.includes('/steper') ||
+            pathname.includes('/maintenance')
+        )
+    );
 
     useEffect(() => {
         const uid = propUserId || getStoredUserId();
@@ -44,23 +78,28 @@ export default function NotificationPopup({ userId: propUserId, onOpenFullModal 
     }, [propUserId]);
 
     const loadUnreadPopups = useCallback(async () => {
+        if (isAuthRoute) return;
+        if (typeof window !== 'undefined' && sessionStorage.getItem('chronosx_popup_dismissed') === 'true') {
+            return;
+        }
+
         const uid = activeUserId || getStoredUserId();
         try {
             if (uid) {
-                // Logged in user: fetch unread private alerts + broadcast updates
                 const { data } = await fetchUserNotifications(uid, {
                     readStatus: 'unread',
                     limit: 15
                 });
-                if (data && data.length > 0) {
-                    setUnreadQueue(data);
+                const dismissed = getDismissedGuestUpdates();
+                const fresh = (data || []).filter((item) => !dismissed.includes(item.id));
+                if (fresh.length > 0) {
+                    setUnreadQueue(fresh);
                     setCurrentIndex(0);
                     setTimeout(() => {
                         setIsVisible(true);
                     }, 800);
                 }
             } else {
-                // Public / Guest visitor: fetch latest website updates
                 const { data } = await fetchWebsiteUpdates(1, 8);
                 const dismissed = getDismissedGuestUpdates();
                 const fresh = (data || []).filter((item) => !dismissed.includes(item.id));
@@ -75,7 +114,7 @@ export default function NotificationPopup({ userId: propUserId, onOpenFullModal 
         } catch (err) {
             console.warn('Failed to load popup notifications:', err);
         }
-    }, [activeUserId]);
+    }, [activeUserId, isAuthRoute]);
 
     useEffect(() => {
         loadUnreadPopups();
@@ -90,25 +129,77 @@ export default function NotificationPopup({ userId: propUserId, onOpenFullModal 
     }, [loadUnreadPopups]);
 
     const currentItem = unreadQueue[currentIndex];
+    const isActuallyShowing = Boolean(isVisible && !isSlidingOut && currentItem);
 
-    // Dismiss single unread notification with smooth slide
-    const dismissCurrent = async () => {
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('notification:popup:visibility', {
+                detail: { visible: isActuallyShowing }
+            }));
+        }
+        return () => {
+            if (typeof window !== 'undefined') {
+                window.dispatchEvent(new CustomEvent('notification:popup:visibility', {
+                    detail: { visible: false }
+                }));
+            }
+        };
+    }, [isActuallyShowing]);
+
+    // Close all notifications on top 'X' button click
+    const dismissAll = async (e) => {
+        e?.stopPropagation?.();
+        if (isSlidingOut || !isVisible) return;
+
+        setIsSlidingOut(true);
+
+        const uid = activeUserId || getStoredUserId();
+        if (uid) {
+            markAllNotificationsAsRead(uid).catch(() => {});
+            unreadQueue.forEach((item) => {
+                if (item?.id) markNotificationAsRead(item.id).catch(() => {});
+            });
+        }
+
+        unreadQueue.forEach((item) => {
+            if (item?.id) saveDismissedGuestUpdate(item.id);
+        });
+
+        try {
+            if (typeof window !== 'undefined') {
+                sessionStorage.setItem('chronosx_popup_dismissed', 'true');
+            }
+        } catch (_) {}
+
+        setTimeout(() => {
+            setIsVisible(false);
+            setUnreadQueue([]);
+            setIsSlidingOut(false);
+            if (typeof window !== 'undefined') {
+                window.dispatchEvent(new CustomEvent('notification:popup:visibility', { detail: { visible: false } }));
+                window.dispatchEvent(new CustomEvent('notification:updated'));
+            }
+        }, 380);
+    };
+
+    // Advance to next notification or dismiss if last
+    const dismissCurrent = async (e) => {
+        e?.stopPropagation?.();
         if (!currentItem || isSlidingOut) return;
 
         setIsSlidingOut(true);
 
         const uid = activeUserId || getStoredUserId();
         if (uid) {
-            markNotificationAsRead(currentItem.id, uid, currentItem.is_broadcast)
+            markNotificationAsRead(currentItem.id)
                 .then(() => {
                     if (typeof window !== 'undefined') {
                         window.dispatchEvent(new CustomEvent('notification:updated'));
                     }
                 })
                 .catch(() => {});
-        } else {
-            saveDismissedGuestUpdate(currentItem.id);
         }
+        saveDismissedGuestUpdate(currentItem.id);
 
         setTimeout(() => {
             if (currentIndex + 1 < unreadQueue.length) {
@@ -117,36 +208,15 @@ export default function NotificationPopup({ userId: propUserId, onOpenFullModal 
             } else {
                 setIsVisible(false);
                 setUnreadQueue([]);
+                setIsSlidingOut(false);
+                try {
+                    if (typeof window !== 'undefined') {
+                        sessionStorage.setItem('chronosx_popup_dismissed', 'true');
+                        window.dispatchEvent(new CustomEvent('notification:popup:visibility', { detail: { visible: false } }));
+                    }
+                } catch (_) {}
             }
         }, 380);
-    };
-
-    // Close all unread notifications with smooth slide
-    const dismissAll = async () => {
-        if (unreadQueue.length === 0 || isSlidingOut) return;
-
-        setIsSlidingOut(true);
-
-        const uid = activeUserId || getStoredUserId();
-        const allItems = [...unreadQueue];
-
-        if (uid) {
-            markAllNotificationsAsRead(uid, allItems)
-                .then(() => {
-                    if (typeof window !== 'undefined') {
-                        window.dispatchEvent(new CustomEvent('notification:updated'));
-                    }
-                })
-                .catch(() => {});
-        } else {
-            allItems.forEach((item) => saveDismissedGuestUpdate(item.id));
-        }
-
-        setTimeout(() => {
-            setIsVisible(false);
-            setUnreadQueue([]);
-            setIsSlidingOut(false);
-        }, 400);
     };
 
     const formatTime = (isoString) => {
@@ -169,44 +239,80 @@ export default function NotificationPopup({ userId: propUserId, onOpenFullModal 
         }
     };
 
-    if (!isVisible || !currentItem) return null;
+    if (isAuthRoute || !isVisible || !currentItem) return null;
 
     const remainingCount = unreadQueue.length - currentIndex;
 
+    const handleCardClick = (e) => {
+        e?.stopPropagation?.();
+        const itemToRedirect = currentItem;
+        if (!itemToRedirect) return;
+
+        const uid = activeUserId || getStoredUserId();
+        if (uid) {
+            markNotificationAsRead(itemToRedirect.id).catch(() => {});
+        }
+        saveDismissedGuestUpdate(itemToRedirect.id);
+
+        setIsVisible(false);
+        setUnreadQueue([]);
+        try {
+            if (typeof window !== 'undefined') {
+                sessionStorage.setItem('chronosx_popup_dismissed', 'true');
+                window.dispatchEvent(new CustomEvent('notification:popup:visibility', { detail: { visible: false } }));
+            }
+        } catch (_) {}
+
+        const hasRedirect = Boolean(getNotificationRedirectUrl(itemToRedirect));
+        executeNotificationRedirect(itemToRedirect, {
+            router,
+            language,
+            isLoggedIn: Boolean(activeUserId),
+            onComplete: () => {
+                if (!hasRedirect) {
+                    onOpenFullModal?.();
+                }
+            }
+        });
+    };
+
     return (
-        <div className={styles.popupContainer}>
-            <div className={`${styles.slideCard} ${isVisible && !isSlidingOut ? styles.slideIn : styles.slideOut}`}>
-                {/* Top Row: Category Tag + Queue counter + Actions */}
+        <aside className={styles.popupContainer} aria-label="Notification Popup">
+            <div className={`${styles.slideNotify} ${isVisible && !isSlidingOut ? styles.slideIn : styles.slideOut}`}>
+                {/* Top Row: Category Tag + Progress Counter Pill + Close Button */}
                 <div className={styles.topRow}>
                     <div className={styles.badgeWrap}>
                         <span className={styles.categoryTag}>
-                            {currentItem.category || currentItem.event_type || 'UPDATE'}
+                            <span className={styles.pulsingDot} />
+                            {formatCategory(currentItem.category || currentItem.event_type)}
                         </span>
+
                         {unreadQueue.length > 1 && (
-                            <span className={styles.queueBadge}>
-                                {currentIndex + 1} of {unreadQueue.length}
-                            </span>
+                            <div className={styles.counterPill}>
+                                <span className={styles.counterText}>
+                                    {currentIndex + 1} of {unreadQueue.length}
+                                </span>
+                                <div className={styles.dotsRow}>
+                                    {unreadQueue.slice(0, 5).map((_, idx) => (
+                                        <span
+                                            key={idx}
+                                            className={`${styles.dot} ${idx === currentIndex ? styles.activeDot : ''}`}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
                         )}
                     </div>
+
                     <div className={styles.actionButtons}>
-                        {unreadQueue.length > 1 && (
-                            <button
-                                type="button"
-                                className={styles.closeAllBtn}
-                                onClick={dismissAll}
-                                title="Close all notifications"
-                            >
-                                Close all
-                            </button>
-                        )}
                         <button
                             type="button"
                             className={styles.slideCloseBtn}
-                            onClick={dismissCurrent}
-                            aria-label="Close notification"
-                            title="Close & slide next"
+                            onClick={dismissAll}
+                            aria-label="Close notification popup"
+                            title="Close all"
                         >
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                                 <line x1="18" y1="6" x2="6" y2="18" />
                                 <line x1="6" y1="6" x2="18" y2="18" />
                             </svg>
@@ -214,35 +320,59 @@ export default function NotificationPopup({ userId: propUserId, onOpenFullModal 
                     </div>
                 </div>
 
-                {/* Content: Title & Message */}
+                {/* Content Row: Glowing Icon Box + Title & Message */}
                 <div
                     className={styles.contentRow}
-                    onClick={() => {
-                        dismissCurrent();
-                        onOpenFullModal?.();
-                    }}
+                    onClick={handleCardClick}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Open update: ${currentItem.title}`}
                 >
-                    <h4 className={styles.popupTitle}>{currentItem.title}</h4>
-                    <p className={styles.popupMessage}>{currentItem.message}</p>
+                    <div className={styles.iconBox}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9" />
+                            <path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5" />
+                            <circle cx="12" cy="12" r="2" fill="currentColor" />
+                            <path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5" />
+                            <path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1" />
+                        </svg>
+                    </div>
+
+                    <div className={styles.textCol}>
+                        <h4 className={styles.popupTitle}>{currentItem.title}</h4>
+                        <p className={styles.popupMessage}>{currentItem.message}</p>
+                    </div>
                 </div>
 
-                {/* Bottom Row: Timestamp + Dismiss / Next Arrow */}
+                {/* Divider Line */}
+                <div className={styles.divider} />
+
+                {/* Bottom Row: Timestamp + Glowing 'Next update →' / 'Dismiss' Pill Button */}
                 <div className={styles.bottomRow}>
-                    <span className={styles.timeText}>{formatTime(currentItem.created_at)}</span>
+                    <span className={styles.timeText}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        {formatTime(currentItem.created_at)}
+                    </span>
+
                     <div className={styles.bottomActions}>
                         <button
                             type="button"
                             className={styles.markReadBtn}
                             onClick={dismissCurrent}
+                            aria-label={remainingCount > 1 ? 'Go to next update' : 'Dismiss update'}
                         >
-                            <span>{remainingCount > 1 ? 'Next' : 'Dismiss'}</span>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="9 18 15 12 9 6" />
+                            <span>{remainingCount > 1 ? 'Next update' : 'Dismiss'}</span>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
                             </svg>
                         </button>
                     </div>
                 </div>
             </div>
-        </div>
+        </aside>
     );
 }

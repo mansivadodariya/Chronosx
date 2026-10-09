@@ -131,6 +131,17 @@ export default function StrategyStudio() {
         } catch (_) { }
 
         if (incomingStrategy) {
+            clearStudioSession();
+            setCurrentDraft(null);
+            setResults(null);
+            setRoundTrips([]);
+            setExecutedParams(null);
+            setChatInput('');
+            setIsBacktestPanelOpen(false);
+            setGeneratingStrategy(false);
+            setAdvisorLoading(false);
+            setSimulationLoading(false);
+
             const strat = incomingStrategy.config || incomingStrategy.blueprint || incomingStrategy;
             setCurrentStrategy(strat);
             syncToolbarFromStrategy(strat);
@@ -141,14 +152,26 @@ export default function StrategyStudio() {
                 ? crypto.randomUUID()
                 : 'sess_' + Math.random().toString(36).substring(2, 9);
             setCurrentSessionId(newId);
-            setMessages([
+            const initialMessages = [
                 {
                     role: 'ai',
                     text: `Loaded quantitative strategy **"${name}"** on **${sym} (${tf})**.\n\n` +
                         (incomingStrategy.trade_reasoning?.rationale ? `> **Rationale:** ${incomingStrategy.trade_reasoning.rationale}\n\n` : '') +
                         `Parameters and indicator rules have been calibrated. You can ask me to refine any parameters, or click **"Run Backtest"** to simulate historical performance.`
                 }
-            ]);
+            ];
+            setMessages(initialMessages);
+            saveStudioSession({
+                sessionId: newId,
+                messages: initialMessages,
+                currentDraft: null,
+                currentStrategy: strat,
+                results: null,
+                roundTrips: [],
+                executedParams: null,
+                symbol: sym,
+                interval: tf
+            });
             return;
         }
 
@@ -318,13 +341,19 @@ export default function StrategyStudio() {
                 }
                 const rawReply = resultData.reply || res.reply || 'I have analyzed your strategy request.';
                 const reply = sanitizeRawJsonText(rawReply);
-                const suggestions = resultData.suggestions || res.suggestions || [];
-                const options = resultData.options || [];
-                const questions = resultData.questions || [];
-                const current_question = resultData.current_question || null;
+                const isComplete = Boolean(resultData.complete === true || res.complete === true || resultData.is_complete === true || resultData.draft?.complete === true);
+                const strategyName = resultData.strategy_name || res.strategy_name || resultData.draft?.strategy_name || resultData.draft?.name || '';
+                const suggestions = isComplete ? [] : (resultData.suggestions || res.suggestions || []);
+                const options = isComplete ? [] : (resultData.options || []);
+                const questions = isComplete ? [] : (resultData.questions || []);
+                const current_question = isComplete ? null : (resultData.current_question || null);
                 const total_questions = resultData.total_questions || questions.length || 0;
                 const question = resultData.question || (current_question ? current_question.question : null);
                 const draft = resultData.draft || res.draft || null;
+                if (draft && strategyName) {
+                    draft.strategy_name = strategyName;
+                    draft.name = strategyName;
+                }
                 const step = resultData.step || resultData.step_number || resultData.current_step || null;
                 const total_steps = resultData.total_steps || resultData.step_total || 4;
                 const step_badge = resultData.step_badge || '';
@@ -356,6 +385,8 @@ export default function StrategyStudio() {
                         total_questions,
                         question,
                         draft,
+                        strategy_name: strategyName,
+                        complete: isComplete,
                         step,
                         total_steps,
                         step_badge,

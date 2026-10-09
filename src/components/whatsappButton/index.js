@@ -2,8 +2,20 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import styles from './whatsappButton.module.scss';
-
 import { usePathname } from 'next/navigation';
+
+const SUPPORTED_LOCALES = ['en', 'ar', 'ary', 'es', 'ru', 'zh', 'vi', 'id', 'fil', 'arabic', 'spanish', 'russian', 'chinese', 'vietnamese', 'indonesian', 'filipino', 'darija'];
+
+function stripLocalePrefix(path) {
+    if (!path) return '/';
+    const clean = path.split('?')[0].replace(/\/$/, '') || '/';
+    const parts = clean.split('/').filter(Boolean);
+    if (parts.length > 0 && SUPPORTED_LOCALES.includes(parts[0].toLowerCase())) {
+        const withoutLocale = '/' + parts.slice(1).join('/');
+        return withoutLocale === '' ? '/' : withoutLocale;
+    }
+    return clean;
+}
 
 export default function WhatsappButton() {
     const { t } = useLanguage();
@@ -38,9 +50,13 @@ export default function WhatsappButton() {
         '/supported-brokers'
     ];
 
-    const isPublicPage = pathname && (
-        publicLandingPages.includes(pathname) ||
-        publicLandingPages.some(page => page !== '/' && pathname.startsWith(page))
+    const cleanPath = stripLocalePrefix(pathname);
+
+    const isPublicPage = Boolean(
+        cleanPath && (
+            publicLandingPages.includes(cleanPath) ||
+            publicLandingPages.some(page => page !== '/' && cleanPath.startsWith(page))
+        )
     );
 
     // If not a public landing page (i.e. user dashboard, tools, auth, onboarding), hide it completely
@@ -48,7 +64,7 @@ export default function WhatsappButton() {
         return null;
     }
 
-    // Fake placeholder WhatsApp number - user will replace this
+    // WhatsApp number
     const whatsappNumber = "+971568840900";
     const sanitizedWhatsappNumber = whatsappNumber.replace(/[^\d]/g, "");
     const whatsappUrl = `https://wa.me/${sanitizedWhatsappNumber}`;
@@ -58,7 +74,7 @@ export default function WhatsappButton() {
             className={styles.whatsappWrapper}
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 1, duration: 0.3 }}
+            transition={{ delay: 0.5, duration: 0.3 }}
         >
             <a
                 href={whatsappUrl}

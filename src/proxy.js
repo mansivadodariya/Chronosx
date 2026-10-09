@@ -47,8 +47,13 @@ const AUTH_ROUTES = [
 const MAINTENANCE_EXCLUDED_PREFIXES = [
   "/_next",
   "/assets",
+  "/icons",
   "/favicon",
   "/icon",
+  "/sw.js",
+  "/manifest",
+  "/robots.txt",
+  "/sitemap.xml",
   "/api/health",
   "/api/maintenance",
   "/maintenance",
@@ -84,6 +89,22 @@ const LANGUAGE_ALIASES = {
 
 export async function proxy(request) {
   const { pathname, searchParams } = request.nextUrl;
+
+  // Early bypass for static PWA assets, service worker, manifest, and robots
+  if (
+    pathname === "/sw.js" ||
+    pathname === "/manifest.json" ||
+    pathname === "/manifest.webmanifest" ||
+    pathname === "/robots.txt" ||
+    pathname === "/sitemap.xml" ||
+    pathname.startsWith("/icons/") ||
+    pathname.startsWith("/assets/") ||
+    pathname.startsWith("/_next/") ||
+    pathname.startsWith("/.well-known/")
+  ) {
+    return NextResponse.next();
+  }
+
   const token = request.cookies.get("auth_token")?.value;
   const isLoggedIn = Boolean(token);
 
@@ -272,6 +293,6 @@ export const middleware = proxy;
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|favicon.png|favicon.svg|assets).*)",
+    "/((?!_next/static|_next/image|favicon.ico|favicon.png|favicon.svg|assets|icons|sw\\.js|manifest\\.json|manifest\\.webmanifest|robots\\.txt|sitemap\\.xml).*)",
   ],
 };

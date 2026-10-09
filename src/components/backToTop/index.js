@@ -5,6 +5,19 @@ import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
 import styles from './backToTop.module.scss';
 
+const SUPPORTED_LOCALES = ['en', 'ar', 'ary', 'es', 'ru', 'zh', 'vi', 'id', 'fil', 'arabic', 'spanish', 'russian', 'chinese', 'vietnamese', 'indonesian', 'filipino', 'darija'];
+
+function stripLocalePrefix(path) {
+    if (!path) return '/';
+    const clean = path.split('?')[0].replace(/\/$/, '') || '/';
+    const parts = clean.split('/').filter(Boolean);
+    if (parts.length > 0 && SUPPORTED_LOCALES.includes(parts[0].toLowerCase())) {
+        const withoutLocale = '/' + parts.slice(1).join('/');
+        return withoutLocale === '' ? '/' : withoutLocale;
+    }
+    return clean;
+}
+
 export default function BackToTop() {
     const [isVisible, setIsVisible] = useState(false);
     const [scrollProgress, setScrollProgress] = useState(0);
@@ -40,9 +53,13 @@ export default function BackToTop() {
         '/supported-brokers'
     ];
 
-    const isWhatsAppVisible = pathname && (
-        publicLandingPages.includes(pathname) ||
-        publicLandingPages.some(page => page !== '/' && pathname.startsWith(page))
+    const cleanPath = stripLocalePrefix(pathname);
+
+    const isWhatsAppVisible = Boolean(
+        cleanPath && (
+            publicLandingPages.includes(cleanPath) ||
+            publicLandingPages.some(page => page !== '/' && cleanPath.startsWith(page))
+        )
     );
 
     const handleScroll = useCallback(() => {
@@ -69,6 +86,16 @@ export default function BackToTop() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [handleScroll]);
 
+    const [isNotifPopupOpen, setIsNotifPopupOpen] = useState(false);
+
+    useEffect(() => {
+        const handleNotifVis = (e) => {
+            setIsNotifPopupOpen(Boolean(e?.detail?.visible));
+        };
+        window.addEventListener('notification:popup:visibility', handleNotifVis);
+        return () => window.removeEventListener('notification:popup:visibility', handleNotifVis);
+    }, []);
+
     const scrollToTop = () => {
         if (typeof window === 'undefined') return;
 
@@ -87,11 +114,15 @@ export default function BackToTop() {
     const circumference = 2 * Math.PI * radius;
     const strokeDashoffset = circumference - (scrollProgress / 100) * circumference;
 
+    const positionClass = isNotifPopupOpen
+        ? (isWhatsAppVisible ? styles.aboveNotifAndWhatsapp : styles.aboveNotification)
+        : (isWhatsAppVisible ? styles.aboveWhatsapp : styles.standalone);
+
     return (
         <AnimatePresence>
             {isVisible && (
                 <motion.div
-                    className={`${styles.backToTopWrapper} ${isWhatsAppVisible ? styles.aboveWhatsapp : styles.standalone}`}
+                    className={`${styles.backToTopWrapper} ${positionClass}`}
                     initial={{ scale: 0, opacity: 0, y: 15 }}
                     animate={{ scale: 1, opacity: 1, y: 0 }}
                     exit={{ scale: 0, opacity: 0, y: 15 }}
@@ -137,19 +168,17 @@ export default function BackToTop() {
 
                         <div className={styles.arrowIconWrap}>
                             <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="18"
-                                height="18"
+                                width="20"
+                                height="20"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
-                                strokeWidth="2.5"
+                                strokeWidth="3"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 className={styles.arrowIcon}
                             >
-                                <path d="M12 19V5" />
-                                <path d="M5 12l7-7 7 7" />
+                                <path d="M6 14.5L12 8.5L18 14.5" />
                             </svg>
                         </div>
                     </button>

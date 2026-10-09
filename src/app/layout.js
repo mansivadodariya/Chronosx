@@ -32,7 +32,7 @@ const robotoSans = Roboto({
 });
 
 export const viewport = {
-  themeColor: "#000000",
+  themeColor: "#08140F",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -40,6 +40,12 @@ export const viewport = {
 
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://chronosx.com'),
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'ChronosX',
+  },
   title: {
     default: "ChronosX — Next-Gen AI Trading Platform & Intelligence Desk",
     template: "%s | ChronosX"
@@ -90,12 +96,14 @@ export const metadata = {
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
       { url: "/assets/logo/smallLogo.png", type: "image/png" },
     ],
     shortcut: "/favicon.svg",
     apple: [
+      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
       { url: "/assets/logo/smallLogo.png", type: "image/png" },
-      { url: "/favicon.svg", type: "image/svg+xml" },
     ],
   },
 };
@@ -195,6 +203,18 @@ export default async function RootLayout({ children }) {
                 document.documentElement.setAttribute('lang', canonical);
                 document.documentElement.setAttribute('dir', (canonical === 'ar' || canonical === 'ary') ? 'rtl' : 'ltr');
               } catch (_) {}
+            `,
+          }}
+        />
+        <script
+          id="pwa-sw-registration"
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js').catch(function(e) {});
+                });
+              }
             `,
           }}
         />

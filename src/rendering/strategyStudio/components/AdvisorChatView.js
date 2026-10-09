@@ -595,6 +595,8 @@ export default function AdvisorChatView({
                                         );
 
                                         const isReviewOrConfirmStage = !isAlreadyGenerated && !msg.isError && Boolean(
+                                            msg.complete === true ||
+                                            msg.draft?.complete === true ||
                                             msg.draft ||
                                             (msg.text || '').toLowerCase().includes('confirm to proceed') ||
                                             (msg.text || '').toLowerCase().includes('chart elements? just let me know') ||
@@ -611,19 +613,19 @@ export default function AdvisorChatView({
                                         const showReadyToProceedCard = showActionOptions &&
                                             !isUser &&
                                             !msg.isError &&
-                                            (msg.draft || currentDraft) &&
+                                            (msg.draft || currentDraft || msg.complete) &&
                                             isReviewOrConfirmStage &&
                                             !hasSubsequentCreation &&
                                             !generatingStrategy;
 
                                         if (!showReadyToProceedCard) return null;
 
-                                        const effectiveDraft = msg.draft || currentDraft;
-                                        if (!effectiveDraft) return null;
+                                        const effectiveDraft = msg.draft || currentDraft || {};
 
                                         return (
                                             <ReadyToProceedCard
                                                 draft={effectiveDraft}
+                                                strategyName={msg.strategy_name || effectiveDraft?.strategy_name}
                                                 onCreateStrategy={(name) => onGenerateFromDraft(effectiveDraft, name)}
                                                 onEnhance={(name) => onSend(`Enhance and optimize strategy rules for ${name}`)}
                                                 onModifyStrategy={(name) => onSend(`Modify strategy parameters for ${name}`)}

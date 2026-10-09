@@ -19,21 +19,25 @@ import { computeDynamicStrategyName } from '../utils/strategyNaming';
  */
 export default function ReadyToProceedCard({
     draft,
+    strategyName: initialStrategyName,
     onCreateStrategy,
     onEnhance,
     onModifyStrategy,
     generatingStrategy
 }) {
-    const defaultName = computeDynamicStrategyName(draft);
+    const defaultName = initialStrategyName || draft?.strategy_name || draft?.name || computeDynamicStrategyName(draft);
     const [strategyName, setStrategyName] = useState(defaultName);
     const [hasUserEdited, setHasUserEdited] = useState(false);
     const [generationStage, setGenerationStage] = useState(1);
 
     useEffect(() => {
         if (!hasUserEdited && draft) {
-            setStrategyName(computeDynamicStrategyName(draft));
+            const dynamicName = initialStrategyName || draft?.strategy_name || draft?.name || computeDynamicStrategyName(draft);
+            if (dynamicName) {
+                setStrategyName(dynamicName);
+            }
         }
-    }, [draft, hasUserEdited]);
+    }, [draft, initialStrategyName, hasUserEdited]);
 
     // Animate the 3-step generation progression when generatingStrategy is true
     useEffect(() => {

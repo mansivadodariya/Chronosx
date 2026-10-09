@@ -84,8 +84,6 @@ html.light [class*="mobileDrawer"] {
 }
 
 /* Sidebar & Topbar */
-/* Sidebar & Topbar */
-html.light aside,
 html.light .sidebar,
 html.light [class*="sidebar_sidebar"],
 html.light [class*="sidebarContainer"] {

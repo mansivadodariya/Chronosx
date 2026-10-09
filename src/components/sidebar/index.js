@@ -39,6 +39,7 @@ import { getBidiProps } from '@/lib/bidi';
 import { fetchVisibleTabNames, getVisibleTabNamesSync, checkPermissionInSet } from '@/lib/useTabPermission';
 import QuickJump from '@/components/QuickJump';
 import SidebarSubscriptionWidget from './SidebarSubscriptionWidget';
+import SidebarInstallButton from './SidebarInstallButton';
 
 const BrandDarkLogo = "/assets/logo/darklogo.png";
 const BrandLightLogo = "/assets/logo/logo.png";
@@ -52,7 +53,7 @@ const ChevronRightIcon = () => (
 
 const getNavSections = (t) => [
   {
-    title: null,
+    title: t('sidebar.workspace', 'WORKSPACE'),
     items: [
       { label: t('nav.dashboard', 'Dashboard'), href: "/dashboard", icon: DashboardGridIcon },
       { label: t('nav.marketAssistant', 'AI Market Assistant'), href: "/market-assistant", icon: AiChatBotIcon },
@@ -602,6 +603,9 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
           <QuickJump isCollapsed={isCollapsed} />
         </div>
 
+        {/* Install App Button */}
+        <SidebarInstallButton isCollapsed={isCollapsed} />
+
         {/* Navigation Menu List */}
         <div 
           className={styles.sidebarmenu} 
@@ -616,6 +620,9 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
           ) : (
             navSections.map((section, sIndex) => (
               <div key={section.title || sIndex} className={styles.navSectionBlock}>
+                {sIndex > 0 && !isCollapsed && (
+                  <div className={styles.navSectionDivider} />
+                )}
                 {!isCollapsed && section.title ? (
                   <div className={styles.navSectionHeader}>
                     {section.title}

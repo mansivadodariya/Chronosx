@@ -209,7 +209,6 @@
 
             .chartSubBadge {
                 background: rgba(24, 201, 139, 0.16);
-                border: 1px solid rgba(24, 201, 139, 0.35);
                 color: #18C98B;
                 font-size: 12px;
                 font-weight: 700;
@@ -222,8 +221,7 @@
                 align-items: center;
                 gap: 4px;
                 background: rgba(255, 255, 255, 0.05);
-                border: 1px solid rgba(255, 255, 255, 0.08);
-                border-radius: 8px;
+                border-radius: 50px;
                 padding: 3px;
 
                 .tfBtn {
