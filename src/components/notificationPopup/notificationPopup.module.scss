@@ -1,0 +1,179 @@
+.popupContainer {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    max-width: 380px;
+    width: calc(100vw - 48px);
+    pointer-events: none;
+}
+
+.slideCard {
+    pointer-events: auto;
+    background: linear-gradient(145deg, #111D18 0%, #0A120F 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: none;
+    border-radius: 16px;
+    padding: 16px 18px;
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.7), 0 0 28px rgba(24, 201, 139, 0.09);
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    transform: translateX(130%);
+    opacity: 0;
+    transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.38s ease;
+
+    &.slideIn {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    &.slideOut {
+        transform: translateX(130%);
+        opacity: 0;
+    }
+}
+
+.topRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.badgeWrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.categoryTag {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #18C98B;
+    background: rgba(24, 201, 139, 0.12);
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.queueBadge {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.actionButtons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.closeAllBtn {
+    background: rgba(255, 255, 255, 0.06);
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(239, 68, 68, 0.18);
+        color: #EF4444;
+    }
+}
+
+.slideCloseBtn {
+    background: rgba(255, 255, 255, 0.06);
+    border: none;
+    color: rgba(255, 255, 255, 0.75);
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+
+    &:hover {
+        background: rgba(239, 68, 68, 0.22);
+        color: #EF4444;
+        transform: scale(1.08);
+    }
+}
+
+.contentRow {
+    cursor: pointer;
+}
+
+.popupTitle {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.35;
+}
+
+.popupMessage {
+    margin: 0;
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.bottomRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.timeText {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.bottomActions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.markReadBtn {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #18C98B;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.18s ease;
+
+    &:hover {
+        color: #34D399;
+    }
+}
+
+@media (max-width: 600px) {
+    .popupContainer {
+        bottom: 16px;
+        right: 16px;
+        left: 16px;
+        width: auto;
+        max-width: 100%;
+    }
+}

@@ -7,6 +7,7 @@ const PageLoader = dynamic(() => import('@/components/pageLoader'), { ssr: false
 const BackToTop = dynamic(() => import('@/components/backToTop'), { ssr: false });
 const WhatsappButton = dynamic(() => import('@/components/whatsappButton'), { ssr: false });
 const MaintenanceGuard = dynamic(() => import('@/components/maintenanceGuard'), { ssr: false });
+const NotificationPopup = dynamic(() => import('@/components/notificationPopup'), { ssr: false });
 
 export default function ClientOnlyWidgets() {
     const pathname = usePathname();
@@ -27,6 +28,7 @@ export default function ClientOnlyWidgets() {
             <PageLoader />
             <BackToTop />
             <WhatsappButton />
+            <NotificationPopup />
         </>
     );
 }

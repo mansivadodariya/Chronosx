@@ -611,3 +611,9 @@ export const affiliateApi = {
         }
     }
 };
+
+export const notificationsApi = {
+    markAsRead: (id) => request(`/notifications/${id}/read`, { method: 'POST', headers: getAuthHeaders() }),
+    markAllAsRead: () => request('/notifications/read-all', { method: 'POST', headers: getAuthHeaders() }),
+};
+

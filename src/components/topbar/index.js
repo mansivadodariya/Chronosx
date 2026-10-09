@@ -8,6 +8,8 @@ import { CREDITS_UPDATED_EVENT } from '@/lib/credits';
 import { useLanguage } from '@/context/LanguageContext';
 import LanguageToggle from '@/components/languageToggle';
 import ThemeToggle from '@/components/themeToggle';
+import NotificationsModal from '@/components/notificationsModal';
+import { getUnreadCount } from '@/services/notificationService';
 import { fetchVisibleTabNames, getVisibleTabNamesSync, checkPermissionInSet } from '@/lib/useTabPermission';
 import { CreditCardIcon } from '@/icons/creditIcon';
 
@@ -65,6 +67,9 @@ const Topbar = ({ onMenuClick }) => {
   const { t } = useLanguage();
   const [credits, setCredits] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState('');
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [visibleTabNames, setVisibleTabNames] = useState(() => getVisibleTabNamesSync());
 
   const currentEntry = Object.entries(ROUTE_TITLE_MAP).find(([route]) =>
@@ -77,14 +82,23 @@ const Topbar = ({ onMenuClick }) => {
     return t(tKey, defaultVal);
   })();
 
-  const fetchCredits = async (userId) => {
-    if (!userId) return;
+  const fetchCredits = async (uid) => {
+    if (!uid) return;
     try {
-      const res = await dashboardApi.getStats(userId);
+      const res = await dashboardApi.getStats(uid);
       setCredits(res?.data?.available_credits ?? 0);
     } catch (err) {
       if (!err?.message?.includes('Session expired')) { /* skip */ }
     }
+  };
+
+  const refreshUnreadCount = async (uid) => {
+    const targetUid = uid || userId;
+    if (!targetUid) return;
+    try {
+      const count = await getUnreadCount(targetUid);
+      setUnreadCount(count || 0);
+    } catch (_) {}
   };
 
   useEffect(() => {
@@ -97,20 +111,30 @@ const Topbar = ({ onMenuClick }) => {
     const init = async () => {
       try {
         const parsed = getStoredUser();
-        const userId = getStoredUserId();
-        if (!parsed && !userId) {
+        const uid = getStoredUserId();
+        if (!parsed && !uid) {
           router.replace('/login');
           return;
         }
-        await hydrateUserFromProfile(userId, parsed || { id: userId, user_id: userId });
-        await fetchCredits(userId);
+        setUserId(uid);
+        await hydrateUserFromProfile(uid, parsed || { id: uid, user_id: uid });
+        await fetchCredits(uid);
+        await refreshUnreadCount(uid);
       } catch { /* ignore */ } finally {
         setLoading(false);
       }
     };
     init();
     window.addEventListener('user:updated', init);
-    return () => window.removeEventListener('user:updated', init);
+    const onNotifSync = () => {
+      const uid = getStoredUserId();
+      if (uid) refreshUnreadCount(uid);
+    };
+    window.addEventListener('notification:updated', onNotifSync);
+    return () => {
+      window.removeEventListener('user:updated', init);
+      window.removeEventListener('notification:updated', onNotifSync);
+    };
   }, [router]);
 
   useEffect(() => {
@@ -147,42 +171,71 @@ const Topbar = ({ onMenuClick }) => {
   }
 
   return (
-    <div className={styles.topbar}>
-      <div className={styles.left}>
-        <button className={styles.menuBtn} onClick={onMenuClick} aria-label="Open menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
-        {pageTitle && <h1 className={styles.pageTitle}>{pageTitle}</h1>}
-      </div>
+    <>
+      <div className={styles.topbar}>
+        <div className={styles.left}>
+          <button className={styles.menuBtn} onClick={onMenuClick} aria-label="Open menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          {pageTitle && <h1 className={styles.pageTitle}>{pageTitle}</h1>}
+        </div>
 
-      <div className={styles.right}>
-        {/* Language Selector */}
-        <LanguageToggle />
+        <div className={styles.right}>
+          {/* Notification Bell */}
+          <button
+            type="button"
+            className={styles.bellBtn}
+            onClick={() => setIsNotificationsOpen(true)}
+            title={t('topbar.notifications', 'Notifications')}
+            aria-label="Notifications"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            {unreadCount > 0 && (
+              <span className={styles.bellBadge}>
+                {unreadCount > 99 ? '99+' : unreadCount}
+              </span>
+            )}
+          </button>
 
-        {/* Light / Dark Theme Toggle */}
-        <ThemeToggle />
+          {/* Language Selector */}
+          <LanguageToggle />
 
-        {/* Credits Badge */}
-        <div
-          className={styles.credits}
-          onClick={() => {
-            if (hasPlansPermission) {
-              router.push('/subscription-plans');
-            }
-          }}
-          role="button"
-          tabIndex={0}
-          title={hasPlansPermission ? t('topbar.clickToUpgrade', 'View subscription plans') : ''}
-        >
-          <CreditCardIcon />
-          <span>{credits ?? 0} {t('topbar.credits', 'credits')}</span>
+          {/* Light / Dark Theme Toggle */}
+          <ThemeToggle />
+
+          {/* Credits Badge */}
+          <div
+            className={styles.credits}
+            onClick={() => {
+              if (hasPlansPermission) {
+                router.push('/subscription-plans');
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            title={hasPlansPermission ? t('topbar.clickToUpgrade', 'View subscription plans') : ''}
+          >
+            <CreditCardIcon />
+            <span>{credits ?? 0} {t('topbar.credits', 'credits')}</span>
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* Notifications Modal */}
+      <NotificationsModal
+        isOpen={isNotificationsOpen}
+        onClose={() => setIsNotificationsOpen(false)}
+        userId={userId}
+        onUnreadCountChanged={() => refreshUnreadCount(userId)}
+      />
+    </>
   );
 };
 

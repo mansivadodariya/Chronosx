@@ -405,7 +405,7 @@ const layout = ({ children }) => {
                     />
                     <FirebasePhoneModal
                         isOpen={showPhoneVerifyModal}
-                        phoneNumber={userPhoneNumber}
+phoneNumber={userPhoneNumber}
                         autoTriggerSend={false}
                         onSuccess={handlePhoneVerifySuccess}
                     />
