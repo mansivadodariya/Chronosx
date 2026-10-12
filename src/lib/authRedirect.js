@@ -71,13 +71,8 @@ function getActiveLocalePrefix() {
  * Otherwise returns /login?redirect=<target> so login bounces them back.
  */
 export function getAuthHref(targetPath = '/dashboard') {
-    const prefix = getActiveLocalePrefix();
     const cleanTarget = targetPath && targetPath !== '/' ? targetPath : '/dashboard';
-    const localizedTarget = cleanTarget.startsWith(prefix) ? cleanTarget : `${prefix}${cleanTarget}`;
-    const loginPath = `${prefix}/login`;
-
-    if (typeof window === 'undefined') return `${loginPath}?redirect=${encodeURIComponent(localizedTarget)}`;
-    return isUserLoggedIn() ? localizedTarget : `${loginPath}?redirect=${encodeURIComponent(localizedTarget)}`;
+    return cleanTarget;
 }
 
 /**
@@ -85,7 +80,11 @@ export function getAuthHref(targetPath = '/dashboard') {
  * Pass a Next.js router instance or fallback to window.location.
  */
 export function authNavigate(router, targetPath = '/dashboard') {
-    const destination = getAuthHref(targetPath);
+    const prefix = getActiveLocalePrefix();
+    const cleanTarget = targetPath && targetPath !== '/' ? targetPath : '/dashboard';
+    const localizedTarget = cleanTarget.startsWith(prefix) ? cleanTarget : `${prefix}${cleanTarget}`;
+    const loginPath = `${prefix}/login`;
+    const destination = isUserLoggedIn() ? localizedTarget : `${loginPath}?redirect=${encodeURIComponent(localizedTarget)}`;
     if (router && typeof router.push === 'function') {
         router.push(destination);
     } else if (typeof window !== 'undefined') {

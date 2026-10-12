@@ -19,8 +19,6 @@ export default function Herobanner() {
   const { t } = useLanguage();
   const sectionRef = useRef(null);
 
-  const [mousePos, setMousePos] = React.useState({ x: 50, y: 35, isHovered: false });
-
   // Scroll Progress Driven Motion Animations
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -45,9 +43,11 @@ export default function Herobanner() {
       rafRef.current = null;
       if (!sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
-      const x = ((clientX - rect.left) / rect.width) * 100;
-      const y = ((clientY - rect.top) / rect.height) * 100;
-      setMousePos({ x, y, isHovered: true });
+      const x = (((clientX - rect.left) / rect.width) * 100).toFixed(2);
+      const y = (((clientY - rect.top) / rect.height) * 100).toFixed(2);
+      sectionRef.current.style.setProperty('--mouse-x', `${x}%`);
+      sectionRef.current.style.setProperty('--mouse-y', `${y}%`);
+      sectionRef.current.style.setProperty('--mouse-opacity', '1');
     });
   };
 
@@ -56,7 +56,9 @@ export default function Herobanner() {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     }
-    setMousePos(prev => ({ ...prev, isHovered: false }));
+    if (sectionRef.current) {
+      sectionRef.current.style.setProperty('--mouse-opacity', '0');
+    }
   };
 
   return (
@@ -83,11 +85,6 @@ export default function Herobanner() {
         {/* Interactive Cursor Spotlight Glow */}
         <div
           className={styles.interactiveSpotlight}
-          style={{
-            left: `${mousePos.x}%`,
-            top: `${mousePos.y}%`,
-            opacity: mousePos.isHovered ? 1 : 0
-          }}
           aria-hidden="true"
         />
 
@@ -97,11 +94,6 @@ export default function Herobanner() {
         {/* Localized Green Spotlight Grid (area around pointer illuminates green grid) */}
         <div
           className={styles.greenSpotlightGrid}
-          style={{
-            opacity: mousePos.isHovered ? 1 : 0,
-            WebkitMaskImage: `radial-gradient(circle 260px at ${mousePos.x}% ${mousePos.y}%, #000 0%, transparent 100%)`,
-            maskImage: `radial-gradient(circle 260px at ${mousePos.x}% ${mousePos.y}%, #000 0%, transparent 100%)`
-          }}
           aria-hidden="true"
         />
       </motion.div>

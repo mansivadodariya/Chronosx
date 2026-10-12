@@ -2,7 +2,7 @@ import { supabase } from './supabaseClient';
 
 let cachedStatus = null;
 let lastFetchTime = 0;
-const CACHE_TTL_MS = 3000; // 3 seconds fast cache
+const CACHE_TTL_MS = 10000; // 10 seconds cache to prevent connection thrashing
 
 /**
  * Checks if the platform is currently under maintenance.
@@ -22,11 +22,17 @@ export async function getMaintenanceStatus(force = false) {
 
   try {
     if (supabase) {
-      const { data, error } = await supabase
+      const queryPromise = supabase
         .from('system_settings')
         .select('value')
         .eq('key', 'maintenance_mode')
         .single();
+
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Maintenance query timeout')), 2500)
+      );
+
+      const { data, error } = await Promise.race([queryPromise, timeoutPromise]);
 
       if (!error && data && data.value !== undefined && data.value !== null) {
         const raw = String(data.value).trim().toLowerCase();

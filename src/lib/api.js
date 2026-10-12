@@ -613,6 +613,33 @@ export const affiliateApi = {
 };
 
 export const notificationsApi = {
+    getNotifications: ({ page = 1, limit = 20, category = null, readStatus = null } = {}) => {
+        const params = new URLSearchParams();
+        if (page) params.set('page', String(page));
+        if (limit) params.set('limit', String(limit));
+        if (category && category !== 'all') params.set('category', category);
+        if (readStatus && readStatus !== 'all') params.set('read_status', readStatus);
+        const qs = params.toString();
+        return request(`/notifications${qs ? `?${qs}` : ''}`, {
+            headers: getAuthHeaders(),
+        });
+    },
+
+    getUnreadCount: () =>
+        request('/notifications/unread-count', {
+            headers: getAuthHeaders(),
+        }),
+
+    getWebsiteUpdates: ({ page = 1, limit = 20 } = {}) => {
+        const params = new URLSearchParams();
+        if (page) params.set('page', String(page));
+        if (limit) params.set('limit', String(limit));
+        params.set('category', 'website_updates');
+        return request(`/notifications?${params.toString()}`, {
+            headers: getAuthHeaders(),
+        });
+    },
+
     markAsRead: (id) => request(`/notifications/${id}/read`, { method: 'POST', body: JSON.stringify({}) }),
     markAllAsRead: () => request('/notifications/read-all', { method: 'POST', body: JSON.stringify({}) }),
 };

@@ -10,6 +10,8 @@
         unicode-bidi: isolate;
         -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
         mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+        contain: paint;
+        transform: translateZ(0);
 
         @include respond-to("xl") {
             margin-top: 0;
@@ -31,20 +33,33 @@
         overflow: hidden;
         padding: 10px 0;
         direction: ltr !important;
+        contain: paint;
     }
 
     .heroMarqueeTrack {
         display: flex;
         align-items: center;
-        gap: 12px;
         width: max-content;
         will-change: transform;
+        transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+        perspective: 1000px;
         direction: ltr !important;
-        animation: heroMarqueeScroll 38s linear infinite;
+        animation: heroMarqueeScroll 24s linear infinite;
 
         &:hover {
             animation-play-state: paused;
         }
+    }
+
+    .marqueeGroup {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-right: 12px;
+        flex-shrink: 0;
+        will-change: transform;
+        transform: translateZ(0);
     }
 
     .heroTickerCard {
@@ -61,9 +76,10 @@
         min-width: 200px;
         cursor: pointer;
         overflow: visible;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-
 
         &:hover {
             background: linear-gradient(135deg, rgba(12, 34, 25, 0.98) 0%, rgba(6, 20, 14, 0.98) 100%);
@@ -197,7 +213,7 @@
         }
 
         100% {
-            transform: translate3d(-33.333%, 0, 0);
+            transform: translate3d(-50%, 0, 0);
         }
     }
 

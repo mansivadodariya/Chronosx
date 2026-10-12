@@ -286,18 +286,22 @@
         z-index: 1;
     }
 
-    // Interactive Cursor Spotlight Glow
+    // Interactive Cursor Spotlight Glow (GPU Composited with CSS custom variables)
     .interactiveSpotlight {
         position: absolute;
-        width: 300px;
-        height: 300px;
-        transform: translate(-50%, -50%);
+        width: 320px;
+        height: 320px;
+        left: var(--mouse-x, 50%);
+        top: var(--mouse-y, 35%);
+        opacity: var(--mouse-opacity, 0);
+        transform: translate3d(-50%, -50%, 0);
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(24, 201, 139, 0.26) 0%, rgba(24, 201, 139, 0.06) 50%, transparent 75%);
+        background: radial-gradient(circle, rgba(24, 201, 139, 0.24) 0%, rgba(24, 201, 139, 0.05) 50%, transparent 75%);
         filter: blur(35px);
         pointer-events: none;
         z-index: 2;
-        transition: opacity 0.35s ease;
+        transition: opacity 0.25s ease;
+        will-change: left, top, opacity;
 
         @include respond-to("sm") {
             display: none;
@@ -315,9 +319,10 @@
         pointer-events: none;
         z-index: 1;
         opacity: 0.08;
+        transform: translateZ(0);
     }
 
-    // Localized Green Spotlight Grid
+    // Localized Green Spotlight Grid (Hardware accelerated via CSS custom coordinates)
     .greenSpotlightGrid {
         position: absolute;
         inset: 0;
@@ -327,7 +332,12 @@
         background-size: 64px 64px;
         pointer-events: none;
         z-index: 2;
-        transition: opacity 0.3s ease;
+        opacity: var(--mouse-opacity, 0);
+        -webkit-mask-image: radial-gradient(circle 260px at var(--mouse-x, 50%) var(--mouse-y, 35%), #000 0%, transparent 100%);
+        mask-image: radial-gradient(circle 260px at var(--mouse-x, 50%) var(--mouse-y, 35%), #000 0%, transparent 100%);
+        transition: opacity 0.25s ease;
+        will-change: opacity;
+        transform: translateZ(0);
     }
 
     // Side Animation Dots on Left and Right Sides
@@ -337,6 +347,8 @@
         pointer-events: none;
         z-index: 3;
         overflow: hidden;
+        transform: translateZ(0);
+        will-change: transform;
     }
 
     .sideDotsLeft,
@@ -365,6 +377,8 @@
         animation-name: sideDotFloatPulse;
         animation-iteration-count: infinite;
         animation-timing-function: ease-in-out;
+        transform: translateZ(0);
+        will-change: transform, opacity;
     }
 
     // Animated Slope Laser Beams along Perspective Candlestick Stairs
@@ -374,6 +388,8 @@
         pointer-events: none;
         z-index: 3;
         overflow: hidden;
+        transform: translateZ(0);
+        will-change: transform;
     }
 
     .slopeLasersSvg {

@@ -1,11 +1,40 @@
 import { NextResponse } from 'next/server';
+import { serverFetch } from '@/lib/serverFetch';
 
 // In-memory cache for 15 seconds
 let cacheData = null;
 let lastFetchTime = 0;
 const CACHE_TTL_MS = 15000;
 
-export async function GET() {
+async function fetchScannerSafe(url, symbols, signal) {
+    try {
+        const res = await serverFetch(url, {
+            method: 'POST',
+            timeoutMs: 5000,
+            clientSignal: signal,
+            closeConnection: true,
+            headers: {
+                'Content-Type': 'application/json',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ChronosXApp'
+            },
+            body: JSON.stringify({
+                symbols: { tickers: symbols },
+                columns: ['close', 'change', 'Recommend.All']
+            }),
+            cache: 'no-store'
+        });
+
+        if (res.ok) {
+            return await res.json();
+        }
+        await res.body?.cancel().catch(() => {});
+        return { data: [] };
+    } catch {
+        return { data: [] };
+    }
+}
+
+export async function GET(request) {
     const now = Date.now();
     if (cacheData && now - lastFetchTime < CACHE_TTL_MS) {
         return NextResponse.json({ success: true, data: cacheData, cached: true });
@@ -32,26 +61,10 @@ export async function GET() {
             'TVC:USOIL'
         ];
 
+        const clientSignal = request?.signal;
         const [forexRes, cfdRes] = await Promise.all([
-            fetch('https://scanner.tradingview.com/forex/scan', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    symbols: { tickers: forexSymbols },
-                    columns: ['close', 'change', 'Recommend.All']
-                }),
-                cache: 'no-store'
-            }).then(r => r.ok ? r.json() : { data: [] }).catch(() => ({ data: [] })),
-
-            fetch('https://scanner.tradingview.com/cfd/scan', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    symbols: { tickers: cfdSymbols },
-                    columns: ['close', 'change', 'Recommend.All']
-                }),
-                cache: 'no-store'
-            }).then(r => r.ok ? r.json() : { data: [] }).catch(() => ({ data: [] }))
+            fetchScannerSafe('https://scanner.tradingview.com/forex/scan', forexSymbols, clientSignal),
+            fetchScannerSafe('https://scanner.tradingview.com/cfd/scan', cfdSymbols, clientSignal)
         ]);
 
         const resultMap = {};

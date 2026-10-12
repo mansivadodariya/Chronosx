@@ -107,7 +107,7 @@ const TICKER_ASSETS = [
   }
 ];
 
-function SparklineMini({ isUp }) {
+const SparklineMini = React.memo(function SparklineMini({ isUp }) {
   const strokeColor = isUp ? '#34D399' : '#F87171';
   const pathD = isUp
     ? 'M 2 14 Q 12 15, 22 9 T 42 3'
@@ -120,82 +120,85 @@ function SparklineMini({ isUp }) {
       </svg>
     </div>
   );
-}
+});
 
-function TickerCardLogo({ logoUrl, name, color, fallbackChar }) {
+const TickerCard = React.memo(function TickerCard({ item, onClick }) {
   const [imgError, setImgError] = useState(false);
 
   return (
-    <div className={styles.tickerLogoCircle}>
-      {!imgError && logoUrl ? (
-        <img
-          src={logoUrl}
-          alt={name}
-          className={styles.tickerLogoImg}
-          loading="lazy"
-          decoding="async"
-          onError={() => setImgError(true)}
-        />
-      ) : (
-        <span className={styles.tickerFallbackChar} style={{ color: color || '#6EE7B7' }}>
-          {fallbackChar || name.charAt(0)}
-        </span>
-      )}
+    <div
+      className={styles.heroTickerCard}
+      dir="ltr"
+      onClick={onClick}
+    >
+      <div className={styles.tickerLogoCircle}>
+        {!imgError && item.logoUrl ? (
+          <img
+            src={item.logoUrl}
+            alt={item.name}
+            className={styles.tickerLogoImg}
+            loading="lazy"
+            decoding="async"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <span className={styles.tickerFallbackChar} style={{ color: item.color || '#6EE7B7' }}>
+            {item.fallbackChar || item.name.charAt(0)}
+          </span>
+        )}
+      </div>
+      <div className={styles.tickerCardContent}>
+        <div className={styles.tickerCardTop}>
+          <span className={styles.tickerCardName}>{item.name}</span>
+          <span className={styles.tickerCardSymbol}>{item.symbol}</span>
+          <span className={styles.tickerSignalPill}>{item.signal}</span>
+        </div>
+        <div className={styles.tickerCardBottom}>
+          <span className={styles.tickerPrice}>{item.price}</span>
+          <span className={`${styles.tickerChange} ${item.isUp ? styles.green : styles.red}`}>
+            {item.change}
+          </span>
+          <SparklineMini isUp={item.isUp} />
+        </div>
+      </div>
     </div>
   );
-}
+});
 
-export default function HeroTickerMarquee() {
+export default React.memo(function HeroTickerMarquee() {
   const router = useRouter();
 
-  // Duplicate items 3x for infinite seamless scroll
-  const marqueeItems = [...TICKER_ASSETS, ...TICKER_ASSETS, ...TICKER_ASSETS];
-
-  const getAssetData = (item) => ({
-    price: item.price,
-    change: item.change,
-    isUp: item.isUp,
-    signal: item.signal
-  });
+  const handleCardClick = React.useCallback(() => {
+    navigateFeature(router, '/ai-chart-scanner', '/chart-scanner');
+  }, [router]);
 
   return (
     <div className={styles.heroMarqueeWrapper} aria-label="Live Market Assets Ticker" dir="ltr">
       <div className={styles.marqueeTrackWrapper} dir="ltr">
         <div className={styles.heroMarqueeTrack} dir="ltr">
-          {marqueeItems.map((item, idx) => {
-            const data = getAssetData(item);
-            return (
-              <div
-                key={`hero-ticker-${idx}`}
-                className={styles.heroTickerCard}
-                dir="ltr"
-                onClick={() => navigateFeature(router, '/ai-chart-scanner', '/chart-scanner')}
-              >
-                <TickerCardLogo
-                  logoUrl={item.logoUrl}
-                  name={item.name}
-                  color={item.color}
-                  fallbackChar={item.fallbackChar}
-                />
-                <div className={styles.tickerCardContent}>
-                  <div className={styles.tickerCardTop}>
-                    <span className={styles.tickerCardName}>{item.name}</span>
-                    <span className={styles.tickerCardSymbol}>{item.symbol}</span>
-                    <span className={styles.tickerSignalPill}>{data.signal}</span>
-                  </div>
-                  <div className={styles.tickerCardBottom}>
-                    <span className={styles.tickerPrice}>{data.price}</span>
-                    <span className={`${styles.tickerChange} ${data.isUp ? styles.green : styles.red}`}>
-                      {data.change}
-                    </span>
-                    <SparklineMini isUp={data.isUp} />
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          {/* First loop group */}
+          <div className={styles.marqueeGroup} dir="ltr">
+            {TICKER_ASSETS.map((item, idx) => (
+              <TickerCard
+                key={`hero-ticker-a-${idx}`}
+                item={item}
+                onClick={handleCardClick}
+              />
+            ))}
+          </div>
+
+          {/* Second identical loop group for 100% seamless, mathematically exact infinite scroll */}
+          <div className={styles.marqueeGroup} aria-hidden="true" dir="ltr">
+            {TICKER_ASSETS.map((item, idx) => (
+              <TickerCard
+                key={`hero-ticker-b-${idx}`}
+                item={item}
+                onClick={handleCardClick}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
   );
-}
+});

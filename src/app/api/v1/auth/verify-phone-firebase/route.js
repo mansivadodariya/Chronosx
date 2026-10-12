@@ -1,11 +1,8 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabaseClient';
 import * as admin from 'firebase-admin';
 
 export const dynamic = 'force-dynamic';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 // Initialize Firebase Admin SDK if not already initialized
 function getFirebaseAdmin() {
@@ -92,16 +89,12 @@ export async function POST(request) {
         const headerUserId = request.headers.get('X-User-Id') || '';
         const userId = requestedUserId || headerUserId || decodedToken?.sub || '';
 
-        if (!supabaseUrl || !serviceRoleKey) {
+        if (!supabaseAdmin) {
             return NextResponse.json(
                 { error: 'Supabase server configuration is missing.' },
                 { status: 500, headers: corsHeaders }
             );
         }
-
-        const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
-            auth: { persistSession: false }
-        });
 
         // 3. Update Supabase users table with verified phone_number & is_phone_verified: true
         if (userId) {

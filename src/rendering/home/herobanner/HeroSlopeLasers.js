@@ -41,7 +41,7 @@ const SLOPE_BEAMS = [
   }
 ];
 
-export default function HeroSlopeLasers() {
+export default React.memo(function HeroSlopeLasers() {
   return (
     <div className={styles.slopeLasersWrapper} aria-hidden="true">
       <svg
@@ -72,20 +72,18 @@ export default function HeroSlopeLasers() {
             <stop offset="100%" stopColor="#18C98B" stopOpacity="0.05" />
           </linearGradient>
 
-          <filter id="slopeLaserGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="3.5" result="blur" />
+          <filter id="slopeLaserGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="2.5" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
 
-          <filter id="slopeParticleGlow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="5" result="blur1" />
-            <feGaussianBlur stdDeviation="2" result="blur2" />
+          <filter id="slopeParticleGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="blur1" />
             <feMerge>
               <feMergeNode in="blur1" />
-              <feMergeNode in="blur2" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
@@ -176,4 +174,4 @@ export default function HeroSlopeLasers() {
       </svg>
     </div>
   );
-}
+});

@@ -149,7 +149,11 @@ export async function getUnreadCount(userId) {
 export async function markNotificationAsRead(notificationId) {
     if (!notificationId) return;
     try {
-        return await notificationsApi.markAsRead(notificationId);
+        const res = await notificationsApi.markAsRead(notificationId);
+        if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('notification:updated'));
+        }
+        return res;
     } catch (err) {
         console.error('Error marking notification as read via API:', err);
     }
@@ -161,7 +165,11 @@ export async function markNotificationAsRead(notificationId) {
  */
 export async function markAllNotificationsAsRead() {
     try {
-        return await notificationsApi.markAllAsRead();
+        const res = await notificationsApi.markAllAsRead();
+        if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('notification:updated'));
+        }
+        return res;
     } catch (err) {
         console.error('Error marking all notifications as read via API:', err);
     }

@@ -53,8 +53,7 @@ export default function Testimonials() {
     }
   ];
 
-  // Quadruple array for seamless infinite continuous scroll on any screen size
-  const marqueeItems = [...testimonialsData, ...testimonialsData, ...testimonialsData, ...testimonialsData];
+  const halfItems = [...testimonialsData, ...testimonialsData];
 
   return (
     <div className={styles.testimonials}>
@@ -72,25 +71,49 @@ export default function Testimonials() {
         <div className={styles.fogRight}></div>
 
         <div className={styles.marqueeTrack} dir="ltr">
-          {marqueeItems.map((item, index) => (
-            <div key={index} className={styles.card} dir="ltr">
-              <div className={styles.stars}>
-                {[...Array(item.rating)].map((_, i) => (
-                  <img key={i} src="/assets/icons/star.svg" alt="star" />
-                ))}
-              </div>
+          <div className={styles.marqueeGroup} dir="ltr">
+            {halfItems.map((item, index) => (
+              <div key={`t-a-${index}`} className={styles.card} dir="ltr">
+                <div className={styles.stars}>
+                  {[...Array(item.rating)].map((_, i) => (
+                    <img key={i} src="/assets/icons/star.svg" alt="star" />
+                  ))}
+                </div>
 
-              <p className={styles.quote}>{item.quote}</p>
+                <p className={styles.quote}>{item.quote}</p>
 
-              <div className={styles.author}>
-                <div className={styles.avatar}>{item.initials}</div>
-                <div className={styles.authorInfo}>
-                  <h4>{item.name}</h4>
-                  <span>{item.role}</span>
+                <div className={styles.author}>
+                  <div className={styles.avatar}>{item.initials}</div>
+                  <div className={styles.authorInfo}>
+                    <h4>{item.name}</h4>
+                    <span>{item.role}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          <div className={styles.marqueeGroup} aria-hidden="true" dir="ltr">
+            {halfItems.map((item, index) => (
+              <div key={`t-b-${index}`} className={styles.card} dir="ltr">
+                <div className={styles.stars}>
+                  {[...Array(item.rating)].map((_, i) => (
+                    <img key={i} src="/assets/icons/star.svg" alt="star" />
+                  ))}
+                </div>
+
+                <p className={styles.quote}>{item.quote}</p>
+
+                <div className={styles.author}>
+                  <div className={styles.avatar}>{item.initials}</div>
+                  <div className={styles.authorInfo}>
+                    <h4>{item.name}</h4>
+                    <span>{item.role}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

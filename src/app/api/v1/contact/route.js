@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabaseClient';
 
 export const dynamic = 'force-dynamic';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -21,17 +18,13 @@ export async function OPTIONS() {
 
 export async function POST(request) {
     try {
-        if (!supabaseUrl || !serviceRoleKey) {
+        if (!supabaseAdmin) {
             console.error('Supabase configuration missing in contact API');
             return NextResponse.json(
                 { error: 'Server configuration error. Please contact support directly.' },
                 { status: 500, headers: corsHeaders }
             );
         }
-
-        const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
-            auth: { persistSession: false }
-        });
 
         const body = await request.json();
         const { name, email, country, phone, message } = body;

@@ -1,13 +1,13 @@
 import { tryRefreshToken, clearAuthAndRedirect } from '@/lib/api';
 
 function getBackendUrl() {
-    const raw = process.env.NEXT_PUBLIC_BACKEND_URL || '';
-    return raw ? raw.replace(/\/+$/, '') : '';
+    const raw = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://127.0.0.1:8000';
+    return raw.replace(/\/+$/, '');
 }
 
 export function getAnalyzeEndpoint() {
     const base = getBackendUrl();
-    return base ? `${base}/api/v1/trade-analyze/analyze` : '/api/v1/trade-analyze/analyze';
+    return `${base}/api/v1/trade-analyze/analyze`;
 }
 
 function getAccessToken() {
@@ -94,22 +94,8 @@ export async function analyzeTradesReport(files, _isRetry = false) {
             body: formData,
         });
     } catch (netErr) {
-        // If direct backend endpoint had network issue, try local proxy route
-        if (endpoint !== '/api/v1/trade-analyze/analyze') {
-            try {
-                res = await fetch('/api/v1/trade-analyze/analyze', {
-                    method: 'POST',
-                    headers,
-                    body: formData,
-                });
-            } catch (_) {
-                console.error('Trade analysis network error:', netErr);
-                throw new Error('Could not connect to the analysis engine. Please check your internet connection and try again.');
-            }
-        } else {
-            console.error('Trade analysis network error:', netErr);
-            throw new Error('Could not connect to the analysis engine. Please check your internet connection and try again.');
-        }
+        console.error('Trade analysis network error:', netErr);
+        throw new Error('Could not connect to the analysis engine. Please check your internet connection and try again.');
     }
 
     if (res.status === 401 && !_isRetry) {
@@ -175,7 +161,7 @@ export async function analyzeIndividualTrade(tradeId, _isRetry = false) {
 
     const token = getAccessToken();
     const base = getBackendUrl();
-    const directUrl = base ? `${base}/api/v1/trade-analyze/trade/${encodeURIComponent(tradeId)}/analyze` : `/api/v1/trade-analyze/trade/${encodeURIComponent(tradeId)}/analyze`;
+    const directUrl = `${base}/api/v1/trade-analyze/trade/${encodeURIComponent(tradeId)}/analyze`;
 
     const headers = {
         Accept: 'application/json',
@@ -194,21 +180,8 @@ export async function analyzeIndividualTrade(tradeId, _isRetry = false) {
             headers,
         });
     } catch (netErr) {
-        // Fallback to Next.js proxy route
-        if (directUrl !== `/api/v1/trade-analyze/trade/${tradeId}/analyze`) {
-            try {
-                res = await fetch(`/api/v1/trade-analyze/trade/${tradeId}/analyze`, {
-                    method: 'POST',
-                    headers,
-                });
-            } catch (_) {
-                console.error('Trade analysis network error:', netErr);
-                throw new Error('Could not connect to the individual trade analysis engine.');
-            }
-        } else {
-            console.error('Trade analysis network error:', netErr);
-            throw new Error('Could not connect to the individual trade analysis engine.');
-        }
+        console.error('Trade analysis network error:', netErr);
+        throw new Error('Could not connect to the individual trade analysis engine.');
     }
 
     if (res.status === 401 && !_isRetry) {

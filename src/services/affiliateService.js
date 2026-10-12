@@ -4,11 +4,8 @@
  */
 
 const getApiBaseUrl = () => {
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || '';
-    if (backendUrl) {
-        return `${backendUrl.replace(/\/+$/, '')}/api/v1`;
-    }
-    return '/api/v1';
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+    return `${backendUrl.replace(/\/+$/, '')}/api/v1`;
 };
 
 const getAuthHeaders = () => {

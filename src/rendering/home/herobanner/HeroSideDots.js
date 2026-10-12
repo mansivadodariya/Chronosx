@@ -21,7 +21,7 @@ const RIGHT_DOTS = [
   { id: 'rd7', right: '10%', top: '84%', size: 5, delay: '0.3s', duration: '6.4s' },
 ];
 
-export default function HeroSideDots() {
+export default React.memo(function HeroSideDots() {
   return (
     <div className={styles.sideDotsWrapper} aria-hidden="true">
       {/* Left side floating glowing dots */}
@@ -61,4 +61,4 @@ export default function HeroSideDots() {
       </div>
     </div>
   );
-}
+});

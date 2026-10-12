@@ -7,7 +7,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import styles from './herobanner.module.scss';
 import { AiChipIcon, TrendChartIcon, RiskAlertIcon } from './heroIcons';
 
-export default function HeroFeatureCards() {
+export default React.memo(function HeroFeatureCards() {
   const router = useRouter();
   const { t } = useLanguage();
 
@@ -86,4 +86,4 @@ export default function HeroFeatureCards() {
       </div>
     </div>
   );
-}
+});

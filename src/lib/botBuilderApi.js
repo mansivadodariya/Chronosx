@@ -130,36 +130,11 @@ export const botBuilderApi = {
                 return { success: true, data: json?.data || json, raw: json };
             }
 
-            // Fallback to Next.js API proxy route if primary base failed
-            try {
-                const fallbackRes = await fetch('/api/v1/bot-builder/strategies', {
-                    method: 'POST',
-                    headers,
-                    body: JSON.stringify(payload)
-                });
-                if (fallbackRes.ok) {
-                    const json = await fallbackRes.json();
-                    return { success: true, data: json?.data || json, raw: json };
-                }
-            } catch (_) {}
-
             const errData = await res.json().catch(() => null);
             const errMsg = errData?.detail || errData?.message || errData?.error || `Request failed with status ${res.status}`;
             return { success: false, error: errMsg, payload };
         } catch (err) {
-            console.warn('[botBuilderApi] Primary backend unreachable, falling back to local proxy:', err.message);
-            try {
-                const fallbackRes = await fetch('/api/v1/bot-builder/strategies', {
-                    method: 'POST',
-                    headers,
-                    body: JSON.stringify(payload)
-                });
-                if (fallbackRes.ok) {
-                    const json = await fallbackRes.json();
-                    return { success: true, data: json?.data || json, raw: json };
-                }
-            } catch (_) {}
-
+            console.warn('[botBuilderApi] Backend strategy request failed:', err.message);
             return { success: false, error: err.message, payload };
         }
     },

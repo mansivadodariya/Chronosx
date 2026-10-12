@@ -2,7 +2,6 @@
 import React, { useRef } from 'react';
 import styles from './footer.module.scss';
 import Link from 'next/link';
-import { getAuthHref } from '@/lib/authRedirect';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
 import { useTabPermission } from '@/lib/useTabPermission';
@@ -116,8 +115,8 @@ export default function Footer() {
             <h4>{t('footer.tradingToolsTitle', 'TRADING TOOLS')}</h4>
             <ul>
               <li><Link href="/ai-trade-advisor">{t('header.tradingTools.tradeAudit.title', 'AI Past Trade Analyzer')}</Link></li>
-              <li><Link href={getAuthHref('/strategy-core')}>{t('footer.strategyBuilder', 'Strategy Builder')}</Link></li>
-              <li><Link href={getAuthHref('/strategy-core')}>{t('footer.quantBacktesting', 'Quant Backtesting')}</Link></li>
+              <li><Link href="/strategy-core">{t('footer.strategyBuilder', 'Strategy Builder')}</Link></li>
+              <li><Link href="/backtesting">{t('footer.quantBacktesting', 'Quant Backtesting')}</Link></li>
             </ul>
           </div>
 

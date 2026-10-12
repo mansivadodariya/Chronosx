@@ -454,12 +454,13 @@ export default function StrategyStudio() {
                 setCurrentStrategy(strat);
                 syncToolbarFromStrategy(strat);
 
+                const genSuggestions = res?.suggestions || res?.data?.suggestions || strat?.suggestions;
                 setMessages((prev) => [
                     ...prev,
                     {
                         role: 'ai',
                         text: `Strategy model **${finalName}** configured and calibrated. You can run backtest or refine parameters.`,
-                        suggestions: ['Run Backtest Now']
+                        ...(Array.isArray(genSuggestions) && genSuggestions.length > 0 ? { suggestions: genSuggestions } : {})
                     }
                 ]);
                 handleToast('Strategy blueprint applied successfully!');
@@ -472,8 +473,7 @@ export default function StrategyStudio() {
                 ...prev,
                 {
                     role: 'ai',
-                    text: `Strategy model **${finalName}** configured and calibrated. You can run backtest or refine parameters.`,
-                    suggestions: ['Run Backtest Now']
+                    text: `Strategy model **${finalName}** configured and calibrated. You can run backtest or refine parameters.`
                 }
             ]);
             handleToast('Strategy parameters configured');
@@ -596,24 +596,26 @@ export default function StrategyStudio() {
                 const maxDd = data.stats?.max_drawdown_percentage !== undefined ? data.stats.max_drawdown_percentage : (data.stats?.max_drawdown || '0.00');
 
                 const formattedNetPnl = Number(netPnl) >= 0 ? `+$${netPnl}` : `-$${Math.abs(Number(netPnl)).toFixed(2)}`;
+                const backendSuggestions = res?.suggestions || res?.data?.suggestions || data?.suggestions;
 
                 setMessages((prev) => [
                     ...prev,
                     {
                         role: 'ai',
                         text: `**Backtest Simulation Results – ${activeSymbol} (${activeInterval})**\n\n- Total Trades: ${totalTradesCount}\n- Win Rate: ${winRate}%\n- Winning / Losing Trades: ${data.stats?.win || parsedTrips.filter(t => t.pnl > 0).length} / ${data.stats?.loss || parsedTrips.filter(t => t.pnl <= 0).length}\n- Net Profit (USD): ${formattedNetPnl}\n- Max Drawdown: ${maxDd}%\n- Profit Factor: ${profitFactor}`,
-                        suggestions: ['Run Another Backtest', 'Modify Strategy', 'Export Report']
+                        ...(Array.isArray(backendSuggestions) && backendSuggestions.length > 0 ? { suggestions: backendSuggestions } : {})
                     }
                 ]);
 
                 handleToast('Backtest simulation complete!');
             } else {
+                const failSuggestions = res?.suggestions || res?.data?.suggestions;
                 setMessages((prev) => [
                     ...prev,
                     {
                         role: 'ai',
                         text: res.error || 'Backtest executed but returned no trade signals for the chosen parameters.',
-                        suggestions: ['Run Backtest', 'Change Timeframe']
+                            ...(Array.isArray(failSuggestions) && failSuggestions.length > 0 ? { suggestions: failSuggestions } : {})
                     }
                 ]);
             }
@@ -623,8 +625,7 @@ export default function StrategyStudio() {
                 ...prev,
                 {
                     role: 'ai',
-                    text: 'Could not connect to backtest engine. Simulating with historical pricing model...',
-                    suggestions: ['Run Backtest']
+                    text: 'Could not connect to backtest engine. Simulating with historical pricing model...'
                 }
             ]);
         } finally {

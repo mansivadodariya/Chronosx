@@ -1,14 +1,9 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabaseClient';
+import { serverFetch } from '@/lib/serverFetch';
 import { EMA, ATR } from 'technicalindicators';
 
 export const dynamic = 'force-dynamic';
-
-// Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
 // Helper to align indicator values to original candles array
 function alignIndicator(candles, indicatorValues, period) {
@@ -179,18 +174,18 @@ export async function GET(request) {
         // 1. Primary: Fetch real live MT5 candles directly from configured Backend API
         const backendBase = (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL || '').replace(/\/+$/, '');
         if (backendBase) {
+            let liveRes = null;
             try {
                 const liveBackendUrl = `${backendBase}/api/v1/chart/candles?symbol=${strippedSymbol}&timeframe=${rawTimeframe}&strategy_id=${strategyId}`;
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 4000);
-                const liveRes = await fetch(liveBackendUrl, {
+                liveRes = await serverFetch(liveBackendUrl, {
+                    timeoutMs: 4000,
+                    clientSignal: request.signal,
+                    closeConnection: true,
                     headers: {
                         'accept': 'application/json',
                         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ChronosXApp'
-                    },
-                    signal: controller.signal
+                    }
                 });
-                clearTimeout(timeoutId);
 
                 if (liveRes.ok) {
                     const liveData = await liveRes.json();
@@ -203,8 +198,13 @@ export async function GET(request) {
                             }
                         });
                     }
+                } else {
+                    await liveRes.body?.cancel().catch(() => {});
                 }
             } catch (backendErr) {
+                if (liveRes && !liveRes.bodyUsed) {
+                    await liveRes.body?.cancel().catch(() => {});
+                }
                 console.warn('[CandlesRoute] Live API fetch notice:', backendErr.message);
             }
         }

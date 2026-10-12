@@ -351,9 +351,6 @@ export default function AdvisorChatView({
                         >
                             <ClockIntervalIcon size={15} color="#18C98B" />
                             <span>{t('strategyStudio.history', 'History')}</span>
-                            {historyCount > 0 && (
-                                <span className={styles.historyCountBadge}>{historyCount}</span>
-                            )}
                         </button>
                     )}
                 </div>

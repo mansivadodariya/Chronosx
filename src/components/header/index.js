@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { authNavigate, getAuthHref, isUserLoggedIn } from '@/lib/authRedirect';
+import { authNavigate, isUserLoggedIn } from '@/lib/authRedirect';
 import { useLanguage } from '@/context/LanguageContext';
 import { DashboardGridIcon } from '@/icons/sidebarIcons';
 import { useTheme } from '@/context/ThemeContext';
@@ -301,7 +301,7 @@ export default function Header() {
         const items = [
             {
                 label: t('header.productsTab', 'Products'),
-                href: getAuthHref('/'),
+                href: '/',
                 hasDropdown: true,
                 dropdownTag: t('header.aiTradingEcosystem', 'AI TRADING ECOSYSTEM'),
                 dropdownFooter: t('header.aiTradingEcosystemDesc', 'Powered by ChronosX Real-Time Neural Engines'),
@@ -309,7 +309,7 @@ export default function Header() {
             },
             {
                 label: t('header.tradingToolsTab', 'Trading Tools'),
-                href: getAuthHref('/'),
+                href: '/',
                 hasDropdown: true,
                 dropdownTag: t('header.quantExecutionSuite', 'QUANTITATIVE EXECUTION SUITE'),
                 dropdownFooter: t('header.quantExecutionSuiteDesc', 'Multi-Broker Execution & Zero-Latency Routing'),

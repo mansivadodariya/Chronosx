@@ -149,16 +149,28 @@
 
   .marqueeTrack {
     display: flex;
-    gap: 24px;
+    align-items: center;
     width: max-content;
     direction: ltr !important;
-    animation: marqueeContinuous 45s linear infinite;
+    animation: marqueeContinuous 34s linear infinite;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
 
     &:hover {
       animation-play-state: paused;
     }
   }
 
+  .marqueeGroup {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding-right: 24px;
+    flex-shrink: 0;
+    will-change: transform;
+    transform: translateZ(0);
+  }
 
   .card {
     width: 380px;
