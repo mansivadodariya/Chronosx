@@ -134,6 +134,81 @@ const PROTECTED_PREFIXES = [
     '/steper',
 ];
 
+const VALID_APP_ROUTES = new Set([
+    '/',
+    '/dashboard',
+    '/chart-scanner',
+    '/live-scanner',
+    '/signal-terminal',
+    '/trade-advisor',
+    '/trade-audit',
+    '/market-assistant',
+    '/strategy-core',
+    '/trading-signal',
+    '/ai-trading-signal',
+    '/strategy-signal',
+    '/predefined-strategies',
+    '/strategy-hub',
+    '/my-bots',
+    '/ai-bot-builder',
+    '/manual-bot-builder',
+    '/bot-builder',
+    '/bot-library',
+    '/browse-bots',
+    '/calendar',
+    '/calculator',
+    '/news',
+    '/credit-history',
+    '/broker',
+    '/brokers',
+    '/profile',
+    '/settings',
+    '/subscription-plans',
+    '/affiliate',
+    '/backtest',
+    '/strategy-studio',
+    '/pricing',
+    '/plans',
+    '/about-us',
+    '/contact-us',
+    '/terms-and-conditions',
+    '/privacy-policy',
+]);
+
+export function isValidAppRoute(rawPath) {
+    if (!rawPath || typeof rawPath !== 'string') return false;
+    const trimmed = rawPath.trim();
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('//')) {
+        return true;
+    }
+    const clean = stripLocalePrefix(trimmed.split('?')[0]).replace(/\/$/, '') || '/';
+    return VALID_APP_ROUTES.has(clean.toLowerCase());
+}
+
+export function validateNotificationRedirect(rawUrl) {
+    if (!rawUrl || typeof rawUrl !== 'string') return '/dashboard';
+    const trimmed = rawUrl.trim();
+    if (!trimmed) return '/dashboard';
+
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('//')) {
+        return trimmed;
+    }
+
+    const [pathname, search] = trimmed.split('?');
+    const clean = stripLocalePrefix(pathname).replace(/\/$/, '') || '/';
+
+    if (VALID_APP_ROUTES.has(clean.toLowerCase())) {
+        return search ? `${clean}?${search}` : clean;
+    }
+
+    // Route does not exist in the app -> default to /dashboard
+    return '/dashboard';
+}
+
+export function hasNotificationLink(notification) {
+    return Boolean(getNotificationRedirectUrl(notification));
+}
+
 function stripLocalePrefix(path) {
     if (!path) return '/';
     const clean = path.split('?')[0].replace(/\/$/, '') || '/';
@@ -166,7 +241,7 @@ export function getNotificationRedirectUrl(notification) {
     // 1. Direct properties on notification object
     const direct = notification.redirect_url || notification.url || notification.link || notification.route || notification.action_url || notification.href;
     if (direct && typeof direct === 'string' && direct.trim()) {
-        return direct.trim();
+        return validateNotificationRedirect(direct.trim());
     }
 
     // 2. Properties in data payload
@@ -181,7 +256,7 @@ export function getNotificationRedirectUrl(notification) {
     if (data && typeof data === 'object') {
         const dataUrl = data.redirect_url || data.url || data.link || data.route || data.action_url || data.href || data.target || data.path;
         if (dataUrl && typeof dataUrl === 'string' && dataUrl.trim()) {
-            return dataUrl.trim();
+            return validateNotificationRedirect(dataUrl.trim());
         }
     }
 
@@ -190,6 +265,7 @@ export function getNotificationRedirectUrl(notification) {
     if (cat === 'trade_signals' || cat === 'trade_signal') return '/trading-signal';
     if (cat === 'ai_strategy' || cat === 'strategy') return '/my-bots';
     if (cat === 'chart_scanner' || cat === 'scanner') return '/chart-scanner';
+    if (cat === 'live_scanner') return '/live-scanner';
     if (cat === 'trade_advisor' || cat === 'trade_audit') return '/trade-advisor';
     if (cat === 'market_assistant') return '/market-assistant';
     if (cat === 'brokers' || cat === 'associated_brokers') return '/brokers';
@@ -199,7 +275,7 @@ export function getNotificationRedirectUrl(notification) {
     if (cat === 'tools' || cat === 'economic_calendar') return '/calendar';
     if (cat === 'forex_calculator') return '/calculator';
 
-    return null;
+    return '/dashboard';
 }
 
 /**

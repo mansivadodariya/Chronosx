@@ -1318,8 +1318,8 @@
         "badge": "AI AUDIT"
       },
       "strategyCreate": {
-        "title": "Custom Bot Builder",
-        "desc": "Build, backtest & automate custom trading bots & algorithmic strategies",
+        "title": "AI Trading Bot Builder",
+        "desc": "Build your strategy with AI in plain English or build custom rules step-by-step",
         "badge": "AI BOT"
       },
       "backtesting": {
@@ -2109,7 +2109,7 @@
     "step3": {
       "tag": "STARTER CREDITS",
       "title": "Use Complimentary Credits",
-      "subtitle": "Test drive the AI Chart Scanner, Custom Bot Builder, and Live Radar with default starter credits.",
+      "subtitle": "Test drive the AI Chart Scanner, AI Trading Bot Builder, and Live Radar with default starter credits.",
       "badge": "Free Credits Active",
       "actionText": "Try AI Tools"
     },
@@ -2127,7 +2127,7 @@
     "mainDashboardDesc": "Portfolio overview & analytics",
     "aiCockpitTitle": "Live AI Cockpit",
     "aiCockpitDesc": "Institutional signal flow",
-    "customBotBuilderTitle": "Custom Bot Builder",
+    "customBotBuilderTitle": "AI Trading Bot Builder",
     "customBotBuilderDesc": "Automate execution rules",
     "aiChartScannerTitle": "AI Chart Scanner",
     "aiChartScannerDesc": "Pattern breakout vision",
@@ -2795,12 +2795,12 @@
     "aiCardFeat2": "Multi-market MT5 simulation & metrics backtest",
     "aiCardFeat3": "Interactive AI Copilot parameter tuning",
     "aiCardBtn": "Launch AI Bot Builder",
-    "customCardTitle": "Custom Bot Builder",
+    "customCardTitle": "AI Trading Bot Builder",
     "customCardDesc": "Assemble technical indicators (RSI, EMA, MACD, Bollinger Bands, Order Blocks), define deterministic entry/exit triggers, position sizing, and risk-reward ratios step-by-step.",
     "customCardFeat1": "20+ Technical indicator trigger & filter blocks",
     "customCardFeat2": "Dynamic Take Profit, Stop Loss & Trailing Stops",
     "customCardFeat3": "Custom execution logic & lot size formulas",
-    "customCardBtn": "Open Custom Bot Builder",
+    "customCardBtn": "Open AI Trading Bot Builder",
     "libraryBannerTitle": "Want ready-made institutional bots?",
     "libraryBannerDesc": "Explore verified pre-built algorithmic templates in our community library.",
     "libraryBannerBtn": "Browse Bots Library →",
@@ -2843,7 +2843,7 @@
     "lots": "Lots"
   },
   "guidedBuilder": {
-    "badge": "CUSTOM BOT BUILDER",
+    "badge": "AI TRADING BOT BUILDER",
     "title1": "Build Your Bot. Your Rules.",
     "title2": "Your Complete Control.",
     "description": "Prefer a more structured approach? Use the guided bot builder to configure your bot step-by-step — from the initial setup to risk management and final review.",

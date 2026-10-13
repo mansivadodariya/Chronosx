@@ -39,7 +39,7 @@ import { getBidiProps } from '@/lib/bidi';
 import { fetchVisibleTabNames, getVisibleTabNamesSync, checkPermissionInSet } from '@/lib/useTabPermission';
 import QuickJump from '@/components/QuickJump';
 import SidebarSubscriptionWidget from './SidebarSubscriptionWidget';
-// import SidebarInstallButton from './SidebarInstallButton';
+import SidebarInstallButton from './SidebarInstallButton';
 
 const BrandDarkLogo = "/assets/logo/darklogo.png";
 const BrandLightLogo = "/assets/logo/logo.png";
@@ -608,8 +608,8 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
           <QuickJump isCollapsed={isCollapsed} />
         </div>
 
-        {/* Install App Button - disabled for now */}
-        {/* <SidebarInstallButton isCollapsed={isCollapsed} /> */}
+        {/* Install App Button */}
+        <SidebarInstallButton isCollapsed={isCollapsed} />
 
         {/* Navigation Menu List */}
         <div 

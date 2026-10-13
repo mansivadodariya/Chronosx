@@ -39,7 +39,7 @@
     "aiTradingBot": "Bot Trading AI",
     "myBots": "Bot Saya",
     "aiBotBuilder": "Pembuat Bot AI",
-    "customBotBuilder": "Pembuat Bot Khusus",
+    "customBotBuilder": "Custom Bot Builder",
     "botLibrary": "Jelajahi Pustaka Bot",
     "strategyStudio": "Studio Strategi AI",
     "landingPage": "Halaman Utama",
@@ -1319,7 +1319,7 @@
         "badge": "AUDIT AI"
       },
       "strategyCreate": {
-        "title": "Pembuat Bot Khusus",
+        "title": "AI Trading Bot Builder",
         "desc": "Logika perdagangan algoritmik khusus, penyetelan parameter & mesin aturan",
         "badge": "BOT AI"
       },

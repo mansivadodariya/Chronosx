@@ -24,6 +24,7 @@ const ROUTE_TITLE_MAP = {
   '/ai-bot-builder': 'nav.aiBotBuilder|AI Bot Builder',
   '/manual-bot-builder': 'nav.customBotBuilder|Custom Bot Builder',
   '/custom-bot-builder': 'nav.customBotBuilder|Custom Bot Builder',
+  '/ai-trading-bot-builder': 'nav.customBotBuilder|Custom Bot Builder',
   '/bot-library': 'nav.botLibrary|Browse Bots Library',
   '/browse-bots': 'nav.botLibrary|Browse Bots Library',
   '/bot-builder': 'nav.aiBotBuilder|AI Bot Builder',

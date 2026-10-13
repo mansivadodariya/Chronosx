@@ -228,11 +228,30 @@ const Login = () => {
             }
         } catch (err) {
             toast.dismiss();
-            let msg = typeof err.message === 'string' ? err.message : 'Something went wrong. Please try again.';
+            const status = err?.status;
+            const rawMsg = typeof err.message === 'string' ? err.message : '';
+            const lowerMsg = rawMsg.toLowerCase();
+
+            // Only redirect to maintenance if server indicates maintenance or backend outage (503, 502, 504, or explicit maintenance error)
+            const isMaintenanceOrServerDown =
+                err?.isMaintenance ||
+                status === 503 ||
+                status === 502 ||
+                status === 504 ||
+                err?.data?.status === 'maintenance' ||
+                lowerMsg.includes('maintenance') ||
+                lowerMsg.includes('service temporarily unavailable');
+
+            if (isMaintenanceOrServerDown) {
+                router.push('/maintenance?from=/login');
+                return;
+            }
+
+            let msg = rawMsg || 'Something went wrong. Please try again.';
             if (
-                msg.toLowerCase().includes('account is not active') ||
-                msg.toLowerCase().includes('account is inactive') ||
-                msg.toLowerCase().includes('account not active')
+                lowerMsg.includes('account is not active') ||
+                lowerMsg.includes('account is inactive') ||
+                lowerMsg.includes('account not active')
             ) {
                 msg = 'Account is not active. Please contact admin.';
             }

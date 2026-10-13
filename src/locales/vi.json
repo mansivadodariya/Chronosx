@@ -39,7 +39,7 @@
     "aiTradingBot": "Bot giao dịch AI",
     "myBots": "Bot của tôi",
     "aiBotBuilder": "Trình tạo Bot AI",
-    "customBotBuilder": "Trình tạo Bot tùy chỉnh",
+    "customBotBuilder": "Custom Bot Builder",
     "botLibrary": "Duyệt thư viện Bot",
     "strategyStudio": "Xưởng chiến lược AI",
     "landingPage": "Trang chủ",
@@ -1319,7 +1319,7 @@
         "badge": "KIỂM TOÁN AI"
       },
       "strategyCreate": {
-        "title": "Trình tạo Bot tùy chỉnh",
+        "title": "AI Trading Bot Builder",
         "desc": "Logic giao dịch thuật toán tùy chỉnh, điều chỉnh tham số và công cụ quy tắc",
         "badge": "BOT AI"
       },

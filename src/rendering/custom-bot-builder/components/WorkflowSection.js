@@ -2,33 +2,38 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import SectionHeader from '@/components/sectionHeader';
-import styles from './customBotBuilder.module.scss';
+import styles from '../customBotBuilder.module.scss';
 
 const STEPS = [
   {
     num: "01",
-    title: "Define",
-    desc: "Start with your trading idea and the market you want to trade."
+    title: "Choose Your Builder",
+    desc: "Start with AI Bot Builder or Custom Bot Builder."
   },
   {
     num: "02",
-    title: "Configure",
-    desc: "Set your entry, exit, and risk-management rules."
+    title: "Define Your Strategy",
+    desc: "Describe your idea or configure every rule manually."
   },
   {
     num: "03",
-    title: "Create",
-    desc: "Generate your structured bot configuration."
+    title: "Configure Parameters",
+    desc: "Set indicators, conditions, risk, position sizing and execution logic."
   },
   {
     num: "04",
-    title: "Backtest",
-    desc: "Run your bot against historical market data."
+    title: "Backtest Your Bot",
+    desc: "Use historical market data to evaluate how your strategy performed."
   },
   {
     num: "05",
-    title: "Refine",
-    desc: "Analyze the results, adjust your rules, and test again."
+    title: "Refine & Optimize",
+    desc: "Review the results, adjust parameters and run new simulations."
+  },
+  {
+    num: "06",
+    title: "Deploy Your Bot",
+    desc: "Once your strategy is ready, move it into your ChronosX bot workflow."
   }
 ];
 
@@ -37,10 +42,10 @@ export default function WorkflowSection() {
     <section className={styles.workflowSection}>
       <div className="container">
         <SectionHeader
-          badge="FROM IDEA TO BOT"
-          title1="Turn Your Trading Idea Into a"
-          title2="Structured Bot."
-          description="ChronosX brings strategy development into one connected workflow."
+          badge="SECTION 05 — THE BOT CREATION FLOW"
+          title1="From Idea to"
+          title2="Executable Strategy"
+          description="A structured end-to-end framework to take any trading concept into an algorithmic, deployable bot."
         />
 
         <div className={styles.workflowStepsGrid}>
@@ -51,7 +56,7 @@ export default function WorkflowSection() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              transition={{ duration: 0.45, delay: idx * 0.08 }}
             >
               <div className={styles.stepNumBadge}>{step.num} — STEP</div>
               <h3 className={styles.stepTitle}>{step.title}</h3>

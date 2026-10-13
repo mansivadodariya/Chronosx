@@ -25,6 +25,7 @@ export const ROUTE_TAB_MAP = {
   '/ai-bot-builder': 'AI Bot Builder',
   '/manual-bot-builder': 'Custom Bot Builder',
   '/custom-bot-builder': 'Custom Bot Builder',
+  '/ai-trading-bot-builder': 'Custom Bot Builder',
   '/bot-library': 'Browse Bots Library',
   '/browse-bots': 'Browse Bots Library',
   '/bot-builder': 'AI Bot Builder',

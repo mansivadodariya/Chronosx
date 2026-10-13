@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SectionHeader from '@/components/sectionHeader';
-import styles from './customBotBuilder.module.scss';
+import styles from '../customBotBuilder.module.scss';
 
 const FAQS = [
   {

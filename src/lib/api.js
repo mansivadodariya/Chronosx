@@ -189,6 +189,10 @@ async function executeRequest(path, options = {}, _isRetry = false) {
         const err = new Error(errorMessage);
         err.detail = data?.detail;
         err.status = res.status;
+        err.data = data;
+        if (res.status === 503 || data?.status === 'maintenance' || data?.error === 'Service Temporarily Unavailable') {
+            err.isMaintenance = true;
+        }
         throw err;
     }
 

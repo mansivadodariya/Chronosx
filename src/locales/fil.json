@@ -1319,7 +1319,7 @@
         "badge": "AI AUDIT"
       },
       "strategyCreate": {
-        "title": "Custom Bot Builder",
+        "title": "AI Trading Bot Builder",
         "desc": "Pasadyang lohika ng algorithmic trading, parameter tuning at mga engine ng panuntunan",
         "badge": "AI BOT"
       },

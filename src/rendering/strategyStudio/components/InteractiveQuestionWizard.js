@@ -52,7 +52,8 @@ export default function InteractiveQuestionWizard({
 
     // Parse questions list from latest AI message & omit already answered questions
     const questionsList = useMemo(() => {
-        if (!latestAiMessage || latestAiMessage.isError || latestAiMessage.role === 'user') return [];
+        const isReadyToProceed = Boolean(latestAiMessage?.complete === true);
+        if (!latestAiMessage || latestAiMessage.isError || latestAiMessage.role === 'user' || isReadyToProceed) return [];
         let raw = [];
         if (latestAiMessage.questions && Array.isArray(latestAiMessage.questions) && latestAiMessage.questions.length > 0) {
             raw = latestAiMessage.questions;
@@ -61,7 +62,7 @@ export default function InteractiveQuestionWizard({
         } else if (latestAiMessage.options && Array.isArray(latestAiMessage.options) && latestAiMessage.options.length > 0) {
             raw = [
                 {
-                    question_id: 'strategy_preference',
+                    question_id: latestAiMessage.question_id || (latestAiMessage.question ? latestAiMessage.question.slice(0, 40) : `q_${latestAiMessage.step || 1}`),
                     question_number: 1,
                     total_questions: 1,
                     question: latestAiMessage.question || 'How would you like to configure your strategy rules?',
@@ -281,6 +282,10 @@ export default function InteractiveQuestionWizard({
             if (onDismiss) onDismiss();
         }
     };
+
+    if (!activeQuestion || questionsList.length === 0 || activeOptions.length === 0) {
+        return null;
+    }
 
     return (
         <div

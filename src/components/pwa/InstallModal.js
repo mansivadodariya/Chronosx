@@ -7,6 +7,7 @@ export default function InstallModal({ isOpen, onClose, deferredPrompt, onInstal
   const [activeTab, setActiveTab] = useState('laptop');
   const [supportsOneTap, setSupportsOneTap] = useState(false);
   const [isInstalling, setIsInstalling] = useState(false);
+  const [installFeedback, setInstallFeedback] = useState('');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -27,8 +28,6 @@ export default function InstallModal({ isOpen, onClose, deferredPrompt, onInstal
   }, [deferredPrompt, isOpen]);
 
   if (!isOpen) return null;
-
-  const [installFeedback, setInstallFeedback] = useState('');
 
   const handleInstallClick = async () => {
     const prompt = deferredPrompt || (typeof window !== 'undefined' ? window.deferredPwaPrompt : null);

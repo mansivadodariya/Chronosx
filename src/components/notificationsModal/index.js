@@ -7,7 +7,8 @@ import {
     fetchUserNotifications,
     markNotificationAsRead,
     markAllNotificationsAsRead,
-    executeNotificationRedirect
+    executeNotificationRedirect,
+    getNotificationRedirectUrl
 } from '@/services/notificationService';
 import { getStoredUserId } from '@/lib/authSession';
 import styles from './notificationsModal.module.scss';
@@ -243,36 +244,69 @@ export default function NotificationsModal({ isOpen, onClose, userId, onUnreadCo
                                 <p className={styles.emptySubtitle}>{t('notifications.caughtUp', "You're all caught up!")}</p>
                             </div>
                         ) : (
-                            filteredNotifications.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className={`${styles.notificationCard} ${!item.is_read ? styles.unreadCard : ''} ${dismissingIds.has(item.id) ? styles.slidingOut : ''}`}
-                                    onClick={() => handleItemClick(item)}
-                                >
-                                    <div className={styles.cardHeader}>
-                                        <span className={styles.cardCatTag}>{item.category || item.event_type || 'SYSTEM'}</span>
-                                        <div className={styles.cardHeaderRight}>
-                                            <span className={styles.cardTime}>{formatTime(item.created_at)}</span>
-                                            {!item.is_read && (
+                            filteredNotifications.map((item) => {
+                                const redirectUrl = getNotificationRedirectUrl(item);
+                                const isExternal = Boolean(redirectUrl && (redirectUrl.startsWith('http://') || redirectUrl.startsWith('https://') || redirectUrl.startsWith('//')));
+                                return (
+                                    <div
+                                        key={item.id}
+                                        className={`${styles.notificationCard} ${!item.is_read ? styles.unreadCard : ''} ${redirectUrl ? styles.clickableCard : ''} ${dismissingIds.has(item.id) ? styles.slidingOut : ''}`}
+                                        onClick={() => handleItemClick(item)}
+                                        role="button"
+                                        tabIndex={0}
+                                    >
+                                        <div className={styles.cardHeader}>
+                                            <span className={styles.cardCatTag}>{item.category || item.event_type || 'SYSTEM'}</span>
+                                            <div className={styles.cardHeaderRight}>
+                                                <span className={styles.cardTime}>{formatTime(item.created_at)}</span>
+                                                {!item.is_read && (
+                                                    <button
+                                                        type="button"
+                                                        className={styles.cardDismissBtn}
+                                                        onClick={(e) => handleDismissItem(e, item)}
+                                                        title={t('notifications.dismiss', 'Mark as read & close')}
+                                                        aria-label="Dismiss notification"
+                                                    >
+                                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                            <line x1="18" y1="6" x2="6" y2="18" />
+                                                            <line x1="6" y1="6" x2="18" y2="18" />
+                                                        </svg>
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <h5 className={styles.cardTitle}>{item.title}</h5>
+                                        <p className={styles.cardMessage}>{item.message}</p>
+                                        {redirectUrl && (
+                                            <div className={styles.cardFooter}>
                                                 <button
                                                     type="button"
-                                                    className={styles.cardDismissBtn}
-                                                    onClick={(e) => handleDismissItem(e, item)}
-                                                    title={t('notifications.dismiss', 'Mark as read & close')}
-                                                    aria-label="Dismiss notification"
+                                                    className={styles.visitNowBtn}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleItemClick(item);
+                                                    }}
+                                                    title={isExternal ? 'Open external link' : 'Visit now'}
                                                 >
-                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                                        <line x1="18" y1="6" x2="6" y2="18" />
-                                                        <line x1="6" y1="6" x2="18" y2="18" />
-                                                    </svg>
+                                                    <span>{t('notifications.visitNow', 'Visit Now')}</span>
+                                                    {isExternal ? (
+                                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                                            <polyline points="15 3 21 3 21 9" />
+                                                            <line x1="10" y1="14" x2="21" y2="3" />
+                                                        </svg>
+                                                    ) : (
+                                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                            <line x1="5" y1="12" x2="19" y2="12" />
+                                                            <polyline points="12 5 19 12 12 19" />
+                                                        </svg>
+                                                    )}
                                                 </button>
-                                            )}
-                                        </div>
+                                            </div>
+                                        )}
                                     </div>
-                                    <h5 className={styles.cardTitle}>{item.title}</h5>
-                                    <p className={styles.cardMessage}>{item.message}</p>
-                                </div>
-                            ))
+                                );
+                            })
                         )}
                     </div>
                 </div>

@@ -389,7 +389,7 @@ export default function AdvisorChatView({
                             placeholder={t('strategyStudio.inputPlaceholder', 'What would you like to explore?')}
                             onSend={handleSend}
                             loading={loading}
-                            onNewChat={onNewChat}
+                            onNewChat={null}
                             typedSuggestions={typedSuggestions}
                             showTypedSuggestions={showTypedSuggestions}
                             activeSuggestionIndex={activeSuggestionIndex}
@@ -518,7 +518,7 @@ export default function AdvisorChatView({
 
                                                 {/* Dynamic Step Indicator Badge */}
                                                 {(() => {
-                                                    const stepInfo = getDynamicStepInfo(msg, messages, currentStep, totalSteps);
+                                                    const stepInfo = getDynamicStepInfo(msg, messages);
                                                     if (!stepInfo) return null;
                                                     return (
                                                         <div className={styles.stepIndicatorPill}>
@@ -556,14 +556,7 @@ export default function AdvisorChatView({
                                         );
 
                                         const isReviewOrConfirmStage = !isAlreadyGenerated && !msg.isError && Boolean(
-                                            msg.complete === true ||
-                                            msg.draft?.complete === true ||
-                                            msg.draft ||
-                                            (msg.text || '').toLowerCase().includes('confirm to proceed') ||
-                                            (msg.text || '').toLowerCase().includes('chart elements? just let me know') ||
-                                            (msg.text || '').toLowerCase().includes('ready to proceed') ||
-                                            (msg.step_title || '').toLowerCase().includes('review') ||
-                                            (msg.step_title || '').toLowerCase().includes('confirm')
+                                            msg.complete === true
                                         );
 
                                         const hasSubsequentCreation = messages.slice(index + 1).some((m) =>
@@ -574,19 +567,20 @@ export default function AdvisorChatView({
                                         const showReadyToProceedCard = showActionOptions &&
                                             !isUser &&
                                             !msg.isError &&
-                                            (msg.draft || currentDraft || msg.complete) &&
-                                            isReviewOrConfirmStage &&
+                                            msg.complete === true &&
+                                            !isAlreadyGenerated &&
                                             !hasSubsequentCreation &&
                                             !generatingStrategy;
 
                                         if (!showReadyToProceedCard) return null;
 
                                         const effectiveDraft = msg.draft || currentDraft || {};
+                                        const dynName = msg.strategy_name || effectiveDraft?.strategy_name || effectiveDraft?.suggested_strategy_name;
 
                                         return (
                                             <ReadyToProceedCard
                                                 draft={effectiveDraft}
-                                                strategyName={msg.strategy_name || effectiveDraft?.strategy_name}
+                                                strategyName={dynName}
                                                 onCreateStrategy={(name) => onGenerateFromDraft(effectiveDraft, name)}
                                                 onEnhance={(name) => onSend(`Enhance and optimize strategy rules for ${name}`)}
                                                 onModifyStrategy={(name) => onSend(`Modify strategy parameters for ${name}`)}
@@ -614,17 +608,23 @@ export default function AdvisorChatView({
                     {/* ── BOTTOM CHAT BAR WITH DOCKED INTERACTIVE QUESTION WIZARD (IMAGE 1 & 2) ── */}
                     <div className={styles.bottomChatInputBar}>
                         {/* Interactive Step-by-Step Question Wizard Docked Above Input Field */}
-                        {!isOptionBoxDismissed && !loading && isLatestAiMessage && isLatestAiStreamCompleted && !latestAiMessage?.isError && (
-                            <InteractiveQuestionWizard
-                                latestAiMessage={latestAiMessage}
-                                messages={messages}
-                                onComplete={(summaryText, qaList) => {
-                                    handleSend(summaryText, { qaList });
-                                }}
-                                onDismiss={() => setIsOptionBoxDismissed(true)}
-                                loading={loading}
-                            />
-                        )}
+                        {(() => {
+                            const isReadyStage = Boolean(latestAiMessage?.complete === true);
+                            if (isReadyStage || isOptionBoxDismissed || loading || !isLatestAiMessage || !isLatestAiStreamCompleted || latestAiMessage?.isError) {
+                                return null;
+                            }
+                            return (
+                                <InteractiveQuestionWizard
+                                    latestAiMessage={latestAiMessage}
+                                    messages={messages}
+                                    onComplete={(summaryText, qaList) => {
+                                        handleSend(summaryText, { qaList });
+                                    }}
+                                    onDismiss={() => setIsOptionBoxDismissed(true)}
+                                    loading={loading}
+                                />
+                            );
+                        })()}
 
                         {/* Bottom Textarea + Send Button (Card Layout Matching Image 2) */}
                         <StudioComposerCard

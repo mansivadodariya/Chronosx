@@ -115,7 +115,7 @@ export default function Footer() {
             <h4>{t('footer.tradingToolsTitle', 'TRADING TOOLS')}</h4>
             <ul>
               <li><Link href="/ai-trade-advisor">{t('header.tradingTools.tradeAudit.title', 'AI Past Trade Analyzer')}</Link></li>
-              <li><Link href="/strategy-core">{t('footer.strategyBuilder', 'Strategy Builder')}</Link></li>
+              <li><Link href="/custom-bot-builder">{t('header.tradingTools.strategyCreate.title', 'AI Trading Bot Builder')}</Link></li>
               <li><Link href="/backtesting">{t('footer.quantBacktesting', 'Quant Backtesting')}</Link></li>
             </ul>
           </div>

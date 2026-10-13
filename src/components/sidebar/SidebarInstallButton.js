@@ -5,10 +5,6 @@ import InstallModal from '@/components/pwa/InstallModal';
 import styles from './SidebarInstallButton.module.scss';
 
 export default function SidebarInstallButton({ isCollapsed }) {
-  // PWA disabled for now
-  return null;
-
-  /*
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isStandalone, setIsStandalone] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -98,5 +94,4 @@ export default function SidebarInstallButton({ isCollapsed }) {
       />
     </>
   );
-  */
 }

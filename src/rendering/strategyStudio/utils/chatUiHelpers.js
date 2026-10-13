@@ -12,48 +12,30 @@ export const DYNAMIC_LOADING_STAGES = [
     'Compiling algorithmic strategy rules...'
 ];
 
-export function getDynamicStepInfo(msg, allMessages, defaultCurrentStep = 2, defaultTotalSteps = 4) {
+export function getDynamicStepInfo(msg, allMessages) {
     if (!msg || msg.isError || msg.role === 'user') return null;
-    if (msg.step_badge) {
+
+    // If step is null or not provided from backend, do not show step progress bar (must not be static)
+    const rawStep = msg.step ?? msg.step_number;
+    const hasValidStepNum = rawStep != null && rawStep !== '' && !isNaN(parseInt(rawStep, 10)) && parseInt(rawStep, 10) > 0;
+    const hasValidBadge = Boolean(msg.step_badge && typeof msg.step_badge === 'string' && msg.step_badge.trim());
+
+    if (!hasValidStepNum && !hasValidBadge) {
+        return null;
+    }
+
+    if (hasValidBadge) {
         const match = msg.step_badge.match(/Step\s*(\d+)/i);
-        const stepNum = match ? parseInt(match[1], 10) : defaultCurrentStep;
+        const stepNum = match ? parseInt(match[1], 10) : (hasValidStepNum ? parseInt(rawStep, 10) : 1);
         const title = msg.step_title || msg.step_badge.replace(/^Step\s*\d+:\s*/i, '') || STEP_TITLES[stepNum - 1] || 'Strategy Configuration';
-        const total = msg.total_steps || defaultTotalSteps;
+        const total = msg.total_steps || 4;
         const progress = Math.min(100, Math.max(12, Math.round((stepNum / total) * 100)));
         return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
     }
 
-    if (msg.draft) {
-        return {
-            stepNum: 4,
-            total: 4,
-            title: 'Strategy Blueprint Ready',
-            badgeText: 'Step 4: Strategy Blueprint Ready',
-            progress: 100
-        };
-    }
-
-    if (msg.current_question?.question_number && msg.current_question?.total_questions) {
-        const qNum = msg.current_question.question_number;
-        const qTotal = msg.current_question.total_questions;
-        const total = 4;
-        const stepNum = Math.min(4, Math.max(1, Math.ceil((qNum / qTotal) * 4)));
-        const title = msg.step_title || STEP_TITLES[stepNum - 1] || 'Strategy Requirements';
-        const progress = Math.min(100, Math.max(15, Math.round((qNum / qTotal) * 100)));
-        return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
-    }
-
-    if (msg.step != null || msg.step_number != null) {
-        const rawStep = msg.step ?? msg.step_number;
-        const stepNum = parseInt(rawStep, 10);
-        if (!isNaN(stepNum) && stepNum > 0) {
-            const total = msg.total_steps || defaultTotalSteps;
-            const title = msg.step_title || STEP_TITLES[stepNum - 1] || 'Strategy Requirements';
-            const progress = Math.min(100, Math.max(15, Math.round((stepNum / total) * 100)));
-            return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
-        }
-    }
-
-    // If step is null or not provided in API response, do not show step progress bar
-    return null;
+    const stepNum = parseInt(rawStep, 10);
+    const total = msg.total_steps || 4;
+    const title = msg.step_title || STEP_TITLES[stepNum - 1] || 'Strategy Configuration';
+    const progress = Math.min(100, Math.max(12, Math.round((stepNum / total) * 100)));
+    return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
 }

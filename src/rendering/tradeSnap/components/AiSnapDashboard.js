@@ -13,8 +13,6 @@ import TimeframeSelectionModal from './TimeframeSelectionModal';
 import { useTradeSnapExport } from '../hooks/useTradeSnapExport';
 
 export default function AiSnapDashboard({ analysisData, rawData }) {
-    if (!analysisData && !rawData) return null;
-
     const dashboardRef = useRef(null);
     const { exportToPdf, isExporting } = useTradeSnapExport();
 
@@ -23,19 +21,22 @@ export default function AiSnapDashboard({ analysisData, rawData }) {
     const analysis = analysisData?.analysis || analysisData || rawData?.analysis || rawData;
 
     const [selectedTimeframe, setSelectedTimeframe] = useState(
-        analysis.timeframe || analysis.Timeframe || analysis.data?.timeframe || '15M'
+        analysis?.timeframe || analysis?.Timeframe || analysis?.data?.timeframe || '15M'
     );
     const [timeframeModalOpen, setTimeframeModalOpen] = useState(false);
 
     // Auto-trigger condition specified in Section 2:
     // When timeframe_detected === false or timeframe is null, open popup modal automatically
     useEffect(() => {
+        if (!rawPayload && !analysis) return;
         const isDetected = rawPayload?.timeframe_detected ?? rawPayload?.data?.timeframe_detected ?? true;
-        const currentTf = analysis.timeframe || analysis.Timeframe || analysis.data?.timeframe;
+        const currentTf = analysis?.timeframe || analysis?.Timeframe || analysis?.data?.timeframe;
         if (isDetected === false || !currentTf || currentTf === 'null') {
             setTimeframeModalOpen(true);
         }
     }, [rawPayload, analysis]);
+
+    if (!analysisData && !rawData) return null;
 
     const symbol = analysis.symbol || analysis.Symbol || rawPayload.symbol || analysis.data?.pair || 'XAUUSD';
     const timeframe = selectedTimeframe || rawPayload.timeframe || 'M15';

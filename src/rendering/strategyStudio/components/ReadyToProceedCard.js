@@ -25,17 +25,15 @@ export default function ReadyToProceedCard({
     onModifyStrategy,
     generatingStrategy
 }) {
-    const defaultName = initialStrategyName || draft?.strategy_name || draft?.name || computeDynamicStrategyName(draft);
+    const defaultName = initialStrategyName || draft?.strategy_name || draft?.suggested_strategy_name || draft?.name || computeDynamicStrategyName(draft) || 'Algorithmic Strategy';
     const [strategyName, setStrategyName] = useState(defaultName);
     const [hasUserEdited, setHasUserEdited] = useState(false);
     const [generationStage, setGenerationStage] = useState(1);
 
     useEffect(() => {
-        if (!hasUserEdited && draft) {
-            const dynamicName = initialStrategyName || draft?.strategy_name || draft?.name || computeDynamicStrategyName(draft);
-            if (dynamicName) {
-                setStrategyName(dynamicName);
-            }
+        const dynamicName = initialStrategyName || draft?.strategy_name || draft?.suggested_strategy_name || draft?.name;
+        if (dynamicName && !hasUserEdited) {
+            setStrategyName(dynamicName);
         }
     }, [draft, initialStrategyName, hasUserEdited]);
 

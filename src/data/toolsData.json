@@ -101,8 +101,8 @@
     },
     {
       "id": "custom-bot-builder",
-      "name": "Custom Bot Builder",
-      "shortName": "Custom Bot Builder",
+      "name": "AI Trading Bot Builder",
+      "shortName": "AI Trading Bot Builder",
       "outerRoute": "/custom-bot-builder",
       "innerRoute": "/manual-bot-builder",
       "description": "Step-by-step visual rule & technical indicator configuration with risk parameters",

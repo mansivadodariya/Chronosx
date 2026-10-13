@@ -3,7 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import SectionHeader from '@/components/sectionHeader';
-import styles from './customBotBuilder.module.scss';
+import styles from '../customBotBuilder.module.scss';
 
 const METRICS = [
   "Net Profit",

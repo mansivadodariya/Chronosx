@@ -6,7 +6,6 @@ import {
     SparklesMiniIcon,
     PlusIcon,
     ArrowUpIcon,
-    EditPencilIcon,
     ChevronDownIcon
 } from './StudioIcons';
 
@@ -80,18 +79,23 @@ export default function StudioComposerCard({
                             {placeholder}
                         </span>
                     </div>
-                    <button
-                        type="button"
-                        className={styles.tapToWriteBtn}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            handleExpand();
-                        }}
-                        title={t ? t('strategyStudio.tapToWrite', 'Tap to write') : 'Tap to write'}
-                        aria-label="Tap to write"
-                    >
-                        <EditPencilIcon size={18} />
-                    </button>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+                        {onNewChat && !isExploreMode && (
+                            <button
+                                type="button"
+                                className={styles.btnNewChatMini}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onNewChat();
+                                }}
+                                title={t ? t('strategyStudio.newChat', 'New Chat') : 'New Chat'}
+                                aria-label="New Chat"
+                            >
+                                <PlusIcon size={13} />
+                                <span>{t ? t('strategyStudio.newChat', 'New Chat') : 'New Chat'}</span>
+                            </button>
+                        )}
+                    </div>
                 </>
             ) : (
                 <>
@@ -135,7 +139,7 @@ export default function StudioComposerCard({
 
                     <div className={bottomRowClass}>
                         <div className={styles.cardBottomActionsLeft} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            {onNewChat && (
+                            {onNewChat && !isExploreMode && (
                                 <button
                                     type="button"
                                     className={styles.btnNewChat}

@@ -6,7 +6,7 @@ import BackToTop from '@/components/backToTop';
 import WhatsappButton from '@/components/whatsappButton';
 import MaintenanceGuard from '@/components/maintenanceGuard';
 import NotificationPopup from '@/components/notificationPopup';
-// import PwaInstaller from '@/components/pwa/PwaInstaller';
+import PwaInstaller from '@/components/pwa/PwaInstaller';
 
 import styles from './ClientOnlyWidgets.module.scss';
 
@@ -97,8 +97,7 @@ export default function ClientOnlyWidgets() {
             <WhatsappButton />
             {!isAuthRoute && (
                 <>
-                    {/* PWA disabled for now */}
-                    {/* <PwaInstaller /> */}
+                    <PwaInstaller />
                     <div className={`${styles.bottomWidgetsStack} ${isPublicPage ? styles.aboveWhatsapp : styles.standalone}`}>
                         <NotificationPopup />
                     </div>

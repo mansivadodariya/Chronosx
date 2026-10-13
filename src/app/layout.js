@@ -40,13 +40,12 @@ export const viewport = {
 
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://chronosx.com'),
-  // PWA disabled for now
-  // manifest: '/manifest.json',
-  // appleWebApp: {
-  //   capable: true,
-  //   statusBarStyle: 'black-translucent',
-  //   title: 'ChronosX',
-  // },
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'ChronosX',
+  },
   title: {
     default: "ChronosX — Next-Gen AI Trading Platform & Intelligence Desk",
     template: "%s | ChronosX"
@@ -209,7 +208,6 @@ export default async function RootLayout({ children }) {
             `,
           }}
         />
-        {/* PWA service worker registration disabled for now
         <Script
           id="pwa-sw-registration"
           strategy="afterInteractive"
@@ -223,7 +221,6 @@ export default async function RootLayout({ children }) {
             `,
           }}
         />
-        */}
       </head>
       <body suppressHydrationWarning>
         <Script

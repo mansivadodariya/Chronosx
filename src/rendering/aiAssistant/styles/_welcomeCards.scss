@@ -218,12 +218,18 @@
 
                 .welcomeContainer {
                     padding: 16px 12px 12px;
-                    max-width: 380px;
+                    max-width: 440px;
                     width: 100%;
-                    margin: 0 auto;
+                    margin: auto;
+
+                    @media (max-height: 580px) {
+                        margin: 16px auto;
+                    }
 
                     @include respond-to('tab') {
                         padding: 8px 10px 4px;
+                        margin: 12px auto;
+                        max-width: 380px;
                     }
 
                     .welcomeHeroBadge {
@@ -293,10 +299,11 @@
                         flex-direction: column;
                         gap: 12px;
                         width: 100%;
-                        max-width: 400px;
+                        max-width: 440px;
 
                         @include respond-to('tab') {
                             gap: 8px;
+                            max-width: 400px;
                         }
 
                         .welcomeActionCard {

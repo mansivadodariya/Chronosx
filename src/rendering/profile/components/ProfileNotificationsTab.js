@@ -1,14 +1,20 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/context/LanguageContext';
 import {
     fetchUserNotifications,
     markNotificationAsRead,
-    markAllNotificationsAsRead
+    markAllNotificationsAsRead,
+    executeNotificationRedirect,
+    getNotificationRedirectUrl
 } from '@/services/notificationService';
 import styles from '../profile.module.scss';
 
 export default function ProfileNotificationsTab({ userId, t, onUnreadCountChanged }) {
+    const router = useRouter();
+    const { language } = useLanguage();
     const [activeTab, setActiveTab] = useState('unread'); // 'unread' | 'read'
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [notifications, setNotifications] = useState([]);
@@ -104,6 +110,21 @@ export default function ProfileNotificationsTab({ userId, t, onUnreadCountChange
     const handleMarkAsRead = async (item) => {
         if (!item || item.is_read) return;
         handleDismissItem(null, item);
+    };
+
+    const handleItemClick = (item) => {
+        if (!item) return;
+        const targetUrl = getNotificationRedirectUrl(item);
+        if (!item.is_read) {
+            handleMarkAsRead(item);
+        }
+        if (targetUrl) {
+            executeNotificationRedirect(item, {
+                router,
+                language,
+                isLoggedIn: Boolean(userId),
+            });
+        }
     };
 
     const handleMarkAllRead = async () => {
@@ -218,36 +239,69 @@ export default function ProfileNotificationsTab({ userId, t, onUnreadCountChange
                     </div>
                 ) : (
                     <div className={styles.notificationsList}>
-                        {filteredNotifications.map((item) => (
-                            <div
-                                key={item.id}
-                                className={`${styles.profileNotifCard} ${!item.is_read ? styles.unreadProfileNotif : ''} ${dismissingIds.has(item.id) ? styles.slidingOut : ''}`}
-                                onClick={() => handleMarkAsRead(item)}
-                            >
-                                <div className={styles.notifCardHeader}>
-                                    <span className={styles.notifCategoryTag}>{item.category || item.event_type || 'SYSTEM'}</span>
-                                    <div className={styles.cardHeaderRight}>
-                                        <span className={styles.notifTime}>{formatTime(item.created_at)}</span>
-                                        {!item.is_read && (
+                        {filteredNotifications.map((item) => {
+                            const redirectUrl = getNotificationRedirectUrl(item);
+                            const isExternal = Boolean(redirectUrl && (redirectUrl.startsWith('http://') || redirectUrl.startsWith('https://') || redirectUrl.startsWith('//')));
+                            return (
+                                <div
+                                    key={item.id}
+                                    className={`${styles.profileNotifCard} ${!item.is_read ? styles.unreadProfileNotif : ''} ${redirectUrl ? styles.clickableProfileNotif : ''} ${dismissingIds.has(item.id) ? styles.slidingOut : ''}`}
+                                    onClick={() => handleItemClick(item)}
+                                    role="button"
+                                    tabIndex={0}
+                                >
+                                    <div className={styles.notifCardHeader}>
+                                        <span className={styles.notifCategoryTag}>{item.category || item.event_type || 'SYSTEM'}</span>
+                                        <div className={styles.cardHeaderRight}>
+                                            <span className={styles.notifTime}>{formatTime(item.created_at)}</span>
+                                            {!item.is_read && (
+                                                <button
+                                                    type="button"
+                                                    className={styles.profileNotifDismissBtn}
+                                                    onClick={(e) => handleDismissItem(e, item)}
+                                                    title={t ? t('notifications.dismiss', 'Mark as read & close') : 'Mark as read & close'}
+                                                    aria-label="Dismiss notification"
+                                                >
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                        <line x1="18" y1="6" x2="6" y2="18" />
+                                                        <line x1="6" y1="6" x2="18" y2="18" />
+                                                    </svg>
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <h5 className={styles.notifCardTitle}>{item.title}</h5>
+                                    <p className={styles.notifCardMessage}>{item.message}</p>
+                                    {redirectUrl && (
+                                        <div className={styles.notifCardFooter}>
                                             <button
                                                 type="button"
-                                                className={styles.profileNotifDismissBtn}
-                                                onClick={(e) => handleDismissItem(e, item)}
-                                                title={t ? t('notifications.dismiss', 'Mark as read & close') : 'Mark as read & close'}
-                                                aria-label="Dismiss notification"
+                                                className={styles.notifActionBtn}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleItemClick(item);
+                                                }}
+                                                title={isExternal ? 'Open external link' : 'Visit now'}
                                             >
-                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                                    <line x1="18" y1="6" x2="6" y2="18" />
-                                                    <line x1="6" y1="6" x2="18" y2="18" />
-                                                </svg>
+                                                <span>{t ? t('notifications.visitNow', 'Visit Now') : 'Visit Now'}</span>
+                                                {isExternal ? (
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                                        <polyline points="15 3 21 3 21 9" />
+                                                        <line x1="10" y1="14" x2="21" y2="3" />
+                                                    </svg>
+                                                ) : (
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                                        <polyline points="12 5 19 12 12 19" />
+                                                    </svg>
+                                                )}
                                             </button>
-                                        )}
-                                    </div>
+                                        </div>
+                                    )}
                                 </div>
-                                <h5 className={styles.notifCardTitle}>{item.title}</h5>
-                                <p className={styles.notifCardMessage}>{item.message}</p>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 )}
             </div>

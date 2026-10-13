@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { motion } from 'framer-motion';
-import styles from './customBotBuilder.module.scss';
+import styles from '../customBotBuilder.module.scss';
 
 const BotSparklesIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -42,38 +42,35 @@ const HIGHLIGHTS = [
   }
 ];
 
-export default function HeroSection({ onStartClick, onMarketplaceClick }) {
+export default function HeroSection({ onStartClick, onCustomClick }) {
   return (
     <section className={styles.heroSection}>
       <div className="container">
         {/* Top Tag Badge */}
         <div className={styles.heroBadge}>
           <span className={styles.pulseDot} />
-          AI CUSTOM BOT BUILDER
+          AI TRADING BOT BUILDER
         </div>
 
         {/* Hero Title */}
         <h1 className={styles.heroTitle}>
-          Build Your Trading Bot <br />
-          <span className={styles.highlight}>With AI</span>
+          Build Your Strategy. <br />
+          <span className={styles.highlight}>Automate Your Edge.</span>
         </h1>
 
-        {/* Hero Subtext (Primary LCP Element) */}
+        {/* Hero Subtext */}
         <p className={styles.heroSubtext}>
-          Discover trading bots in our marketplace, create your own bot with AI chat, or build step-by-step with full control. Turn your trading ideas into structured bot configurations and take them from creation to backtesting — all in one place.
+          Turn your trading ideas into configurable algorithmic bots with ChronosX. Choose an AI-powered workflow to describe your strategy in plain English, or build every rule manually with the Custom Bot Builder.
         </p>
 
         {/* Hero CTAs */}
         <div className={styles.heroCtaGroup}>
           <button className={styles.heroPrimaryBtn} onClick={onStartClick}>
-            START BUILDING
+            CREATE YOUR BOT
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="5" y1="12" x2="19" y2="12" />
               <polyline points="12 5 19 12 12 19" />
             </svg>
-          </button>
-          <button className={styles.heroSecondaryBtn} onClick={onMarketplaceClick}>
-            EXPLORE BOT MARKETPLACE
           </button>
         </div>
 

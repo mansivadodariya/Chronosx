@@ -294,43 +294,28 @@ export default function StrategyStudio() {
         if (extracted.capital) setCapital(extracted.capital);
         if (extracted.quantity) setQuantity(extracted.quantity);
 
-        // 1. Backtest trigger commands -> open side backtest panel and run real /backtest/v1
-        const qaAnswers = (extraData?.qaList || []).map(qa => `${qa.answer || ''} ${qa.label || ''} ${qa.question || ''}`.toLowerCase());
-        const isBacktestCommand =
-            lower.includes('backtest') ||
-            lower.includes('simulate') ||
-            lower === 'run' ||
-            lower === 'start' ||
-            lower.includes('historical candle') ||
-            qaAnswers.some(ans => ans.includes('backtest') || ans.includes('simulate'));
+        // 1. Only trigger standalone backtest execution if strategy is already complete and confirmed
+        const isStrategyReady = Boolean(currentDraft?.complete || currentStrategy?.complete || currentStrategy?.entry_conditions);
+        const isExplicitRunCommand = isStrategyReady && (
+            lower === 'run backtest' ||
+            lower === 'run simulation' ||
+            lower === 'start backtest'
+        );
 
-        if (isBacktestCommand) {
-            const cleanAnswer = extraData?.qaList?.[0]?.answer || extraData?.qaList?.[0]?.label;
-            const displayUserText = cleanAnswer || (text.includes('\n') ? text.split('\n').pop() : text);
-            
-            const targetSymbol = extracted.symbol || symbol || 'XAUUSD';
-            const targetInterval = extracted.interval || interval || '15min';
-            const targetCapital = extracted.capital || capital || 10000;
-            const targetQuantity = extracted.quantity || quantity || 0.01;
-
-            setSymbol(targetSymbol);
-            setInterval(targetInterval);
-            setCapital(targetCapital);
-            setQuantity(targetQuantity);
-
+        if (isExplicitRunCommand) {
+            const displayUserText = extraData?.qaList?.[0]?.answer || extraData?.qaList?.[0]?.label || (text.includes('\n') ? text.split('\n').pop() : text);
+            const tSym = extracted.symbol || symbol || 'XAUUSD';
+            const tInt = extracted.interval || interval || '15min';
+            const tCap = extracted.capital || capital || 10000;
+            const tQty = extracted.quantity || quantity || 0.01;
+            setSymbol(tSym); setInterval(tInt); setCapital(tCap); setQuantity(tQty);
             setMessages((prev) => [
                 ...prev,
                 { role: 'user', text: displayUserText },
-                { role: 'ai', text: `Launching backtest simulation for **${targetSymbol}** (${targetInterval}) across historical candle data...` }
+                { role: 'ai', text: `Launching backtest simulation for **${tSym}** (${tInt}) across historical candle data...` }
             ]);
             setIsBacktestPanelOpen(true);
-            handleRunBacktest({
-                symbol: targetSymbol,
-                interval: targetInterval,
-                capital: targetCapital,
-                quantity: targetQuantity,
-                ...currentStrategy
-            });
+            handleRunBacktest({ symbol: tSym, interval: tInt, capital: tCap, quantity: tQty, ...currentStrategy });
             isSendingRef.current = false;
             return;
         }
@@ -355,23 +340,27 @@ export default function StrategyStudio() {
                 }
                 const rawReply = resultData.reply || res.reply || 'I have analyzed your strategy request.';
                 const reply = sanitizeRawJsonText(rawReply);
-                const isComplete = Boolean(resultData.complete === true || res.complete === true || resultData.is_complete === true || resultData.draft?.complete === true);
-                const strategyName = resultData.strategy_name || res.strategy_name || resultData.draft?.strategy_name || resultData.draft?.name || '';
+                const isComplete = Boolean(
+                    resultData.complete === true ||
+                    res.complete === true
+                );
+                const strategyName = resultData.strategy_name || resultData.suggested_strategy_name || res.strategy_name || resultData.draft?.strategy_name || resultData.draft?.suggested_strategy_name || resultData.draft?.name || '';
+                // Hide chat suggestion bubbles (options/actions are empty []) when ready to proceed
                 const suggestions = isComplete ? [] : (resultData.suggestions || res.suggestions || []);
                 const options = isComplete ? [] : (resultData.options || []);
                 const questions = isComplete ? [] : (resultData.questions || []);
                 const current_question = isComplete ? null : (resultData.current_question || null);
-                const total_questions = resultData.total_questions || questions.length || 0;
-                const question = resultData.question || (current_question ? current_question.question : null);
+                const total_questions = isComplete ? 0 : (resultData.total_questions || questions.length || 0);
+                const question = isComplete ? null : (resultData.question || (current_question ? current_question.question : null));
                 const draft = resultData.draft || res.draft || null;
                 if (draft && strategyName) {
                     draft.strategy_name = strategyName;
                     draft.name = strategyName;
                 }
                 const step = resultData.step || resultData.step_number || resultData.current_step || null;
-                const total_steps = resultData.total_steps || resultData.step_total || 4;
-                const step_badge = resultData.step_badge || '';
-                const step_title = resultData.step_title || '';
+                const total_steps = resultData.total_steps || resultData.step_total || (step ? 4 : null);
+                const step_badge = resultData.step_badge || null;
+                const step_title = resultData.step_title || null;
 
                 if (draft) {
                     setCurrentDraft(draft);
@@ -401,6 +390,7 @@ export default function StrategyStudio() {
                         draft,
                         strategy_name: strategyName,
                         complete: isComplete,
+                        'ready to proceed': isComplete,
                         step,
                         total_steps,
                         step_badge,
@@ -478,8 +468,11 @@ export default function StrategyStudio() {
                     }
                 ]);
                 handleToast('Strategy blueprint applied successfully!');
+                setIsBacktestPanelOpen(true);
+                handleRunBacktest(strat);
             } else {
                 handleToast('Strategy blueprint parameters loaded into studio');
+                setIsBacktestPanelOpen(true);
             }
         } catch (err) {
             console.warn('Strategy generation error, applying draft parameters to studio:', err.message);

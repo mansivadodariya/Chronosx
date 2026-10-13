@@ -153,36 +153,53 @@ export const strategyStudioApi = {
     },
 
     /**
-     * Generate Strategy JSON from AI Draft via /backtest/v1/wizard/generate
+     * Generate Strategy JSON from AI Draft via /api/v1/backtesting/wizard/generate or /backtest/v1/wizard/generate
      */
     generateStrategy: async ({ sessionId, draft, strategyName, userId }) => {
-        const stratName = strategyName || draft?.name || "AI Strategy";
+        const stratName = strategyName || draft?.strategy_name || draft?.name || "AI Strategy";
+        const finalDraft = {
+            ...(draft || {}),
+            strategy_name: stratName,
+            name: stratName
+        };
+        const payload = {
+            session_id: sessionId,
+            strategy_name: stratName,
+            draft: finalDraft,
+            ...(userId ? { user_id: userId } : {})
+        };
         try {
             const apiBase = getApiBase();
-            const currentUserId = userId || getStoredUserId() || undefined;
-            const payload = {
-                session_id: sessionId,
-                strategy_name: stratName,
-                draft: draft || {},
-                ...(currentUserId ? { user_id: currentUserId } : {})
-            };
-            const res = await fetch(`${apiBase}/wizard/generate`, {
-                method: "POST",
-                headers: getAuthHeaders(),
-                body: JSON.stringify(payload)
-            });
-            if (res.ok) {
-                const json = await res.json();
-                if ((json.status === "success" || json.success === true) && (json.strategies?.length > 0 || json.data)) {
-                    const firstStrat = json.strategies?.[0] || json.data?.strategy || (Array.isArray(json.data) ? json.data[0] : json.data);
-                    return {
-                        status: "success",
-                        success: true,
-                        strategy: firstStrat,
-                        strategies: json.strategies || (firstStrat ? [firstStrat] : []),
-                        data: json.data || { strategy: firstStrat }
-                    };
-                }
+            const backend = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/, '');
+            const candidateUrls = [];
+            if (backend) {
+                candidateUrls.push(`${backend}/api/v1/backtesting/wizard/generate`);
+                candidateUrls.push(`${backend}/api/v1/backtest/wizard/generate`);
+            }
+            candidateUrls.push(`${apiBase}/wizard/generate`);
+            candidateUrls.push('/api/v1/backtesting/wizard/generate');
+
+            for (const url of candidateUrls) {
+                try {
+                    const res = await fetch(url, {
+                        method: "POST",
+                        headers: getAuthHeaders(),
+                        body: JSON.stringify(payload)
+                    });
+                    if (res.ok) {
+                        const json = await res.json();
+                        if ((json.status === "success" || json.success === true) && (json.strategies?.length > 0 || json.data || json.strategy)) {
+                            const firstStrat = json.strategies?.[0] || json.data?.strategy || (Array.isArray(json.data) ? json.data[0] : json.data) || json.strategy;
+                            return {
+                                status: "success",
+                                success: true,
+                                strategy: firstStrat,
+                                strategies: json.strategies || (firstStrat ? [firstStrat] : []),
+                                data: json.data || { strategy: firstStrat }
+                            };
+                        }
+                    }
+                } catch (_) {}
             }
         } catch (err) {
             console.warn("Backend /wizard/generate unreachable, using local specification builder:", err.message);

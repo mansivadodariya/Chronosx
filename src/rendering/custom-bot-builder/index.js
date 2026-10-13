@@ -1,21 +1,18 @@
 "use client";
 import React, { useRef, useState } from 'react';
-import HeroSection from './HeroSection';
-import ThreeWaysSection from './ThreeWaysSection';
-import MarketplaceSection from './MarketplaceSection';
-import AiBuilderSection from './AiBuilderSection';
-import GuidedBuilderSection from './GuidedBuilderSection';
-import WorkflowSection from './WorkflowSection';
-import BacktestIntegrationSection from './BacktestIntegrationSection';
-import FaqSection from './FaqSection';
-import FinalCta from './FinalCta';
+import HeroSection from './components/HeroSection';
+import ThreeWaysSection from './components/ThreeWaysSection';
+import AiBuilderSection from './components/AiBuilderSection';
+import WhyChronosXSection from './components/WhyChronosXSection';
+import ComparisonSection from './components/ComparisonSection';
+import FaqSection from './components/FaqSection';
+import CommonCta from '@/components/commonCta';
 import styles from './customBotBuilder.module.scss';
 
 export default function CustomBotBuilderView() {
   const containerRef = useRef(null);
-  const marketplaceRef = useRef(null);
   const aiBuilderRef = useRef(null);
-  const guidedBuilderRef = useRef(null);
+  const comparisonRef = useRef(null);
 
   const [mousePos, setMousePos] = useState({ x: 50, y: 20, isHovered: false });
 
@@ -31,22 +28,17 @@ export default function CustomBotBuilderView() {
     setMousePos(prev => ({ ...prev, isHovered: false }));
   };
 
-  const scrollToMarketplace = () => {
-    marketplaceRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   const scrollToAiBuilder = () => {
     aiBuilderRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const scrollToGuidedBuilder = () => {
-    guidedBuilderRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToComparison = () => {
+    comparisonRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleSelectWay = (wayId) => {
-    if (wayId === 'marketplace') scrollToMarketplace();
-    else if (wayId === 'ai-builder') scrollToAiBuilder();
-    else if (wayId === 'custom-builder') scrollToGuidedBuilder();
+    if (wayId === 'ai-builder') scrollToAiBuilder();
+    else if (wayId === 'custom-builder') scrollToComparison();
   };
 
   return (
@@ -75,36 +67,39 @@ export default function CustomBotBuilderView() {
       {/* 1. HERO BANNER */}
       <HeroSection
         onStartClick={scrollToAiBuilder}
-        onMarketplaceClick={scrollToMarketplace}
+        onCustomClick={scrollToComparison}
       />
 
       {/* CONTENT SECTIONS */}
       <div className={styles.contentSections}>
-        {/* 2. THREE WAYS TO BUILD */}
+        {/* TWO WAYS TO BUILD */}
         <ThreeWaysSection onSelectWay={handleSelectWay} />
 
-        {/* 3. BOT MARKETPLACE SHOWCASE */}
-        <MarketplaceSection refProp={marketplaceRef} />
+        {/* AI BOT BUILDER */}
 
-        {/* 4. AI BOT BUILDER + CHAT SIMULATOR */}
+        {/* WHY BUILD WITH CHRONOSX? */}
+        <WhyChronosXSection />
         <AiBuilderSection refProp={aiBuilderRef} />
 
-        {/* 5. CUSTOM GUIDED BOT BUILDER */}
-        <GuidedBuilderSection refProp={guidedBuilderRef} />
+        {/* AI VS CUSTOM COMPARISON */}
+        <ComparisonSection
+          refProp={comparisonRef}
+          onAiClick={scrollToAiBuilder}
+          onCustomClick={scrollToComparison}
+          onStartClick={scrollToAiBuilder}
+        />
 
-        {/* 6. WORKFLOW FROM IDEA TO BOT */}
-        <WorkflowSection />
-
-        {/* 7. BACKTEST INTEGRATION & CATEGORY EXPLORER */}
-        <BacktestIntegrationSection onExploreClick={scrollToMarketplace} />
-
-        {/* 8. FAQ ACCORDION */}
+        {/* SECTION 07 — FAQ ACCORDION */}
         <FaqSection />
 
-        {/* 9. FINAL CTA BANNER */}
-        <FinalCta
-          onBuildClick={scrollToAiBuilder}
-          onMarketplaceClick={scrollToMarketplace}
+        {/* FINAL CTA (COMMON CTA) */}
+        <CommonCta
+          badge="AI TRADING BOT BUILDER"
+          title1="Your Strategy Shouldn't"
+          title2="Stay on Paper."
+          description="Build it. Test it. Refine it. Turn your trading logic into a bot with ChronosX."
+          primaryBtnText="CREATE YOUR FIRST BOT"
+          primaryBtnAction={scrollToAiBuilder}
         />
       </div>
     </div>

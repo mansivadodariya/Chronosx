@@ -50,13 +50,15 @@ export function checkPermissionInSet(set, tabName) {
     target === 'custom bot builder' ||
     target === 'manual bot builder' ||
     target === 'custom bot' ||
-    target === 'manual bot'
+    target === 'manual bot' ||
+    target === 'ai trading bot builder'
   ) {
     return (
       set.has('custom bot builder') ||
       set.has('manual bot builder') ||
       set.has('custom bot') ||
-      set.has('manual bot')
+      set.has('manual bot') ||
+      set.has('ai trading bot builder')
     );
   }
 
