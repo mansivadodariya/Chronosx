@@ -16,10 +16,16 @@ import { supabase } from '@/lib/supabaseClient';
 import { fetchVisibleTabNames, checkPermissionInSet } from '@/lib/useTabPermission';
 import './layout.scss';
 
-const NeweraCreditsModal = dynamic(() => import('@/components/neweraCreditsModal'), { ssr: false });
-const RiskDisclosureModal = dynamic(() => import('@/components/riskDisclosureModal'), { ssr: false });
-const FirebasePhoneModal = dynamic(() => import('@/components/firebasePhoneModal'), { ssr: false });
-const AccessDeniedScreen = dynamic(() => import('@/components/AccessDeniedScreen'), { ssr: false });
+const safeDynamic = (importFn) =>
+    dynamic(() => importFn().catch((err) => {
+        console.warn('Chunk load failed, fallback applied:', err);
+        return { default: () => null };
+    }), { ssr: false });
+
+const NeweraCreditsModal = safeDynamic(() => import('@/components/neweraCreditsModal'));
+const RiskDisclosureModal = safeDynamic(() => import('@/components/riskDisclosureModal'));
+const FirebasePhoneModal = safeDynamic(() => import('@/components/firebasePhoneModal'));
+const AccessDeniedScreen = safeDynamic(() => import('@/components/AccessDeniedScreen'));
 
 const TOOL_ROUTES = [
     '/chart-scanner',
@@ -268,8 +274,11 @@ const layout = ({ children }) => {
                 });
         }
 
+        let lastVisibilityCheckTime = Date.now();
         const handleTabVisibilityChange = () => {
-            if (document.visibilityState === 'visible') {
+            const now = Date.now();
+            if (document.visibilityState === 'visible' && (now - lastVisibilityCheckTime > 60000)) {
+                lastVisibilityCheckTime = now;
                 const activeUid = getStoredUserId();
                 if (activeUid) {
                     dashboardApi.getStats(activeUid)
@@ -398,17 +407,21 @@ const layout = ({ children }) => {
                             }}
                         />
                     )} */}
-                    <RiskDisclosureModal
-                        isOpen={showRiskModal}
-                        userId={userId}
-                        onAccept={() => setShowRiskModal(false)}
-                    />
-                    <FirebasePhoneModal
-                        isOpen={showPhoneVerifyModal}
-phoneNumber={userPhoneNumber}
-                        autoTriggerSend={false}
-                        onSuccess={handlePhoneVerifySuccess}
-                    />
+                    {showRiskModal && (
+                        <RiskDisclosureModal
+                            isOpen={showRiskModal}
+                            userId={userId}
+                            onAccept={() => setShowRiskModal(false)}
+                        />
+                    )}
+                    {showPhoneVerifyModal && (
+                        <FirebasePhoneModal
+                            isOpen={showPhoneVerifyModal}
+                            phoneNumber={userPhoneNumber}
+                            autoTriggerSend={false}
+                            onSuccess={handlePhoneVerifySuccess}
+                        />
+                    )}
                 </ToolStateProvider>
                 </SubscriptionProvider>
             </ThemeProvider>

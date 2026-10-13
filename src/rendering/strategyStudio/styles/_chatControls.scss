@@ -54,18 +54,42 @@
 
 .chatInputWrapper {
     width: 100%;
-    display: flex;
-    flex-direction: column;
     position: relative;
     background: rgba(14, 22, 17, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-radius: 20px;
-    padding: 18px 22px;
-    min-height: 120px;
-    gap: 12px;
-    transition: all 0.22s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-sizing: border-box;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+
+    &.inputCardCollapsed {
+        min-height: 52px;
+        max-height: 52px;
+        padding: 6px 8px 6px 18px;
+        border-radius: 9999px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        overflow: hidden;
+
+        &:hover {
+            border-color: rgba(24, 201, 139, 0.45);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 16px rgba(24, 201, 139, 0.15);
+        }
+    }
+
+    &.inputCardExpanded {
+        border-radius: 20px;
+        padding: 18px 22px;
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
 
     &:focus-within {
         border-color: rgba(24, 201, 139, 0.55);
@@ -77,9 +101,113 @@
         border-color: rgba(0, 0, 0, 0.1);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 
+        &.inputCardCollapsed {
+            border-color: rgba(0, 0, 0, 0.12);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+
+            &:hover {
+                border-color: #059669;
+                box-shadow: 0 4px 16px rgba(5, 150, 105, 0.12);
+            }
+        }
+
         &:focus-within {
             border-color: #059669;
             box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12);
+        }
+    }
+}
+
+.collapsedPlaceholderWrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+    user-select: none;
+    color: #64748B;
+    font-size: 15px;
+
+    [data-theme='light'] & {
+        color: #94A3B8;
+    }
+}
+
+.collapsedPlaceholderText {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 400;
+}
+
+.tapToWriteBtn {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    color: #18C98B;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+    box-shadow: none;
+
+    &:hover {
+        background: rgba(24, 201, 139, 0.12);
+        color: #10B981;
+        transform: scale(1.1);
+        box-shadow: none;
+    }
+
+    [data-theme='light'] & {
+        background: transparent;
+        border: none;
+        color: #059669;
+
+        &:hover {
+            background: rgba(5, 150, 105, 0.1);
+            color: #047857;
+        }
+    }
+
+    @media (max-width: 480px) {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+.btnCollapseInput {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #94A3B8;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #FFFFFF;
+        border-color: rgba(24, 201, 139, 0.3);
+    }
+
+    [data-theme='light'] & {
+        background: #F1F5F9;
+        border-color: #E2E8F0;
+        color: #64748B;
+
+        &:hover {
+            background: #E2E8F0;
+            color: #0F172A;
         }
     }
 }

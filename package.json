@@ -6,7 +6,6 @@
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "start": "next start",
-    "test:automation": "node scratch/run_full_automation_test.js",
     "test:e2e": "playwright test"
   },
   "dependencies": {

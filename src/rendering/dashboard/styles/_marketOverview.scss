@@ -11,6 +11,8 @@
     gap: 12px;
     height: 100%;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     /* 1. Header with Title & Category Filter Pills (Outside card background) */
     .overviewHeader {
@@ -77,6 +79,12 @@
             padding: 3px;
             gap: 2px;
 
+            @include respond-to('sm') {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
             .overviewTabBtn {
                 background: transparent;
                 border: none;
@@ -88,6 +96,13 @@
                 cursor: pointer;
                 transition: all 0.15s ease;
                 white-space: nowrap;
+
+                @include respond-to('sm') {
+                    flex: 1;
+                    text-align: center;
+                    padding: 4px 8px;
+                    font-size: 10.5px;
+                }
 
                 &:hover {
                     color: #FFFFFF;
@@ -119,8 +134,14 @@
         box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
         transition: all 0.22s ease;
         width: 100%;
+        max-width: 100%;
+        min-width: 0;
         flex: 1;
         box-sizing: border-box;
+
+        @include respond-to('sm') {
+            padding: 8px 8px 10px 8px;
+        }
 
         &:hover {
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 18px rgba(24, 201, 139, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -184,15 +205,21 @@
 
             .colInstrument {
                 flex: 1.35;
-                min-width: 125px;
+                min-width: 0;
                 display: flex;
                 align-items: center;
                 gap: 8px;
+                overflow: hidden;
+
+                @include respond-to('sm') {
+                    flex: 1.2;
+                    gap: 6px;
+                }
             }
 
             .colPrice {
                 flex: 0.95;
-                min-width: 80px;
+                min-width: 0;
                 text-align: right;
                 font-family: "Euclid-Bold", "Euclid Circular A", var(--font-plus-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
                 font-variant-numeric: tabular-nums;
@@ -202,6 +229,12 @@
                 color: #FFFFFF;
                 padding-right: 12px;
                 transition: color 0.3s ease;
+                white-space: nowrap;
+
+                @include respond-to('sm') {
+                    padding-right: 4px;
+                    font-size: 11.5px;
+                }
 
                 &.priceUp {
                     color: #10B981;
@@ -216,17 +249,22 @@
 
             .colTrend {
                 flex: 0.85;
-                min-width: 70px;
+                min-width: 0;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+
+                @include respond-to('tab') {
+                    display: none;
+                }
             }
 
             .colChange {
                 flex: 0.8;
-                min-width: 65px;
+                min-width: 0;
                 display: flex;
                 justify-content: flex-end;
+                white-space: nowrap;
             }
 
             .overviewRow {

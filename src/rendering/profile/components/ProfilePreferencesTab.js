@@ -340,7 +340,7 @@ export default function ProfilePreferencesTab({ t }) {
 
                 <div className={styles.prefList}>
                     {/* Timezone Selection */}
-                    <div className={styles.prefRow}>
+                    <div className={`${styles.prefRow} ${styles.prefRowSelect}`}>
                         <div className={styles.prefRowLeft}>
                             <div className={styles.rowIcon}>
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -353,7 +353,7 @@ export default function ProfilePreferencesTab({ t }) {
                                 <span className={styles.rowDesc}>{t?.('profile.defaultTzSub', 'Align candlestick timestamp grids with your primary trading session.') || 'Align candlestick timestamp grids with your primary trading session.'}</span>
                             </div>
                         </div>
-                        <div className={styles.prefRowRight} style={{ minWidth: '220px' }}>
+                        <div className={`${styles.prefRowRight} ${styles.timezoneSelect}`}>
                             <ProfileCustomSelect
                                 value={chartTimezone}
                                 onChange={(val) => handleTimezoneChange({ target: { value: val } })}
@@ -363,7 +363,7 @@ export default function ProfilePreferencesTab({ t }) {
                     </div>
 
                     {/* Currency Display Preference */}
-                    <div className={styles.prefRow}>
+                    <div className={`${styles.prefRow} ${styles.prefRowSelect}`}>
                         <div className={styles.prefRowLeft}>
                             <div className={styles.rowIcon}>
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -376,7 +376,7 @@ export default function ProfilePreferencesTab({ t }) {
                                 <span className={styles.rowDesc}>{t?.('profile.displayCurrencySub', 'Symbol formatting for compute estimates and invoices.') || 'Symbol formatting for compute estimates and invoices.'}</span>
                             </div>
                         </div>
-                        <div className={styles.prefRowRight} style={{ minWidth: '160px' }}>
+                        <div className={`${styles.prefRowRight} ${styles.currencySelect}`}>
                             <ProfileCustomSelect
                                 value={currency}
                                 onChange={(val) => handleCurrencyChange({ target: { value: val } })}

@@ -166,8 +166,8 @@ export default function NotificationsModal({ isOpen, onClose, userId, onUnreadCo
     if (!isOpen) return null;
 
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
-            <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalOverlay} onClick={onClose} data-lenis-prevent="true">
+            <div className={styles.modalCard} onClick={(e) => e.stopPropagation()} data-lenis-prevent="true">
                 {/* Header */}
                 <div className={styles.headerRow}>
                     <h3 className={styles.modalTitle}>{t('notifications.title', 'Notifications')}</h3>
@@ -207,9 +207,9 @@ export default function NotificationsModal({ isOpen, onClose, userId, onUnreadCo
                 </div>
 
                 {/* Body: Left Categories + Right Feed */}
-                <div className={styles.modalBody}>
+                <div className={styles.modalBody} data-lenis-prevent="true">
                     {/* Left Category Sidebar (Only shows existing categories) */}
-                    <div className={styles.categorySidebar}>
+                    <div className={styles.categorySidebar} data-lenis-prevent="true">
                         {dynamicCategories.map((cat) => (
                             <button
                                 key={cat.id}
@@ -226,7 +226,7 @@ export default function NotificationsModal({ isOpen, onClose, userId, onUnreadCo
                     </div>
 
                     {/* Right Content Area */}
-                    <div className={styles.contentArea}>
+                    <div className={styles.contentArea} data-lenis-prevent="true">
                         {loading ? (
                             <div className={styles.loaderCenter}>
                                 <span>{t('notifications.loading', 'Loading notifications...')}</span>

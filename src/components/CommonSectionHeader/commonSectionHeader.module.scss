@@ -111,6 +111,7 @@
     width: 100%;
 
     @media (max-width: 640px) {
+        align-items: flex-start;
         gap: 12px;
     }
 }
@@ -137,6 +138,8 @@
     }
 
     @media (max-width: 640px) {
+        align-self: flex-start;
+        margin-top: 2px;
         width: 44px;
         height: 44px;
         min-width: 44px;
@@ -175,6 +178,10 @@
     justify-content: space-between;
     gap: 8px;
     flex-wrap: wrap;
+
+    @media (max-width: 640px) {
+        display: contents;
+    }
 }
 
 .badgePill {
@@ -191,6 +198,11 @@
     width: fit-content;
     letter-spacing: 0.4px;
     text-transform: uppercase;
+
+    @media (max-width: 640px) {
+        order: 1;
+        margin-bottom: 2px;
+    }
 
     .badgeIconWrap {
         display: flex;
@@ -213,6 +225,18 @@
     margin-left: auto;
     position: relative;
     z-index: 50;
+
+    @media (max-width: 640px) {
+        order: 3;
+        width: 100%;
+        margin-left: 0;
+        margin-top: 8px;
+
+        > * {
+            width: 100%;
+            justify-content: center;
+        }
+    }
 }
 
 .headerMainRow {
@@ -221,6 +245,11 @@
     justify-content: space-between;
     gap: 12px;
     flex-wrap: wrap;
+
+    @media (max-width: 640px) {
+        order: 2;
+        width: 100%;
+    }
 }
 
 .textGroup {

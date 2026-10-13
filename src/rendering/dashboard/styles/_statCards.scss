@@ -15,8 +15,12 @@
     }
 
     @include respond-to('lg') {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 16px;
+    }
+
+    @include respond-to('sm') {
+        gap: 12px;
     }
 }
 
@@ -207,6 +211,13 @@
             align-items: center;
             gap: 10px;
 
+            @include respond-to('sm') {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
             .chartSubBadge {
                 background: rgba(24, 201, 139, 0.16);
                 color: #18C98B;
@@ -214,6 +225,11 @@
                 font-weight: 700;
                 padding: 4px 12px;
                 border-radius: 99px;
+
+                @include respond-to('sm') {
+                    font-size: 11px;
+                    padding: 3px 10px;
+                }
             }
 
             .timeframeFilterGroup {
@@ -234,6 +250,11 @@
                     border-radius: 6px;
                     cursor: pointer;
                     transition: all 0.2s ease;
+
+                    @include respond-to('sm') {
+                        padding: 3px 8px;
+                        font-size: 10px;
+                    }
 
                     &:hover {
                         color: #FFFFFF;

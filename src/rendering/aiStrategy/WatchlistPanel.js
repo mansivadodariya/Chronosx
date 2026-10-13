@@ -105,9 +105,12 @@ const WatchlistItem = memo(({ pair, isActive, globalTimeframe, addLog, onClick, 
     const lastWsTickTime = useRef(0);
     const prevPriceRef = useRef(0);
 
-    // Initial Seed
+    // Initial Seed fallback if WS price hasn't arrived
     useEffect(() => {
-        setLiveData(getMockInitialData(pair));
+        const timer = setTimeout(() => {
+            setLiveData((prev) => prev || getMockInitialData(pair));
+        }, 1100);
+        return () => clearTimeout(timer);
     }, [pair]);
 
     // Unified WebSocket Subscription
@@ -240,8 +243,22 @@ const WatchlistItem = memo(({ pair, isActive, globalTimeframe, addLog, onClick, 
         }
     }, [isActive, onPriceUpdate, candle, pair]);
 
-    const changeVal = candle ? candle.close - candle.open : 0;
-    const changePct = candle && candle.open > 0 ? (changeVal / candle.open) * 100 : 0;
+    if (!candle) {
+        return (
+            <div className={`${styles.quoteWatchlistItem} ${styles.watchlistSkeletonItem} ${isActive ? styles.quoteActiveItem : ''}`}>
+                <div className={styles.quoteItemLeft}>
+                    <div className={`${styles.skeletonPulse} ${styles.skelSymbol}`} />
+                </div>
+                <div className={styles.quoteItemRight}>
+                    <div className={`${styles.skeletonPulse} ${styles.skelPrice}`} />
+                    <div className={`${styles.skeletonPulse} ${styles.skelPct}`} />
+                </div>
+            </div>
+        );
+    }
+
+    const changeVal = candle.close - candle.open;
+    const changePct = candle.open > 0 ? (changeVal / candle.open) * 100 : 0;
     const isPositive = changeVal >= 0;
     const isNegative = changeVal < 0;
 
@@ -290,6 +307,28 @@ WatchlistItem.displayName = 'WatchlistItem';
 export default function WatchlistPanel({ selectedSymbol, onSelectSymbol, globalTimeframe, addLog, activeAnalysis, onActivePriceUpdate }) {
     const { t } = useLanguage();
     const [searchQuery, setSearchQuery] = useState('');
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        let mounted = true;
+        const unsubPrice = unifiedSocket.subscribePrice((priceObj) => {
+            if (priceObj && mounted) {
+                setLoading(false);
+            }
+        });
+
+        const timer = setTimeout(() => {
+            if (mounted) {
+                setLoading(false);
+            }
+        }, 1100);
+
+        return () => {
+            mounted = false;
+            unsubPrice();
+            clearTimeout(timer);
+        };
+    }, []);
 
     const filteredPairs = PAIRS.filter(pair =>
         pair.toLowerCase().includes(searchQuery.toLowerCase())
@@ -329,7 +368,28 @@ export default function WatchlistPanel({ selectedSymbol, onSelectSymbol, globalT
 
             {/* Pairs Quote List */}
             <div className={styles.watchlistItemsList}>
-                {filteredPairs.length > 0 ? (
+                {loading ? (
+                    Array.from({ length: 6 }).map((_, idx) => (
+                        <div
+                            key={idx}
+                            className={`${styles.quoteWatchlistItem} ${styles.watchlistSkeletonItem} ${idx === 0 ? styles.quoteActiveItem : ''}`}
+                        >
+                            <div className={styles.quoteItemLeft}>
+                                <div
+                                    className={`${styles.skeletonPulse} ${styles.skelSymbol}`}
+                                    style={{ width: `${60 + (idx % 3) * 12}px` }}
+                                />
+                            </div>
+                            <div className={styles.quoteItemRight}>
+                                <div
+                                    className={`${styles.skeletonPulse} ${styles.skelPrice}`}
+                                    style={{ width: `${54 + (idx % 2) * 10}px` }}
+                                />
+                                <div className={`${styles.skeletonPulse} ${styles.skelPct}`} />
+                            </div>
+                        </div>
+                    ))
+                ) : filteredPairs.length > 0 ? (
                     filteredPairs.map(pair => {
                         const isSelected = selectedSymbol
                             ? pair.replace('/', '').replace(' ', '').toUpperCase() === selectedSymbol.replace('/', '').replace(' ', '').toUpperCase()

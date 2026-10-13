@@ -18,7 +18,7 @@
     z-index: 1000;
 
     @include respond-to('sm') {
-        padding: 0 14px;
+        padding: 0 10px;
     }
 
     .left {
@@ -26,10 +26,16 @@
         align-items: center;
         gap: 12px;
         margin-left: 8px;
+        min-width: 0;
 
         :global([dir="rtl"]) & {
             margin-left: 0;
             margin-right: 8px;
+        }
+
+        @include respond-to('sm') {
+            gap: 6px;
+            margin-left: 0;
         }
 
         .menuBtn {
@@ -49,6 +55,11 @@
                 justify-content: center;
             }
 
+            @include respond-to('sm') {
+                margin-right: 2px;
+                padding: 4px;
+            }
+
             &:hover {
                 color: #6EE7B7;
                 transform: scale(1.05);
@@ -63,9 +74,17 @@
             font-family: "Euclid-Bold", sans-serif;
             letter-spacing: 0.2px;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
 
             @include respond-to('sm') {
-                font-size: 15px;
+                font-size: 14px;
+                max-width: 130px;
+            }
+
+            @media (max-width: 380px) {
+                font-size: 13px;
+                max-width: 95px;
             }
         }
     }
@@ -76,10 +95,15 @@
         gap: 12px;
         margin-inline-start: auto;
         margin-left: auto;
+        flex-shrink: 0;
 
         :global([dir="rtl"]) & {
             margin-left: 0;
             margin-right: auto;
+        }
+
+        @include respond-to('sm') {
+            gap: 6px;
         }
 
         .themeToggle {
@@ -98,6 +122,17 @@
             flex-shrink: 0;
             transition: all 0.2s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+
+            @include respond-to('sm') {
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+
+                svg {
+                    width: 15px;
+                    height: 15px;
+                }
+            }
 
             &:hover {
                 border-color: rgba(110, 231, 183, 0.7);
@@ -128,6 +163,17 @@
             position: relative;
             transition: all 0.2s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+
+            @include respond-to('sm') {
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+
+                svg {
+                    width: 15px;
+                    height: 15px;
+                }
+            }
 
             [data-theme='light'] &,
             :global(html.light) & {
@@ -193,6 +239,29 @@
             cursor: pointer;
             transition: all 0.2s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            user-select: none;
+
+            @include respond-to('sm') {
+                height: 32px;
+                min-height: 32px;
+                padding: 0 8px;
+                font-size: 12px;
+                gap: 5px;
+                border-radius: 8px;
+
+                svg {
+                    width: 14px;
+                    height: 14px;
+                }
+            }
+
+            @media (max-width: 400px) {
+                span {
+                    max-width: 70px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
             user-select: none;
 
             &:hover {

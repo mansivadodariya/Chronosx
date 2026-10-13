@@ -292,12 +292,14 @@ html.light .children-wrapper {
     width: 100% !important;
     max-width: 100% !important;
     margin-left: 0 !important;
+    overflow-x: hidden;
   }
 }
 
 .children-spacing {
   padding: 16px;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
 }
 

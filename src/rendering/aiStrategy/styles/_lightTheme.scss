@@ -290,6 +290,26 @@
             }
         }
 
+        .watchlistSkeletonItem {
+            background: #F8FAFC !important;
+            border-left: 3px solid #E2E8F0 !important;
+
+            &.quoteActiveItem {
+                border-left: 3px solid #10B981 !important;
+                background: #F0FDF4 !important;
+            }
+
+            .skeletonPulse {
+                background: linear-gradient(
+                    90deg,
+                    rgba(0, 0, 0, 0.04) 25%,
+                    rgba(0, 0, 0, 0.09) 50%,
+                    rgba(0, 0, 0, 0.04) 75%
+                ) !important;
+                background-size: 200% 100% !important;
+            }
+        }
+
         .noPairsFound {
             color: #94A3B8 !important;
         }

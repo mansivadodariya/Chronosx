@@ -10,7 +10,30 @@ export default function ErrorBoundary({ error, reset }) {
 
   useEffect(() => {
     console.error('ChronosX Segment Error caught:', error);
+
+    const isChunkError =
+      error?.name === 'ChunkLoadError' ||
+      error?.message?.includes('Loading chunk') ||
+      error?.message?.includes('Failed to fetch dynamically imported module');
+
+    if (isChunkError && typeof window !== 'undefined') {
+      const retryKey = 'chunk_err_retry_' + window.location.pathname;
+      const lastRetry = sessionStorage.getItem(retryKey);
+      const now = Date.now();
+      if (!lastRetry || now - Number(lastRetry) > 10000) {
+        sessionStorage.setItem(retryKey, String(now));
+        window.location.reload();
+      }
+    }
   }, [error]);
+
+  const handleRetry = () => {
+    if (typeof window !== 'undefined') {
+      window.location.reload();
+    } else {
+      reset();
+    }
+  };
 
   return (
     <div className={styles.notFoundContainer}>
@@ -51,7 +74,7 @@ export default function ErrorBoundary({ error, reset }) {
               <button
                 type="button"
                 className={`${styles.btn} ${styles.primaryBtn}`}
-                onClick={() => reset()}
+                onClick={handleRetry}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />

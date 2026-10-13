@@ -51,6 +51,19 @@
             }
         }
 
+        .chartHeaderOHLCSkeleton {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+
+            .ohlcSkelBox {
+                width: 58px;
+                height: 18px;
+                border-radius: 4px;
+            }
+        }
+
         .chartHeaderOHLCInfo {
             display: flex;
             align-items: center;

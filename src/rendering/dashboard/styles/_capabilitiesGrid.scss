@@ -77,17 +77,20 @@
 
 .splitMarketFeedGrid {
     display: grid;
-    grid-template-columns: 4fr 6fr;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
     gap: 20px;
     align-items: stretch;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     @include respond-to('xl') {
-        grid-template-columns: 4fr 6fr;
+        grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
         gap: 16px;
     }
 
     @include respond-to('lg') {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 20px;
     }
 
@@ -124,6 +127,14 @@
         justify-content: space-between;
         flex-wrap: wrap;
         gap: 10px;
+        width: 100%;
+        max-width: 100%;
+
+        @media (max-width: 520px) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
 
         .feedTitleWrap {
             display: flex;
@@ -151,6 +162,11 @@
             border-radius: 8px;
             padding: 3px;
 
+            @media (max-width: 520px) {
+                width: 100%;
+                justify-content: space-between;
+            }
+
             .filterTab {
                 background: transparent;
                 border: none;
@@ -161,6 +177,12 @@
                 border-radius: 5px;
                 cursor: pointer;
                 transition: all 0.15s ease;
+
+                @media (max-width: 520px) {
+                    flex: 1;
+                    text-align: center;
+                    padding: 5px 6px;
+                }
 
                 &.filterTabActive {
                     background: rgba(24, 201, 139, 0.2);
@@ -327,7 +349,8 @@
                 font-weight: 700;
                 display: inline-flex;
                 align-items: center;
-                gap: 4px;
+                justify-content: center;
+                gap: 5px;
                 padding: 6px 12px;
                 border-radius: 8px;
                 background: rgba(24, 201, 139, 0.08);
@@ -336,9 +359,43 @@
                 transition: all 0.2s ease;
                 white-space: nowrap;
 
+                svg {
+                    width: 13px;
+                    height: 13px;
+                    flex-shrink: 0;
+                    display: block;
+                    stroke: currentColor;
+                    transition: transform 0.2s ease;
+                }
+
+                &:hover {
+                    background: rgba(24, 201, 139, 0.16);
+                    border-color: rgba(24, 201, 139, 0.35);
+
+                    svg {
+                        transform: translateX(2px);
+                    }
+                }
+
                 @include respond-to('sm') {
                     font-size: 11px;
-                    padding: 5px 10px;
+                    padding: 5px 8px;
+                }
+
+                @media (max-width: 480px) {
+                    padding: 6px;
+                    min-width: 28px;
+                    min-height: 28px;
+                    justify-content: center;
+
+                    span {
+                        display: none;
+                    }
+
+                    svg {
+                        width: 13px;
+                        height: 13px;
+                    }
                 }
             }
         }

@@ -22,7 +22,6 @@ export const TRADING_PAIRS = [
 ];
 
 export const getTimeframes = (t) => [
-    { value: '1m', label: t ? t('botBuilder.timeframes.m1', '1 Minute (M1)') : '1 Minute (M1)' },
     { value: '5m', label: t ? t('botBuilder.timeframes.m5', '5 Minutes (M5)') : '5 Minutes (M5)' },
     { value: '15m', label: t ? t('botBuilder.timeframes.m15', '15 Minutes (M15)') : '15 Minutes (M15)' },
     { value: '1h', label: t ? t('botBuilder.timeframes.h1', '1 Hour (H1)') : '1 Hour (H1)' },

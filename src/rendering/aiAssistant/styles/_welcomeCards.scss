@@ -220,7 +220,11 @@
                     padding: 16px 12px 12px;
                     max-width: 380px;
                     width: 100%;
-                    margin: auto;
+                    margin: 0 auto;
+
+                    @include respond-to('tab') {
+                        padding: 8px 10px 4px;
+                    }
 
                     .welcomeHeroBadge {
                         background: rgba(14, 26, 48, 0.85);
@@ -235,6 +239,12 @@
                         font-weight: 600;
                         margin-bottom: 12px;
                         letter-spacing: 0.2px;
+
+                        @include respond-to('tab') {
+                            padding: 3px 10px;
+                            font-size: 11px;
+                            margin-bottom: 8px;
+                        }
 
                         span {
                             color: #18C98B;
@@ -252,6 +262,11 @@
                         line-height: 1.25;
                         font-family: var(--font-plus-jakarta), var(--font-roboto), sans-serif;
 
+                        @include respond-to('tab') {
+                            font-size: 20px;
+                            margin: 0 0 4px;
+                        }
+
                         .titleGradient {
                             color: #18C98B;
                             background: none;
@@ -265,6 +280,12 @@
                         color: rgba(255, 255, 255, 0.65);
                         margin: 0 0 20px;
                         line-height: 1.4;
+
+                        @include respond-to('tab') {
+                            font-size: 11px;
+                            margin: 0 0 10px;
+                            line-height: 1.3;
+                        }
                     }
 
                     .welcomeActionCards {
@@ -273,6 +294,10 @@
                         gap: 12px;
                         width: 100%;
                         max-width: 400px;
+
+                        @include respond-to('tab') {
+                            gap: 8px;
+                        }
 
                         .welcomeActionCard {
                             display: flex;
@@ -289,6 +314,11 @@
                             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.05);
                             position: relative;
                             overflow: hidden;
+
+                            @include respond-to('tab') {
+                                padding: 8px 12px;
+                                gap: 10px;
+                            }
 
                             &::after {
                                 content: '';
@@ -316,9 +346,19 @@
                                 color: #18C98B;
                                 transition: all 0.25s ease;
 
+                                @include respond-to('tab') {
+                                    width: 32px;
+                                    height: 32px;
+                                }
+
                                 svg {
                                     color: #18C98B;
                                     transition: all 0.25s ease;
+
+                                    @include respond-to('tab') {
+                                        width: 18px !important;
+                                        height: 18px !important;
+                                    }
                                 }
                             }
 
@@ -329,6 +369,10 @@
                                 flex: 1;
                                 min-width: 0;
 
+                                @include respond-to('tab') {
+                                    gap: 1px;
+                                }
+
                                 .cardMainTitle {
                                     font-size: 14px;
                                     font-weight: 700;
@@ -336,6 +380,11 @@
                                     line-height: 1.25;
                                     letter-spacing: 0.15px;
                                     transition: all 0.2s ease;
+
+                                    @include respond-to('tab') {
+                                        font-size: 12px;
+                                        line-height: 1.2;
+                                    }
                                 }
 
                                 .cardSubTitle {
@@ -343,6 +392,11 @@
                                     color: rgba(255, 255, 255, 0.65);
                                     line-height: 1.35;
                                     transition: color 0.2s ease;
+
+                                    @include respond-to('tab') {
+                                        font-size: 10px;
+                                        line-height: 1.25;
+                                    }
                                 }
                             }
 
@@ -358,6 +412,16 @@
                                 color: rgba(24, 201, 139, 0.7);
                                 flex-shrink: 0;
                                 transition: all 0.2s ease;
+
+                                @include respond-to('tab') {
+                                    width: 22px;
+                                    height: 22px;
+
+                                    svg {
+                                        width: 12px !important;
+                                        height: 12px !important;
+                                    }
+                                }
                             }
 
                             :global(html.dark) &:hover {

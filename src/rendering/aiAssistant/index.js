@@ -216,10 +216,17 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [setDropdownOpen, setAttachDropdownOpen]);
 
-    // Scroll to bottom on new chat messages
+    // Scroll handling: scroll container only on new chat messages, and keep at top on empty/initial welcome view
     useEffect(() => {
-        if (chatEndRef.current) {
-            chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        const container = chatEndRef.current?.parentElement;
+        if (chatMessages && chatMessages.length > 0) {
+            if (container && typeof container.scrollTo === 'function') {
+                container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+            } else if (chatEndRef.current?.scrollIntoView) {
+                chatEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        } else if (container && typeof container.scrollTo === 'function') {
+            container.scrollTo({ top: 0, behavior: 'instant' });
         }
     }, [chatMessages, pendingRequest]);
 

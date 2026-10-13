@@ -1,93 +1,37 @@
-import { supabase } from '@/lib/supabaseClient';
 import { notificationsApi } from '@/lib/api';
 
 /**
  * 1. Fetch Website Updates Only (Announcements & Feature Releases)
- * Use this on your announcement banner, what's new modal, or changelog page:
+ * Calls Backend API: GET /api/v1/notifications?category=website_updates
  */
 export async function fetchWebsiteUpdates(page = 1, limit = 20) {
-    if (!supabase) return { data: [], total: 0 };
-    const from = (page - 1) * limit;
-    const to = from + limit - 1;
-
     try {
-        const { data, count, error } = await supabase
-            .from('user_notifications')
-            .select('*', { count: 'exact' })
-            .eq('category', 'website_updates')
-            .order('created_at', { ascending: false })
-            .range(from, to);
-
-        if (error) {
-            console.error('Error fetching website updates:', error);
-            return { data: [], total: 0 };
-        }
-
-        return { data: data || [], total: count || 0 };
+        const res = await notificationsApi.getWebsiteUpdates({ page, limit });
+        const rawList = res?.data?.notifications || res?.data?.items || res?.data || res?.notifications || [];
+        const total = res?.data?.total || res?.total || (Array.isArray(rawList) ? rawList.length : 0);
+        return { data: Array.isArray(rawList) ? rawList : [], total };
     } catch (err) {
-        console.error('Error fetching website updates exception:', err);
+        console.error('Error fetching website updates from backend API:', err);
         return { data: [], total: 0 };
     }
 }
 
 /**
  * 2. Fetch User Notification Feed (User-Specific + Global Broadcasts)
- * Use this for the Notification Bell Dropdown or Notification Center page.
- * It fetches both private user alerts and global broadcasts:
+ * Calls Backend API: GET /api/v1/notifications
  */
 export async function fetchUserNotifications(userId, { page = 1, limit = 20, category = null, readStatus = null } = {}) {
-    if (!supabase || !userId) return { data: [], total: 0 };
-    const from = (page - 1) * limit;
-    const to = from + limit - 1;
-
     try {
-        // Query notifications belonging to this user OR global broadcasts (user_id IS NULL)
-        let query = supabase
-            .from('user_notifications')
-            .select(`
-                id,
-                user_id,
-                category,
-                event_type,
-                title,
-                message,
-                data,
-                priority,
-                is_read,
-                created_at,
-                user_notification_reads!left (
-                    user_id,
-                    read_at
-                )
-            `, { count: 'exact' })
-            .or(`user_id.eq.${userId},user_id.is.null`)
-            .order('created_at', { ascending: false })
-            .range(from, to);
+        const res = await notificationsApi.getNotifications({ page, limit, category, readStatus });
+        const rawList = res?.data?.notifications || res?.data?.items || res?.data || res?.notifications || [];
+        const total = res?.data?.total || res?.total || (Array.isArray(rawList) ? rawList.length : 0);
 
-        // Optional: filter by category if selected
-        if (category && category !== 'all') {
-            query = query.eq('category', category);
-        }
-
-        const { data, count, error } = await query;
-
-        if (error) {
-            console.error('Error fetching notifications:', error);
-            return { data: [], total: 0 };
-        }
-
-        // Format read status:
-        // - If private (user_id != null): read status is 'item.is_read'
-        // - If broadcast (user_id == null): read status is true if record exists in user_notification_reads
-        const formatted = (data || []).map((item) => {
-            const isBroadcast = item.user_id === null;
-            const isRead = isBroadcast
-                ? Boolean(item.user_notification_reads && item.user_notification_reads.some(r => r.user_id === userId))
-                : Boolean(item.is_read);
-
+        const list = Array.isArray(rawList) ? rawList : [];
+        const formatted = list.map((item) => {
+            const isBroadcast = item.user_id === null || item.is_broadcast === true;
             return {
                 ...item,
-                is_read: isRead,
+                is_read: Boolean(item.is_read),
                 is_broadcast: isBroadcast,
             };
         });
@@ -98,46 +42,27 @@ export async function fetchUserNotifications(userId, { page = 1, limit = 20, cat
                 ? formatted.filter(item => item.is_read)
                 : formatted;
 
-        return { data: filtered, total: count || filtered.length };
+        return { data: filtered, total };
     } catch (err) {
-        console.error('Error fetching notifications exception:', err);
+        console.error('Error fetching notifications from backend API:', err);
         return { data: [], total: 0 };
     }
 }
 
 /**
  * 3. Fetch Unread Count Badge
- * Use this to display the red notification badge on the bell icon:
+ * Calls Backend API: GET /api/v1/notifications/unread-count
  */
 export async function getUnreadCount(userId) {
-    if (!supabase || !userId) return 0;
     try {
-        // 1. Count unread private notifications
-        const { count: privateUnread, error: err1 } = await supabase
-            .from('user_notifications')
-            .select('id', { count: 'exact', head: true })
-            .eq('user_id', userId)
-            .eq('is_read', false);
-
-        // 2. Count unread broadcast notifications
-        // (All broadcasts minus the ones read by this user)
-        const { data: broadcasts, error: err2 } = await supabase
-            .from('user_notifications')
-            .select(`
-                id,
-                user_notification_reads!left (user_id)
-            `)
-            .is('user_id', null);
-
-        if (err1 || err2) return 0;
-
-        const broadcastUnread = (broadcasts || []).filter(
-            (b) => !b.user_notification_reads || !b.user_notification_reads.some((r) => r.user_id === userId)
-        ).length;
-
-        return (privateUnread || 0) + broadcastUnread;
+        const res = await notificationsApi.getUnreadCount();
+        const count = res?.data?.unread_count ?? res?.data?.count ?? res?.unread_count ?? res?.count;
+        if (typeof count === 'number') return count;
+        if (typeof res?.data === 'number') return res.data;
+        if (typeof res === 'number') return res;
+        return 0;
     } catch (err) {
-        console.error('Error getting unread count:', err);
+        console.error('Error getting unread count from backend API:', err);
         return 0;
     }
 }

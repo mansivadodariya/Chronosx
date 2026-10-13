@@ -58,12 +58,32 @@
         }
     }
 
+    @include respond-to('sm') {
+        padding: 16px 14px;
+        border-radius: 14px;
+    }
+
     .topMetricsRow {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 16px;
         border-top: 1px solid rgba(255, 255, 255, 0.08);
         padding-top: 18px;
+
+        @include respond-to('md') {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        @include respond-to('sm') {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        @media (max-width: 420px) {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
 
         .topMetricItem {
             display: flex;
@@ -87,6 +107,10 @@
                     font-weight: 800;
                     color: $textWhite;
                     letter-spacing: -0.5px;
+
+                    @include respond-to('sm') {
+                        font-size: 22px;
+                    }
 
                     &.green {
                         color: $successGreen;
@@ -139,6 +163,13 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+
+    @include respond-to('sm') {
+        padding: 16px 14px;
+        border-radius: 12px;
+    }
 
     .tableSectionHeader {
         display: flex;
@@ -242,6 +273,13 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+
+    @include respond-to('sm') {
+        padding: 16px 14px;
+        border-radius: 12px;
+    }
 
     .tableSectionHeader {
         display: flex;

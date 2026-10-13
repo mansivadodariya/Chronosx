@@ -587,7 +587,14 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
                     <span className={styles.chartTimeframeBadge}>{timeframe}</span>
                 </div>
 
-                {activePrice && (
+                {loading && !activePrice ? (
+                    <div className={styles.chartHeaderOHLCSkeleton}>
+                        <div className={`${styles.skeletonPulse} ${styles.ohlcSkelBox}`} />
+                        <div className={`${styles.skeletonPulse} ${styles.ohlcSkelBox}`} />
+                        <div className={`${styles.skeletonPulse} ${styles.ohlcSkelBox}`} />
+                        <div className={`${styles.skeletonPulse} ${styles.ohlcSkelBox}`} />
+                    </div>
+                ) : activePrice ? (
                     <div className={styles.chartHeaderOHLCInfo}>
                         <div className={styles.ohlcItem}>
                             <span className={styles.ohlcLabel}>O</span>
@@ -621,7 +628,7 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
                             </div>
                         )}
                     </div>
-                )}
+                ) : null}
             </div>
 
             <div className={styles.chartCanvasContainer} style={{ cursor: 'crosshair' }}>

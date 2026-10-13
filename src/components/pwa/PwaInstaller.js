@@ -9,6 +9,10 @@ import InstallModal from './InstallModal';
  * Registers the Service Worker, captures beforeinstallprompt, and manages the center Install ChronosX modal.
  */
 export default function PwaInstaller() {
+  // PWA disabled for now
+  return null;
+
+  /*
   const pathname = usePathname();
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -88,4 +92,5 @@ export default function PwaInstaller() {
       }}
     />
   );
+  */
 }

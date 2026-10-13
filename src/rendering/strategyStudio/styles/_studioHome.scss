@@ -12,9 +12,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     position: relative;
-    padding: 32px 24px;
+    padding: 16px 24px 32px;
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
@@ -43,10 +43,10 @@
     text-align: center;
     width: 100%;
     max-width: 840px;
-    margin: auto 0;
+    margin: clamp(48px, 14vh, 125px) auto auto;
     position: relative;
     z-index: 10;
-    padding: 20px 0;
+    padding: 10px 0 20px;
 }
 
 /* Rotating Tagline Header */
@@ -119,19 +119,42 @@
     width: 100%;
     background: rgba(14, 22, 17, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 20px 24px;
     box-sizing: border-box;
     backdrop-filter: blur(20px);
     box-shadow:
         0 24px 60px rgba(0, 0, 0, 0.65),
         inset 0 1px 1px rgba(255, 255, 255, 0.08);
-    transition: all 0.22s ease;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     text-align: left;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
     position: relative;
+
+    &.inputCardCollapsed {
+        min-height: 52px;
+        max-height: 52px;
+        padding: 6px 8px 6px 18px;
+        border-radius: 9999px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        overflow: hidden;
+
+        &:hover {
+            border-color: rgba(24, 201, 139, 0.45);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 16px rgba(24, 201, 139, 0.15);
+        }
+    }
+
+    &.inputCardExpanded {
+        border-radius: 20px;
+        padding: 20px 24px;
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
 
     &:focus-within {
         border-color: rgba(24, 201, 139, 0.55);
@@ -144,6 +167,16 @@
         background: #ffffff;
         border-color: rgba(0, 0, 0, 0.1);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+
+        &.inputCardCollapsed {
+            border-color: rgba(0, 0, 0, 0.12);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+
+            &:hover {
+                border-color: #059669;
+                box-shadow: 0 4px 16px rgba(5, 150, 105, 0.12);
+            }
+        }
 
         &:focus-within {
             border-color: #059669;

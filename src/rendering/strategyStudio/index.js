@@ -75,18 +75,6 @@ export default function StrategyStudio() {
     const isSendingRef = useRef(false);
     const lastSendRef = useRef({ time: 0, text: '' });
 
-    // Initialize date ranges on mount
-    useEffect(() => {
-        // Default 60-day window ending yesterday
-        const today = new Date();
-        const yest = new Date(today);
-        yest.setDate(yest.getDate() - 1);
-        const sixtyDaysAgo = new Date(today);
-        sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 61);
-
-        setFromDate(sixtyDaysAgo.toISOString().split('T')[0]);
-        setToDate(yest.toISOString().split('T')[0]);
-    }, []);
     const handleToast = useCallback((msg) => {
         toast.success(msg, {
             style: {
@@ -118,6 +106,46 @@ export default function StrategyStudio() {
 
     // Initialize session ID and date ranges or restore from localStorage on mount
     useEffect(() => {
+        // 0. Check if forced new clean chat requested (e.g. from Launch AI Builder button)
+        let isForceNew = false;
+        try {
+            if (typeof window !== 'undefined') {
+                const sp = new URLSearchParams(window.location.search);
+                if (sp.get('new') === 'true' || sp.get('new') === '1' || sessionStorage.getItem('strategy_studio_force_new') === 'true') {
+                    isForceNew = true;
+                    sessionStorage.removeItem('strategy_studio_force_new');
+                    if (window.history?.replaceState) window.history.replaceState({}, '', window.location.pathname);
+                }
+            }
+        } catch (_) {}
+
+        if (isForceNew) {
+            clearStudioSession();
+            setCurrentDraft(null);
+            setCurrentStrategy(null);
+            setResults(null);
+            setRoundTrips([]);
+            setExecutedParams(null);
+            setChatInput('');
+            setIsBacktestPanelOpen(false);
+            setGeneratingStrategy(false);
+            setAdvisorLoading(false);
+            setSimulationLoading(false);
+            setMessages([]);
+
+            const newId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+                ? crypto.randomUUID()
+                : 'sess_' + Math.random().toString(36).substring(2, 9);
+            setCurrentSessionId(newId);
+
+            const yest = new Date(), sixtyAgo = new Date();
+            yest.setDate(yest.getDate() - 1);
+            sixtyAgo.setDate(sixtyAgo.getDate() - 61);
+            setFromDate(sixtyAgo.toISOString().split('T')[0]);
+            setToDate(yest.toISOString().split('T')[0]);
+            return;
+        }
+
         // 1. Check if strategy was selected from My Bots dashboard or Predefined Strategies
         let incomingStrategy = null;
         try {
@@ -180,20 +208,21 @@ export default function StrategyStudio() {
         if (cachedSession && cachedSession.sessionId) {
             setCurrentSessionId(cachedSession.sessionId);
             if (Array.isArray(cachedSession.messages) && cachedSession.messages.length > 0) {
-                setMessages(cachedSession.messages);
+                setMessages(cachedSession.messages.map((m) => ({ ...m, fromHistory: true })));
             }
-            if (cachedSession.currentDraft) setCurrentDraft(cachedSession.currentDraft);
-            if (cachedSession.currentStrategy) setCurrentStrategy(cachedSession.currentStrategy);
-            if (cachedSession.results) setResults(cachedSession.results);
-            if (Array.isArray(cachedSession.roundTrips)) setRoundTrips(cachedSession.roundTrips);
-            if (cachedSession.executedParams) setExecutedParams(cachedSession.executedParams);
-            if (cachedSession.symbol) setSymbol(cachedSession.symbol);
-            if (cachedSession.interval) setInterval(cachedSession.interval);
-            if (cachedSession.capital) setCapital(cachedSession.capital);
-            if (cachedSession.quantity) setQuantity(cachedSession.quantity);
-            if (cachedSession.marketMode) setMarketMode(cachedSession.marketMode);
-            if (cachedSession.fromDate) setFromDate(cachedSession.fromDate);
-            if (cachedSession.toDate) setToDate(cachedSession.toDate);
+            const cs = cachedSession;
+            if (cs.currentDraft) setCurrentDraft(cs.currentDraft);
+            if (cs.currentStrategy) setCurrentStrategy(cs.currentStrategy);
+            if (cs.results) setResults(cs.results);
+            if (Array.isArray(cs.roundTrips)) setRoundTrips(cs.roundTrips);
+            if (cs.executedParams) setExecutedParams(cs.executedParams);
+            if (cs.symbol) setSymbol(cs.symbol);
+            if (cs.interval) setInterval(cs.interval);
+            if (cs.capital) setCapital(cs.capital);
+            if (cs.quantity) setQuantity(cs.quantity);
+            if (cs.marketMode) setMarketMode(cs.marketMode);
+            if (cs.fromDate) setFromDate(cs.fromDate);
+            if (cs.toDate) setToDate(cs.toDate);
         } else {
             const newId = (typeof crypto !== 'undefined' && crypto.randomUUID)
                 ? crypto.randomUUID()
@@ -201,13 +230,10 @@ export default function StrategyStudio() {
             setCurrentSessionId(newId);
 
             // Default 60-day window ending yesterday
-            const today = new Date();
-            const yest = new Date(today);
+            const yest = new Date(), sixtyAgo = new Date();
             yest.setDate(yest.getDate() - 1);
-            const sixtyDaysAgo = new Date(today);
-            sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 61);
-
-            setFromDate(sixtyDaysAgo.toISOString().split('T')[0]);
+            sixtyAgo.setDate(sixtyAgo.getDate() - 61);
+            setFromDate(sixtyAgo.toISOString().split('T')[0]);
             setToDate(yest.toISOString().split('T')[0]);
         }
     }, [syncToolbarFromStrategy, setCurrentSessionId]);
@@ -232,20 +258,8 @@ export default function StrategyStudio() {
             marketMode
         });
     }, [
-        currentSessionId,
-        messages,
-        currentDraft,
-        currentStrategy,
-        results,
-        roundTrips,
-        executedParams,
-        symbol,
-        interval,
-        fromDate,
-        toDate,
-        capital,
-        quantity,
-        marketMode
+        currentSessionId, messages, currentDraft, currentStrategy, results,
+        roundTrips, executedParams, symbol, interval, fromDate, toDate, capital, quantity, marketMode
     ]);
 
     /**
@@ -631,23 +645,6 @@ export default function StrategyStudio() {
         } finally {
             setSimulationLoading(false);
         }
-    };
-
-    /**
-     * Start New Session Reset
-     */
-    const handleResetSession = () => {
-        const newId = (typeof crypto !== 'undefined' && crypto.randomUUID)
-            ? crypto.randomUUID()
-            : 'sess_' + Math.random().toString(36).substring(2, 9);
-        setSessionId(newId);
-        setCurrentDraft(null);
-        setCurrentStrategy(null);
-        setResults(null);
-        setRoundTrips([]);
-        setMessages([]);
-        setIsBacktestPanelOpen(false);
-        handleToast('New session started!');
     };
 
     const handleMouseMove = useCallback((e) => {

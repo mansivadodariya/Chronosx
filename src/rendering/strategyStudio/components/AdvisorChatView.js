@@ -9,6 +9,7 @@ import { getStoredUser, getStoredUserId, hydrateUserFromProfile } from '@/lib/au
 import { useLanguage } from '@/context/LanguageContext';
 import InteractiveQuestionWizard from './InteractiveQuestionWizard';
 import ReadyToProceedCard from './ReadyToProceedCard';
+import StudioComposerCard from './StudioComposerCard';
 import { getDynamicStepInfo, DYNAMIC_LOADING_STAGES } from '../utils/chatUiHelpers';
 import {
     BotBrainIcon,
@@ -75,22 +76,23 @@ function StreamingAiBubble({ text, shouldStream, onStreamComplete, onStreamProgr
 
     const { displayedText, isStreaming, skipToEnd } = useStreamingText(cleanText, {
         msPerChar: 14,
-        enabled: shouldStream,
+        enabled: Boolean(shouldStream),
         onComplete: onStreamComplete,
         onProgress: onStreamProgress
     });
 
     const activeText = shouldStream ? displayedText : cleanText;
+    const showCursor = Boolean(shouldStream && isStreaming);
 
     return (
         <div
             className={`${styles.bubble} ${styles.aiBubble}`}
-            onClick={isStreaming ? skipToEnd : undefined}
-            style={{ cursor: isStreaming ? 'pointer' : 'default' }}
-            title={isStreaming ? 'Click to reveal immediately' : undefined}
+            onClick={showCursor ? skipToEnd : undefined}
+            style={{ cursor: showCursor ? 'pointer' : 'default' }}
+            title={showCursor ? 'Click to reveal immediately' : undefined}
         >
             {renderFormattedMarkdown(activeText)}
-            {isStreaming && <span className={styles.streamingCursorChar}>▌</span>}
+            {showCursor && <span className={styles.streamingCursorChar}>▌</span>}
         </div>
     );
 }
@@ -115,8 +117,6 @@ export default function AdvisorChatView({
     totalSteps = 4
 }) {
     const chatScrollContainerRef = useRef(null);
-    const textareaRef = useRef(null);
-    const exploreTextareaRef = useRef(null);
     const completedStreamsRef = useRef(new Set());
     const [, forceUpdate] = useState(0);
     const { t } = useLanguage();
@@ -155,8 +155,14 @@ export default function AdvisorChatView({
             completedStreamsRef.current.clear();
             setIsOptionBoxDismissed(false);
             setIsStrategyMenuOpen(false);
+        } else {
+            messages.forEach((msg, idx) => {
+                if (msg.fromHistory) {
+                    completedStreamsRef.current.add(`msg_${idx}_${(msg.text || '').slice(0, 15)}`);
+                }
+            });
         }
-    }, [messages.length]);
+    }, [messages]);
 
     useEffect(() => {
         async function loadUser() {
@@ -276,7 +282,7 @@ export default function AdvisorChatView({
         : null;
 
     const isLatestAiStreamCompleted = Boolean(
-        latestAiMsgKey && completedStreamsRef.current.has(latestAiMsgKey)
+        latestAiMsgKey && (completedStreamsRef.current.has(latestAiMsgKey) || latestAiMessage?.fromHistory)
     );
 
     // Rotating Taglines at top of explore screen
@@ -376,63 +382,21 @@ export default function AdvisorChatView({
                         </div>
 
                         {/* Centered Explore Input Card */}
-                        <div className={styles.exploreInputCard}>
-                            <textarea
-                                ref={exploreTextareaRef}
-                                className={styles.explorePromptTextarea}
-                                placeholder="What would you like to explore?"
-                                value={input}
-                                onChange={(e) => { setInput(e.target.value); setActiveSuggestionIndex(0); }}
-                                onKeyDown={handleKeyDown}
-                                rows={2}
-                            />
-                            {/* As-you-type suggestion dropdown (Out of box floating card) */}
-                            {showTypedSuggestions && (
-                                <div className={styles.typedSuggestionDropdown}>
-                                    {typedSuggestions.map((sug, i) => (
-                                        <button
-                                            key={i}
-                                            type="button"
-                                            className={`${styles.typedSuggestionItem} ${i === activeSuggestionIndex ? styles.typedSuggestionActive : ''}`}
-                                            onMouseEnter={() => setActiveSuggestionIndex(i)}
-                                            onClick={() => {
-                                                setInput(sug);
-                                                setActiveSuggestionIndex(0);
-                                                if (exploreTextareaRef.current) exploreTextareaRef.current.focus();
-                                            }}
-                                        >
-                                            <div className={styles.suggestionIconWrap}>
-                                                <SparklesMiniIcon size={14} color="currentColor" />
-                                            </div>
-                                            <span className={styles.suggestionText}>{sug}</span>
-                                            <span className={styles.suggestionHintBadge}>Tab</span>
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-                            <div className={styles.exploreCardBottom}>
-                                <div className={styles.cardBottomActionsLeft}>
-                                    <button
-                                        type="button"
-                                        className={styles.btnNewChat}
-                                        onClick={onNewChat}
-                                        title="Start a new chat session"
-                                    >
-                                        <PlusIcon size={14} />
-                                        <span>{t('strategyStudio.newChat', 'New Chat')}</span>
-                                    </button>
-                                </div>
-                                <button
-                                    type="button"
-                                    className={`${styles.circularSubmitBtn} ${input.trim() ? styles.activeBtn : ''}`}
-                                    onClick={() => handleSend(input)}
-                                    disabled={loading || !input.trim()}
-                                    title="Send Message"
-                                >
-                                    <ArrowUpIcon size={20} />
-                                </button>
-                            </div>
-                        </div>
+                        <StudioComposerCard
+                            isExploreMode={true}
+                            input={input}
+                            setInput={setInput}
+                            placeholder={t('strategyStudio.inputPlaceholder', 'What would you like to explore?')}
+                            onSend={handleSend}
+                            loading={loading}
+                            onNewChat={onNewChat}
+                            typedSuggestions={typedSuggestions}
+                            showTypedSuggestions={showTypedSuggestions}
+                            activeSuggestionIndex={activeSuggestionIndex}
+                            setActiveSuggestionIndex={setActiveSuggestionIndex}
+                            onKeyDown={handleKeyDown}
+                            t={t}
+                        />
 
                         {/* Category Chips Underneath Input Card */}
                         <div className={styles.categoryChipsRow}>
@@ -493,7 +457,7 @@ export default function AdvisorChatView({
                             const isFirstAiResponse = !isUser && messages.findIndex((m) => m.role === 'ai') === index;
                             const msgKey = `msg_${index}_${(msg.text || '').slice(0, 15)}`;
                             const hasCompleted = completedStreamsRef.current.has(msgKey);
-                            const shouldStream = isLatestAi && !hasCompleted;
+                            const shouldStream = isLatestAi && !hasCompleted && !msg.fromHistory;
                             const showActionOptions = isUser || !isLatestAi || hasCompleted || !shouldStream;
 
                             return (
@@ -663,63 +627,21 @@ export default function AdvisorChatView({
                         )}
 
                         {/* Bottom Textarea + Send Button (Card Layout Matching Image 2) */}
-                        <div className={styles.chatInputWrapper}>
-                            <textarea
-                                ref={textareaRef}
-                                className={styles.chatTextarea}
-                                placeholder="What would you like to explore?"
-                                value={input}
-                                onChange={(e) => { setInput(e.target.value); setActiveSuggestionIndex(0); }}
-                                onKeyDown={handleKeyDown}
-                                rows={2}
-                            />
-                            {/* As-you-type suggestion dropdown (Out of box floating card above input) */}
-                            {showTypedSuggestions && (
-                                <div className={`${styles.typedSuggestionDropdown} ${styles.typedSuggestionDropdownAbove}`}>
-                                    {typedSuggestions.map((sug, i) => (
-                                        <button
-                                            key={i}
-                                            type="button"
-                                            className={`${styles.typedSuggestionItem} ${i === activeSuggestionIndex ? styles.typedSuggestionActive : ''}`}
-                                            onMouseEnter={() => setActiveSuggestionIndex(i)}
-                                            onClick={() => {
-                                                setInput(sug);
-                                                setActiveSuggestionIndex(0);
-                                                if (textareaRef.current) textareaRef.current.focus();
-                                            }}
-                                        >
-                                            <div className={styles.suggestionIconWrap}>
-                                                <SparklesMiniIcon size={14} color="currentColor" />
-                                            </div>
-                                            <span className={styles.suggestionText}>{sug}</span>
-                                            <span className={styles.suggestionHintBadge}>Tab</span>
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-                            <div className={styles.chatCardBottom}>
-                                <div className={styles.cardBottomActionsLeft}>
-                                    <button
-                                        type="button"
-                                        className={styles.btnNewChat}
-                                        onClick={onNewChat}
-                                        title="Start a new chat session"
-                                    >
-                                        <PlusIcon size={14} />
-                                        <span>{t('strategyStudio.newChat', 'New Chat')}</span>
-                                    </button>
-                                </div>
-                                <button
-                                    type="button"
-                                    className={`${styles.circularSubmitBtn} ${input.trim() ? styles.activeBtn : ''}`}
-                                    onClick={() => handleSend()}
-                                    disabled={loading || !input.trim()}
-                                    title="Send Message"
-                                >
-                                    <ArrowUpIcon size={20} />
-                                </button>
-                            </div>
-                        </div>
+                        <StudioComposerCard
+                            isExploreMode={false}
+                            input={input}
+                            setInput={setInput}
+                            placeholder={t('strategyStudio.inputPlaceholder', 'What would you like to explore?')}
+                            onSend={handleSend}
+                            loading={loading}
+                            onNewChat={onNewChat}
+                            typedSuggestions={typedSuggestions}
+                            showTypedSuggestions={showTypedSuggestions}
+                            activeSuggestionIndex={activeSuggestionIndex}
+                            setActiveSuggestionIndex={setActiveSuggestionIndex}
+                            onKeyDown={handleKeyDown}
+                            t={t}
+                        />
                     </div>
                 </div>
             )}

@@ -39,7 +39,7 @@ import { getBidiProps } from '@/lib/bidi';
 import { fetchVisibleTabNames, getVisibleTabNamesSync, checkPermissionInSet } from '@/lib/useTabPermission';
 import QuickJump from '@/components/QuickJump';
 import SidebarSubscriptionWidget from './SidebarSubscriptionWidget';
-import SidebarInstallButton from './SidebarInstallButton';
+// import SidebarInstallButton from './SidebarInstallButton';
 
 const BrandDarkLogo = "/assets/logo/darklogo.png";
 const BrandLightLogo = "/assets/logo/logo.png";
@@ -377,20 +377,25 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
   const { theme } = useTheme();
   const BrandTextLogo = theme === 'light' ? BrandDarkLogo : BrandLightLogo;
 
+  const [isMounted, setIsMounted] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [visibleTabNames, setVisibleTabNames] = useState(() => getVisibleTabNamesSync());
-  const [tabsLoading, setTabsLoading] = useState(() => !getVisibleTabNamesSync());
+  const [visibleTabNames, setVisibleTabNames] = useState(null);
+  const [tabsLoading, setTabsLoading] = useState(true);
   const profileRef = useRef(null);
   const sidebarMenuRef = useRef(null);
 
   useEffect(() => {
+    setIsMounted(true);
+    const syncTabs = getVisibleTabNamesSync();
+    if (syncTabs) {
+      setVisibleTabNames(syncTabs);
+      setTabsLoading(false);
+    }
     fetchVisibleTabNames()
       .then((names) => {
-        if (names) {
-          setVisibleTabNames(names);
-        }
+        if (names) setVisibleTabNames(names);
       })
       .finally(() => {
         setTabsLoading(false);
@@ -603,8 +608,8 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
           <QuickJump isCollapsed={isCollapsed} />
         </div>
 
-        {/* Install App Button */}
-        <SidebarInstallButton isCollapsed={isCollapsed} />
+        {/* Install App Button - disabled for now */}
+        {/* <SidebarInstallButton isCollapsed={isCollapsed} /> */}
 
         {/* Navigation Menu List */}
         <div 
@@ -615,7 +620,7 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
             e.stopPropagation();
           }}
         >
-          {tabsLoading || !visibleTabNames ? (
+          {!isMounted || tabsLoading || !visibleTabNames ? (
             <NavSkeleton count={7} isCollapsed={isCollapsed} />
           ) : (
             navSections.map((section, sIndex) => (

@@ -58,21 +58,45 @@ export default function useStrategyChatHistory({ setMessages, setCurrentDraft, s
         setCurrentSessionId(sessionId);
         setIsHistoryOpen(false);
 
+        // Instantly mark current messages as fromHistory so any active stream stops immediately
+        if (setMessages) {
+            setMessages((prev) => (Array.isArray(prev) ? prev.map((m) => ({ ...m, fromHistory: true })) : []));
+        }
+
         if (!userId) return;
 
         try {
             const res = await strategyStudioApi.getSessionMessages(userId, sessionId);
-            if (res && (res.status === 'success' || res.data)) {
-                const sessionData = res.data || {};
-                const rawMessages = sessionData.messages || sessionData.chat_history || [];
+            if (res && (res.status === 'success' || res.data || Array.isArray(res))) {
+                let rawMessages = [];
+                let sessionData = {};
+
+                if (Array.isArray(res)) {
+                    rawMessages = res;
+                } else if (Array.isArray(res.data)) {
+                    rawMessages = res.data;
+                } else if (res.data && typeof res.data === 'object') {
+                    sessionData = res.data;
+                    rawMessages = sessionData.messages || sessionData.chat_history || sessionData.history || [];
+                } else if (Array.isArray(res.messages)) {
+                    rawMessages = res.messages;
+                } else if (Array.isArray(res.chat_history)) {
+                    rawMessages = res.chat_history;
+                }
 
                 if (Array.isArray(rawMessages) && rawMessages.length > 0) {
-                    const normalized = rawMessages.map((m) => ({
-                        role: (m.role === 'user' || m.role === 'human') ? 'user' : 'ai',
-                        text: m.content || m.text || m.message || '',
-                        draft: m.draft || null,
-                        qaList: m.answers || m.qaList || null
-                    }));
+                    const normalized = rawMessages.map((m) => {
+                        const rawText = typeof m.content === 'string'
+                            ? m.content
+                            : (m.text || m.message || m.reply || (m.content ? JSON.stringify(m.content) : ''));
+                        return {
+                            role: (m.role === 'user' || m.role === 'human') ? 'user' : 'ai',
+                            text: rawText,
+                            draft: m.draft || null,
+                            qaList: m.answers || m.qaList || null,
+                            fromHistory: true
+                        };
+                    });
                     if (setMessages) setMessages(normalized);
                 }
 

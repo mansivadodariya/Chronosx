@@ -278,5 +278,10 @@
     }
     .searchBox {
         width: 100%;
+        min-width: 0;
+    }
+    .templatesGrid {
+        grid-template-columns: 1fr;
+        gap: 14px;
     }
 }

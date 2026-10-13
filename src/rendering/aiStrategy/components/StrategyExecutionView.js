@@ -21,7 +21,7 @@ const ensureDollarPrice = (val, shortPair = '') => {
 
 export default function StrategyExecutionView({ selectedStrategyId, strategies = [] }) {
     const router = useRouter();
-    const { setupsList, wsStatus, loading } = useStrategyStream();
+    const { setupsList, wsStatus, loading, initialLoaded } = useStrategyStream();
 
     const selectedStrategy = Array.isArray(strategies) ? strategies.find(s => (s.id || s.strategy_id) === selectedStrategyId) : null;
     const finalSetups = setupsList;
@@ -53,7 +53,7 @@ export default function StrategyExecutionView({ selectedStrategyId, strategies =
 
             {/* Dark Glassmorphism Grid of Strategy Cards (2 Columns per Row) */}
             <div className={styles.pairsGrid}>
-                {loading && finalSetups.length === 0 ? (
+                {loading || (!initialLoaded && finalSetups.length < 2) ? (
                     <StrategyGridSkeleton count={6} />
                 ) : finalSetups.length === 0 ? (
                     <div className={styles.emptySetupsState}>

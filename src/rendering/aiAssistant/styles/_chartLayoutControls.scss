@@ -14,10 +14,9 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
-            height: 100% !important;
+            height: auto !important;
             min-height: 0;
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
+            overflow: visible !important;
         }
     }
 
@@ -72,8 +71,7 @@
         }
     }
 
-    .chartSidePanel,
-    .chartSingleBody {
+    .chartSidePanel {
         display: flex;
         flex-direction: column;
         height: 100%;

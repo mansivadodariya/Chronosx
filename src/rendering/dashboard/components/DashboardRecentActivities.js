@@ -122,7 +122,10 @@ export default function DashboardRecentActivities({
                                     </div>
 
                                     <div className={styles.actAction}>
-                                        <span>{t('dashboard.openAction', 'Open →')}</span>
+                                        <span>{t('dashboard.openAction', 'Open')}</span>
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                            <polyline points="9 18 15 12 9 6" />
+                                        </svg>
                                     </div>
                                 </div>
                             );

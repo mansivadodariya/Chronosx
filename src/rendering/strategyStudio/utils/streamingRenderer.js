@@ -25,7 +25,7 @@ export function useStreamingText(fullText, options = {}) {
         onProgress = null
     } = options;
 
-    const [displayedText, setDisplayedText] = useState('');
+    const [displayedText, setDisplayedText] = useState(() => (enabled ? '' : (fullText || '')));
     const [isStreaming, setIsStreaming] = useState(false);
 
     const rafRef = useRef(null);

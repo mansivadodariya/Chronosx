@@ -1,0 +1,172 @@
+'use client';
+
+import React, { useRef, useState, useEffect } from 'react';
+import styles from '../styles/strategyStudio.module.scss';
+import {
+    SparklesMiniIcon,
+    PlusIcon,
+    ArrowUpIcon,
+    EditPencilIcon,
+    ChevronDownIcon
+} from './StudioIcons';
+
+export default function StudioComposerCard({
+    isExploreMode = false,
+    input,
+    setInput,
+    placeholder = 'What would you like to explore?',
+    onSend,
+    loading = false,
+    onNewChat,
+    typedSuggestions = [],
+    showTypedSuggestions = false,
+    activeSuggestionIndex = 0,
+    setActiveSuggestionIndex,
+    onKeyDown,
+    t
+}) {
+    const textareaRef = useRef(null);
+    const [isExpanded, setIsExpanded] = useState(() => Boolean(input && input.trim()));
+
+    // Keep expanded if user has written text
+    useEffect(() => {
+        if (input && input.trim() && !isExpanded) {
+            setIsExpanded(true);
+        }
+    }, [input, isExpanded]);
+
+    const handleExpand = () => {
+        setIsExpanded(true);
+        setTimeout(() => {
+            if (textareaRef.current) {
+                textareaRef.current.focus();
+            }
+        }, 50);
+    };
+
+    const handleCollapse = (e) => {
+        if (e) e.stopPropagation();
+        setIsExpanded(false);
+    };
+
+    const handleSendAction = () => {
+        if (loading || !input.trim()) return;
+        onSend(input);
+        setIsExpanded(false);
+    };
+
+    const containerClass = isExploreMode
+        ? `${styles.exploreInputCard} ${isExpanded ? styles.inputCardExpanded : styles.inputCardCollapsed}`
+        : `${styles.chatInputWrapper} ${isExpanded ? styles.inputCardExpanded : styles.inputCardCollapsed}`;
+
+    const textareaClass = isExploreMode ? styles.explorePromptTextarea : styles.chatTextarea;
+    const bottomRowClass = isExploreMode ? styles.exploreCardBottom : styles.chatCardBottom;
+    const dropdownClass = isExploreMode
+        ? styles.typedSuggestionDropdown
+        : `${styles.typedSuggestionDropdown} ${styles.typedSuggestionDropdownAbove}`;
+
+    return (
+        <div
+            className={containerClass}
+            onClick={() => {
+                if (!isExpanded) handleExpand();
+            }}
+        >
+            {!isExpanded ? (
+                <>
+                    <div className={styles.collapsedPlaceholderWrap}>
+                        <SparklesMiniIcon size={15} color="#18C98B" />
+                        <span className={styles.collapsedPlaceholderText}>
+                            {placeholder}
+                        </span>
+                    </div>
+                    <button
+                        type="button"
+                        className={styles.tapToWriteBtn}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleExpand();
+                        }}
+                        title={t ? t('strategyStudio.tapToWrite', 'Tap to write') : 'Tap to write'}
+                        aria-label="Tap to write"
+                    >
+                        <EditPencilIcon size={18} />
+                    </button>
+                </>
+            ) : (
+                <>
+                    <textarea
+                        ref={textareaRef}
+                        className={textareaClass}
+                        placeholder={placeholder}
+                        value={input}
+                        onChange={(e) => {
+                            setInput(e.target.value);
+                            if (setActiveSuggestionIndex) setActiveSuggestionIndex(0);
+                        }}
+                        onKeyDown={onKeyDown}
+                        rows={2}
+                    />
+
+                    {/* As-you-type suggestion dropdown */}
+                    {showTypedSuggestions && (
+                        <div className={dropdownClass}>
+                            {typedSuggestions.map((sug, i) => (
+                                <button
+                                    key={i}
+                                    type="button"
+                                    className={`${styles.typedSuggestionItem} ${i === activeSuggestionIndex ? styles.typedSuggestionActive : ''}`}
+                                    onMouseEnter={() => setActiveSuggestionIndex && setActiveSuggestionIndex(i)}
+                                    onClick={() => {
+                                        setInput(sug);
+                                        if (setActiveSuggestionIndex) setActiveSuggestionIndex(0);
+                                        if (textareaRef.current) textareaRef.current.focus();
+                                    }}
+                                >
+                                    <div className={styles.suggestionIconWrap}>
+                                        <SparklesMiniIcon size={14} color="currentColor" />
+                                    </div>
+                                    <span className={styles.suggestionText}>{sug}</span>
+                                    <span className={styles.suggestionHintBadge}>Tab</span>
+                                </button>
+                            ))}
+                        </div>
+                    )}
+
+                    <div className={bottomRowClass}>
+                        <div className={styles.cardBottomActionsLeft} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            {onNewChat && (
+                                <button
+                                    type="button"
+                                    className={styles.btnNewChat}
+                                    onClick={onNewChat}
+                                    title="Start a new chat session"
+                                >
+                                    <PlusIcon size={14} />
+                                    <span>{t ? t('strategyStudio.newChat', 'New Chat') : 'New Chat'}</span>
+                                </button>
+                            )}
+                            <button
+                                type="button"
+                                className={styles.btnCollapseInput}
+                                onClick={handleCollapse}
+                                title={t ? t('strategyStudio.collapse', 'Collapse input') : 'Collapse input'}
+                            >
+                                <ChevronDownIcon size={16} />
+                            </button>
+                        </div>
+                        <button
+                            type="button"
+                            className={`${styles.circularSubmitBtn} ${input.trim() ? styles.activeBtn : ''}`}
+                            onClick={handleSendAction}
+                            disabled={loading || !input.trim()}
+                            title="Send Message"
+                        >
+                            <ArrowUpIcon size={20} />
+                        </button>
+                    </div>
+                </>
+            )}
+        </div>
+    );
+}

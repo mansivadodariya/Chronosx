@@ -31,7 +31,20 @@ export default function CreateBotModal({
                 <p className={styles.modalSub}>{t('myBots.modalSub', 'Select your preferred bot creation method:')}</p>
                 <div className={`${styles.modalCards} ${isSingleCard ? styles.singleModalCards : ''}`}>
                     {hasAiBotPermission && (
-                        <div className={styles.modalCardOption} onClick={() => onNavigate('/ai-bot-builder')}>
+                        <div
+                            className={styles.modalCardOption}
+                            onClick={() => {
+                                try {
+                                    if (typeof window !== 'undefined') {
+                                        sessionStorage.removeItem('active_selected_strategy');
+                                        sessionStorage.setItem('strategy_studio_force_new', 'true');
+                                        localStorage.removeItem('bot_builder_session_v1');
+                                    }
+                                } catch (_) {}
+                                if (onClose) onClose();
+                                onNavigate('/ai-bot-builder?new=true');
+                            }}
+                        >
                             <div className={styles.modalCardHeader}>
                                 <div className={styles.modalIconBox}>
                                     <img src="/assets/images/botai.png" alt="AI Bot" className={styles.modalIllustrationImg} />

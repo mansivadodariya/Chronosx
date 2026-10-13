@@ -40,12 +40,13 @@ export const viewport = {
 
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://chronosx.com'),
-  manifest: '/manifest.json',
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'black-translucent',
-    title: 'ChronosX',
-  },
+  // PWA disabled for now
+  // manifest: '/manifest.json',
+  // appleWebApp: {
+  //   capable: true,
+  //   statusBarStyle: 'black-translucent',
+  //   title: 'ChronosX',
+  // },
   title: {
     default: "ChronosX — Next-Gen AI Trading Platform & Intelligence Desk",
     template: "%s | ChronosX"
@@ -166,13 +167,15 @@ export default async function RootLayout({ children }) {
   return (
     <html lang={lang} dir={dir} className={`${antonSans.variable} ${robotoSans.variable} ${plusSans.variable}`} suppressHydrationWarning>
       <head>
-        <script
+        <Script
           id="organization-jsonld"
           type="application/ld+json"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <script
+        <Script
           id="theme-initializer"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               try {
@@ -206,8 +209,10 @@ export default async function RootLayout({ children }) {
             `,
           }}
         />
-        <script
+        {/* PWA service worker registration disabled for now
+        <Script
           id="pwa-sw-registration"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
@@ -218,6 +223,7 @@ export default async function RootLayout({ children }) {
             `,
           }}
         />
+        */}
       </head>
       <body suppressHydrationWarning>
         <Script

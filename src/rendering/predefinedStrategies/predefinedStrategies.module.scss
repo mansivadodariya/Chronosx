@@ -20,6 +20,11 @@
         border-radius: 14px;
         padding: 14px 18px;
 
+        @include respond-to('sm') {
+            padding: 12px 14px;
+            gap: 12px;
+        }
+
         .searchBox {
             display: flex;
             align-items: center;
@@ -31,6 +36,11 @@
             min-width: 260px;
             color: rgba(255, 255, 255, 0.5);
             transition: all 0.2s ease;
+
+            @include respond-to('sm') {
+                width: 100%;
+                min-width: 0;
+            }
 
             &:focus-within {
                 border-color: rgba(24, 201, 139, 0.45);

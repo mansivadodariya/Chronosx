@@ -219,6 +219,8 @@
     padding: 14px 10px;
     border-right: 1px solid rgba(255, 255, 255, 0.06);
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     background: rgba(0, 0, 0, 0.18);
 
@@ -297,6 +299,8 @@
 .contentArea {
     padding: 16px;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     display: flex;
     flex-direction: column;
     gap: 10px;

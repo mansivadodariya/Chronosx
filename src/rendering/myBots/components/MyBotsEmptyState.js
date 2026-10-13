@@ -28,7 +28,16 @@ export default function MyBotsEmptyState({
                 {hasAiBotPermission && (
                     <div
                         className={`${styles.creationHeroCard} ${styles.aiCard}`}
-                        onClick={() => onNavigate('/ai-bot-builder')}
+                        onClick={() => {
+                            try {
+                                if (typeof window !== 'undefined') {
+                                    sessionStorage.removeItem('active_selected_strategy');
+                                    sessionStorage.setItem('strategy_studio_force_new', 'true');
+                                    localStorage.removeItem('bot_builder_session_v1');
+                                }
+                            } catch (_) {}
+                            onNavigate('/ai-bot-builder?new=true');
+                        }}
                     >
                         <div className={styles.botGlowOverlay} />
 

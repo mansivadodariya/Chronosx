@@ -261,6 +261,8 @@ export const getStrategyWebSocketUrl = (symbol = 'EURUSD', timeframe = '1h', str
 
 export function useStrategyStream() {
     const [loading, setLoading] = useState(true);
+    const [initialLoaded, setInitialLoaded] = useState(false);
+    const initialLoadedRef = useRef(false);
     const [setupsList, setSetupsList] = useState([]);
     const [setups, setSetups] = useState({});
     const [wsStatus, setWsStatus] = useState(() => (typeof window !== 'undefined' ? unifiedSocket.getStatus() : 'connecting'));
@@ -279,6 +281,19 @@ export function useStrategyStream() {
 
         const normalizedItems = incomingArray.map(normalizeSetupItem).filter(Boolean);
         if (normalizedItems.length === 0) return;
+
+        // Prevent a single lone socket event from prematurely rendering 1 card before all pair setups arrive
+        if (!initialLoadedRef.current && incomingArray.length < 2) {
+            setSetups((prevDict) => {
+                const updated = { ...prevDict };
+                normalizedItems.forEach((it) => {
+                    const existing = updated[it.meta.short] || {};
+                    updated[it.meta.short] = { ...existing, ...it };
+                });
+                return updated;
+            });
+            return;
+        }
 
         setSetupsList((prevList) => {
             const listMap = new Map();
@@ -320,7 +335,9 @@ export function useStrategyStream() {
             return updated;
         });
 
-        setLoading(false);
+        if (initialLoadedRef.current || incomingArray.length >= 2) {
+            setLoading(false);
+        }
     }, []);
 
     // Load real live candle data for all 6 pairs dynamically on mount
@@ -347,12 +364,16 @@ export function useStrategyStream() {
 
                 const validSetups = results.filter(Boolean);
                 if (!isCancelled && validSetups.length > 0) {
+                    initialLoadedRef.current = true;
+                    setInitialLoaded(true);
                     handleIncomingSetups(validSetups);
                 }
             } catch (err) {
                 console.error('[StrategyStream] Error loading live pair setups:', err);
             } finally {
                 if (!isCancelled) {
+                    initialLoadedRef.current = true;
+                    setInitialLoaded(true);
                     setLoading(false);
                 }
             }
@@ -489,5 +510,6 @@ export function useStrategyStream() {
         setupsList,
         wsStatus,
         loading,
+        initialLoaded,
     };
 }

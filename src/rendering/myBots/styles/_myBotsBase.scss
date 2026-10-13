@@ -14,6 +14,10 @@
     display: flex;
     align-items: center;
     gap: 10px;
+
+    @media (max-width: 640px) {
+        width: 100%;
+    }
 }
 
 .refreshBtn {
@@ -81,6 +85,12 @@
         transform: translateY(-1px);
         box-shadow: 0 6px 20px rgba(24, 201, 139, 0.45);
     }
+
+    @media (max-width: 640px) {
+        width: 100%;
+        justify-content: center;
+        padding: 10px 16px;
+    }
 }
 
 /* Loading Skeleton State */
@@ -93,8 +103,12 @@
 
 .statsSkeleton {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
+
+    @media (max-width: 768px) {
+        gap: 8px;
+    }
 }
 
 .skeletonBox {
@@ -263,8 +277,12 @@
 
 .statsBar {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
+
+    @media (max-width: 768px) {
+        gap: 8px;
+    }
 }
 
 .statBox {
@@ -275,10 +293,20 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    min-width: 0;
 
     :global(html.light) & {
         background: #FFFFFF;
         border-color: rgba(0, 0, 0, 0.08);
+    }
+
+    @media (max-width: 768px) {
+        padding: 12px 10px;
+        border-radius: 10px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 10px 8px;
     }
 }
 
@@ -287,15 +315,34 @@
     font-weight: 700;
     color: #94A3B8;
     letter-spacing: 0.5px;
+    word-break: break-word;
+
+    @media (max-width: 768px) {
+        font-size: 10px;
+        letter-spacing: 0.2px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 9px;
+    }
 }
 
 .statVal {
     font-size: 22px;
     font-weight: 700;
     color: #FFFFFF;
+    word-break: break-word;
 
     :global(html.light) & {
         color: #0F172A;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 15px;
     }
 }
 
@@ -323,6 +370,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .filterPill {
@@ -427,6 +475,11 @@
     padding: 8px 14px;
     min-width: 300px;
     color: #94A3B8;
+
+    @media (max-width: 640px) {
+        min-width: 100%;
+        width: 100%;
+    }
 
     input {
         background: transparent;

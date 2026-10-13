@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { CandlestickSeries, LineSeries, AreaSeries, HistogramSeries } from 'lightweight-charts';
 import { fetchChartCandlesOnce, subscribeLiveCandles, parseCandleTimestamp } from '@/lib/chartStore';
 import { unifiedSocket } from '@/lib/unifiedSocket';
-import { generateMockCandles, getSymbolPrecision, getDefaultSymbolBasePrice } from '../utils/indicatorCalculations';
+import { generateMockCandles, getSymbolPrecision, getDefaultSymbolBasePrice, getTimeframeInterval } from '../utils/indicatorCalculations';
 
 export default function useChartDataLoader({
     chartRef,
@@ -234,7 +234,7 @@ export default function useChartDataLoader({
                     const rawClose = bar.close !== undefined ? bar.close : (bar.price !== undefined ? bar.price : (bar.last !== undefined ? bar.last : bar.c));
                     const closePrice = parseFloat(rawClose);
 
-                    const interval = getTimeframeInterval(currentTimeframe);
+                    const interval = (typeof getTimeframeInterval === 'function' ? getTimeframeInterval(currentTimeframe) : 60) || 60;
                     const bucketTime = Math.floor(timeVal / interval) * interval;
 
                     const openPrice = !isNaN(parseFloat(bar.open)) && parseFloat(bar.open) > 0 ? parseFloat(bar.open) : closePrice;

@@ -280,11 +280,61 @@
         }
     }
 
+    .skeletonPulse {
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.03) 25%,
+            rgba(255, 255, 255, 0.08) 50%,
+            rgba(255, 255, 255, 0.03) 75%
+        );
+        background-size: 200% 100%;
+        animation: watchlistShimmer 1.5s infinite ease-in-out;
+    }
+
+    .watchlistSkeletonItem {
+        background: rgba(255, 255, 255, 0.02) !important;
+        border-left: 3px solid rgba(255, 255, 255, 0.06) !important;
+        cursor: default !important;
+        pointer-events: none;
+
+        &.quoteActiveItem {
+            border-left: 3px solid #18C98B !important;
+            background: rgba(24, 201, 139, 0.06) !important;
+        }
+
+        .skelSymbol {
+            width: 70px;
+            height: 15px;
+            border-radius: 4px;
+        }
+
+        .skelPrice {
+            width: 58px;
+            height: 15px;
+            border-radius: 4px;
+        }
+
+        .skelPct {
+            width: 48px;
+            height: 15px;
+            border-radius: 4px;
+        }
+    }
+
     .noPairsFound {
         padding: 24px 8px;
         text-align: center;
         color: rgba(255, 255, 255, 0.4);
         font-size: 12px;
+    }
+}
+
+@keyframes watchlistShimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
     }
 }
 

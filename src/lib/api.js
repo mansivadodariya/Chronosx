@@ -1,6 +1,6 @@
 import { extractAvailableCredits, notifyCreditsUpdated } from '@/lib/credits';
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1`;
+const BASE_URL = `${(process.env.NEXT_PUBLIC_BACKEND_URL || 'http://127.0.0.1:8000').replace(/\/+$/, '')}/api/v1`;
 
 const DEFAULT_ROLE_ID = '44b71348-74d5-42ef-831a-be7c2da4882e';
 
@@ -387,8 +387,28 @@ export const fxApi = {
         }),
 };
 
+const statsCache = new Map();
+
+if (typeof window !== 'undefined') {
+    window.addEventListener('credits:updated', () => {
+        statsCache.clear();
+    });
+}
+
 export const dashboardApi = {
-    getStats: (user_id, timeframe = '7D') => {
+    getStats: (user_id, timeframe = '7D', forceRefresh = false) => {
+        if (!user_id) return Promise.resolve(null);
+        const cacheKey = `${user_id}_${timeframe}`;
+        const now = Date.now();
+        const cached = statsCache.get(cacheKey);
+
+        if (!forceRefresh && cached) {
+            if (cached.promise) return cached.promise;
+            if (cached.data && (now - cached.timestamp < 30000)) {
+                return Promise.resolve(cached.data);
+            }
+        }
+
         let query = '';
         if (timeframe === '30D' || timeframe === '30' || timeframe === 30) {
             query = '?days=30&timeframe=30D';
@@ -397,9 +417,31 @@ export const dashboardApi = {
         } else if (timeframe) {
             query = `?timeframe=${timeframe}`;
         }
-        return request(`/users/${user_id}/dashboard/stats${query}`, {
+
+        const fetchPromise = request(`/users/${user_id}/dashboard/stats${query}`, {
             headers: getAuthHeaders(),
-        });
+        })
+            .then((res) => {
+                statsCache.set(cacheKey, { data: res, timestamp: Date.now(), promise: null });
+                return res;
+            })
+            .catch((err) => {
+                statsCache.delete(cacheKey);
+                throw err;
+            });
+
+        statsCache.set(cacheKey, { data: cached?.data || null, timestamp: cached?.timestamp || 0, promise: fetchPromise });
+        return fetchPromise;
+    },
+
+    clearStatsCache: (user_id) => {
+        if (user_id) {
+            for (const key of statsCache.keys()) {
+                if (key.startsWith(`${user_id}_`)) statsCache.delete(key);
+            }
+        } else {
+            statsCache.clear();
+        }
     },
 
     getRecentActivity: (user_id) =>
