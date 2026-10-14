@@ -97,8 +97,12 @@
             letter-spacing: -0.01em;
         }
 
-        [data-theme='light'] & {
+        [data-theme='light'] &,
+        :global(html.light) &,
+        :global([data-theme='light']) & {
             background: #FFFFFF;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
             color: #1E293B;
 
             strong, b {
@@ -119,11 +123,17 @@
         max-width: 88%;
         text-align: left;
 
-        [data-theme='light'] & {
+        [data-theme='light'] &,
+        :global(html.light) &,
+        :global([data-theme='light']) & {
             background: #FFFFFF;
             border: 1px solid rgba(0, 0, 0, 0.1);
             color: #0F172A;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+
+            strong, b {
+                color: #0F172A;
+            }
         }
     }
 }
@@ -147,7 +157,9 @@
     font-weight: 400;
     line-height: 1.4;
 
-    [data-theme='light'] & {
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
         color: #64748B;
     }
 }
@@ -159,9 +171,80 @@
     line-height: 1.35;
     letter-spacing: -0.01em;
 
-    [data-theme='light'] & {
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
         color: #0F172A;
     }
+}
+
+.inlineStrong {
+    font-family: "Euclid-Bold", "Euclid Circular A", sans-serif;
+    font-weight: 800;
+    color: #FFFFFF;
+
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        color: #0F172A;
+    }
+}
+
+.markdownInlineCode {
+    background: rgba(24, 201, 139, 0.15);
+    color: #18C98B;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: monospace;
+
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        background: rgba(5, 150, 105, 0.1);
+        color: #059669;
+    }
+}
+
+.stepHeaderRow,
+.headingRow {
+    margin-top: 12px;
+    margin-bottom: 6px;
+
+    strong {
+        font-family: "Euclid-Bold", "Euclid Circular A", sans-serif;
+        font-weight: 800;
+        font-size: 15px;
+        color: #FFFFFF;
+
+        [data-theme='light'] &,
+        :global(html.light) &,
+        :global([data-theme='light']) & {
+            color: #0F172A;
+        }
+    }
+}
+
+.markdownFooterPrompt {
+    margin: 12px 0 4px;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.6;
+
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        color: #475569;
+    }
+}
+
+.markdownTextLine {
+    margin: 4px 0;
+    line-height: 1.6;
+}
+
+.emptyLineSpacer {
+    height: 6px;
 }
 
 .bulletInlineRow {
@@ -178,7 +261,9 @@
         flex-shrink: 0;
         line-height: 1.6;
 
-        [data-theme='light'] & {
+        [data-theme='light'] &,
+        :global(html.light) &,
+        :global([data-theme='light']) & {
             color: #059669;
         }
     }
@@ -196,12 +281,16 @@
             color: #FFFFFF;
             margin-right: 4px;
 
-            [data-theme='light'] & {
+            [data-theme='light'] &,
+            :global(html.light) &,
+            :global([data-theme='light']) & {
                 color: #0F172A;
             }
         }
 
-        [data-theme='light'] & {
+        [data-theme='light'] &,
+        :global(html.light) &,
+        :global([data-theme='light']) & {
             color: #334155;
         }
     }
@@ -232,7 +321,9 @@
         font-weight: 800;
         color: #FFFFFF;
 
-        [data-theme='light'] & {
+        [data-theme='light'] &,
+        :global(html.light) &,
+        :global([data-theme='light']) & {
             color: #0F172A;
         }
     }
@@ -243,12 +334,16 @@
         flex-shrink: 0;
         line-height: 1.6;
 
-        [data-theme='light'] & {
+        [data-theme='light'] &,
+        :global(html.light) &,
+        :global([data-theme='light']) & {
             color: #059669;
         }
     }
 
-    [data-theme='light'] & {
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
         color: #334155;
     }
 }
@@ -267,12 +362,16 @@
         color: #FFFFFF;
         margin-right: 4px;
 
-        [data-theme='light'] & {
+        [data-theme='light'] &,
+        :global(html.light) &,
+        :global([data-theme='light']) & {
             color: #0F172A;
         }
     }
 
-    [data-theme='light'] & {
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
         color: #334155;
     }
 }

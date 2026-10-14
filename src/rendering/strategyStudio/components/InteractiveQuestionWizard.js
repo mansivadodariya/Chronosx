@@ -107,6 +107,7 @@ export default function InteractiveQuestionWizard({
         // Auto-filter out questions already answered in previous turns
         const filtered = raw.filter((q) => {
             const qId = (q.question_id || '').toLowerCase().trim();
+            if (qId === 'quick_actions') return true;
             const qTitle = (q.question_title || q.question || '').toLowerCase().trim();
             if (qId && previouslyAnsweredSet.has(qId)) return false;
             if (qTitle && previouslyAnsweredSet.has(qTitle)) return false;

@@ -295,11 +295,13 @@ export default function StrategyStudio() {
         if (extracted.quantity) setQuantity(extracted.quantity);
 
         // 1. Only trigger standalone backtest execution if strategy is already complete and confirmed
-        const isStrategyReady = Boolean(currentDraft?.complete || currentStrategy?.complete || currentStrategy?.entry_conditions);
-        const isExplicitRunCommand = isStrategyReady && (
+        const isExplicitRunCommand = (
             lower === 'run backtest' ||
+            lower === 'run backtest now' ||
             lower === 'run simulation' ||
-            lower === 'start backtest'
+            lower === 'start backtest' ||
+            lower.startsWith('run backtest') ||
+            lower.includes('run backtest')
         );
 
         if (isExplicitRunCommand) {
@@ -458,21 +460,23 @@ export default function StrategyStudio() {
                 setCurrentStrategy(strat);
                 syncToolbarFromStrategy(strat);
 
-                const genSuggestions = res?.suggestions || res?.data?.suggestions || strat?.suggestions;
+                const genSuggestions = (Array.isArray(res?.suggestions) && res.suggestions.length > 0)
+                    ? res.suggestions
+                    : (Array.isArray(strat?.suggestions) && strat.suggestions.length > 0)
+                        ? strat.suggestions
+                        : ['Run Backtest Now'];
+
                 setMessages((prev) => [
                     ...prev,
                     {
                         role: 'ai',
                         text: `Strategy model **${finalName}** configured and calibrated. You can run backtest or refine parameters.`,
-                        ...(Array.isArray(genSuggestions) && genSuggestions.length > 0 ? { suggestions: genSuggestions } : {})
+                        suggestions: genSuggestions
                     }
                 ]);
                 handleToast('Strategy blueprint applied successfully!');
-                setIsBacktestPanelOpen(true);
-                handleRunBacktest(strat);
             } else {
                 handleToast('Strategy blueprint parameters loaded into studio');
-                setIsBacktestPanelOpen(true);
             }
         } catch (err) {
             console.warn('Strategy generation error, applying draft parameters to studio:', err.message);
@@ -480,7 +484,8 @@ export default function StrategyStudio() {
                 ...prev,
                 {
                     role: 'ai',
-                    text: `Strategy model **${finalName}** configured and calibrated. You can run backtest or refine parameters.`
+                    text: `Strategy model **${finalName}** configured and calibrated. You can run backtest or refine parameters.`,
+                    suggestions: ['Run Backtest Now']
                 }
             ]);
             handleToast('Strategy parameters configured');

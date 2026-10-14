@@ -157,6 +157,10 @@ export default function AdvisorChatView({
             setIsOptionBoxDismissed(false);
             setIsStrategyMenuOpen(false);
         } else {
+            const lastMsg = messages[messages.length - 1];
+            if (lastMsg?.role === 'ai') {
+                setIsOptionBoxDismissed(false);
+            }
             messages.forEach((msg, idx) => {
                 if (msg.fromHistory) {
                     completedStreamsRef.current.add(`msg_${idx}_${(msg.text || '').slice(0, 15)}`);

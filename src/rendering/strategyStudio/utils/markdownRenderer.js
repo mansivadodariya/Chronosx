@@ -45,24 +45,14 @@ export function renderInlineTokens(str) {
             const boldInner = token.slice(2, -2).replace(/\*+/g, '').trim();
             if (boldInner) {
                 parts.push(
-                    <strong key={`b_${key++}`} style={{ fontFamily: '"Euclid-Bold", "Euclid Circular A", sans-serif', fontWeight: 800, color: '#FFFFFF' }}>
+                    <strong key={`b_${key++}`} className={styles.inlineStrong}>
                         {boldInner}
                     </strong>
                 );
             }
         } else if (token.startsWith('`') && token.endsWith('`')) {
             parts.push(
-                <code
-                    key={`c_${key++}`}
-                    style={{
-                        background: 'rgba(24, 201, 139, 0.15)',
-                        color: '#18C98B',
-                        padding: '1px 5px',
-                        borderRadius: '4px',
-                        fontSize: '0.9em',
-                        fontFamily: 'monospace'
-                    }}
-                >
+                <code key={`c_${key++}`} className={styles.markdownInlineCode}>
                     {token.slice(1, -1)}
                 </code>
             );
@@ -99,7 +89,7 @@ export function renderFormattedMarkdown(text) {
     return lines.map((rawLine, lineIdx) => {
         let line = rawLine.trim();
         if (!line) {
-            return <div key={lineIdx} style={{ height: '6px' }} />;
+            return <div key={lineIdx} className={styles.emptyLineSpacer} />;
         }
 
         // Clean stray leading asterisks in bullets like "• *Chart Elements:" -> "• Chart Elements:"
@@ -112,8 +102,8 @@ export function renderFormattedMarkdown(text) {
             const stepTitle = stripEmojis((stepHeaderMatch[2] || '').replace(/\*/g, '')).trim();
             const fullTitle = stepTitle ? `${stepNum}: ${stepTitle}` : stepNum;
             return (
-                <div key={lineIdx} className={styles.keyValueRow} style={{ marginTop: '12px', marginBottom: '6px' }}>
-                    <strong style={{ fontWeight: 800, color: '#FFFFFF', fontSize: '15px' }}>{fullTitle}</strong>
+                <div key={lineIdx} className={styles.stepHeaderRow}>
+                    <strong>{fullTitle}</strong>
                 </div>
             );
         }
@@ -123,8 +113,8 @@ export function renderFormattedMarkdown(text) {
         if (headingMatch) {
             const headingText = stripEmojis(headingMatch[1].replace(/^\*\*|\*\*$/g, '').replace(/\*/g, '').replace(/:$/, '')).trim();
             return (
-                <div key={lineIdx} className={styles.keyValueRow} style={{ marginTop: '12px', marginBottom: '6px' }}>
-                    <strong style={{ fontWeight: 800, color: '#FFFFFF', fontSize: '15px' }}>{headingText}:</strong>
+                <div key={lineIdx} className={styles.headingRow}>
+                    <strong>{headingText}:</strong>
                 </div>
             );
         }
@@ -134,8 +124,8 @@ export function renderFormattedMarkdown(text) {
         if (standaloneHeaderMatch && (line.endsWith(':') || line.startsWith('**') || line.toLowerCase().includes('chart element') || line.toLowerCase().includes('overview'))) {
             const titleLabel = stripEmojis(standaloneHeaderMatch[1].replace(/\*/g, '')).trim();
             return (
-                <div key={lineIdx} className={styles.keyValueRow} style={{ marginTop: '12px', marginBottom: '6px' }}>
-                    <strong style={{ fontWeight: 800, color: '#FFFFFF', fontSize: '15px' }}>{titleLabel}:</strong>
+                <div key={lineIdx} className={styles.keyValueRow}>
+                    <strong>{titleLabel}:</strong>
                 </div>
             );
         }
@@ -149,7 +139,7 @@ export function renderFormattedMarkdown(text) {
                 <div key={lineIdx} className={styles.bulletInlineRow}>
                     <span className={styles.bulletDot}>•</span>
                     <div className={styles.bulletContent}>
-                        <strong style={{ fontWeight: 800, color: '#FFFFFF' }}>{titleLabel}:</strong>
+                        <strong>{titleLabel}:</strong>
                         <span>{renderInlineTokens(descText)}</span>
                     </div>
                 </div>
@@ -164,10 +154,10 @@ export function renderFormattedMarkdown(text) {
 
             if (itemContent.endsWith(':') || itemContent.toLowerCase().includes('signal') || itemContent.toLowerCase().includes('ema') || itemContent.toLowerCase().includes('sma') || itemContent.toLowerCase().includes('profit') || itemContent.toLowerCase().includes('loss') || itemContent.toLowerCase().includes('level')) {
                 return (
-                    <div key={lineIdx} className={styles.simpleBulletRow} style={{ margin: '5px 0' }}>
+                    <div key={lineIdx} className={styles.simpleBulletRow}>
                         <span className={styles.bulletDot}>•</span>
                         <div className={styles.bulletContent}>
-                            <strong style={{ fontWeight: 800, color: '#FFFFFF' }}>{cleanLabel}</strong>
+                            <strong>{cleanLabel}</strong>
                         </div>
                     </div>
                 );
@@ -188,7 +178,7 @@ export function renderFormattedMarkdown(text) {
             const valText = stripEmojis(keyValueMatch[2].replace(/^\*\*:\s*|^\*\*\s*/, '').replace(/\*+$/, '')).trim();
             return (
                 <div key={lineIdx} className={styles.keyValueRow}>
-                    <strong style={{ fontWeight: 800, color: '#FFFFFF' }}>{keyLabel}:</strong>
+                    <strong>{keyLabel}:</strong>
                     <span>{renderInlineTokens(valText)}</span>
                 </div>
             );
@@ -204,7 +194,7 @@ export function renderFormattedMarkdown(text) {
             cleanRaw.toLowerCase().startsWith('sounds good')
         ) {
             return (
-                <div key={lineIdx} style={{ margin: '12px 0 4px', fontStyle: 'italic', color: 'rgba(255, 255, 255, 0.88)', lineHeight: 1.6 }}>
+                <div key={lineIdx} className={styles.markdownFooterPrompt}>
                     {cleanRaw.replace(/:$/, '')}
                 </div>
             );
@@ -212,7 +202,7 @@ export function renderFormattedMarkdown(text) {
 
         // 6. Default plain text line
         return (
-            <div key={lineIdx} style={{ margin: '4px 0', lineHeight: 1.6 }}>
+            <div key={lineIdx} className={styles.markdownTextLine}>
                 {renderInlineTokens(cleanRaw)}
             </div>
         );
