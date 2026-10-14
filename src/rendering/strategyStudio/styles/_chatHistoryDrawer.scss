@@ -259,21 +259,21 @@
 }
 
 .historyCardActive {
-    background: rgba(24, 201, 139, 0.08) !important;
-    border-color: rgba(24, 201, 139, 0.45) !important;
+    background: rgba(24, 201, 139, 0.08);
+    border-color: rgba(24, 201, 139, 0.45);
     box-shadow: 0 0 14px rgba(24, 201, 139, 0.12);
 
     .historyCardTitle {
-        color: #18C98B !important;
+        color: #18C98B;
         font-weight: 700;
     }
 
     [data-theme='light'] & {
-        background: #ECFDF5 !important;
-        border-color: #059669 !important;
+        background: #ECFDF5;
+        border-color: #059669;
 
         .historyCardTitle {
-            color: #059669 !important;
+            color: #059669;
         }
     }
 }

@@ -1,180 +1,40 @@
-/* Light Theme Section & Card Depth Overrides */
-html.light [class*="sectionCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
-html.light [class*="cardWrapper"]:not([class*="Icon"]):not([class*="icon"]):not([class*="Text"]):not([class*="text"]):not([class*="Content"]):not([class*="content"]),
-html.light [class*="featureCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Badge"]):not([class*="badge"]),
-html.light [class*="bentoCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
-html.light [class*="assetCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
-html.light [class*="cockpitCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
-html.light [class*="comparisonCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
-html.light [class*="chatCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Content"]):not([class*="content"]),
-html.light [class*="marketCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
-html.light [class*="stepCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
-html.light [class*="testimonialCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
-html.light [class*="planCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]),
-html.light [class*="pricingCard"]:not([class*="Title"]):not([class*="title"]):not([class*="Desc"]):not([class*="desc"]):not([class*="Text"]):not([class*="text"]):not([class*="Stat"]):not([class*="stat"]):not([class*="Header"]):not([class*="header"]):not([class*="Body"]):not([class*="body"]):not([class*="Footer"]):not([class*="footer"]):not([class*="Icon"]):not([class*="icon"]) {
-  background: #FFFFFF !important;
-  border: none !important;
-  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06) !important;
+/* ============================================================
+   CHRONOSX GLOBAL LIGHT THEME ESSENTIALS
+   ============================================================ */
+
+/* Section Dividers in Light Mode */
+html.light .sectionDivider {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(24, 201, 139, 0.35) 50%, transparent 100%);
+  margin: 40px 0;
 }
 
-html.light [class*="featureCardTitle"],
-html.light [class*="featureCardDesc"],
-html.light [class*="featureCardStat"],
-html.light [class*="featureTitle"],
-html.light [class*="featureDesc"],
-html.light [class*="statLabel"],
-html.light [class*="statVal"],
-html.light [class*="statValue"],
-html.light [class*="cardIconWrapper"],
-html.light [class*="cardTextContent"],
-html.light [class*="cardMainTitle"],
-html.light [class*="cardSubTitle"],
-html.light [class*="cardArrow"],
-html.light [class*="cardArrowBtn"],
-html.light [class*="watchlistSearchInput"] {
-  background: transparent !important;
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-html.light [class*="sectionDivider"] {
-  display: block !important;
-  width: 100% !important;
-  height: 1px !important;
-  background: linear-gradient(90deg, transparent 0%, rgba(24, 201, 139, 0.35) 50%, transparent 100%) !important;
-  margin: 40px 0 !important;
-}
-
-html.light [class*="navLink"],
-html.light [class*="navItem"],
-html.light [class*="menuItem"],
-html.light [class*="navMenu"] a {
-  color: #334155 !important;
-}
-
-html.light [class*="navLink"]:hover,
-html.light [class*="navItem"]:hover,
-html.light [class*="menuItem"]:hover {
-  color: #059669 !important;
-}
-
-/* Mega Dropdown & Mobile Drawer in Header */
-html.light [class*="dropdownMenu"] {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  border-radius: 20px !important;
-}
-
-html.light [class*="dropdownCard"],
-html.light [class*="dropdownWrapper"],
-html.light [class*="megaMenu"] {
-  background: #FFFFFF !important;
-  border: 1px solid rgba(15, 23, 42, 0.1) !important;
-  border-radius: 20px !important;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1) !important;
-  overflow: hidden;
-}
-
-html.light [class*="mobileDrawer"] {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* Sidebar & Topbar */
-html.light .sidebar,
-html.light [class*="sidebar_sidebar"],
-html.light [class*="sidebarContainer"] {
-  background-color: #FFFFFF !important;
-  border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
-}
-
-html.light .sidebar-wrapper {
-  background-color: transparent !important;
-  border-right: none !important;
-}
-
-html.light [class*="logoHeader"],
-html.light [class*="quickJumpWrapper"],
-html.light [class*="sidebarmenu"],
-html.light [class*="sidebar"] [class*="bottomSection"] {
-  border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
-}
-
-html.light footer [class*="bottomSection"],
-html.light [class*="footer"] [class*="bottomSection"] {
-  border: none !important;
-  border-right: none !important;
-}
-
-html.light [class*="topbar"],
-html.light [class*="topbarWrapper"] {
-  background-color: rgba(255, 255, 255, 0.9) !important;
-  border-bottom: none !important;
-  color: #0F172A !important;
-}
-
-html.light [class*="sidebarmenu"] a,
-html.light [class*="sidebarItem"],
-html.light [class*="navMenuItem"] {
-  color: #475569 !important;
-}
-
-html.light [class*="sidebarmenu"] a:hover,
-html.light [class*="sidebarItem"]:hover,
-html.light [class*="navMenuItem"]:hover {
-  background: rgba(24, 201, 139, 0.1) !important;
-  color: #047857 !important;
-  box-shadow: none !important;
-}
-
-html.light [class*="sidebarmenu"] a.active,
-html.light [class*="sidebarmenu"] a[class*="active"],
-html.light [class*="navMenuItemActive"],
-html.light [class*="sidebarItemActive"],
-html.light [data-active="true"] {
-  background: rgba(24, 201, 139, 0.15) !important;
-  color: #047857 !important;
-  font-weight: 700 !important;
-}
-
-/* Header navbar items must remain transparent with clean text hover */
-html.light [class*="headerAlignment"] ul,
-html.light [class*="headerAlignment"] nav,
-html.light [class*="headerAlignment"] li,
-html.light [class*="headerAlignment"] ul:hover,
-html.light [class*="headerAlignment"] nav:hover,
-html.light [class*="headerAlignment"] li:hover {
-  background: transparent !important;
-  background-color: transparent !important;
-}
-
-/* Tables */
+/* Light Mode Base Table Styling */
 html.light table {
-  background-color: #FFFFFF !important;
-  color: #0F172A !important;
-  border-color: rgba(15, 23, 42, 0.08) !important;
+  background-color: #FFFFFF;
+  color: #0F172A;
+  border-color: rgba(15, 23, 42, 0.08);
 }
 
 html.light th {
-  background-color: #F1F5F9 !important;
-  color: #334155 !important;
-  font-weight: 600 !important;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.1) !important;
+  background-color: #F1F5F9;
+  color: #334155;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.1);
 }
 
 html.light td {
-  color: #1E293B !important;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.06) !important;
+  color: #1E293B;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
 }
 
 html.light tr:hover td {
-  background-color: #F8FAFC !important;
+  background-color: #F8FAFC;
 }
 
-/* SVG Line & Path Contrast */
+/* Universal SVG Line & Path Contrast for Light Mode */
 html.light svg path[stroke="#ffffff"],
 html.light svg path[stroke="#FFFFFF"],
 html.light svg path[stroke="white"],
@@ -184,13 +44,13 @@ html.light svg line[stroke="white"],
 html.light svg circle[stroke="#ffffff"],
 html.light svg circle[stroke="#FFFFFF"],
 html.light svg circle[stroke="white"] {
-  stroke: #334155 !important;
+  stroke: #334155;
 }
 
 html.light svg:not([data-social="youtube"]) path[fill="#ffffff"]:not(.cx-yt-play):not([data-preserve-white]),
 html.light svg:not([data-social="youtube"]) path[fill="#FFFFFF"]:not(.cx-yt-play):not([data-preserve-white]),
 html.light svg:not([data-social="youtube"]) path[fill="white"]:not(.cx-yt-play):not([data-preserve-white]) {
-  fill: #0F172A !important;
+  fill: #0F172A;
 }
 
 html.light .cx-yt-play,
@@ -198,539 +58,38 @@ html.light [data-social="youtube"] path:last-child,
 html.light svg[data-social="youtube"] path[fill="#FFFFFF"],
 html.light svg[data-social="youtube"] path[fill="#ffffff"],
 html.light svg path.cx-yt-play {
-  fill: #FFFFFF !important;
+  fill: #FFFFFF;
 }
 
 html.light line[stroke="rgba(255, 255, 255, 0.05)"],
 html.light line[stroke*="rgba(255, 255, 255"] {
-  stroke: rgba(15, 23, 42, 0.12) !important;
+  stroke: rgba(15, 23, 42, 0.12);
 }
 
 html.light text[fill="rgba(255, 255, 255, 0.5)"],
 html.light text[fill*="rgba(255, 255, 255"] {
-  fill: #475569 !important;
+  fill: #475569;
 }
 
-/* Ambient glow & backdrop grid softness in Light Mode */
-html.light [class*="ambient"],
-html.light [class*="gridOverlay"],
-html.light [class*="glow"] {
-  opacity: 0.15 !important;
+/* Ambient Glow & Vignettes in Light Mode */
+html.light .ambient,
+html.light .gridOverlay,
+html.light .glow {
+  opacity: 0.15;
 }
 
-/* Eyebrow Badges & Section Tags */
-html.light [class*="eyebrowBadge"],
-html.light [class*="sectionTag"],
-html.light [class*="statusBadge"],
-
-html.light span[class*="badge"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="Label"]):not([class*="label"]):not([class*="headerLivePriceBadge"]):not([class*="days"]):not([class*="Days"]):not([class*="calendar"]):not([class*="Calendar"]),
-html.light span[class*="Badge"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Icon"]):not([class*="icon"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="Label"]):not([class*="label"]):not([class*="headerLivePriceBadge"]):not([class*="days"]):not([class*="Days"]):not([class*="calendar"]):not([class*="Calendar"]),
-html.light span[class*="tag"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="pill"]):not([class*="Pill"]):not([class*="faq"]):not([class*="Faq"]):not([class*="Label"]):not([class*="label"]):not([class*="subtitle"]):not([class*="Subtitle"]),
-html.light span[class*="Tag"]:not([class*="Text"]):not([class*="text"]):not([class*="Title"]):not([class*="title"]):not([class*="Wrap"]):not([class*="wrap"]):not([class*="Content"]):not([class*="content"]):not([class*="pill"]):not([class*="Pill"]):not([class*="faq"]):not([class*="Faq"]):not([class*="Label"]):not([class*="label"]):not([class*="subtitle"]):not([class*="Subtitle"]),
-html.light [class*="pillBadge"],
-html.light [class*="statBadge"] {
-  color: #047857 !important;
-  background: rgba(24, 201, 139, 0.12) !important;
-  border: 1px solid rgba(24, 201, 139, 0.3) !important;
-  box-shadow: none !important;
+html.light .radialVignette,
+html.light .ambientGlowCenter,
+html.light .ambientGlowBottom,
+html.light .mobileTechAtmosphere,
+html.light .mobileQuantumHalo {
+  display: none;
 }
 
-html.light [class*="badgeText"],
-html.light span[class*="badgeText"],
-html.light [class*="badgeTitle"],
-html.light [class*="labelText"],
-html.light span[class*="labelText"],
-html.light [class*="stepTag"],
-html.light span[class*="stepTag"],
-html.light [class*="pillTag"],
-html.light span[class*="pillTag"],
-html.light [class*="pillText"],
-html.light span[class*="pillText"],
-html.light [class*="pillDivider"],
-html.light span[class*="pillDivider"],
-html.light [class*="faqTag"],
-html.light span[class*="faqTag"],
-html.light [class*="badgeContent"],
-html.light [class*="badgeContent"] h4,
-html.light [class*="badgeContent"] p,
-html.light [class*="badgeWrapper"],
-html.light [class*="badgeRow"],
-html.light [class*="cardHeaderMeta"] {
-  background: transparent !important;
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* Secondary & Neutral Buttons */
-html.light [class*="secondaryBtn"],
-html.light [class*="outlineBtn"],
-html.light [class*="ghostBtn"],
-html.light [class*="btnSecondary"],
-html.light [class*="actionGridBtn"] {
-  background: #FFFFFF !important;
-  color: #0F172A !important;
-  border: 1px solid rgba(15, 23, 42, 0.15) !important;
-}
-
-html.light [class*="secondaryBtn"]:hover,
-html.light [class*="outlineBtn"]:hover,
-html.light [class*="ghostBtn"]:hover,
-html.light [class*="actionGridBtn"]:hover {
-  background: #F1F5F9 !important;
-  border-color: rgba(24, 201, 139, 0.4) !important;
-}
-
-/* Auth & Onboarding Views */
-html.light .auth-layout,
-html.light [class*="authLayout"],
-html.light [class*="authPage"],
-html.light [class*="onboardingWrapper"] {
-  background-color: #F8FAFC !important;
+/* Auth Layout Light Mode Background */
+html.light .auth-layout {
+  background-color: #F8FAFC;
   background-image:
     radial-gradient(circle at 50% 15%, rgba(24, 201, 139, 0.1) 0%, transparent 55%),
-    radial-gradient(circle at 50% 85%, rgba(24, 201, 139, 0.05) 0%, transparent 60%) !important;
-}
-
-html.light [class*="authCard"],
-html.light [class*="formCard"],
-html.light [class*="onboardingCard"] {
-  background: #FFFFFF !important;
-  border: 1px solid rgba(15, 23, 42, 0.08) !important;
-  box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.08) !important;
-}
-
-/* Chat & AI Analyst Bubbles */
-html.light [class*="chatBox"],
-html.light [class*="chatBubble"],
-html.light [class*="botMessage"],
-html.light [class*="assistantMessage"],
-html.light [class*="messageBubble"] {
-  background: #F1F5F9 !important;
-  color: #0F172A !important;
-  border: 1px solid rgba(24, 201, 139, 0.25) !important;
-  box-shadow: none !important;
-}
-
-html.light [class*="chatBox"] p,
-html.light [class*="chatBubble"] p,
-html.light [class*="botMessage"] p,
-html.light [class*="assistantMessage"] p,
-html.light [class*="messageBubble"] p {
-  color: #0F172A !important;
-}
-
-
-/* ============================================================
-   GLOBAL BUTTON SYSTEM - 100% FULLY ROUNDED & SOLID COLORS
-   ============================================================ */
-button,
-input[type="button"],
-input[type="submit"],
-input[type="reset"],
-.button button,
-[class*="btnPrimary"],
-[class*="BtnPrimary"],
-[class*="primaryBtn"],
-[class*="PrimaryBtn"],
-[class*="ctaBtn"],
-[class*="CtaBtn"],
-[class*="ctaGoldBtn"],
-[class*="ctaPrimaryBtn"],
-[class*="ctaSecondaryBtn"],
-[class*="buyBtn"],
-[class*="basicBuyBtn"],
-[class*="featuredBuyBtn"],
-[class*="premiumBuyBtn"],
-[class*="submitBtn"],
-[class*="submitButton"],
-[class*="actionBtn"],
-[class*="btnSecondary"],
-[class*="secondaryBtn"],
-[class*="SecondaryBtn"],
-[class*="outlineBtn"],
-[class*="ghostBtn"],
-[class*="historyBtn"],
-[class*="actionGridBtn"],
-[class*="exploreBtn"],
-[class*="tradeBtn"],
-[class*="analyzeBtn"],
-[class*="btnAnalyze"],
-[class*="btnDanger"],
-[class*="googleBtnWrapper"],
-[class*="customGoogleBtn"],
-[class*="statusPill"],
-[class*="textbutton"] button {
-  border-radius: 9999px !important;
-}
-
-/* Primary Solid Buttons (Remove All Gradients) */
-[class*="btnPrimary"],
-[class*="BtnPrimary"],
-[class*="primaryBtn"],
-[class*="PrimaryBtn"],
-[class*="ctaPrimaryBtn"],
-[class*="ctaGoldBtn"],
-[class*="ctaBtn"],
-[class*="submitButton"],
-[class*="basicBuyBtn"],
-[class*="featuredBuyBtn"],
-[class*="premiumBuyBtn"],
-[class*="btnAnalyze"],
-.button button {
-  background: #18C98B !important;
-  background-image: none !important;
-  color: #040605 !important;
-  border: 1px solid #18C98B !important;
-  box-shadow: 0 4px 16px rgba(24, 201, 139, 0.3) !important;
-  font-weight: 700 !important;
-  transition: all 0.25s ease !important;
-}
-
-[class*="btnPrimary"]:hover:not(:disabled),
-[class*="BtnPrimary"]:hover:not(:disabled),
-[class*="primaryBtn"]:hover:not(:disabled),
-[class*="PrimaryBtn"]:hover:not(:disabled),
-[class*="ctaPrimaryBtn"]:hover:not(:disabled),
-[class*="ctaGoldBtn"]:hover:not(:disabled),
-[class*="ctaBtn"]:hover:not(:disabled),
-[class*="submitButton"]:hover:not(:disabled),
-[class*="basicBuyBtn"]:hover:not(:disabled),
-[class*="featuredBuyBtn"]:hover:not(:disabled),
-[class*="premiumBuyBtn"]:hover:not(:disabled),
-[class*="btnAnalyze"]:hover:not(:disabled),
-.button button:hover {
-  background: #15B77E !important;
-  background-image: none !important;
-  border-color: #15B77E !important;
-  color: #040605 !important;
-  box-shadow: 0 6px 22px rgba(24, 201, 139, 0.45) !important;
-}
-
-/* Ensure Button Text & Icon visibility */
-[class*="btnPrimary"] span,
-[class*="BtnPrimary"] span,
-[class*="primaryBtn"] span,
-[class*="PrimaryBtn"] span,
-[class*="ctaPrimaryBtn"] span,
-[class*="ctaGoldBtn"] span,
-[class*="ctaBtn"] span,
-[class*="submitButton"] span,
-[class*="btnAnalyze"] span,
-.button button span {
-  color: #040605 !important;
-}
-
-[class*="btnPrimary"] svg,
-[class*="BtnPrimary"] svg,
-[class*="primaryBtn"] svg,
-[class*="PrimaryBtn"] svg,
-[class*="ctaPrimaryBtn"] svg,
-[class*="ctaGoldBtn"] svg,
-[class*="ctaBtn"] svg,
-[class*="submitButton"] svg,
-[class*="btnAnalyze"] svg {
-  color: #040605 !important;
-  stroke: currentColor;
-}
-
-/* ============================================================
-   LIGHT MODE: BUTTONS & INTERACTIVE ELEMENTS
-   ============================================================ */
-html.light [class*="btnPrimary"],
-html.light [class*="BtnPrimary"],
-html.light [class*="primaryBtn"],
-html.light [class*="PrimaryBtn"],
-html.light [class*="ctaPrimaryBtn"],
-html.light [class*="ctaGoldBtn"],
-html.light [class*="ctaBtn"],
-html.light [class*="submitButton"],
-html.light [class*="basicBuyBtn"],
-html.light [class*="featuredBuyBtn"],
-html.light [class*="premiumBuyBtn"],
-html.light [class*="btnAnalyze"],
-html.light .button button {
-  background: #18C98B !important;
-  background-image: none !important;
-  color: #040605 !important;
-  border-color: #18C98B !important;
-  box-shadow: 0 2px 8px rgba(24, 201, 139, 0.25) !important;
-}
-
-html.light [class*="btnPrimary"]:hover,
-html.light [class*="BtnPrimary"]:hover,
-html.light [class*="primaryBtn"]:hover,
-html.light [class*="PrimaryBtn"]:hover,
-html.light [class*="ctaPrimaryBtn"]:hover,
-html.light [class*="ctaGoldBtn"]:hover,
-html.light [class*="ctaBtn"]:hover,
-html.light [class*="submitButton"]:hover:not(:disabled),
-html.light [class*="basicBuyBtn"]:hover,
-html.light [class*="featuredBuyBtn"]:hover,
-html.light [class*="premiumBuyBtn"]:hover,
-html.light [class*="btnAnalyze"]:hover:not(:disabled),
-html.light .button button:hover {
-  background: #15B77E !important;
-  border-color: #15B77E !important;
-  color: #040605 !important;
-  box-shadow: 0 4px 14px rgba(24, 201, 139, 0.35) !important;
-}
-
-/* Light Mode Secondary, Outline, Ghost, Action & Google Buttons */
-html.light [class*="btnSecondary"],
-html.light [class*="secondaryBtn"],
-html.light [class*="SecondaryBtn"],
-html.light [class*="ctaSecondaryBtn"],
-html.light [class*="outlineBtn"],
-html.light [class*="ghostBtn"],
-html.light [class*="historyBtn"],
-html.light [class*="actionGridBtn"],
-html.light [class*="googleBtnWrapper"] {
-  background: #FFFFFF !important;
-  background-image: none !important;
-  border: 1px solid rgba(15, 23, 42, 0.16) !important;
-  color: #0F172A !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
-}
-
-html.light [class*="btnSecondary"]:hover,
-html.light [class*="secondaryBtn"]:hover,
-html.light [class*="SecondaryBtn"]:hover,
-html.light [class*="ctaSecondaryBtn"]:hover,
-html.light [class*="outlineBtn"]:hover,
-html.light [class*="ghostBtn"]:hover,
-html.light [class*="historyBtn"]:hover,
-html.light [class*="actionGridBtn"]:hover,
-html.light [class*="googleBtnWrapper"]:hover {
-  background: #F1F5F9 !important;
-  border-color: #18C98B !important;
-  color: #047857 !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
-}
-
-html.light [class*="customGoogleBtn"] {
-  color: #0F172A !important;
-}
-
-/* ============================================================
-   LIGHT MODE: HEADER, FOOTER, SIDEBAR, TOPBAR & SECTIONS
-   ============================================================ */
-/* Header */
-
-
-html.light [class*="headerAlignment"].alignmentScrolled {
-  background-color: rgba(255, 255, 255, 0.98) !important;
-  border-color: rgba(15, 23, 42, 0.12) !important;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06) !important;
-}
-
-html.light [class*="menu"] a,
-html.light [class*="dropdownTrigger"] {
-  color: #0F172A !important;
-}
-
-html.light [class*="menu"] a:hover,
-html.light [class*="dropdownTrigger"]:hover,
-html.light [class*="menu"] li.active a,
-html.light [class*="menu"] li.dropdownOpen .dropdownTrigger {
-  color: #047857 !important;
-}
-
-html.light [class*="dropdownTrigger"] .chevron {
-  color: #475569 !important;
-}
-
-html.light [class*="dropdownCard"],
-html.light [class*="megaMenu"] {
-  background: #FFFFFF !important;
-  border: 1px solid rgba(15, 23, 42, 0.1) !important;
-  border-radius: 20px !important;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.09) !important;
-  overflow: hidden;
-}
-
-html.light [class*="dropdownItem"]:hover {
-  background: #F1F5F9 !important;
-}
-
-html.light [class*="dropdownItem"]:hover [class*="itemIconBox"] {
-  background: #18C98B !important;
-  color: #040605 !important;
-}
-
-/* Footer */
-html.light footer,
-html.light [class*="footerSection"],
-html.light [class*="footerWrapper"] {
-  background-color: #F8FAFC !important;
-  border-top: none !important;
-  border: none !important;
-  color: #334155 !important;
-  box-shadow: none !important;
-}
-
-/* Sidebar Subscription Green Widget Protection */
-html.light [class*="widgetCard"] [class*="footerRow"],
-html.light [class*="widgetCard"] [class*="statusText"],
-html.light [class*="widgetCard"] [class*="cycleText"] {
-  background: transparent !important;
-  background-color: transparent !important;
-  color: #FFFFFF !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-html.light [class*="widgetCard"] [class*="daysBadge"] {
-  color: #FFFFFF !important;
-  -webkit-text-fill-color: #FFFFFF !important;
-  background: rgba(0, 0, 0, 0.25) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-}
-
-html.light [class*="calendarBadge"],
-html.light span[class*="calendarBadge"],
-html.light [class*="calendarHeaderStrip"] [class*="calendarBadge"] {
-  color: #FFFFFF !important;
-  -webkit-text-fill-color: #FFFFFF !important;
-  background: rgba(0, 0, 0, 0.28) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-}
-
-html.light [class*="navCol"] h4 {
-  color: #0F172A !important;
-}
-
-html.light [class*="navCol"] h4::after {
-  background: #047857 !important;
-}
-
-html.light [class*="footer"] a,
-html.light footer a,
-html.light [class*="navCol"] ul li a,
-html.light [class*="footerWrapper"] a {
-  color: #475569 !important;
-}
-
-html.light [class*="footer"] a:hover,
-html.light footer a:hover,
-html.light [class*="navCol"] ul li a:hover,
-html.light [class*="footerWrapper"] a:hover {
-  color: #047857 !important;
-}
-
-html.light [class*="brandDesc"],
-html.light [class*="disclaimerSection"] p,
-html.light [class*="bottomSection"] p {
-  color: #64748B !important;
-}
-
-
-html.light [class*="topbar"],
-html.light [class*="topbarWrapper"] {
-  background-color: #FFFFFF !important;
-  border-bottom: none !important;
-  color: #0F172A !important;
-}
-
-html.light [class*="sidebarmenu"] a,
-html.light [class*="sidebarItem"],
-html.light [class*="navMenuItem"] {
-  color: #475569 !important;
-}
-
-html.light [class*="sidebarmenu"] a:hover,
-html.light [class*="sidebarItem"]:hover,
-html.light [class*="navMenuItem"]:hover {
-  background: rgba(24, 201, 139, 0.1) !important;
-  color: #047857 !important;
-}
-
-html.light [class*="sidebarmenu"] a.active,
-html.light [class*="sidebarmenu"] a[class*="active"],
-html.light [class*="navMenuItemActive"],
-html.light [class*="sidebarItemActive"],
-html.light [data-active="true"] {
-  background: rgba(24, 201, 139, 0.14) !important;
-  border-color: rgba(24, 201, 139, 0.3) !important;
-  color: #047857 !important;
-}
-
-/* Hide Dark Background Glows and Vignettes in Light Mode */
-html.light [class*="radialVignette"],
-html.light [class*="ambientGlowCenter"],
-html.light [class*="ambientGlowBottom"],
-html.light [class*="mobileTechAtmosphere"],
-html.light [class*="mobileQuantumHalo"] {
-  display: none !important;
-}
-
-/* Universal Light Theme Styling for Broker Cards */
-html.light [data-component="broker-card"],
-html[data-theme='light'] [data-component="broker-card"],
-[data-theme='light'] [data-component="broker-card"] {
-  background: #FFFFFF !important;
-  border: 1px solid rgba(15, 23, 42, 0.08) !important;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06) !important;
-}
-
-html.light [data-component="broker-card"] [class*="bannerHeader"],
-html[data-theme='light'] [data-component="broker-card"] [class*="bannerHeader"],
-[data-theme='light'] [data-component="broker-card"] [class*="bannerHeader"] {
-  border-radius: 10px !important;
-}
-
-html.light [data-component="broker-card"] [class*="bannerHeader"][class*="hasLightBg"],
-[data-theme='light'] [data-component="broker-card"] [class*="bannerHeader"][class*="hasLightBg"] {
-  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%) !important;
-  border: 1px solid rgba(15, 23, 42, 0.08) !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
-}
-
-html.light [data-component="broker-card"] [class*="bannerHeader"][class*="hasDarkBg"],
-[data-theme='light'] [data-component="broker-card"] [class*="bannerHeader"][class*="hasDarkBg"] {
-  background: linear-gradient(135deg, #0E1613 0%, #050A08 100%) !important;
-  border: 1px solid rgba(24, 201, 139, 0.25) !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12) !important;
-}
-
-html.light [data-component="broker-card"] [class*="bannerHeader"]::before,
-html.light [data-component="broker-card"] [class*="bannerHeader"]::after,
-[data-theme='light'] [data-component="broker-card"] [class*="bannerHeader"]::before,
-[data-theme='light'] [data-component="broker-card"] [class*="bannerHeader"]::after {
-  display: none !important;
-  content: none !important;
-}
-
-html.light [data-component="broker-card"] [class*="logoWrapper"],
-[data-theme='light'] [data-component="broker-card"] [class*="logoWrapper"] {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-}
-
-html.light [data-component="broker-card"] [class*="bannerHeader"][class*="hasLightBg"] [class*="logoWrapper"] img,
-[data-theme='light'] [data-component="broker-card"] [class*="bannerHeader"][class*="hasLightBg"] [class*="logoWrapper"] img {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  mix-blend-mode: multiply !important;
-  filter: contrast(1.05) !important;
-}
-
-html.light [data-component="broker-card"] [class*="bannerHeader"][class*="hasDarkBg"] [class*="logoWrapper"] img,
-[data-theme='light'] [data-component="broker-card"] [class*="bannerHeader"][class*="hasDarkBg"] [class*="logoWrapper"] img {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  mix-blend-mode: normal !important;
-  filter: none !important;
-}
-
-html.light [data-component="broker-card"] [class*="chartGraphic"],
-[data-theme='light'] [data-component="broker-card"] [class*="chartGraphic"] {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  opacity: 0.88 !important;
+    radial-gradient(circle at 50% 85%, rgba(24, 201, 139, 0.05) 0%, transparent 60%);
 }

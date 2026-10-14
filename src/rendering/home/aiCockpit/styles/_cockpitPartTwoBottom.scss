@@ -571,31 +571,31 @@
   }
 
   :global(html.light) & {
-    background: #F8FAFC !important;
+    background: #F8FAFC;
 
     .sectionHeader {
       h2 {
-        color: #0F172A !important;
+        color: #0F172A;
       }
 
       p {
-        color: #475569 !important;
+        color: #475569;
       }
     }
 
-    [class*="cockpitCard"],
-    [class*="metricCard"],
-    [class*="signalCard"],
-    [class*="terminalCard"] {
-      background: #FFFFFF !important;
-      border-color: rgba(15, 23, 42, 0.09) !important;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
-      color: #0F172A !important;
+    .cockpitCard,
+    .metricCard,
+    .signalCard,
+    .terminalCard {
+      background: #FFFFFF;
+      border-color: rgba(15, 23, 42, 0.09);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      color: #0F172A;
     }
 
     .cockpitFooterBar {
-      border-top-color: #E2E8F0 !important;
-      color: #64748B !important;
+      border-top-color: #E2E8F0;
+      color: #64748B;
     }
   }
 }

@@ -368,11 +368,11 @@
     cursor: pointer;
     transition: all 0.12s ease;
     user-select: none;
-    border-radius: 0 !important;
+    border-radius: 0;
 
     &:hover {
         background: rgba(24, 201, 139, 0.12);
-        border-radius: 0 !important;
+        border-radius: 0;
 
         .indicatorRowName {
             color: #18C98B;
@@ -380,18 +380,18 @@
     }
 
     &.indicatorRowActive {
-        background: rgba(24, 201, 139, 0.22) !important;
+        background: rgba(24, 201, 139, 0.22);
         border-left: 3px solid #18C98B;
         padding-left: 17px;
-        border-radius: 0 !important;
+        border-radius: 0;
 
         .indicatorRowName {
-            color: #18C98B !important;
-            font-weight: 700 !important;
+            color: #18C98B;
+            font-weight: 700;
         }
 
         .indicatorCategory {
-            color: #18C98B !important;
+            color: #18C98B;
         }
     }
 

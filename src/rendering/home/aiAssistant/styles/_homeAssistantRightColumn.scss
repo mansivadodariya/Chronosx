@@ -581,69 +581,69 @@
   }
 
   :global(html.light) & {
-    background: #F8FAFC !important;
+    background: #F8FAFC;
 
     .sectionHeading {
-      color: #0F172A !important;
+      color: #0F172A;
     }
 
     .desc,
     .itemDesc,
     .logText {
-      color: #475569 !important;
+      color: #475569;
     }
 
     .featureCard {
-      background: #FFFFFF !important;
-      border-color: rgba(15, 23, 42, 0.09) !important;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+      background: #FFFFFF;
+      border-color: rgba(15, 23, 42, 0.09);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 
       .itemTitle {
-        color: #0F172A !important;
+        color: #0F172A;
       }
 
       &.featureActive {
-        background: #FFFFFF !important;
-        border-color: #18C98B !important;
-        box-shadow: 0 8px 30px rgba(24, 201, 139, 0.15) !important;
+        background: #FFFFFF;
+        border-color: #18C98B;
+        box-shadow: 0 8px 30px rgba(24, 201, 139, 0.15);
 
         .itemTitle {
-          color: #0F172A !important;
-          text-shadow: none !important;
+          color: #0F172A;
+          text-shadow: none;
         }
       }
     }
 
     .liveTerminalContainer {
-      background: #FFFFFF !important;
-      border-color: rgba(15, 23, 42, 0.1) !important;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.06) !important;
+      background: #FFFFFF;
+      border-color: rgba(15, 23, 42, 0.1);
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.06);
 
       .terminalHeader,
       .terminalFooter {
-        background: #F8FAFC !important;
-        border-color: #E2E8F0 !important;
+        background: #F8FAFC;
+        border-color: #E2E8F0;
       }
 
       .terminalTitle,
       .hudVal {
-        color: #0F172A !important;
+        color: #0F172A;
       }
 
       .chartMockCard,
       .streamConsole {
-        background: #F8FAFC !important;
-        border-color: #E2E8F0 !important;
+        background: #F8FAFC;
+        border-color: #E2E8F0;
       }
 
       .cardTitle {
-        color: #0F172A !important;
+        color: #0F172A;
       }
 
       .logItem,
       .hudTile {
-        background: #FFFFFF !important;
-        border-color: #E2E8F0 !important;
+        background: #FFFFFF;
+        border-color: #E2E8F0;
       }
     }
   }

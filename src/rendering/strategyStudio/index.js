@@ -714,7 +714,7 @@ export default function StrategyStudio() {
                         />
 
                         {/* Right Panel Main Content Area */}
-                        <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+                        <div className={styles.rightPanelContentArea}>
                             {simulationLoading ? (
                                 <div className={styles.loadingOverlay}>
                                     <SimulationProgressLoader symbol={symbol} interval={interval} />

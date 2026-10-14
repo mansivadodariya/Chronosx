@@ -80,8 +80,8 @@
             background: none;
 
             :global(html.light) & {
-                color: rgba(15, 23, 42, 0.08) !important;
-                -webkit-text-fill-color: rgba(15, 23, 42, 0.08) !important;
+                color: rgba(15, 23, 42, 0.08);
+                -webkit-text-fill-color: rgba(15, 23, 42, 0.08);
             }
         }
 
@@ -111,12 +111,12 @@
             @include respond-to("tab") {
                 top: 10px;
                 // Mobile & Tablet: Auto Infinite Green Shine Sweep Animation
-                opacity: 1 !important;
-                -webkit-mask-image: linear-gradient(115deg, transparent 20%, rgba(0, 0, 0, 1) 50%, transparent 80%) !important;
-                mask-image: linear-gradient(115deg, transparent 20%, rgba(0, 0, 0, 1) 50%, transparent 80%) !important;
-                -webkit-mask-size: 250% 100% !important;
-                mask-size: 250% 100% !important;
-                animation: autoSweepMobile 3.6s ease-in-out infinite alternate !important;
+                opacity: 1;
+                -webkit-mask-image: linear-gradient(115deg, transparent 20%, rgba(0, 0, 0, 1) 50%, transparent 80%);
+                mask-image: linear-gradient(115deg, transparent 20%, rgba(0, 0, 0, 1) 50%, transparent 80%);
+                -webkit-mask-size: 250% 100%;
+                mask-size: 250% 100%;
+                animation: autoSweepMobile 3.6s ease-in-out infinite alternate;
             }
 
             @include respond-to("sm") {
@@ -364,8 +364,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border: none !important;
-        border-right: none !important;
+        border: none;
 
         @include respond-to("sm") {
             flex-direction: column;
@@ -390,8 +389,8 @@
                 height: 38px;
                 border-radius: 50%;
                 background: #06140e;
-                border: none !important;
-                outline: none !important;
+                border: none;
+                outline: none;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -403,19 +402,12 @@
                 :global(html.light) &,
                 :global(html[data-theme="light"]) &,
                 :global([data-theme="light"]) & {
-                    background: rgba(24, 201, 139, 0.16) !important;
-                    background-color: rgba(24, 201, 139, 0.16) !important;
-                    border: none !important;
-                    outline: none !important;
-                    box-shadow: none !important;
-                    --x-color: #0F1419 !important;
+                    background: rgba(24, 201, 139, 0.16);
+                    --x-color: #0F1419;
 
                     &:hover {
-                        background: rgba(24, 201, 139, 0.28) !important;
-                        background-color: rgba(24, 201, 139, 0.28) !important;
-                        border: none !important;
-                        outline: none !important;
-                        box-shadow: 0 4px 12px rgba(24, 201, 139, 0.22) !important;
+                        background: rgba(24, 201, 139, 0.28);
+                        box-shadow: 0 4px 12px rgba(24, 201, 139, 0.22);
                     }
                 }
 
@@ -433,13 +425,13 @@
 
                     :global(.cx-yt-play),
                     :global([data-social="youtube"]) path:last-child {
-                        fill: #FFFFFF !important;
+                        fill: #FFFFFF;
                     }
                 }
 
                 &:hover {
-                    border: none !important;
-                    outline: none !important;
+                    border: none;
+                    outline: none;
                     box-shadow: 0 0 16px var(--brand-glow, rgba(24, 201, 139, 0.4));
                     transform: translateY(-2px);
                     background: var(--brand-hover-bg, rgba(255, 255, 255, 0.08));
@@ -455,133 +447,86 @@
     :global(html.light) &,
     :global(html[data-theme="light"]) &,
     :global([data-theme="light"]) & {
-        background: #F8FAFC !important;
-        border-top: none !important;
-        border: none !important;
+        background: #F8FAFC;
+        border-top: none;
+        border: none;
 
         .brandCol {
             .brandDesc {
-                color: #475569 !important;
+                color: #475569;
             }
 
             .statusBadge {
-                background: #ECFDF5 !important;
-                border: 1px solid rgba(16, 185, 129, 0.4) !important;
-                color: #047857 !important;
-                font-weight: 700 !important;
-                box-shadow: 0 2px 8px rgba(16, 185, 129, 0.12) !important;
+                background: #ECFDF5;
+                border: 1px solid rgba(16, 185, 129, 0.4);
+                color: #047857;
+                font-weight: 700;
+                box-shadow: 0 2px 8px rgba(16, 185, 129, 0.12);
 
                 span {
-                    color: #047857 !important;
+                    color: #047857;
                 }
             }
 
             .statusDot {
-                background: #10B981 !important;
-                box-shadow: 0 0 6px rgba(16, 185, 129, 0.6) !important;
+                background: #10B981;
+                box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
             }
         }
 
         .navCol {
             h4 {
-                color: #0F172A !important;
+                color: #0F172A;
 
                 &::after {
-                    background: #18C98B !important;
+                    background: #18C98B;
                 }
             }
 
             ul li a {
-                color: #475569 !important;
+                color: #475569;
 
                 &:hover {
-                    color: #047857 !important;
+                    color: #047857;
                 }
             }
         }
 
         .disclaimerSection {
             .companyRegLine {
-                color: #64748B !important;
+                color: #64748B;
 
                 strong {
-                    color: #0F172A !important;
+                    color: #0F172A;
                 }
             }
 
             p {
-                color: #64748B !important;
+                color: #64748B;
 
                 a {
-                    color: #475569 !important;
+                    color: #475569;
 
                     &:hover {
-                        color: #047857 !important;
+                        color: #047857;
                     }
                 }
             }
 
             .fullDisclaimerLink a {
-                color: #047857 !important;
+                color: #047857;
             }
         }
 
         .divider {
-            background: linear-gradient(90deg, transparent 0%, rgba(24, 201, 139, 0.25) 50%, transparent 100%) !important;
+            background: linear-gradient(90deg, transparent 0%, rgba(24, 201, 139, 0.25) 50%, transparent 100%);
         }
 
         .bottomSection {
-            border: none !important;
-            border-right: none !important;
+            border: none;
 
             p {
-                color: #64748B !important;
-            }
-
-            .allsociallinks .sociallinks {
-                width: 38px !important;
-                height: 38px !important;
-                background: rgba(24, 201, 139, 0.16) !important;
-                border: none !important;
-                outline: none !important;
-                border-radius: 50% !important;
-                box-shadow: none !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                flex-shrink: 0 !important;
-                transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-                --x-color: #0F1419 !important;
-
-                .socialIcon {
-                    display: inline-flex !important;
-                    align-items: center !important;
-                    justify-content: center !important;
-                    line-height: 0 !important;
-                    opacity: 1 !important;
-                    transition: transform 0.25s ease !important;
-
-                    svg {
-                        display: block !important;
-                    }
-
-                    :global(.cx-yt-play),
-                    :global([data-social="youtube"]) path:last-child {
-                        fill: #FFFFFF !important;
-                    }
-                }
-
-                &:hover {
-                    background: rgba(24, 201, 139, 0.28) !important;
-                    border: none !important;
-                    outline: none !important;
-                    transform: translateY(-2px) !important;
-                    box-shadow: 0 4px 12px rgba(24, 201, 139, 0.22) !important;
-
-                    .socialIcon {
-                        transform: scale(1.14) !important;
-                    }
-                }
+                color: #64748B;
             }
         }
     }

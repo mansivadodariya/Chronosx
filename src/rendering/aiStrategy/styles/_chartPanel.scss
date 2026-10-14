@@ -89,11 +89,11 @@
                 }
 
                 .itemBullish {
-                    color: #18C98B !important;
+                    color: #18C98B;
                 }
 
                 .itemBearish {
-                    color: #EF5350 !important;
+                    color: #EF5350;
                 }
             }
         }
@@ -105,17 +105,17 @@
         height: 100%;
         position: relative;
         background: #08090c;
-        cursor: crosshair !important;
+        cursor: crosshair;
 
         :global(canvas) {
-            cursor: crosshair !important;
+            cursor: crosshair;
         }
 
         :global(.tv-lightweight-charts) {
-            cursor: crosshair !important;
+            cursor: crosshair;
 
             :global(canvas) {
-                cursor: crosshair !important;
+                cursor: crosshair;
             }
         }
     }
@@ -124,17 +124,17 @@
         width: 100%;
         height: 100%;
         min-height: 380px;
-        cursor: crosshair !important;
+        cursor: crosshair;
 
         :global(canvas) {
-            cursor: crosshair !important;
+            cursor: crosshair;
         }
 
         :global(.tv-lightweight-charts) {
-            cursor: crosshair !important;
+            cursor: crosshair;
 
             :global(canvas) {
-                cursor: crosshair !important;
+                cursor: crosshair;
             }
         }
     }

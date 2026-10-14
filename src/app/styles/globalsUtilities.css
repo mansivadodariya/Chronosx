@@ -1,313 +1,24 @@
 /* ============================================================
-   CHRONOSX GLOBAL UTILITIES & THEME SYSTEM EXTENSIONS
+   CHRONOSX GLOBAL UTILITIES & FORM NORMALIZE
    ============================================================ */
 
-/* Custom Sleek Thin Mint Green Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #040605;
-  border-radius: 99px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #6EE7B7 0%, #18c98b 50%, #059669 100%);
-  border-radius: 99px;
-  box-shadow: 0 0 8px rgba(24, 201, 139, 0.4);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #FFFFFF 0%, #18c98b 100%);
-  box-shadow: 0 0 12px rgba(24, 201, 139, 0.7);
-}
-
-/* Firefox Scrollbar Standard */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #18c98b #040605;
-}
-
-html.light ::-webkit-scrollbar-track,
-html[data-theme="light"] ::-webkit-scrollbar-track,
-.light ::-webkit-scrollbar-track,
-html.light *::-webkit-scrollbar-track,
-html[data-theme="light"] *::-webkit-scrollbar-track,
-.light *::-webkit-scrollbar-track {
-  background: #F1F5F9 !important;
-}
-
-html.light ::-webkit-scrollbar-thumb,
-html[data-theme="light"] ::-webkit-scrollbar-thumb,
-.light ::-webkit-scrollbar-thumb,
-html.light *::-webkit-scrollbar-thumb,
-html[data-theme="light"] *::-webkit-scrollbar-thumb,
-.light *::-webkit-scrollbar-thumb {
-  background: #10B981 !important;
-  box-shadow: none !important;
-}
-
-html.light ::-webkit-scrollbar-thumb:hover,
-html[data-theme="light"] ::-webkit-scrollbar-thumb:hover,
-.light ::-webkit-scrollbar-thumb:hover,
-html.light *::-webkit-scrollbar-thumb:hover,
-html[data-theme="light"] *::-webkit-scrollbar-thumb:hover,
-.light *::-webkit-scrollbar-thumb:hover {
-  background: #059669 !important;
-}
-
-html.light *,
-html[data-theme="light"] *,
-.light * {
-  scrollbar-width: thin !important;
-  scrollbar-color: #10B981 #F1F5F9 !important;
-}
-
-/* Responsive Table Wrappers & Touch Scrolling */
-.table-responsive,
-[class*="tableWrapper"],
-[class*="tableContainer"],
-[class*="ledgerTableWrapper"],
-[class*="historyTableWrapper"] {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.nsm7Bb-HzV7m-LgbsSe {
-  border: none !important;
-}
-
-.nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-BPrWId {
-  font-weight: 500;
-  font-style: bold;
-  font-size: 16px;
-  text-align: center;
-}
-
-.nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-bN97Pc-sM5MNb {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  height: 100%;
-  position: relative;
-  width: 100% !important;
-}
-
-/* Mixed Language (Arabic & English Bidi) Rules */
-.message,
-[dir="auto"],
-.bidi-auto {
-  unicode-bidi: plaintext;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  text-align: start;
-}
-
-/* Force LTR direction and left alignment for English content inside RTL dashboard */
-[dir="rtl"] .message[lang="en"],
-[dir="rtl"] .message[data-lang="en"],
-.message.ltr,
-.bidi-ltr,
-[dir="auto"].bidi-ltr,
-[dir="auto"][data-dir="ltr"] {
-  direction: ltr;
-  text-align: left;
-}
-
-/* Force RTL direction and right alignment for Arabic content */
-[dir="rtl"] .message[lang="ar"],
-[dir="rtl"] .message[data-lang="ar"],
-.message.rtl,
-.bidi-rtl,
-[dir="auto"].bidi-rtl,
-[dir="auto"][data-dir="rtl"] {
-  direction: rtl;
-  text-align: right;
-}
-
-/* Table Cell Auto Directionality & Column Alignment */
-table th,
-table td,
-table td [dir="auto"],
-table td .bidi-auto,
-table td .bidi-ltr,
-table td .bidi-rtl,
-table th [dir="auto"],
-table th .bidi-auto,
-table th .bidi-ltr,
-table th .bidi-rtl {
-  text-align: start !important;
-  unicode-bidi: plaintext;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-}
-
-/* Light Mode Input & Select Dropdowns - No Dark Boxes */
+/* Light Mode Base Form Controls */
 html.light input:not([type="checkbox"]):not([type="radio"]),
 html.light select,
-html.light textarea,
-html.light [class*="inputWrapper"],
-html.light [class*="selectWrapper"],
-html.light [class*="textareaWrapper"],
-html.light [class*="phoneInputWrapper"],
-html.light [class*="searchBox"],
-html.light [class*="searchInput"] {
-  background: #FFFFFF !important;
-  background-color: #FFFFFF !important;
-  border-color: rgba(24, 201, 139, 0.28) !important;
-  color: #0F172A !important;
-  box-shadow: none !important;
+html.light textarea {
+  background-color: #FFFFFF;
+  color: #0F172A;
+  border-color: rgba(15, 23, 42, 0.15);
 }
 
 html.light input::placeholder,
 html.light textarea::placeholder {
-  color: #94A3B8 !important;
+  color: #94A3B8;
 }
 
 html.light select option {
-  background-color: #FFFFFF !important;
-  color: #0F172A !important;
-}
-
-/* Light Mode Modals & Dropdown Popups */
-html.light [class*="modalContent"],
-html.light [class*="modalBox"],
-html.light [class*="dialog"],
-html.light [class*="popover"],
-html.light [class*="dropdownMenu"],
-html.light [class*="dropdownList"],
-html.light [class*="menuList"],
-html.light [class*="drawer"] {
-  background: #FFFFFF !important;
-  border: 1px solid rgba(24, 201, 139, 0.28) !important;
-  color: #0F172A !important;
-  box-shadow: none !important;
-}
-
-/* Light Mode Table Styling */
-html.light table,
-html.light thead,
-html.light tbody,
-html.light tr {
-  background: transparent !important;
-}
-
-html.light th {
-  background: #F1F5F9 !important;
-  color: #475569 !important;
-  border-bottom: 1px solid rgba(24, 201, 139, 0.2) !important;
-}
-
-html.light td {
-  background: #FFFFFF !important;
-  color: #0F172A !important;
-  border-bottom: 1px solid #F1F5F9 !important;
-}
-
-/* Light Mode Secondary, Outline & Ghost Buttons */
-html.light [class*="secondaryBtn"],
-html.light [class*="SecondaryBtn"],
-html.light [class*="outlineBtn"],
-html.light [class*="ghostBtn"],
-html.light [class*="resetBtn"],
-html.light [class*="navBtn"] {
-  background: #FFFFFF !important;
-  border-color: rgba(24, 201, 139, 0.35) !important;
-  color: #047857 !important;
-  box-shadow: none !important;
-}
-
-html.light [class*="secondaryBtn"]:hover,
-html.light [class*="SecondaryBtn"]:hover,
-html.light [class*="outlineBtn"]:hover,
-html.light [class*="ghostBtn"]:hover,
-html.light [class*="resetBtn"]:hover,
-html.light [class*="navBtn"]:hover {
-  background: rgba(24, 201, 139, 0.1) !important;
-  border-color: #10B981 !important;
-  color: #047857 !important;
-  box-shadow: none !important;
-}
-
-/* Form Controls & Inputs */
-html.light input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
-html.light textarea,
-html.light select,
-html.light [class*="inputField"],
-html.light [class*="inputWrapper"] input,
-html.light [class*="searchInput"]:not([class*="watchlistSearchInput"]):not([class*="tickerSearchInput"]):not([class*="indicatorsSearchInput"]),
-html.light [class*="customInput"],
-html.light [class*="formControl"],
-html.light [class*="phoneInput"] input {
-  background-color: transparent !important;
-  border-right-color: rgba(24, 201, 139, 0.2) !important;
-  box-shadow: none !important;
-}
-
-html.light input::placeholder,
-html.light textarea::placeholder,
-html.light [class*="inputField"]::placeholder,
-html.light [class*="searchInput"]::placeholder {
-  color: #94A3B8 !important;
-  opacity: 1 !important;
-}
-
-html.light input:focus,
-html.light textarea:focus,
-html.light select:focus,
-html.light [class*="inputField"]:focus,
-html.light [class*="searchInput"]:focus {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* Light Theme: Calendar Header & Live Countdown Badge Protection */
-html.light [class*="calendarHeaderStrip"],
-html.light [class*="calendarHeaderStrip"] *,
-html.light [class*="liveText"],
-html.light [class*="calendarBadge"],
-html.light span[class*="calendarBadge"] {
-  color: #FFFFFF !important;
-  -webkit-text-fill-color: #FFFFFF !important;
-}
-
-/* Light Theme: Modals Close Button Visibility */
-html.light [class*="modalCard"] [class*="closeBtn"],
-html.light [class*="modalBox"] [class*="closeBtn"],
-html.light [class*="modalContent"] [class*="closeBtn"],
-html.light button[class*="closeBtn"] {
-  color: #0F172A !important;
-}
-html.light [class*="modalCard"] [class*="closeBtn"] svg,
-html.light [class*="modalBox"] [class*="closeBtn"] svg,
-html.light [class*="modalContent"] [class*="closeBtn"] svg,
-html.light button[class*="closeBtn"] svg {
-  stroke: #0F172A !important;
-  color: #0F172A !important;
-}
-
-/* Light Theme: Sidebar Subscription Green Widget Protection */
-html.light [class*="widgetCard"] [class*="daysBadge"],
-html.light [class*="widgetCard"] [class*="daysBadge"] * {
-  color: #FFFFFF !important;
-  -webkit-text-fill-color: #FFFFFF !important;
-  background: rgba(0, 0, 0, 0.25) !important;
-}
-
-html.light [class*="widgetCard"] [class*="footerRow"],
-html.light [class*="widgetCard"] [class*="statusText"],
-html.light [class*="widgetCard"] [class*="cycleText"] {
-  background: transparent !important;
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  color: #FFFFFF !important;
-  -webkit-text-fill-color: #FFFFFF !important;
+  background-color: #FFFFFF;
+  color: #0F172A;
 }
 
 /* Custom Pointer / Futuristic Cursor Global Rules */
@@ -322,17 +33,18 @@ html.light [class*="widgetCard"] [class*="cycleText"] {
   html.custom-cursor-enabled label,
   html.custom-cursor-enabled [role="button"],
   html.custom-cursor-enabled [data-cursor] {
-    cursor: none !important;
+    cursor: none !important; /* Required to suppress browser default pointer on interactive elements when custom cursor is active */
   }
 }
 
 /* ============================================================
-   APEXCHARTS TOOLBAR & DOWNLOAD DROPDOWN MENU COMPLETE FIX
+   APEXCHARTS TOOLBAR & DOWNLOAD DROPDOWN MENU
+   Third-party library override: ApexCharts injects inline positioning
    ============================================================ */
 .apexcharts-toolbar {
   display: flex !important;
   align-items: center !important;
-  gap: 3px !important;
+  gap: 3px;
   position: absolute !important;
   top: 0 !important;
   right: 0 !important;
@@ -347,37 +59,37 @@ html.light [class*="widgetCard"] [class*="cycleText"] {
   justify-content: center !important;
   width: 24px !important;
   height: 24px !important;
-  border: none !important;
+  border: none;
   background: transparent !important;
-  border-radius: 4px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  cursor: pointer !important;
-  color: #94A3B8 !important;
-  transition: all 0.15s ease !important;
+  border-radius: 4px;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: #94A3B8;
+  transition: all 0.15s ease;
 }
 
 .apexcharts-toolbar button:hover,
 .apexcharts-toolbar > [class*="-icon"]:hover,
 .apexcharts-toolbar > div:not(.apexcharts-menu):hover {
   background: rgba(24, 201, 139, 0.16) !important;
-  color: #18C98B !important;
+  color: #18C98B;
 }
 
 .apexcharts-toolbar button.apexcharts-selected,
 .apexcharts-toolbar > [class*="-icon"].apexcharts-selected,
 .apexcharts-toolbar > div:not(.apexcharts-menu).apexcharts-selected {
   background: rgba(24, 201, 139, 0.25) !important;
-  color: #18C98B !important;
+  color: #18C98B;
 }
 
 .apexcharts-toolbar svg,
 .apexcharts-toolbar svg * {
-  fill: none !important;
-  stroke: currentColor !important;
-  stroke-width: 2px !important;
-  stroke-linecap: round !important;
-  stroke-linejoin: round !important;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .apexcharts-toolbar svg {
@@ -397,7 +109,7 @@ html[data-theme="light"] .apexcharts-toolbar > div:not(.apexcharts-menu),
 .light .apexcharts-toolbar button,
 .light .apexcharts-toolbar > [class*="-icon"],
 .light .apexcharts-toolbar > div:not(.apexcharts-menu) {
-  color: #475569 !important;
+  color: #475569;
 }
 
 html.light .apexcharts-toolbar button:hover,
@@ -410,7 +122,7 @@ html[data-theme="light"] .apexcharts-toolbar > div:not(.apexcharts-menu):hover,
 .light .apexcharts-toolbar > [class*="-icon"]:hover,
 .light .apexcharts-toolbar > div:not(.apexcharts-menu):hover {
   background: rgba(5, 150, 105, 0.12) !important;
-  color: #059669 !important;
+  color: #059669;
 }
 
 html.light .apexcharts-toolbar button.apexcharts-selected,
@@ -423,7 +135,7 @@ html[data-theme="light"] .apexcharts-toolbar > div:not(.apexcharts-menu).apexcha
 .light .apexcharts-toolbar > [class*="-icon"].apexcharts-selected,
 .light .apexcharts-toolbar > div:not(.apexcharts-menu).apexcharts-selected {
   background: rgba(5, 150, 105, 0.2) !important;
-  color: #059669 !important;
+  color: #059669;
 }
 
 /* ApexCharts Dropdown Menu Vertical Stacking */
@@ -441,17 +153,17 @@ html[data-theme="light"] .apexcharts-toolbar > div:not(.apexcharts-menu).apexcha
   height: auto !important;
   max-height: none !important;
   background: #0D1424 !important;
-  border: 1px solid rgba(24, 201, 139, 0.35) !important;
-  border-radius: 8px !important;
-  padding: 6px 0 !important;
-  margin: 0 !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 16px rgba(24, 201, 139, 0.15) !important;
+  border: 1px solid rgba(24, 201, 139, 0.35);
+  border-radius: 8px;
+  padding: 6px 0;
+  margin: 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 16px rgba(24, 201, 139, 0.15);
   z-index: 99999 !important;
   opacity: 0 !important;
   pointer-events: none !important;
   visibility: hidden !important;
   transform: translateY(-4px) !important;
-  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease !important;
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
 }
 
 .apexcharts-toolbar .apexcharts-menu.apexcharts-menu-open,
@@ -469,27 +181,27 @@ html[data-theme="light"] .apexcharts-toolbar > div:not(.apexcharts-menu).apexcha
   display: block !important;
   width: 100% !important;
   min-width: 100% !important;
-  box-sizing: border-box !important;
-  text-align: left !important;
-  white-space: nowrap !important;
-  color: #FFFFFF !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  font-family: inherit !important;
-  padding: 8px 16px !important;
-  line-height: 1.4 !important;
-  cursor: pointer !important;
+  box-sizing: border-box;
+  text-align: left;
+  white-space: nowrap;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 8px 16px;
+  line-height: 1.4;
+  cursor: pointer;
   background: transparent !important;
-  border: none !important;
-  border-radius: 0 !important;
-  transition: background 0.15s ease, color 0.15s ease !important;
+  border: none;
+  border-radius: 0;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .apexcharts-toolbar .apexcharts-menu .apexcharts-menu-item:hover,
 .apexcharts-menu .apexcharts-menu-item:hover,
 .apexcharts-menu-item:hover {
   background: rgba(24, 201, 139, 0.18) !important;
-  color: #18C98B !important;
+  color: #18C98B;
 }
 
 /* Light Theme: ApexCharts Menu */
@@ -500,8 +212,8 @@ html[data-theme="light"] .apexcharts-menu,
 .light .apexcharts-toolbar .apexcharts-menu,
 .light .apexcharts-menu {
   background: #FFFFFF !important;
-  border: 1px solid rgba(0, 0, 0, 0.15) !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 }
 
 html.light .apexcharts-toolbar .apexcharts-menu .apexcharts-menu-item,
@@ -510,7 +222,7 @@ html[data-theme="light"] .apexcharts-toolbar .apexcharts-menu .apexcharts-menu-i
 html[data-theme="light"] .apexcharts-menu-item,
 .light .apexcharts-toolbar .apexcharts-menu .apexcharts-menu-item,
 .light .apexcharts-menu-item {
-  color: #0F172A !important;
+  color: #0F172A;
 }
 
 html.light .apexcharts-toolbar .apexcharts-menu .apexcharts-menu-item:hover,
@@ -520,6 +232,5 @@ html[data-theme="light"] .apexcharts-menu-item:hover,
 .light .apexcharts-toolbar .apexcharts-menu .apexcharts-menu-item:hover,
 .light .apexcharts-menu-item:hover {
   background: #ECFDF5 !important;
-  color: #059669 !important;
+  color: #059669;
 }
-

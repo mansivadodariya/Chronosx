@@ -79,7 +79,7 @@ export default function StudioComposerCard({
                             {placeholder}
                         </span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+                    <div className={styles.composerCollapsedActions}>
                         {onNewChat && !isExploreMode && (
                             <button
                                 type="button"
@@ -138,7 +138,7 @@ export default function StudioComposerCard({
                     )}
 
                     <div className={bottomRowClass}>
-                        <div className={styles.cardBottomActionsLeft} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div className={styles.cardBottomActionsLeft}>
                             {onNewChat && !isExploreMode && (
                                 <button
                                     type="button"

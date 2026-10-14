@@ -47,8 +47,8 @@
 }
 
 .triggerBtnActive {
-    background: #18C98B !important;
-    color: #040605 !important;
+    background: #18C98B;
+    color: #040605;
     font-weight: 700;
     box-shadow: 0 0 12px rgba(24, 201, 139, 0.35);
 }
@@ -174,7 +174,7 @@
 .paramInput {
     background: #141816;
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 12px !important;
+    border-radius: 12px;
     padding: 10px 14px;
     color: #FFFFFF;
     font-size: 13.5px;
@@ -183,15 +183,15 @@
     box-sizing: border-box;
 
     &.inputError {
-        border-color: #EF4444 !important;
-        background: rgba(239, 68, 68, 0.06) !important;
-        box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.3) !important;
+        border-color: #EF4444;
+        background: rgba(239, 68, 68, 0.06);
+        box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.3);
     }
 
     :global(html.light) & {
         background: #F8FAFC;
         border-color: #CBD5E1;
-        border-radius: 12px !important;
+        border-radius: 12px;
         color: #0F172A;
 
         &:focus {
@@ -199,8 +199,8 @@
         }
 
         &.inputError {
-            border-color: #EF4444 !important;
-            background: #FEF2F2 !important;
+            border-color: #EF4444;
+            background: #FEF2F2;
         }
     }
 }

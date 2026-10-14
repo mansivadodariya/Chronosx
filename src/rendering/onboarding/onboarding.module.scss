@@ -300,47 +300,46 @@
 
 /* Specific Light Mode Rules for Onboarding */
 :global(html.light) .onboardingPage {
-    background-color: #F8FAFC !important;
-    color: #0F172A !important;
+    background-color: #F8FAFC;
+    color: #0F172A;
 
     .stepText,
     .optionTitle,
     .sectionHeading {
-        color: #0F172A !important;
+        color: #0F172A;
     }
 
     .stepSubtext,
     .optionDesc {
-        color: #475569 !important;
+        color: #475569;
     }
 
     .choiceCard,
     .stepCard,
     .onboardingCard,
     .optionBox {
-        background: #FFFFFF !important;
-        border-color: rgba(15, 23, 42, 0.09) !important;
-        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.09);
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
 
         &:hover {
-            border-color: rgba(24, 201, 139, 0.4) !important;
+            border-color: rgba(24, 201, 139, 0.4);
         }
 
-        &.selected,
-        &[class*="selected"] {
-            border-color: #18C98B !important;
-            background: rgba(24, 201, 139, 0.06) !important;
+        &.selected {
+            border-color: #18C98B;
+            background: rgba(24, 201, 139, 0.06);
         }
     }
 
     .backBtn {
-        background: #FFFFFF !important;
-        border-color: rgba(15, 23, 42, 0.15) !important;
-        color: #0F172A !important;
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.15);
+        color: #0F172A;
 
         &:hover {
-            background: #F1F5F9 !important;
-            color: #059669 !important;
+            background: #F1F5F9;
+            color: #059669;
         }
     }
 }

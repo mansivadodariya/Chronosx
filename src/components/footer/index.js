@@ -184,7 +184,6 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    backgroundColor: theme === 'light' ? 'rgba(24, 201, 139, 0.16)' : undefined,
                     '--brand-color': brandColor,
                     '--brand-hover-bg': item.hoverBg,
                     '--brand-glow': item.glow,

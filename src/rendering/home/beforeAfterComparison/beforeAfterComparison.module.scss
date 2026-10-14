@@ -8,116 +8,116 @@
   overflow: hidden;
 
   :global(html.light) & {
-    background: #F8FAFC !important;
-    border-bottom: 1px solid rgba(24, 201, 139, 0.15) !important;
+    background: #F8FAFC;
+    border-bottom: 1px solid rgba(24, 201, 139, 0.15);
 
     .comparisonCard {
-      background: #FFFFFF !important;
-      border: 1px solid rgba(24, 201, 139, 0.22) !important;
-      box-shadow: 0 10px 40px rgba(15, 23, 42, 0.06) !important;
+      background: #FFFFFF;
+      border: 1px solid rgba(24, 201, 139, 0.22);
+      box-shadow: 0 10px 40px rgba(15, 23, 42, 0.06);
     }
 
     .layerBefore,
     .layerAfter {
-      background: #FFFFFF !important;
+      background: #FFFFFF;
     }
 
     .badgeBefore {
-      background: #F1F5F9 !important;
-      border: 1px solid #E2E8F0 !important;
-      color: #0F172A !important;
+      background: #F1F5F9;
+      border: 1px solid #E2E8F0;
+      color: #0F172A;
     }
 
     .badgeAfter {
-      background: rgba(16, 185, 129, 0.12) !important;
-      border: 1px solid rgba(5, 150, 105, 0.4) !important;
-      color: #047857 !important;
-      box-shadow: none !important;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(5, 150, 105, 0.4);
+      color: #047857;
+      box-shadow: none;
     }
 
     .mtfHudOverlay {
-      background: rgba(255, 255, 255, 0.96) !important;
-      border: 1px solid #CBD5E1 !important;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid #CBD5E1;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 
       .hudTableHeader {
-        color: #64748B !important;
-        border-bottom-color: #E2E8F0 !important;
+        color: #64748B;
+        border-bottom-color: #E2E8F0;
       }
 
       .hudTableRow {
-        color: #0F172A !important;
+        color: #0F172A;
 
         .tfBadge {
-          color: #047857 !important;
+          color: #047857;
         }
 
         .valGreen {
-          color: #047857 !important;
+          color: #047857;
         }
 
         .valWhite {
-          color: #0F172A !important;
+          color: #0F172A;
         }
       }
 
       .backtestTable {
-        background: #F8FAFC !important;
-        border-color: #E2E8F0 !important;
+        background: #F8FAFC;
+        border-color: #E2E8F0;
 
         .btHeader {
-          color: #047857 !important;
+          color: #047857;
         }
 
         .btGrid {
           .btLabel {
-            color: #64748B !important;
+            color: #64748B;
           }
 
           .btVal {
-            color: #047857 !important;
+            color: #047857;
           }
         }
       }
 
       .trendStrengthBox {
         .tsHeader {
-          color: #64748B !important;
+          color: #64748B;
 
           .tsLabel {
-            color: #047857 !important;
+            color: #047857;
           }
         }
 
         .tsMeterBar {
-          background: #E2E8F0 !important;
+          background: #E2E8F0;
 
           .tsMeterFill {
-            box-shadow: none !important;
+            box-shadow: none;
           }
         }
 
         .tsScore {
-          color: #047857 !important;
+          color: #047857;
         }
       }
     }
 
     .dragBadgePill {
-      background: #F1F5F9 !important;
-      border: 1px solid #E2E8F0 !important;
-      box-shadow: none !important;
+      background: #F1F5F9;
+      border: 1px solid #E2E8F0;
+      box-shadow: none;
 
       span {
-        color: #047857 !important;
+        color: #047857;
       }
     }
 
     .sliderLine {
-      box-shadow: none !important;
+      box-shadow: none;
 
       .sliderHandle {
-        box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3) !important;
+        box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
       }
     }
   }

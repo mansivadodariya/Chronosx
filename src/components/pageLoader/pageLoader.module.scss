@@ -107,12 +107,12 @@
     flex-shrink: 0;
 
     svg {
-        width: 18px !important;
-        height: 18px !important;
-        max-width: 18px !important;
-        max-height: 18px !important;
-        display: block !important;
-        flex-shrink: 0 !important;
+        width: 18px;
+        height: 18px;
+        max-width: 18px;
+        max-height: 18px;
+        display: block;
+        flex-shrink: 0;
         filter: drop-shadow(0 0 6px rgba(24, 201, 139, 0.8));
     }
 

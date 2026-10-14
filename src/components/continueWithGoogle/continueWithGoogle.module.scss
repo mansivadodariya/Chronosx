@@ -50,17 +50,14 @@
         }
 
         :global(html.light) &,
-        :global(html[data-theme='light']) &,
-        :global(body.light) &,
-        :global([data-theme='light']) &,
-        :global(.light) & {
-            background: #FFFFFF !important;
-            border: 1.5px solid rgba(15, 23, 42, 0.15) !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+        :global(html[data-theme='light']) & {
+            background: #FFFFFF;
+            border: 1.5px solid rgba(15, 23, 42, 0.15);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
             &:hover {
-                background: #F8FAFC !important;
-                border-color: #18C98B !important;
+                background: #F8FAFC;
+                border-color: #18C98B;
             }
         }
     }
@@ -85,11 +82,8 @@
         font-family: "Euclid-Medium", sans-serif;
 
         :global(html.light) &,
-        :global(html[data-theme='light']) &,
-        :global(body.light) &,
-        :global([data-theme='light']) &,
-        :global(.light) & {
-            color: #0F172A !important;
+        :global(html[data-theme='light']) & {
+            color: #0F172A;
         }
 
         img {
@@ -131,15 +125,15 @@
         cursor: pointer;
 
         >div {
-            width: 100% !important;
-            max-width: 100% !important;
-            height: 100% !important;
+            width: 100%;
+            max-width: 100%;
+            height: 100%;
 
             iframe {
-                width: 100% !important;
-                max-width: 100% !important;
-                height: 52px !important;
-                min-height: 52px !important;
+                width: 100%;
+                max-width: 100%;
+                height: 52px;
+                min-height: 52px;
             }
         }
     }

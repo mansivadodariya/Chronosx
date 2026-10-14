@@ -206,18 +206,18 @@
 
 /* Specific Light Mode Rules for Verify Email */
 :global(html.light) .authCard {
-    background: #FFFFFF !important;
-    border: none !important;
-    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.08) !important;
+    background: #FFFFFF;
+    border: none;
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.08);
 
     .text h2 {
-        color: #18C98B !important;
-        background: none !important;
-        -webkit-background-clip: unset !important;
-        -webkit-text-fill-color: initial !important;
+        color: #18C98B;
+        background: none;
+        -webkit-background-clip: unset;
+        -webkit-text-fill-color: initial;
     }
 
     .text p {
-        color: #475569 !important;
+        color: #475569;
     }
 }

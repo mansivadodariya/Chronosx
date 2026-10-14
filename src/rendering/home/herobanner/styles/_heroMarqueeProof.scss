@@ -6,7 +6,7 @@
         overflow: hidden;
         padding: 14px 0;
         z-index: 5;
-        direction: ltr !important;
+        direction: ltr;
         unicode-bidi: isolate;
         -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
         mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
@@ -32,7 +32,7 @@
         width: 100%;
         overflow: hidden;
         padding: 10px 0;
-        direction: ltr !important;
+        direction: ltr;
         contain: paint;
     }
 
@@ -44,7 +44,7 @@
         transform: translate3d(0, 0, 0);
         backface-visibility: hidden;
         perspective: 1000px;
-        direction: ltr !important;
+        direction: ltr;
         animation: heroMarqueeScroll 24s linear infinite;
 
         &:hover {
@@ -67,8 +67,8 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        direction: ltr !important;
-        text-align: left !important;
+        direction: ltr;
+        text-align: left;
         background: linear-gradient(135deg, rgba(8, 24, 18, 0.98) 0%, rgba(4, 14, 10, 0.98) 100%);
         border: 1px solid rgba(24, 201, 139, 0.25);
         border-radius: 12px;

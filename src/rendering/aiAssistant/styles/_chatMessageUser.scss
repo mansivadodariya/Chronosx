@@ -3,13 +3,13 @@
         .userRow {
             align-self: flex-end;
             align-items: flex-end;
-            max-width: 90% !important;
-            width: auto !important;
+            max-width: 90%;
+            width: auto;
 
             .userMessage {
                 background: linear-gradient(135deg, rgba(24, 201, 139, 0.16) 0%, rgba(24, 201, 139, 0.08) 100%);
                 border: 1px solid rgba(24, 201, 139, 0.38);
-                color: #FFFFFF !important;
+                color: #FFFFFF;
                 border-radius: 14px 14px 2px 14px;
                 padding: 10px 20px;
                 font-size: 14px;

@@ -230,6 +230,24 @@
     }
 }
 
+.chartLoaderTextWrap {
+    margin-top: 12px;
+    text-align: center;
+}
+
+.chartLoaderCentered {
+    justify-content: center;
+}
+
+.chartLoaderMarginTop12 {
+    margin-top: 12px;
+}
+
+.chartLoaderSubMargin {
+    margin-top: 2px;
+}
+
+
 /* ── Area Chart Progression Skeleton ── */
 .areaLoaderStage {
     position: relative;

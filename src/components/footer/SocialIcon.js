@@ -55,7 +55,6 @@ export default function SocialIcon({ platform, className = '', style = {} }) {
         <path
           className="cx-yt-play"
           data-preserve-white="true"
-          style={{ fill: '#FFFFFF' }}
           fill="#FFFFFF"
           d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"
         />

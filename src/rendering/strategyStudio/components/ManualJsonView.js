@@ -98,7 +98,7 @@ export default function ManualJsonView({
                     width="230px"
                 />
 
-                <div style={{ display: 'flex', gap: '6px' }}>
+                <div className={styles.jsonActionsRow}>
                     <button type="button" className={styles.btnGhost} onClick={handlePrettify} title="Prettify JSON">
                         <SparklesMagicIcon size={13} />
                         <span>Prettify</span>
@@ -120,14 +120,13 @@ export default function ManualJsonView({
                         ref={fileInputRef}
                         type="file"
                         accept=".json"
-                        style={{ display: 'none' }}
+                        className={styles.hiddenFileInput}
                         onChange={handleFileUpload}
                     />
                     <button
                         type="button"
-                        className={styles.btnGhost}
+                        className={`${styles.btnGhost} ${styles.btnClearJson}`}
                         onClick={() => setJsonInput('')}
-                        style={{ color: '#F43F5E' }}
                     >
                         Clear
                     </button>
@@ -162,7 +161,7 @@ export default function ManualJsonView({
                 </span>
             </div>
 
-            <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end', marginTop: '4px' }}>
+            <div className={styles.jsonFooterRow}>
                 <button
                     type="button"
                     className={styles.btnGhost}

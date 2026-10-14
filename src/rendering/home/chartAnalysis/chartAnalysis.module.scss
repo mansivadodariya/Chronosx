@@ -10,49 +10,49 @@
     background: radial-gradient(ellipse at 50% 50%, #040c09 0%, #020605 60%, #010101 100%);
 
     :global(html.light) & {
-        background: #FFFFFF !important;
+        background: #FFFFFF;
 
         .graphicImg {
 
             .interactiveSvg,
             img {
-                filter: none !important;
+                filter: none;
             }
         }
 
         .pedestal {
-            opacity: 0.2 !important;
+            opacity: 0.2;
 
             .pedestalLight,
             .pedestalRingOuter,
             .pedestalRingInner {
-                box-shadow: none !important;
+                box-shadow: none;
             }
         }
 
         .connectorBadgeOne,
         .connectorBadgeTwo {
-            background: #F1F5F9 !important;
-            border-color: rgba(5, 150, 105, 0.4) !important;
-            box-shadow: none !important;
+            background: #F1F5F9;
+            border-color: rgba(5, 150, 105, 0.4);
+            box-shadow: none;
         }
 
         .stepsFlow::before {
-            box-shadow: none !important;
+            box-shadow: none;
         }
 
         .stepTitle {
-            color: #0F172A !important;
+            color: #0F172A;
         }
 
         .stepDesc {
-            color: #64748B !important;
+            color: #64748B;
         }
 
         .stepBadge {
-            background: rgba(5, 150, 105, 0.1) !important;
-            border-color: rgba(5, 150, 105, 0.35) !important;
-            color: #059669 !important;
+            background: rgba(5, 150, 105, 0.1);
+            border-color: rgba(5, 150, 105, 0.35);
+            color: #059669;
         }
     }
 

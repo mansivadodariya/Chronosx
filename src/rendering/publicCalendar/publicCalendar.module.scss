@@ -10,8 +10,8 @@
     overflow: hidden;
 
     :global(html.light) & {
-        background: #F8FAFC !important;
-        color: #0F172A !important;
+        background: #F8FAFC;
+        color: #0F172A;
     }
 
     @include respond-to('md') {
@@ -57,9 +57,9 @@
         box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(24, 201, 139, 0.1);
 
         :global(html.light) & {
-            background: #FFFFFF !important;
-            border-color: rgba(15, 23, 42, 0.1) !important;
-            box-shadow: 0 10px 35px -10px rgba(0, 0, 0, 0.08) !important;
+            background: #FFFFFF;
+            border-color: rgba(15, 23, 42, 0.1);
+            box-shadow: 0 10px 35px -10px rgba(0, 0, 0, 0.08);
         }
 
         @include respond-to('md') {
@@ -76,7 +76,7 @@
                 margin: 0 0 6px;
 
                 :global(html.light) & {
-                    color: #0F172A !important;
+                    color: #0F172A;
                 }
 
                 @include respond-to('sm') {
@@ -91,7 +91,7 @@
                 line-height: 1.5;
 
                 :global(html.light) & {
-                    color: #475569 !important;
+                    color: #475569;
                 }
 
                 @include respond-to('sm') {

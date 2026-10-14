@@ -363,8 +363,8 @@
                                     transition: all 0.25s ease;
 
                                     @include respond-to('tab') {
-                                        width: 18px !important;
-                                        height: 18px !important;
+                                        width: 18px;
+                                        height: 18px;
                                     }
                                 }
                             }
@@ -425,8 +425,8 @@
                                     height: 22px;
 
                                     svg {
-                                        width: 12px !important;
-                                        height: 12px !important;
+                                        width: 12px;
+                                        height: 12px;
                                     }
                                 }
                             }
@@ -442,15 +442,15 @@
                                 }
 
                                 .cardIconWrapper {
-                                    background: linear-gradient(145deg, rgba(24, 201, 139, 0.25) 0%, rgba(24, 201, 139, 0.15) 100%) !important;
-                                    border-color: #18C98B !important;
-                                    box-shadow: 0 0 20px rgba(24, 201, 139, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
-                                    color: #6EE7B7 !important;
+                                    background: linear-gradient(145deg, rgba(24, 201, 139, 0.25) 0%, rgba(24, 201, 139, 0.15) 100%);
+                                    border-color: #18C98B;
+                                    box-shadow: 0 0 20px rgba(24, 201, 139, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+                                    color: #6EE7B7;
                                     transform: scale(1.06);
 
                                     svg {
-                                        color: #6EE7B7 !important;
-                                        filter: drop-shadow(0 0 8px rgba(24, 201, 139, 0.8)) !important;
+                                        color: #6EE7B7;
+                                        filter: drop-shadow(0 0 8px rgba(24, 201, 139, 0.8));
                                         transform: scale(1.05);
                                     }
                                 }
@@ -486,11 +486,11 @@
             }
 
             .assistantMessage {
-                background: #000000 !important;
-                color: #f1f5f9 !important;
+                background: #000000;
+                color: #f1f5f9;
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-                border-radius: 14px 14px 14px 2px !important;
-                padding: 12px 18px !important;
+                border-radius: 14px 14px 14px 2px;
+                padding: 12px 18px;
 
                 p,
                 li {
@@ -500,19 +500,19 @@
         }
 
         .userRow {
-            max-width: 90% !important;
-            width: auto !important;
+            max-width: 90%;
+            width: auto;
 
             .userMessage {
-                background: linear-gradient(135deg, rgba(24, 201, 139, 0.16) 0%, rgba(24, 201, 139, 0.08) 100%) !important;
-                border: 1px solid rgba(24, 201, 139, 0.38) !important;
-                color: #FFFFFF !important;
-                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(24, 201, 139, 0.15) !important;
-                width: max-content !important;
-                max-width: 100% !important;
-                white-space: pre-wrap !important;
-                word-break: normal !important;
-                overflow-wrap: break-word !important;
+                background: linear-gradient(135deg, rgba(24, 201, 139, 0.16) 0%, rgba(24, 201, 139, 0.08) 100%);
+                border: 1px solid rgba(24, 201, 139, 0.38);
+                color: #FFFFFF;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(24, 201, 139, 0.15);
+                width: max-content;
+                max-width: 100%;
+                white-space: pre-wrap;
+                word-break: normal;
+                overflow-wrap: break-word;
             }
         }
 

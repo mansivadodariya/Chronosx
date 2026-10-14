@@ -1,158 +1,158 @@
 .aiAssistant.isDark {
     .visionSummaryCard {
-        background: #000000 !important;
-        border-color: rgba(255, 255, 255, 0.12) !important;
+        background: #000000;
+        border-color: rgba(255, 255, 255, 0.12);
     }
 
     .visionOverviewCard {
-        background: #000000 !important;
-        border-color: rgba(255, 255, 255, 0.1) !important;
+        background: #000000;
+        border-color: rgba(255, 255, 255, 0.1);
     }
 
     .visionOverviewText {
-        color: #94a3b8 !important;
+        color: #94a3b8;
     }
 
     .visionAccordionCard {
-        background: #000000 !important;
-        border-color: rgba(255, 255, 255, 0.12) !important;
+        background: #000000;
+        border-color: rgba(255, 255, 255, 0.12);
 
         &.visionAccordionOpen {
-            border-color: rgba(24, 201, 139, 0.5) !important;
+            border-color: rgba(24, 201, 139, 0.5);
         }
     }
 
     .visionAccordionHeader {
         &:hover {
-            background: rgba(24, 201, 139, 0.08) !important;
+            background: rgba(24, 201, 139, 0.08);
         }
     }
 
     .visionSectionTitle {
-        color: #ffffff !important;
+        color: #ffffff;
     }
 
     .visionChevron {
-        color: #94a3b8 !important;
+        color: #94a3b8;
 
         &.visionChevronOpen {
-            color: #18C98B !important;
+            color: #18C98B;
         }
     }
 
     .visionAccordionBody {
-        border-top-color: rgba(255, 255, 255, 0.08) !important;
-        background: #000000 !important;
-        color: #f1f5f9 !important;
+        border-top-color: rgba(255, 255, 255, 0.08);
+        background: #000000;
+        color: #f1f5f9;
     }
 
     .visionDescText,
     .visionSummaryText {
-        color: #f1f5f9 !important;
+        color: #f1f5f9;
     }
 
     .visionObservationText {
-        color: #7dd3fc !important;
+        color: #7dd3fc;
     }
 
     .badgeSlate {
-        background: #14161d !important;
-        color: #94a3b8 !important;
-        border-color: rgba(255, 255, 255, 0.12) !important;
+        background: #14161d;
+        color: #94a3b8;
+        border-color: rgba(255, 255, 255, 0.12);
     }
 
     .visionSwingBox {
-        background: #060706 !important;
-        border-color: rgba(255, 255, 255, 0.1) !important;
+        background: #060706;
+        border-color: rgba(255, 255, 255, 0.1);
     }
 
     .visionSwingLabel {
-        color: #94a3b8 !important;
+        color: #94a3b8;
     }
 
     .visionPatternText {
-        color: #18C98B !important;
+        color: #18C98B;
     }
 
     .visionGroupTitleGreen {
-        color: #34d399 !important;
+        color: #34d399;
     }
 
     .visionGroupTitleRed {
-        color: #f87171 !important;
+        color: #f87171;
     }
 
     .visionLevelCardGreen,
     .visionZoneCardGreen,
     .visionActionCardGreen {
-        background: rgba(16, 185, 129, 0.08) !important;
-        border-color: rgba(16, 185, 129, 0.3) !important;
+        background: rgba(16, 185, 129, 0.08);
+        border-color: rgba(16, 185, 129, 0.3);
     }
 
     .visionLevelCardRed,
     .visionZoneCardRed,
     .visionActionCardRed {
-        background: rgba(239, 68, 68, 0.08) !important;
-        border-color: rgba(239, 68, 68, 0.3) !important;
+        background: rgba(239, 68, 68, 0.08);
+        border-color: rgba(239, 68, 68, 0.3);
     }
 
     .visionLevelInfo {
-        color: #7dd3fc !important;
+        color: #7dd3fc;
 
         strong {
-            color: #ffffff !important;
+            color: #ffffff;
         }
     }
 
     .visionZoneText {
-        color: #e2e8f0 !important;
+        color: #e2e8f0;
 
         strong {
-            color: #18C98B !important;
+            color: #18C98B;
         }
     }
 
     .visionActionTitleGreen {
-        color: #34d399 !important;
+        color: #34d399;
     }
 
     .visionActionTitleRed {
-        color: #f87171 !important;
+        color: #f87171;
     }
 
     .visionActionText {
-        color: #e2e8f0 !important;
+        color: #e2e8f0;
     }
 
     .visionActionSub {
-        color: #94a3b8 !important;
+        color: #94a3b8;
     }
 
     .visionCountBadge {
-        background: #14161d !important;
-        color: #94a3b8 !important;
-        border-color: rgba(255, 255, 255, 0.12) !important;
+        background: #14161d;
+        color: #94a3b8;
+        border-color: rgba(255, 255, 255, 0.12);
     }
 
     .visionFieldKey {
-        color: #18C98B !important;
+        color: #18C98B;
     }
 
     .visionFieldValue {
-        color: #f1f5f9 !important;
+        color: #f1f5f9;
     }
 
     .visionFieldBlock {
-        background: #0a0b0e !important;
-        border-color: rgba(255, 255, 255, 0.1) !important;
+        background: #0a0b0e;
+        border-color: rgba(255, 255, 255, 0.1);
     }
 
     .visionBlockHeading {
-        color: #18C98B !important;
+        color: #18C98B;
     }
 
     .visionList li {
-        color: #f1f5f9 !important;
+        color: #f1f5f9;
     }
 }
 
@@ -164,7 +164,7 @@
     height: 28px;
     padding: 0 6px 0 8px;
     box-sizing: border-box;
-    border-radius: 6px !important;
+    border-radius: 6px;
     font-size: 11px;
     font-weight: 700;
     line-height: 1;
@@ -310,13 +310,13 @@
 
 .attachMenuItem {
     &.attachMenuItemActive {
-        background: rgba(24, 201, 139, 0.08) !important;
-        color: #18C98B !important;
+        background: rgba(24, 201, 139, 0.08);
+        color: #18C98B;
         font-weight: 600;
 
         :global(html.dark) & {
-            background: rgba(24, 201, 139, 0.16) !important;
-            color: #18C98B !important;
+            background: rgba(24, 201, 139, 0.16);
+            color: #18C98B;
         }
     }
 }

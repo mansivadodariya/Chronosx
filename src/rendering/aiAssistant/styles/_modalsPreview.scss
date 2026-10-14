@@ -82,7 +82,7 @@
         .messageBox {
             display: grid;
             grid-template-columns: 1fr 32px;
-            direction: ltr !important;
+            direction: ltr;
             padding: 12px 12px 12px 16px;
             background: #F8FAFC;
             border: 1px solid rgba(24, 201, 139, 0.05);
@@ -151,20 +151,20 @@
 
 /* Full-Screen Image Preview Modal Overlay (Portal to document.body) */
 .imagePreviewOverlay {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background: rgba(15, 23, 42, 0.55) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    z-index: 999999 !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
     padding: 24px;
     box-sizing: border-box;
     animation: fadeInModalOverlay 0.2s cubic-bezier(0.16, 1, 0.3, 1);

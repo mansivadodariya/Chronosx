@@ -77,48 +77,48 @@
             opacity: 0.45;
             cursor: not-allowed;
             pointer-events: none;
-            box-shadow: none !important;
-            transform: none !important;
-            background: rgba(255, 255, 255, 0.08) !important;
-            border-color: rgba(255, 255, 255, 0.12) !important;
-            color: rgba(255, 255, 255, 0.4) !important;
+            box-shadow: none;
+            transform: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: rgba(255, 255, 255, 0.4);
 
             .btnText {
-                color: rgba(255, 255, 255, 0.4) !important;
+                color: rgba(255, 255, 255, 0.4);
             }
 
             .iconWrapper img,
             .iconWrapper svg {
-                opacity: 0.3 !important;
-                filter: grayscale(1) !important;
+                opacity: 0.3;
+                filter: grayscale(1);
             }
         }
     }
 
     :global(html.light) & {
         button {
-            background: #18C98B !important;
-            color: #040605 !important;
-            border: 1px solid #18C98B !important;
-            box-shadow: 0 2px 8px rgba(24, 201, 139, 0.2) !important;
+            background: #18C98B;
+            color: #040605;
+            border: 1px solid #18C98B;
+            box-shadow: 0 2px 8px rgba(24, 201, 139, 0.2);
 
             .btnText {
-                color: #040605 !important;
+                color: #040605;
             }
 
             .iconWrapper img {
-                filter: brightness(0) !important;
+                filter: brightness(0);
             }
 
             .iconWrapper svg {
-                color: #040605 !important;
+                color: #040605;
                 stroke: currentColor;
             }
 
             &:hover {
-                background: #15B77E !important;
-                border-color: #15B77E !important;
-                box-shadow: 0 4px 12px rgba(24, 201, 139, 0.3) !important;
+                background: #15B77E;
+                border-color: #15B77E;
+                box-shadow: 0 4px 12px rgba(24, 201, 139, 0.3);
             }
         }
     }

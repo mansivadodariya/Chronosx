@@ -10,51 +10,51 @@
   background: radial-gradient(ellipse at 50% 50%, #040c09 0%, #020605 60%, #000000 100%);
 
   :global(html.light) & {
-    background: #FFFFFF !important;
-    border-bottom: 1px solid rgba(24, 201, 139, 0.15) !important;
+    background: #FFFFFF;
+    border-bottom: 1px solid rgba(24, 201, 139, 0.15);
 
     .assetCard {
-      background: #FFFFFF !important;
-      border: 1px solid rgba(24, 201, 139, 0.22) !important;
-      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+      background: #FFFFFF;
+      border: 1px solid rgba(24, 201, 139, 0.22);
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
 
       &:hover {
-        background: #FFFFFF !important;
-        border-color: #18C98B !important;
-        box-shadow: 0 8px 25px rgba(24, 201, 139, 0.15) !important;
+        background: #FFFFFF;
+        border-color: #18C98B;
+        box-shadow: 0 8px 25px rgba(24, 201, 139, 0.15);
       }
 
       .iconWrapper {
-        background: #F1F5F9 !important;
-        border: 1px solid #E2E8F0 !important;
-        box-shadow: none !important;
+        background: #F1F5F9;
+        border: 1px solid #E2E8F0;
+        box-shadow: none;
       }
 
       .assetName {
-        color: #0F172A !important;
+        color: #0F172A;
       }
 
       .symbolText {
-        color: #64748B !important;
+        color: #64748B;
       }
 
       .priceText {
-        color: #0F172A !important;
+        color: #0F172A;
       }
 
       .signalPill {
-        background: rgba(5, 150, 105, 0.1) !important;
-        border: 1px solid rgba(5, 150, 105, 0.25) !important;
-        color: #059669 !important;
+        background: rgba(5, 150, 105, 0.1);
+        border: 1px solid rgba(5, 150, 105, 0.25);
+        color: #059669;
       }
     }
 
     .fogLeft {
-      background: linear-gradient(90deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%) !important;
+      background: linear-gradient(90deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
     }
 
     .fogRight {
-      background: linear-gradient(270deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%) !important;
+      background: linear-gradient(270deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
     }
   }
 
@@ -185,7 +185,7 @@
       pointer-events: none;
 
       :global(html.light) & {
-        background: linear-gradient(90deg, #F8FAFC 0%, rgba(248, 250, 252, 0.95) 45%, rgba(248, 250, 252, 0.6) 75%, transparent 100%) !important;
+        background: linear-gradient(90deg, #F8FAFC 0%, rgba(248, 250, 252, 0.95) 45%, rgba(248, 250, 252, 0.6) 75%, transparent 100%);
       }
 
       @include respond-to("sm") {
@@ -206,7 +206,7 @@
       pointer-events: none;
 
       :global(html.light) & {
-        background: linear-gradient(-90deg, #F8FAFC 0%, rgba(248, 250, 252, 0.95) 45%, rgba(248, 250, 252, 0.6) 75%, transparent 100%) !important;
+        background: linear-gradient(-90deg, #F8FAFC 0%, rgba(248, 250, 252, 0.95) 45%, rgba(248, 250, 252, 0.6) 75%, transparent 100%);
       }
 
       @include respond-to("sm") {

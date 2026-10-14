@@ -302,7 +302,7 @@ export default function TradingProfileModal({
                             preferences={form}
                             user={user}
                         />
-                        <div className={styles.modalFooterRow} style={{ justifyContent: 'space-between', marginTop: '12px' }}>
+                        <div className={`${styles.modalFooterRow} ${styles.resultFooterRow}`}>
                             <button
                                 type="button"
                                 className={styles.btnCancel}
@@ -334,7 +334,7 @@ export default function TradingProfileModal({
                                         required
                                     />
                                 </div>
-                                <div className={styles.inputsGrid2} style={{ marginTop: '4px' }}>
+                                <div className={`${styles.inputsGrid2} ${styles.gridTopGap4}`}>
                                     <div className={styles.fieldGroup}>
                                         <label>Experience Level</label>
                                         <ProfileCustomSelect
@@ -397,7 +397,7 @@ export default function TradingProfileModal({
                                         options={RISK_TOLERANCES}
                                     />
                                 </div>
-                                <div className={styles.inputsGrid2} style={{ marginTop: '4px' }}>
+                                <div className={`${styles.inputsGrid2} ${styles.gridTopGap4}`}>
                                     <div className={styles.fieldGroup}>
                                         <label>Max Acceptable Drawdown</label>
                                         <input
@@ -442,7 +442,7 @@ export default function TradingProfileModal({
                                         />
                                     </div>
                                 </div>
-                                <div className={styles.inputsGrid2} style={{ marginTop: '4px' }}>
+                                <div className={`${styles.inputsGrid2} ${styles.gridTopGap4}`}>
                                     <div className={styles.fieldGroup}>
                                         <label>Profit Goal ($ USD)</label>
                                         <input
@@ -468,7 +468,7 @@ export default function TradingProfileModal({
                                         />
                                     </div>
                                 </div>
-                                <div className={styles.fieldGroup} style={{ marginTop: '4px' }}>
+                                <div className={`${styles.fieldGroup} ${styles.gridTopGap4}`}>
                                     <label>Custom Strategy Mission</label>
                                     <input
                                         type="text"
@@ -510,7 +510,7 @@ export default function TradingProfileModal({
                                         })}
                                     </div>
                                 </div>
-                                <div className={styles.fieldGroup} style={{ marginTop: '10px' }}>
+                                <div className={`${styles.fieldGroup} ${styles.fieldGroupTopGap10}`}>
                                     <label>Active Trading Sessions</label>
                                     <div className={styles.chipsWrap}>
                                         {AVAILABLE_SESSIONS.map((sessObj) => {
@@ -544,7 +544,7 @@ export default function TradingProfileModal({
 
                         {/* Footer Stepper Controls */}
                         <div className={styles.modalFooterRow}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div className={styles.footerLeftGroup}>
                                 <button
                                     type="button"
                                     className={styles.btnCancel}

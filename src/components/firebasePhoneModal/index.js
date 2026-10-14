@@ -281,7 +281,7 @@ export default function FirebasePhoneModal({
                                 </p>
                             )}
 
-                            <form onSubmit={handlePhoneSubmit} style={{ width: '100%' }}>
+                            <form onSubmit={handlePhoneSubmit} className={styles.phoneForm}>
                                 <div className={styles.phoneInputContainer}>
                                     <PhoneInput
                                         international
@@ -350,7 +350,7 @@ export default function FirebasePhoneModal({
                                 </button>
                             </p>
 
-                            <form onSubmit={handleVerifyOtp} style={{ width: '100%' }}>
+                            <form onSubmit={handleVerifyOtp} className={styles.phoneForm}>
                                 <div className={styles.otpInputsRow}>
                                     {otpValues.map((digit, idx) => (
                                         <input

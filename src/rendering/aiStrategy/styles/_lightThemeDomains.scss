@@ -8,17 +8,17 @@
         /* Unified Domain Cards & Section Dividers */
         .unifiedDomainCard,
         .aiIntelligenceShowcaseCard {
-            border-bottom-color: #E2E8F0 !important;
+            border-bottom-color: #E2E8F0;
 
             .domainHeaderRow {
-                border-bottom-color: #E2E8F0 !important;
+                border-bottom-color: #E2E8F0;
 
                 .domainTitleGroup {
                     .domainMainTitle {
-                        color: #0F172A !important;
+                        color: #0F172A;
                     }
                     .domainSubtitle {
-                        color: #64748B !important;
+                        color: #64748B;
                     }
                 }
             }
@@ -27,97 +27,97 @@
             .threeColumnUnifiedRow {
                 >div:nth-child(1),
                 >div:nth-child(2) {
-                    border-right-color: #E2E8F0 !important;
+                    border-right-color: #E2E8F0;
                 }
 
                 @media (max-width: 1140px) {
                     >div:nth-child(3) {
-                        border-top-color: #E2E8F0 !important;
+                        border-top-color: #E2E8F0;
                     }
                 }
 
                 @media (max-width: 768px) {
                     >div:nth-child(1),
                     >div:nth-child(2) {
-                        border-bottom-color: #E2E8F0 !important;
+                        border-bottom-color: #E2E8F0;
                     }
                 }
             }
 
             /* Visual Slider Block (Oscillators Column) */
             .visualSliderBlock {
-                background: #F8FAFC !important;
-                border: 1px solid #E2E8F0 !important;
+                background: #F8FAFC;
+                border: 1px solid #E2E8F0;
 
                 .sliderHeaderRow {
                     .sliderName {
-                        color: #0F172A !important;
+                        color: #0F172A;
                     }
                     .sliderValueText {
-                        color: #0F172A !important;
+                        color: #0F172A;
                     }
                 }
 
                 /* MACD Track - Empty Line / Baseline */
                 .macdTrack {
-                    background: #CBD5E1 !important;
-                    height: 6px !important;
-                    border-radius: 3px !important;
+                    background: #CBD5E1;
+                    height: 6px;
+                    border-radius: 3px;
 
                     .macdZeroLine {
-                        background: #64748B !important;
-                        width: 2px !important;
+                        background: #64748B;
+                        width: 2px;
                     }
 
                     .macdBarFill {
-                        border-radius: 2px !important;
+                        border-radius: 2px;
                     }
                 }
 
                 .macdDetailsRow {
-                    color: #475569 !important;
-                    font-weight: 600 !important;
+                    color: #475569;
+                    font-weight: 600;
                 }
 
                 /* Stochastic Tracks - Empty Line / Baseline */
                 .stochRow {
                     .stochLabel {
-                        color: #475569 !important;
-                        font-weight: 600 !important;
+                        color: #475569;
+                        font-weight: 600;
                     }
 
                     .stochBarTrack {
-                        background: #CBD5E1 !important;
-                        height: 5px !important;
-                        border-radius: 3px !important;
+                        background: #CBD5E1;
+                        height: 5px;
+                        border-radius: 3px;
 
                         .stochBarFill {
-                            border-radius: 3px !important;
+                            border-radius: 3px;
                         }
                     }
 
                     .stochValue {
-                        color: #0F172A !important;
-                        font-weight: 700 !important;
+                        color: #0F172A;
+                        font-weight: 700;
                     }
                 }
 
                 /* RSI Track Needle in Light Mode */
                 .rsiTrack {
-                    height: 6px !important;
-                    border-radius: 3px !important;
+                    height: 6px;
+                    border-radius: 3px;
 
                     .rsiNeedlePin {
-                        background: #FFFFFF !important;
-                        border: 2px solid #0F172A !important;
-                        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+                        background: #FFFFFF;
+                        border: 2px solid #0F172A;
+                        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
                     }
                 }
 
                 .rsiThresholds {
                     span {
-                        color: #64748B !important;
-                        font-weight: 600 !important;
+                        color: #64748B;
+                        font-weight: 600;
                     }
                 }
             }
@@ -125,30 +125,30 @@
             /* Structure Confluence Score Card Progress Track */
             .structureScoreCardColumn {
                 .structureScoreCard {
-                    background: #F8FAFC !important;
-                    border: 1px solid #E2E8F0 !important;
+                    background: #F8FAFC;
+                    border: 1px solid #E2E8F0;
 
                     .structScoreCardTop {
                         .structCardHeading {
-                            color: #0F172A !important;
+                            color: #0F172A;
                         }
                         .structCardFraction {
-                            color: #0F172A !important;
+                            color: #0F172A;
 
                             span {
-                                color: #64748B !important;
+                                color: #64748B;
                             }
                         }
                     }
 
                     .structProgressTrack {
-                        background: #CBD5E1 !important;
-                        height: 7px !important;
+                        background: #CBD5E1;
+                        height: 7px;
                     }
 
                     .structScoreCardBottom {
                         .structPctText {
-                            color: #0F172A !important;
+                            color: #0F172A;
                         }
                     }
                 }
@@ -157,13 +157,13 @@
             /* Clean Indicators Table in Light Mode */
             .cleanIndicatorsListTable {
                 .indicatorTableRow {
-                    border-bottom-color: #F1F5F9 !important;
+                    border-bottom-color: #F1F5F9;
 
                     .rowName {
-                        color: #475569 !important;
+                        color: #475569;
                     }
                     .rowValue {
-                        color: #0F172A !important;
+                        color: #0F172A;
                     }
                 }
             }
@@ -172,14 +172,14 @@
             .seamlessEvidenceColumn {
                 .evidenceHeaderTag {
                     .evidenceTitleText {
-                        color: #0F172A !important;
+                        color: #0F172A;
                     }
                 }
 
                 .domainEvidenceList {
                     li,
                     .domainEvidenceItem {
-                        color: #334155 !important;
+                        color: #334155;
                     }
                 }
             }
@@ -187,24 +187,24 @@
 
         /* Generic Track Fallbacks (All progress tracks & baselines) */
         .macdTrack {
-            background: #CBD5E1 !important;
+            background: #CBD5E1;
 
             .macdZeroLine {
-                background: #64748B !important;
+                background: #64748B;
             }
         }
 
         .stochBarTrack {
-            background: #CBD5E1 !important;
+            background: #CBD5E1;
         }
 
         .structProgressTrack {
-            background: #CBD5E1 !important;
+            background: #CBD5E1;
         }
 
         .pillarTrackWrap {
             .pillarTrack {
-                background: #CBD5E1 !important;
+                background: #CBD5E1;
             }
         }
     }

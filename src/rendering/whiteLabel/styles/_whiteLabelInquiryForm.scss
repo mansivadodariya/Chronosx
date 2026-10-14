@@ -290,7 +290,7 @@
     width: 100%;
     background: #141816;
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 12px !important;
+    border-radius: 12px;
     padding: 10px 14px;
     color: #FFFFFF;
     font-size: 13px;
@@ -322,7 +322,7 @@
     :global(.light) & {
         background: #F8FAFC;
         border-color: #CBD5E1;
-        border-radius: 12px !important;
+        border-radius: 12px;
         color: #0F172A;
 
         &::placeholder {
@@ -353,15 +353,15 @@
 }
 
 .inputError {
-    border-color: #EF4444 !important;
-    box-shadow: 0 0 0 1.5px rgba(239, 68, 68, 0.45) !important;
+    border-color: #EF4444;
+    box-shadow: 0 0 0 1.5px rgba(239, 68, 68, 0.45);
 
     :global(html.light) &,
     :global(html[data-theme='light']) &,
     :global([data-theme='light']) &,
     :global(.light) & {
-        border-color: #EF4444 !important;
-        box-shadow: 0 0 0 1.5px rgba(239, 68, 68, 0.35) !important;
+        border-color: #EF4444;
+        box-shadow: 0 0 0 1.5px rgba(239, 68, 68, 0.35);
     }
 }
 
@@ -371,7 +371,7 @@
     gap: 5px;
     font-size: 11.5px;
     font-weight: 700;
-    color: #EF4444 !important;
+    color: #EF4444;
     margin-top: 2px;
     letter-spacing: 0.1px;
 
@@ -379,19 +379,19 @@
         flex-shrink: 0;
         width: 13px;
         height: 13px;
-        color: #EF4444 !important;
-        fill: #EF4444 !important;
+        color: #EF4444;
+        fill: #EF4444;
     }
 
     :global(html.light) &,
     :global(html[data-theme='light']) &,
     :global([data-theme='light']) &,
     :global(.light) & {
-        color: #DC2626 !important;
+        color: #DC2626;
 
         svg {
-            color: #DC2626 !important;
-            fill: #DC2626 !important;
+            color: #DC2626;
+            fill: #DC2626;
         }
     }
 }
@@ -411,7 +411,7 @@
     resize: none;
     background: #141816;
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 12px !important;
+    border-radius: 12px;
     padding: 12px 14px;
     color: #FFFFFF;
     font-size: 13px;
@@ -440,7 +440,7 @@
     :global(.light) & {
         background: #F8FAFC;
         border-color: #CBD5E1;
-        border-radius: 12px !important;
+        border-radius: 12px;
         color: #0F172A;
 
         &::placeholder {
@@ -515,7 +515,7 @@
     min-height: 38px;
     background: #141816;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px !important;
+    border-radius: 12px;
     padding: 0 10px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -534,7 +534,7 @@
     :global(.light) & {
         background: #FFFFFF;
         border-color: #CBD5E1;
-        border-radius: 12px !important;
+        border-radius: 12px;
 
         &:hover {
             border-color: #18C98B;
@@ -544,19 +544,19 @@
 }
 
 .capabilityPillActive {
-    background: rgba(24, 201, 139, 0.12) !important;
-    border-color: #18C98B !important;
-    border-radius: 12px !important;
+    background: rgba(24, 201, 139, 0.12);
+    border-color: #18C98B;
+    border-radius: 12px;
     box-shadow: 0 0 12px rgba(24, 201, 139, 0.2);
 
     .customCheckSquare {
-        background: #18C98B !important;
-        border-color: #18C98B !important;
+        background: #18C98B;
+        border-color: #18C98B;
         color: #0A0D0B;
     }
 
     .capabilityLabel {
-        color: #18C98B !important;
+        color: #18C98B;
         font-weight: 700;
     }
 
@@ -564,18 +564,18 @@
     :global(html[data-theme='light']) &,
     :global([data-theme='light']) &,
     :global(.light) & {
-        background: #DCFCE7 !important;
-        border-color: #059669 !important;
-        border-radius: 12px !important;
+        background: #DCFCE7;
+        border-color: #059669;
+        border-radius: 12px;
 
         .customCheckSquare {
-            background: #059669 !important;
-            border-color: #059669 !important;
+            background: #059669;
+            border-color: #059669;
             color: #FFFFFF;
         }
 
         .capabilityLabel {
-            color: #047857 !important;
+            color: #047857;
         }
     }
 }
@@ -628,7 +628,7 @@
     height: 48px;
     background: linear-gradient(135deg, #18C98B 0%, #10B981 100%);
     border: none;
-    border-radius: 12px !important;
+    border-radius: 12px;
     color: #060907;
     font-size: 15px;
     font-weight: 800;

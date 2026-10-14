@@ -8,7 +8,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { authNavigate } from '@/lib/authRedirect';
 import styles from '../aiChat.module.scss';
 
-export default function ChatHeroSection({ scrollToDemo }) {
+export default function ChatHeroSection() {
     const router = useRouter();
     const { t } = useLanguage();
 
@@ -42,17 +42,6 @@ export default function ChatHeroSection({ scrollToDemo }) {
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                 <line x1="5" y1="12" x2="19" y2="12" />
                                 <polyline points="12 5 19 12 12 19" />
-                            </svg>
-                        </button>
-
-                        <button
-                            type="button"
-                            onClick={scrollToDemo}
-                            className={styles.heroSecondaryBtn}
-                        >
-                            <span>{t('aiChat.hero.viewDemoBtn', 'VIEW LIVE DEMO')}</span>
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M12 5v14M19 12l-7 7-7-7" />
                             </svg>
                         </button>
                     </motion.div>

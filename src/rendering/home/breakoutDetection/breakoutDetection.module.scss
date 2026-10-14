@@ -12,121 +12,121 @@
   :global(html.light) &,
   :global(html[data-theme="light"]) &,
   :global([data-theme="light"]) & {
-    background: #F8FAFC !important;
-    border-bottom: 1px solid rgba(24, 201, 139, 0.15) !important;
+    background: #F8FAFC;
+    border-bottom: 1px solid rgba(24, 201, 139, 0.15);
 
     .chartCard {
-      background: #FFFFFF !important;
-      border: 1px solid #CBD5E1 !important;
-      box-shadow: 0 10px 40px rgba(15, 23, 42, 0.06) !important;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      box-shadow: 0 10px 40px rgba(15, 23, 42, 0.06);
 
       .gridLine {
-        stroke: rgba(148, 163, 184, 0.3) !important;
+        stroke: rgba(148, 163, 184, 0.3);
       }
 
       .resistanceLine {
-        stroke: #059669 !important;
-        stroke-width: 1.6 !important;
-        opacity: 0.9 !important;
+        stroke: #059669;
+        stroke-width: 1.6;
+        opacity: 0.9;
 
         &.resistanceBroken {
-          stroke: #047857 !important;
-          stroke-width: 2 !important;
-          filter: drop-shadow(0 0 4px rgba(4, 120, 87, 0.3)) !important;
+          stroke: #047857;
+          stroke-width: 2;
+          filter: drop-shadow(0 0 4px rgba(4, 120, 87, 0.3));
         }
       }
 
       .resistanceLabel {
-        fill: #047857 !important;
-        font-weight: 800 !important;
+        fill: #047857;
+        font-weight: 800;
       }
 
       .basePathLine {
-        stroke: #047857 !important;
-        stroke: url(#baseLineGradLight) !important;
-        stroke-width: 3 !important;
+        stroke: #047857;
+        stroke: url(#baseLineGradLight);
+        stroke-width: 3;
       }
 
       .baseAreaPath {
-        fill: url(#baseAreaGradLight) !important;
+        fill: url(#baseAreaGradLight);
       }
 
       .sonarRing {
-        stroke: #047857 !important;
-        stroke-width: 1.6 !important;
+        stroke: #047857;
+        stroke-width: 1.6;
       }
 
       .tipDotInner {
-        fill: #047857 !important;
+        fill: #047857;
       }
 
       .tipDotCenter {
-        fill: #059669 !important;
+        fill: #059669;
       }
 
       .breakoutLine {
-        stroke: #047857 !important;
-        stroke-width: 3.4 !important;
-        filter: drop-shadow(0 2px 8px rgba(4, 120, 87, 0.35)) !important;
+        stroke: #047857;
+        stroke-width: 3.4;
+        filter: drop-shadow(0 2px 8px rgba(4, 120, 87, 0.35));
       }
 
       .breakoutAreaPath {
-        fill: url(#glowAreaGradLight) !important;
+        fill: url(#glowAreaGradLight);
       }
 
       .breakoutSonar {
-        stroke: #047857 !important;
+        stroke: #047857;
       }
 
       .breakoutCenter {
-        fill: #047857 !important;
+        fill: #047857;
       }
 
       .tickerTag {
-        color: #0F172A !important;
+        color: #0F172A;
       }
 
       .statusTag {
-        color: #475569 !important;
-        background: #F1F5F9 !important;
-        border: 1px solid #E2E8F0 !important;
+        color: #475569;
+        background: #F1F5F9;
+        border: 1px solid #E2E8F0;
 
         &.statusBroken {
-          color: #047857 !important;
-          background: rgba(5, 150, 105, 0.12) !important;
-          border-color: rgba(5, 150, 105, 0.4) !important;
-          box-shadow: none !important;
+          color: #047857;
+          background: rgba(5, 150, 105, 0.12);
+          border-color: rgba(5, 150, 105, 0.4);
+          box-shadow: none;
         }
       }
 
       .breakoutLineLabel,
       .resistanceVal {
-        color: #047857 !important;
+        color: #047857;
       }
 
       .toastCard {
-        background: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
-        box-shadow: none !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
 
         .toastBadge {
-          background: rgba(16, 185, 129, 0.12) !important;
-          border-color: rgba(5, 150, 105, 0.35) !important;
-          color: #047857 !important;
+          background: rgba(16, 185, 129, 0.12);
+          border-color: rgba(5, 150, 105, 0.35);
+          color: #047857;
         }
 
         .toastTime {
-          color: #047857 !important;
+          color: #047857;
         }
 
         .toastMainTitle {
-          color: #0F172A !important;
+          color: #0F172A;
         }
 
         .toastSubtitle {
-          color: #64748B !important;
+          color: #64748B;
         }
       }
     }
@@ -134,36 +134,36 @@
     .stepBlock {
       &.stepActive {
         .numberBadge {
-          background: rgba(16, 185, 129, 0.15) !important;
-          border-color: #059669 !important;
-          color: #047857 !important;
-          box-shadow: none !important;
+          background: rgba(16, 185, 129, 0.15);
+          border-color: #059669;
+          color: #047857;
+          box-shadow: none;
         }
 
         h3 {
-          color: #0F172A !important;
+          color: #0F172A;
         }
 
         .stepDesc {
-          color: #334155 !important;
+          color: #334155;
         }
       }
 
       .stepHeader {
         .numberBadge {
-          color: #059669 !important;
-          border-color: rgba(5, 150, 105, 0.3) !important;
-          background: rgba(16, 185, 129, 0.08) !important;
-          box-shadow: none !important;
+          color: #059669;
+          border-color: rgba(5, 150, 105, 0.3);
+          background: rgba(16, 185, 129, 0.08);
+          box-shadow: none;
         }
 
         h3 {
-          color: #0F172A !important;
+          color: #0F172A;
         }
       }
 
       .stepDesc {
-        color: #64748B !important;
+        color: #64748B;
       }
     }
   }

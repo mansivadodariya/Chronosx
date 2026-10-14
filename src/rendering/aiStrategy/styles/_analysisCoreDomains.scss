@@ -422,8 +422,8 @@
                     width: 7px;
                     height: 7px;
                     border-radius: 50%;
-                    background: #18C98B !important;
-                    box-shadow: 0 0 8px rgba(24, 201, 139, 0.8) !important;
+                    background: #18C98B;
+                    box-shadow: 0 0 8px rgba(24, 201, 139, 0.8);
                     flex-shrink: 0;
                 }
 
@@ -451,18 +451,18 @@
             }
 
             .domainEvidenceList {
-                list-style: none !important;
-                list-style-type: none !important;
-                margin: 0 !important;
-                padding: 0 !important;
+                list-style: none;
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
 
                 li,
                 .domainEvidenceItem {
-                    list-style: none !important;
-                    list-style-type: none !important;
+                    list-style: none;
+                    list-style-type: none;
                     display: flex;
                     align-items: flex-start;
                     gap: 8px;
@@ -472,8 +472,8 @@
                     font-family: "Euclid-Regular", "Inter", sans-serif;
 
                     &::marker {
-                        display: none !important;
-                        content: "" !important;
+                        display: none;
+                        content: "";
                     }
 
                     svg {

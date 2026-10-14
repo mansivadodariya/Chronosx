@@ -88,8 +88,8 @@ export default function TradesTable({
                     <tbody>
                         {filteredTrades.length === 0 ? (
                             <tr>
-                                <td colSpan="9" style={{ textAlign: 'center', color: '#94A3B8', padding: '32px' }}>
-                                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
+                                <td colSpan="9" className={styles.emptyTradesCell}>
+                                    <div className={styles.emptyTradesContent}>
                                         {displayTotal > 0 ? (
                                             <span>
                                                 Backend Engine Execution: <strong>{displayTotal}</strong> aggregate trades computed ({displayWins} wins / {displayLosses} losses).
@@ -115,7 +115,7 @@ export default function TradesTable({
 
                                 return (
                                     <tr key={t?.index || idx + 1}>
-                                        <td style={{ color: '#94A3B8' }}>{t?.index || idx + 1}</td>
+                                        <td className={styles.indexCell}>{t?.index || idx + 1}</td>
                                         <td>{t?.entryDate || '—'}</td>
                                         <td>{formatPrice(t?.entryPrice)}</td>
                                         <td>{t?.exitDate || '—'}</td>
@@ -130,15 +130,10 @@ export default function TradesTable({
                                                 {trigger}
                                             </span>
                                         </td>
-                                        <td
-                                            style={{
-                                                color: isWin ? '#10B981' : '#F43F5E',
-                                                fontWeight: 700
-                                            }}
-                                        >
+                                        <td className={isWin ? styles.pnlWin : styles.pnlLoss}>
                                             {formatPnL(pnlNum)}
                                         </td>
-                                        <td style={{ fontWeight: 600 }}>
+                                        <td className={styles.balanceCell}>
                                             {formatBalance(t?.runningBalance)}
                                         </td>
                                     </tr>

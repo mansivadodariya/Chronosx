@@ -31,10 +31,10 @@
     // Header Container styling
     :global(.container) {
         @include respond-to("md") {
-            max-width: 100% !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            width: 100% !important;
+            max-width: 100%;
+            padding-left: 0;
+            padding-right: 0;
+            width: 100%;
         }
     }
 
@@ -201,7 +201,7 @@
                         }
 
                         :global(html.light) & {
-                            color: #0F172A !important;
+                            color: #0F172A;
                         }
                     }
 
@@ -222,7 +222,7 @@
                             color: rgba(255, 255, 255, 0.6);
 
                             :global(html.light) & {
-                                color: #334155 !important;
+                                color: #334155;
                             }
                         }
                     }
@@ -274,9 +274,9 @@
                             visibility: hidden;
                             pointer-events: none;
                             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-                            background: transparent !important;
-                            border: none !important;
-                            box-shadow: none !important;
+                            background: transparent;
+                            border: none;
+                            box-shadow: none;
                             border-radius: 20px;
 
                             &.twoColMenu {

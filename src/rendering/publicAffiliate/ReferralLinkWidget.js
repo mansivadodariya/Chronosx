@@ -51,20 +51,19 @@ export default function ReferralLinkWidget() {
 
           {/* Code & QR Actions Row */}
           <div className={styles.widgetActionsRow}>
-            <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)' }}>
-              Referral Code: <strong style={{ color: '#18C98B' }}>YOUR-CODE</strong>
+            <div className={styles.codeText}>
+              Referral Code: <strong>YOUR-CODE</strong>
             </div>
 
             <button
-              className={styles.heroSecondaryBtn}
+              className={`${styles.heroSecondaryBtn} ${styles.qrTriggerBtn}`}
               onClick={() => setShowQrModal(true)}
-              style={{ padding: '8px 20px', fontSize: '0.85rem' }}
             >
               SHOW QR CODE
             </button>
 
             <div className={styles.socialShareGroup}>
-              <span style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.5)', marginRight: 4 }}>Share On:</span>
+              <span className={styles.shareLabel}>Share On:</span>
               <button className={styles.sociallinks} onClick={() => handleSocialShare('x')}>𝕏 (Twitter)</button>
               <button className={styles.sociallinks} onClick={() => handleSocialShare('telegram')}>Telegram</button>
               <button className={styles.sociallinks} onClick={() => handleSocialShare('whatsapp')}>WhatsApp</button>
@@ -81,39 +80,20 @@ export default function ReferralLinkWidget() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              zIndex: 9999,
-              background: 'rgba(0,0,0,0.8)',
-              backdropFilter: 'blur(8px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 20
-            }}
+            className={styles.qrModalOverlay}
             onClick={() => setShowQrModal(false)}
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              style={{
-                background: '#0B1319',
-                border: '1px solid rgba(24,201,139,0.4)',
-                borderRadius: 24,
-                padding: 36,
-                textAlign: 'center',
-                maxWidth: 360,
-                width: '100%',
-                color: '#FFFFFF'
-              }}
+              className={styles.qrModalContent}
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 style={{ margin: '0 0 8px', fontSize: '1.2rem', fontWeight: 700 }}>Your Referral QR Code</h3>
-              <p style={{ margin: '0 0 24px', fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>Scan with smartphone camera to join ChronosX</p>
+              <h3 className={styles.qrModalTitle}>Your Referral QR Code</h3>
+              <p className={styles.qrModalDesc}>Scan with smartphone camera to join ChronosX</p>
 
-              <div style={{ background: '#FFFFFF', padding: 16, borderRadius: 16, display: 'inline-block', marginBottom: 24 }}>
+              <div className={styles.qrCodeWrapper}>
                 <svg width="180" height="180" viewBox="0 0 100 100" fill="#060B0E">
                   <path d="M0,0 h30 v30 h-30 z M40,0 h20 v10 h-20 z M70,0 h30 v30 h-30 z M10,10 h10 v10 h-10 z M80,10 h10 v10 h-10 z M0,40 h10 v20 h-10 z M30,40 h40 v10 h-40 z M80,40 h20 v20 h-20 z M0,70 h30 v30 h-30 z M10,80 h10 v10 h-10 z M40,70 h20 v30 h-20 z M70,70 h30 v30 h-30 z M80,80 h10 v10 h-10 z" />
                 </svg>
@@ -121,9 +101,8 @@ export default function ReferralLinkWidget() {
 
               <div>
                 <button
-                  className={styles.heroPrimaryBtn}
+                  className={`${styles.heroPrimaryBtn} ${styles.qrModalCloseBtn}`}
                   onClick={() => setShowQrModal(false)}
-                  style={{ width: '100%' }}
                 >
                   CLOSE
                 </button>

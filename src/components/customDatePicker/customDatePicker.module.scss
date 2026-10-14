@@ -6,6 +6,8 @@
 }
 
 .datePickerTrigger {
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -16,7 +18,7 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(24, 201, 139, 0.2);
-    border-radius: 9999px;
+    border-radius: 6px;
     color: #FFFFFF;
     font-size: 12px;
     font-weight: 600;

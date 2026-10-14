@@ -9,121 +9,121 @@
   overflow: hidden;
 
   :global(html.light) & {
-    background: #F8FAFC !important;
-    border-bottom: 1px solid rgba(24, 201, 139, 0.15) !important;
+    background: #F8FAFC;
+    border-bottom: 1px solid rgba(24, 201, 139, 0.15);
 
     .cardFace {
-      background: #FFFFFF !important;
-      border: 1px solid rgba(24, 201, 139, 0.22) !important;
-      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+      background: #FFFFFF;
+      border: 1px solid rgba(24, 201, 139, 0.22);
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
 
       &:hover {
-        background: #FFFFFF !important;
-        border-color: #18C98B !important;
-        box-shadow: 0 8px 25px rgba(24, 201, 139, 0.15) !important;
+        background: #FFFFFF;
+        border-color: #18C98B;
+        box-shadow: 0 8px 25px rgba(24, 201, 139, 0.15);
       }
 
       .terminalTitle {
-        color: #0F172A !important;
+        color: #0F172A;
       }
 
       .liveBadge {
-        background: rgba(24, 201, 139, 0.12) !important;
-        border: 1px solid rgba(24, 201, 139, 0.3) !important;
-        color: #047857 !important;
+        background: rgba(24, 201, 139, 0.12);
+        border: 1px solid rgba(24, 201, 139, 0.3);
+        color: #047857;
 
         .liveDot {
-          background: #10B981 !important;
-          box-shadow: 0 0 6px #10B981 !important;
+          background: #10B981;
+          box-shadow: 0 0 6px #10B981;
         }
       }
 
       .chartStage {
-        background: #F8FAFC !important;
-        border: 1px solid rgba(15, 23, 42, 0.08) !important;
-        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+        background: #F8FAFC;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
       }
 
       .terminalFooter {
-        color: #64748B !important;
+        color: #64748B;
       }
 
       .footLeft {
-        color: #64748B !important;
+        color: #64748B;
       }
 
       .footRight {
-        color: #047857 !important;
+        color: #047857;
 
         &.buySignal {
-          color: #047857 !important;
-          text-shadow: none !important;
+          color: #047857;
+          text-shadow: none;
         }
       }
 
       .legendGroup {
         .legOb {
-          color: #047857 !important;
+          color: #047857;
         }
 
         .legFvg {
-          color: #047857 !important;
+          color: #047857;
         }
 
         .legLiq {
-          color: #7C3AED !important;
+          color: #7C3AED;
         }
       }
     }
 
     .cardBack {
-      background: #FFFFFF !important;
-      border: 1px solid rgba(24, 201, 139, 0.25) !important;
-      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+      background: #FFFFFF;
+      border: 1px solid rgba(24, 201, 139, 0.25);
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
 
       &:hover {
-        background: #FFFFFF !important;
-        border-color: #18C98B !important;
-        box-shadow: 0 8px 25px rgba(24, 201, 139, 0.15) !important;
+        background: #FFFFFF;
+        border-color: #18C98B;
+        box-shadow: 0 8px 25px rgba(24, 201, 139, 0.15);
       }
 
       .backHeader {
-        border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
       }
 
       .backTitle {
-        color: #0F172A !important;
+        color: #0F172A;
       }
 
       .backDesc {
-        color: #475569 !important;
+        color: #475569;
       }
 
       .specItem {
-        color: #334155 !important;
+        color: #334155;
       }
 
       .specDot {
-        color: #047857 !important;
+        color: #047857;
       }
 
       .backLayerTag {
-        color: #047857 !important;
+        color: #047857;
       }
 
       .flipHint {
-        color: #64748B !important;
+        color: #64748B;
       }
 
       .backFooter {
-        border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+        border-top: 1px solid rgba(15, 23, 42, 0.08);
 
         .metricTitle {
-          color: #64748B !important;
+          color: #64748B;
         }
 
         .metricValue {
-          color: #047857 !important;
+          color: #047857;
         }
       }
     }

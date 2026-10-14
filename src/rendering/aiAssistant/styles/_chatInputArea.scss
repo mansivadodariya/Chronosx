@@ -246,8 +246,8 @@
 
                     :global([dir="rtl"]) &,
                     :global(html[dir="rtl"]) & {
-                        left: auto !important;
-                        right: 0 !important;
+                        left: auto;
+                        right: 0;
                     }
 
                     .attachMenuItem {
@@ -269,7 +269,7 @@
 
                         :global([dir="rtl"]) &,
                         :global(html[dir="rtl"]) & {
-                            text-align: right !important;
+                            text-align: right;
                         }
 
                         svg {
@@ -378,8 +378,8 @@
 
                 :global([dir="rtl"]) &,
                 :global(html[dir="rtl"]) & {
-                    left: auto !important;
-                    right: 0 !important;
+                    left: auto;
+                    right: 0;
                 }
 
                 &::-webkit-scrollbar {

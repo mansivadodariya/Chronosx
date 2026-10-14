@@ -9,8 +9,8 @@
   overflow: hidden;
 
   :global(html.light) & {
-    background: linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 50%, #E2E8F0 100%) !important;
-    color: #0F172A !important;
+    background: linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 50%, #E2E8F0 100%);
+    color: #0F172A;
   }
 }
 
@@ -24,7 +24,7 @@
   padding-top: 10px;
 
   :global(html.light) & {
-    background: transparent !important;
+    background: transparent;
   }
 }
 

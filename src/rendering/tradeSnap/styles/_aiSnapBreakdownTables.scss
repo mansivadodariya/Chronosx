@@ -33,10 +33,10 @@
     }
 
     &.tabNavActive {
-        background: #00B074 !important;
-        color: #FFFFFF !important;
-        border: 1px solid #00B074 !important;
-        border-radius: 9999px !important;
+        background: #00B074;
+        color: #FFFFFF;
+        border: 1px solid #00B074;
+        border-radius: 9999px;
         font-weight: 600;
         box-shadow: 0 2px 8px rgba(0, 176, 116, 0.28);
     }
@@ -216,19 +216,19 @@
 
 :global(.pdfExportLight) .pdfFullBreakdown,
 :global(.pdfExportContainer) .pdfFullBreakdown {
-    display: block !important;
-    width: 100% !important;
-    margin-top: 14px !important;
+    display: block;
+    width: 100%;
+    margin-top: 14px;
 }
 
 :global(.pdfExportLight) .pdfBreakdownBlock,
 :global(.pdfExportContainer) .pdfBreakdownBlock {
-    display: block !important;
-    width: 100% !important;
-    margin-bottom: 20px !important;
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-    break-inside: avoid-page !important;
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    break-inside: avoid-page;
 }
 
 /* ============================================================
@@ -267,10 +267,10 @@
         }
 
         &.tabNavActive {
-            background: #00B074 !important;
-            color: #FFFFFF !important;
-            border: 1px solid #00B074 !important;
-            border-radius: 9999px !important;
+            background: #00B074;
+            color: #FFFFFF;
+            border: 1px solid #00B074;
+            border-radius: 9999px;
             box-shadow: 0 2px 8px rgba(0, 176, 116, 0.28);
         }
     }

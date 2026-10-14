@@ -2,11 +2,13 @@
 @use '../../scss/breakpoints/breakpoints.scss' as *;
 
 @import './styles/chartLayoutControls';
+@import './styles/chartFloatingOverlays';
 @import './styles/chartDropdownsSettings';
 @import './styles/chatCardBody';
 @import './styles/chatMessagesRows';
 @import './styles/chatInputArea';
 @import './styles/markdownReports';
+@import './styles/markdownWidgetsAnim';
 @import './styles/modalsPreview';
 @import './styles/welcomeCards';
 @import './styles/extraPromptsModals';
@@ -15,5 +17,6 @@
 @import './styles/indicatorsSearchModal';
 @import './styles/clarificationDeepAnalysis';
 @import './styles/visionAccordions';
+@import './styles/visionZonesGrids';
 @import './styles/themeOverrides';
 @import './styles/pdfExportStyles';

@@ -52,15 +52,15 @@
         }
 
         .watchlistSearchInput {
-            background: transparent !important;
-            border: none !important;
-            outline: none !important;
-            color: #FFFFFF !important;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #FFFFFF;
             font-size: 12px;
             width: 100%;
             padding: 0;
             margin: 0;
-            box-shadow: none !important;
+            box-shadow: none;
 
             &::placeholder {
                 color: rgba(255, 255, 255, 0.35);
@@ -292,14 +292,14 @@
     }
 
     .watchlistSkeletonItem {
-        background: rgba(255, 255, 255, 0.02) !important;
-        border-left: 3px solid rgba(255, 255, 255, 0.06) !important;
-        cursor: default !important;
+        background: rgba(255, 255, 255, 0.02);
+        border-left: 3px solid rgba(255, 255, 255, 0.06);
+        cursor: default;
         pointer-events: none;
 
         &.quoteActiveItem {
-            border-left: 3px solid #18C98B !important;
-            background: rgba(24, 201, 139, 0.06) !important;
+            border-left: 3px solid #18C98B;
+            background: rgba(24, 201, 139, 0.06);
         }
 
         .skelSymbol {

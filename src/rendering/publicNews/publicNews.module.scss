@@ -10,8 +10,8 @@
     overflow: hidden;
 
     :global(html.light) & {
-        background: #F8FAFC !important;
-        color: #0F172A !important;
+        background: #F8FAFC;
+        color: #0F172A;
     }
 
     @include respond-to('md') {

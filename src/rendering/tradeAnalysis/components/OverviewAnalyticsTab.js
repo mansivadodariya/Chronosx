@@ -251,7 +251,7 @@ export default function OverviewAnalyticsTab({
                                 <td>{summary.buy_stats?.trades ?? summary.buy_trades_count ?? trades.filter(t => (t.side || '').toUpperCase() === 'BUY').length}</td>
                                 <td>{summary.buy_stats?.win_rate ?? '100.0'}%</td>
                                 <td>+$0.00</td>
-                                <td style={{ color: '#10B981', fontWeight: 700 }}>
+                                <td className={styles.profitCell}>
                                     {formatCurrency(summary.buy_stats?.net_profit ?? summary.buy_net_pnl ?? 0)}
                                 </td>
                                 <td>{formatCurrency(summary.buy_stats?.avg_profit_per_trade ?? ((summary.buy_stats?.trades || 1) ? (summary.buy_stats?.net_profit || 0) / (summary.buy_stats?.trades || 1) : 0))}</td>
@@ -279,7 +279,7 @@ export default function OverviewAnalyticsTab({
                                 <td>{summary.sell_stats?.trades ?? summary.sell_trades_count ?? trades.filter(t => (t.side || '').toUpperCase() === 'SELL').length}</td>
                                 <td>{summary.sell_stats?.win_rate ?? '100.0'}%</td>
                                 <td>+$0.00</td>
-                                <td style={{ color: '#10B981', fontWeight: 700 }}>
+                                <td className={styles.profitCell}>
                                     {formatCurrency(summary.sell_stats?.net_profit ?? summary.sell_net_pnl ?? 0)}
                                 </td>
                                 <td>{formatCurrency(summary.sell_stats?.avg_profit_per_trade ?? ((summary.sell_stats?.trades || 1) ? (summary.sell_stats?.net_profit || 0) / (summary.sell_stats?.trades || 1) : 0))}</td>

@@ -18,26 +18,26 @@
 
 
     :global(html.light) & {
-        background-color: #F8FAFC !important;
+        background-color: #F8FAFC;
         background-image:
             linear-gradient(180deg, rgba(248, 250, 252, 0.75) 0%, rgba(248, 250, 252, 0.2) 25%, transparent 45%),
-            url('/assets/images/herobannerlight.png') !important;
-        background-repeat: no-repeat !important;
-        background-position: center bottom !important;
-        background-size: cover !important;
+            url('/assets/images/herobannerlight.png');
+        background-repeat: no-repeat;
+        background-position: center bottom;
+        background-size: cover;
 
         .gridOverlay {
             background-image:
                 linear-gradient(to right, rgba(15, 23, 42, 0.08) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(15, 23, 42, 0.08) 1px, transparent 1px) !important;
-            mask-image: radial-gradient(ellipse at 50% 35%, #000 70%, transparent 95%) !important;
-            -webkit-mask-image: radial-gradient(ellipse at 50% 35%, #000 70%, transparent 95%) !important;
-            opacity: 0.001 !important;
+                linear-gradient(to bottom, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+            mask-image: radial-gradient(ellipse at 50% 35%, #000 70%, transparent 95%);
+            -webkit-mask-image: radial-gradient(ellipse at 50% 35%, #000 70%, transparent 95%);
+            opacity: 0.001;
         }
 
         .greenSpotlightGrid {
-            opacity: 0 !important;
-            display: none !important;
+            opacity: 0;
+            display: none;
         }
 
         .ambientGlowTop,
@@ -45,134 +45,134 @@
         .ambientGlowLeft,
         .ambientGlowRight,
         .ambientGlowBottom {
-            opacity: 0.08 !important;
-            filter: blur(120px) !important;
+            opacity: 0.08;
+            filter: blur(120px);
         }
 
         .topBadgeRow {
             .badge {
-                background: #FFFFFF !important;
-                border: 1px solid rgba(24, 201, 139, 0.45) !important;
-                box-shadow: 0 4px 18px rgba(24, 201, 139, 0.12) !important;
+                background: #FFFFFF;
+                border: 1px solid rgba(24, 201, 139, 0.45);
+                box-shadow: 0 4px 18px rgba(24, 201, 139, 0.12);
 
                 &:hover {
-                    background: #F0FDF4 !important;
-                    border-color: #18C98B !important;
-                    box-shadow: 0 6px 22px rgba(24, 201, 139, 0.2) !important;
+                    background: #F0FDF4;
+                    border-color: #18C98B;
+                    box-shadow: 0 6px 22px rgba(24, 201, 139, 0.2);
                 }
 
                 .badgeText {
-                    color: #059669 !important;
-                    font-weight: 700 !important;
-                    background: transparent !important;
-                    background-color: transparent !important;
-                    border: none !important;
-                    box-shadow: none !important;
-                    padding: 0 !important;
+                    color: #059669;
+                    font-weight: 700;
+                    background: transparent;
+                    background-color: transparent;
+                    border: none;
+                    box-shadow: none;
+                    padding: 0;
                 }
             }
         }
 
         .heroTitle {
-            color: #0F172A !important;
+            color: #0F172A;
 
             .titleLine1 {
-                color: #0F172A !important;
+                color: #0F172A;
             }
 
             .titleLine2 {
-                color: #0F172A !important;
+                color: #0F172A;
             }
 
             .candleIconBox {
-                background: transparent !important;
-                background-color: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
+                background: transparent;
+                background-color: transparent;
+                border: none;
+                box-shadow: none;
             }
 
             .titleCandleIcon {
-                background: transparent !important;
-                background-color: transparent !important;
+                background: transparent;
+                background-color: transparent;
             }
 
             .greenGradient {
-                color: #0F172A !important;
-                -webkit-text-fill-color: #0F172A !important;
-                background: none !important;
-                filter: none !important;
+                color: #0F172A;
+                -webkit-text-fill-color: #0F172A;
+                background: none;
+                filter: none;
             }
         }
 
         .heroDesc {
-            color: #475569 !important;
+            color: #475569;
         }
 
         .heroTickerCard {
-            background: #FFFFFF !important;
-            border: 1px solid rgba(24, 201, 139, 0.35) !important;
-            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06) !important;
+            background: #FFFFFF;
+            border: 1px solid rgba(24, 201, 139, 0.35);
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
 
             &:hover {
-                background: #F8FAFC !important;
-                border-color: #18C98B !important;
-                box-shadow: 0 8px 24px rgba(24, 201, 139, 0.18) !important;
+                background: #F8FAFC;
+                border-color: #18C98B;
+                box-shadow: 0 8px 24px rgba(24, 201, 139, 0.18);
             }
 
             .tickerLogoCircle {
-                background: #F1F5F9 !important;
-                border: 1px solid rgba(15, 23, 42, 0.12) !important;
+                background: #F1F5F9;
+                border: 1px solid rgba(15, 23, 42, 0.12);
             }
 
             .tickerCardTop {
                 .tickerCardName {
-                    color: #0F172A !important;
+                    color: #0F172A;
                 }
 
                 .tickerCardSymbol {
-                    color: #64748B !important;
+                    color: #64748B;
                 }
 
                 .tickerSignalPill {
-                    background: rgba(16, 185, 129, 0.12) !important;
-                    color: #047857 !important;
-                    border: 1px solid rgba(5, 150, 105, 0.3) !important;
+                    background: rgba(16, 185, 129, 0.12);
+                    color: #047857;
+                    border: 1px solid rgba(5, 150, 105, 0.3);
                 }
             }
 
             .tickerCardBottom {
                 .tickerPrice {
-                    color: #0F172A !important;
+                    color: #0F172A;
                 }
             }
         }
 
         .socialProofBar {
-            background: #FFFFFF !important;
-            border: 1px solid rgba(24, 201, 139, 0.28) !important;
-            box-shadow: 0 6px 25px rgba(15, 23, 42, 0.06) !important;
+            background: #FFFFFF;
+            border: 1px solid rgba(24, 201, 139, 0.28);
+            box-shadow: 0 6px 25px rgba(15, 23, 42, 0.06);
 
             .proofText {
                 .starCluster .scoreText {
-                    color: #0F172A !important;
+                    color: #0F172A;
                 }
 
                 .verifiedSub {
-                    color: #64748B !important;
+                    color: #64748B;
                 }
             }
 
             .proofDivider {
-                background: rgba(15, 23, 42, 0.12) !important;
+                background: rgba(15, 23, 42, 0.12);
             }
 
             .proofSpeed {
                 .speedHeader .speedLabel {
-                    color: #0F172A !important;
+                    color: #0F172A;
                 }
 
                 .speedSub {
-                    color: #047857 !important;
+                    color: #047857;
                 }
             }
         }

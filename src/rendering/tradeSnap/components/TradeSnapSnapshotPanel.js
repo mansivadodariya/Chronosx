@@ -67,7 +67,7 @@ export default function TradeSnapSnapshotPanel({
                         disabled={isAnalyzing || !capturedImage}
                     >
                         {isAnalyzing ? (
-                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                            <span className={styles.analyzingTextWrap}>
                                 <span className={styles.pulseDot} />
                                 {activeStage.text}
                             </span>

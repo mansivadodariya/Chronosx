@@ -50,55 +50,55 @@
     }
 
     :global(html.light) & {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(5, 150, 105, 0.25) !important;
-        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(5, 150, 105, 0.25);
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
 
         &::before {
-            background: linear-gradient(90deg, transparent 0%, rgba(5, 150, 105, 0.45) 50%, transparent 100%) !important;
+            background: linear-gradient(90deg, transparent 0%, rgba(5, 150, 105, 0.45) 50%, transparent 100%);
         }
 
         .badgePill {
-            background: rgba(5, 150, 105, 0.1) !important;
-            border: 1px solid rgba(5, 150, 105, 0.35) !important;
-            color: #059669 !important;
+            background: rgba(5, 150, 105, 0.1);
+            border: 1px solid rgba(5, 150, 105, 0.35);
+            color: #059669;
 
             .badgeIconWrap {
-                color: #059669 !important;
+                color: #059669;
             }
         }
 
         .headline {
-            color: #0F172A !important;
-            font-weight: 800 !important;
+            color: #0F172A;
+            font-weight: 800;
 
             .highlight {
-                color: #059669 !important;
+                color: #059669;
             }
         }
 
         .subtitle {
-            color: #475569 !important;
-            font-weight: 500 !important;
+            color: #475569;
+            font-weight: 500;
         }
 
         .tabBar {
-            background: #F1F5F9 !important;
-            border: 1px solid rgba(5, 150, 105, 0.2) !important;
+            background: #F1F5F9;
+            border: 1px solid rgba(5, 150, 105, 0.2);
         }
 
         .tabBtn {
-            color: #475569 !important;
+            color: #475569;
 
             &:hover {
-                color: #0F172A !important;
-                background: rgba(15, 23, 42, 0.05) !important;
+                color: #0F172A;
+                background: rgba(15, 23, 42, 0.05);
             }
 
             &.activeTab {
-                background: #059669 !important;
-                color: #FFFFFF !important;
-                box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3) !important;
+                background: #059669;
+                color: #FFFFFF;
+                box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
             }
         }
     }
@@ -146,8 +146,8 @@
         border-radius: 12px;
 
         svg {
-            width: 22px !important;
-            height: 22px !important;
+            width: 22px;
+            height: 22px;
         }
     }
 

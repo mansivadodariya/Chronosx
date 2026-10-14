@@ -1,6 +1,6 @@
 .pointerGlow {
-    pointer-events: none !important;
-    user-select: none !important;
+    pointer-events: none;
+    user-select: none;
     border-radius: 50%;
     filter: blur(50px);
     opacity: 0;

@@ -189,61 +189,61 @@
       #E2E8F0 0%,
       #F1F5F9 50%,
       #E2E8F0 100%
-    ) !important;
-    background-size: 200% 100% !important;
+    );
+    background-size: 200% 100%;
   }
 
   .cardSkeleton {
-    background: #FFFFFF !important;
-    border-color: rgba(15, 23, 42, 0.09) !important;
-    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+    background: #FFFFFF;
+    border-color: rgba(15, 23, 42, 0.09);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
   }
 
   .bannerHeader {
-    background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%) !important;
-    border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+    background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
 
     .logoCircle {
-      background: #FFFFFF !important;
-      border: 1px solid rgba(15, 23, 42, 0.09) !important;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+      background: #FFFFFF;
+      border: 1px solid rgba(15, 23, 42, 0.09);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
   }
 
   .highlightItem {
-    background: #F8FAFC !important;
-    border-color: rgba(15, 23, 42, 0.08) !important;
+    background: #F8FAFC;
+    border-color: rgba(15, 23, 42, 0.08);
   }
 
   .cardFooter {
-    border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+    border-top: 1px solid rgba(15, 23, 42, 0.08);
   }
 
   .btnSkeleton {
-    background: #F1F5F9 !important;
-    border-color: #E2E8F0 !important;
+    background: #F1F5F9;
+    border-color: #E2E8F0;
   }
 
   .detailBanner {
-    background: linear-gradient(135deg, #F8FAFC 0%, #EDF8F3 100%) !important;
-    border-color: rgba(24, 201, 139, 0.25) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05) !important;
+    background: linear-gradient(135deg, #F8FAFC 0%, #EDF8F3 100%);
+    border-color: rgba(24, 201, 139, 0.25);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
 
     .detailLogo {
-      background: #FFFFFF !important;
-      border: 1px solid rgba(15, 23, 42, 0.09) !important;
+      background: #FFFFFF;
+      border: 1px solid rgba(15, 23, 42, 0.09);
     }
   }
 
   .detailCardSection {
-    background: #FFFFFF !important;
-    border-color: #E2E8F0 !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
   }
 
   .featureBox {
-    background: #F8FAFC !important;
-    border-color: #E2E8F0 !important;
+    background: #F8FAFC;
+    border-color: #E2E8F0;
   }
 }
 

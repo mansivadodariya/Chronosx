@@ -173,7 +173,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: #18C98B !important;
+    color: #18C98B;
     font-weight: 800;
 
     .crownIcon {
@@ -221,9 +221,9 @@
 }
 
 .faqItemOpen {
-    border-color: #18C98B !important;
-    background: rgba(20, 16, 10, 0.95) !important;
-    box-shadow: 0 8px 30px rgba(24, 201, 139, 0.15) !important;
+    border-color: #18C98B;
+    background: rgba(20, 16, 10, 0.95);
+    box-shadow: 0 8px 30px rgba(24, 201, 139, 0.15);
 }
 
 .faqQuestionBtn {

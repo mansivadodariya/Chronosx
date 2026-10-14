@@ -33,20 +33,20 @@
         }
 
         :global(html.light) & {
-            color: #059669 !important;
-            background: #FFFFFF !important;
-            border: 1px solid rgba(5, 150, 105, 0.35) !important;
-            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.1) !important;
+            color: #059669;
+            background: #FFFFFF;
+            border: 1px solid rgba(5, 150, 105, 0.35);
+            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.1);
 
             .labelText {
-                color: #059669 !important;
-                font-weight: 800 !important;
-                -webkit-text-fill-color: #059669 !important;
-                background: transparent !important;
-                background-color: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
-                padding: 0 !important;
+                color: #059669;
+                font-weight: 800;
+                -webkit-text-fill-color: #059669;
+                background: transparent;
+                background-color: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 0;
             }
         }
     }

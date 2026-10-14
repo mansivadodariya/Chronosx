@@ -52,7 +52,7 @@ export default function HowItWorksSection({ refProp, onJoinClick }) {
           ))}
         </div>
 
-        <div style={{ textAlign: 'center', marginTop: 48 }}>
+        <div className={styles.ctaContainer}>
           <button className={styles.heroPrimaryBtn} onClick={onJoinClick}>
             JOIN AFFILIATE PROGRAM →
           </button>

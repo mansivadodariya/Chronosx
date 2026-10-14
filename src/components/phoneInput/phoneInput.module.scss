@@ -45,40 +45,40 @@
 
 // Override react-phone-number-input styles
 .phoneInput {
-    display: flex !important;
-    align-items: center !important;
-    width: 100% !important;
-    padding: 0 16px !important;
-    background: transparent !important;
-    border: none !important;
-    gap: 0 !important;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0 16px;
+    background: transparent;
+    border: none;
+    gap: 0;
 
     :global(.PhoneInputCountry) {
-        display: flex !important;
-        align-items: center !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: none !important;
-        position: relative !important;
+        display: flex;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        border: none;
+        position: relative;
     }
 
     :global(.PhoneInputInput) {
-        flex: 1 !important;
-        border: none !important;
-        outline: none !important;
-        background: transparent !important;
-        padding: 0 0 0 12px !important;
-        font-size: 15px !important;
-        font-weight: 400 !important;
-        color: #FFFFFF !important;
-        line-height: 24px !important;
-        font-family: "Euclid-Regular", sans-serif !important;
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 0 0 0 12px;
+        font-size: 15px;
+        font-weight: 400;
+        color: #FFFFFF;
+        line-height: 24px;
+        font-family: "Euclid-Regular", sans-serif;
 
         &::placeholder {
-            color: rgba(255, 255, 255, 0.35) !important;
-            opacity: 1 !important;
-            font-size: 15px !important;
-            font-weight: 400 !important;
+            color: rgba(255, 255, 255, 0.35);
+            opacity: 1;
+            font-size: 15px;
+            font-weight: 400;
         }
 
         &:-webkit-autofill,
@@ -89,13 +89,13 @@
         &:autofill:hover,
         &:autofill:focus,
         &:autofill:active {
-            -webkit-box-shadow: 0 0 0 1000px #071a13 inset !important;
-            box-shadow: 0 0 0 1000px #071a13 inset !important;
-            -webkit-text-fill-color: #FFFFFF !important;
-            color: #FFFFFF !important;
-            caret-color: #18C98B !important;
-            border-radius: 7px !important;
-            transition: background-color 9999999s ease-in-out 0s, color 9999999s ease-in-out 0s !important;
+            -webkit-box-shadow: 0 0 0 1000px #071a13 inset;
+            box-shadow: 0 0 0 1000px #071a13 inset;
+            -webkit-text-fill-color: #FFFFFF;
+            color: #FFFFFF;
+            caret-color: #18C98B;
+            border-radius: 7px;
+            transition: background-color 9999999s ease-in-out 0s, color 9999999s ease-in-out 0s;
         }
     }
 }
@@ -116,7 +116,7 @@
         padding: 0 10px 0 0;
         margin: 0;
         border-right: 1px solid rgba(24, 201, 139, 0.3);
-        border-radius: 0 !important;
+        border-radius: 0;
         height: 26px;
         cursor: pointer;
         outline: none;
@@ -367,27 +367,27 @@
     .phoneInput {
         .customCountryPicker {
             .countryTrigger {
-                border-right: none !important;
-                border-left: 1px solid rgba(24, 201, 139, 0.3) !important;
-                padding: 0 0 0 10px !important;
+                border-right: none;
+                border-left: 1px solid rgba(24, 201, 139, 0.3);
+                padding: 0 0 0 10px;
             }
 
             .countryDropdownMenu {
-                left: auto !important;
-                right: -14px !important;
+                left: auto;
+                right: -14px;
 
                 @include respond-to('sm') {
-                    right: -8px !important;
+                    right: -8px;
                 }
 
                 .countryItem {
-                    text-align: right !important;
+                    text-align: right;
                 }
             }
         }
 
         :global(.PhoneInputInput) {
-            padding: 0 12px 0 0 !important;
+            padding: 0 12px 0 0;
         }
     }
 }
@@ -396,32 +396,32 @@
 :global(html.light),
 :global(html[data-theme='light']) {
     .wrapper {
-        background: #F1F5F9 !important;
-        border: none !important;
-        box-shadow: none !important;
+        background: #F1F5F9;
+        border: none;
+        box-shadow: none;
 
         &:focus-within {
-            background: #E2E8F0 !important;
-            border: none !important;
-            box-shadow: 0 0 0 2px rgba(24, 201, 139, 0.35) !important;
+            background: #E2E8F0;
+            border: none;
+            box-shadow: 0 0 0 2px rgba(24, 201, 139, 0.35);
         }
 
         &.hasError {
-            border: 1px solid #EF5350 !important;
-            background: #FEF2F2 !important;
+            border: 1px solid #EF5350;
+            background: #FEF2F2;
         }
     }
 
     .label {
-        color: #0F172A !important;
+        color: #0F172A;
     }
 
     .phoneInput {
         :global(.PhoneInputInput) {
-            color: #0F172A !important;
+            color: #0F172A;
 
             &::placeholder {
-                color: #94A3B8 !important;
+                color: #94A3B8;
             }
 
             &:-webkit-autofill,
@@ -432,35 +432,35 @@
             &:autofill:hover,
             &:autofill:focus,
             &:autofill:active {
-                -webkit-box-shadow: 0 0 0 1000px #F1F5F9 inset !important;
-                box-shadow: 0 0 0 1000px #F1F5F9 inset !important;
-                -webkit-text-fill-color: #0F172A !important;
-                color: #0F172A !important;
-                caret-color: #059669 !important;
-                transition: background-color 9999999s ease-in-out 0s, color 9999999s ease-in-out 0s !important;
+                -webkit-box-shadow: 0 0 0 1000px #F1F5F9 inset;
+                box-shadow: 0 0 0 1000px #F1F5F9 inset;
+                -webkit-text-fill-color: #0F172A;
+                color: #0F172A;
+                caret-color: #059669;
+                transition: background-color 9999999s ease-in-out 0s, color 9999999s ease-in-out 0s;
             }
         }
     }
 
     .customCountryPicker {
         .countryTrigger {
-            border-right-color: rgba(15, 23, 42, 0.15) !important;
+            border-right-color: rgba(15, 23, 42, 0.15);
         }
 
         .countryDropdownMenu {
-            background: #FFFFFF !important;
-            border-color: rgba(15, 23, 42, 0.12) !important;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12) !important;
+            background: #FFFFFF;
+            border-color: rgba(15, 23, 42, 0.12);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
 
             .searchBox {
-                background: #F8FAFC !important;
-                border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+                background: #F8FAFC;
+                border-bottom-color: rgba(15, 23, 42, 0.08);
 
                 .searchInput {
-                    color: #0F172A !important;
+                    color: #0F172A;
 
                     &::placeholder {
-                        color: #94A3B8 !important;
+                        color: #94A3B8;
                     }
                 }
             }
@@ -468,20 +468,20 @@
             .countryList {
                 .countryItem {
                     &:hover {
-                        background: #F1F5F9 !important;
+                        background: #F1F5F9;
                     }
 
                     &.countryItemSelected {
-                        background: #ECFDF5 !important;
-                        border-color: rgba(24, 201, 139, 0.3) !important;
+                        background: #ECFDF5;
+                        border-color: rgba(24, 201, 139, 0.3);
 
                         .countryName {
-                            color: #0F172A !important;
+                            color: #0F172A;
                         }
                     }
 
                     .countryName {
-                        color: #334155 !important;
+                        color: #334155;
                     }
                 }
             }

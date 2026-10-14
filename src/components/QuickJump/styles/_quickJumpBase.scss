@@ -11,7 +11,7 @@
     gap: 8px;
     background: rgba(14, 26, 19, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 9px !important;
+    border-radius: 9px;
     padding: 8px 12px;
     color: #c9d8cb;
     cursor: pointer;
@@ -324,8 +324,8 @@
     flex: 1;
     min-height: 0;
     max-height: none;
-    overflow-y: auto !important;
-    overscroll-behavior: contain !important;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
     pointer-events: auto;
     padding: 10px 14px 16px;

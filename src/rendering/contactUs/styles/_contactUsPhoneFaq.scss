@@ -1,110 +1,110 @@
 .phoneCustomInput {
-    display: flex !important;
-    align-items: center !important;
-    width: 100% !important;
-    height: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 
     :global(.PhoneInputCountry) {
-        display: inline-flex !important;
-        align-items: center !important;
-        align-self: center !important;
-        height: 22px !important;
-        padding-right: 12px !important;
-        margin: 0 12px 0 0 !important;
-        border-right: 1px solid rgba(24, 201, 139, 0.35) !important;
-        position: relative !important;
-        flex-shrink: 0 !important;
-        box-sizing: border-box !important;
+        display: inline-flex;
+        align-items: center;
+        align-self: center;
+        height: 22px;
+        padding-right: 12px;
+        margin: 0 12px 0 0;
+        border-right: 1px solid rgba(24, 201, 139, 0.35);
+        position: relative;
+        flex-shrink: 0;
+        box-sizing: border-box;
     }
 
     :global(.PhoneInputCountryIcon) {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 22px !important;
-        height: 15px !important;
-        border-radius: 3px !important;
-        overflow: hidden !important;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-        margin: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 15px;
+        border-radius: 3px;
+        overflow: hidden;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        margin: 0;
 
         :global(.PhoneInputCountryIconImg) {
-            display: block !important;
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     }
 
     :global(.PhoneInputCountrySelectArrow) {
-        display: block !important;
-        content: '' !important;
-        width: 6px !important;
-        height: 6px !important;
-        margin-left: 6px !important;
-        margin-top: -2px !important;
-        border-style: solid !important;
-        border-color: #18C98B !important;
-        border-top-width: 0 !important;
-        border-left-width: 0 !important;
-        border-bottom-width: 1.5px !important;
-        border-right-width: 1.5px !important;
-        transform: rotate(45deg) !important;
-        opacity: 0.85 !important;
+        display: block;
+        content: '';
+        width: 6px;
+        height: 6px;
+        margin-left: 6px;
+        margin-top: -2px;
+        border-style: solid;
+        border-color: #18C98B;
+        border-top-width: 0;
+        border-left-width: 0;
+        border-bottom-width: 1.5px;
+        border-right-width: 1.5px;
+        transform: rotate(45deg);
+        opacity: 0.85;
     }
 
     :global(.PhoneInputCountrySelect) {
-        position: absolute !important;
-        inset: 0 !important;
-        opacity: 0 !important;
-        cursor: pointer !important;
-        width: 100% !important;
-        height: 100% !important;
-        background: #0D1612 !important;
-        color: #FFFFFF !important;
-        z-index: 5 !important;
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        background: #0D1612;
+        color: #FFFFFF;
+        z-index: 5;
 
         option {
-            background: #0D1612 !important;
-            color: #FFFFFF !important;
-            padding: 8px 12px !important;
+            background: #0D1612;
+            color: #FFFFFF;
+            padding: 8px 12px;
         }
     }
 
     :global(.PhoneInputInput) {
-        flex: 1 !important;
-        display: flex !important;
-        align-items: center !important;
-        align-self: center !important;
-        background: transparent !important;
-        background-color: transparent !important;
-        border: none !important;
-        outline: none !important;
-        color: #FFFFFF !important;
-        font-size: 14.5px !important;
-        font-family: inherit !important;
-        height: 100% !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        box-shadow: none !important;
-        box-sizing: border-box !important;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        align-self: center;
+        background: transparent;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        color: #FFFFFF;
+        font-size: 14.5px;
+        font-family: inherit;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        box-shadow: none;
+        box-sizing: border-box;
 
         &::placeholder {
-            color: rgba(255, 255, 255, 0.32) !important;
-            font-size: 14.5px !important;
+            color: rgba(255, 255, 255, 0.32);
+            font-size: 14.5px;
         }
 
         &:-webkit-autofill,
         &:-webkit-autofill:hover,
         &:-webkit-autofill:focus,
         &:-webkit-autofill:active {
-            -webkit-box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.6) inset !important;
-            box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.6) inset !important;
-            -webkit-text-fill-color: #FFFFFF !important;
+            -webkit-box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.6) inset;
+            box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.6) inset;
+            -webkit-text-fill-color: #FFFFFF;
         }
     }
 }
@@ -140,9 +140,9 @@
 
     textarea {
         width: 100%;
-        background: transparent !important;
-        border: none !important;
-        outline: none !important;
+        background: transparent;
+        border: none;
+        outline: none;
         color: #FFFFFF;
         font-size: 14.5px;
         font-family: inherit;
@@ -207,14 +207,14 @@
     }
 
     :global(html.light) & {
-        background: #18C98B !important;
-        color: #040605 !important;
-        border-color: #18C98B !important;
-        box-shadow: 0 2px 10px rgba(24, 201, 139, 0.25) !important;
+        background: #18C98B;
+        color: #040605;
+        border-color: #18C98B;
+        box-shadow: 0 2px 10px rgba(24, 201, 139, 0.25);
 
         &:hover:not(:disabled) {
-            background: #15B77E !important;
-            border-color: #15B77E !important;
+            background: #15B77E;
+            border-color: #15B77E;
         }
     }
 
@@ -307,142 +307,6 @@
         background: #18C98B;
         color: #040300;
         box-shadow: 0 0 20px rgba(24, 201, 139, 0.4);
-    }
-}
-
-/* 3. Interactive FAQ Section */
-.faqSection {
-    position: relative;
-    z-index: 2;
-    margin-bottom: 70px;
-    max-width: 880px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.faqHeader {
-    text-align: center;
-    margin-bottom: 36px;
-}
-
-.faqBadge {
-    display: inline-block;
-    background: rgba(24, 201, 139, 0.12);
-    border: 1px solid rgba(24, 201, 139, 0.35);
-    color: #18C98B;
-    font-size: 10.5px;
-    font-weight: 800;
-    letter-spacing: 0.8px;
-    padding: 4px 12px;
-    border-radius: 6px;
-    margin-bottom: 12px;
-}
-
-.faqTitle {
-    color: #FFFFFF;
-    font-size: 32px;
-    font-weight: 800;
-    font-family: var(--font-plus-jakarta), sans-serif;
-    margin-bottom: 8px;
-
-    @include respond-to('sm') {
-        font-size: 26px;
-    }
-}
-
-.faqSubtitle {
-    color: rgba(255, 255, 255, 0.65);
-    font-size: 15px;
-    max-width: 620px;
-    margin: 0 auto;
-
-    @include respond-to('sm') {
-        font-size: 14px;
-    }
-}
-
-.faqAccordionList {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.faqCard {
-    background: linear-gradient(160deg, #0D1612 0%, #040806 100%);
-    border: 1px solid rgba(24, 201, 139, 0.22);
-    border-radius: 14px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-
-    &:hover {
-        border-color: rgba(24, 201, 139, 0.45);
-    }
-
-    &.faqCardOpen {
-        border-color: rgba(24, 201, 139, 0.6);
-        background: linear-gradient(160deg, #0F1C16 0%, #060B08 100%);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(24, 201, 139, 0.08);
-    }
-}
-
-.faqQuestionBtn {
-    width: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    padding: 18px 22px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    cursor: pointer;
-    text-align: left;
-}
-
-.faqQuestionText {
-    color: #FFFFFF;
-    font-size: 16px;
-    font-weight: 700;
-    font-family: var(--font-plus-jakarta), sans-serif;
-    line-height: 1.4;
-
-    @include respond-to('sm') {
-        font-size: 14px;
-    }
-}
-
-.faqChevron {
-    color: #18C98B;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    flex-shrink: 0;
-
-    &.faqChevronOpen {
-        transform: rotate(180deg);
-    }
-}
-
-.faqAnswerWrapper {
-    overflow: hidden;
-}
-
-.faqAnswerContent {
-    padding: 0 22px 20px 22px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    margin-top: 4px;
-    padding-top: 14px;
-
-    p {
-        color: rgba(255, 255, 255, 0.72);
-        font-size: 14px;
-        line-height: 1.7;
-        margin: 0;
-
-        @include respond-to('sm') {
-            font-size: 13px;
-        }
     }
 }
 
@@ -543,56 +407,56 @@
 }
 
 :global(html.light) .contactPage {
-    background: #F8FAFC !important;
-    color: #0F172A !important;
+    background: #F8FAFC;
+    color: #0F172A;
 
     .gridOverlay {
-        opacity: 0.08 !important;
+        opacity: 0.08;
     }
 
     .ambientGlowTop,
     .ambientGlowCenter,
     .ambientGlowBottom {
-        opacity: 0.1 !important;
-        filter: blur(120px) !important;
+        opacity: 0.1;
+        filter: blur(120px);
     }
 
     /* 1. Status Pill (Screenshot Fix 1) */
     .statusPillWrapper {
         .statusPill {
-            background: #FFFFFF !important;
-            border: 1px solid rgba(24, 201, 139, 0.45) !important;
-            box-shadow: 0 4px 18px rgba(24, 201, 139, 0.12) !important;
+            background: #FFFFFF;
+            border: 1px solid rgba(24, 201, 139, 0.45);
+            box-shadow: 0 4px 18px rgba(24, 201, 139, 0.12);
 
             .pillTag {
-                color: #047857 !important;
-                font-weight: 800 !important;
-                background: transparent !important;
-                background-color: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
-                padding: 0 !important;
+                color: #047857;
+                font-weight: 800;
+                background: transparent;
+                background-color: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 0;
             }
 
             .pillDivider {
-                color: rgba(15, 23, 42, 0.25) !important;
+                color: rgba(15, 23, 42, 0.25);
             }
 
             .pillText {
-                color: #0F172A !important;
-                font-weight: 600 !important;
-                background: transparent !important;
-                background-color: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
-                padding: 0 !important;
+                color: #0F172A;
+                font-weight: 600;
+                background: transparent;
+                background-color: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 0;
             }
 
             .pillBadge {
-                background: #F0FDF4 !important;
-                border: 1px solid rgba(24, 201, 139, 0.35) !important;
-                color: #047857 !important;
-                font-weight: 700 !important;
+                background: #F0FDF4;
+                border: 1px solid rgba(24, 201, 139, 0.35);
+                color: #047857;
+                font-weight: 700;
             }
         }
     }
@@ -602,7 +466,7 @@
     .formTitle,
     .faqTitle,
     .ctaTitle {
-        color: #0F172A !important;
+        color: #0F172A;
     }
 
     .mainSubtitle,
@@ -610,180 +474,180 @@
     .formSubtitle,
     .faqSubtitle,
     .ctaSubtitle {
-        color: #475569 !important;
+        color: #475569;
     }
 
     .goldGradient {
-        color: #18C98B !important;
-        background: none !important;
-        -webkit-background-clip: unset !important;
-        -webkit-text-fill-color: initial !important;
+        color: #18C98B;
+        background: none;
+        -webkit-background-clip: unset;
+        -webkit-text-fill-color: initial;
     }
 
     .infoBadge,
     .formHeaderBadge,
     .faqBadge {
-        background: rgba(24, 201, 139, 0.12) !important;
-        border: 1px solid rgba(24, 201, 139, 0.3) !important;
-        color: #047857 !important;
+        background: rgba(24, 201, 139, 0.12);
+        border: 1px solid rgba(24, 201, 139, 0.3);
+        color: #047857;
     }
 
     .infoCard,
     .formGlassCard,
     .ctaCard {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(24, 201, 139, 0.28) !important;
-        box-shadow: 0 10px 35px rgba(15, 23, 42, 0.08) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(24, 201, 139, 0.28);
+        box-shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
     }
 
     .infoItem {
-        background: #F8FAFC !important;
-        border: 1px solid rgba(24, 201, 139, 0.2) !important;
+        background: #F8FAFC;
+        border: 1px solid rgba(24, 201, 139, 0.2);
 
         .infoIconBox {
-            background: #F0FDF4 !important;
-            border: 1px solid rgba(24, 201, 139, 0.35) !important;
-            color: #047857 !important;
+            background: #F0FDF4;
+            border: 1px solid rgba(24, 201, 139, 0.35);
+            color: #047857;
         }
 
         .infoLabel {
-            color: #047857 !important;
+            color: #047857;
         }
 
         .infoValue,
         .addressValue {
-            color: #0F172A !important;
+            color: #0F172A;
         }
 
         .infoHelper {
-            color: #64748B !important;
+            color: #64748B;
         }
 
         .itemCopyBtn {
-            background: #FFFFFF !important;
-            border: 1px solid rgba(15, 23, 42, 0.12) !important;
-            color: #475569 !important;
+            background: #FFFFFF;
+            border: 1px solid rgba(15, 23, 42, 0.12);
+            color: #475569;
 
             &:hover {
-                background: #F0FDF4 !important;
-                border-color: #18C98B !important;
-                color: #047857 !important;
+                background: #F0FDF4;
+                border-color: #18C98B;
+                color: #047857;
             }
         }
     }
 
     .activeStatusPill {
-        background: #F0FDF4 !important;
-        border: 1px solid rgba(24, 201, 139, 0.3) !important;
-        color: #047857 !important;
+        background: #F0FDF4;
+        border: 1px solid rgba(24, 201, 139, 0.3);
+        color: #047857;
     }
 
     .inputGroup label,
     .labelRow label {
-        color: #1E293B !important;
+        color: #1E293B;
     }
 
     .inputWrapper,
     .phoneInputWrapper,
     .textareaWrapper {
-        background: #FFFFFF !important;
-        border: 1.5px solid rgba(15, 23, 42, 0.14) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+        background: #FFFFFF;
+        border: 1.5px solid rgba(15, 23, 42, 0.14);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 
         &:focus-within {
-            border-color: #18C98B !important;
-            box-shadow: 0 0 0 3px rgba(24, 201, 139, 0.15) !important;
+            border-color: #18C98B;
+            box-shadow: 0 0 0 3px rgba(24, 201, 139, 0.15);
         }
 
         input,
         textarea,
         select {
-            color: #0F172A !important;
-            background: transparent !important;
+            color: #0F172A;
+            background: transparent;
 
             &::placeholder {
-                color: #94A3B8 !important;
+                color: #94A3B8;
             }
         }
 
         .fieldIcon,
         .dropdownChevron {
-            color: #047857 !important;
+            color: #047857;
         }
     }
 
     /* Phone Input Country Dropdown (Screenshot Fix 2) */
     .phoneCustomInput {
         :global(.PhoneInputCountry) {
-            background: transparent !important;
-            background-color: transparent !important;
-            border-right: 1px solid rgba(15, 23, 42, 0.14) !important;
+            background: transparent;
+            background-color: transparent;
+            border-right: 1px solid rgba(15, 23, 42, 0.14);
         }
 
         :global(.PhoneInputCountryIcon) {
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
-            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         :global(.PhoneInputCountrySelectArrow) {
-            border-color: #047857 !important;
+            border-color: #047857;
         }
 
         :global(.PhoneInputCountrySelect) {
-            background: transparent !important;
-            background-color: transparent !important;
-            color: transparent !important;
-            opacity: 0 !important;
+            background: transparent;
+            background-color: transparent;
+            color: transparent;
+            opacity: 0;
 
             option {
-                background: #FFFFFF !important;
-                color: #0F172A !important;
+                background: #FFFFFF;
+                color: #0F172A;
             }
         }
 
         :global(.PhoneInputInput) {
-            color: #0F172A !important;
-            background: transparent !important;
-            background-color: transparent !important;
+            color: #0F172A;
+            background: transparent;
+            background-color: transparent;
 
             &::placeholder {
-                color: #94A3B8 !important;
+                color: #94A3B8;
             }
         }
     }
 
     .selectInput option {
-        background: #FFFFFF !important;
-        color: #0F172A !important;
+        background: #FFFFFF;
+        color: #0F172A;
     }
 
     .faqCard {
-        background: #FFFFFF !important;
-        border: 1px solid rgba(24, 201, 139, 0.25) !important;
-        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04) !important;
+        background: #FFFFFF;
+        border: 1px solid rgba(24, 201, 139, 0.25);
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
 
         &:hover {
-            border-color: #18C98B !important;
-            background: #F8FAFC !important;
+            border-color: #18C98B;
+            background: #F8FAFC;
         }
 
         &.faqCardOpen {
-            background: #FFFFFF !important;
-            border-color: #18C98B !important;
-            box-shadow: 0 6px 22px rgba(24, 201, 139, 0.1) !important;
+            background: #FFFFFF;
+            border-color: #18C98B;
+            box-shadow: 0 6px 22px rgba(24, 201, 139, 0.1);
         }
 
         .faqQuestionText {
-            color: #0F172A !important;
+            color: #0F172A;
         }
 
         .faqChevron {
-            color: #047857 !important;
+            color: #047857;
         }
 
         .faqAnswerContent p {
-            color: #475569 !important;
-            border-top: 1px solid #F1F5F9 !important;
+            color: #475569;
+            border-top: 1px solid #F1F5F9;
         }
     }
 }

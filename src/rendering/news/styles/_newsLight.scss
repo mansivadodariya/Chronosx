@@ -1,0 +1,160 @@
+@use '../../../scss/main.scss' as *;
+@use '../../../scss/breakpoints/breakpoints.scss' as *;
+
+/* COMPLETE LIGHT MODE OVERRIDES FOR NEWS */
+/* ========================================================================= */
+:global(html.light) .newsContainer {
+    color: #0F172A;
+
+    .heroHeader {
+        border-bottom-color: rgba(15, 23, 42, 0.08);
+
+        .titleWrap {
+            .newsIconBadge {
+                background: #FFFFFF;
+                border-color: rgba(15, 23, 42, 0.12);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            }
+
+            h1 {
+                color: #0F172A;
+            }
+
+            p {
+                color: #475569;
+            }
+        }
+    }
+
+    .controlBar {
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.09);
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+
+        .searchBox input {
+            background: #F8FAFC;
+            border-color: rgba(15, 23, 42, 0.15);
+            color: #0F172A;
+
+            &::placeholder {
+                color: #94A3B8;
+            }
+
+            &:focus {
+                background: #FFFFFF;
+                border-color: #18C98B;
+            }
+        }
+
+        .togglePill {
+            background: #F8FAFC;
+            border-color: rgba(15, 23, 42, 0.1);
+            color: #475569;
+
+            &:hover {
+                background: #F1F5F9;
+                color: #0F172A;
+            }
+
+            &.activeToggle {
+                background: rgba(24, 201, 139, 0.15);
+                border-color: #18C98B;
+                color: #047857;
+            }
+        }
+
+        .refreshBtn {
+            background: #F8FAFC;
+            border-color: rgba(15, 23, 42, 0.12);
+            color: #047857;
+
+            &:hover {
+                background: #F1F5F9;
+            }
+        }
+
+        .catBtn {
+            background: #F8FAFC;
+            border-color: rgba(15, 23, 42, 0.08);
+            color: #475569;
+
+            &:hover {
+                background: #F1F5F9;
+                color: #0F172A;
+            }
+
+            &.activeCat {
+                background: #18C98B;
+                border-color: #18C98B;
+                color: #040605;
+            }
+        }
+    }
+
+    .newsCard {
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.09);
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+
+        .cardHeader .metaSource {
+            color: #64748B;
+        }
+
+        .cardHeader .metaTime {
+            color: #94A3B8;
+        }
+
+        .cardBody .newsTitle {
+            color: #0F172A;
+        }
+
+        .cardBody .newsExcerpt {
+            color: #475569;
+        }
+
+        .cardFooter {
+            border-top-color: rgba(15, 23, 42, 0.06);
+
+            .readMoreLink {
+                color: #047857;
+            }
+        }
+    }
+
+    .newsModalContent {
+        background: #FFFFFF;
+        border-color: rgba(15, 23, 42, 0.1);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+        color: #0F172A;
+
+        .modalHeader {
+            border-bottom-color: rgba(15, 23, 42, 0.08);
+
+            h3 {
+                color: #0F172A;
+            }
+        }
+
+        .insightBox,
+        .scenarioBox {
+            background: #F8FAFC;
+            border-color: rgba(15, 23, 42, 0.08);
+
+            h4 {
+                color: #0F172A;
+            }
+
+            p {
+                color: #475569;
+            }
+        }
+
+        .scenarioItem {
+            color: #475569;
+
+            strong {
+                color: #0F172A;
+            }
+        }
+    }
+}

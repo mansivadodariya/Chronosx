@@ -163,6 +163,7 @@
         text-transform: uppercase;
         color: #94A3B8;
         letter-spacing: 0.05em;
+        white-space: nowrap;
         svg { color: #18C98B; }
     }
 
@@ -179,12 +180,14 @@
             color: #FFFFFF;
             font-size: 12px;
             font-weight: 600;
-            border-radius: 9999px;
+            border-radius: 6px;
             padding: 0 12px;
             outline: none;
             height: 36px;
+            box-sizing: border-box;
             transition: all 0.2s;
             appearance: textfield;
+            font-family: inherit;
 
             &:focus {
                 background: rgba(18, 34, 26, 0.75);
@@ -204,6 +207,14 @@
             }
         }
     }
+}
+
+.paramInputCapital {
+    width: 95px;
+}
+
+.paramInputVolume {
+    width: 108px;
 }
 
 .customSelectContainer {
@@ -398,3 +409,45 @@
         box-shadow: none;
     }
 }
+
+.jsonActionsRow {
+    display: flex;
+    gap: 6px;
+}
+
+.btnGhost {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #94A3B8;
+    font-size: 11.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(24, 201, 139, 0.12);
+        border-color: rgba(24, 201, 139, 0.3);
+        color: #18C98B;
+    }
+}
+
+.btnClearJson {
+    color: #F43F5E;
+}
+
+.jsonFooterRow {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+.hiddenFileInput {
+    display: none;
+}
+

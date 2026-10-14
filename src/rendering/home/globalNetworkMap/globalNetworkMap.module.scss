@@ -10,13 +10,13 @@
   background: radial-gradient(ellipse at 50% 30%, #040e0a 0%, #020705 55%, #000000 100%);
 
   :global(html.light) & {
-    background: #FFFFFF !important;
-    border-bottom: 1px solid rgba(24, 201, 139, 0.15) !important;
+    background: #FFFFFF;
+    border-bottom: 1px solid rgba(24, 201, 139, 0.15);
 
     .mapCard {
-      background: radial-gradient(circle at 75% 30%, rgba(24, 201, 139, 0.14) 0%, transparent 60%), #07130F !important;
-      border: 1px solid rgba(24, 201, 139, 0.45) !important;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+      background: radial-gradient(circle at 75% 30%, rgba(24, 201, 139, 0.14) 0%, transparent 60%), #07130F;
+      border: 1px solid rgba(24, 201, 139, 0.45);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     }
   }
 

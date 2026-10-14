@@ -29,23 +29,23 @@
         .customSelectWrapper {
             .customSelectOptions,
             .customDropdownMenu {
-                background: #FFFFFF !important;
-                border-color: rgba(24, 201, 139, 0.25) !important;
-                box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12) !important;
+                background: #FFFFFF;
+                border-color: rgba(24, 201, 139, 0.25);
+                box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
 
                 .customOption,
                 .customDropdownItem {
-                    color: #1E293B !important;
+                    color: #1E293B;
 
                     &:hover {
-                        background: rgba(24, 201, 139, 0.08) !important;
-                        color: #047857 !important;
+                        background: rgba(24, 201, 139, 0.08);
+                        color: #047857;
                     }
 
                     &.selectedOption,
                     &.itemSelected {
-                        background: rgba(24, 201, 139, 0.14) !important;
-                        color: #047857 !important;
+                        background: rgba(24, 201, 139, 0.14);
+                        color: #047857;
                     }
                 }
             }
@@ -53,9 +53,9 @@
     }
 
     .strategyCategoryFilterBar {
-        background: #FFFFFF !important;
-        border-color: rgba(24, 201, 139, 0.25) !important;
-        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+        background: #FFFFFF;
+        border-color: rgba(24, 201, 139, 0.25);
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
 
         .filterTitleGroup {
             color: #0F172A;
@@ -93,13 +93,13 @@
     .watchlistPanel,
     .chartPanel,
     .analysisPanel {
-        background: #FFFFFF !important;
-        border-color: rgba(24, 201, 139, 0.25) !important;
-        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
+        background: #FFFFFF;
+        border-color: rgba(24, 201, 139, 0.25);
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
 
         .watchlistHeader h3,
         .analysisHeader h3 {
-            color: #0F172A !important;
+            color: #0F172A;
         }
 
         .watchlistControls {
@@ -138,68 +138,68 @@
 
         .watchlistHeader {
             h3 {
-                color: #0F172A !important;
+                color: #0F172A;
             }
 
             .watchlistCount {
-                background: #ECFDF5 !important;
-                border: 1px solid rgba(16, 185, 129, 0.3) !important;
-                color: #059669 !important;
+                background: #ECFDF5;
+                border: 1px solid rgba(16, 185, 129, 0.3);
+                color: #059669;
             }
         }
 
         .watchlistSearchContainer {
-            background: #F8FAFC !important;
-            border: 1px solid #E2E8F0 !important;
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
 
             &:focus-within {
-                border-color: #10B981 !important;
-                background: #FFFFFF !important;
-                box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15) !important;
+                border-color: #10B981;
+                background: #FFFFFF;
+                box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
             }
 
             .searchIcon {
-                color: #64748B !important;
+                color: #64748B;
             }
 
             .watchlistSearchInput {
-                background: transparent !important;
-                background-color: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
-                outline: none !important;
-                color: #0F172A !important;
+                background: transparent;
+                background-color: transparent;
+                border: none;
+                box-shadow: none;
+                outline: none;
+                color: #0F172A;
 
                 &::placeholder {
-                    color: #94A3B8 !important;
-                    background: transparent !important;
-                    background-color: transparent !important;
+                    color: #94A3B8;
+                    background: transparent;
+                    background-color: transparent;
                 }
             }
 
             .searchClearBtn {
-                color: #94A3B8 !important;
+                color: #94A3B8;
 
                 &:hover {
-                    color: #0F172A !important;
+                    color: #0F172A;
                 }
             }
         }
 
         .quoteColumnHeader {
-            border-bottom: 1px solid #F1F5F9 !important;
+            border-bottom: 1px solid #F1F5F9;
 
             .colHeaderLeft span,
             .colHeaderRight span,
             .colHeaderBid,
             .colHeaderAsk {
-                color: #64748B !important;
+                color: #64748B;
             }
         }
 
         .watchlistItemsList {
             &::-webkit-scrollbar-thumb {
-                background: rgba(16, 185, 129, 0.25) !important;
+                background: rgba(16, 185, 129, 0.25);
             }
         }
 
@@ -209,94 +209,94 @@
             border-left: 3px solid transparent;
 
             &.rowBullish {
-                background: #F0FDF4 !important;
-                border-color: #DCFCE7 !important;
+                background: #F0FDF4;
+                border-color: #DCFCE7;
 
                 &:hover {
-                    background: #DCFCE7 !important;
+                    background: #DCFCE7;
                 }
 
                 &.quoteActiveItem {
-                    background: #DCFCE7 !important;
-                    border-left: 3px solid #10B981 !important;
-                    border-color: #86EFAC !important;
+                    background: #DCFCE7;
+                    border-left: 3px solid #10B981;
+                    border-color: #86EFAC;
                 }
             }
 
             &.rowBearish {
-                background: #FEF2F2 !important;
-                border-color: #FEE2E2 !important;
+                background: #FEF2F2;
+                border-color: #FEE2E2;
 
                 &:hover {
-                    background: #FEE2E2 !important;
+                    background: #FEE2E2;
                 }
 
                 &.quoteActiveItem {
-                    background: #FEE2E2 !important;
-                    border-left: 3px solid #EF4444 !important;
-                    border-color: #FCA5A5 !important;
+                    background: #FEE2E2;
+                    border-left: 3px solid #EF4444;
+                    border-color: #FCA5A5;
                 }
             }
 
             &.rowNeutral {
-                background: #F8FAFC !important;
-                border-color: #E2E8F0 !important;
+                background: #F8FAFC;
+                border-color: #E2E8F0;
 
                 &:hover {
-                    background: #F1F5F9 !important;
+                    background: #F1F5F9;
                 }
 
                 &.quoteActiveItem {
-                    background: #ECFDF5 !important;
-                    border-left: 3px solid #10B981 !important;
-                    border-color: #A7F3D0 !important;
+                    background: #ECFDF5;
+                    border-left: 3px solid #10B981;
+                    border-color: #A7F3D0;
                 }
             }
 
             .quoteItemLeft {
                 .quoteSymbolName {
-                    color: #0F172A !important;
+                    color: #0F172A;
                 }
 
                 .quoteChangePct {
                     &.pctUp {
-                        color: #059669 !important;
+                        color: #059669;
                     }
 
                     &.pctDown {
-                        color: #DC2626 !important;
+                        color: #DC2626;
                     }
 
                     &.pctRef {
-                        color: #64748B !important;
+                        color: #64748B;
                     }
                 }
             }
 
             .quoteItemRight {
                 .quoteBidPrice {
-                    color: #DC2626 !important;
+                    color: #DC2626;
                 }
 
                 .quoteAskPrice {
-                    color: #059669 !important;
+                    color: #059669;
                 }
             }
 
             &.quoteActiveItem {
                 .quoteItemLeft .quoteSymbolName {
-                    color: #059669 !important;
+                    color: #059669;
                 }
             }
         }
 
         .watchlistSkeletonItem {
-            background: #F8FAFC !important;
-            border-left: 3px solid #E2E8F0 !important;
+            background: #F8FAFC;
+            border-left: 3px solid #E2E8F0;
 
             &.quoteActiveItem {
-                border-left: 3px solid #10B981 !important;
-                background: #F0FDF4 !important;
+                border-left: 3px solid #10B981;
+                background: #F0FDF4;
             }
 
             .skeletonPulse {
@@ -305,13 +305,13 @@
                     rgba(0, 0, 0, 0.04) 25%,
                     rgba(0, 0, 0, 0.09) 50%,
                     rgba(0, 0, 0, 0.04) 75%
-                ) !important;
-                background-size: 200% 100% !important;
+                );
+                background-size: 200% 100%;
             }
         }
 
         .noPairsFound {
-            color: #94A3B8 !important;
+            color: #94A3B8;
         }
 
         .timeframeRow {
@@ -333,380 +333,53 @@
         }
 
         .chartPanelHeader {
-            background: #FFFFFF !important;
-            border-bottom: 1px solid #E2E8F0 !important;
+            background: #FFFFFF;
+            border-bottom: 1px solid #E2E8F0;
 
             .symbolTitle h3 {
-                color: #0F172A !important;
+                color: #0F172A;
             }
 
             .badgeTf {
-                background: #ECFDF5 !important;
-                border: 1px solid rgba(16, 185, 129, 0.3) !important;
-                color: #059669 !important;
+                background: #ECFDF5;
+                border: 1px solid rgba(16, 185, 129, 0.3);
+                color: #059669;
             }
 
             .ohlcItem {
                 .ohlcLabel {
-                    color: #64748B !important;
+                    color: #64748B;
                 }
 
                 .ohlcValue {
-                    color: #0F172A !important;
+                    color: #0F172A;
                 }
             }
         }
 
         .chartCanvasContainer {
-            background: #FFFFFF !important;
+            background: #FFFFFF;
         }
 
         .chartLegendContainer {
-            background: #F8FAFC !important;
-            border-top: 1px solid #E2E8F0 !important;
+            background: #F8FAFC;
+            border-top: 1px solid #E2E8F0;
 
             .chartLegend {
                 .legendItem {
-                    color: #475569 !important;
-                    font-weight: 600 !important;
+                    color: #475569;
+                    font-weight: 600;
 
                     &:hover {
-                        background: #F1F5F9 !important;
-                        color: #0F172A !important;
+                        background: #F1F5F9;
+                        color: #0F172A;
                     }
 
                     &.legendDisabled {
-                        opacity: 0.35 !important;
-                        color: #94A3B8 !important;
+                        opacity: 0.35;
+                        color: #94A3B8;
                     }
                 }
             }
         }
-
-        /* 3. Right Analysis Panel & Technical Score */
-        .premiumAccordion,
-        .premiumAccordionCard {
-            background: #FFFFFF !important;
-            border: 1px solid #E2E8F0 !important;
-            border-radius: 12px !important;
-            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
-            margin-bottom: 10px !important;
-            overflow: hidden !important;
-
-            .premiumAccordionHeader {
-                background: #F8FAFC !important;
-                border-bottom: 1px solid #E2E8F0 !important;
-
-                span {
-                    color: #0F172A !important;
-                    font-weight: 700 !important;
-                }
-
-                svg {
-                    color: #059669 !important;
-                }
-
-                &:hover {
-                    background: #F1F5F9 !important;
-                }
-            }
-
-            .premiumAccordionBody {
-                background: #FFFFFF !important;
-                color: #0F172A !important;
-            }
-        }
-
-        .scoreTopRow {
-            border-bottom: 1px solid #E2E8F0 !important;
-
-            .scoreTextGroup {
-                .largeScoreText {
-                    color: #059669 !important;
-
-                    .scoreDivider {
-                        color: #94A3B8 !important;
-                    }
-                }
-
-                .scoreTextLabel {
-                    color: #059669 !important;
-                }
-            }
-
-            .confidenceGroup {
-                .confLabel {
-                    color: #64748B !important;
-                }
-
-                .confValue {
-                    color: #0F172A !important;
-                }
-            }
-        }
-
-        .progressBarRow {
-            &:hover {
-                background: #F8FAFC !important;
-            }
-
-            .progressBarLabelGroup {
-                color: #334155 !important;
-
-                svg {
-                    color: #059669 !important;
-                }
-            }
-
-            .progressOuterTrack {
-                background: #E2E8F0 !important;
-            }
-
-            .progressValueGroup {
-                .progressScoreText {
-                    color: #0F172A !important;
-                }
-
-                .subChevron {
-                    color: #64748B !important;
-                }
-            }
-        }
-
-        .progressSubDetailsCollapse {
-            background: #F8FAFC !important;
-            border: 1px solid #E2E8F0 !important;
-
-            .subDetailTableGrid {
-                .subDetailMetricRow {
-                    border-bottom: 1px solid #F1F5F9 !important;
-
-                    .metricName {
-                        color: #64748B !important;
-                    }
-
-                    .metricVal {
-                        color: #0F172A !important;
-                    }
-                }
-            }
-
-            .subDetailSimpleRows {
-                .simpleRowItem {
-                    color: #64748B !important;
-
-                    strong {
-                        color: #0F172A !important;
-                    }
-                }
-            }
-        }
-
-        .evidenceOutlinedGroup {
-            background: #F8FAFC !important;
-            border: 1px solid #E2E8F0 !important;
-
-            .evidenceGroupClickableHeader {
-                .evidenceTitleGroup {
-                    .groupTypeTitle {
-                        color: #0F172A !important;
-                    }
-                }
-
-                .subChevron {
-                    color: #64748B !important;
-                }
-            }
-
-            .evidenceCollapsedBulletArea {
-                border-top: 1px solid #F1F5F9 !important;
-
-                .evidenceBulletItem {
-                    color: #334155 !important;
-                }
-            }
-        }
-
-        .trendRowHeader {
-            background: #F8FAFC !important;
-            border: 1px solid #E2E8F0 !important;
-
-            .trendHeaderText {
-                h4 {
-                    color: #0F172A !important;
-                }
-
-                p {
-                    color: #64748B !important;
-                }
-            }
-        }
-
-        .confluenceSummaryCard,
-        .levelsSummaryTable,
-        .strategyExecutionCard,
-        .strategyOrderCard {
-            background: #F8FAFC !important;
-            border: 1px solid #E2E8F0 !important;
-            color: #0F172A !important;
-
-            h4, h5, strong {
-                color: #0F172A !important;
-            }
-
-            p, span {
-                color: #334155 !important;
-            }
-        }
-
-        .confluenceGridItem,
-        .levelRow,
-        .executionMetricBox {
-            background: #FFFFFF !important;
-            border: 1px solid #E2E8F0 !important;
-            color: #0F172A !important;
-        }
-
-        .momentumSliderContainer,
-        .macdMetricsContainer,
-        .stochasticSubProgressList,
-        .relativeVolumeContainer,
-        .volumePressureContainer,
-        .levelsSummaryGrid,
-        .pivotPointsTable,
-        .fibonacciTable,
-        .aiSummaryCard {
-            background: #F8FAFC !important;
-            border: 1px solid #E2E8F0 !important;
-            color: #0F172A !important;
-
-            .sliderName,
-            .macdTitle,
-            .stochLabel,
-            .volHeaderRow,
-            .pressureHeaderRow {
-                color: #334155 !important;
-            }
-
-            .sliderValTxt,
-            .stochValText,
-            .volCompareValue,
-            strong {
-                color: #0F172A !important;
-            }
-
-            .macdSubDetailsRow,
-            .axisMarker,
-            .volMarker {
-                color: #64748B !important;
-            }
-
-            .gradientTrackBg,
-            .macdHistogramTrack,
-            .stochTrackBg,
-            .relativeVolumeTrack {
-                background: #E2E8F0 !important;
-            }
-        }
-
-        .volCompareCard {
-            background: #F8FAFC !important;
-            border: 1px solid #E2E8F0 !important;
-
-            .volCompareLabel {
-                color: #64748B !important;
-            }
-
-            .volCompareValue {
-                color: #0F172A !important;
-            }
-        }
-
-        .metricBox,
-        .levelsCard,
-        .trendConfidenceContainer,
-        .confluenceBox,
-        .strategyReasoning,
-        .volMetricBox,
-        .indicatorRow,
-        .quickPosBox {
-            background: #F8FAFC !important;
-            border-color: rgba(24, 201, 139, 0.2) !important;
-            color: #0F172A !important;
-
-            .sectionTitle,
-            .confKicker,
-            .reasoningLabel {
-                color: #047857 !important;
-            }
-
-            p {
-                color: #334155 !important;
-            }
-
-            strong {
-                color: #0F172A !important;
-            }
-
-            .indicatorName,
-            .sliderName,
-            .metricName {
-                color: #475569 !important;
-            }
-
-            .sliderValTxt,
-            .metricValTxt,
-            .confidenceTexts strong {
-                color: #0F172A !important;
-            }
-
-            .confidenceTrack {
-                background: #E2E8F0 !important;
-            }
-        }
-
-        .accordionHeader {
-            background: #F1F5F9;
-            border-color: rgba(24, 201, 139, 0.2);
-            color: #0F172A;
-
-            .accTitle {
-                color: #0F172A;
-            }
-
-            .accChevron {
-                color: #64748B;
-            }
-        }
-
-        .accordionBody {
-            background: #FFFFFF;
-        }
-
-        .actionBtnGreen {
-            background: #18C98B !important;
-            border: 1px solid #18C98B !important;
-            color: #040605 !important;
-            border-radius: 9999px !important;
-            box-shadow: 0 4px 14px rgba(24, 201, 139, 0.25);
-
-            &:hover {
-                background: #15b77e !important;
-                border-color: #15b77e !important;
-            }
-        }
-
-        .actionBtnOutline {
-            background: #FFFFFF;
-            border: 1px solid rgba(24, 201, 139, 0.35);
-            border-radius: 9999px !important;
-            color: #047857;
-
-            &:hover {
-                background: rgba(24, 201, 139, 0.08);
-            }
-        }
-    }
-}
-
-
+}}

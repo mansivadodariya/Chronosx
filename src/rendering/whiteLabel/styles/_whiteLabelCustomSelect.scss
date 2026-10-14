@@ -18,7 +18,7 @@
     height: 42px;
     background: #141816;
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 12px !important;
+    border-radius: 12px;
     padding: 0 32px 0 12px;
     color: #FFFFFF;
     font-size: 13px;
@@ -51,7 +51,7 @@
     :global(.light) & {
         background: #F8FAFC;
         border-color: #CBD5E1;
-        border-radius: 12px !important;
+        border-radius: 12px;
         color: #0F172A;
 
         &:hover:not(:disabled) {

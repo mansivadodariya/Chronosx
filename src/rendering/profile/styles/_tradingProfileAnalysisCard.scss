@@ -233,3 +233,80 @@
     border-radius: 6px;
     box-shadow: 0 0 10px rgba(24, 201, 139, 0.6);
 }
+
+.tileValueRisk {
+    color: #18C98B;
+}
+
+.tileValueReturn {
+    color: #00F2FE;
+}
+
+.chipsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.chipRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    align-items: center;
+}
+
+.chipRowLabel {
+    font-size: 13px;
+    color: #94A3B8;
+    font-weight: 600;
+    min-width: 105px;
+
+    [data-theme='light'] & {
+        color: #475569;
+    }
+}
+
+.pairChip {
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(24, 201, 139, 0.12);
+    border: 1px solid rgba(24, 201, 139, 0.3);
+    color: #18C98B;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    [data-theme='light'] & {
+        background: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        color: #047857;
+    }
+}
+
+.sessionChip {
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #CBD5E1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    [data-theme='light'] & {
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        color: #334155;
+    }
+}
+
+.chipText {
+    unicode-bidi: isolate;
+    letter-spacing: 0.3px;
+}
+

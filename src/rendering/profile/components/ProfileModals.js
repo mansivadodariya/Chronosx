@@ -162,7 +162,7 @@ export default function ProfileModals({
                                 <button type="button" onClick={() => setShowLogoutConfirm(false)} className={styles.closeBtn}>✕</button>
                             </div>
                             <div className={styles.modalBody}>
-                                <p style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '14px', margin: '8px 0 16px' }}>
+                                <p>
                                     {t('sidebar.logoutConfirm', 'Are you sure you want to sign out of your account?')}
                                 </p>
                             </div>

@@ -114,7 +114,7 @@ RRR: ${selectedPrompt.demoData.setup.rrr}`;
             <div className={styles.gridOverlay} aria-hidden="true" />
 
             {/* 1. PAGE HEADER & HERO SECTION */}
-            <ChatHeroSection scrollToDemo={scrollToDemo} />
+            <ChatHeroSection />
 
             {/* 3. PRE-BUILT QUICK PROMPT STARTERS */}
             <PromptStartersSection

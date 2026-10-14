@@ -9,7 +9,7 @@
     background: #020605;
 
     :global(html.light) & {
-        background: #F8FAFC !important;
+        background: #F8FAFC;
     }
 
     .bannerCardFull {
@@ -20,9 +20,9 @@
         border-top: 1px solid rgba(24, 201, 139, 0.35);
 
         :global(html.light) & {
-            background: #FFFFFF !important;
-            border-top-color: rgba(24, 201, 139, 0.3) !important;
-            box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08) !important;
+            background: #FFFFFF;
+            border-top-color: rgba(24, 201, 139, 0.3);
+            box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08);
         }
 
         box-shadow: 0 30px 90px rgba(0, 0, 0, 0.95),
@@ -177,10 +177,10 @@
                     }
 
                     :global(html.light) & {
-                        background: #18C98B !important;
-                        color: #040605 !important;
-                        border-color: #18C98B !important;
-                        box-shadow: 0 2px 10px rgba(24, 201, 139, 0.2) !important;
+                        background: #18C98B;
+                        color: #040605;
+                        border-color: #18C98B;
+                        box-shadow: 0 2px 10px rgba(24, 201, 139, 0.2);
                     }
 
                     svg {

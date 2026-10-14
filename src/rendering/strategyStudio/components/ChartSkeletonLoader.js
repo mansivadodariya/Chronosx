@@ -97,12 +97,12 @@ export default function ChartSkeletonLoader({
                     </div>
                 </div>
 
-                <div style={{ marginTop: '12px', textAlign: 'center' }}>
-                    <div className={styles.chartLoaderLabel} style={{ justifyContent: 'center' }}>
+                <div className={styles.chartLoaderTextWrap}>
+                    <div className={`${styles.chartLoaderLabel} ${styles.chartLoaderCentered}`}>
                         <PieChartIcon size={14} color="#18C98B" />
                         <span>{label || 'Aggregating Trade Outcomes...'}</span>
                     </div>
-                    <div className={styles.chartLoaderSub} style={{ marginTop: '2px' }}>
+                    <div className={`${styles.chartLoaderSub} ${styles.chartLoaderSubMargin}`}>
                         Measuring win/loss ratios and risk factor
                     </div>
                 </div>
@@ -115,7 +115,7 @@ export default function ChartSkeletonLoader({
             <div className={styles.spinnerOrbitalSmall}>
                 <div className={styles.spinnerRing} />
             </div>
-            <div className={styles.chartLoaderLabel} style={{ marginTop: '12px' }}>
+            <div className={`${styles.chartLoaderLabel} ${styles.chartLoaderMarginTop12}`}>
                 <span>Loading Chart Data...</span>
             </div>
         </div>

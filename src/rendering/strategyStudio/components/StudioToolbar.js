@@ -135,7 +135,7 @@ export default function StudioToolbar({
                             min={fromMinAttr}
                             max={fromMaxAttr}
                             onChange={handleFromChange}
-                            width="135px"
+                            width="125px"
                             placeholder="Select Date"
                         />
                     </div>
@@ -153,7 +153,7 @@ export default function StudioToolbar({
                             min={toMinAttr}
                             max={toMaxAttr}
                             onChange={handleToChange}
-                            width="135px"
+                            width="125px"
                             placeholder="Select Date"
                         />
                     </div>
@@ -169,6 +169,7 @@ export default function StudioToolbar({
                         <input
                             type="number"
                             min="1"
+                            className={styles.paramInputCapital}
                             onKeyDown={(e) => {
                                 if (['-', '+', 'e', 'E'].includes(e.key)) {
                                     e.preventDefault();
@@ -189,7 +190,6 @@ export default function StudioToolbar({
                                     setCapital('');
                                 }
                             }}
-                            style={{ width: '90px' }}
                         />
                     </div>
                 </div>
@@ -206,6 +206,7 @@ export default function StudioToolbar({
                             step="0.01"
                             min="0.01"
                             max="1"
+                            className={styles.paramInputVolume}
                             onKeyDown={(e) => {
                                 if (['-', '+', 'e', 'E'].includes(e.key)) {
                                     e.preventDefault();
@@ -243,14 +244,13 @@ export default function StudioToolbar({
                                     setQuantity(num);
                                 }
                             }}
-                            style={{ width: '90px' }}
                         />
                     </div>
                 </div>
             </div>
 
             {/* Actions */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div className={styles.toolbarActionsRow}>
                 <button
                     type="button"
                     className={styles.btnNeonRunBacktest}
@@ -259,7 +259,7 @@ export default function StudioToolbar({
                 >
                     {loading ? (
                         <>
-                            <div className={styles.spinner} style={{ width: '14px', height: '14px', borderWidth: '2px' }} />
+                            <div className={`${styles.spinner} ${styles.spinnerSmall}`} />
                             <span>Simulating...</span>
                         </>
                     ) : (

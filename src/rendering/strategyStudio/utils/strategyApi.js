@@ -153,7 +153,7 @@ export const strategyStudioApi = {
     },
 
     /**
-     * Generate Strategy JSON from AI Draft via /api/v1/backtesting/wizard/generate or /backtest/v1/wizard/generate
+     * Generate Strategy JSON from AI Draft via /backtest/v1/wizard/generate
      */
     generateStrategy: async ({ sessionId, draft, strategyName, userId }) => {
         const stratName = strategyName || draft?.strategy_name || draft?.name || "AI Strategy";
@@ -170,14 +170,10 @@ export const strategyStudioApi = {
         };
         try {
             const apiBase = getApiBase();
-            const backend = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/, '');
-            const candidateUrls = [];
-            if (backend) {
-                candidateUrls.push(`${backend}/api/v1/backtesting/wizard/generate`);
-                candidateUrls.push(`${backend}/api/v1/backtest/wizard/generate`);
-            }
-            candidateUrls.push(`${apiBase}/wizard/generate`);
-            candidateUrls.push('/api/v1/backtesting/wizard/generate');
+            const candidateUrls = [
+                `${apiBase}/wizard/generate`,
+                '/backtest/v1/wizard/generate'
+            ];
 
             for (const url of candidateUrls) {
                 try {
@@ -198,11 +194,23 @@ export const strategyStudioApi = {
                                 data: json.data || { strategy: firstStrat }
                             };
                         }
+                        if (json && (json.stock_name || json.strategy_name || json.entry_conditions)) {
+                            return {
+                                status: "success",
+                                success: true,
+                                strategy: json,
+                                strategies: [json],
+                                data: json
+                            };
+                        }
+                    } else {
+                        const errText = await res.text().catch(() => '');
+                        console.warn(`[strategyApi] ${url} returned HTTP ${res.status}:`, errText);
                     }
                 } catch (_) {}
             }
         } catch (err) {
-            console.warn("Backend /wizard/generate unreachable, using local specification builder:", err.message);
+            console.warn("Backend /backtest/v1/wizard/generate unreachable, using local specification builder:", err.message);
         }
 
         const sym = draft?.instrument || "XAUUSD";

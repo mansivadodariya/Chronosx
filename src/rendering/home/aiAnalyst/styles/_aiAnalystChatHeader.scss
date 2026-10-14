@@ -125,154 +125,154 @@
 
   /* Light Theme Overrides */
   :global(html.light) & {
-    background: #FFFFFF !important;
-    border-bottom: 1px solid rgba(24, 201, 139, 0.15) !important;
+    background: #FFFFFF;
+    border-bottom: 1px solid rgba(24, 201, 139, 0.15);
 
     .terminalContainer {
-      background: #FFFFFF !important;
-      border: 1px solid rgba(24, 201, 139, 0.3) !important;
-      box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08) !important;
+      background: #FFFFFF;
+      border: 1px solid rgba(24, 201, 139, 0.3);
+      box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08);
     }
 
     .sidebarDock {
-      background: #F8FAFC !important;
-      border-right-color: #E2E8F0 !important;
+      background: #F8FAFC;
+      border-right-color: #E2E8F0;
     }
 
     .dockIconBtn {
-      color: #64748B !important;
+      color: #64748B;
 
       &:hover,
       &.activeDockBtn {
-        color: #047857 !important;
+        color: #047857;
       }
     }
 
     .terminalHeader {
-      border-bottom-color: #E2E8F0 !important;
+      border-bottom-color: #E2E8F0;
 
       .chronosLogoText {
-        color: #0F172A !important;
+        color: #0F172A;
       }
 
       .headerSubtitle {
-        color: #64748B !important;
+        color: #64748B;
       }
     }
 
     .tickersBar {
-      border-bottom-color: #E2E8F0 !important;
+      border-bottom-color: #E2E8F0;
 
       .tickerName {
-        color: #64748B !important;
+        color: #64748B;
       }
 
       .tickerPrice {
-        color: #0F172A !important;
+        color: #0F172A;
       }
 
       .tickerDivider {
-        background: #E2E8F0 !important;
+        background: #E2E8F0;
       }
     }
 
     .userBubbleCard {
-      background: #F1F5F9 !important;
-      border-color: #E2E8F0 !important;
+      background: #F1F5F9;
+      border-color: #E2E8F0;
 
       .userHeaderName {
-        color: #0F172A !important;
+        color: #0F172A;
       }
 
       .userQueryText {
-        color: #334155 !important;
+        color: #334155;
       }
 
       .userTimestampRow {
-        color: #64748B !important;
+        color: #64748B;
       }
     }
 
     .aiResponseCard {
-      background: #FAFDFA !important;
-      border-color: rgba(16, 185, 129, 0.35) !important;
-      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.08) !important;
+      background: #FAFDFA;
+      border-color: rgba(16, 185, 129, 0.35);
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.08);
 
       .aiBotName {
-        color: #0F172A !important;
+        color: #0F172A;
       }
 
       .aiCardTime {
-        color: #64748B !important;
+        color: #64748B;
       }
 
       .aiHeadlineIntro {
-        color: #047857 !important;
+        color: #047857;
       }
 
       .breakoutNumber,
       .breakoutSymbol {
-        color: #0F172A !important;
+        color: #0F172A;
       }
 
       .breakoutSubdesc {
-        color: #475569 !important;
+        color: #475569;
       }
     }
 
     .sourcesBtn,
     .filterPill {
-      background: #F1F5F9 !important;
-      border-color: #E2E8F0 !important;
-      color: #475569 !important;
+      background: #F1F5F9;
+      border-color: #E2E8F0;
+      color: #475569;
 
       &:hover,
       &.activeFilterPill {
-        background: rgba(16, 185, 129, 0.12) !important;
-        border-color: rgba(5, 150, 105, 0.4) !important;
-        color: #047857 !important;
+        background: rgba(16, 185, 129, 0.12);
+        border-color: rgba(5, 150, 105, 0.4);
+        color: #047857;
       }
     }
 
     .chatInputContainer {
-      background: #F8FAFC !important;
-      border-color: #E2E8F0 !important;
+      background: #F8FAFC;
+      border-color: #E2E8F0;
 
       .terminalInput {
-        color: #0F172A !important;
+        color: #0F172A;
 
         &::placeholder {
-          color: #94A3B8 !important;
+          color: #94A3B8;
         }
       }
 
       .attachmentBtn,
       .micBtn {
-        color: #64748B !important;
+        color: #64748B;
       }
     }
 
     .featureItem {
-      background: #FFFFFF !important;
-      border: 1px solid rgba(24, 201, 139, 0.22) !important;
+      background: #FFFFFF;
+      border: 1px solid rgba(24, 201, 139, 0.22);
 
       &:hover {
-        background: #F0FDF4 !important;
-        border-color: rgba(24, 201, 139, 0.45) !important;
+        background: #F0FDF4;
+        border-color: rgba(24, 201, 139, 0.45);
       }
 
       .numBadge {
-        color: #047857 !important;
-        background: #F0FDF4 !important;
+        color: #047857;
+        background: #F0FDF4;
       }
 
       .featureContent {
         h3 {
-          color: #0F172A !important;
+          color: #0F172A;
         }
 
         p {
-          color: #475569 !important;
+          color: #475569;
         }
       }
     }

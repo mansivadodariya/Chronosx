@@ -6,34 +6,34 @@
   background: radial-gradient(ellipse at 50% 0%, #050e0d 0%, #020605 50%, #000403 100%);
 
   :global(html.light) & {
-    background: #FFFFFF !important;
+    background: #FFFFFF;
 
     .sectionHeader {
       h2 {
-        color: #0F172A !important;
+        color: #0F172A;
 
         span {
-          color: #059669 !important;
+          color: #059669;
         }
       }
 
       p {
-        color: #475569 !important;
+        color: #475569;
       }
     }
   }
 
   &.heroMode {
-    padding: 0 !important;
-    background: transparent !important;
-    overflow: visible !important;
+    padding: 0;
+    background: transparent;
+    overflow: visible;
 
     &::after {
-      display: none !important;
+      display: none;
     }
 
     .ambientBackdropGlow {
-      display: none !important;
+      display: none;
     }
   }
 
@@ -164,464 +164,394 @@
     will-change: transform;
 
     :global(html.light) & {
-      background: #FFFFFF !important;
-      border-color: rgba(24, 201, 139, 0.35) !important;
-      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08), 0 0 25px rgba(24, 201, 139, 0.06) !important;
+      background: #FFFFFF;
+      border-color: rgba(24, 201, 139, 0.35);
+      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08), 0 0 25px rgba(24, 201, 139, 0.06);
 
       /* Part 1 (Left Chart) & Part 2 (Right Cockpit) Cards */
       .partOneChart,
-      .partTwoCockpit,
-      [class*="partOneChart"],
-      [class*="partTwoCockpit"] {
-        background: #FFFFFF !important;
-        border-color: #E2E8F0 !important;
-        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+      .partTwoCockpit {
+        background: #FFFFFF;
+        border-color: #E2E8F0;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
       }
 
       /* Chart Header & Badges */
-      .partHeader,
-      [class*="partHeader"] {
-        background: #F8FAFC !important;
-        border-bottom: 1px solid #E2E8F0 !important;
+      .partHeader {
+        background: #F8FAFC;
+        border-bottom: 1px solid #E2E8F0;
       }
 
-      .goldAssetPill,
-      [class*="goldAssetPill"] {
-        background: #ECFDF5 !important;
-        border: 1px solid rgba(16, 185, 129, 0.4) !important;
+      .goldAssetPill {
+        background: #ECFDF5;
+        border: 1px solid rgba(16, 185, 129, 0.4);
 
-        .goldIconLetter,
-        [class*="goldIconLetter"] {
-          background: #059669 !important;
-          color: #FFFFFF !important;
+        .goldIconLetter {
+          background: #059669;
+          color: #FFFFFF;
         }
 
-        .dropdownSymbol,
-        [class*="dropdownSymbol"] {
-          color: #065F46 !important;
-          font-weight: 800 !important;
+        .dropdownSymbol {
+          color: #065F46;
+          font-weight: 800;
         }
       }
 
-      .strategyBadge,
-      [class*="strategyBadge"] {
-        background: #ECFDF5 !important;
-        border: 1px solid rgba(16, 185, 129, 0.4) !important;
-        color: #047857 !important;
-        font-weight: 800 !important;
+      .strategyBadge {
+        background: #ECFDF5;
+        border: 1px solid rgba(16, 185, 129, 0.4);
+        color: #047857;
+        font-weight: 800;
 
         .beaconDot,
-        [class*="beaconDot"],
-        .pulseDot,
-        [class*="pulseDot"] {
-          background: #059669 !important;
-          box-shadow: 0 0 6px rgba(5, 150, 105, 0.6) !important;
+        .pulseDot {
+          background: #059669;
+          box-shadow: 0 0 6px rgba(5, 150, 105, 0.6);
         }
       }
 
       .lightweightChartWrapper,
-      [class*="lightweightChartWrapper"],
-      .svgChartContainer,
-      [class*="svgChartContainer"] {
-        background: #FFFFFF !important;
+      .svgChartContainer {
+        background: #FFFFFF;
       }
 
-      .chartOhlcHud,
-      [class*="chartOhlcHud"] {
-        background: rgba(255, 255, 255, 0.9) !important;
-        border-color: #E2E8F0 !important;
+      .chartOhlcHud {
+        background: rgba(255, 255, 255, 0.9);
+        border-color: #E2E8F0;
 
-        .hudItem span,
-        [class*="hudItem"] span {
-          color: #0F172A !important;
+        .hudItem span {
+          color: #0F172A;
         }
 
-        .hudLabel,
-        [class*="hudLabel"] {
-          color: #64748B !important;
+        .hudLabel {
+          color: #64748B;
         }
       }
 
       /* Part 2: Top Breadcrumbs & Watchlist */
-      .cockpitTopBreadcrumb,
-      [class*="cockpitTopBreadcrumb"] {
-
-        .breadcrumbTitle,
-        [class*="breadcrumbTitle"] {
-
-          .arrowLeft,
-          [class*="arrowLeft"] {
-            color: #94A3B8 !important;
+      .cockpitTopBreadcrumb {
+        .breadcrumbTitle {
+          .arrowLeft {
+            color: #94A3B8;
           }
 
-          .parentName,
-          [class*="parentName"] {
-            color: #64748B !important;
-            font-weight: 700 !important;
+          .parentName {
+            color: #64748B;
+            font-weight: 700;
           }
 
-          .slash,
-          [class*="slash"] {
-            color: #CBD5E1 !important;
+          .slash {
+            color: #CBD5E1;
           }
 
-          .activeAssetTicker,
-          [class*="activeAssetTicker"] {
-            color: #047857 !important;
-            font-weight: 800 !important;
+          .activeAssetTicker {
+            color: #047857;
+            font-weight: 800;
           }
         }
 
-        .watchlistTag,
-        [class*="watchlistTag"] {
-          background: #ECFDF5 !important;
-          border: 1px solid rgba(16, 185, 129, 0.35) !important;
-          padding: 4px 10px !important;
-          border-radius: 6px !important;
-          color: #047857 !important;
-          font-weight: 800 !important;
+        .watchlistTag {
+          background: #ECFDF5;
+          border: 1px solid rgba(16, 185, 129, 0.35);
+          padding: 4px 10px;
+          border-radius: 6px;
+          color: #047857;
+          font-weight: 800;
 
           .starIcon,
-          [class*="starIcon"],
-          .starSvg,
-          [class*="starSvg"] {
-            color: #059669 !important;
+          .starSvg {
+            color: #059669;
           }
         }
       }
 
       /* Asset Header & Live Status */
-      .identityLeft,
-      [class*="identityLeft"] {
-
-        .logoGold,
-        [class*="logoGold"] {
-          background: #ECFDF5 !important;
-          border: 1px solid rgba(16, 185, 129, 0.35) !important;
-          box-shadow: 0 2px 8px rgba(16, 185, 129, 0.12) !important;
-          color: #059669 !important;
+      .identityLeft {
+        .logoGold {
+          background: #ECFDF5;
+          border: 1px solid rgba(16, 185, 129, 0.35);
+          box-shadow: 0 2px 8px rgba(16, 185, 129, 0.12);
+          color: #059669;
 
           svg {
-            color: #059669 !important;
-            stroke: #059669 !important;
+            color: #059669;
+            stroke: #059669;
           }
         }
 
-        .assetTickerText,
-        [class*="assetTickerText"] {
-          color: #0F172A !important;
-          font-weight: 800 !important;
+        .assetTickerText {
+          color: #0F172A;
+          font-weight: 800;
         }
 
-        .liveStatusPill,
-        [class*="liveStatusPill"] {
-          background: #ECFDF5 !important;
-          border: 1px solid rgba(16, 185, 129, 0.4) !important;
-          color: #047857 !important;
-          font-weight: 800 !important;
+        .liveStatusPill {
+          background: #ECFDF5;
+          border: 1px solid rgba(16, 185, 129, 0.4);
+          color: #047857;
+          font-weight: 800;
 
-          .liveGreenBeacon,
-          [class*="liveGreenBeacon"] {
-            background: #059669 !important;
-            box-shadow: 0 0 6px rgba(5, 150, 105, 0.5) !important;
+          .liveGreenBeacon {
+            background: #059669;
+            box-shadow: 0 0 6px rgba(5, 150, 105, 0.5);
           }
         }
 
-        .assetSubDetails,
-        [class*="assetSubDetails"] {
-          color: #64748B !important;
-          font-weight: 500 !important;
+        .assetSubDetails {
+          color: #64748B;
+          font-weight: 500;
         }
       }
 
       /* Live Big Price Number */
-      .mainPriceNumber,
-      [class*="mainPriceNumber"] {
-        color: #0F172A !important;
-        font-weight: 800 !important;
+      .mainPriceNumber {
+        color: #0F172A;
+        font-weight: 800;
       }
 
-      .priceChangeAndClock,
-      [class*="priceChangeAndClock"] {
+      .priceChangeAndClock {
+        .changePercentTag {
+          background: #ECFDF5;
+          border: 1px solid rgba(16, 185, 129, 0.4);
+          color: #047857;
+          font-weight: 800;
 
-        .changePercentTag,
-        [class*="changePercentTag"] {
-          background: #ECFDF5 !important;
-          border: 1px solid rgba(16, 185, 129, 0.4) !important;
-          color: #047857 !important;
-          font-weight: 800 !important;
-
-          &.changeNegative,
-          [class*="changeNegative"] {
-            background: #FEF2F2 !important;
-            border-color: #FECACA !important;
-            color: #DC2626 !important;
+          &.changeNegative {
+            background: #FEF2F2;
+            border-color: #FECACA;
+            color: #DC2626;
           }
         }
 
-        .liveClockET,
-        [class*="liveClockET"] {
-          color: #64748B !important;
+        .liveClockET {
+          color: #64748B;
         }
       }
 
       /* Sub-Tabs */
-      .tabLink,
-      [class*="tabLink"] {
-        background: #F1F5F9 !important;
-        border: 1px solid #E2E8F0 !important;
+      .tabLink {
+        background: #F1F5F9;
+        border: 1px solid #E2E8F0;
 
         span {
-          color: #334155 !important;
-          font-weight: 600 !important;
+          color: #334155;
+          font-weight: 600;
         }
 
         svg {
-          color: #64748B !important;
+          color: #64748B;
         }
 
         &:hover {
-          background: #E2E8F0 !important;
-          border-color: rgba(16, 185, 129, 0.4) !important;
+          background: #E2E8F0;
+          border-color: rgba(16, 185, 129, 0.4);
 
           span {
-            color: #047857 !important;
+            color: #047857;
           }
 
           svg {
-            color: #047857 !important;
+            color: #047857;
           }
         }
 
-        &.tabLinkActive,
-        [class*="tabLinkActive"] {
-          background: #ECFDF5 !important;
-          border-color: rgba(16, 185, 129, 0.45) !important;
+        &.tabLinkActive {
+          background: #ECFDF5;
+          border-color: rgba(16, 185, 129, 0.45);
 
           span {
-            color: #047857 !important;
-            font-weight: 800 !important;
+            color: #047857;
+            font-weight: 800;
           }
 
           svg {
-            color: #047857 !important;
+            color: #047857;
           }
         }
       }
 
       /* The Two Intel Cards (AI Score & Universe Rank) */
-      .intelCard,
-      [class*="intelCard"] {
-        background: #F8FAFC !important;
-        border: 1px solid #E2E8F0 !important;
-        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04) !important;
+      .intelCard {
+        background: #F8FAFC;
+        border: 1px solid #E2E8F0;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
 
         &.cardActiveScore,
-        &.cardActiveRank,
-        [class*="cardActiveScore"],
-        [class*="cardActiveRank"] {
-          background: #FFFFFF !important;
-          border-color: rgba(16, 185, 129, 0.45) !important;
-          box-shadow: 0 8px 26px rgba(16, 185, 129, 0.12) !important;
+        &.cardActiveRank {
+          background: #FFFFFF;
+          border-color: rgba(16, 185, 129, 0.45);
+          box-shadow: 0 8px 26px rgba(16, 185, 129, 0.12);
         }
 
-        .cardTitle,
-        [class*="cardTitle"] {
-          color: #0F172A !important;
-          font-weight: 800 !important;
+        .cardTitle {
+          color: #0F172A;
+          font-weight: 800;
         }
 
-        .cardSub,
-        [class*="cardSub"] {
-          color: #64748B !important;
-          font-weight: 500 !important;
+        .cardSub {
+          color: #64748B;
+          font-weight: 500;
         }
 
-        .radarIconBox,
-        [class*="radarIconBox"] {
-          background: #ECFDF5 !important;
-          border: 1px solid rgba(16, 185, 129, 0.35) !important;
-          color: #059669 !important;
+        .radarIconBox {
+          background: #ECFDF5;
+          border: 1px solid rgba(16, 185, 129, 0.35);
+          color: #059669;
 
           svg {
-            color: #059669 !important;
+            color: #059669;
           }
         }
 
-        .trophyIconBox,
-        [class*="trophyIconBox"] {
-          background: #ECFDF5 !important;
-          border: 1px solid rgba(16, 185, 129, 0.35) !important;
-          color: #059669 !important;
+        .trophyIconBox {
+          background: #ECFDF5;
+          border: 1px solid rgba(16, 185, 129, 0.35);
+          color: #059669;
 
           svg {
-            color: #059669 !important;
+            color: #059669;
           }
         }
 
-        .deltaPillGreen,
-        [class*="deltaPillGreen"] {
-          background: #ECFDF5 !important;
-          border: 1px solid rgba(16, 185, 129, 0.4) !important;
-          color: #047857 !important;
-          font-weight: 800 !important;
+        .deltaPillGreen {
+          background: #ECFDF5;
+          border: 1px solid rgba(16, 185, 129, 0.4);
+          color: #047857;
+          font-weight: 800;
         }
 
         /* AI Score Card Internals */
-        .scoreDigits,
-        [class*="scoreDigits"] {
-          color: #0F172A !important;
-          font-weight: 800 !important;
+        .scoreDigits {
+          color: #0F172A;
+          font-weight: 800;
         }
 
-        .scoreCurrentBadge,
-        [class*="scoreCurrentBadge"] {
-          background: #ECFDF5 !important;
-          border: 1px solid rgba(16, 185, 129, 0.4) !important;
-          color: #047857 !important;
-          font-weight: 800 !important;
+        .scoreCurrentBadge {
+          background: #ECFDF5;
+          border: 1px solid rgba(16, 185, 129, 0.4);
+          color: #047857;
+          font-weight: 800;
         }
 
-        .verdictText,
-        [class*="verdictText"] {
-          color: #059669 !important;
-          font-weight: 800 !important;
+        .verdictText {
+          color: #059669;
+          font-weight: 800;
         }
 
-        .confidenceBadge,
-        [class*="confidenceBadge"] {
-          color: #64748B !important;
-          font-weight: 700 !important;
+        .confidenceBadge {
+          color: #64748B;
+          font-weight: 700;
         }
 
-        .sliderRangeHeader,
-        [class*="sliderRangeHeader"] {
+        .sliderRangeHeader {
           span {
-            color: #64748B !important;
-            font-weight: 600 !important;
+            color: #64748B;
+            font-weight: 600;
           }
         }
 
-        .sliderTrack,
-        [class*="sliderTrack"] {
-          background: #E2E8F0 !important;
+        .sliderTrack {
+          background: #E2E8F0;
         }
 
         /* Universe Rank Internals */
-        .rankGoldDigit,
-        [class*="rankGoldDigit"] {
-          color: #047857 !important;
-          font-weight: 800 !important;
+        .rankGoldDigit {
+          color: #047857;
+          font-weight: 800;
         }
 
-        .rankOutOf,
-        [class*="rankOutOf"] {
-          color: #64748B !important;
-          font-weight: 700 !important;
+        .rankOutOf {
+          color: #64748B;
+          font-weight: 700;
         }
 
-        .topPerformerBadge,
-        [class*="topPerformerBadge"] {
-          background: #ECFDF5 !important;
-          border: 1px solid rgba(16, 185, 129, 0.4) !important;
-          color: #047857 !important;
-          font-weight: 800 !important;
-          display: inline-flex !important;
-          align-items: center !important;
-          gap: 4px !important;
+        .topPerformerBadge {
+          background: #ECFDF5;
+          border: 1px solid rgba(16, 185, 129, 0.4);
+          color: #047857;
+          font-weight: 800;
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
 
           svg {
-            color: #059669 !important;
-            fill: #059669 !important;
+            color: #059669;
+            fill: #059669;
           }
         }
       }
 
       /* Light Grey Styling for Bottom 3-Column Meta Matrix Cards */
-      .metaCol,
-      [class*="metaCol"] {
-        background: #F1F5F9 !important;
-        border: 1px solid #E2E8F0 !important;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+      .metaCol {
+        background: #F1F5F9;
+        border: 1px solid #E2E8F0;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 
         &:hover {
-          background: #E2E8F0 !important;
-          border-color: rgba(16, 185, 129, 0.45) !important;
+          background: #E2E8F0;
+          border-color: rgba(16, 185, 129, 0.45);
         }
 
-        .metaLabel,
-        [class*="metaLabel"] {
-          color: #64748B !important;
-          font-weight: 800 !important;
+        .metaLabel {
+          color: #64748B;
+          font-weight: 800;
         }
 
-        .metaVal,
-        [class*="metaVal"] {
-          color: #0F172A !important;
-          font-weight: 800 !important;
+        .metaVal {
+          color: #0F172A;
+          font-weight: 800;
         }
 
-        .metaSub,
-        [class*="metaSub"] {
-          color: #64748B !important;
+        .metaSub {
+          color: #64748B;
         }
 
         .metaBadgeGold,
         .metaBadgeGreen,
-        .metaBadgeLive,
-        [class*="metaBadgeGold"],
-        [class*="metaBadgeGreen"],
-        [class*="metaBadgeLive"] {
-          background: #ECFDF5 !important;
-          color: #047857 !important;
-          border: 1px solid rgba(16, 185, 129, 0.35) !important;
-          font-weight: 800 !important;
+        .metaBadgeLive {
+          background: #ECFDF5;
+          color: #047857;
+          border: 1px solid rgba(16, 185, 129, 0.35);
+          font-weight: 800;
         }
 
-        .signalBadgeGreen,
-        [class*="signalBadgeGreen"] {
-          color: #047857 !important;
-          font-weight: 800 !important;
+        .signalBadgeGreen {
+          color: #047857;
+          font-weight: 800;
 
-          .signalDot,
-          [class*="signalDot"] {
-            background: #059669 !important;
-            box-shadow: 0 0 6px rgba(5, 150, 105, 0.5) !important;
+          .signalDot {
+            background: #059669;
+            box-shadow: 0 0 6px rgba(5, 150, 105, 0.5);
           }
         }
       }
 
       /* Live WebSocket Footer Bar in Light Mode */
-      .cockpitFooterBar,
-      [class*="cockpitFooterBar"] {
-        border-top: 1px solid #E2E8F0 !important;
-        color: #64748B !important;
+      .cockpitFooterBar {
+        border-top: 1px solid #E2E8F0;
+        color: #64748B;
 
-        .footerLeft,
-        [class*="footerLeft"] {
+        .footerLeft {
           span {
-            color: #475569 !important;
-            font-weight: 700 !important;
+            color: #475569;
+            font-weight: 700;
           }
 
-          .liveGreenDotSmall,
-          [class*="liveGreenDotSmall"] {
-            background: #059669 !important;
-            box-shadow: 0 0 6px rgba(5, 150, 105, 0.5) !important;
+          .liveGreenDotSmall {
+            background: #059669;
+            box-shadow: 0 0 6px rgba(5, 150, 105, 0.5);
           }
         }
 
-        .footerRight,
-        [class*="footerRight"] {
-          background: #ECFDF5 !important;
-          border: 1px solid rgba(16, 185, 129, 0.35) !important;
-          padding: 3px 8px !important;
-          border-radius: 6px !important;
+        .footerRight {
+          background: #ECFDF5;
+          border: 1px solid rgba(16, 185, 129, 0.35);
+          padding: 3px 8px;
+          border-radius: 6px;
 
           span {
-            color: #047857 !important;
-            font-weight: 800 !important;
-            font-family: monospace, sans-serif !important;
+            color: #047857;
+            font-weight: 800;
+            font-family: monospace, sans-serif;
           }
         }
       }

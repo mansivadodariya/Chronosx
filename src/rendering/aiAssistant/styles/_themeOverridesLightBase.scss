@@ -3,19 +3,19 @@
    ========================================================================== */
 :global(html.light) .aiAssistant,
 .aiAssistant.isLight {
-    color: #0F172A !important;
+    color: #0F172A;
 
     /* Grid & Splitter */
     .resizerSplitter {
         .resizerLine {
-            background: #cbd5e1 !important;
+            background: #cbd5e1;
         }
 
         &:hover,
         &.resizerActive {
             .resizerLine {
-                background: #10b981 !important;
-                box-shadow: 0 0 10px rgba(16, 185, 129, 0.4) !important;
+                background: #10b981;
+                box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
             }
         }
     }
@@ -23,65 +23,65 @@
     /* Left Panel: Copilot Chat Card */
     .chatSingleBody {
         .chatCard {
-            background: #ffffff !important;
-            border: 1px solid #e2e8f0 !important;
-            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
 
             .chatHeader {
-                background: #ffffff !important;
-                border-bottom: 1px solid #f1f5f9 !important;
+                background: #ffffff;
+                border-bottom: 1px solid #f1f5f9;
 
                 .avatar {
-                    background: rgba(16, 185, 129, 0.12) !important;
-                    border-color: rgba(16, 185, 129, 0.3) !important;
+                    background: rgba(16, 185, 129, 0.12);
+                    border-color: rgba(16, 185, 129, 0.3);
                 }
 
                 .headerInfo {
                     h3 {
-                        color: #0f172a !important;
+                        color: #0f172a;
                     }
 
                     span {
-                        color: #64748b !important;
+                        color: #64748b;
                     }
                 }
 
                 .createNewBtn {
-                    background: #10b981 !important;
-                    color: #ffffff !important;
-                    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+                    background: #10b981;
+                    color: #ffffff;
+                    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
 
                     &:hover {
-                        background: #059669 !important;
+                        background: #059669;
                     }
 
                     svg {
-                        stroke: #ffffff !important;
+                        stroke: #ffffff;
                     }
                 }
 
                 .historyHeaderBtn {
-                    background: #f1f5f9 !important;
-                    color: #0f172a !important;
-                    border: 1px solid #cbd5e1 !important;
+                    background: #f1f5f9;
+                    color: #0f172a;
+                    border: 1px solid #cbd5e1;
 
                     &:hover {
-                        background: #e2e8f0 !important;
-                        color: #0f172a !important;
-                        border-color: #94a3b8 !important;
+                        background: #e2e8f0;
+                        color: #0f172a;
+                        border-color: #94a3b8;
                     }
 
                     svg {
-                        color: #10b981 !important;
+                        color: #10b981;
                     }
                 }
             }
 
             .chatBody {
-                background: #f8fafc !important;
+                background: #f8fafc;
 
                 &::-webkit-scrollbar-thumb {
-                    background: rgba(16, 185, 129, 0.25) !important;
+                    background: rgba(16, 185, 129, 0.25);
                 }
             }
         }
@@ -90,120 +90,120 @@
     /* Welcome Action Cards in Light Mode */
     .welcomeContainer {
         .welcomeHeroBadge {
-            background: #ecfdf5 !important;
-            border: 1px solid rgba(16, 185, 129, 0.35) !important;
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08) !important;
+            background: #ecfdf5;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
 
             span {
-                color: #059669 !important;
-                font-weight: 700 !important;
+                color: #059669;
+                font-weight: 700;
             }
         }
 
         .welcomeTitle {
-            color: #0f172a !important;
+            color: #0f172a;
 
             .titleGradient {
-                color: #059669 !important;
+                color: #059669;
             }
         }
 
         .welcomeSubtitle {
-            color: #64748b !important;
+            color: #64748b;
         }
 
         .welcomeActionCards {
             .welcomeActionCard {
-                background: #ffffff !important;
-                border: 1px solid #e2e8f0 !important;
-                box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
 
                 &:hover {
-                    background: #f0fdf4 !important;
-                    border-color: #10b981 !important;
-                    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.12) !important;
+                    background: #f0fdf4;
+                    border-color: #10b981;
+                    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.12);
                     transform: translateY(-2px);
 
                     .cardIconWrapper,
                     .cardTextContent,
                     .cardMainTitle,
                     .cardSubTitle {
-                        background: transparent !important;
-                        background-color: transparent !important;
-                        border: none !important;
-                        box-shadow: none !important;
+                        background: transparent;
+                        background-color: transparent;
+                        border: none;
+                        box-shadow: none;
                     }
 
                     .cardIconWrapper {
-                        color: #059669 !important;
-                        filter: none !important;
+                        color: #059669;
+                        filter: none;
 
                         svg {
-                            color: #059669 !important;
-                            filter: none !important;
-                            box-shadow: none !important;
+                            color: #059669;
+                            filter: none;
+                            box-shadow: none;
                         }
                     }
 
                     .cardMainTitle {
-                        color: #059669 !important;
-                        text-shadow: none !important;
+                        color: #059669;
+                        text-shadow: none;
                     }
 
                     .cardSubTitle {
-                        text-shadow: none !important;
+                        text-shadow: none;
                     }
 
                     .cardArrow {
-                        color: #10b981 !important;
+                        color: #10b981;
                         transform: translateX(3px);
                     }
                 }
 
                 .cardIconWrapper {
-                    background: transparent !important;
-                    background-color: transparent !important;
-                    border: none !important;
-                    box-shadow: none !important;
-                    filter: none !important;
-                    color: #059669 !important;
-                    width: 36px !important;
-                    height: 36px !important;
-                    padding: 0 !important;
-                    display: flex !important;
-                    align-items: center !important;
-                    justify-content: center !important;
+                    background: transparent;
+                    background-color: transparent;
+                    border: none;
+                    box-shadow: none;
+                    filter: none;
+                    color: #059669;
+                    width: 36px;
+                    height: 36px;
+                    padding: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
 
                     svg {
-                        color: #059669 !important;
-                        filter: none !important;
-                        box-shadow: none !important;
+                        color: #059669;
+                        filter: none;
+                        box-shadow: none;
                     }
                 }
 
                 .cardTextContent {
-                    background: transparent !important;
-                    background-color: transparent !important;
-                    border: none !important;
-                    box-shadow: none !important;
+                    background: transparent;
+                    background-color: transparent;
+                    border: none;
+                    box-shadow: none;
 
                     .cardMainTitle {
-                        background: transparent !important;
-                        background-color: transparent !important;
-                        color: #0f172a !important;
+                        background: transparent;
+                        background-color: transparent;
+                        color: #0f172a;
                     }
 
                     .cardSubTitle {
-                        background: transparent !important;
-                        background-color: transparent !important;
-                        color: #64748b !important;
+                        background: transparent;
+                        background-color: transparent;
+                        color: #64748b;
                     }
                 }
 
                 .cardArrowBtn {
-                    background: #f8fafc !important;
-                    border: 1px solid #e2e8f0 !important;
-                    color: #64748b !important;
+                    background: #f8fafc;
+                    border: 1px solid #e2e8f0;
+                    color: #64748b;
                 }
             }
         }
@@ -212,264 +212,264 @@
     /* Messages & Chat Rows */
     .messageRow {
         .pairBadge {
-            background: #ecfdf5 !important;
-            color: #059669 !important;
-            border: 1px solid rgba(16, 185, 129, 0.3) !important;
+            background: #ecfdf5;
+            color: #059669;
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
         .assistantMessage {
-            background: #ffffff !important;
-            border: 1px solid #e2e8f0 !important;
-            border-radius: 14px 14px 14px 2px !important;
-            padding: 12px 18px !important;
-            color: #1e293b !important;
-            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px 14px 14px 2px;
+            padding: 12px 18px;
+            color: #1e293b;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
 
             p, li, span {
-                color: #1e293b !important;
+                color: #1e293b;
             }
 
             .formattedList li {
-                color: #1e293b !important;
+                color: #1e293b;
             }
 
             .visionWarningCard {
-                background: #fef2f2 !important;
-                border-color: rgba(239, 68, 68, 0.3) !important;
-                color: #dc2626 !important;
+                background: #fef2f2;
+                border-color: rgba(239, 68, 68, 0.3);
+                color: #dc2626;
             }
 
             .visionOverviewCard {
-                background: #f8fafc !important;
-                border-color: #e2e8f0 !important;
-                color: #475569 !important;
+                background: #f8fafc;
+                border-color: #e2e8f0;
+                color: #475569;
             }
         }
     }
 
     .userRow {
         .userMessage {
-            background: #10b981 !important;
-            border: 1px solid #059669 !important;
-            color: #ffffff !important;
-            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25) !important;
+            background: #10b981;
+            border: 1px solid #059669;
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
 
             p, span {
-                color: #ffffff !important;
+                color: #ffffff;
             }
         }
     }
 
     /* Markdown Formatted Reports & Content */
     .chatMarkdown {
-        color: #1e293b !important;
+        color: #1e293b;
 
         h1, h2, h3, h4, h5, h6 {
-            color: #0f172a !important;
-            font-weight: 700 !important;
+            color: #0f172a;
+            font-weight: 700;
         }
 
         p, li {
-            color: #1e293b !important;
+            color: #1e293b;
 
             &::marker {
-                color: #059669 !important;
+                color: #059669;
             }
         }
 
         strong, b {
-            color: #0f172a !important;
-            font-weight: 700 !important;
+            color: #0f172a;
+            font-weight: 700;
         }
 
         ul, ol {
             li {
-                color: #1e293b !important;
+                color: #1e293b;
             }
         }
 
         table {
-            border: 1px solid #e2e8f0 !important;
+            border: 1px solid #e2e8f0;
 
             th, td {
-                border-color: #e2e8f0 !important;
+                border-color: #e2e8f0;
             }
 
             th {
-                background: #f8fafc !important;
-                color: #0f172a !important;
-                font-weight: 700 !important;
+                background: #f8fafc;
+                color: #0f172a;
+                font-weight: 700;
             }
 
             td {
-                background: #ffffff !important;
-                color: #1e293b !important;
+                background: #ffffff;
+                color: #1e293b;
             }
         }
 
         hr {
-            background: #e2e8f0 !important;
-            border-top: 1px solid #e2e8f0 !important;
+            background: #e2e8f0;
+            border-top: 1px solid #e2e8f0;
         }
 
         code {
-            background: #f1f5f9 !important;
-            color: #059669 !important;
-            border: 1px solid #e2e8f0 !important;
+            background: #f1f5f9;
+            color: #059669;
+            border: 1px solid #e2e8f0;
         }
 
         pre {
-            background: #f8fafc !important;
-            border: 1px solid #e2e8f0 !important;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
 
             code {
-                background: transparent !important;
-                border: none !important;
-                color: #0f172a !important;
+                background: transparent;
+                border: none;
+                color: #0f172a;
             }
         }
 
         blockquote {
-            border-left-color: #10b981 !important;
-            background: #f0fdf4 !important;
-            color: #1e293b !important;
+            border-left-color: #10b981;
+            background: #f0fdf4;
+            color: #1e293b;
         }
     }
 
     /* Clarification & Deep Analysis Options */
     .clarificationOptionBtn {
-        background: #ffffff !important;
-        border: 1px solid #cbd5e1 !important;
-        color: #0f172a !important;
-        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        color: #0f172a;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
 
         &:hover {
-            background: #f0fdf4 !important;
-            border-color: #10b981 !important;
-            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.12) !important;
+            background: #f0fdf4;
+            border-color: #10b981;
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.12);
             transform: translateY(-2px);
 
             .clarificationOptionLabel {
-                color: #059669 !important;
+                color: #059669;
             }
 
             .clarificationOptionIcon {
-                background: #10b981 !important;
-                border-color: #10b981 !important;
-                color: #ffffff !important;
+                background: #10b981;
+                border-color: #10b981;
+                color: #ffffff;
             }
         }
 
         .clarificationOptionIcon {
-            background: #ecfdf5 !important;
-            border-color: rgba(16, 185, 129, 0.3) !important;
-            color: #059669 !important;
+            background: #ecfdf5;
+            border-color: rgba(16, 185, 129, 0.3);
+            color: #059669;
         }
 
         .clarificationOptionLabel {
-            color: #0f172a !important;
+            color: #0f172a;
         }
 
         .clarificationOptionSub {
-            color: #64748b !important;
+            color: #64748b;
         }
     }
 
     .downloadReportRow {
-        border-top-color: #e2e8f0 !important;
+        border-top-color: #e2e8f0;
     }
 
     .downloadFullReportBtn {
-        background: #00B074 !important;
-        color: #ffffff !important;
-        border: none !important;
-        box-shadow: 0 2px 8px rgba(0, 176, 116, 0.25) !important;
+        background: #00B074;
+        color: #ffffff;
+        border: none;
+        box-shadow: 0 2px 8px rgba(0, 176, 116, 0.25);
 
         svg {
-            color: #ffffff !important;
-            stroke: #ffffff !important;
+            color: #ffffff;
+            stroke: #ffffff;
         }
 
         span {
-            color: #ffffff !important;
+            color: #ffffff;
         }
 
         &:hover {
-            background: #009864 !important;
-            color: #ffffff !important;
+            background: #009864;
+            color: #ffffff;
         }
     }
 
     .executiveSummaryCard,
     .analysisCenterCard,
     .inlineWidgetCard {
-        background: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
-        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
-        color: #0f172a !important;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+        color: #0f172a;
 
         p, span, li, label, div {
-            color: #1e293b !important;
+            color: #1e293b;
         }
 
         h1, h2, h3, h4, h5, h6 {
-            color: #047857 !important;
+            color: #047857;
         }
 
         strong, b {
-            color: #0f172a !important;
+            color: #0f172a;
         }
 
         table {
-            background: #ffffff !important;
-            border: 1px solid #e2e8f0 !important;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
 
             th {
-                background: #f8fafc !important;
-                color: #0f172a !important;
-                border: 1px solid #e2e8f0 !important;
+                background: #f8fafc;
+                color: #0f172a;
+                border: 1px solid #e2e8f0;
             }
 
             td {
-                background: #ffffff !important;
-                color: #1e293b !important;
-                border: 1px solid #e2e8f0 !important;
+                background: #ffffff;
+                color: #1e293b;
+                border: 1px solid #e2e8f0;
             }
 
             tr:nth-child(even) td {
-                background: #f8fafc !important;
+                background: #f8fafc;
             }
         }
     }
 
     .analysisCenterHeader,
     .inlineWidgetHeader {
-        border-bottom-color: #f1f5f9 !important;
+        border-bottom-color: #f1f5f9;
 
         .analysisCenterTitle,
         .inlineWidgetTitle {
-            color: #0f172a !important;
+            color: #0f172a;
         }
 
         .analysisCenterIcon {
-            color: #047857 !important;
+            color: #047857;
         }
     }
 
     .srToggleBtn {
-        background: #f1f5f9 !important;
-        color: #475569 !important;
-        border-color: #cbd5e1 !important;
+        background: #f1f5f9;
+        color: #475569;
+        border-color: #cbd5e1;
 
         &:hover {
-            background: #e2e8f0 !important;
-            color: #0f172a !important;
+            background: #e2e8f0;
+            color: #0f172a;
         }
 
         &.srToggleActive {
-            background: #ecfdf5 !important;
-            color: #059669 !important;
-            border-color: #10b981 !important;
+            background: #ecfdf5;
+            color: #059669;
+            border-color: #10b981;
         }
     }
 
@@ -477,58 +477,58 @@
     .visionSummaryCard,
     .visionOverviewCard,
     .visionAccordionCard {
-        background: #ffffff !important;
-        border-color: #e2e8f0 !important;
-        color: #0f172a !important;
+        background: #ffffff;
+        border-color: #e2e8f0;
+        color: #0f172a;
 
         &.visionAccordionOpen {
-            border-color: #10b981 !important;
+            border-color: #10b981;
         }
     }
 
     .visionAccordionHeader {
         &:hover {
-            background: #f8fafc !important;
+            background: #f8fafc;
         }
     }
 
     .visionSectionTitle {
-        color: #0f172a !important;
+        color: #0f172a;
     }
 
     .visionChevron {
-        color: #64748b !important;
+        color: #64748b;
 
         &.visionChevronOpen {
-            color: #059669 !important;
+            color: #059669;
         }
     }
 
     .visionAccordionBody {
-        border-top-color: #f1f5f9 !important;
-        background: #ffffff !important;
-        color: #1e293b !important;
+        border-top-color: #f1f5f9;
+        background: #ffffff;
+        color: #1e293b;
     }
 
     .visionDescText,
     .visionSummaryText,
     .visionFieldValue,
     .visionActionText {
-        color: #334155 !important;
+        color: #334155;
     }
 
     .visionObservationText {
-        color: #0284c7 !important;
+        color: #0284c7;
     }
 
     .badgeSlate {
-        background: #f1f5f9 !important;
-        color: #475569 !important;
-        border-color: #cbd5e1 !important;
+        background: #f1f5f9;
+        color: #475569;
+        border-color: #cbd5e1;
     }
 
     .visionSwingBox {
-        background: #f8fafc !important;
-        border-color: #e2e8f0 !important;
+        background: #f8fafc;
+        border-color: #e2e8f0;
     }
 }

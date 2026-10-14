@@ -33,7 +33,7 @@
 
         &:has(input:-webkit-autofill),
         &:has(input:autofill) {
-            background: #071a13 !important;
+            background: #071a13;
         }
 
         &:has(input:disabled) {
@@ -104,61 +104,61 @@
             &:autofill:hover,
             &:autofill:focus,
             &:autofill:active {
-                -webkit-box-shadow: 0 0 0 1000px #071a13 inset !important;
-                box-shadow: 0 0 0 1000px #071a13 inset !important;
-                -webkit-text-fill-color: #FFFFFF !important;
-                color: #FFFFFF !important;
-                caret-color: #18C98B !important;
-                border-radius: 7px !important;
-                transition: background-color 9999999s ease-in-out 0s, color 9999999s ease-in-out 0s !important;
+                -webkit-box-shadow: 0 0 0 1000px #071a13 inset;
+                box-shadow: 0 0 0 1000px #071a13 inset;
+                -webkit-text-fill-color: #FFFFFF;
+                color: #FFFFFF;
+                caret-color: #18C98B;
+                border-radius: 7px;
+                transition: background-color 9999999s ease-in-out 0s, color 9999999s ease-in-out 0s;
             }
         }
 
         .iconLeft~input,
         input.hasIconLeft {
-            padding-left: 48px !important;
+            padding-left: 48px;
         }
 
         input:has(~ .eyeBtn),
         input.hasEyeBtn {
-            padding-right: 48px !important;
+            padding-right: 48px;
         }
 
         button.eyeBtn {
-            position: absolute !important;
-            right: 12px !important;
-            top: 50% !important;
-            transform: translateY(-50%) !important;
-            width: 36px !important;
-            height: 36px !important;
-            background: transparent !important;
-            border: none !important;
-            padding: 6px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            cursor: pointer !important;
-            color: #18C98B !important;
-            transition: color 0.2s ease-in-out, transform 0.15s ease !important;
-            outline: none !important;
-            box-shadow: none !important;
-            z-index: 10 !important;
-            pointer-events: auto !important;
-            user-select: none !important;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background: transparent;
+            border: none;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #18C98B;
+            transition: color 0.2s ease-in-out, transform 0.15s ease;
+            outline: none;
+            box-shadow: none;
+            z-index: 10;
+            pointer-events: auto;
+            user-select: none;
 
             &:hover {
-                color: #22E7A0 !important;
+                color: #22E7A0;
             }
 
             &:active {
-                transform: translateY(-50%) scale(0.92) !important;
+                transform: translateY(-50%) scale(0.92);
             }
 
             svg {
-                display: block !important;
-                width: 20px !important;
-                height: 20px !important;
-                pointer-events: none !important;
+                display: block;
+                width: 20px;
+                height: 20px;
+                pointer-events: none;
             }
         }
 
@@ -185,29 +185,29 @@
 :global(html.light) .input,
 :global(html[data-theme='light']) .input {
     label {
-        color: #0F172A !important;
+        color: #0F172A;
     }
 
     .inputWrapper {
-        background: #F1F5F9 !important;
-        border: none !important;
-        box-shadow: none !important;
+        background: #F1F5F9;
+        border: none;
+        box-shadow: none;
 
         &:focus-within {
-            background: #E2E8F0 !important;
-            border: none !important;
-            box-shadow: 0 0 0 2px rgba(24, 201, 139, 0.35) !important;
+            background: #E2E8F0;
+            border: none;
+            box-shadow: 0 0 0 2px rgba(24, 201, 139, 0.35);
         }
 
         .iconLeft {
-            color: #059669 !important;
+            color: #059669;
         }
 
         input {
-            color: #0F172A !important;
+            color: #0F172A;
 
             &::placeholder {
-                color: #94A3B8 !important;
+                color: #94A3B8;
             }
 
             &:-webkit-autofill,
@@ -218,30 +218,30 @@
             &:autofill:hover,
             &:autofill:focus,
             &:autofill:active {
-                -webkit-box-shadow: 0 0 0 1000px #F1F5F9 inset !important;
-                box-shadow: 0 0 0 1000px #F1F5F9 inset !important;
-                -webkit-text-fill-color: #0F172A !important;
-                color: #0F172A !important;
-                caret-color: #059669 !important;
-                transition: background-color 9999999s ease-in-out 0s, color 9999999s ease-in-out 0s !important;
+                -webkit-box-shadow: 0 0 0 1000px #F1F5F9 inset;
+                box-shadow: 0 0 0 1000px #F1F5F9 inset;
+                -webkit-text-fill-color: #0F172A;
+                color: #0F172A;
+                caret-color: #059669;
+                transition: background-color 9999999s ease-in-out 0s, color 9999999s ease-in-out 0s;
             }
         }
 
         button.eyeBtn {
-            color: #059669 !important;
+            color: #059669;
 
             &:hover {
-                color: #10B981 !important;
+                color: #10B981;
             }
         }
 
         &.hasError {
-            border: 1px solid #EF5350 !important;
-            background: #FEF2F2 !important;
+            border: 1px solid #EF5350;
+            background: #FEF2F2;
 
             &:focus-within {
-                border: 1px solid #EF5350 !important;
-                box-shadow: 0 0 0 2px rgba(239, 83, 80, 0.2) !important;
+                border: 1px solid #EF5350;
+                box-shadow: 0 0 0 2px rgba(239, 83, 80, 0.2);
             }
         }
     }

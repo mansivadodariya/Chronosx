@@ -9,8 +9,8 @@
   overflow: hidden;
 
   :global(html.light) & {
-    background: #F8FAFC !important;
-    border-bottom: 1px solid rgba(24, 201, 139, 0.15) !important;
+    background: #F8FAFC;
+    border-bottom: 1px solid rgba(24, 201, 139, 0.15);
   }
 
   @include respond-to("sm") {
@@ -45,8 +45,8 @@
     -moz-osx-font-smoothing: grayscale;
 
     :global(html.light) & {
-      color: #0F172A !important;
-      font-weight: 900 !important;
+      color: #0F172A;
+      font-weight: 900;
     }
 
     span {
@@ -57,9 +57,9 @@
       font-weight: 900;
 
       :global(html.light) & {
-        color: #059669 !important;
-        -webkit-text-fill-color: #059669 !important;
-        font-weight: 900 !important;
+        color: #059669;
+        -webkit-text-fill-color: #059669;
+        font-weight: 900;
       }
     }
 
@@ -81,7 +81,7 @@
     max-width: 620px;
 
     :global(html.light) & {
-      color: #475569 !important;
+      color: #475569;
     }
 
     @include respond-to("tab") {
@@ -103,7 +103,7 @@
   z-index: 1;
 
   :global(html.light) & {
-    display: none !important;
+    display: none;
   }
 }
 
@@ -116,7 +116,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
   :global(html.light) & {
-    border-color: rgba(24, 201, 139, 0.25) !important;
+    border-color: rgba(24, 201, 139, 0.25);
   }
 }
 
@@ -126,7 +126,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
   :global(html.light) & {
-    border-color: rgba(24, 201, 139, 0.25) !important;
+    border-color: rgba(24, 201, 139, 0.25);
   }
 
   &:last-child {
@@ -171,9 +171,9 @@
   overflow: hidden;
 
   :global(html.light) & {
-    background: transparent !important;
-    border-color: rgba(24, 201, 139, 0.2) !important;
-    box-shadow: none !important;
+    background: transparent;
+    border-color: rgba(24, 201, 139, 0.2);
+    box-shadow: none;
   }
 
   &:last-child {
@@ -217,8 +217,8 @@
     pointer-events: none;
 
     :global(html.light) & {
-      background: transparent !important;
-      box-shadow: none !important;
+      background: transparent;
+      box-shadow: none;
     }
 
     @include respond-to("tab") {
@@ -310,7 +310,7 @@
   margin-bottom: 8px;
 
   :global(html.light) & {
-    color: #0F172A !important;
+    color: #0F172A;
   }
 
   .suffixGreen {
@@ -319,7 +319,7 @@
     margin-left: 2px;
 
     :global(html.light) & {
-      color: #047857 !important;
+      color: #047857;
     }
   }
 
@@ -336,7 +336,7 @@
   letter-spacing: -0.2px;
 
   :global(html.light) & {
-    color: #0F172A !important;
+    color: #0F172A;
   }
 }
 

@@ -10,8 +10,8 @@
     font-family: inherit;
 
     :global(html.light) & {
-        background-color: #F8FAFC !important;
-        color: #0F172A !important;
+        background-color: #F8FAFC;
+        color: #0F172A;
     }
 }
 
@@ -66,7 +66,7 @@
 }
 
 .sectionDivider {
-    display: none !important;
+    display: none;
 }
 
 .goldGradient {

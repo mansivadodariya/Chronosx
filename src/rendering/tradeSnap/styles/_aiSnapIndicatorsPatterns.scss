@@ -343,21 +343,21 @@
 }
 
 .supportPill {
-    border-color: rgba(16, 185, 129, 0.35) !important;
+    border-color: rgba(16, 185, 129, 0.35);
     background: rgba(16, 185, 129, 0.05);
 
     .pillIndex {
-        color: #10B981 !important;
+        color: #10B981;
     }
 }
 
 .resistancePill {
-    border-color: rgba(239, 68, 68, 0.35) !important;
+    border-color: rgba(239, 68, 68, 0.35);
     background: rgba(239, 68, 68, 0.05);
 
     .pillIndex,
     .pillIndexRes {
-        color: #EF4444 !important;
+        color: #EF4444;
     }
 }
 

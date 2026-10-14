@@ -16,8 +16,8 @@
   overscroll-behavior: contain;
 
   :global([dir="rtl"]) & {
-    left: auto !important;
-    right: 0 !important;
+    left: auto;
+    right: 0;
   }
 
   &.positionBottom {

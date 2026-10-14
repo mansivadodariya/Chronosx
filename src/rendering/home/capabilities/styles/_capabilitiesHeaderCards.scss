@@ -6,86 +6,86 @@
   background: radial-gradient(circle at 50% 30%, #040907 0%, #020605 60%, #000000 100%);
 
   :global(html.light) & {
-    background: #F8FAFC !important;
-    border-bottom: 1px solid rgba(24, 201, 139, 0.15) !important;
+    background: #F8FAFC;
+    border-bottom: 1px solid rgba(24, 201, 139, 0.15);
 
     .cockpitCard {
-      background: #FFFFFF !important;
-      border: 1px solid rgba(24, 201, 139, 0.22) !important;
-      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05) !important;
+      background: #FFFFFF;
+      border: 1px solid rgba(24, 201, 139, 0.22);
+      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05);
 
       &:hover,
       &.cardActive {
-        background: #FFFFFF !important;
-        border-color: #18C98B !important;
-        box-shadow: 0 12px 36px rgba(24, 201, 139, 0.12) !important;
+        background: #FFFFFF;
+        border-color: #18C98B;
+        box-shadow: 0 12px 36px rgba(24, 201, 139, 0.12);
 
         .cardHeaderMeta h3 {
-          color: #0F172A !important;
-          text-shadow: none !important;
+          color: #0F172A;
+          text-shadow: none;
         }
       }
 
       .cardHeaderMeta {
         .capLabelRow .watermarkNum {
-          color: #0F172A !important;
-          text-shadow: none !important;
+          color: #0F172A;
+          text-shadow: none;
         }
 
         h3 {
-          color: #0F172A !important;
-          text-shadow: none !important;
+          color: #0F172A;
+          text-shadow: none;
         }
 
         .actionArrow {
-          background: #F1F5F9 !important;
-          border-color: #E2E8F0 !important;
-          color: #64748B !important;
-          box-shadow: none !important;
+          background: #F1F5F9;
+          border-color: #E2E8F0;
+          color: #64748B;
+          box-shadow: none;
 
           &.arrowGlow {
-            background: rgba(16, 185, 129, 0.15) !important;
-            border-color: rgba(16, 185, 129, 0.45) !important;
-            color: #047857 !important;
-            box-shadow: none !important;
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.45);
+            color: #047857;
+            box-shadow: none;
 
             svg {
-              filter: none !important;
+              filter: none;
             }
           }
         }
 
         .comingBadge {
-          background: rgba(16, 185, 129, 0.12) !important;
-          border-color: rgba(16, 185, 129, 0.35) !important;
-          color: #047857 !important;
+          background: rgba(16, 185, 129, 0.12);
+          border-color: rgba(16, 185, 129, 0.35);
+          color: #047857;
         }
       }
 
       .cardFooter {
         .cardDesc {
-          color: #64748B !important;
+          color: #64748B;
         }
 
         .watermarkNum {
-          color: #CBD5E1 !important;
+          color: #CBD5E1;
         }
       }
     }
 
     .widgetBox {
-      background: #F8FAFC !important;
-      border: 1px solid #E2E8F0 !important;
-      box-shadow: none !important;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      box-shadow: none;
 
       &.widgetActive {
-        border-color: rgba(16, 185, 129, 0.45) !important;
-        box-shadow: none !important;
+        border-color: rgba(16, 185, 129, 0.45);
+        box-shadow: none;
       }
 
       .widgetTopRow {
         .liveTag {
-          color: #475569 !important;
+          color: #475569;
         }
 
         .subMeta,
@@ -93,12 +93,12 @@
         .resLabel,
         .equityLabel,
         .sampleBadge {
-          color: #64748B !important;
+          color: #64748B;
         }
 
         .proTag,
         .momText.momActive {
-          color: #047857 !important;
+          color: #047857;
         }
       }
     }
@@ -106,23 +106,23 @@
     .convictionList {
       .convRow {
         .rankNum {
-          color: #64748B !important;
+          color: #64748B;
         }
 
         .symText {
-          color: #0F172A !important;
+          color: #0F172A;
         }
 
         .trackBar {
-          background: #E2E8F0 !important;
+          background: #E2E8F0;
         }
 
         .scoreText {
-          color: #475569 !important;
+          color: #475569;
 
           &.scoreActive {
-            color: #047857 !important;
-            text-shadow: none !important;
+            color: #047857;
+            text-shadow: none;
           }
         }
       }
@@ -130,44 +130,44 @@
 
     .candlestickArea {
       .buyBadge {
-        background: #F1F5F9 !important;
-        border-color: #E2E8F0 !important;
-        color: #64748B !important;
-        box-shadow: none !important;
+        background: #F1F5F9;
+        border-color: #E2E8F0;
+        color: #64748B;
+        box-shadow: none;
 
         &.buyBadgeActive {
-          background: rgba(16, 185, 129, 0.12) !important;
-          border-color: rgba(16, 185, 129, 0.35) !important;
-          color: #047857 !important;
-          box-shadow: none !important;
+          background: rgba(16, 185, 129, 0.12);
+          border-color: rgba(16, 185, 129, 0.35);
+          color: #047857;
+          box-shadow: none;
         }
       }
 
       .widgetFooterMeta {
-        color: #64748B !important;
+        color: #64748B;
       }
     }
 
     .breakoutArea {
       .resLevelMarker {
-        color: #047857 !important;
+        color: #047857;
       }
 
       .breakoutToast {
-        background: #F1F5F9 !important;
-        border-color: #E2E8F0 !important;
-        color: #64748B !important;
-        box-shadow: none !important;
+        background: #F1F5F9;
+        border-color: #E2E8F0;
+        color: #64748B;
+        box-shadow: none;
 
         &.toastActive {
-          background: rgba(16, 185, 129, 0.12) !important;
-          border-color: rgba(16, 185, 129, 0.35) !important;
-          color: #047857 !important;
-          box-shadow: none !important;
+          background: rgba(16, 185, 129, 0.12);
+          border-color: rgba(16, 185, 129, 0.35);
+          color: #047857;
+          box-shadow: none;
 
           .arrowIcon,
           span {
-            color: #047857 !important;
+            color: #047857;
           }
         }
       }
@@ -176,28 +176,28 @@
     .equityArea {
       .statBoxesRow {
         .statPill {
-          background: #F1F5F9 !important;
-          border-color: #E2E8F0 !important;
-          box-shadow: none !important;
+          background: #F1F5F9;
+          border-color: #E2E8F0;
+          box-shadow: none;
 
           .statTitle {
-            color: #64748B !important;
+            color: #64748B;
           }
 
           .statNum {
-            color: #0F172A !important;
-            text-shadow: none !important;
+            color: #0F172A;
+            text-shadow: none;
           }
 
           &.statPillActive {
-            background: rgba(16, 185, 129, 0.12) !important;
-            border-color: rgba(16, 185, 129, 0.35) !important;
-            box-shadow: none !important;
+            background: rgba(16, 185, 129, 0.12);
+            border-color: rgba(16, 185, 129, 0.35);
+            box-shadow: none;
 
             .statTitle,
             .statNum {
-              color: #047857 !important;
-              text-shadow: none !important;
+              color: #047857;
+              text-shadow: none;
             }
           }
         }
@@ -206,11 +206,11 @@
 
     svg path[stroke="rgba(255, 255, 255, 0.2)"],
     svg line[stroke="rgba(255, 255, 255, 0.2)"] {
-      stroke: rgba(15, 23, 42, 0.25) !important;
+      stroke: rgba(15, 23, 42, 0.25);
     }
 
     svg circle[fill="rgba(255, 255, 255, 0.4)"] {
-      fill: rgba(15, 23, 42, 0.4) !important;
+      fill: rgba(15, 23, 42, 0.4);
     }
   }
 

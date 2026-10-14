@@ -404,7 +404,6 @@
             }
 
             &.active,
-            &[class*="active"],
             &[data-active='true'] {
                 background: rgba(24, 201, 139, 0.12);
                 border: none;

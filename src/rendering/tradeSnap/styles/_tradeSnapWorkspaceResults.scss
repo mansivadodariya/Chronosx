@@ -297,6 +297,12 @@ $success: #10b981;
         font-family: "Euclid-Regular", sans-serif;
     }
 
+    .analyzingTextWrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
     .pulseDot {
         width: 6px;
         height: 6px;

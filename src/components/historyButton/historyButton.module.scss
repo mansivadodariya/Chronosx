@@ -51,19 +51,19 @@
     }
 
     :global(html.light) & {
-        background: #FFFFFF !important;
-        border-color: rgba(24, 201, 139, 0.4) !important;
-        color: #047857 !important;
-        box-shadow: none !important;
+        background: #FFFFFF;
+        border-color: rgba(24, 201, 139, 0.4);
+        color: #047857;
+        box-shadow: none;
 
         svg {
-            color: #047857 !important;
+            color: #047857;
         }
 
         &:hover {
-            background: rgba(24, 201, 139, 0.12) !important;
-            border-color: #18C98B !important;
-            color: #047857 !important;
+            background: rgba(24, 201, 139, 0.12);
+            border-color: #18C98B;
+            color: #047857;
         }
     }
 }

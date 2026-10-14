@@ -21,14 +21,14 @@ $border-gold: rgba(24, 201, 139, 0.28);
 }
 
 .box {
-    max-width: 620px !important;
+    max-width: 620px;
     width: 100%;
     background: $bg-card;
     border: 1px solid rgba(24, 201, 139, 0.35);
-    border-radius: 20px !important;
+    border-radius: 20px;
     box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(24, 201, 139, 0.08);
     position: relative;
-    padding: 32px 24px 24px !important;
+    padding: 32px 24px 24px;
     overflow: hidden;
     animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -47,7 +47,7 @@ $border-gold: rgba(24, 201, 139, 0.28);
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    margin-bottom: 18px !important;
+    margin-bottom: 18px;
 }
 
 .logoWrapper {
@@ -59,7 +59,7 @@ $border-gold: rgba(24, 201, 139, 0.28);
 }
 
 .logoImg {
-    width: 190px !important;
+    width: 190px;
     max-width: 100%;
     height: auto;
     display: block;
@@ -68,20 +68,20 @@ $border-gold: rgba(24, 201, 139, 0.28);
 }
 
 .content {
-    text-align: center !important;
+    text-align: center;
 }
 
 .title {
-    font-family: var(--font-plus-jakarta) !important;
-    font-size: 22px !important;
-    font-weight: 800 !important;
-    color: #FFFFFF !important;
-    margin: 0 0 8px !important;
+    font-family: var(--font-plus-jakarta);
+    font-size: 22px;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0 0 8px;
     letter-spacing: -0.5px;
     display: flex;
     align-items: center;
-    justify-content: center !important;
-    text-align: center !important;
+    justify-content: center;
+    text-align: center;
     gap: 10px;
 
     .titleIconBadge {
@@ -98,15 +98,15 @@ $border-gold: rgba(24, 201, 139, 0.28);
 }
 
 .welcomeText {
-    margin-bottom: 20px !important;
-    text-align: center !important;
+    margin-bottom: 20px;
+    text-align: center;
 
     p {
-        font-size: 13.5px !important;
-        color: rgba(255, 255, 255, 0.65) !important;
-        font-weight: 500 !important;
+        font-size: 13.5px;
+        color: rgba(255, 255, 255, 0.65);
+        font-weight: 500;
         margin: 0;
-        text-align: center !important;
+        text-align: center;
         line-height: 1.45;
 
         strong {
@@ -119,21 +119,21 @@ $border-gold: rgba(24, 201, 139, 0.28);
 .optionsContainer {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px !important;
+    gap: 16px;
     text-align: left;
-    margin-bottom: 8px !important;
+    margin-bottom: 8px;
 
     @include respond-to('sm') {
         grid-template-columns: 1fr;
-        gap: 14px !important;
+        gap: 14px;
     }
 }
 
 .optionCard {
     background: linear-gradient(145deg, rgba(20, 18, 14, 0.9) 0%, rgba(8, 8, 10, 0.95) 100%);
     border: 1px solid $border-gold;
-    border-radius: 16px !important;
-    padding: 20px !important;
+    border-radius: 16px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -149,27 +149,27 @@ $border-gold: rgba(24, 201, 139, 0.28);
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 8px !important;
+    margin-bottom: 8px;
 
     h3 {
-        font-family: var(--font-plus-jakarta) !important;
-        font-size: 14.5px !important;
-        font-weight: 700 !important;
-        color: #FFFFFF !important;
+        font-family: var(--font-plus-jakarta);
+        font-size: 14.5px;
+        font-weight: 700;
+        color: #FFFFFF;
         margin: 0;
-        line-height: 1.3 !important;
+        line-height: 1.3;
     }
 }
 
 .badgeStep {
-    width: 22px !important;
-    height: 22px !important;
-    border-radius: 50% !important;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
     background: rgba(24, 201, 139, 0.15);
     border: 1px solid rgba(24, 201, 139, 0.4);
-    color: $gold-primary !important;
-    font-size: 11px !important;
-    font-weight: 700 !important;
+    color: $gold-primary;
+    font-size: 11px;
+    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -177,10 +177,10 @@ $border-gold: rgba(24, 201, 139, 0.28);
 }
 
 .optionDesc {
-    font-size: 12.5px !important;
-    line-height: 1.45 !important;
-    color: rgba(255, 255, 255, 0.55) !important;
-    margin: 0 0 16px !important;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 0 0 16px;
 
     strong {
         color: $gold-primary;
@@ -192,12 +192,12 @@ $border-gold: rgba(24, 201, 139, 0.28);
     margin-top: auto;
     width: 100%;
     background: linear-gradient(135deg, #18C98B 0%, #10B981 100%);
-    color: #000000 !important;
+    color: #000000;
     border: none;
-    border-radius: 12px !important;
-    padding: 11px 16px !important;
-    font-size: 13.5px !important;
-    font-weight: 700 !important;
+    border-radius: 12px;
+    padding: 11px 16px;
+    font-size: 13.5px;
+    font-weight: 700;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -231,7 +231,7 @@ $border-gold: rgba(24, 201, 139, 0.28);
     margin-top: auto;
     display: flex;
     flex-direction: column;
-    gap: 10px !important;
+    gap: 10px;
 }
 
 .inputWrapper {
@@ -243,16 +243,16 @@ $border-gold: rgba(24, 201, 139, 0.28);
         }
 
         :global(.inputWrapper) {
-            border-radius: 12px !important;
-            background: #060706 !important;
-            border: 1px solid rgba(24, 201, 139, 0.3) !important;
-            padding: 2px 8px !important;
+            border-radius: 12px;
+            background: #060706;
+            border: 1px solid rgba(24, 201, 139, 0.3);
+            padding: 2px 8px;
 
             input {
-                font-size: 12.5px !important;
-                height: 36px !important;
-                color: #FFFFFF !important;
-                background: transparent !important;
+                font-size: 12.5px;
+                height: 36px;
+                color: #FFFFFF;
+                background: transparent;
 
                 &::placeholder {
                     color: rgba(255, 255, 255, 0.35);
@@ -264,13 +264,13 @@ $border-gold: rgba(24, 201, 139, 0.28);
 
 .submitBtn {
     width: 100%;
-    background: rgba(24, 201, 139, 0.15) !important;
-    border: 1px solid rgba(24, 201, 139, 0.45) !important;
-    color: $gold-primary !important;
-    border-radius: 12px !important;
-    padding: 11px 16px !important;
-    font-size: 13.5px !important;
-    font-weight: 700 !important;
+    background: rgba(24, 201, 139, 0.15);
+    border: 1px solid rgba(24, 201, 139, 0.45);
+    color: $gold-primary;
+    border-radius: 12px;
+    padding: 11px 16px;
+    font-size: 13.5px;
+    font-weight: 700;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -280,10 +280,10 @@ $border-gold: rgba(24, 201, 139, 0.28);
     font-family: inherit;
 
     &:hover:not(:disabled) {
-        background: rgba(24, 201, 139, 0.28) !important;
-        color: #FFFFFF !important;
-        border-color: $gold-primary !important;
-        box-shadow: 0 0 16px rgba(24, 201, 139, 0.25) !important;
+        background: rgba(24, 201, 139, 0.28);
+        color: #FFFFFF;
+        border-color: $gold-primary;
+        box-shadow: 0 0 16px rgba(24, 201, 139, 0.25);
         transform: translateY(-1px);
     }
 
@@ -490,15 +490,15 @@ $border-gold: rgba(24, 201, 139, 0.28);
 
 /* Specific Light Mode Rules for Newera Credits Modal */
 :global(html.light) .box {
-    background: #FFFFFF !important;
-    border-color: rgba(15, 23, 42, 0.09) !important;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15) !important;
+    background: #FFFFFF;
+    border-color: rgba(15, 23, 42, 0.09);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
 
     .title,
     .criteriaTitle,
     .successTitle,
     .stepTitle {
-        color: #0F172A !important;
+        color: #0F172A;
     }
 
     .welcomeText,
@@ -507,23 +507,23 @@ $border-gold: rgba(24, 201, 139, 0.28);
     .modalDesc,
     .noticeText,
     .syncStatusText {
-        color: #475569 !important;
+        color: #475569;
     }
 
     .criteriaCard,
     .stepItem,
     .statusIndicator,
     .infoBox {
-        background: #F8FAFC !important;
-        border-color: rgba(15, 23, 42, 0.08) !important;
+        background: #F8FAFC;
+        border-color: rgba(15, 23, 42, 0.08);
     }
 
     .closeBtn {
-        background: #F1F5F9 !important;
-        color: #0F172A !important;
+        background: #F1F5F9;
+        color: #0F172A;
 
         &:hover {
-            background: #E2E8F0 !important;
+            background: #E2E8F0;
         }
     }
 }

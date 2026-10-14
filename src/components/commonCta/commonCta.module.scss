@@ -157,63 +157,46 @@
 }
 
 :global(html.light) .commonCtaSection {
-    background: #F8FAFC !important;
+    background: #F8FAFC;
 
     .bannerCardFull {
-        background: #FFFFFF !important;
-        border: none !important;
-        border-top: none !important;
-        border-bottom: none !important;
-        box-shadow: 0 10px 40px rgba(15, 23, 42, 0.04) !important;
+        background: #FFFFFF;
+        border: none;
+        border-top: none;
+        border-bottom: none;
+        box-shadow: 0 10px 40px rgba(15, 23, 42, 0.04);
 
         .cardShimmerTop {
-            display: none !important;
+            display: none;
         }
 
         .pointerGlow {
-            display: none !important;
-        }
-
-        :global([class*="badgeWrapper"]) {
-            :global(button) {
-                background: #FFFFFF !important;
-                border: 1px solid rgba(24, 201, 139, 0.45) !important;
-                box-shadow: 0 4px 14px rgba(24, 201, 139, 0.1) !important;
-
-                :global(span) {
-                    background: transparent !important;
-                    background-color: transparent !important;
-                    border: none !important;
-                    box-shadow: none !important;
-                    color: #059669 !important;
-                    font-weight: 800 !important;
-                }
-            }
+            display: none;
         }
 
         .ctaPrimaryBtn {
-            background: #18C98B !important;
-            color: #040605 !important;
-            border-color: #18C98B !important;
-            box-shadow: 0 4px 18px rgba(24, 201, 139, 0.25) !important;
+            background: #18C98B;
+            color: #040605;
+            border-color: #18C98B;
+            box-shadow: 0 4px 18px rgba(24, 201, 139, 0.25);
 
             &:hover {
-                background: #15B77E !important;
-                border-color: #15B77E !important;
-                box-shadow: 0 8px 24px rgba(24, 201, 139, 0.4) !important;
+                background: #15B77E;
+                border-color: #15B77E;
+                box-shadow: 0 8px 24px rgba(24, 201, 139, 0.4);
             }
         }
 
         .ctaSecondaryBtn {
-            background: #FFFFFF !important;
-            border: 1px solid rgba(5, 150, 105, 0.35) !important;
-            color: #059669 !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+            background: #FFFFFF;
+            border: 1px solid rgba(5, 150, 105, 0.35);
+            color: #059669;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 
             &:hover {
-                background: #F0FDF4 !important;
-                border-color: #059669 !important;
-                color: #059669 !important;
+                background: #F0FDF4;
+                border-color: #059669;
+                color: #059669;
             }
         }
     }

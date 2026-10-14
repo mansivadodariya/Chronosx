@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useInView } from 'framer-motion';
+import styles from './countUp.module.scss';
 
 export default function CountUp({
     to,
@@ -19,7 +20,6 @@ export default function CountUp({
     useEffect(() => {
         if (!isInView || hasAnimated.current) return;
         hasAnimated.current = true;
-
         let startTime = null;
         let animationFrameId;
 
@@ -57,7 +57,7 @@ export default function CountUp({
     });
 
     return (
-        <span ref={ref} style={{ display: 'inline-block' }}>
+        <span ref={ref} className={styles.countUpWrapper}>
             {prefix}{formattedNumber}{suffix}
         </span>
     );

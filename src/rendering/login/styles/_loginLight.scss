@@ -1,166 +1,148 @@
 /* Light Theme overrides */
 :global(html.light) .loginpage,
 :global(html[data-theme='light']) .loginpage {
-    background: #F8FAFC !important;
+    background: #F8FAFC;
 
     .splitAuthCard {
-        background: #FFFFFF !important;
-        border: none !important;
-        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.06) !important;
+        background: #FFFFFF;
+        border: none;
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.06);
     }
 
     .leftStepperPanel {
-        background: radial-gradient(circle at 50% 8%, rgba(24, 201, 139, 0.18) 0%, rgba(16, 185, 129, 0.07) 35%, #F0FDF4 75%), #F0FDF4 !important;
-        border: none !important;
-        box-shadow: none !important;
+        background: radial-gradient(circle at 50% 8%, rgba(24, 201, 139, 0.18) 0%, rgba(16, 185, 129, 0.07) 35%, #F0FDF4 75%), #F0FDF4;
+        border: none;
+        box-shadow: none;
 
         .auroraGlow {
-            background: radial-gradient(circle, rgba(24, 201, 139, 0.28) 0%, rgba(16, 185, 129, 0.1) 45%, transparent 75%) !important;
-            opacity: 0.6 !important;
+            background: radial-gradient(circle, rgba(24, 201, 139, 0.28) 0%, rgba(16, 185, 129, 0.1) 45%, transparent 75%);
+            opacity: 0.6;
         }
 
         .leftTitle {
-            color: #0F172A !important;
+            color: #0F172A;
 
             .highlightText {
-                color: #059669 !important;
-                background: linear-gradient(135deg, #059669 0%, #10B981 100%) !important;
-                -webkit-background-clip: text !important;
-                -webkit-text-fill-color: transparent !important;
+                color: #059669;
+                background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
             }
         }
 
         .leftSubtitle {
-            color: #475569 !important;
+            color: #475569;
         }
 
         .featurePillList {
             .featurePill {
-                background: rgba(255, 255, 255, 0.75) !important;
-                border: 1px solid rgba(15, 23, 42, 0.08) !important;
-                box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03) !important;
+                background: rgba(255, 255, 255, 0.75);
+                border: 1px solid rgba(15, 23, 42, 0.08);
+                box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
 
                 .featureIconBox {
-                    background: rgba(24, 201, 139, 0.1) !important;
-                    border: 1px solid rgba(24, 201, 139, 0.22) !important;
-                    color: #059669 !important;
+                    background: rgba(24, 201, 139, 0.1);
+                    border: 1px solid rgba(24, 201, 139, 0.22);
+                    color: #059669;
                 }
 
                 .featurePillText {
-                    color: #1E293B !important;
-                    font-weight: 600 !important;
+                    color: #1E293B;
+                    font-weight: 600;
                 }
 
                 .featurePillDesc {
-                    color: #64748B !important;
+                    color: #64748B;
                 }
 
                 .featureBadge {
-                    background: rgba(24, 201, 139, 0.08) !important;
-                    border-color: rgba(24, 201, 139, 0.25) !important;
-                    color: #059669 !important;
+                    background: rgba(24, 201, 139, 0.08);
+                    border-color: rgba(24, 201, 139, 0.25);
+                    color: #059669;
                 }
 
                 &:hover,
                 &.activePill {
-                    background: #FFFFFF !important;
-                    border: 1.5px solid #10B981 !important;
-                    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.22), 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+                    background: #FFFFFF;
+                    border: 1.5px solid #10B981;
+                    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.22), 0 2px 8px rgba(15, 23, 42, 0.06);
                     transform: translateY(-2px) scale(1.015);
 
                     .featureIconBox {
-                        background: rgba(24, 201, 139, 0.2) !important;
-                        border-color: #059669 !important;
-                        color: #047857 !important;
-                        box-shadow: 0 0 10px rgba(24, 201, 139, 0.25) !important;
+                        background: rgba(24, 201, 139, 0.2);
+                        border-color: #059669;
+                        color: #047857;
+                        box-shadow: 0 0 10px rgba(24, 201, 139, 0.25);
                     }
 
                     .featurePillText {
-                        color: #0F172A !important;
-                        font-weight: 700 !important;
+                        color: #0F172A;
+                        font-weight: 700;
                     }
 
                     .featurePillDesc {
-                        color: #334155 !important;
+                        color: #334155;
                     }
 
                     .featureBadge {
-                        background: #059669 !important;
-                        border-color: #059669 !important;
-                        color: #FFFFFF !important;
+                        background: #059669;
+                        border-color: #059669;
+                        color: #FFFFFF;
                     }
                 }
             }
         }
 
         .leftFooterNotice {
-            color: #059669 !important;
+            color: #059669;
 
             svg {
-                color: #059669 !important;
+                color: #059669;
             }
         }
     }
 
     .rightFormPanel {
-        background: #FFFFFF !important;
+        background: #FFFFFF;
 
         .formTitle {
-            color: #0F172A !important;
+            color: #0F172A;
         }
 
         .formSubtitle {
-            color: #64748B !important;
+            color: #64748B;
         }
 
         .orDivider {
-            color: #94A3B8 !important;
+            color: #94A3B8;
 
             &::before,
             &::after {
-                border-bottom-color: rgba(15, 23, 42, 0.1) !important;
+                border-bottom-color: rgba(15, 23, 42, 0.1);
             }
         }
 
         .submitBtn {
-            background: #0F172A !important;
-            color: #FFFFFF !important;
-            border-color: #0F172A !important;
+            background: #0F172A;
+            color: #FFFFFF;
+            border-color: #0F172A;
 
             &:hover:not(:disabled) {
-                background: #18C98B !important;
-                color: #020403 !important;
-                border-color: #18C98B !important;
+                background: #18C98B;
+                color: #020403;
+                border-color: #18C98B;
             }
         }
 
-        .socialRow {
-            .googleButtonWrapper {
-                div[class*="googleBtnWrapper"] {
-                    background: #FFFFFF !important;
-                    border: 1.5px solid rgba(15, 23, 42, 0.15) !important;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
-
-                    &:hover {
-                        background: #F8FAFC !important;
-                        border-color: #18C98B !important;
-                    }
-                }
-
-                div[class*="customGoogleBtn"] {
-                    color: #0F172A !important;
-                }
-            }
-        }
 
         .accountBottomLink p {
-            color: #64748B !important;
+            color: #64748B;
 
             a {
-                color: #0F172A !important;
+                color: #0F172A;
 
                 &:hover {
-                    color: #18C98B !important;
+                    color: #18C98B;
                 }
             }
         }

@@ -126,13 +126,13 @@
     }
 
     :global(html.light) & {
-        color: #0F172A !important;
-        font-weight: 900 !important;
+        color: #0F172A;
+        font-weight: 900;
 
         span {
-            color: #059669 !important;
-            -webkit-text-fill-color: #059669 !important;
-            font-weight: 900 !important;
+            color: #059669;
+            -webkit-text-fill-color: #059669;
+            font-weight: 900;
         }
     }
 }

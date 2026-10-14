@@ -35,13 +35,13 @@ export default function TradeLedgerTab({
                         return (
                             <tr key={i}>
                                 <td>{t.date} {t.time}</td>
-                                <td style={{ fontWeight: 700 }}>{t.symbol}</td>
-                                <td style={{ color: (t.side || '').toUpperCase() === 'BUY' ? '#10B981' : '#EF4444' }}>
+                                <td className={styles.symbolCell}>{t.symbol}</td>
+                                <td className={(t.side || '').toUpperCase() === 'BUY' ? styles.greenText : styles.redText}>
                                     {t.side || 'BUY'}
                                 </td>
                                 <td>{t.quantity ?? '0.1'}</td>
                                 <td>{t.entry_price ?? '—'}</td>
-                                <td style={{ color: Number(t.pnl) >= 0 ? '#10B981' : '#EF4444' }}>
+                                <td className={Number(t.pnl) >= 0 ? styles.greenText : styles.redText}>
                                     {t.outcome || (Number(t.pnl) >= 0 ? 'WIN' : 'LOSS')}
                                 </td>
                                 <td className={Number(t.pnl) >= 0 ? styles.greenText : styles.redText}>

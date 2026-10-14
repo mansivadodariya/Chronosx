@@ -78,7 +78,7 @@ export default function TradingProfileAnalysisCard({
             <div className={styles.metricsGrid4}>
                 <div className={styles.metricTile}>
                     <span className={styles.tileLabel}>{t('profile.riskTolerance', 'Risk Tolerance')}</span>
-                    <span className={styles.tileValue} style={{ color: '#18C98B' }}>
+                    <span className={`${styles.tileValue} ${styles.tileValueRisk}`}>
                         {risk.risk_capacity || risk.risk_tolerance || 'Moderate'}
                     </span>
                     <span className={styles.tileSub}>
@@ -108,7 +108,7 @@ export default function TradingProfileAnalysisCard({
 
                 <div className={styles.metricTile}>
                     <span className={styles.tileLabel}>{t('profile.targetReturn', 'Target Return')}</span>
-                    <span className={styles.tileValue} style={{ color: '#00F2FE' }}>
+                    <span className={`${styles.tileValue} ${styles.tileValueReturn}`}>
                         {goals.monthly_return_rate || goals.monthly_return_target || '5%'} / mo
                     </span>
                     <span className={styles.tileSub}>
@@ -132,53 +132,25 @@ export default function TradingProfileAnalysisCard({
             </div>
 
             {/* Preferred Markets & Sessions Chips (Separate Dedicated Rows) */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '10px' }}>
+            <div className={styles.chipsContainer}>
                 {/* Row 1: Preferred Pairs */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 14px', alignItems: 'center' }}>
-                    <span style={{ fontSize: '13px', color: isLight ? '#475569' : '#94A3B8', fontWeight: 600, minWidth: '105px' }}>{t('profile.preferredPairs', 'Preferred Pairs:')}</span>
+                <div className={styles.chipRow}>
+                    <span className={styles.chipRowLabel}>{t('profile.preferredPairs', 'Preferred Pairs:')}</span>
                     {pairs.map((p) => (
-                        <span
-                            key={p}
-                            style={{
-                                fontSize: '12.5px',
-                                fontWeight: 600,
-                                padding: '6px 14px',
-                                borderRadius: '999px',
-                                background: isLight ? '#ecfdf5' : 'rgba(24, 201, 139, 0.12)',
-                                border: isLight ? '1px solid #a7f3d0' : '1px solid rgba(24, 201, 139, 0.3)',
-                                color: isLight ? '#047857' : '#18C98B',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                            }}
-                        >
+                        <span key={p} className={styles.pairChip}>
                             <TradingViewPairIcon pair={p} size={16} />
-                            <span style={{ unicodeBidi: 'isolate', letterSpacing: '0.3px' }}>{p}</span>
+                            <span className={styles.chipText}>{p}</span>
                         </span>
                     ))}
                 </div>
 
                 {/* Row 2: Sessions */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 14px', alignItems: 'center' }}>
-                    <span style={{ fontSize: '13px', color: isLight ? '#475569' : '#94A3B8', fontWeight: 600, minWidth: '105px' }}>{t('profile.sessions', 'Sessions:')}</span>
+                <div className={styles.chipRow}>
+                    <span className={styles.chipRowLabel}>{t('profile.sessions', 'Sessions:')}</span>
                     {sessions.map((s) => (
-                        <span
-                            key={s}
-                            style={{
-                                fontSize: '12.5px',
-                                fontWeight: 600,
-                                padding: '6px 14px',
-                                borderRadius: '999px',
-                                background: isLight ? '#f1f5f9' : 'rgba(255, 255, 255, 0.05)',
-                                border: isLight ? '1px solid #cbd5e1' : '1px solid rgba(255, 255, 255, 0.12)',
-                                color: isLight ? '#334155' : '#CBD5E1',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                            }}
-                        >
+                        <span key={s} className={styles.sessionChip}>
                             <SessionIcon session={s} size={16} />
-                            <span style={{ unicodeBidi: 'isolate', letterSpacing: '0.3px' }}>{s}</span>
+                            <span className={styles.chipText}>{s}</span>
                         </span>
                     ))}
                 </div>
