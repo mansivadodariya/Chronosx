@@ -1,7 +1,8 @@
 /* ========================================================================= */
 /* 5. LIVE INTERACTIVE CHAT DEMO (COCKPIT TERMINAL) */
 /* ========================================================================= */
-.liveDemoSection {
+.liveDemoSection,
+.demoSection {
     position: relative;
     z-index: 2;
     padding: 80px 0;
@@ -15,7 +16,8 @@
     }
 }
 
-.terminalCockpit {
+.terminalCockpit,
+.chatTerminalCard {
     max-width: 1080px;
     margin: 0 auto;
     border-radius: 20px;
@@ -27,7 +29,8 @@
 }
 
 /* Header Bar */
-.terminalHeader {
+.terminalHeader,
+.terminalWindowBar {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -43,37 +46,58 @@
     }
 }
 
-.terminalControls {
+.terminalControls,
+.windowControls {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.dot {
+.dot,
+.controlDotRed,
+.controlDotYellow,
+.controlDotGreen {
     width: 11px;
     height: 11px;
     border-radius: 50%;
+    display: inline-block;
 }
 
-.dotRed {
+.dotRed,
+.controlDotRed {
     background: #FF5F56;
 }
 
-.dotYellow {
+.dotYellow,
+.controlDotYellow {
     background: #38BDF8;
 }
 
-.dotGreen {
+.dotGreen,
+.controlDotGreen {
     background: #27C93F;
 }
 
-.terminalBrand {
+.terminalBrand,
+.terminalTitle {
     margin-left: 8px;
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 0.08em;
     color: #18C98B;
     text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.terminalLiveDot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10B981;
+    box-shadow: 0 0 8px #10B981;
+    display: inline-block;
 }
 
 .terminalTabs {
@@ -106,7 +130,8 @@
     color: #18C98B !important;
 }
 
-.terminalLiveIndicator {
+.terminalLiveIndicator,
+.terminalStatus {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -117,7 +142,8 @@
 }
 
 /* Chat Stream Area */
-.chatStreamArea {
+.chatStreamArea,
+.terminalMessageStream {
     padding: 30px;
     display: flex;
     flex-direction: column;
@@ -131,7 +157,8 @@
 }
 
 /* Trader Message */
-.traderMessageRow {
+.traderMessageRow,
+.userMessageRow {
     display: flex;
     align-items: flex-start;
     gap: 14px;

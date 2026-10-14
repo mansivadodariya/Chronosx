@@ -147,6 +147,23 @@ export default function BreakoutDetection() {
                         <stop offset="100%" stopColor="#18c98b" stopOpacity="0" />
                       </linearGradient>
 
+                      {/* High-contrast rich dark emerald gradients for light theme */}
+                      <linearGradient id="baseLineGradLight" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#047857" stopOpacity="1" />
+                        <stop offset="100%" stopColor="#059669" stopOpacity="1" />
+                      </linearGradient>
+
+                      <linearGradient id="baseAreaGradLight" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#059669" stopOpacity="0.18" />
+                        <stop offset="100%" stopColor="#059669" stopOpacity="0.01" />
+                      </linearGradient>
+
+                      <linearGradient id="glowAreaGradLight" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#047857" stopOpacity="0.25" />
+                        <stop offset="60%" stopColor="#059669" stopOpacity="0.1" />
+                        <stop offset="100%" stopColor="#059669" stopOpacity="0" />
+                      </linearGradient>
+
                       <radialGradient id="pointGlowHalo" cx="50%" cy="50%" r="50%">
                         <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
                         <stop offset="40%" stopColor="#6EE7B7" stopOpacity="0.9" />
@@ -155,8 +172,8 @@ export default function BreakoutDetection() {
                     </defs>
 
                     {/* Subtle Horizontal Grid lines */}
-                    <line x1="20" y1="240" x2="560" y2="240" stroke="rgba(24, 201, 139, 0.08)" strokeWidth="1" />
-                    <line x1="20" y1="125" x2="560" y2="125" stroke="rgba(24, 201, 139, 0.08)" strokeWidth="1" />
+                    <line x1="20" y1="240" x2="560" y2="240" className={styles.gridLine} strokeWidth="1" />
+                    <line x1="20" y1="125" x2="560" y2="125" className={styles.gridLine} strokeWidth="1" />
 
                     {/* Dashed Resistance Line */}
                     <g className={styles.resistanceLineGroup}>
@@ -181,6 +198,7 @@ export default function BreakoutDetection() {
                     {/* Base Area Fill */}
                     <path
                       d="M 25 248 L 58 256 L 95 232 L 132 245 L 170 220 L 208 234 L 246 205 L 284 218 L 322 190 L 365 180 L 365 280 L 25 280 Z"
+                      className={styles.baseAreaPath}
                       fill="url(#baseAreaGrad)"
                     />
 
@@ -188,8 +206,8 @@ export default function BreakoutDetection() {
                     {activeStep === 0 && (
                       <g className={styles.tipDotGroup}>
                         <circle cx="365" cy="180" r="9" className={styles.sonarRing} />
-                        <circle cx="365" cy="180" r="4" fill="#13f9d3ff" />
-                        <circle cx="365" cy="180" r="1.8" fill="#00ffaeff" />
+                        <circle cx="365" cy="180" r="4" className={styles.tipDotInner} fill="#13f9d3ff" />
+                        <circle cx="365" cy="180" r="1.8" className={styles.tipDotCenter} fill="#00ffaeff" />
                       </g>
                     )}
 
@@ -206,6 +224,7 @@ export default function BreakoutDetection() {
                               ? "M 365 180 Q 395 180 445 132 L 525 75 L 525 280 L 365 280 Z"
                               : "M 365 180 Q 395 180 445 132 L 535 62 L 535 280 L 365 280 Z"
                           }
+                          className={styles.breakoutAreaPath}
                           fill="url(#glowAreaGrad)"
                         />
 
@@ -225,7 +244,7 @@ export default function BreakoutDetection() {
                         {/* Breakout Point Indicator */}
                         <circle cx="365" cy="180" r="12" className={styles.breakoutSonar} />
                         <circle cx="365" cy="180" r="5" fill="none" stroke="#FFFFFF" strokeWidth="1.6" />
-                        <circle cx="365" cy="180" r="2.8" fill="#14ffccff" />
+                        <circle cx="365" cy="180" r="2.8" className={styles.breakoutCenter} fill="#14ffccff" />
 
                         {/* Current Price Tip Dot */}
                         <circle 

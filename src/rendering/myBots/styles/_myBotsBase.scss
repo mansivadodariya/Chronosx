@@ -227,6 +227,18 @@
     align-items: center;
     gap: 14px;
 
+    .bannerIconBox {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: rgba(24, 201, 139, 0.1);
+        border: 1px solid rgba(24, 201, 139, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
     h4 {
         font-size: 14px;
         font-weight: 700;

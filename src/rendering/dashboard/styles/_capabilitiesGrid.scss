@@ -398,6 +398,34 @@
                     }
                 }
             }
+
+            &.skeletonRow {
+                cursor: default;
+                pointer-events: none;
+            }
+
+            .actIndexBadge {
+                width: 38px;
+                height: 38px;
+                border-radius: 10px;
+                background: rgba(255, 255, 255, 0.05);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+
+            .skeletonBar {
+                border-radius: 6px;
+                background: rgba(255, 255, 255, 0.08);
+                animation: skeletonPulse 1.5s infinite ease-in-out;
+            }
+
+            .skeletonTitleBar { width: 110px; height: 16px; }
+            .skeletonTagBar { width: 50px; height: 16px; }
+            .skeletonTimeBar { width: 60px; height: 14px; }
+            .skeletonDescBar { width: 80%; height: 14px; }
+            .skeletonActionBar { width: 70px; height: 28px; border-radius: 8px; flex-shrink: 0; }
         }
 
         .emptyFeed {

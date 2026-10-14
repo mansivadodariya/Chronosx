@@ -65,10 +65,10 @@ export default function ReferralLinkWidget() {
 
             <div className={styles.socialShareGroup}>
               <span style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.5)', marginRight: 4 }}>Share On:</span>
-              <button className={styles.socialBtn} onClick={() => handleSocialShare('x')}>𝕏 (Twitter)</button>
-              <button className={styles.socialBtn} onClick={() => handleSocialShare('telegram')}>Telegram</button>
-              <button className={styles.socialBtn} onClick={() => handleSocialShare('whatsapp')}>WhatsApp</button>
-              <button className={styles.socialBtn} onClick={() => handleSocialShare('linkedin')}>LinkedIn</button>
+              <button className={styles.sociallinks} onClick={() => handleSocialShare('x')}>𝕏 (Twitter)</button>
+              <button className={styles.sociallinks} onClick={() => handleSocialShare('telegram')}>Telegram</button>
+              <button className={styles.sociallinks} onClick={() => handleSocialShare('whatsapp')}>WhatsApp</button>
+              <button className={styles.sociallinks} onClick={() => handleSocialShare('linkedin')}>LinkedIn</button>
             </div>
           </div>
         </div>
@@ -112,7 +112,7 @@ export default function ReferralLinkWidget() {
             >
               <h3 style={{ margin: '0 0 8px', fontSize: '1.2rem', fontWeight: 700 }}>Your Referral QR Code</h3>
               <p style={{ margin: '0 0 24px', fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>Scan with smartphone camera to join ChronosX</p>
-              
+
               <div style={{ background: '#FFFFFF', padding: 16, borderRadius: 16, display: 'inline-block', marginBottom: 24 }}>
                 <svg width="180" height="180" viewBox="0 0 100 100" fill="#060B0E">
                   <path d="M0,0 h30 v30 h-30 z M40,0 h20 v10 h-20 z M70,0 h30 v30 h-30 z M10,10 h10 v10 h-10 z M80,10 h10 v10 h-10 z M0,40 h10 v20 h-10 z M30,40 h40 v10 h-40 z M80,40 h20 v20 h-20 z M0,70 h30 v30 h-30 z M10,80 h10 v10 h-10 z M40,70 h20 v30 h-20 z M70,70 h30 v30 h-30 z M80,80 h10 v10 h-10 z" />

@@ -61,17 +61,17 @@ export default function StrategyPageHero({
 
                     {/* Value Proposition Badges */}
                     <motion.div
-                        className={styles.valueBadgesRow}
+                        className={styles.highlightsGrid}
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.3 }}
                     >
                         {valueBadges.map((badge, idx) => (
-                            <div key={idx} className={styles.valueBadgeCard}>
-                                <div className={`${styles.badgeIconWrap} ${styles[badge.iconStyle]}`}>
+                            <div key={idx} className={styles.highlightCard}>
+                                <div className={`${styles.highlightIconBox} ${styles[badge.colorClass || badge.iconStyle] || ''}`}>
                                     {badge.icon}
                                 </div>
-                                <div className={styles.badgeContent}>
+                                <div className={styles.highlightContent}>
                                     <h4>{badge.title}</h4>
                                     <p>{badge.desc}</p>
                                 </div>

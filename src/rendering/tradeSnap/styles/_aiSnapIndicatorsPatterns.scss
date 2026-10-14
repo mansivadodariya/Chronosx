@@ -342,6 +342,25 @@
     }
 }
 
+.supportPill {
+    border-color: rgba(16, 185, 129, 0.35) !important;
+    background: rgba(16, 185, 129, 0.05);
+
+    .pillIndex {
+        color: #10B981 !important;
+    }
+}
+
+.resistancePill {
+    border-color: rgba(239, 68, 68, 0.35) !important;
+    background: rgba(239, 68, 68, 0.05);
+
+    .pillIndex,
+    .pillIndexRes {
+        color: #EF4444 !important;
+    }
+}
+
 .patternsColumn {
     display: flex;
     flex-direction: column;

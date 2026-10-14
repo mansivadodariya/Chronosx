@@ -364,6 +364,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        border: none !important;
+        border-right: none !important;
 
         @include respond-to("sm") {
             flex-direction: column;
@@ -378,44 +380,73 @@
             @include font-normal;
         }
 
-        .socialList {
+        .allsociallinks {
             display: flex;
             align-items: center;
             gap: 12px;
 
-            .socialBtn {
+            .sociallinks {
                 width: 38px;
                 height: 38px;
                 border-radius: 50%;
                 background: #06140e;
-                border: 1px solid rgba(24, 201, 139, 0.35);
+                border: none !important;
+                outline: none !important;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                transition: all 0.3s ease;
+                transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
                 text-decoration: none;
-                color: #18c98b;
+                flex-shrink: 0;
+                --x-color: #FFFFFF;
+
+                :global(html.light) &,
+                :global(html[data-theme="light"]) &,
+                :global([data-theme="light"]) & {
+                    background: rgba(24, 201, 139, 0.16) !important;
+                    background-color: rgba(24, 201, 139, 0.16) !important;
+                    border: none !important;
+                    outline: none !important;
+                    box-shadow: none !important;
+                    --x-color: #0F1419 !important;
+
+                    &:hover {
+                        background: rgba(24, 201, 139, 0.28) !important;
+                        background-color: rgba(24, 201, 139, 0.28) !important;
+                        border: none !important;
+                        outline: none !important;
+                        box-shadow: 0 4px 12px rgba(24, 201, 139, 0.22) !important;
+                    }
+                }
 
                 .socialIcon {
-                    width: 16px;
-                    height: 16px;
-                    display: block;
-                    background-color: currentColor;
-                    mask-size: contain;
-                    mask-position: center;
-                    mask-repeat: no-repeat;
-                    -webkit-mask-size: contain;
-                    -webkit-mask-position: center;
-                    -webkit-mask-repeat: no-repeat;
-                    transition: all 0.2s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    line-height: 0;
+                    color: var(--brand-color, #18c98b);
+                    transition: transform 0.25s ease;
+
+                    svg {
+                        display: block;
+                    }
+
+                    :global(.cx-yt-play),
+                    :global([data-social="youtube"]) path:last-child {
+                        fill: #FFFFFF !important;
+                    }
                 }
 
                 &:hover {
-                    color: #6EE7B7;
-                    border-color: #6EE7B7;
-                    box-shadow: 0 0 16px rgba(24, 201, 139, 0.4);
+                    border: none !important;
+                    outline: none !important;
+                    box-shadow: 0 0 16px var(--brand-glow, rgba(24, 201, 139, 0.4));
                     transform: translateY(-2px);
-                    background: rgba(8, 28, 20, 0.95);
+                    background: var(--brand-hover-bg, rgba(255, 255, 255, 0.08));
+
+                    .socialIcon {
+                        transform: scale(1.14);
+                    }
                 }
             }
         }
@@ -500,29 +531,55 @@
         }
 
         .bottomSection {
+            border: none !important;
+            border-right: none !important;
+
             p {
                 color: #64748B !important;
             }
 
-            .socialList .socialBtn {
-                background: #FFFFFF !important;
-                border: 1px solid rgba(24, 201, 139, 0.3) !important;
-                border-radius: 9999px !important;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+            .allsociallinks .sociallinks {
+                width: 38px !important;
+                height: 38px !important;
+                background: rgba(24, 201, 139, 0.16) !important;
+                border: none !important;
+                outline: none !important;
+                border-radius: 50% !important;
+                box-shadow: none !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                flex-shrink: 0 !important;
+                transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+                --x-color: #0F1419 !important;
 
                 .socialIcon {
-                    background-color: #047857 !important;
+                    display: inline-flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    line-height: 0 !important;
                     opacity: 1 !important;
+                    transition: transform 0.25s ease !important;
+
+                    svg {
+                        display: block !important;
+                    }
+
+                    :global(.cx-yt-play),
+                    :global([data-social="youtube"]) path:last-child {
+                        fill: #FFFFFF !important;
+                    }
                 }
 
                 &:hover {
-                    background: #18C98B !important;
-                    border-color: #18C98B !important;
-                    transform: translateY(-2px);
-                    box-shadow: 0 4px 14px rgba(24, 201, 139, 0.35) !important;
+                    background: rgba(24, 201, 139, 0.28) !important;
+                    border: none !important;
+                    outline: none !important;
+                    transform: translateY(-2px) !important;
+                    box-shadow: 0 4px 12px rgba(24, 201, 139, 0.22) !important;
 
                     .socialIcon {
-                        background-color: #040605 !important;
+                        transform: scale(1.14) !important;
                     }
                 }
             }

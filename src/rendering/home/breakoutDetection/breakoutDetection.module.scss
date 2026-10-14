@@ -9,14 +9,78 @@
   overflow: visible;
   background: radial-gradient(ellipse at 50% 50%, #040c09 0%, #020605 60%, #000000 100%);
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme="light"]) &,
+  :global([data-theme="light"]) & {
     background: #F8FAFC !important;
     border-bottom: 1px solid rgba(24, 201, 139, 0.15) !important;
 
     .chartCard {
       background: #FFFFFF !important;
-      border: 1px solid rgba(24, 201, 139, 0.22) !important;
+      border: 1px solid #CBD5E1 !important;
       box-shadow: 0 10px 40px rgba(15, 23, 42, 0.06) !important;
+
+      .gridLine {
+        stroke: rgba(148, 163, 184, 0.3) !important;
+      }
+
+      .resistanceLine {
+        stroke: #059669 !important;
+        stroke-width: 1.6 !important;
+        opacity: 0.9 !important;
+
+        &.resistanceBroken {
+          stroke: #047857 !important;
+          stroke-width: 2 !important;
+          filter: drop-shadow(0 0 4px rgba(4, 120, 87, 0.3)) !important;
+        }
+      }
+
+      .resistanceLabel {
+        fill: #047857 !important;
+        font-weight: 800 !important;
+      }
+
+      .basePathLine {
+        stroke: #047857 !important;
+        stroke: url(#baseLineGradLight) !important;
+        stroke-width: 3 !important;
+      }
+
+      .baseAreaPath {
+        fill: url(#baseAreaGradLight) !important;
+      }
+
+      .sonarRing {
+        stroke: #047857 !important;
+        stroke-width: 1.6 !important;
+      }
+
+      .tipDotInner {
+        fill: #047857 !important;
+      }
+
+      .tipDotCenter {
+        fill: #059669 !important;
+      }
+
+      .breakoutLine {
+        stroke: #047857 !important;
+        stroke-width: 3.4 !important;
+        filter: drop-shadow(0 2px 8px rgba(4, 120, 87, 0.35)) !important;
+      }
+
+      .breakoutAreaPath {
+        fill: url(#glowAreaGradLight) !important;
+      }
+
+      .breakoutSonar {
+        stroke: #047857 !important;
+      }
+
+      .breakoutCenter {
+        fill: #047857 !important;
+      }
 
       .tickerTag {
         color: #0F172A !important;
@@ -28,16 +92,16 @@
         border: 1px solid #E2E8F0 !important;
 
         &.statusBroken {
-          color: #059669 !important;
-          background: rgba(5, 150, 105, 0.1) !important;
-          border-color: rgba(5, 150, 105, 0.35) !important;
+          color: #047857 !important;
+          background: rgba(5, 150, 105, 0.12) !important;
+          border-color: rgba(5, 150, 105, 0.4) !important;
           box-shadow: none !important;
         }
       }
 
       .breakoutLineLabel,
       .resistanceVal {
-        color: #059669 !important;
+        color: #047857 !important;
       }
 
       .toastCard {
@@ -318,6 +382,10 @@
   }
 
   /* SVG Graphics Styling */
+  .gridLine {
+    stroke: rgba(24, 201, 139, 0.08);
+  }
+
   .resistanceLine {
     stroke: rgba(24, 201, 139, 0.45);
     stroke-width: 1.3;

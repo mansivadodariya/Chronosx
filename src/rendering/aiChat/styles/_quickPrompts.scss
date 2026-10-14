@@ -119,3 +119,103 @@
 .actionPromptText {
     letter-spacing: 0.02em;
 }
+
+/* Simulation Preset Selector Buttons */
+.presetButtonsRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 32px 0 36px 0;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 5;
+
+    @include respond-to('sm') {
+        gap: 8px;
+        margin: 20px 0 24px 0;
+    }
+}
+
+.presetBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 9999px;
+    background: rgba(18, 15, 10, 0.85);
+    border: 1px solid rgba(24, 201, 139, 0.28);
+    color: #D1D5DB;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+
+    @include respond-to('sm') {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+
+    &:hover {
+        background: rgba(24, 201, 139, 0.12);
+        border-color: rgba(24, 201, 139, 0.55);
+        color: #18C98B;
+        transform: translateY(-2px);
+    }
+
+    &.presetActive {
+        background: rgba(24, 201, 139, 0.18) !important;
+        border-color: #18C98B !important;
+        color: #18C98B !important;
+        box-shadow: 0 0 16px rgba(24, 201, 139, 0.35), 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .presetIcon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        color: inherit;
+    }
+
+    .presetMeta {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .presetLabel {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: inherit;
+        letter-spacing: 0.2px;
+    }
+
+    .presetCategory {
+        display: none;
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme="light"]) &,
+    :global([data-theme="light"]) & {
+        background: #FFFFFF !important;
+        border: 1px solid #CBD5E1 !important;
+        color: #334155 !important;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05) !important;
+
+        &:hover {
+            background: #F0FDF4 !important;
+            border-color: #059669 !important;
+            color: #047857 !important;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.12) !important;
+        }
+
+        &.presetActive {
+            background: #ECFDF5 !important;
+            border-color: #059669 !important;
+            color: #047857 !important;
+            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.2) !important;
+            font-weight: 800 !important;
+        }
+    }
+}

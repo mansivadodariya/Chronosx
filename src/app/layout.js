@@ -147,10 +147,12 @@ export default async function RootLayout({ children }) {
           "contactType": "customer support"
         },
         "sameAs": [
-          "https://x.com/ChronosX_AI",
-          "https://t.me/ChronosX_Official",
-          "https://youtube.com/@ChronosX_AI",
-          "https://instagram.com/chronosx.ai"
+          "https://x.com/ChronosX_Official",
+          "https://t.me/chronosxofficial",
+          "https://www.youtube.com/@Chronosx_Official",
+          "https://www.instagram.com/chronosx_official/",
+          "https://www.facebook.com/profile.php?id=61594721187286",
+          "https://discord.gg/uPTwM59wY"
         ]
       },
       {

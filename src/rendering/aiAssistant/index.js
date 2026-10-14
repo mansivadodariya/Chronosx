@@ -17,7 +17,7 @@ const Logo = '/assets/logo/smallLogo.png';
 
 export { PAIR_GROUPS, ALL_PAIRS, SYMBOL_DATABASE, normalizeSymbol };
 
-const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
+const AiAssistant = ({ initialTab, initialOpenId, initialPrompt } = {}) => {
     const { t } = useLanguage();
     const { theme } = useTheme();
     const isDark = theme !== 'light';
@@ -238,6 +238,33 @@ const AiAssistant = ({ initialTab, initialOpenId } = {}) => {
         const found = chatHistory.find((it, idx) => matchId(it, idx));
         if (found) handleSelectChat(found);
     }, [initialOpenId, chatHistory, handleSelectChat]);
+
+    const initialPromptExecutedRef = useRef(false);
+
+    // Auto-execute initial prompt if navigated with query parameter (e.g. from homepage input)
+    useEffect(() => {
+        if (!initialPrompt || initialPromptExecutedRef.current) return;
+        const promptText = initialPrompt.trim();
+        if (!promptText) return;
+
+        initialPromptExecutedRef.current = true;
+        setChatInput(promptText);
+
+        // Clean query parameter from URL to avoid repeated execution
+        if (typeof window !== 'undefined' && window.history?.replaceState) {
+            const url = new URL(window.location.href);
+            url.searchParams.delete('prompt');
+            url.searchParams.delete('q');
+            url.searchParams.delete('message');
+            window.history.replaceState({}, '', url.toString());
+        }
+
+        const timer = setTimeout(() => {
+            handleSendChatMessage(promptText);
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [initialPrompt, setChatInput, handleSendChatMessage]);
 
     const handleOptionClick = useCallback((optionLabel) => {
         setChatInput(optionLabel);

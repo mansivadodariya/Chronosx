@@ -584,6 +584,14 @@
         opacity: 0.6;
         cursor: not-allowed;
     }
+
+    .livePulseDot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+        display: inline-block;
+    }
 }
 
 /* ── Custom Theme Select Dropdowns ── */

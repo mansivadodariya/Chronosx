@@ -9,9 +9,54 @@
   overflow: hidden;
   background: radial-gradient(ellipse at 50% 50%, #040c09 0%, #020605 60%, #020202 100%);
 
-  :global(html.light) & {
-    background: #F8FAFC !important;
-    border-bottom: 1px solid rgba(24, 201, 139, 0.15) !important;
+  :global(html.light) &,
+  :global(html[data-theme="light"]) &,
+  :global([data-theme="light"]) & {
+    background: linear-gradient(180deg, #F0FDF4 0%, #E8F9F1 50%, #F0FDF4 100%) !important;
+    border-top: 1px solid rgba(24, 201, 139, 0.18) !important;
+    border-bottom: 1px solid rgba(24, 201, 139, 0.18) !important;
+
+    .card {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(24, 201, 139, 0.28) !important;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+
+      &::before {
+        display: none !important;
+      }
+
+      &::after {
+        display: none !important;
+      }
+
+      &:hover {
+        transform: translateY(-6px) !important;
+        border-color: #10B981 !important;
+        box-shadow: 0 14px 34px rgba(16, 185, 129, 0.18), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+      }
+
+      .quote {
+        color: #334155 !important;
+      }
+
+      .author {
+        .avatar {
+          background: linear-gradient(145deg, #34D399 0%, #059669 100%) !important;
+          color: #FFFFFF !important;
+          box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25) !important;
+        }
+
+        .authorInfo {
+          h4 {
+            color: #0F172A !important;
+          }
+
+          span {
+            color: #64748B !important;
+          }
+        }
+      }
+    }
   }
 
   @include respond-to("tab") {
@@ -119,8 +164,10 @@
     z-index: 10;
     pointer-events: none;
 
-    :global(html.light) & {
-      background: linear-gradient(to right, #F8FAFC 0%, rgba(248, 250, 252, 0.95) 20%, rgba(248, 250, 252, 0.4) 65%, transparent 100%) !important;
+    :global(html.light) &,
+    :global(html[data-theme="light"]) &,
+    :global([data-theme="light"]) & {
+      background: linear-gradient(to right, #F0FDF4 0%, rgba(240, 253, 244, 0.95) 25%, rgba(240, 253, 244, 0.4) 70%, transparent 100%) !important;
     }
 
     @include respond-to("sm") {
@@ -138,8 +185,10 @@
     z-index: 10;
     pointer-events: none;
 
-    :global(html.light) & {
-      background: linear-gradient(to left, #F8FAFC 0%, rgba(248, 250, 252, 0.95) 20%, rgba(248, 250, 252, 0.4) 65%, transparent 100%) !important;
+    :global(html.light) &,
+    :global(html[data-theme="light"]) &,
+    :global([data-theme="light"]) & {
+      background: linear-gradient(to left, #F0FDF4 0%, rgba(240, 253, 244, 0.95) 25%, rgba(240, 253, 244, 0.4) 70%, transparent 100%) !important;
     }
 
     @include respond-to("sm") {

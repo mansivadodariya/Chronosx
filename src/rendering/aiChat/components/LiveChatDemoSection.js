@@ -24,7 +24,7 @@ export default function LiveChatDemoSection({
     const selectedPrompt = QUICK_PROMPTS.find(p => p.id === activePromptId) || QUICK_PROMPTS[0];
 
     return (
-        <section ref={demoSectionRef} className={styles.demoSection}>
+        <section ref={demoSectionRef} className={`${styles.demoSection} ${styles.liveDemoSection}`}>
             <div className="container">
                 <SectionHeader
                     badge={t('aiChat.demoBadge', 'LIVE INTERACTIVE SIMULATION')}
@@ -47,8 +47,7 @@ export default function LiveChatDemoSection({
                             >
                                 <span className={styles.presetIcon}>{prompt.icon}</span>
                                 <div className={styles.presetMeta}>
-                                    <span className={styles.presetLabel}>{prompt.label}</span>
-                                    <span className={styles.presetCategory}>{prompt.category}</span>
+                                    <span className={styles.presetLabel}>{prompt.label || prompt.category}</span>
                                 </div>
                             </button>
                         );
@@ -56,25 +55,25 @@ export default function LiveChatDemoSection({
                 </div>
 
                 {/* 4. LIVE INTERACTIVE CHAT TERMINAL / WORKSPACE */}
-                <div className={styles.chatTerminalCard}>
+                <div className={`${styles.chatTerminalCard} ${styles.terminalCockpit}`}>
                     {/* Terminal Top Window Bar */}
-                    <div className={styles.terminalWindowBar}>
-                        <div className={styles.windowControls}>
-                            <span className={styles.controlDotRed} />
-                            <span className={styles.controlDotYellow} />
-                            <span className={styles.controlDotGreen} />
+                    <div className={`${styles.terminalWindowBar} ${styles.terminalHeader}`}>
+                        <div className={`${styles.windowControls} ${styles.terminalControls}`}>
+                            <span className={`${styles.dot} ${styles.dotRed} ${styles.controlDotRed}`} />
+                            <span className={`${styles.dot} ${styles.dotYellow} ${styles.controlDotYellow}`} />
+                            <span className={`${styles.dot} ${styles.dotGreen} ${styles.controlDotGreen}`} />
                         </div>
-                        <div className={styles.terminalTitle}>
+                        <div className={`${styles.terminalTitle} ${styles.terminalBrand}`}>
                             <span className={styles.terminalLiveDot} />
                             <span>CHRONOSX QUANT DESK // MT5 LIVE STREAM ({selectedPrompt.demoData.pair})</span>
                         </div>
-                        <div className={styles.terminalStatus}>STATUS: READY</div>
+                        <div className={`${styles.terminalStatus} ${styles.terminalLiveIndicator}`}>STATUS: READY</div>
                     </div>
 
                     {/* Terminal Message Stream Body */}
-                    <div className={styles.terminalMessageStream}>
+                    <div className={`${styles.terminalMessageStream} ${styles.chatStreamArea}`}>
                         {/* 1. Trader User Message */}
-                        <div className={styles.userMessageRow}>
+                        <div className={`${styles.userMessageRow} ${styles.traderMessageRow}`}>
                             <div className={styles.traderAvatar}>
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />

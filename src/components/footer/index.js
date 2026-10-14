@@ -5,21 +5,16 @@ import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
 import { useTabPermission } from '@/lib/useTabPermission';
+import { useSocialLinks } from '@/services/socialLinksService';
+import SocialIcon from './SocialIcon';
 
 const DarkLogo = '/assets/logo/logo.png';
 const LightLogo = '/assets/logo/darklogo.png';
 
-const socialLinks = [
-  { icon: '/assets/icons/twitter.svg', href: 'https://x.com/ChronosX_AI', label: 'X / Twitter' },
-  { icon: '/assets/icons/telegram.svg', href: 'https://t.me/ChronosX_Official', label: 'Telegram' },
-  { icon: '/assets/icons/youtube.svg', href: 'https://youtube.com/@ChronosX_AI', label: 'YouTube' },
-  { icon: '/assets/icons/instagram.svg', href: 'https://instagram.com/chronosx.ai', label: 'Instagram' },
-  { icon: '/assets/icons/discord.svg', href: 'https://discord.gg/chronosx', label: 'Discord' }
-];
-
 export default function Footer() {
   const { t } = useLanguage();
   const { theme } = useTheme();
+  const { socialLinks } = useSocialLinks();
   const hasPlansPermission = useTabPermission('Subscription Plans');
   const activeLogo = theme === 'light' ? LightLogo : DarkLogo;
   const containerRef = useRef(null);
@@ -116,7 +111,7 @@ export default function Footer() {
             <ul>
               <li><Link href="/ai-trade-advisor">{t('header.tradingTools.tradeAudit.title', 'AI Past Trade Analyzer')}</Link></li>
               <li><Link href="/custom-bot-builder">{t('header.tradingTools.strategyCreate.title', 'AI Trading Bot Builder')}</Link></li>
-              <li><Link href="/backtesting">{t('footer.quantBacktesting', 'Quant Backtesting')}</Link></li>
+              <li><Link href="/backtesting">{t('footer.quantBacktesting', 'Backtesting')}</Link></li>
             </ul>
           </div>
 
@@ -173,25 +168,35 @@ export default function Footer() {
         <div className={styles.bottomSection}>
           <p>{t('footer.copyright', '© 2026 ChronosX Financial Technologies FZ-LLC. All rights reserved.')}</p>
 
-          <div className={styles.socialList}>
-            {socialLinks.map((item, index) => (
-              <a
-                key={index}
-                href={item.href}
-                aria-label={item.label}
-                className={styles.socialBtn}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span
-                  className={styles.socialIcon}
+          <div className={styles.allsociallinks}>
+            {socialLinks.map((item, index) => {
+              const brandColor = theme === 'light'
+                ? (item.lightColor || item.brandColor)
+                : (item.darkColor || item.brandColor);
+
+              return (
+                <a
+                  key={item.platform || index}
+                  href={item.href}
+                  aria-label={item.label}
+                  data-platform={item.platform}
+                  className={styles.sociallinks}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
-                    maskImage: `url(${item.icon})`,
-                    WebkitMaskImage: `url(${item.icon})`
+                    backgroundColor: theme === 'light' ? 'rgba(24, 201, 139, 0.16)' : undefined,
+                    '--brand-color': brandColor,
+                    '--brand-hover-bg': item.hoverBg,
+                    '--brand-glow': item.glow,
                   }}
-                />
-              </a>
-            ))}
+                >
+                  <SocialIcon
+                    platform={item.platform}
+                    className={styles.socialIcon}
+                  />
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>

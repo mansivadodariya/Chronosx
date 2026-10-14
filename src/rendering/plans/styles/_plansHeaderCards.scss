@@ -362,6 +362,22 @@
     }
 }
 
+.selectedCard {
+    border-color: #18C98B !important;
+    box-shadow: 0 0 0 2px #18C98B, 0 16px 45px rgba(0, 0, 0, 0.7), 0 0 35px rgba(24, 201, 139, 0.3) !important;
+}
+
+.cardGlowTop {
+    position: absolute;
+    top: 0;
+    left: 15%;
+    right: 15%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(24, 201, 139, 0.8), transparent);
+    pointer-events: none;
+    z-index: 5;
+}
+
 /* Badges */
 .tierBadge {
     position: absolute;

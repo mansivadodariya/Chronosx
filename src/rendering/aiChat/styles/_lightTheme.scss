@@ -165,18 +165,27 @@
     }
 
     /* 4. Live Interactive Chat Demo Cockpit */
-    .terminalCockpit {
+    .terminalCockpit,
+    .chatTerminalCard {
         background: #FFFFFF !important;
         border: 1px solid rgba(24, 201, 139, 0.28) !important;
         box-shadow: 0 15px 45px rgba(15, 23, 42, 0.08) !important;
 
-        .terminalHeader {
+        .terminalHeader,
+        .terminalWindowBar {
             background: #F8FAFC !important;
             border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
 
-            .terminalBrand {
+            .terminalBrand,
+            .terminalTitle {
                 color: #0F172A !important;
                 font-weight: 700 !important;
+            }
+
+            .terminalStatus,
+            .terminalLiveIndicator {
+                color: #047857 !important;
+                font-weight: 800 !important;
             }
 
             .termTabBtn {
@@ -198,7 +207,8 @@
             }
         }
 
-        .chatStreamArea {
+        .chatStreamArea,
+        .terminalMessageStream {
             background: #FAFAFA !important;
         }
 
@@ -436,7 +446,8 @@
                     color: #047857 !important;
                 }
 
-                .customChatInput {
+                .customChatInput,
+                .chatInputField {
                     color: #0F172A !important;
                     background: transparent !important;
 
@@ -445,12 +456,29 @@
                     }
                 }
 
-                .inputSubmitBtn {
+                .inputSubmitBtn,
+                .launchFullDeskBtn {
                     background: #18C98B !important;
                     color: #040605 !important;
                     font-weight: 700 !important;
                 }
             }
+        }
+    }
+
+    /* Direct traderBubble override for anywhere inside light mode */
+    .traderBubble {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(24, 201, 139, 0.28) !important;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04) !important;
+
+        .bubbleSender {
+            color: #047857 !important;
+            font-weight: 700 !important;
+        }
+
+        .bubbleText {
+            color: #0F172A !important;
         }
     }
 

@@ -1,15 +1,18 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './aiAnalyst.module.scss';
 import SectionHeader from '@/components/sectionHeader';
 import StreamingText from '@/components/streamingText';
 import { useTheme } from '@/context/ThemeContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { authNavigate } from '@/lib/authRedirect';
 import StreamingWords from './components/StreamingWords';
 import DedicatedChartRenderer from './components/DedicatedChartRenderer';
 import { tabPresets, tabKeys, featurePoints } from './constants/analystData';
 export default function AiAnalyst() {
+  const router = useRouter();
   const { theme } = useTheme();
   const { t } = useLanguage();
   const terminalLogo = theme === 'light' ? '/assets/logo/darklogo.png' : '/assets/logo/logo.png';
@@ -136,32 +139,14 @@ export default function AiAnalyst() {
     }, 600);
   };
 
-  // Handle Real User Custom Query Submission
+  // Handle Custom Query Submission -> Redirect to Market Assistant or Login
   const handleSendMessage = (e) => {
-    e.preventDefault();
-    if (!userInput.trim()) return;
-    setUserInteractedUntil(Date.now() + 20000);
+    if (e && e.preventDefault) e.preventDefault();
     const query = userInput.trim();
-    setUserInput('');
-    const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    setMessages((prev) => [...prev, { role: 'user', text: query, time: timeNow }]);
-    setIsThinking(true);
-
-    setTimeout(() => {
-      setIsThinking(false);
-      const activeTabObj = tabPresets[activeSidebarTab] || tabPresets.chat;
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: 'bot',
-          time: timeNow,
-          intro: `AI analysis and verified setup parameters for "${query}":`,
-          bullets: activeTabObj.bullets,
-          chartData: activeTabObj.chartData,
-          pills: activeTabObj.pills
-        }
-      ]);
-    }, 650);
+    const target = query
+      ? `/market-assistant?prompt=${encodeURIComponent(query)}`
+      : '/market-assistant';
+    authNavigate(router, target);
   };
 
   return (
@@ -456,7 +441,7 @@ export default function AiAnalyst() {
                     </svg>
                   </button>
 
-                  <button type="submit" className={styles.terminalSendBtn} aria-label="Send">
+                  <button type="submit" onClick={handleSendMessage} className={styles.terminalSendBtn} aria-label="Send">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#040605" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="22" y1="2" x2="11" y2="13"/>
                       <polygon points="22 2 15 22 11 13 2 9 22 2"/>

@@ -7,7 +7,14 @@ function MarketAssistantWithParams() {
     const params = useSearchParams();
     const initialTab = params.get('tab') || undefined;
     const initialOpenId = params.get('open') || undefined;
-    return <AiAssistant initialTab={initialTab} initialOpenId={initialOpenId} />;
+    const initialPrompt = params.get('prompt') || params.get('q') || params.get('message') || undefined;
+    return (
+        <AiAssistant
+            initialTab={initialTab}
+            initialOpenId={initialOpenId}
+            initialPrompt={initialPrompt}
+        />
+    );
 }
 
 export default function MarketAssistantPage() {

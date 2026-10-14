@@ -254,6 +254,11 @@
                 align-items: center;
                 justify-content: center;
 
+                .overviewSparklineSvg {
+                    display: block;
+                    overflow: visible;
+                }
+
                 @include respond-to('tab') {
                     display: none;
                 }

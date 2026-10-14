@@ -12,7 +12,6 @@ const PROTECTED_PREFIXES = [
   "/live-scanner",
   "/strategy-core",
   "/trading-signal",
-  "/ai-trading-signal",
   "/strategy-signal",
   "/predefined-strategies",
   "/strategy-hub",

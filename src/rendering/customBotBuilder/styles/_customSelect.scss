@@ -243,6 +243,14 @@
     overflow: hidden;
 }
 
+.optionCustomIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
 .optionLabel {
     letter-spacing: 0.1px;
     white-space: nowrap;

@@ -6,6 +6,18 @@
     grid-template-columns: 1fr 430px;
     gap: 26px;
     align-items: start;
+
+    @include respond-to('tab') {
+        grid-template-columns: 1fr;
+    }
+}
+
+.mainColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+    width: 100%;
 }
 
 /* SIDEBAR COLUMN */

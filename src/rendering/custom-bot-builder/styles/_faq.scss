@@ -15,8 +15,9 @@
 
   :global(html.light) & {
     background: #FFFFFF;
-    border-top-color: #E2E8F0;
-    border-bottom-color: #E2E8F0;
+    border-top: none !important;
+    border-bottom: none !important;
+    border: none !important;
   }
 }
 

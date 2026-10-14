@@ -99,8 +99,14 @@ html.light .sidebar-wrapper {
 html.light [class*="logoHeader"],
 html.light [class*="quickJumpWrapper"],
 html.light [class*="sidebarmenu"],
-html.light [class*="bottomSection"] {
+html.light [class*="sidebar"] [class*="bottomSection"] {
   border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
+}
+
+html.light footer [class*="bottomSection"],
+html.light [class*="footer"] [class*="bottomSection"] {
+  border: none !important;
+  border-right: none !important;
 }
 
 html.light [class*="topbar"],
@@ -181,10 +187,18 @@ html.light svg circle[stroke="white"] {
   stroke: #334155 !important;
 }
 
-html.light svg path[fill="#ffffff"],
-html.light svg path[fill="#FFFFFF"],
-html.light svg path[fill="white"] {
+html.light svg:not([data-social="youtube"]) path[fill="#ffffff"]:not(.cx-yt-play):not([data-preserve-white]),
+html.light svg:not([data-social="youtube"]) path[fill="#FFFFFF"]:not(.cx-yt-play):not([data-preserve-white]),
+html.light svg:not([data-social="youtube"]) path[fill="white"]:not(.cx-yt-play):not([data-preserve-white]) {
   fill: #0F172A !important;
+}
+
+html.light .cx-yt-play,
+html.light [data-social="youtube"] path:last-child,
+html.light svg[data-social="youtube"] path[fill="#FFFFFF"],
+html.light svg[data-social="youtube"] path[fill="#ffffff"],
+html.light svg path.cx-yt-play {
+  fill: #FFFFFF !important;
 }
 
 html.light line[stroke="rgba(255, 255, 255, 0.05)"],
@@ -306,14 +320,6 @@ html.light [class*="messageBubble"] p {
   color: #0F172A !important;
 }
 
-html.light [class*="userMessage"] {
-  background: #18C98B !important;
-  color: #040605 !important;
-}
-
-html.light [class*="userMessage"] p {
-  color: #040605 !important;
-}
 
 /* ============================================================
    GLOBAL BUTTON SYSTEM - 100% FULLY ROUNDED & SOLID COLORS
@@ -554,7 +560,6 @@ html.light [class*="dropdownItem"]:hover [class*="itemIconBox"] {
 
 /* Footer */
 html.light footer,
-html.light [class*="footer"]:not([class*="Row"]):not([class*="row"]):not([class*="card"]):not([class*="Card"]),
 html.light [class*="footerSection"],
 html.light [class*="footerWrapper"] {
   background-color: #F8FAFC !important;
@@ -618,26 +623,6 @@ html.light [class*="disclaimerSection"] p,
 html.light [class*="bottomSection"] p {
   color: #64748B !important;
 }
-
-html.light [class*="socialBtn"] {
-  background: #FFFFFF !important;
-  border: 1px solid #CBD5E1 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-}
-
-html.light [class*="socialBtn"]:hover {
-  background: #F1F5F9 !important;
-  border-color: #047857 !important;
-}
-
-html.light [class*="socialIcon"] {
-  background-color: #0F172A !important;
-}
-
-html.light [class*="socialBtn"]:hover [class*="socialIcon"] {
-  background-color: #047857 !important;
-}
-
 
 
 html.light [class*="topbar"],
