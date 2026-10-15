@@ -2215,10 +2215,10 @@
   },
   "errors": {
     "boundary": {
-      "tag": "PANSAMANTALANG PAGKABALAKID SA SISTEMA • ERROR 500",
-      "headingPrefix": "Daloy ng Telemetry",
-      "headingHighlight": "Nabalakid",
-      "description": "May nakitang runtime anomaly sa segment na ito. Sinusubukan ng neural engine ang auto-recovery. Maaari mong subukang muli ang operasyon o bumalik sa main desk.",
+      "tag": "AUTO-RECONNECTING • LIVE SYNC",
+      "headingPrefix": "Magkokonekta",
+      "headingHighlight": "Muli",
+      "description": "Nagtatatag ng secure na koneksyon sa live telemetry engine. Ang iyong session at mga setting ay ligtas na nakaimbak. Maaari mong subukang muli o bumalik sa dashboard.",
       "retry": "SUBUKANG MULI ANG KONEKSYON",
       "dashboard": "DASHBOARD"
     },

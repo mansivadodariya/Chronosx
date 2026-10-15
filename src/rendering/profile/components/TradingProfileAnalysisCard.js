@@ -136,23 +136,27 @@ export default function TradingProfileAnalysisCard({
                 {/* Row 1: Preferred Pairs */}
                 <div className={styles.chipRow}>
                     <span className={styles.chipRowLabel}>{t('profile.preferredPairs', 'Preferred Pairs:')}</span>
-                    {pairs.map((p) => (
-                        <span key={p} className={styles.pairChip}>
-                            <TradingViewPairIcon pair={p} size={16} />
-                            <span className={styles.chipText}>{p}</span>
-                        </span>
-                    ))}
+                    <div className={styles.chipItemsWrap}>
+                        {pairs.map((p) => (
+                            <span key={p} className={styles.pairChip}>
+                                <TradingViewPairIcon pair={p} size={16} />
+                                <span className={styles.chipText}>{p}</span>
+                            </span>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Row 2: Sessions */}
                 <div className={styles.chipRow}>
                     <span className={styles.chipRowLabel}>{t('profile.sessions', 'Sessions:')}</span>
-                    {sessions.map((s) => (
-                        <span key={s} className={styles.sessionChip}>
-                            <SessionIcon session={s} size={16} />
-                            <span className={styles.chipText}>{s}</span>
-                        </span>
-                    ))}
+                    <div className={styles.chipItemsWrap}>
+                        {sessions.map((s) => (
+                            <span key={s} className={styles.sessionChip}>
+                                <SessionIcon session={s} size={16} />
+                                <span className={styles.chipText}>{s}</span>
+                            </span>
+                        ))}
+                    </div>
                 </div>
             </div>
 

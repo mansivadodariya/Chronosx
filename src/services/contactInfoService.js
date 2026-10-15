@@ -16,6 +16,12 @@ export const DEFAULT_CONTACT_INFO = {
         value: '+971 56 884 0900',
         helper: 'WhatsApp & Phone Support (24/7)',
     },
+    whatsapp: {
+        platform: 'whatsapp',
+        label: 'WHATSAPP',
+        value: '+971 56 884 0900',
+        helper: 'WhatsApp & Phone Support (24/7)',
+    },
     address: {
         platform: 'address',
         label: 'OFFICE ADDRESS',
@@ -48,6 +54,7 @@ function mapDatabaseRowsToContactInfo(rows) {
     const result = {
         email: { ...DEFAULT_CONTACT_INFO.email },
         phone: { ...DEFAULT_CONTACT_INFO.phone },
+        whatsapp: { ...DEFAULT_CONTACT_INFO.whatsapp },
         address: { ...DEFAULT_CONTACT_INFO.address },
     };
 
@@ -77,6 +84,15 @@ function mapDatabaseRowsToContactInfo(rows) {
                 value: parsed.value || DEFAULT_CONTACT_INFO.phone.value,
                 helper: parsed.helper,
             };
+        } else if (platform === 'whatsapp' || platform === 'contact_whatsapp') {
+            const raw = String(row.url || '').replace(/^tel:/i, '');
+            const parsed = parseContactValueAndHelper(raw, DEFAULT_CONTACT_INFO.whatsapp.helper);
+            result.whatsapp = {
+                platform: 'whatsapp',
+                label: row.label?.trim() || DEFAULT_CONTACT_INFO.whatsapp.label,
+                value: parsed.value || DEFAULT_CONTACT_INFO.whatsapp.value,
+                helper: parsed.helper,
+            };
         } else if (platform === 'address' || platform === 'contact_address' || platform === 'office_address') {
             const raw = String(row.url || '');
             const parsed = parseContactValueAndHelper(raw, DEFAULT_CONTACT_INFO.address.helper);
@@ -99,7 +115,7 @@ export async function fetchContactInfo() {
         const { data, error } = await supabase
             .from('social_links')
             .select('platform, label, url, is_active, sort_order')
-            .in('platform', ['email', 'contact_email', 'phone', 'contact_phone', 'address', 'contact_address', 'office_address'])
+            .in('platform', ['email', 'contact_email', 'phone', 'contact_phone', 'whatsapp', 'contact_whatsapp', 'address', 'contact_address', 'office_address'])
             .eq('is_active', true);
 
         if (error || !data || data.length === 0) {

@@ -258,9 +258,27 @@ html[data-theme="light"] .apexcharts-menu-item:hover,
 .text-gradient,
 .title-gradient,
 .gradientText {
-  background: linear-gradient(135deg, #18C98B 0%, #34D399 40%, #38BDF8 100%);
+  color: #18c98b;
+  background: #18c98b;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   display: inline;
+}
+
+html.light .header-gradient-text,
+html.light .gradient-text,
+html.light .text-gradient,
+html.light .title-gradient,
+html.light .gradientText,
+[data-theme='light'] .header-gradient-text,
+[data-theme='light'] .gradient-text,
+[data-theme='light'] .text-gradient,
+[data-theme='light'] .title-gradient,
+[data-theme='light'] .gradientText {
+  color: #059669;
+  background: #059669;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

@@ -1,39 +1,87 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import styles from './not-found.module.scss';
 
 export default function ErrorBoundary({ error, reset }) {
-  const { t } = useLanguage();
+  let t = (k, fallback) => fallback;
+  try {
+    const langCtx = useLanguage();
+    if (langCtx?.t) t = langCtx.t;
+  } catch (_) {}
+
+  const [countdown, setCountdown] = useState(5);
+  const [isRetrying, setIsRetrying] = useState(false);
+
+  const performHardRefresh = useCallback(() => {
+    setIsRetrying(true);
+    if (typeof window === 'undefined') {
+      reset();
+      return;
+    }
+
+    try {
+      // Clear CacheStorage (PWA / service worker / asset cache)
+      if ('caches' in window) {
+        caches.keys().then((names) => {
+          names.forEach((name) => caches.delete(name));
+        }).catch(() => {});
+      }
+
+      // Force browser to bypass disk cache by navigating with cache-buster
+      const url = new URL(window.location.href);
+      url.searchParams.set('_r', String(Date.now()));
+      window.location.replace(url.toString());
+    } catch (_) {
+      window.location.reload();
+    }
+  }, [reset]);
+
+  const handleRetry = useCallback(() => {
+    performHardRefresh();
+  }, [performHardRefresh]);
 
   useEffect(() => {
     console.error('ChronosX Segment Error caught:', error);
 
-    const isChunkError =
-      error?.name === 'ChunkLoadError' ||
-      error?.message?.includes('Loading chunk') ||
-      error?.message?.includes('Failed to fetch dynamically imported module');
+    const errorMessage = String(error?.message || '');
+    const errorName = String(error?.name || '');
+    const isChunkOrNetworkError =
+      errorName === 'ChunkLoadError' ||
+      errorMessage.includes('Loading chunk') ||
+      errorMessage.includes('Failed to fetch dynamically imported module') ||
+      errorMessage.includes('Load failed') ||
+      errorMessage.includes('Unexpected token') ||
+      errorMessage.includes('NetworkError');
 
-    if (isChunkError && typeof window !== 'undefined') {
+    if (isChunkOrNetworkError && typeof window !== 'undefined') {
       const retryKey = 'chunk_err_retry_' + window.location.pathname;
       const lastRetry = sessionStorage.getItem(retryKey);
       const now = Date.now();
-      if (!lastRetry || now - Number(lastRetry) > 10000) {
+      // Auto-hard-refresh immediately for chunk errors (max once every 12 seconds per path)
+      if (!lastRetry || now - Number(lastRetry) > 12000) {
         sessionStorage.setItem(retryKey, String(now));
-        window.location.reload();
+        performHardRefresh();
+        return;
       }
     }
-  }, [error]);
 
-  const handleRetry = () => {
-    if (typeof window !== 'undefined') {
-      window.location.reload();
-    } else {
-      reset();
-    }
-  };
+    // Auto-countdown to reconnect automatically so the user is never permanently stuck
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          handleRetry();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [error, handleRetry]);
 
   return (
     <div className={styles.notFoundContainer}>
@@ -75,12 +123,17 @@ export default function ErrorBoundary({ error, reset }) {
                 type="button"
                 className={`${styles.btn} ${styles.primaryBtn}`}
                 onClick={handleRetry}
+                disabled={isRetrying}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
                   <path d="M21 3v5h-5" />
                 </svg>
-                <span>{t('errors.boundary.retry', 'RETRY CONNECTION')}</span>
+                <span>
+                  {isRetrying
+                    ? (t('errors.boundary.reconnecting', 'RECONNECTING...'))
+                    : `${t('errors.boundary.retry', 'RETRY CONNECTION')}${countdown > 0 ? ` (${countdown}s)` : ''}`}
+                </span>
               </button>
 
               <Link href="/dashboard" className={`${styles.btn} ${styles.secondaryBtn}`}>

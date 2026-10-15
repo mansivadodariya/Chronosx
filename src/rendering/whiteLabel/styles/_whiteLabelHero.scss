@@ -152,7 +152,8 @@
     letter-spacing: -1.2px;
 
     .gradientText {
-        background: linear-gradient(135deg, #18C98B 0%, #34D399 40%, #38BDF8 100%);
+        color: #18c98b;
+        background: #18c98b;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         display: inline;
@@ -173,6 +174,13 @@
     :global([data-theme='light']) &,
     :global(.light) & {
         color: #0F172A;
+
+        .gradientText {
+            color: #059669;
+            background: #059669;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     }
 }
 

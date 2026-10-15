@@ -13,15 +13,18 @@ $success: #10b981;
         background: #0D0E13;
         display: flex;
         flex-direction: column;
-        max-height: calc(100dvh - 180px);
+        height: 100%;
+        max-height: 100%;
+        min-height: 0;
         overflow: hidden;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
 
     .resultsHeader {
-        padding: 16px 20px;
+        padding: 10px 18px;
         border-bottom: 1px solid $border;
         background: rgba(24, 201, 139, 0.04);
+        flex-shrink: 0;
 
         .resultsHeaderRow {
             display: flex;
@@ -101,21 +104,22 @@ $success: #10b981;
     }
 
     .resultsBody {
-        flex: 1;
+        flex: 1 1 0;
         min-height: 0;
+        height: auto;
         overflow-y: auto;
         overflow-x: hidden;
-        padding: 16px;
+        padding: 14px 16px;
         scroll-behavior: smooth;
         overscroll-behavior-y: contain;
         touch-action: pan-y;
         -webkit-overflow-scrolling: touch;
 
         scrollbar-width: thin;
-        scrollbar-color: #18C98B rgba(255, 255, 255, 0.05);
+        scrollbar-color: #18C98B rgba(255, 255, 255, 0.08);
 
         &::-webkit-scrollbar {
-            width: 6px;
+            width: 7px;
         }
 
         &::-webkit-scrollbar-track {
@@ -124,22 +128,30 @@ $success: #10b981;
         }
 
         &::-webkit-scrollbar-thumb {
-            background: rgba(24, 201, 139, 0.5);
+            background: rgba(24, 201, 139, 0.6);
             border-radius: 999px;
+
+            &:hover {
+                background: #18C98B;
+            }
         }
 
         :global(html[data-theme='light']) &,
         :global([data-theme='light']) &,
         :global(html.light) &,
         :global(.light) & {
-            scrollbar-color: #10B981 #F1F5F9;
+            scrollbar-color: #059669 #E2E8F0;
 
             &::-webkit-scrollbar-track {
                 background: #F1F5F9;
             }
 
             &::-webkit-scrollbar-thumb {
-                background: #10B981;
+                background: #059669;
+
+                &:hover {
+                    background: #047857;
+                }
             }
         }
     }

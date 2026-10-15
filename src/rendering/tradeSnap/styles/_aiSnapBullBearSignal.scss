@@ -26,70 +26,21 @@
         border-color: rgba(245, 158, 11, 0.3);
     }
 
-    @container (max-width: 720px) {
+    @container (max-width: 760px) {
+        padding: 14px 16px;
+
         .bannerContent {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 16px;
+            gap: 14px;
         }
 
         .bannerLeft {
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            width: 100%;
-            gap: 12px;
+            gap: 14px;
         }
 
         .bannerImageContainer {
-            width: 100%;
-            max-width: 160px;
-            height: 120px;
-            min-width: unset;
-        }
-
-        .neutralBannerImages {
-            justify-content: center;
-            width: 100%;
-        }
-
-        .bannerTextCol {
-            align-items: center;
-            text-align: center;
-            width: 100%;
-        }
-
-        .bannerTagRow,
-        .bannerTagRowRed,
-        .bannerTagRowAmber {
-            justify-content: center;
-        }
-
-        .bannerSubtitle {
-            text-align: center;
-        }
-
-        .bannerRight {
-            flex-direction: row;
-            width: 100%;
-            gap: 10px;
-
-            .bannerStatCard,
-            .bannerStatCardRed,
-            .bannerStatCardAmber {
-                flex: 1 1 0;
-                min-width: 0;
-            }
-        }
-    }
-
-    @container (max-width: 440px) {
-        padding: 14px 12px;
-
-        .neutralBullImg,
-        .neutralBearImg {
-            width: 60px;
-            height: 52px;
+            width: 120px;
+            height: 100px;
+            min-width: 100px;
         }
 
         .bannerTitle {
@@ -101,8 +52,48 @@
         }
 
         .bannerRight {
-            flex-direction: column;
-            gap: 8px;
+            width: 110px;
+            min-width: 100px;
+            gap: 6px;
+        }
+    }
+
+    @container (max-width: 520px) {
+        padding: 12px 14px;
+
+        .bannerContent {
+            gap: 10px;
+        }
+
+        .bannerLeft {
+            gap: 10px;
+        }
+
+        .bannerImageContainer {
+            width: 85px;
+            height: 75px;
+            min-width: 75px;
+        }
+
+        .bannerTitle {
+            font-size: 14px;
+        }
+
+        .bannerSubtitle {
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .bannerRight {
+            width: 100px;
+            min-width: 90px;
+            gap: 6px;
+        }
+
+        .bannerStatCard,
+        .bannerStatCardRed,
+        .bannerStatCardAmber {
+            padding: 6px 8px;
         }
     }
 }
@@ -135,46 +126,25 @@
     align-items: center;
     gap: 18px;
     width: 100%;
-
-    @media (max-width: 860px) {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 16px;
-    }
 }
 
 .bannerLeft {
     display: flex;
     align-items: center;
     gap: 18px;
-    flex: 1 1 280px;
+    flex: 1 1 auto;
     min-width: 0;
-
-    @media (max-width: 860px) {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        width: 100%;
-        gap: 12px;
-    }
 }
 
 .bannerImageContainer {
     position: relative;
-    width: 180px;
-    height: 140px;
-    min-width: 180px;
+    width: 150px;
+    height: 120px;
+    min-width: 120px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    @media (max-width: 860px) {
-        width: 100%;
-        max-width: 160px;
-        height: 120px;
-        min-width: unset;
-    }
 }
 
 .bullBannerImg {
@@ -261,16 +231,12 @@
 .bannerTextCol {
     display: flex;
     flex-direction: column;
-    flex: 1 1 180px;
+    align-items: flex-start;
+    text-align: left;
+    flex: 1 1 auto;
     min-width: 0;
     overflow-wrap: break-word;
     word-break: break-word;
-
-    @media (max-width: 860px) {
-        align-items: center;
-        text-align: center;
-        width: 100%;
-    }
 }
 
 .bannerTagRow {
@@ -344,6 +310,7 @@
     font-weight: 800;
     color: var(--title-color);
     margin: 0;
+    text-align: left;
     overflow-wrap: break-word;
     word-break: break-word;
 }
@@ -351,8 +318,9 @@
 .bannerSubtitle {
     font-size: 12.5px;
     color: var(--text-muted);
-    margin: 4px 0 0 0;
+    margin: 6px 0 0 0;
     line-height: 1.55;
+    text-align: left;
     overflow-wrap: break-word;
     word-break: break-word;
 }
@@ -362,33 +330,22 @@
     flex-direction: column;
     gap: 8px;
     justify-content: center;
-    min-width: 130px;
+    width: 120px;
+    min-width: 110px;
     flex-shrink: 0;
-
-    @media (max-width: 860px) {
-        width: 100%;
-        flex-direction: row;
-        gap: 10px;
-
-        .bannerStatCard,
-        .bannerStatCardRed,
-        .bannerStatCardAmber {
-            flex: 1 1 0;
-            min-width: 0;
-        }
-    }
 }
 
 .bannerStatCard {
     background: var(--stat-card-bg);
     border: 1px solid rgba(16, 185, 129, 0.35);
     border-radius: 0;
-    padding: 8px 14px;
+    padding: 8px 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
     box-sizing: border-box;
+    width: 100%;
 
     .bannerStatLabel {
         font-size: 10px;
@@ -406,13 +363,17 @@
     }
 
     .bannerStatBadge {
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 800;
         color: #10B981;
-        display: flex;
+        display: inline-flex;
         align-items: center;
         gap: 5px;
-        padding: 4px 0;
+        padding: 3px 8px;
+        border: 1px solid rgba(16, 185, 129, 0.4);
+        background: rgba(16, 185, 129, 0.08);
+        border-radius: 4px;
+        margin-top: 2px;
     }
 }
 
@@ -420,12 +381,13 @@
     background: var(--stat-card-bg);
     border: 1px solid rgba(239, 68, 68, 0.35);
     border-radius: 0;
-    padding: 8px 14px;
+    padding: 8px 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
     box-sizing: border-box;
+    width: 100%;
 
     .bannerStatLabel {
         font-size: 10px;
@@ -443,13 +405,17 @@
     }
 
     .bannerStatBadgeRed {
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 800;
         color: #EF4444;
-        display: flex;
+        display: inline-flex;
         align-items: center;
         gap: 5px;
-        padding: 4px 0;
+        padding: 3px 8px;
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        background: rgba(239, 68, 68, 0.08);
+        border-radius: 4px;
+        margin-top: 2px;
     }
 }
 
@@ -457,12 +423,13 @@
     background: var(--stat-card-bg);
     border: 1px solid rgba(14, 165, 233, 0.35);
     border-radius: 0;
-    padding: 8px 14px;
+    padding: 8px 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
     box-sizing: border-box;
+    width: 100%;
 
     .bannerStatLabel {
         font-size: 10px;
@@ -483,10 +450,14 @@
         font-size: 12px;
         font-weight: 800;
         color: #38BDF8;
-        display: flex;
+        display: inline-flex;
         align-items: center;
         gap: 5px;
-        padding: 4px 0;
+        padding: 3px 8px;
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        background: rgba(56, 189, 248, 0.08);
+        border-radius: 4px;
+        margin-top: 2px;
     }
 }
 
@@ -553,14 +524,45 @@
             color: #475569;
         }
 
-        .bannerStatCard,
-        .bannerStatCardRed,
-        .bannerStatCardAmber {
-            background: #F8FAFC;
-            border-color: rgba(15, 23, 42, 0.1);
+        &.bullishHero {
+            background: #FFFFFF;
+            border-color: rgba(16, 185, 129, 0.4);
 
-            .bannerStatLabel {
-                color: #64748B;
+            .bannerStatCard {
+                background: #FFFFFF;
+                border-color: rgba(16, 185, 129, 0.35);
+
+                .bannerStatLabel {
+                    color: #475569;
+                }
+            }
+        }
+
+        &.bearishHero {
+            background: #FFFFFF;
+            border-color: rgba(239, 68, 68, 0.4);
+
+            .bannerStatCardRed {
+                background: #FFFFFF;
+                border-color: rgba(239, 68, 68, 0.35);
+
+                .bannerStatLabel {
+                    color: #475569;
+                }
+            }
+        }
+
+        &.neutralHero {
+            background: #FFFFFF;
+            border-color: rgba(14, 165, 233, 0.35);
+
+            .bannerStatCardAmber {
+                background: #FFFFFF;
+                border-color: rgba(14, 165, 233, 0.35);
+
+                .bannerStatLabel {
+                    color: #475569;
+                }
             }
         }
     }

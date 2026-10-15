@@ -504,6 +504,28 @@
             gap: 6px;
             flex-shrink: 0;
             margin-left: auto;
+
+            .charCounter {
+                font-size: 11px;
+                color: rgba(255, 255, 255, 0.4);
+                font-family: monospace, sans-serif;
+                letter-spacing: 0.3px;
+                user-select: none;
+                margin-right: 4px;
+
+                [data-theme='light'] &,
+                :global(html.light) & {
+                    color: #94A3B8;
+                }
+
+                &.nearLimit {
+                    color: #F59E0B;
+                }
+
+                &.atLimit {
+                    color: #EF4444;
+                }
+            }
         }
 
         .voiceBtn {

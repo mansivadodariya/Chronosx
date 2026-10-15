@@ -44,7 +44,8 @@ export default function AiExploreView({
                         className={styles.inputPromptTextarea}
                         placeholder="What would you like to explore?"
                         value={homeQuery}
-                        onChange={(e) => setHomeQuery(e.target.value)}
+                        maxLength={500}
+                        onChange={(e) => setHomeQuery(e.target.value.slice(0, 500))}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' && !e.shiftKey) {
                                 e.preventDefault();

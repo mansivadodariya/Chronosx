@@ -2215,10 +2215,10 @@
   },
   "errors": {
     "boundary": {
-      "tag": "GIÁN ĐOẠN HỆ THỐNG TẠM THỜI • LỖI 500",
-      "headingPrefix": "Luồng dữ liệu",
-      "headingHighlight": "Bị gián đoạn",
-      "description": "Đã phát hiện thấy sự bất thường khi thực thi. Động cơ AI đang cố gắng tự phục hồi. Bạn có thể thử lại hoặc quay lại bàn giao dịch chính.",
+      "tag": "TỰ ĐỘNG KẾT NỐI • ĐỒNG BỘ TRỰC TIẾP",
+      "headingPrefix": "Chúng Tôi Sẽ",
+      "headingHighlight": "Kết Nối Sớm",
+      "description": "Đang thiết lập kết nối an toàn với công cụ dữ liệu trực tiếp. Phiên và cài đặt của bạn được lưu an toàn. Bạn có thể thử lại kết nối hoặc quay lại bàn giao dịch.",
       "retry": "THỬ LẠI KẾT NỐI",
       "dashboard": "BẢNG ĐIỀU KHIỂN"
     },

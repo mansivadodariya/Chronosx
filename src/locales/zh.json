@@ -2215,10 +2215,10 @@
   },
   "errors": {
     "boundary": {
-      "tag": "系统临时中断 • 错误 500",
-      "headingPrefix": "遥测数据流",
-      "headingHighlight": "已中断",
-      "description": "在当前会话中检测到运行时异常。神经引擎正在尝试自动恢复。您可以重试操作或返回主面板。",
+      "tag": "自动重连中 • 实时同步",
+      "headingPrefix": "即将",
+      "headingHighlight": "恢复连接",
+      "description": "正在与实时遥测引擎建立安全连接。您的会话和设置已安全保存。您可以重试连接或返回主面板。",
       "retry": "重试连接",
       "dashboard": "控制面板"
     },

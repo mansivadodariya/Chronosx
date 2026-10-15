@@ -2,6 +2,7 @@
    ONBOARDING SURVEY & STRATEGY PROFILE CARD
    ============================================================ */
 .onboardingSurveyCard {
+    container-type: inline-size;
     background:
         radial-gradient(ellipse 40% 70% at 100% 0%, rgba(24, 201, 139, 0.18) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 80%),
         radial-gradient(ellipse 40% 70% at 0% 100%, rgba(0, 242, 254, 0.1) 0%, transparent 75%),
@@ -180,6 +181,14 @@
         grid-template-columns: 1fr 1fr;
         gap: 14px;
 
+        @container (max-width: 580px) {
+            grid-template-columns: 1fr;
+        }
+
+        @media (max-width: 1250px) {
+            grid-template-columns: 1fr;
+        }
+
         @include respond-to('sm') {
             grid-template-columns: 1fr;
         }
@@ -201,9 +210,10 @@
 
         .blockHead {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
             gap: 8px;
+            flex-wrap: wrap;
 
             .blockLabel {
                 font-size: 11px;
@@ -211,6 +221,9 @@
                 font-weight: 600;
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
+                flex: 1 1 auto;
+                min-width: 110px;
+                line-height: 1.4;
             }
 
             .expBadgePill {
@@ -222,12 +235,21 @@
                 padding: 2px 7px;
                 border-radius: 4px;
                 letter-spacing: 0.5px;
+                white-space: nowrap;
+                flex-shrink: 0;
             }
 
             .countBadge {
-                font-size: 10.5px;
-                color: rgba(255, 255, 255, 0.45);
-                font-weight: 500;
+                font-size: 11px;
+                color: rgba(255, 255, 255, 0.65);
+                font-weight: 600;
+                white-space: nowrap;
+                flex-shrink: 0;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                padding: 2px 7px;
+                border-radius: 4px;
+                line-height: 1.2;
             }
         }
 

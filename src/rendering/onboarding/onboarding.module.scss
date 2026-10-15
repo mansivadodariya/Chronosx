@@ -309,6 +309,13 @@
         color: #0F172A;
     }
 
+    .accentText {
+        color: #059669;
+        background: #059669;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
     .stepSubtext,
     .optionDesc {
         color: #475569;

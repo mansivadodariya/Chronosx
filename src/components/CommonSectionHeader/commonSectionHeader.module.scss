@@ -20,7 +20,13 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-    transition: box-shadow 0.2s ease;   
+    transition: box-shadow 0.2s ease;
+
+    @media (max-height: 800px) {
+        padding: 9px 18px;
+        margin-bottom: 8px;
+        gap: 4px;
+    }   
 
     &::before {
         content: '';
@@ -74,7 +80,8 @@
             font-weight: 800;
 
             .highlight {
-                background: linear-gradient(135deg, #18C98B 0%, #34D399 40%, #38BDF8 100%);
+                color: #059669;
+                background: #059669;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
@@ -282,7 +289,8 @@
     }
 
     .highlight {
-        background: linear-gradient(135deg, #18C98B 0%, #34D399 40%, #38BDF8 100%);
+        color: #18c98b;
+        background: #18c98b;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;

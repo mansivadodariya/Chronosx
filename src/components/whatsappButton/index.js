@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import styles from './whatsappButton.module.scss';
 import { usePathname } from 'next/navigation';
+import { useContactInfo } from '@/services/contactInfoService';
 
 const SUPPORTED_LOCALES = ['en', 'ar', 'ary', 'es', 'ru', 'zh', 'vi', 'id', 'fil', 'arabic', 'spanish', 'russian', 'chinese', 'vietnamese', 'indonesian', 'filipino', 'darija'];
 
@@ -20,8 +21,10 @@ function stripLocalePrefix(path) {
 export default function WhatsappButton() {
     const { t } = useLanguage();
     const pathname = usePathname();
+    const { contactInfo } = useContactInfo();
 
     const publicLandingPages = [
+        '/',
         '/',
         '/capabilities',
         '/economic-calendar',
@@ -64,10 +67,16 @@ export default function WhatsappButton() {
         return null;
     }
 
-    // WhatsApp number
-    const whatsappNumber = "+971568840900";
-    const sanitizedWhatsappNumber = whatsappNumber.replace(/[^\d]/g, "");
-    const whatsappUrl = `https://wa.me/${sanitizedWhatsappNumber}`;
+    // Dynamic WhatsApp number from Supabase social_links (fallback to phone or default)
+    const rawNumber = contactInfo?.whatsapp?.value || contactInfo?.phone?.value || '+971 56 884 0900';
+    const whatsappUrl = (() => {
+        const trimmed = (rawNumber || '').trim();
+        if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+            return trimmed;
+        }
+        const digits = trimmed.replace(/[^\d]/g, '');
+        return `https://wa.me/${digits || '971568840900'}`;
+    })();
 
     return (
         <motion.div

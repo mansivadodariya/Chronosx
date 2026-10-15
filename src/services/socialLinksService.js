@@ -88,6 +88,8 @@ export const NON_SOCIAL_PLATFORMS = new Set([
     'support_email',
     'phone',
     'contact_phone',
+    'whatsapp',
+    'contact_whatsapp',
     'tel',
     'address',
     'contact_address',

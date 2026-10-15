@@ -234,7 +234,13 @@
                     border-color: #86EFAC;
                     color: #15803D;
                 }
-                .countBadge { color: #64748B; }
+                .countBadge {
+                    background: #F1F5F9;
+                    border: 1px solid #E2E8F0;
+                    color: #475569;
+                    white-space: nowrap;
+                    flex-shrink: 0;
+                }
             }
 
             .blockMainVal {

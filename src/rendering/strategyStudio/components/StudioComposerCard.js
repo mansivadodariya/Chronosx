@@ -104,8 +104,10 @@ export default function StudioComposerCard({
                         className={textareaClass}
                         placeholder={placeholder}
                         value={input}
+                        maxLength={500}
                         onChange={(e) => {
-                            setInput(e.target.value);
+                            const val = e.target.value.slice(0, 500);
+                            setInput(val);
                             if (setActiveSuggestionIndex) setActiveSuggestionIndex(0);
                         }}
                         onKeyDown={onKeyDown}
@@ -122,7 +124,7 @@ export default function StudioComposerCard({
                                     className={`${styles.typedSuggestionItem} ${i === activeSuggestionIndex ? styles.typedSuggestionActive : ''}`}
                                     onMouseEnter={() => setActiveSuggestionIndex && setActiveSuggestionIndex(i)}
                                     onClick={() => {
-                                        setInput(sug);
+                                        setInput(sug.slice(0, 500));
                                         if (setActiveSuggestionIndex) setActiveSuggestionIndex(0);
                                         if (textareaRef.current) textareaRef.current.focus();
                                     }}
@@ -159,15 +161,22 @@ export default function StudioComposerCard({
                                 <ChevronDownIcon size={16} />
                             </button>
                         </div>
-                        <button
-                            type="button"
-                            className={`${styles.circularSubmitBtn} ${input.trim() ? styles.activeBtn : ''}`}
-                            onClick={handleSendAction}
-                            disabled={loading || !input.trim()}
-                            title="Send Message"
-                        >
-                            <ArrowUpIcon size={20} />
-                        </button>
+                        <div className={styles.cardBottomActionsRight}>
+                            {input && input.length > 0 && (
+                                <span className={`${styles.charCounter} ${input.length >= 500 ? styles.atLimit : input.length >= 450 ? styles.nearLimit : ''}`}>
+                                    {input.length}/500
+                                </span>
+                            )}
+                            <button
+                                type="button"
+                                className={`${styles.circularSubmitBtn} ${input.trim() ? styles.activeBtn : ''}`}
+                                onClick={handleSendAction}
+                                disabled={loading || !input.trim()}
+                                title="Send Message"
+                            >
+                                <ArrowUpIcon size={20} />
+                            </button>
+                        </div>
                     </div>
                 </>
             )}

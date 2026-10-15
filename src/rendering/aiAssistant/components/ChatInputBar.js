@@ -95,7 +95,8 @@ export default function ChatInputBar({
                 placeholder={getPlaceholderText()}
                 className={styles.textarea}
                 value={chatInput}
-                onChange={(e) => setChatInput(e.target.value.trimStart())}
+                maxLength={500}
+                onChange={(e) => setChatInput(e.target.value.trimStart().slice(0, 500))}
                 onPaste={handlePaste}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -261,6 +262,11 @@ export default function ChatInputBar({
 
                 {/* Right Input Controls: Voice button + Send button */}
                 <div className={styles.rightInputControls}>
+                    {chatInput && chatInput.length > 0 && (
+                        <span className={`${styles.charCounter} ${chatInput.length >= 500 ? styles.atLimit : chatInput.length >= 450 ? styles.nearLimit : ''}`}>
+                            {chatInput.length}/500
+                        </span>
+                    )}
                     <button
                         type="button"
                         className={`${styles.voiceBtn} ${isListening ? styles.voiceBtnActive : ''}`}

@@ -2215,10 +2215,10 @@
   },
   "errors": {
     "boundary": {
-      "tag": "GANGGUAN SISTEM SEMENTARA • ERROR 500",
-      "headingPrefix": "Aliran Telemetri",
-      "headingHighlight": "Terputus",
-      "description": "Anomali terdeteksi di segmen ini. Mesin neural mencoba pemulihan otomatis. Anda dapat mencoba lagi atau kembali ke dasbor utama.",
+      "tag": "SAMBUNG OTOMATIS • SINKRONISASI LANGSUNG",
+      "headingPrefix": "Kami Akan",
+      "headingHighlight": "Segera Terhubung",
+      "description": "Membangun koneksi aman dengan mesin telemetri langsung. Sesi dan pengaturan Anda tersimpan dengan aman. Anda dapat mencoba lagi atau kembali ke dasbor utama.",
       "retry": "COBA LAGI KONEKSI",
       "dashboard": "DASBOR"
     },

@@ -2267,10 +2267,10 @@
   },
   "errors": {
     "boundary": {
-      "tag": "INTERRUPCIÓN TEMPORAL DEL SISTEMA • ERROR 500",
-      "headingPrefix": "Flujo de telemetría",
-      "headingHighlight": "Interrumpido",
-      "description": "Se detectó una anomalía en este segmento. El motor neuronal intenta la autorrecuperación. Puede reintentar o volver al panel principal.",
+      "tag": "AUTO-RECONEXIÓN • SINCRONIZACIÓN EN VIVO",
+      "headingPrefix": "Nos Conectaremos",
+      "headingHighlight": "Pronto",
+      "description": "Estableciendo una conexión segura con el motor de telemetría en vivo. Tu sesión y configuración están a salvo. Puedes reintentar la conexión o volver a tu panel principal.",
       "retry": "REINTENTAR CONEXIÓN",
       "dashboard": "PANEL DE CONTROL"
     },
