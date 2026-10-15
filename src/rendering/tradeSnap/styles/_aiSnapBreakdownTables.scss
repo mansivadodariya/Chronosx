@@ -4,7 +4,7 @@
     border: 1px solid var(--card-border);
     box-shadow: var(--card-shadow);
     padding: 20px;
-    border-radius: 0;
+    border-radius: 14px;
 }
 
 .tabNavRow {
@@ -45,7 +45,7 @@
 .tabContentCard {
     background: var(--box-bg);
     border: 1px solid var(--box-border);
-    border-radius: 0;
+    border-radius: 10px;
     overflow: hidden;
 }
 

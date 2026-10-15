@@ -2,28 +2,35 @@
 
 .dashboardWrapper {
     // Theme Variables - Default / Dark Mode
-    --card-bg: #0D0E13;
-    --card-border: rgba(24, 201, 139, 0.35);
-    --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-    --box-bg: #060706;
-    --box-border: rgba(24, 201, 139, 0.22);
+    --card-bg: radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.16) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 75%),
+               radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+               radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.16) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 75%),
+               #121514;
+    --card-border: rgba(24, 201, 139, 0.18);
+    --card-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    --box-bg: rgba(24, 201, 139, 0.06);
+    --box-border: transparent;
     --title-color: #FFFFFF;
     --text-primary: #FFFFFF;
     --text-muted: rgba(255, 255, 255, 0.65);
     --text-faint: rgba(255, 255, 255, 0.45);
     --wrapper-bg: #060706;
-    --wrapper-border: rgba(24, 201, 139, 0.25);
-    --pill-bg: rgba(24, 201, 139, 0.15);
-    --pill-border: rgba(24, 201, 139, 0.35);
+    --wrapper-border: rgba(24, 201, 139, 0.2);
+    --pill-bg: rgba(24, 201, 139, 0.12);
+    --pill-border: rgba(24, 201, 139, 0.25);
     --pill-color: #18C98B;
-    --stat-card-bg: #0D0E13;
-    --code-bg: #060706;
+    --stat-card-bg: rgba(24, 201, 139, 0.06);
+    --code-bg: rgba(24, 201, 139, 0.06);
     --code-color: rgba(255, 255, 255, 0.7);
-    --bull-hero-bg: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, #0D0E13 100%);
-    --bear-hero-bg: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, #0D0E13 100%);
-    --neutral-hero-bg: #0D0E13;
-    --tp-card-bg: #0D0E13;
-    --tp-card-border: rgba(16, 185, 129, 0.35);
+    --bull-hero-bg: radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
+                    radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
+                    #121514;
+    --bear-hero-bg: radial-gradient(ellipse 35% 85% at 0% 50%, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.06) 50%, transparent 75%),
+                    radial-gradient(ellipse 35% 85% at 100% 50%, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.06) 50%, transparent 75%),
+                    #121514;
+    --neutral-hero-bg: #121514;
+    --tp-card-bg: rgba(24, 201, 139, 0.06);
+    --tp-card-border: transparent;
 
     :global(html[data-theme='light']) &,
     :global([data-theme='light']) &,
@@ -33,27 +40,27 @@
     :global(.pdfExportContainer) & {
         // Theme Variables - LIGHT MODE
         --card-bg: #FFFFFF;
-        --card-border: rgba(15, 23, 42, 0.12);
+        --card-border: rgba(15, 23, 42, 0.08);
         --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
-        --box-bg: #F8FAFC;
-        --box-border: rgba(15, 23, 42, 0.1);
+        --box-bg: #F1F5F9;
+        --box-border: transparent;
         --title-color: #0F172A;
         --text-primary: #0F172A;
         --text-muted: #475569;
         --text-faint: #64748B;
         --wrapper-bg: #FFFFFF;
-        --wrapper-border: rgba(15, 23, 42, 0.1);
+        --wrapper-border: rgba(15, 23, 42, 0.08);
         --pill-bg: rgba(24, 201, 139, 0.12);
-        --pill-border: rgba(24, 201, 139, 0.35);
+        --pill-border: rgba(24, 201, 139, 0.25);
         --pill-color: #047857;
-        --stat-card-bg: #FFFFFF;
+        --stat-card-bg: #F1F5F9;
         --code-bg: #F1F5F9;
         --code-color: #1E293B;
-        --bull-hero-bg: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, #FFFFFF 100%);
-        --bear-hero-bg: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, #FFFFFF 100%);
+        --bull-hero-bg: #FFFFFF;
+        --bear-hero-bg: #FFFFFF;
         --neutral-hero-bg: #FFFFFF;
-        --tp-card-bg: #FFFFFF;
-        --tp-card-border: rgba(16, 185, 129, 0.35);
+        --tp-card-bg: #F1F5F9;
+        --tp-card-border: transparent;
     }
 
     :global(.pdfExportLight) &,
@@ -115,7 +122,7 @@
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     box-shadow: var(--card-shadow);
-    border-radius: 0;
+    border-radius: 14px;
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -147,7 +154,7 @@
         border: 1px solid var(--pill-border);
         color: var(--pill-color);
         padding: 4px 10px;
-        border-radius: 0;
+        border-radius: 6px;
         font-size: 12px;
         font-weight: 600;
     }
@@ -160,7 +167,7 @@
         font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
-        border-radius: 0;
+        border-radius: 6px;
 
         &.validGreen {
             background: rgba(16, 185, 129, 0.15);
@@ -183,7 +190,7 @@
         color: #060706;
         border: 1px solid #18C98B;
         padding: 4px 11px;
-        border-radius: 0;
+        border-radius: 6px;
         font-size: 11px;
         font-weight: 700;
         cursor: pointer;
@@ -282,7 +289,7 @@
     background: var(--box-bg);
     border: 1px solid var(--box-border);
     padding: 10px 14px;
-    border-radius: 0;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -325,7 +332,7 @@
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     box-shadow: var(--card-shadow);
-    border-radius: 0;
+    border-radius: 14px;
     padding: 16px;
     display: flex;
     flex-direction: column;

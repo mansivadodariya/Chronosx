@@ -151,13 +151,33 @@
         border: none;
         outline: none;
         resize: none;
-        min-height: 48px;
-        max-height: 120px;
+        min-height: 44px;
+        max-height: 115px;
         font-size: 14px;
+        line-height: 1.5;
         font-weight: 450;
         color: #ffffff;
         background: transparent;
         padding: 0;
+        overflow-y: auto;
+        box-sizing: border-box;
+
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: rgba(24, 201, 139, 0.35);
+            border-radius: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: rgba(24, 201, 139, 0.65);
+        }
 
         &::placeholder {
             color: #64748b;
@@ -508,7 +528,6 @@
             .charCounter {
                 font-size: 11px;
                 color: rgba(255, 255, 255, 0.4);
-                font-family: monospace, sans-serif;
                 letter-spacing: 0.3px;
                 user-select: none;
                 margin-right: 4px;

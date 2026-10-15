@@ -72,6 +72,17 @@ export default function AiChatStreamView({
     const [activeStreamingKey, setActiveStreamingKey] = useState(null);
     // Track whether current stream is complete
     const [streamComplete, setStreamComplete] = useState(true);
+    const bottomTextareaRef = React.useRef(null);
+
+    // Auto-grow input up to 4-5 lines (~115px), then scroll
+    React.useEffect(() => {
+        if (bottomTextareaRef?.current) {
+            bottomTextareaRef.current.style.height = 'auto';
+            const scrollH = bottomTextareaRef.current.scrollHeight;
+            const newHeight = Math.min(Math.max(scrollH, 44), 115);
+            bottomTextareaRef.current.style.height = `${newHeight}px`;
+        }
+    }, [chatInput]);
 
     // ONLY the very last message in the chat can EVER stream, and ONLY if it's an incoming AI message
     React.useEffect(() => {
@@ -350,6 +361,7 @@ export default function AiChatStreamView({
             >
                 <div className={styles.tradezeeChatBottomCard} data-lenis-prevent="true">
                     <textarea
+                        ref={bottomTextareaRef}
                         className={styles.inputPromptTextarea}
                         placeholder="Describe your trading strategy idea..."
                         value={chatInput}

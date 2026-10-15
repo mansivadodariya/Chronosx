@@ -189,15 +189,15 @@
 
 .detailBox {
     padding: 10px 14px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 8px;
+    background: rgba(24, 201, 139, 0.06);
+    border: none;
+    border-radius: 10px;
 
     span {
         display: block;
         font-size: 11px;
         font-weight: 600;
-        color: rgba(255, 255, 255, 0.5);
+        color: rgba(255, 255, 255, 0.6);
         margin-bottom: 4px;
         text-transform: uppercase;
     }
@@ -206,6 +206,19 @@
         font-size: 14px;
         color: #FFFFFF;
         font-family: monospace, sans-serif;
+    }
+
+    :global(html.light) & {
+        background: #F1F5F9;
+        border: none;
+
+        span {
+            color: #64748B;
+        }
+
+        strong {
+            color: #0F172A;
+        }
     }
 }
 
@@ -225,9 +238,14 @@
 
 .targetsBox {
     padding: 10px 14px;
-    background: rgba(24, 201, 139, 0.04);
-    border-radius: 8px;
-    border: 1px solid rgba(24, 201, 139, 0.15);
+    background: rgba(24, 201, 139, 0.06);
+    border-radius: 10px;
+    border: none;
+
+    :global(html.light) & {
+        background: #F1F5F9;
+        border: none;
+    }
 }
 
 .targetsLabel {

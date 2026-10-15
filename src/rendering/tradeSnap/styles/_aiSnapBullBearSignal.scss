@@ -1,7 +1,7 @@
 // Section B: Dynamic Bull & Bear Hero Banner
 .heroBanner {
     position: relative;
-    border-radius: 0;
+    border-radius: 14px;
     padding: 18px 20px;
     overflow: hidden;
     border: 1px solid;
@@ -338,7 +338,7 @@
 .bannerStatCard {
     background: var(--stat-card-bg);
     border: 1px solid rgba(16, 185, 129, 0.35);
-    border-radius: 0;
+    border-radius: 10px;
     padding: 8px 12px;
     display: flex;
     flex-direction: column;
@@ -372,7 +372,7 @@
         padding: 3px 8px;
         border: 1px solid rgba(16, 185, 129, 0.4);
         background: rgba(16, 185, 129, 0.08);
-        border-radius: 4px;
+        border-radius: 6px;
         margin-top: 2px;
     }
 }
@@ -380,7 +380,7 @@
 .bannerStatCardRed {
     background: var(--stat-card-bg);
     border: 1px solid rgba(239, 68, 68, 0.35);
-    border-radius: 0;
+    border-radius: 10px;
     padding: 8px 12px;
     display: flex;
     flex-direction: column;
@@ -414,7 +414,7 @@
         padding: 3px 8px;
         border: 1px solid rgba(239, 68, 68, 0.4);
         background: rgba(239, 68, 68, 0.08);
-        border-radius: 4px;
+        border-radius: 6px;
         margin-top: 2px;
     }
 }
@@ -422,7 +422,7 @@
 .bannerStatCardAmber {
     background: var(--stat-card-bg);
     border: 1px solid rgba(14, 165, 233, 0.35);
-    border-radius: 0;
+    border-radius: 10px;
     padding: 8px 12px;
     display: flex;
     flex-direction: column;
@@ -456,7 +456,7 @@
         padding: 3px 8px;
         border: 1px solid rgba(56, 189, 248, 0.4);
         background: rgba(56, 189, 248, 0.08);
-        border-radius: 4px;
+        border-radius: 6px;
         margin-top: 2px;
     }
 }

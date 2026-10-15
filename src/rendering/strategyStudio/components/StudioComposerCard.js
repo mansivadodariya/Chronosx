@@ -34,11 +34,25 @@ export default function StudioComposerCard({
         }
     }, [input, isExpanded]);
 
+    // Auto-grow input up to 4-5 lines (~115px), then scroll
+    useEffect(() => {
+        if (textareaRef?.current && isExpanded) {
+            textareaRef.current.style.height = 'auto';
+            const scrollH = textareaRef.current.scrollHeight;
+            const newHeight = Math.min(Math.max(scrollH, 44), 115);
+            textareaRef.current.style.height = `${newHeight}px`;
+        }
+    }, [input, isExpanded]);
+
     const handleExpand = () => {
         setIsExpanded(true);
         setTimeout(() => {
             if (textareaRef.current) {
                 textareaRef.current.focus();
+                textareaRef.current.style.height = 'auto';
+                const scrollH = textareaRef.current.scrollHeight;
+                const newHeight = Math.min(Math.max(scrollH, 44), 115);
+                textareaRef.current.style.height = `${newHeight}px`;
             }
         }, 50);
     };
@@ -52,6 +66,9 @@ export default function StudioComposerCard({
         if (loading || !input.trim()) return;
         onSend(input);
         setIsExpanded(false);
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+        }
     };
 
     const containerClass = isExploreMode
@@ -111,7 +128,7 @@ export default function StudioComposerCard({
                             if (setActiveSuggestionIndex) setActiveSuggestionIndex(0);
                         }}
                         onKeyDown={onKeyDown}
-                        rows={2}
+                        rows={1}
                     />
 
                     {/* As-you-type suggestion dropdown */}
