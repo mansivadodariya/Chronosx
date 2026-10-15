@@ -429,13 +429,33 @@ $danger: #F87171;
     .headerTitleMeta h1,
     .statValue,
     .descCell,
-    .paginationInfo {
+    .paginationInfo,
+    .dateTimeCell {
         color: #0F172A;
     }
 
     .headerTitleMeta p,
     .statLabel {
         color: #475569;
+    }
+
+    .historyHeaderLeft {
+        .cardHeaderIcon {
+            background: #ECFDF5;
+            border-color: #A7F3D0;
+
+            svg {
+                stroke: #059669;
+            }
+        }
+
+        h2 {
+            color: #0F172A;
+        }
+
+        p {
+            color: #64748B;
+        }
     }
 
     .statCard,
@@ -450,18 +470,90 @@ $danger: #F87171;
         box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
     }
 
+    .statCard {
+        .iconGreen {
+            background: #ECFDF5;
+            border-color: #A7F3D0;
+
+            svg {
+                stroke: #059669;
+            }
+        }
+
+        .iconRed {
+            background: #FEF2F2;
+            border-color: #FECACA;
+
+            svg {
+                stroke: #DC2626;
+            }
+        }
+
+        .textGreen {
+            color: #059669;
+        }
+
+        .textRed {
+            color: #DC2626;
+        }
+    }
+
+    .tableWrapper {
+        &::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+
+            &:hover {
+                background: #94A3B8;
+            }
+        }
+    }
+
     .historyTable {
         background: #FFFFFF;
 
+        thead {
+            background: #F8FAFC;
+        }
+
         th {
-            background: #F1F5F9;
-            color: #334155;
+            background: #F8FAFC;
+            color: #475569;
+            border-bottom: 1px solid #E2E8F0;
+            box-shadow: none;
         }
 
         td {
             border-bottom-color: rgba(15, 23, 42, 0.06);
             color: #1E293B;
         }
+
+        .tableRow:hover {
+            background-color: #F8FAFC;
+        }
+    }
+
+    .badgeAdd {
+        background: #ECFDF5;
+        border: 1px solid #A7F3D0;
+        color: #059669;
+    }
+
+    .badgeDeduct {
+        background: #FEF2F2;
+        border: 1px solid #FECACA;
+        color: #DC2626;
+    }
+
+    .amountAdd {
+        color: #059669;
+    }
+
+    .amountDeduct {
+        color: #DC2626;
     }
 
     .paginationButton {

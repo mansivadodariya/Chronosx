@@ -75,13 +75,16 @@
 
         .heroTitle {
             color: #0F172A;
+            text-shadow: none;
 
             .titleLine1 {
                 color: #0F172A;
+                text-shadow: none;
             }
 
             .titleLine2 {
                 color: #0F172A;
+                text-shadow: none;
             }
 
             .candleIconBox {
@@ -94,6 +97,7 @@
             .titleCandleIcon {
                 background: transparent;
                 background-color: transparent;
+                filter: none;
             }
 
             .greenGradient {

@@ -65,64 +65,83 @@
     }
 }
 
-:global(html.light) .dropdownMenu {
-    background: transparent;
-    border: none;
-    box-shadow: none;
+:global(html.light) .dropdownMenu,
+:global(html[data-theme='light']) .dropdownMenu,
+:global([data-theme='light']) .dropdownMenu {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
     border-radius: 20px;
 }
 
-:global(html.light) .dropdownCard {
-    background: #FFFFFF;
-    border: 1px solid rgba(15, 23, 42, 0.1);
-    border-radius: 20px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+:global(html.light) .dropdownCard,
+:global(html[data-theme='light']) .dropdownCard,
+:global([data-theme='light']) .dropdownCard,
+:global(html.light) .header .dropdownCard,
+:global(html[data-theme='light']) .header .dropdownCard,
+:global([data-theme='light']) .header .dropdownCard {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(15, 23, 42, 0.1) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12), 0 4px 15px rgba(15, 23, 42, 0.05) !important;
     overflow: hidden;
 
     .dropdownHeaderTag {
-        color: #475569;
-        border-bottom-color: rgba(15, 23, 42, 0.08);
+        color: #047857 !important;
+        border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+        font-weight: 800 !important;
     }
 
     .dropdownItem {
-        background: transparent;
+        background: transparent !important;
 
         &:hover {
-            background: rgba(24, 201, 139, 0.08);
+            background: rgba(24, 201, 139, 0.08) !important;
 
             .itemIconBox {
-                background: transparent;
-                border: none;
-                border-color: transparent;
-                color: #047857;
+                background: transparent !important;
+                border: none !important;
+                border-color: transparent !important;
+                color: #047857 !important;
                 transform: scale(1.12);
                 filter: drop-shadow(0 0 6px rgba(24, 201, 139, 0.4));
             }
 
             .itemTitle {
-                color: #047857;
+                color: #047857 !important;
             }
         }
 
         .itemIconBox {
-            background: transparent;
-            border: none;
-            border-color: transparent;
-            color: #0F172A;
+            background: transparent !important;
+            border: none !important;
+            border-color: transparent !important;
+            color: #0F172A !important;
         }
 
         .itemTitle {
-            color: #0F172A;
+            color: #0F172A !important;
+            font-weight: 700 !important;
         }
 
         .itemDesc {
-            color: #64748B;
+            color: #475569 !important;
         }
 
         .itemBadge {
-            background: rgba(24, 201, 139, 0.12);
-            border-color: rgba(24, 201, 139, 0.35);
-            color: #047857;
+            background: rgba(24, 201, 139, 0.12) !important;
+            border-color: rgba(24, 201, 139, 0.35) !important;
+            color: #047857 !important;
+        }
+    }
+
+    .dropdownFooter {
+        border-top-color: rgba(15, 23, 42, 0.08) !important;
+        color: #64748B !important;
+
+        .footerGlowDot {
+            background: #10B981 !important;
+            box-shadow: 0 0 6px #10B981 !important;
         }
     }
 }

@@ -520,7 +520,33 @@
 
         th {
             background: #F1F5F9;
-            color: #475569;
+            color: #334155;
+            font-weight: 700;
+        }
+
+        .thFeature {
+            color: #0F172A;
+        }
+
+        .thManual {
+            color: #334155;
+        }
+
+        .thAiTrade {
+            background: rgba(24, 201, 139, 0.12);
+            color: #047857;
+        }
+
+        tr {
+            border-bottom: 1px solid #F1F5F9;
+
+            &:hover {
+                background: #F8FAFC;
+            }
+        }
+
+        .rowHighlight {
+            background: rgba(24, 201, 139, 0.04);
         }
 
         td {
@@ -528,11 +554,52 @@
             border-bottom-color: #F1F5F9;
         }
 
+        .tdFeature {
+            color: #0F172A;
+            font-weight: 700;
+        }
+
+        .tdManual {
+            color: #334155;
+        }
+
+        .manualText {
+            color: #334155 !important;
+            font-weight: 600;
+        }
+
         .genericText {
-            color: #64748B;
+            color: #334155 !important;
+            font-weight: 600;
         }
 
         .chronosText {
+            color: #047857;
+            font-weight: 700;
+        }
+
+        .statusIconWarn {
+            background: rgba(2, 132, 199, 0.12);
+            border-color: rgba(2, 132, 199, 0.35);
+            color: #0284C7;
+        }
+
+        .statusIconCross {
+            background: rgba(239, 68, 68, 0.12);
+            border-color: rgba(239, 68, 68, 0.35);
+            color: #DC2626;
+        }
+
+        .statusIconCheck {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.4);
+            color: #059669;
+        }
+
+        .tdAiTrade {
+            background: rgba(24, 201, 139, 0.05);
+            border-left: 1px solid rgba(24, 201, 139, 0.18);
+            border-right: 1px solid rgba(24, 201, 139, 0.18);
             color: #047857;
             font-weight: 700;
         }

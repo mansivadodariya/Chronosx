@@ -268,7 +268,6 @@ export default function MyBots() {
                     <MyBotsStats
                         totalCount={bots.length}
                         activeCount={activeCount}
-                        totalPnL={totalPnL}
                     />
 
                     <MyBotsFilterBar

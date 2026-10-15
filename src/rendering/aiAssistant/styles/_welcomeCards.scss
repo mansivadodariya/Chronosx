@@ -268,6 +268,17 @@
                         line-height: 1.25;
                         font-family: var(--font-plus-jakarta), var(--font-roboto), sans-serif;
 
+                        [data-theme='light'] &,
+                        :global(html.light) &,
+                        :global([data-theme='light']) &,
+                        :global(.isLight) & {
+                            color: #0F172A;
+
+                            .titleGradient {
+                                color: #059669;
+                            }
+                        }
+
                         @include respond-to('tab') {
                             font-size: 20px;
                             margin: 0 0 4px;
@@ -286,6 +297,13 @@
                         color: rgba(255, 255, 255, 0.65);
                         margin: 0 0 20px;
                         line-height: 1.4;
+
+                        [data-theme='light'] &,
+                        :global(html.light) &,
+                        :global([data-theme='light']) &,
+                        :global(.isLight) & {
+                            color: #64748B;
+                        }
 
                         @include respond-to('tab') {
                             font-size: 11px;
@@ -321,6 +339,36 @@
                             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.05);
                             position: relative;
                             overflow: hidden;
+
+                            [data-theme='light'] &,
+                            :global(html.light) &,
+                            :global([data-theme='light']) &,
+                            :global(.isLight) & {
+                                background: #FFFFFF;
+                                border: 1px solid #E2E8F0;
+                                box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+
+                                &:hover {
+                                    background: #F0FDF4;
+                                    border-color: #10B981;
+                                    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.12);
+                                    transform: translateY(-2px);
+                                }
+
+                                .cardMainTitle {
+                                    color: #0F172A;
+                                }
+
+                                .cardSubTitle {
+                                    color: #64748B;
+                                }
+
+                                .cardArrow {
+                                    background: #ECFDF5;
+                                    border-color: #A7F3D0;
+                                    color: #059669;
+                                }
+                            }
 
                             @include respond-to('tab') {
                                 padding: 8px 12px;

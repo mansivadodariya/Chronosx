@@ -347,6 +347,18 @@
             height: 100%;
             display: block;
             overflow: visible;
+
+            .sparklineIdleGroup {
+              .sparklineIdlePath {
+                stroke: rgba(24, 201, 139, 0.45);
+                transition: stroke 0.3s ease;
+              }
+
+              .sparklineIdleDot {
+                fill: #18C98B;
+                transition: fill 0.3s ease;
+              }
+            }
           }
         }
       }
@@ -570,7 +582,9 @@
     }
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     background: #F8FAFC;
 
     .sectionHeader {
@@ -586,11 +600,70 @@
     .cockpitCard,
     .metricCard,
     .signalCard,
-    .terminalCard {
+    .terminalCard,
+    .intelCard {
       background: #FFFFFF;
-      border-color: rgba(15, 23, 42, 0.09);
+      border: 1px solid #E2E8F0;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
       color: #0F172A;
+    }
+
+    .intelCard {
+      &.cardActiveScore,
+      &.cardActiveRank {
+        background: #FFFFFF;
+        border-color: rgba(16, 185, 129, 0.45);
+        box-shadow: 0 8px 26px rgba(16, 185, 129, 0.12);
+      }
+
+      .structureHeadline {
+        color: #0F172A;
+
+        &.scoreActiveText {
+          color: #059669;
+          text-shadow: none;
+        }
+      }
+
+      .orderFlowHeadline {
+        color: #047857;
+
+        &.rankActiveText {
+          color: #059669;
+          text-shadow: none;
+        }
+      }
+
+      .structureDetailText,
+      .orderFlowDetailText {
+        color: #64748B;
+      }
+
+      .sliderRangeHeader {
+        color: #64748B;
+
+        span {
+          color: #64748B;
+        }
+
+        .rangeCenterText {
+          color: #475569;
+        }
+      }
+
+      .sliderTrack {
+        background: #E2E8F0;
+      }
+
+      .sparklineIdleGroup {
+        .sparklineIdlePath {
+          stroke: rgba(16, 185, 129, 0.65);
+        }
+
+        .sparklineIdleDot {
+          fill: #059669;
+        }
+      }
     }
 
     .cockpitFooterBar {

@@ -9,18 +9,33 @@
     flex-wrap: wrap;
     gap: 12px;
 
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        border-bottom-color: #E2E8F0;
+    }
+
     .tabTitle {
         color: #FFFFFF;
         font-size: 17px;
         font-weight: 700;
         font-family: "Euclid-Bold", sans-serif;
         margin: 0 0 4px;
+
+        :global(html.light) &,
+        :global([data-theme='light']) & {
+            color: #0F172A;
+        }
     }
 
     .tabSubtitle {
         color: rgba(255, 255, 255, 0.5);
         font-size: 13px;
         margin: 0;
+
+        :global(html.light) &,
+        :global([data-theme='light']) & {
+            color: #64748B;
+        }
     }
 
     .markAllNotificationsBtn {
@@ -33,6 +48,19 @@
         font-weight: 600;
         cursor: pointer;
         transition: all 0.2s ease;
+
+        :global(html.light) &,
+        :global([data-theme='light']) & {
+            background: #ECFDF5;
+            border-color: #A7F3D0;
+            color: #059669;
+
+            &:hover {
+                background: #10B981;
+                color: #FFFFFF;
+                border-color: #10B981;
+            }
+        }
 
         &:hover {
             background: #18C98B;
@@ -57,6 +85,12 @@
     width: fit-content;
     border: 1px solid rgba(255, 255, 255, 0.06);
 
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        background: #F1F5F9;
+        border: 1px solid #E2E8F0;
+    }
+
     .notifTabBtn {
         background: transparent;
         border: none;
@@ -67,6 +101,21 @@
         border-radius: 7px;
         cursor: pointer;
         transition: all 0.2s ease;
+
+        :global(html.light) &,
+        :global([data-theme='light']) & {
+            color: #64748B;
+
+            &:hover {
+                color: #0F172A;
+            }
+
+            &.activeNotifTab {
+                background: #FFFFFF;
+                color: #059669;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            }
+        }
 
         &:hover {
             color: #FFFFFF;
@@ -103,6 +152,30 @@
         cursor: pointer;
         white-space: nowrap;
         transition: all 0.2s ease;
+
+        :global(html.light) &,
+        :global([data-theme='light']) & {
+            background: #FFFFFF;
+            border-color: #E2E8F0;
+            color: #64748B;
+
+            &:hover {
+                background: #F8FAFC;
+                border-color: rgba(24, 201, 139, 0.4);
+                color: #059669;
+            }
+
+            &.activeCategoryPill {
+                background: #ECFDF5;
+                border-color: #10B981;
+                color: #059669;
+            }
+
+            .notifCountBadge {
+                background: #059669;
+                color: #FFFFFF;
+            }
+        }
 
         &:hover {
             border-color: rgba(24, 201, 139, 0.3);
@@ -151,8 +224,9 @@
 
         [data-theme='light'] &,
         :global(html.light) & {
-            background: #F8FAFC;
-            border-color: rgba(0, 0, 0, 0.08);
+            background: #FFFFFF;
+            border-color: #E2E8F0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
         }
 
         &:hover {
@@ -184,6 +258,12 @@
         &.unreadProfileNotif {
             border-left: 3px solid #18C98B;
             background: rgba(24, 201, 139, 0.06);
+
+            :global(html.light) &,
+            :global([data-theme='light']) & {
+                border-left: 3px solid #10B981;
+                background: #F0FDF4;
+            }
         }
 
         &.slidingOut {
@@ -221,6 +301,19 @@
                 transition: all 0.2s ease;
                 padding: 0;
 
+                :global(html.light) &,
+                :global([data-theme='light']) & {
+                    background: #F1F5F9;
+                    border-color: #E2E8F0;
+                    color: #64748B;
+
+                    &:hover {
+                        background: #FEE2E2;
+                        border-color: #FECACA;
+                        color: #EF4444;
+                    }
+                }
+
                 &:hover {
                     background: rgba(239, 68, 68, 0.2);
                     border-color: rgba(239, 68, 68, 0.4);
@@ -238,6 +331,14 @@
                 padding: 2px 7px;
                 border-radius: 5px;
                 text-transform: uppercase;
+
+                :global(html.light) &,
+                :global([data-theme='light']) & {
+                    color: #059669;
+                    background: #ECFDF5;
+                    border-color: #A7F3D0;
+                }
+            }
             }
 
             .notifTime {

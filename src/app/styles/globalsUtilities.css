@@ -3,7 +3,7 @@
    ============================================================ */
 
 /* Light Mode Base Form Controls */
-html.light input:not([type="checkbox"]):not([type="radio"]),
+html.light input:not([type="checkbox"]):not([type="radio"]):not([class*="input"]):not([class*="Input"]),
 html.light select,
 html.light textarea {
   background-color: #FFFFFF;
@@ -19,6 +19,20 @@ html.light textarea::placeholder {
 html.light select option {
   background-color: #FFFFFF;
   color: #0F172A;
+}
+
+/* Light Mode Input Wrapper Neutral Light Grey Style */
+html.light [class*="inputWrapper"],
+html[data-theme='light'] [class*="inputWrapper"] {
+  background-color: #F1F5F9;
+  border-radius: 10px;
+}
+
+html.light [class*="inputWrapper"] input,
+html[data-theme='light'] [class*="inputWrapper"] input {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #0F172A !important;
 }
 
 /* Custom Pointer / Futuristic Cursor Global Rules */

@@ -413,6 +413,18 @@
                 align-items: center;
                 justify-content: center;
                 flex-shrink: 0;
+                font-size: 14px;
+                font-weight: 700;
+                color: #FFFFFF;
+                border: none;
+
+                [data-theme='light'] &,
+                :global(html.light) &,
+                :global([data-theme='light']) & {
+                    background: rgba(24, 201, 139, 0.14);
+                    border: none;
+                    color: #047857;
+                }
             }
 
             .skeletonBar {

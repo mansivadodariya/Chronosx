@@ -312,6 +312,18 @@
                     .actAction {
                         color: #047857;
                     }
+
+                    .actIndexBadge {
+                        background: rgba(24, 201, 139, 0.22);
+                    }
+                }
+
+                .actIndexBadge {
+                    background: rgba(24, 201, 139, 0.14);
+                    border: none;
+                    color: #047857;
+                    font-weight: 700;
+                    font-size: 14px;
                 }
 
                 .skeletonBar {
@@ -410,10 +422,7 @@
         }
 
         .modernToolCard {
-            background: 
-                radial-gradient(ellipse 60% 70% at 0% 0%, rgba(24, 201, 139, 0.16) 0%, transparent 70%),
-                radial-gradient(ellipse 60% 70% at 100% 100%, rgba(24, 201, 139, 0.14) 0%, transparent 70%),
-                #EDF8F3;
+            background:#fff;
             border: 1px solid rgba(24, 201, 139, 0.25);
             box-shadow: 0 4px 16px rgba(24, 201, 139, 0.08);
 

@@ -89,7 +89,7 @@ export default React.memo(function AiCockpitIntelDeck({
                   width: hoveredIntelCard === 'score' ? '96%' : '84%',
                   background: hoveredIntelCard === 'score'
                     ? 'linear-gradient(90deg, var(--accent-bullish) 0%, var(--primary-green) 65%, #6EE7B7 100%)'
-                    : 'rgba(255, 255, 255, 0.18)',
+                    : 'linear-gradient(90deg, rgba(16, 185, 129, 0.4) 0%, #10B981 100%)',
                   boxShadow: hoveredIntelCard === 'score' ? '0 0 16px var(--primary-green-glow)' : 'none'
                 }}
                 transition={{ duration: 0.45, ease: "easeOut" }}
@@ -188,15 +188,17 @@ export default React.memo(function AiCockpitIntelDeck({
                   />
                 </g>
               ) : (
-                <g>
+                <g className={styles.sparklineIdleGroup}>
                   <path
+                    className={styles.sparklineIdlePath}
                     d="M 6 46 Q 40 44 80 38 T 130 26"
                     fill="none"
-                    stroke="var(--border-subtle)"
-                    strokeWidth="2"
+                    stroke="var(--primary-green)"
+                    strokeOpacity="0.5"
+                    strokeWidth="2.5"
                     strokeLinecap="round"
                   />
-                  <circle cx="130" cy="26" r="3" fill="var(--text-muted)" />
+                  <circle className={styles.sparklineIdleDot} cx="130" cy="26" r="3.5" fill="var(--primary-green)" />
                 </g>
               )}
             </svg>

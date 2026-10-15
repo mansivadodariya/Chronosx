@@ -38,6 +38,12 @@
                 font-weight: 700;
                 font-family: "Euclid-Bold", "Inter", sans-serif;
                 margin: 0;
+
+                [data-theme='light'] &,
+                :global(html.light) &,
+                :global([data-theme='light']) & {
+                    color: #0F172A;
+                }
             }
 
             .chartTimeframeBadge {
@@ -48,6 +54,14 @@
                 font-weight: 700;
                 padding: 2px 7px;
                 border-radius: 5px;
+
+                [data-theme='light'] &,
+                :global(html.light) &,
+                :global([data-theme='light']) & {
+                    background: #ECFDF5;
+                    border-color: rgba(16, 185, 129, 0.3);
+                    color: #059669;
+                }
             }
         }
 
