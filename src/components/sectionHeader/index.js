@@ -9,6 +9,8 @@ export default function SectionHeader({
   title1,
   title2,
   title,
+  highlight,
+  highlightText,
   breakLine = true,
   description,
   desc,
@@ -44,18 +46,55 @@ export default function SectionHeader({
 
   const renderTitle = () => {
     const Tag = as || asTag || headingTag || 'h2';
+
+    if (title1 || title2) {
+      return (
+        <Tag className={styles.title}>
+          {title1 && <span className={styles.title1}>{title1}</span>}
+          {title1 && title2 && breakLine && <br />}
+          {title1 && title2 && !breakLine && ' '}
+          {title2 && <span className={styles.title2}>{title2}</span>}
+        </Tag>
+      );
+    }
+
+    const resolvedHighlight = highlightText || highlight;
+    if (title && resolvedHighlight) {
+      return (
+        <Tag className={styles.title}>
+          <span className={styles.title1}>{title}</span>
+          {breakLine ? <br /> : ' '}
+          <span className={styles.title2}>{resolvedHighlight}</span>
+        </Tag>
+      );
+    }
+
+    if (typeof title === 'string' && title.trim()) {
+      const words = title.trim().split(/\s+/);
+      if (words.length >= 2) {
+        const midpoint = Math.ceil(words.length / 2);
+        const firstHalf = words.slice(0, midpoint).join(' ');
+        const secondHalf = words.slice(midpoint).join(' ');
+        return (
+          <Tag className={styles.title}>
+            <span className={styles.title1}>{firstHalf}</span>
+            {breakLine ? <br /> : ' '}
+            <span className={styles.title2}>{secondHalf}</span>
+          </Tag>
+        );
+      }
+      return (
+        <Tag className={styles.title}>
+          <span className={styles.title1}>{title}</span>
+        </Tag>
+      );
+    }
+
     if (title) {
       return <Tag className={styles.title}>{title}</Tag>;
     }
 
-    return (
-      <Tag className={styles.title}>
-        {title1 && <span className={styles.title1}>{title1}</span>}
-        {title1 && title2 && breakLine && <br />}
-        {title1 && title2 && !breakLine && ' '}
-        {title2 && <span className={styles.title2}>{title2}</span>}
-      </Tag>
-    );
+    return null;
   };
 
   const renderDescription = () => {

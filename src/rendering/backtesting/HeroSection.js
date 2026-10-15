@@ -98,7 +98,7 @@ export default function HeroSection({ onStartClick }) {
           >
             <span className={styles.titleLine1}>TEST YOUR IDEAS.</span>
             <span className={styles.titleLine2}>
-              <span>TRADE WITH</span>
+              <span className={styles.gradientText}>TRADE WITH</span>
               <span className={styles.candleIconBox}>
                 <CandlesticksIcon className={styles.titleCandleIcon} width={36} height={36} />
               </span>

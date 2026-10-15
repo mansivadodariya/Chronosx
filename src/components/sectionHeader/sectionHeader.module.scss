@@ -114,16 +114,18 @@
     }
 
     .title2 {
-      color: #18C98B;
-      font-weight: 900;
-      background: none;
-      -webkit-background-clip: unset;
-      -webkit-text-fill-color: initial;
-      background-clip: unset;
+      background: linear-gradient(135deg, #18C98B 0%, #34D399 40%, #38BDF8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       display: inline;
+      font-weight: 900;
     }
 
-    :global(html.light) & {
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
       color: #0F172A;
       font-weight: 900;
 
@@ -137,12 +139,12 @@
       }
 
       .title2 {
-        color: #059669;
+        background: linear-gradient(135deg, #18C98B 0%, #34D399 40%, #38BDF8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: inline;
         font-weight: 900;
-        background: none;
-        -webkit-background-clip: unset;
-        -webkit-text-fill-color: #059669;
-        background-clip: unset;
       }
     }
   }

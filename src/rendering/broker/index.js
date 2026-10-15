@@ -119,7 +119,8 @@ export default function BrokerPage({ isPublic = false }) {
                     {/* Left Column */}
                     <div className={styles.heroLeftCol}>
                         <h1 className={styles.heroTitle}>
-                            {t('broker.title', 'Integrated Brokerage & Trading Infrastructure')}
+                            {t('broker.titlePart1', 'Integrated Brokerage &')}{' '}
+                            <span className={styles.gradientText}>{t('broker.titlePart2', 'Trading Infrastructure')}</span>
                         </h1>
 
                         <p className={styles.heroSubtitle}>

@@ -248,3 +248,19 @@ html[data-theme="light"] .apexcharts-menu-item:hover,
   background: #ECFDF5 !important;
   color: #059669;
 }
+
+/* ============================================================
+   CHRONOSX SIGNATURE GRADIENT TEXT UTILITIES
+   Emerald-to-cyan gradient matching White Label Hero
+   ============================================================ */
+.header-gradient-text,
+.gradient-text,
+.text-gradient,
+.title-gradient,
+.gradientText {
+  background: linear-gradient(135deg, #18C98B 0%, #34D399 40%, #38BDF8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline;
+}

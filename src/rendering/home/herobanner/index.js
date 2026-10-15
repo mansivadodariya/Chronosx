@@ -119,11 +119,11 @@ export default function Herobanner() {
               {t('homeSections.hero.titleLine1', 'TRADE SMARTER')}
             </span>
             <span className={styles.titleLine2}>
-              <span>{t('homeSections.hero.titleLine2', 'WITH AI THAT')}</span>
+              <span className={styles.gradientText}>{t('homeSections.hero.titleLine2', 'WITH AI THAT')}</span>
               <span className={styles.candleIconBox}>
                 <CandlesticksIcon className={styles.titleCandleIcon} width={38} height={38} />
               </span>
-              <span>{t('homeSections.hero.titleLine3', 'NEVER SLEEP')}</span>
+              <span className={styles.gradientText}>{t('homeSections.hero.titleLine3', 'NEVER SLEEP')}</span>
             </span>
           </h1>
 

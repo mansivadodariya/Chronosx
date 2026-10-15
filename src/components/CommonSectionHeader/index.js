@@ -25,6 +25,8 @@ export default function CommonSectionHeader({
     badgeIcon = null,
     icon,
     title,
+    title1,
+    title2,
     highlightText,
     emoji,
     subtitle,
@@ -44,6 +46,61 @@ export default function CommonSectionHeader({
         ? icon 
         : (pathname ? PATH_ICON_MAP[pathname] || null : null);
     const HeadingTag = as || asTag || headingTag || 'h2';
+
+    const renderHeadline = () => {
+        if (title1 && title2) {
+            return (
+                <HeadingTag className={styles.headline}>
+                    {title1}{' '}
+                    <span className={styles.highlight}>{title2}</span>
+                    {emoji && <span className={styles.emoji}>{emoji}</span>}
+                </HeadingTag>
+            );
+        }
+
+        if (title && highlightText) {
+            return (
+                <HeadingTag className={styles.headline}>
+                    {title}{' '}
+                    <span className={styles.highlight}>{highlightText}</span>
+                    {emoji && <span className={styles.emoji}>{emoji}</span>}
+                </HeadingTag>
+            );
+        }
+
+        if (typeof title === 'string' && title.trim()) {
+            const words = title.trim().split(/\s+/);
+            if (words.length >= 2) {
+                const midpoint = Math.ceil(words.length / 2);
+                const firstHalf = words.slice(0, midpoint).join(' ');
+                const secondHalf = words.slice(midpoint).join(' ');
+                return (
+                    <HeadingTag className={styles.headline}>
+                        {firstHalf}{' '}
+                        <span className={styles.highlight}>{secondHalf}</span>
+                        {emoji && <span className={styles.emoji}>{emoji}</span>}
+                    </HeadingTag>
+                );
+            }
+            return (
+                <HeadingTag className={styles.headline}>
+                    {title}
+                    {emoji && <span className={styles.emoji}>{emoji}</span>}
+                </HeadingTag>
+            );
+        }
+
+        if (title) {
+            return (
+                <HeadingTag className={styles.headline}>
+                    {title}
+                    {emoji && <span className={styles.emoji}>{emoji}</span>}
+                </HeadingTag>
+            );
+        }
+
+        return null;
+    };
 
     return (
         <div className={`${styles.sectionHeaderCard} ${!isCard ? styles.inlineHeader : ''} ${className}`}>
@@ -78,13 +135,7 @@ export default function CommonSectionHeader({
                     {/* Main Row: Title, Highlight, Subtitle, and Tabs */}
                     <div className={styles.headerMainRow}>
                         <div className={styles.textGroup}>
-                            {title && (
-                                <HeadingTag className={styles.headline}>
-                                    {title}{' '}
-                                    {highlightText && <span className={styles.highlight}>{highlightText}</span>}
-                                    {emoji && <span className={styles.emoji}>{emoji}</span>}
-                                </HeadingTag>
-                            )}
+                            {renderHeadline()}
                             {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
                         </div>
 

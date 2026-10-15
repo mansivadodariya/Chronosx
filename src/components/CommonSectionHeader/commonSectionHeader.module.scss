@@ -73,7 +73,11 @@
             font-weight: 800;
 
             .highlight {
-                color: #059669;
+                background: linear-gradient(135deg, #18C98B 0%, #34D399 40%, #38BDF8 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                display: inline;
             }
         }
 
@@ -274,7 +278,11 @@
     }
 
     .highlight {
-        color: #18C98B;
+        background: linear-gradient(135deg, #18C98B 0%, #34D399 40%, #38BDF8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: inline;
     }
 
     .emoji {
