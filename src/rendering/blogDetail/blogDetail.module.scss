@@ -1,5 +1,6 @@
 @use '../../scss/main.scss' as *;
 @use '../../scss/breakpoints/breakpoints.scss' as *;
+@use './styles/blogDetailLight.scss' as *;
 
 .detailWrapper {
     padding: 120px 24px 80px;
@@ -11,10 +12,7 @@
     font-family: "Euclid-Regular", sans-serif;
     box-sizing: border-box;
 
-    :global(html.light) & {
-        background: #F8FAFC;
-        color: #0F172A;
-    }
+    @include blog-detail-light-theme;
 
     @include respond-to('lg') {
         padding: 110px 20px 70px;
@@ -733,60 +731,4 @@
             border-color: #18C98B;
         }
     }
-}
-
-:global(html.light) .detailWrapper {
-    background: #F8FAFC;
-    color: #0F172A;
-
-    .articleHeader {
-        h1 {
-            color: #0F172A;
-        }
-    }
-
-    .articleBody {
-        color: #334155;
-
-        h2,
-        h3,
-        h4 {
-            color: #0F172A;
-        }
-
-        p {
-            color: #334155;
-        }
-
-        blockquote {
-            background: #F1F5F9;
-            border-left-color: #10B981;
-            color: #1E293B;
-        }
-    }
-
-    .shareBox,
-    .authorCard,
-    .relatedSection {
-        background: #FFFFFF;
-        border-color: rgba(24, 201, 139, 0.28);
-        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
-
-        h3,
-        h4 {
-            color: #0F172A;
-        }
-    }
-
-    .bottomNav {
-        .navBtn {
-            background: #FFFFFF;
-            border-color: rgba(24, 201, 139, 0.35);
-            color: #047857;
-
-            &:hover {
-                background: rgba(24, 201, 139, 0.08);
-            }
-        }
-    }
-}
+}
