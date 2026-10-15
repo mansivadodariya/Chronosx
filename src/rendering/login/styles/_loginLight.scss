@@ -116,51 +116,37 @@
         // Auth input fields light grey background like design
         :global(.inputWrapper),
         [class*="inputWrapper"] {
-            background: #F1F5F9 !important;
-            border: 1px solid transparent !important;
-            border-radius: 10px !important;
+            background: #F1F5F9;
+            border: 1px solid transparent;
+            border-radius: 10px;
 
             &:focus-within {
-                background: #F1F5F9 !important;
-                border-color: #10B981 !important;
-                box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
+                background: #F1F5F9;
+                border-color: #10B981;
+                box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
             }
 
             input {
-                background: transparent !important;
-                background-color: transparent !important;
-                color: #0F172A !important;
+                background: transparent;
+                background-color: transparent;
+                color: #0F172A;
 
                 &::placeholder {
-                    color: #94A3B8 !important;
-                }
-
-                &:-webkit-autofill,
-                &:-webkit-autofill:hover,
-                &:-webkit-autofill:focus,
-                &:-webkit-autofill:active,
-                &:autofill,
-                &:autofill:hover,
-                &:autofill:focus,
-                &:autofill:active {
-                    -webkit-box-shadow: 0 0 0 1000px #F1F5F9 inset !important;
-                    box-shadow: 0 0 0 1000px #F1F5F9 inset !important;
-                    -webkit-text-fill-color: #0F172A !important;
-                    color: #0F172A !important;
+                    color: #94A3B8;
                 }
             }
 
             :global(.iconLeft),
             [class*="iconLeft"] {
-                color: #059669 !important;
+                color: #059669;
             }
 
             :global(.eyeBtn),
             [class*="eyeBtn"] {
-                color: #059669 !important;
+                color: #059669;
 
                 &:hover {
-                    color: #10B981 !important;
+                    color: #10B981;
                 }
             }
         }

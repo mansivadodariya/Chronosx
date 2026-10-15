@@ -30,9 +30,9 @@ html[data-theme='light'] [class*="inputWrapper"] {
 
 html.light [class*="inputWrapper"] input,
 html[data-theme='light'] [class*="inputWrapper"] input {
-  background: transparent !important;
-  background-color: transparent !important;
-  color: #0F172A !important;
+  background: transparent;
+  background-color: transparent;
+  color: #0F172A;
 }
 
 /* Custom Pointer / Futuristic Cursor Global Rules */

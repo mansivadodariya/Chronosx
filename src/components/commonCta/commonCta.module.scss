@@ -162,18 +162,18 @@
     background: #F8FAFC;
 
     .bannerCardFull {
-        background: radial-gradient(120% 120% at 50% 0%, #F0FDF4 0%, #F8FAFC 55%, #FFFFFF 100%) !important;
-        border-top: 1px solid rgba(24, 201, 139, 0.4) !important;
-        border-bottom: 1px solid rgba(24, 201, 139, 0.15) !important;
-        box-shadow: 0 20px 60px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(24, 201, 139, 0.4) !important;
+        background: radial-gradient(120% 120% at 50% 0%, #F0FDF4 0%, #F8FAFC 55%, #FFFFFF 100%);
+        border-top: 1px solid rgba(24, 201, 139, 0.4);
+        border-bottom: 1px solid rgba(24, 201, 139, 0.15);
+        box-shadow: 0 20px 60px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(24, 201, 139, 0.4);
 
         .cardShimmerTop {
-            display: block !important;
-            background: linear-gradient(90deg, transparent 0%, rgba(24, 201, 139, 0.85) 50%, transparent 100%) !important;
+            display: block;
+            background: linear-gradient(90deg, transparent 0%, rgba(24, 201, 139, 0.85) 50%, transparent 100%);
         }
 
         .pointerGlow {
-            display: block !important;
+            display: block;
             mix-blend-mode: multiply;
         }
 

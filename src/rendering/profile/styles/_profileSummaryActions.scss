@@ -333,27 +333,27 @@
     :global(html.light) &,
     :global([data-theme='light']) &,
     :global(html[data-theme='light']) & {
-        background: #F8FAFC !important;
-        border: 1px solid rgba(15, 23, 42, 0.08) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+        background: #F8FAFC;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 
         .securityPriorityLeft {
             .secShieldIcon {
-                background: #ECFDF5 !important;
-                border-color: #A7F3D0 !important;
+                background: #ECFDF5;
+                border-color: #A7F3D0;
 
                 svg {
-                    stroke: #059669 !important;
+                    stroke: #059669;
                 }
             }
 
             .secPriorityTexts {
                 h5 {
-                    color: #0F172A !important;
+                    color: #0F172A;
                 }
 
                 p {
-                    color: #64748B !important;
+                    color: #64748B;
                 }
             }
         }

@@ -53,9 +53,9 @@ select:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 1000px #071a13 inset !important;
   box-shadow: 0 0 0 1000px #071a13 inset !important;
   -webkit-text-fill-color: #ffffff !important;
-  color: #ffffff !important;
-  caret-color: #18c98b !important;
-  transition: background-color 9999999s ease-in-out 0s, color 9999999s ease-in-out 0s !important;
+  color: #ffffff;
+  caret-color: #18c98b;
+  transition: background-color 9999999s ease-in-out 0s, color 9999999s ease-in-out 0s;
 }
 
 /* Global autofill reset for Light Theme */
@@ -71,6 +71,10 @@ html.light textarea:-webkit-autofill,
 html.light textarea:-webkit-autofill:hover,
 html.light textarea:-webkit-autofill:focus,
 html.light textarea:-webkit-autofill:active,
+html.light select:-webkit-autofill,
+html.light select:-webkit-autofill:hover,
+html.light select:-webkit-autofill:focus,
+html.light select:-webkit-autofill:active,
 html[data-theme='light'] input:-webkit-autofill,
 html[data-theme='light'] input:-webkit-autofill:hover,
 html[data-theme='light'] input:-webkit-autofill:focus,
@@ -82,7 +86,7 @@ html[data-theme='light'] input:autofill:active {
   -webkit-box-shadow: 0 0 0 1000px #f1f5f9 inset !important;
   box-shadow: 0 0 0 1000px #f1f5f9 inset !important;
   -webkit-text-fill-color: #0f172a !important;
-  color: #0f172a !important;
-  caret-color: #059669 !important;
-  transition: background-color 9999999s ease-in-out 0s, color 9999999s ease-in-out 0s !important;
+  color: #0f172a;
+  caret-color: #059669;
+  transition: background-color 9999999s ease-in-out 0s, color 9999999s ease-in-out 0s;
 }

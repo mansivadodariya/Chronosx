@@ -11,43 +11,43 @@
   :global(html.light) &,
   :global(html[data-theme='light']) &,
   :global([data-theme='light']) & {
-    background: #FFFFFF !important;
+    background: #FFFFFF;
     border-bottom: 1px solid rgba(24, 201, 139, 0.15);
 
     .bentoCard,
     .rightContent .bentoGrid .bentoCard {
-      background: #FFFFFF !important;
-      border: 1px solid rgba(24, 201, 139, 0.28) !important;
-      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
+      background: #FFFFFF;
+      border: 1px solid rgba(24, 201, 139, 0.28);
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
 
       &:hover {
-        background: #FFFFFF !important;
-        border-color: #18C98B !important;
-        box-shadow: 0 8px 25px rgba(24, 201, 139, 0.16) !important;
+        background: #FFFFFF;
+        border-color: #18C98B;
+        box-shadow: 0 8px 25px rgba(24, 201, 139, 0.16);
       }
 
       .iconBox {
-        background: #ECFDF5 !important;
-        border: 1px solid rgba(24, 201, 139, 0.35) !important;
-        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08) !important;
+        background: #ECFDF5;
+        border: 1px solid rgba(24, 201, 139, 0.35);
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
       }
 
       .bentoTitle {
-        color: #0F172A !important;
+        color: #0F172A;
         font-weight: 800;
         font-family: "Euclid-Bold", "Euclid Circular A", var(--font-plus-jakarta), sans-serif;
       }
 
       .bentoDesc {
-        color: #475569 !important;
+        color: #475569;
         font-weight: 500;
         font-size: 13px;
       }
 
       .statPill {
-        background: rgba(5, 150, 105, 0.1) !important;
-        border: 1px solid rgba(5, 150, 105, 0.35) !important;
-        color: #059669 !important;
+        background: rgba(5, 150, 105, 0.1);
+        border: 1px solid rgba(5, 150, 105, 0.35);
+        color: #059669;
         font-weight: 800;
         padding: 3px 8px;
         border-radius: 6px;
@@ -56,14 +56,14 @@
 
     .trustBanner,
     .rightContent .trustBanner {
-      background: #FFFFFF !important;
-      border: 1px solid rgba(24, 201, 139, 0.3) !important;
-      box-shadow: 0 4px 24px rgba(15, 23, 42, 0.05) !important;
+      background: #FFFFFF;
+      border: 1px solid rgba(24, 201, 139, 0.3);
+      box-shadow: 0 4px 24px rgba(15, 23, 42, 0.05);
 
       .verifiedTag {
-        color: #059669 !important;
-        background: rgba(5, 150, 105, 0.1) !important;
-        border: 1px solid rgba(5, 150, 105, 0.35) !important;
+        color: #059669;
+        background: rgba(5, 150, 105, 0.1);
+        border: 1px solid rgba(5, 150, 105, 0.35);
         border-radius: 999px;
         padding: 3px 10px;
         display: inline-block;
@@ -72,39 +72,39 @@
       }
 
       h4 {
-        color: #0F172A !important;
+        color: #0F172A;
         font-weight: 800;
         font-family: "Euclid-Bold", "Euclid Circular A", var(--font-plus-jakarta), sans-serif;
       }
 
       p {
-        color: #475569 !important;
+        color: #475569;
         font-weight: 500;
         line-height: 1.55;
 
         strong {
-          color: #0F172A !important;
+          color: #0F172A;
           font-weight: 700;
         }
       }
 
       .shieldVisual {
         .constellationLines {
-          stroke: #059669 !important;
+          stroke: #059669;
           stroke-opacity: 0.45;
         }
 
         .constellationDots circle {
-          fill: #10B981 !important;
+          fill: #10B981;
         }
 
         .shieldBody {
-          fill: #ECFDF5 !important;
-          stroke: #059669 !important;
+          fill: #ECFDF5;
+          stroke: #059669;
         }
 
         .shieldCheck {
-          stroke: #047857 !important;
+          stroke: #047857;
         }
 
         .shieldGlowGroup {
