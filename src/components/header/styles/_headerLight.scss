@@ -65,49 +65,52 @@
     }
 }
 
-:global(html.light) .header,
-:global(html[data-theme='light']) .header,
-:global([data-theme='light']) .header,
+:global(html.light) .headerAlignment .menu ul li.dropdownParent .dropdownMenu,
+:global(html[data-theme='light']) .headerAlignment .menu ul li.dropdownParent .dropdownMenu,
+:global([data-theme='light']) .headerAlignment .menu ul li.dropdownParent .dropdownMenu,
 :global(html.light) .dropdownMenu,
 :global(html[data-theme='light']) .dropdownMenu,
 :global([data-theme='light']) .dropdownMenu {
-    .headerInner .nav .navUl li.dropdownParent .dropdownMenu,
-    &.dropdownMenu {
-        background: transparent;
-        border: none;
-        box-shadow: none;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 20px;
+
+    .dropdownCard {
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 23, 42, 0.09);
         border-radius: 20px;
+        box-shadow: 0 20px 45px -8px rgba(15, 23, 42, 0.12), 0 4px 16px rgba(15, 23, 42, 0.04);
+        backdrop-filter: blur(28px);
+        -webkit-backdrop-filter: blur(28px);
+        overflow: hidden;
 
-        .dropdownCard {
-            background: #FFFFFF;
-            border: 1px solid rgba(15, 23, 42, 0.1);
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12), 0 4px 15px rgba(15, 23, 42, 0.05);
-            overflow: hidden;
+        .dropdownHeaderTag {
+            color: #047857;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+            font-weight: 800;
+        }
 
-            .dropdownHeaderTag {
-                color: #047857;
-                border-bottom-color: rgba(15, 23, 42, 0.08);
-                font-weight: 800;
-            }
-
+        .dropdownGrid {
             .dropdownItem {
                 background: transparent;
+                border: 1px solid transparent;
 
                 &:hover {
-                    background: rgba(24, 201, 139, 0.08);
+                    background: #F0FDF4;
+                    border-color: rgba(24, 201, 139, 0.25);
 
                     .itemIconBox {
                         background: transparent;
                         border: none;
                         border-color: transparent;
-                        color: #047857;
+                        color: #059669;
                         transform: scale(1.12);
-                        filter: drop-shadow(0 0 6px rgba(24, 201, 139, 0.4));
+                        filter: drop-shadow(0 0 6px rgba(5, 150, 105, 0.3));
                     }
 
-                    .itemTitle {
-                        color: #047857;
+                    .itemContent .itemTitleRow .itemTitle {
+                        color: #059669;
                     }
                 }
 
@@ -118,30 +121,41 @@
                     color: #0F172A;
                 }
 
-                .itemTitle {
-                    color: #0F172A;
-                    font-weight: 700;
-                }
+                .itemContent {
+                    .itemTitleRow {
+                        .itemTitle {
+                            color: #0F172A;
+                            font-weight: 700;
+                        }
 
-                .itemDesc {
-                    color: #475569;
-                }
+                        .itemBadge {
+                            background: #ECFDF5;
+                            border-color: #A7F3D0;
+                            color: #047857;
 
-                .itemBadge {
-                    background: rgba(24, 201, 139, 0.12);
-                    border-color: rgba(24, 201, 139, 0.35);
-                    color: #047857;
+                            &.comingSoonBadge {
+                                background: #ECFDF5;
+                                border-color: #A7F3D0;
+                                color: #047857;
+                                box-shadow: none;
+                            }
+                        }
+                    }
+
+                    .itemDesc {
+                        color: #475569;
+                    }
                 }
             }
+        }
 
-            .dropdownFooter {
-                border-top-color: rgba(15, 23, 42, 0.08);
-                color: #64748B;
+        .dropdownFooter {
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
+            color: #64748B;
 
-                .footerGlowDot {
-                    background: #10B981;
-                    box-shadow: 0 0 6px #10B981;
-                }
+            .footerGlowDot {
+                background: #10B981;
+                box-shadow: 0 0 6px #10B981;
             }
         }
     }
