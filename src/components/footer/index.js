@@ -169,7 +169,15 @@ export default function Footer() {
           <p>{t('footer.copyright', '© 2026 ChronosX Financial Technologies FZ-LLC. All rights reserved.')}</p>
 
           <div className={styles.allsociallinks}>
-            {socialLinks.map((item, index) => {
+            {socialLinks
+              .filter((item) => {
+                const p = String(item?.platform || '').toLowerCase().trim();
+                const h = String(item?.href || '').toLowerCase().trim();
+                if (!p || ['email', 'contact_email', 'support_email', 'phone', 'contact_phone', 'tel', 'address', 'contact_address', 'office_address', 'location'].includes(p)) return false;
+                if (h.startsWith('mailto:') || h.startsWith('tel:')) return false;
+                return true;
+              })
+              .map((item, index) => {
               const brandColor = theme === 'light'
                 ? (item.lightColor || item.brandColor)
                 : (item.darkColor || item.brandColor);

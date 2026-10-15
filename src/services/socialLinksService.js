@@ -82,25 +82,37 @@ export const DEFAULT_SOCIAL_LINKS = [
     { ...SOCIAL_PLATFORM_META.discord, href: SOCIAL_PLATFORM_META.discord.defaultUrl },
 ];
 
+export const NON_SOCIAL_PLATFORMS = new Set([
+    'email',
+    'contact_email',
+    'support_email',
+    'phone',
+    'contact_phone',
+    'tel',
+    'address',
+    'contact_address',
+    'office_address',
+    'location',
+]);
+
 function mapDatabaseRowsToSocialLinks(rows) {
     if (!Array.isArray(rows) || rows.length === 0) {
         return DEFAULT_SOCIAL_LINKS;
     }
 
     const mapped = rows
-        .filter((row) => row && row.is_active !== false)
+        .filter((row) => {
+            if (!row || row.is_active === false) return false;
+            const key = String(row.platform || '').trim().toLowerCase();
+            if (!key || NON_SOCIAL_PLATFORMS.has(key)) return false;
+            const url = String(row.url || '').trim().toLowerCase();
+            if (url.startsWith('mailto:') || url.startsWith('tel:')) return false;
+            // Only allow valid social platforms
+            return Boolean(SOCIAL_PLATFORM_META[key]);
+        })
         .map((row) => {
             const key = String(row.platform || '').trim().toLowerCase();
-            const meta = SOCIAL_PLATFORM_META[key] || {
-                platform: key,
-                label: row.label || key,
-                icon: '/assets/icons/twitter.svg',
-                brandColor: '#10B981',
-                darkColor: '#10B981',
-                lightColor: '#10B981',
-                hoverBg: 'rgba(16, 185, 129, 0.12)',
-                glow: 'rgba(16, 185, 129, 0.4)',
-            };
+            const meta = SOCIAL_PLATFORM_META[key];
 
             return {
                 ...meta,
@@ -120,6 +132,7 @@ export async function fetchActiveSocialLinks() {
             .from('social_links')
             .select('platform, label, url, is_active, sort_order')
             .eq('is_active', true)
+            .not('platform', 'in', '("email","contact_email","support_email","phone","contact_phone","tel","address","contact_address","office_address","location")')
             .order('sort_order', { ascending: true });
 
         if (error || !data || data.length === 0) {
