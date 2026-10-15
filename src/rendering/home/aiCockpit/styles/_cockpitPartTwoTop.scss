@@ -147,6 +147,13 @@
               @include respond-to("sm") {
                 font-size: 18px;
               }
+
+              :global(html.light) &,
+              :global(html[data-theme='light']) &,
+              :global([data-theme='light']) &,
+              :global(.light) & {
+                color: #0F172A;
+              }
             }
 
             .liveStatusPill {
@@ -162,6 +169,13 @@
               letter-spacing: 0.6px;
               padding: 0;
 
+              :global(html.light) &,
+              :global(html[data-theme='light']) &,
+              :global([data-theme='light']) &,
+              :global(.light) & {
+                color: #047857;
+              }
+
               .liveGreenBeacon {
                 width: 5px;
                 height: 5px;
@@ -169,6 +183,14 @@
                 background: #34D399;
                 box-shadow: 0 0 6px #34D399;
                 animation: pulseDot 1.5s infinite;
+
+                :global(html.light) &,
+                :global(html[data-theme='light']) &,
+                :global([data-theme='light']) &,
+                :global(.light) & {
+                  background: #059669;
+                  box-shadow: 0 0 6px #059669;
+                }
               }
             }
           }
@@ -183,6 +205,13 @@
 
             @include respond-to("sm") {
               font-size: 11px;
+            }
+
+            :global(html.light) &,
+            :global(html[data-theme='light']) &,
+            :global([data-theme='light']) &,
+            :global(.light) & {
+              color: #475569;
             }
           }
         }

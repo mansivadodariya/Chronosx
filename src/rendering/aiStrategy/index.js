@@ -34,6 +34,7 @@ import LiveAnalysisView from './components/LiveAnalysisView';
 import StrategyExecutionView from './components/StrategyExecutionView';
 import StrategyCategoryTabs from './components/StrategyCategoryTabs';
 import { useAiStrategyStore } from '@/context/toolState';
+import { fetchChartStrategies } from '@/services/chartStrategiesService';
 
 export default function AiStrategy({ initialTab = 'live' }) {
     const { t } = useLanguage();
@@ -87,90 +88,18 @@ export default function AiStrategy({ initialTab = 'live' }) {
     const [strategies, setStrategies] = useState([]);
 
     useEffect(() => {
-        async function fetchStrategies() {
-            try {
-                const getBackendBase = () => {
-                    if (process.env.NEXT_PUBLIC_BACKEND_URL) {
-                        return process.env.NEXT_PUBLIC_BACKEND_URL.replace(/\/+$/, '');
-                    }
-                    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || process.env.NEXT_PUBLIC_WS_LIVE_URL;
-                    if (wsUrl) {
-                        try {
-                            const parsed = new URL(wsUrl);
-                            const proto = parsed.protocol === 'wss:' ? 'https:' : 'http:';
-                            return `${proto}//${parsed.host}`;
-                        } catch (_) {}
-                    }
-                    return '';
-                };
-
-                const getWsHttpBase = () => {
-                    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || process.env.NEXT_PUBLIC_WS_LIVE_URL;
-                    if (wsUrl) {
-                        try {
-                            const parsed = new URL(wsUrl);
-                            const proto = parsed.protocol === 'wss:' ? 'https:' : 'http:';
-                            return `${proto}//${parsed.host}`;
-                        } catch (_) {}
-                    }
-                    return null;
-                };
-
-                const primaryBase = getBackendBase();
-                const fallbackBase = getWsHttpBase() || primaryBase;
-                let res;
-                try {
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 4000);
-                    res = await fetch(`${primaryBase}/api/v1/chart/strategies`, {
-                        signal: controller.signal,
-                        headers: { 
-                            'accept': 'application/json',
-                            'ngrok-skip-browser-warning': 'true'
-                        }
-                    });
-                    clearTimeout(timeoutId);
-                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                } catch (e) {
-                    try {
-                        res = await fetch('/api/v1/chart/strategies');
-                        if (!res.ok) throw new Error('Proxy failed');
-                    } catch (err2) {
-                        res = await fetch(`${fallbackBase}/api/v1/chart/strategies`, {
-                            headers: { 
-                                'accept': 'application/json',
-                                'ngrok-skip-browser-warning': 'true'
-                            }
-                        });
-                    }
-                }
-
-                if (!res.ok) throw new Error('Failed to fetch strategies');
-                const data = await res.json();
-                const list = Array.isArray(data) ? data : (data.strategies || data.data || []);
-                const pullbackList = list.filter(st => {
-                    const text = `${st.name || ''} ${st.title || ''} ${st.strategy_name || ''} ${st.description || ''}`.toLowerCase();
-                    return (text.includes('pullback') || text.includes('ema pullback')) && !text.includes('eurusd');
-                });
-                const effectiveList = pullbackList.length > 0 ? pullbackList : [
-                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback', description: 'Trend Following EMA Pullback' }
-                ];
-                setStrategies(effectiveList);
-                if (!selectedStrategyId && effectiveList.length > 0) {
-                    setSelectedStrategyId(effectiveList[0].id || effectiveList[0].strategy_id);
-                }
-            } catch (err) {
-                const fallbackList = [
-                    { id: '3e8d2b78-0e86-4fdf-9759-338276db1742', name: 'EMA Pullback', description: 'Trend Following EMA Pullback' }
-                ];
-                setStrategies(fallbackList);
-                if (!selectedStrategyId) {
-                    setSelectedStrategyId(fallbackList[0].id);
-                }
+        let isCancelled = false;
+        async function loadStrategies() {
+            const list = await fetchChartStrategies();
+            if (isCancelled) return;
+            setStrategies(list);
+            if (!selectedStrategyId && list.length > 0) {
+                setSelectedStrategyId(list[0].id || list[0].strategy_id);
             }
         }
-        fetchStrategies();
-    }, []);
+        loadStrategies();
+        return () => { isCancelled = true; };
+    }, [selectedStrategyId, setSelectedStrategyId]);
 
     useEffect(() => {
         setMounted(true);

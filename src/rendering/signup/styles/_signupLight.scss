@@ -63,31 +63,31 @@
 
                 &:hover,
                 &.activePill {
-                    background: #FFFFFF;
+                    background: #064E3B;
                     border: 1.5px solid #10B981;
-                    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.22), 0 2px 8px rgba(15, 23, 42, 0.06);
+                    box-shadow: 0 10px 25px rgba(6, 78, 59, 0.4), 0 2px 8px rgba(16, 185, 129, 0.2);
                     transform: translateY(-2px) scale(1.015);
 
                     .featureIconBox {
-                        background: rgba(24, 201, 139, 0.2);
-                        border-color: #059669;
-                        color: #047857;
-                        box-shadow: 0 0 10px rgba(24, 201, 139, 0.25);
+                        background: rgba(24, 201, 139, 0.25);
+                        border-color: #10B981;
+                        color: #6EE7B7;
+                        box-shadow: 0 0 10px rgba(24, 201, 139, 0.3);
                     }
 
                     .featurePillText {
-                        color: #0F172A;
+                        color: #FFFFFF;
                         font-weight: 700;
                     }
 
                     .featurePillDesc {
-                        color: #334155;
+                        color: #D1FAE5;
                     }
 
                     .featureBadge {
-                        background: #059669;
-                        border-color: #059669;
-                        color: #FFFFFF;
+                        background: #10B981;
+                        border-color: #10B981;
+                        color: #064E3B;
                     }
                 }
             }

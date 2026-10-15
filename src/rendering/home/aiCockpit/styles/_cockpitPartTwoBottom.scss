@@ -3,8 +3,6 @@
 
   .partTwoCockpit {
 
-
-
     .cardsPairGrid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -125,6 +123,13 @@
               font-weight: 700;
               margin: 0;
               letter-spacing: -0.2px;
+
+              :global(html.light) &,
+              :global(html[data-theme='light']) &,
+              :global([data-theme='light']) &,
+              :global(.light) & {
+                color: #0F172A;
+              }
             }
 
             .cardSub {
@@ -183,6 +188,13 @@
               display: inline-block;
               transition: all 0.3s ease;
 
+              :global(html.light) &,
+              :global(html[data-theme='light']) &,
+              :global([data-theme='light']) &,
+              :global(.light) & {
+                color: #0F172A;
+              }
+
               @include respond-to("sm") {
                 font-size: 18px;
               }
@@ -191,6 +203,14 @@
                 color: #34D399;
                 text-shadow: 0 0 16px rgba(52, 211, 153, 0.65);
                 transform: scale(1.02);
+
+                :global(html.light) &,
+                :global(html[data-theme='light']) &,
+                :global([data-theme='light']) &,
+                :global(.light) & {
+                  color: #059669;
+                  text-shadow: none;
+                }
               }
             }
 
@@ -201,6 +221,13 @@
               color: #34D399;
               letter-spacing: 0.4px;
               white-space: nowrap;
+
+              :global(html.light) &,
+              :global(html[data-theme='light']) &,
+              :global([data-theme='light']) &,
+              :global(.light) & {
+                color: #047857;
+              }
 
               @include respond-to("sm") {
                 font-size: 10px;
@@ -215,6 +242,13 @@
             line-height: 1.4;
             margin: 0;
             letter-spacing: 0.1px;
+
+            :global(html.light) &,
+            :global(html[data-theme='light']) &,
+            :global([data-theme='light']) &,
+            :global(.light) & {
+              color: #475569;
+            }
 
             @include respond-to("sm") {
               font-size: 10px;
@@ -296,6 +330,13 @@
               display: inline-block;
               transition: all 0.3s ease;
 
+              :global(html.light) &,
+              :global(html[data-theme='light']) &,
+              :global([data-theme='light']) &,
+              :global(.light) & {
+                color: #047857;
+              }
+
               @include respond-to("sm") {
                 font-size: 18px;
               }
@@ -304,6 +345,14 @@
                 color: #A7F3D0;
                 text-shadow: 0 0 16px rgba(110, 231, 183, 0.75);
                 transform: scale(1.02);
+
+                :global(html.light) &,
+                :global(html[data-theme='light']) &,
+                :global([data-theme='light']) &,
+                :global(.light) & {
+                  color: #047857;
+                  text-shadow: none;
+                }
               }
             }
 
@@ -314,6 +363,13 @@
               color: #6EE7B7;
               letter-spacing: 0.4px;
               white-space: nowrap;
+
+              :global(html.light) &,
+              :global(html[data-theme='light']) &,
+              :global([data-theme='light']) &,
+              :global(.light) & {
+                color: #047857;
+              }
 
               @include respond-to("sm") {
                 font-size: 10px;
@@ -328,6 +384,13 @@
             line-height: 1.4;
             margin: 0;
             letter-spacing: 0.1px;
+
+            :global(html.light) &,
+            :global(html[data-theme='light']) &,
+            :global([data-theme='light']) &,
+            :global(.light) & {
+              color: #475569;
+            }
 
             @include respond-to("sm") {
               font-size: 10px;
@@ -474,6 +537,13 @@
           overflow: hidden;
           text-overflow: ellipsis;
 
+          :global(html.light) &,
+          :global(html[data-theme='light']) &,
+          :global([data-theme='light']) &,
+          :global(.light) & {
+            color: #0F172A;
+          }
+
           @include respond-to("sm") {
             font-size: 13.5px;
           }
@@ -514,8 +584,6 @@
         }
       }
     }
-
-
 
     .cockpitFooterBar {
       display: flex;
@@ -587,20 +655,6 @@
   :global([data-theme='light']) & {
     background: #F8FAFC;
 
-    .sectionHeader {
-      h2 {
-        color: #0F172A;
-      }
-
-      p {
-        color: #475569;
-      }
-    }
-
-    .cockpitCard,
-    .metricCard,
-    .signalCard,
-    .terminalCard,
     .intelCard {
       background: #FFFFFF;
       border: 1px solid #E2E8F0;
@@ -614,41 +668,6 @@
         background: #FFFFFF;
         border-color: rgba(16, 185, 129, 0.45);
         box-shadow: 0 8px 26px rgba(16, 185, 129, 0.12);
-      }
-
-      .structureHeadline {
-        color: #0F172A;
-
-        &.scoreActiveText {
-          color: #059669;
-          text-shadow: none;
-        }
-      }
-
-      .orderFlowHeadline {
-        color: #047857;
-
-        &.rankActiveText {
-          color: #059669;
-          text-shadow: none;
-        }
-      }
-
-      .structureDetailText,
-      .orderFlowDetailText {
-        color: #64748B;
-      }
-
-      .sliderRangeHeader {
-        color: #64748B;
-
-        span {
-          color: #64748B;
-        }
-
-        .rangeCenterText {
-          color: #475569;
-        }
       }
 
       .sliderTrack {
