@@ -101,13 +101,13 @@ export default function PublicAffiliateView() {
 
         {/* 8. FAQ */}
         <FaqSection />
-
-        {/* 9. FINAL CTA */}
-        <FinalCta
-          onJoinClick={handleJoinClick}
-          onTiersClick={scrollToTiers}
-        />
       </div>
+
+      {/* 9. FINAL CTA (Common CTA) */}
+      <FinalCta
+        onJoinClick={handleJoinClick}
+        onTiersClick={scrollToTiers}
+      />
     </div>
   );
 }
