@@ -7,6 +7,7 @@ import PhoneInputLib from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { useLanguage } from '@/context/LanguageContext';
 import { supabase } from '@/lib/supabaseClient';
+import { useContactInfo } from '@/services/contactInfoService';
 import CommonCta from '@/components/commonCta';
 import styles from './contactUs.module.scss';
 
@@ -75,6 +76,7 @@ const FAQS = [
 
 export default function ContactUs() {
     const { t } = useLanguage();
+    const { contactInfo } = useContactInfo();
     // Form State (Exact 5 fields requested: Full name, Email, Country, Phone, Message)
     const [formData, setFormData] = useState({
         name: '',
@@ -294,16 +296,16 @@ export default function ContactUs() {
                                             </svg>
                                         </div>
                                         <div className={styles.infoContent}>
-                                            <span className={styles.infoLabel}>{t('contactUs.labelEmail', 'EMAIL')}</span>
-                                            <a href="mailto:support@chronosx.com" className={styles.infoValue}>
-                                                support@chronosx.com
+                                            <span className={styles.infoLabel}>{contactInfo?.email?.label || t('contactUs.labelEmail', 'EMAIL')}</span>
+                                            <a href={`mailto:${contactInfo?.email?.value || 'support@chronosx.com'}`} className={styles.infoValue}>
+                                                {contactInfo?.email?.value || 'support@chronosx.com'}
                                             </a>
-                                            <span className={styles.infoHelper}>{t('contactUs.emailHelper', 'Average response time: < 15 mins')}</span>
+                                            <span className={styles.infoHelper}>{contactInfo?.email?.helper || t('contactUs.emailHelper', 'Average response time: < 15 mins')}</span>
                                         </div>
                                         <button
                                             type="button"
                                             className={styles.itemCopyBtn}
-                                            onClick={() => handleCopy('support@chronosx.com', 'Email')}
+                                            onClick={() => handleCopy(contactInfo?.email?.value || 'support@chronosx.com', 'Email')}
                                             title="Copy email"
                                             aria-label="Copy Email"
                                         >
@@ -328,16 +330,16 @@ export default function ContactUs() {
                                             </svg>
                                         </div>
                                         <div className={styles.infoContent}>
-                                            <span className={styles.infoLabel}>{t('contactUs.labelPhone', 'CONTACT NUMBER')}</span>
-                                            <a href="tel:+971568840900" className={styles.infoValue}>
-                                                +971 56 884 0900
+                                            <span className={styles.infoLabel}>{contactInfo?.phone?.label || t('contactUs.labelPhone', 'PHONE')}</span>
+                                            <a href={`tel:${(contactInfo?.phone?.value || '+971 56 884 0900').replace(/[^+\d]/g, '')}`} className={styles.infoValue}>
+                                                {contactInfo?.phone?.value || '+971 56 884 0900'}
                                             </a>
-                                            <span className={styles.infoHelper}>{t('contactUs.phoneHelper', 'WhatsApp & Phone Support (24/7)')}</span>
+                                            <span className={styles.infoHelper}>{contactInfo?.phone?.helper || t('contactUs.phoneHelper', 'WhatsApp & Phone Support (24/7)')}</span>
                                         </div>
                                         <button
                                             type="button"
                                             className={styles.itemCopyBtn}
-                                            onClick={() => handleCopy('+971568840900', 'Phone Number')}
+                                            onClick={() => handleCopy(contactInfo?.phone?.value || '+971568840900', 'Phone Number')}
                                             title="Copy phone number"
                                             aria-label="Copy Phone Number"
                                         >
@@ -363,12 +365,30 @@ export default function ContactUs() {
                                             </svg>
                                         </div>
                                         <div className={styles.infoContent}>
-                                            <span className={styles.infoLabel}>{t('contactUs.labelAddress', 'OFFICE ADDRESS')}</span>
+                                            <span className={styles.infoLabel}>{contactInfo?.address?.label || t('contactUs.labelAddress', 'OFFICE ADDRESS')}</span>
                                             <p className={styles.addressValue}>
-                                                Dubai, UAE
+                                                {contactInfo?.address?.value || 'Dubai, UAE'}
                                             </p>
-                                            <span className={styles.infoHelper}>{t('contactUs.addressHelper', 'Global Financial Intelligence Centre')}</span>
+                                            <span className={styles.infoHelper}>{contactInfo?.address?.helper || t('contactUs.addressHelper', 'Global Financial Intelligence Centre')}</span>
                                         </div>
+                                        <button
+                                            type="button"
+                                            className={styles.itemCopyBtn}
+                                            onClick={() => handleCopy(contactInfo?.address?.value || 'Dubai, UAE', 'Office Address')}
+                                            title="Copy office address"
+                                            aria-label="Copy Office Address"
+                                        >
+                                            {copiedField === 'Office Address' ? (
+                                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2.5">
+                                                    <polyline points="20 6 9 17 4 12" />
+                                                </svg>
+                                            ) : (
+                                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                                </svg>
+                                            )}
+                                        </button>
                                     </div>
                                 </div>
 
