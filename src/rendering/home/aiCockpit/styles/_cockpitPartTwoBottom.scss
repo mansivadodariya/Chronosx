@@ -3,8 +3,6 @@
 
   .partTwoCockpit {
 
-
-
     .cardsPairGrid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -134,6 +132,13 @@
               font-weight: 700;
               margin: 0;
               letter-spacing: -0.2px;
+
+              :global(html.light) &,
+              :global(html[data-theme='light']) &,
+              :global([data-theme='light']) &,
+              :global(.light) & {
+                color: #0F172A;
+              }
             }
 
             .cardSub {
@@ -226,6 +231,13 @@
               letter-spacing: 0.4px;
               white-space: nowrap;
 
+              :global(html.light) &,
+              :global(html[data-theme='light']) &,
+              :global([data-theme='light']) &,
+              :global(.light) & {
+                color: #047857;
+              }
+
               @include respond-to("sm") {
                 font-size: 10px;
               }
@@ -244,7 +256,7 @@
             :global(html[data-theme='light']) &,
             :global([data-theme='light']) &,
             :global(.light) & {
-              color: #64748B;
+              color: #475569;
             }
 
             @include respond-to("sm") {
@@ -347,7 +359,7 @@
                 :global(html[data-theme='light']) &,
                 :global([data-theme='light']) &,
                 :global(.light) & {
-                  color: #059669;
+                  color: #047857;
                   text-shadow: none;
                 }
               }
@@ -360,6 +372,13 @@
               color: #6EE7B7;
               letter-spacing: 0.4px;
               white-space: nowrap;
+
+              :global(html.light) &,
+              :global(html[data-theme='light']) &,
+              :global([data-theme='light']) &,
+              :global(.light) & {
+                color: #047857;
+              }
 
               @include respond-to("sm") {
                 font-size: 10px;
@@ -379,7 +398,7 @@
             :global(html[data-theme='light']) &,
             :global([data-theme='light']) &,
             :global(.light) & {
-              color: #64748B;
+              color: #475569;
             }
 
             @include respond-to("sm") {
@@ -575,8 +594,6 @@
       }
     }
 
-
-
     .cockpitFooterBar {
       display: flex;
       align-items: center;
@@ -647,20 +664,6 @@
   :global([data-theme='light']) & {
     background: #F8FAFC;
 
-    .sectionHeader {
-      h2 {
-        color: #0F172A;
-      }
-
-      p {
-        color: #475569;
-      }
-    }
-
-    .cockpitCard,
-    .metricCard,
-    .signalCard,
-    .terminalCard,
     .intelCard {
       background: #FFFFFF;
       border: 1px solid #E2E8F0;
@@ -668,6 +671,28 @@
       color: #0F172A;
     }
 
+    .intelCard {
+      &.cardActiveScore,
+      &.cardActiveRank {
+        background: #FFFFFF;
+        border-color: rgba(16, 185, 129, 0.45);
+        box-shadow: 0 8px 26px rgba(16, 185, 129, 0.12);
+      }
+
+      .sliderTrack {
+        background: #E2E8F0;
+      }
+
+      .sparklineIdleGroup {
+        .sparklineIdlePath {
+          stroke: rgba(16, 185, 129, 0.65);
+        }
+
+        .sparklineIdleDot {
+          fill: #059669;
+        }
+      }
+    }
     .cockpitFooterBar {
       border-top-color: #E2E8F0;
       color: #64748B;

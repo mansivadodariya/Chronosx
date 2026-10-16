@@ -257,10 +257,24 @@
 
             &.bullish {
               color: #10B981;
+
+              :global(html.light) &,
+              :global(html[data-theme='light']) &,
+              :global([data-theme='light']) &,
+              :global(.light) & {
+                color: #059669;
+              }
             }
 
             &.bearish {
               color: #F43F5E;
+
+              :global(html.light) &,
+              :global(html[data-theme='light']) &,
+              :global([data-theme='light']) &,
+              :global(.light) & {
+                color: #DC2626;
+              }
             }
           }
         }

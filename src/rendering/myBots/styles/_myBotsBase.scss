@@ -413,9 +413,9 @@
         }
 
         &.activePill {
-            background: rgba(24, 201, 139, 0.14);
-            border-color: rgba(24, 201, 139, 0.45);
-            color: #059669;
+            background: #059669;
+            border-color: #059669;
+            color: #FFFFFF;
             font-weight: 700;
         }
     }
@@ -430,9 +430,9 @@
     :global(html.light) &,
     :global([data-theme='light']) &,
     [data-theme='light'] & {
-        background: rgba(24, 201, 139, 0.14);
-        border-color: rgba(24, 201, 139, 0.45);
-        color: #059669;
+        background: #059669;
+        border-color: #059669;
+        color: #FFFFFF;
         font-weight: 700;
     }
 }

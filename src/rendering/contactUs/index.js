@@ -9,70 +9,9 @@ import { useLanguage } from '@/context/LanguageContext';
 import { supabase } from '@/lib/supabaseClient';
 import { useContactInfo } from '@/services/contactInfoService';
 import CommonCta from '@/components/commonCta';
+import ContactFaqSection from './components/ContactFaqSection';
+import { COUNTRIES } from './contactData';
 import styles from './contactUs.module.scss';
-
-// Curated List of Global Countries
-const COUNTRIES = [
-    'United Arab Emirates',
-    'United States',
-    'United Kingdom',
-    'India',
-    'Canada',
-    'Australia',
-    'Germany',
-    'France',
-    'Singapore',
-    'Switzerland',
-    'Saudi Arabia',
-    'Qatar',
-    'Kuwait',
-    'Bahrain',
-    'Oman',
-    'South Africa',
-    'Nigeria',
-    'Egypt',
-    'Turkey',
-    'Malaysia',
-    'Indonesia',
-    'Thailand',
-    'Vietnam',
-    'Philippines',
-    'Japan',
-    'South Korea',
-    'Hong Kong',
-    'Netherlands',
-    'Sweden',
-    'Norway',
-    'Spain',
-    'Italy',
-    'Brazil',
-    'Mexico',
-    'Other'
-];
-
-// FAQs
-const FAQS = [
-    {
-        q: 'How fast will I receive a response from the ChronosX team?',
-        a: 'Our support routing system prioritizes urgent trading requests immediately. General inquiries are typically answered within 15 minutes, while VIP and Institutional partners receive direct Slack/Telegram channels with sub-5-minute SLA.'
-    },
-    {
-        q: 'Can I integrate ChronosX AI signals directly into my MT5 or broker account?',
-        a: 'Yes! ChronosX provides ultra-low latency webhook APIs, MT5 bridge connectors, and automated signal alerts compatible with leading prop firms and global brokers.'
-    },
-    {
-        q: 'Do you offer 1-on-1 personalized demo onboarding?',
-        a: 'Absolutely. If you represent an institutional fund, prop firm, or are a high-volume trader looking for custom algorithmic indicators, please reach out via the form to schedule a private walkthrough.'
-    },
-    {
-        q: 'How do I request a custom technical indicator or algorithmic strategy?',
-        a: 'Submit your message with your exact specifications, chart timeframe requirements, and risk parameters. Our quant engineering team will review and respond with feasibility estimates.'
-    },
-    {
-        q: 'What is your security and data privacy protocol for trading accounts?',
-        a: 'ChronosX adheres to strict zero-knowledge encryption protocols. We never store personal broker credentials or execute unauthorized trades. All analytical and OCR chart vision data is transmitted via end-to-end TLS 1.3 encryption.'
-    }
-];
 
 export default function ContactUs() {
     const { t } = useLanguage();
@@ -88,7 +27,6 @@ export default function ContactUs() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [copiedField, setCopiedField] = useState(null);
-    const [openFaqIndex, setOpenFaqIndex] = useState(0);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -218,10 +156,6 @@ export default function ContactUs() {
             message: ''
         });
         setIsSubmitted(false);
-    };
-
-    const toggleFaq = (index) => {
-        setOpenFaqIndex(prev => (prev === index ? null : index));
     };
 
     return (
@@ -634,86 +568,7 @@ export default function ContactUs() {
                 </section>
 
                 {/* 3. Interactive FAQ Section */}
-                <motion.section
-                    className={styles.faqSection}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-50px' }}
-                    transition={{ duration: 0.6 }}
-                >
-                    <div className={styles.faqHeader}>
-                        <div className={styles.faqBadge}>
-                            <span>{t('contactUs.faqBadge', 'SUPPORT FAQ')}</span>
-                        </div>
-                        <h2 className={styles.faqTitle}>{t('contactUs.faqTitle', 'Frequently Asked Questions')}</h2>
-                        <p className={styles.faqSubtitle}>
-                            {t('contactUs.faqSubtitle', 'Quick answers to common questions about ChronosX AI tools, account setup, and features.')}
-                        </p>
-                    </div>
-
-                    <div className={styles.faqAccordionList}>
-                        {[
-                            {
-                                q: t('contactUs.faqQ1', 'How fast will I receive a response from the ChronosX team?'),
-                                a: t('contactUs.faqA1', 'Our support routing system prioritizes urgent trading requests immediately. General inquiries are typically answered within 15 minutes, while VIP and Institutional partners receive direct Slack/Telegram channels with sub-5-minute SLA.')
-                            },
-                            {
-                                q: t('contactUs.faqQ2', 'Can I integrate ChronosX AI signals directly into my MT5 or broker account?'),
-                                a: t('contactUs.faqA2', 'Yes! ChronosX provides ultra-low latency webhook APIs, MT5 bridge connectors, and automated signal alerts compatible with leading prop firms and global brokers.')
-                            },
-                            {
-                                q: t('contactUs.faqQ3', 'Do you offer 1-on-1 personalized demo onboarding?'),
-                                a: t('contactUs.faqA3', 'Absolutely. If you represent an institutional fund, prop firm, or are a high-volume trader looking for custom algorithmic indicators, please reach out via the form to schedule a private walkthrough.')
-                            },
-                            {
-                                q: t('contactUs.faqQ4', 'How do I request a custom technical indicator or algorithmic strategy?'),
-                                a: t('contactUs.faqA4', 'Submit your message with your exact specifications, chart timeframe requirements, and risk parameters. Our quant engineering team will review and respond with feasibility estimates.')
-                            },
-                            {
-                                q: t('contactUs.faqQ5', 'What is your security and data privacy protocol for trading accounts?'),
-                                a: t('contactUs.faqA5', 'ChronosX adheres to strict zero-knowledge encryption protocols. We never store personal broker credentials or execute unauthorized trades. All analytical and OCR chart vision data is transmitted via end-to-end TLS 1.3 encryption.')
-                            }
-                        ].map((faq, index) => {
-                            const isOpen = openFaqIndex === index;
-                            return (
-                                <div
-                                    key={index}
-                                    className={`${styles.faqCard} ${isOpen ? styles.faqCardOpen : ''}`}
-                                >
-                                    <button
-                                        type="button"
-                                        className={styles.faqQuestionBtn}
-                                        onClick={() => toggleFaq(index)}
-                                        aria-expanded={isOpen}
-                                    >
-                                        <span className={styles.faqQuestionText}>{faq.q}</span>
-                                        <span className={`${styles.faqChevron} ${isOpen ? styles.faqChevronOpen : ''}`}>
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                                <polyline points="6 9 12 15 18 9" />
-                                            </svg>
-                                        </span>
-                                    </button>
-
-                                    <AnimatePresence initial={false}>
-                                        {isOpen && (
-                                            <motion.div
-                                                className={styles.faqAnswerWrapper}
-                                                initial={{ opacity: 0, height: 0 }}
-                                                animate={{ opacity: 1, height: 'auto' }}
-                                                exit={{ opacity: 0, height: 0 }}
-                                                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                                            >
-                                                <div className={styles.faqAnswerContent}>
-                                                    <p>{faq.a}</p>
-                                                </div>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </motion.section>
+                <ContactFaqSection t={t} />
             </div>
             {/* 4. Bottom Call to Action Banner (Common CTA) */}
             <CommonCta
