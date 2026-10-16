@@ -35,6 +35,15 @@
         box-sizing: border-box;
         overflow: hidden;
 
+        :global(html.light) &,
+        :global(html[data-theme='light']) &,
+        :global([data-theme='light']) &,
+        :global(.light) & {
+          background: #FFFFFF;
+          border: 1px solid #E2E8F0;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+
         @include respond-to("sm") {
           padding: 14px 12px;
           border-radius: 12px;
@@ -177,11 +186,18 @@
               font-family: var(--font-anton), 'Euclid', -apple-system, sans-serif;
               font-size: 21px;
               font-weight: 400;
-              color: #FFFFFF;
+              color: var(--cockpit-headline-color, #FFFFFF);
               line-height: 1.15;
               letter-spacing: 0.5px;
               display: inline-block;
               transition: all 0.3s ease;
+
+              :global(html.light) &,
+              :global(html[data-theme='light']) &,
+              :global([data-theme='light']) &,
+              :global(.light) & {
+                color: #0F172A;
+              }
 
               @include respond-to("sm") {
                 font-size: 18px;
@@ -191,6 +207,14 @@
                 color: #34D399;
                 text-shadow: 0 0 16px rgba(52, 211, 153, 0.65);
                 transform: scale(1.02);
+
+                :global(html.light) &,
+                :global(html[data-theme='light']) &,
+                :global([data-theme='light']) &,
+                :global(.light) & {
+                  color: #059669;
+                  text-shadow: none;
+                }
               }
             }
 
@@ -210,11 +234,18 @@
 
           .structureDetailText {
             font-size: 11px;
-            color: #94A3B8;
+            color: var(--cockpit-detail-color, #94A3B8);
             font-family: var(--font-inter), 'Euclid', -apple-system, sans-serif;
             line-height: 1.4;
             margin: 0;
             letter-spacing: 0.1px;
+
+            :global(html.light) &,
+            :global(html[data-theme='light']) &,
+            :global([data-theme='light']) &,
+            :global(.light) & {
+              color: #64748B;
+            }
 
             @include respond-to("sm") {
               font-size: 10px;
@@ -290,11 +321,18 @@
               font-family: var(--font-anton), 'Euclid', -apple-system, sans-serif;
               font-size: 21px;
               font-weight: 400;
-              color: #6EE7B7;
+              color: var(--cockpit-orderflow-color, #6EE7B7);
               line-height: 1.15;
               letter-spacing: 0.5px;
               display: inline-block;
               transition: all 0.3s ease;
+
+              :global(html.light) &,
+              :global(html[data-theme='light']) &,
+              :global([data-theme='light']) &,
+              :global(.light) & {
+                color: #047857;
+              }
 
               @include respond-to("sm") {
                 font-size: 18px;
@@ -304,6 +342,14 @@
                 color: #A7F3D0;
                 text-shadow: 0 0 16px rgba(110, 231, 183, 0.75);
                 transform: scale(1.02);
+
+                :global(html.light) &,
+                :global(html[data-theme='light']) &,
+                :global([data-theme='light']) &,
+                :global(.light) & {
+                  color: #059669;
+                  text-shadow: none;
+                }
               }
             }
 
@@ -323,11 +369,18 @@
 
           .orderFlowDetailText {
             font-size: 11px;
-            color: #94A3B8;
+            color: var(--cockpit-detail-color, #94A3B8);
             font-family: var(--font-inter), 'Euclid', -apple-system, sans-serif;
             line-height: 1.4;
             margin: 0;
             letter-spacing: 0.1px;
+
+            :global(html.light) &,
+            :global(html[data-theme='light']) &,
+            :global([data-theme='light']) &,
+            :global(.light) & {
+              color: #64748B;
+            }
 
             @include respond-to("sm") {
               font-size: 10px;
@@ -467,12 +520,19 @@
           font-family: var(--font-inter), 'Euclid', -apple-system, sans-serif;
           font-size: 15px;
           font-weight: 700;
-          color: #FFFFFF;
+          color: var(--cockpit-headline-color, #FFFFFF);
           letter-spacing: -0.2px;
           white-space: nowrap;
           margin-top: 1px;
           overflow: hidden;
           text-overflow: ellipsis;
+
+          :global(html.light) &,
+          :global(html[data-theme='light']) &,
+          :global([data-theme='light']) &,
+          :global(.light) & {
+            color: #0F172A;
+          }
 
           @include respond-to("sm") {
             font-size: 13.5px;
@@ -606,64 +666,6 @@
       border: 1px solid #E2E8F0;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
       color: #0F172A;
-    }
-
-    .intelCard {
-      &.cardActiveScore,
-      &.cardActiveRank {
-        background: #FFFFFF;
-        border-color: rgba(16, 185, 129, 0.45);
-        box-shadow: 0 8px 26px rgba(16, 185, 129, 0.12);
-      }
-
-      .structureHeadline {
-        color: #0F172A;
-
-        &.scoreActiveText {
-          color: #059669;
-          text-shadow: none;
-        }
-      }
-
-      .orderFlowHeadline {
-        color: #047857;
-
-        &.rankActiveText {
-          color: #059669;
-          text-shadow: none;
-        }
-      }
-
-      .structureDetailText,
-      .orderFlowDetailText {
-        color: #64748B;
-      }
-
-      .sliderRangeHeader {
-        color: #64748B;
-
-        span {
-          color: #64748B;
-        }
-
-        .rangeCenterText {
-          color: #475569;
-        }
-      }
-
-      .sliderTrack {
-        background: #E2E8F0;
-      }
-
-      .sparklineIdleGroup {
-        .sparklineIdlePath {
-          stroke: rgba(16, 185, 129, 0.65);
-        }
-
-        .sparklineIdleDot {
-          fill: #059669;
-        }
-      }
     }
 
     .cockpitFooterBar {

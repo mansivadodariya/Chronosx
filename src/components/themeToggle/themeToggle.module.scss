@@ -16,14 +16,35 @@
   }
 
   &:hover {
-    background: rgba(24, 201, 139, 0.18);
-    border-color: #18C98B;
     transform: scale(1.06);
-    box-shadow: 0 0 14px rgba(24, 201, 139, 0.35);
 
     svg {
       transform: rotate(25deg) scale(1.1);
     }
+  }
+
+  // On hover moon -> black bg
+  &.isMoon:hover,
+  :global(html[data-theme='light']) &:hover,
+  :global([data-theme='light']) &:hover,
+  :global(html.light) &:hover,
+  :global(.light) &:hover {
+    background: #000000;
+    border-color: #000000;
+    color: #18C98B;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 12px rgba(24, 201, 139, 0.3);
+  }
+
+  // On hover sun -> white bg
+  &.isSun:hover,
+  :global(html[data-theme='dark']) &:hover,
+  :global([data-theme='dark']) &:hover,
+  :global(html.dark) &:hover,
+  :global(.dark) &:hover {
+    background: #FFFFFF;
+    border-color: #FFFFFF;
+    color: #18C98B;
+    box-shadow: 0 4px 14px rgba(255, 255, 255, 0.3), 0 0 12px rgba(24, 201, 139, 0.25);
   }
 
   &:active {

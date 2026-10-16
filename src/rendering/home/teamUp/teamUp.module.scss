@@ -21,9 +21,13 @@
       box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
 
       &:hover {
-        background: #FFFFFF;
+        background: #F0FDF4;
         border-color: #18C98B;
         box-shadow: 0 8px 25px rgba(24, 201, 139, 0.16);
+
+        .bentoTitle {
+          color: #059669;
+        }
       }
 
       .iconBox {
@@ -36,6 +40,7 @@
         color: #0F172A;
         font-weight: 800;
         font-family: "Euclid-Bold", "Euclid Circular A", var(--font-plus-jakarta), sans-serif;
+        transition: color 0.25s ease;
       }
 
       .bentoDesc {

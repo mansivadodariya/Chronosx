@@ -50,14 +50,36 @@
 
         .parentName {
           color: #94A3B8;
+
+          :global(html.light) &,
+          :global(html[data-theme='light']) &,
+          :global([data-theme='light']) &,
+          :global(.light) & {
+            color: #64748B;
+          }
         }
 
         .slash {
           color: #475569;
+
+          :global(html.light) &,
+          :global(html[data-theme='light']) &,
+          :global([data-theme='light']) &,
+          :global(.light) & {
+            color: #94A3B8;
+          }
         }
 
         .activeAssetTicker {
-          color: #6EE7B7;
+          color: var(--cockpit-active-ticker-color, #6EE7B7);
+
+          :global(html.light) &,
+          :global(html[data-theme='light']) &,
+          :global([data-theme='light']) &,
+          :global(.light) & {
+            color: #047857;
+            font-weight: 800;
+          }
         }
       }
 
@@ -137,12 +159,19 @@
             flex-wrap: wrap;
 
             .assetTickerText {
-              color: #FFFFFF;
+              color: var(--cockpit-ticker-color, #FFFFFF);
               font-size: 22px;
               font-weight: 800;
               margin: 0;
               letter-spacing: 0.5px;
               @include font-bold;
+
+              :global(html.light) &,
+              :global(html[data-theme='light']) &,
+              :global([data-theme='light']) &,
+              :global(.light) & {
+                color: #0F172A;
+              }
 
               @include respond-to("sm") {
                 font-size: 18px;
@@ -174,12 +203,19 @@
           }
 
           .assetSubDetails {
-            color: #94A3B8;
+            color: var(--cockpit-detail-color, #94A3B8);
             font-size: 12px;
             margin: 0;
             @include font-normal;
             white-space: normal;
             word-break: break-word;
+
+            :global(html.light) &,
+            :global(html[data-theme='light']) &,
+            :global([data-theme='light']) &,
+            :global(.light) & {
+              color: #64748B;
+            }
 
             @include respond-to("sm") {
               font-size: 11px;

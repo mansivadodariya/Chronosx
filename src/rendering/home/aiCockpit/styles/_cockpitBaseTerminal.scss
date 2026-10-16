@@ -5,8 +5,26 @@
   overflow: hidden;
   background: radial-gradient(ellipse at 50% 0%, #050e0d 0%, #020605 50%, #000403 100%);
 
-  :global(html.light) & {
+  --cockpit-symbol-color: #FFFFFF;
+  --cockpit-ticker-color: #FFFFFF;
+  --cockpit-headline-color: #FFFFFF;
+  --cockpit-orderflow-color: #6EE7B7;
+  --cockpit-hud-val-color: #E2E8F0;
+  --cockpit-detail-color: #94A3B8;
+  --cockpit-active-ticker-color: #6EE7B7;
+
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) &,
+  :global(.light) & {
     background: #FFFFFF;
+    --cockpit-symbol-color: #0F172A;
+    --cockpit-ticker-color: #0F172A;
+    --cockpit-headline-color: #0F172A;
+    --cockpit-orderflow-color: #047857;
+    --cockpit-hud-val-color: #0F172A;
+    --cockpit-detail-color: #64748B;
+    --cockpit-active-ticker-color: #047857;
 
     .sectionHeader {
       h2 {
@@ -163,7 +181,10 @@
     transform: translateZ(0);
     will-change: transform;
 
-    :global(html.light) & {
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    :global(.light) & {
       background: #FFFFFF;
       border-color: rgba(24, 201, 139, 0.35);
       box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08), 0 0 25px rgba(24, 201, 139, 0.06);

@@ -5,7 +5,10 @@
   overflow: hidden;
   background: radial-gradient(circle at 50% 30%, #040907 0%, #020605 60%, #000000 100%);
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) &,
+  :global(.light) & {
     background: #F8FAFC;
     border-bottom: 1px solid rgba(24, 201, 139, 0.15);
 
@@ -16,12 +19,12 @@
 
       &:hover,
       &.cardActive {
-        background: #FFFFFF;
+        background: #F0FDF4;
         border-color: #18C98B;
-        box-shadow: 0 12px 36px rgba(24, 201, 139, 0.12);
+        box-shadow: 0 12px 36px rgba(24, 201, 139, 0.14);
 
         .cardHeaderMeta h3 {
-          color: #0F172A;
+          color: #059669;
           text-shadow: none;
         }
       }
@@ -345,7 +348,7 @@
       border-color: rgba(24, 201, 139, 0.55);
       background: radial-gradient(circle at 50% 15%, rgba(24, 201, 139, 0.14) 0%, transparent 75%), rgba(4, 14, 10, 0.96);
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 32px rgba(24, 201, 139, 0.16), inset 0 1px 0 rgba(24, 201, 139, 0.3);
-      transform: translateY(-4px);
+      transform: none;
 
       .cardHeaderMeta {
         h3 {

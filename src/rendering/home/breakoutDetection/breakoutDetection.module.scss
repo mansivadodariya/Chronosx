@@ -132,6 +132,14 @@
     }
 
     .stepBlock {
+      transition: all 0.3s ease;
+
+      &:hover {
+        h3 {
+          color: #059669;
+        }
+      }
+
       &.stepActive {
         .numberBadge {
           background: rgba(16, 185, 129, 0.15);
@@ -141,7 +149,7 @@
         }
 
         h3 {
-          color: #0F172A;
+          color: #059669;
         }
 
         .stepDesc {
@@ -159,6 +167,7 @@
 
         h3 {
           color: #0F172A;
+          transition: color 0.25s ease;
         }
       }
 
@@ -560,7 +569,7 @@
       background: transparent;
       border: none;
       box-shadow: none;
-      transform: translateX(8px);
+      transform: none;
 
       @include respond-to("md") {
         transform: none;
