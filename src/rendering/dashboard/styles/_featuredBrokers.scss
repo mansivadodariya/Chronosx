@@ -81,10 +81,10 @@
     }
 }
 
-/* ── Broker Cards Responsive Grid (3 cards on screen 1440) ── */
+/* ── Broker Cards Responsive Grid (4 cards on bigger screens, 3 cards on <=1440px) ── */
 .featuredBrokersGrid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
     width: 100%;
 

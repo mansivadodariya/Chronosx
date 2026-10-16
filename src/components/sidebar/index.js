@@ -8,6 +8,7 @@ import {
   ChevronLeftIcon,
   LogoutIcon,
   LandingHomeIcon,
+  ProfileUserIcon,
 } from '@/icons/sidebarIcons';
 import { clearAuthSession, getStoredUser, getStoredUserId, hydrateUserFromProfile } from '@/lib/authSession';
 import { useLanguage } from '@/context/LanguageContext';
