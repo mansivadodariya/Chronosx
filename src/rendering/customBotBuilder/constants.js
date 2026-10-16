@@ -9,16 +9,12 @@ export const getSteps = (t) => [
 export const STEPS = getSteps(null);
 
 export const TRADING_PAIRS = [
+    { value: 'XAU/USD', label: 'XAU/USD (Gold)', category: 'Commodities' },
     { value: 'EUR/USD', label: 'EUR/USD', category: 'Forex' },
     { value: 'GBP/USD', label: 'GBP/USD', category: 'Forex' },
-    { value: 'USD/JPY', label: 'USD/JPY', category: 'Forex' },
-    { value: 'AUD/USD', label: 'AUD/USD', category: 'Forex' },
-    { value: 'USD/CAD', label: 'USD/CAD', category: 'Forex' },
-    { value: 'XAU/USD', label: 'XAU/USD (Gold)', category: 'Commodities' },
-    { value: 'BTC/USD', label: 'BTC/USD (Bitcoin)', category: 'Crypto' },
-    { value: 'ETH/USD', label: 'ETH/USD (Ethereum)', category: 'Crypto' },
-    { value: 'US30', label: 'US30 (Dow Jones)', category: 'Indices' },
-    { value: 'NAS100', label: 'NAS100 (Nasdaq)', category: 'Indices' }
+    { value: 'GBP/JPY', label: 'GBP/JPY', category: 'Forex' },
+    { value: 'EUR/JPY', label: 'EUR/JPY', category: 'Forex' },
+    { value: 'USD/CAD', label: 'USD/CAD', category: 'Forex' }
 ];
 
 export const getTimeframes = (t) => [

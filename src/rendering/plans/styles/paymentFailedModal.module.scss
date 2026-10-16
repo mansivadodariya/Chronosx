@@ -129,3 +129,44 @@
         }
     }
 }
+
+:global(html.light) .modalCard,
+:global(html[data-theme='light']) .modalCard,
+:global([data-theme='light']) .modalCard {
+    background: #FFFFFF;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    box-shadow: 0 25px 60px rgba(15, 23, 42, 0.12), 0 0 35px rgba(239, 68, 68, 0.08);
+    color: #0F172A;
+
+    .title {
+        color: #0F172A;
+    }
+
+    .subtitle {
+        color: #475569;
+    }
+
+    .reassuranceBox {
+        background: #FEF2F2;
+        border: 1px solid rgba(239, 68, 68, 0.25);
+        color: #334155;
+
+        svg {
+            color: #DC2626;
+        }
+    }
+
+    .actionStack {
+        .secondaryBtn {
+            background: #F1F5F9;
+            border-color: #CBD5E1;
+            color: #475569;
+
+            &:hover {
+                background: #E2E8F0;
+                color: #0F172A;
+            }
+        }
+    }
+}
+

@@ -2,12 +2,15 @@
 .quickChips {
     display: flex;
     gap: 6px;
-    margin-top: 4px;
+    margin-top: 6px;
     flex-wrap: wrap;
 
     .chipBtn {
-        padding: 5px 14px;
-        border-radius: 9999px;
+        flex: 1 1 auto;
+        min-width: 0;
+        text-align: center;
+        padding: 6px 12px;
+        border-radius: 8px;
         background: rgba(255, 255, 255, 0.04);
         border: 1px solid rgba(255, 255, 255, 0.1);
         color: rgba(255, 255, 255, 0.7);
@@ -15,11 +18,20 @@
         font-weight: 600;
         cursor: pointer;
         transition: all 0.15s ease;
+        white-space: nowrap;
+
+        @include respond-to('tab') {
+            flex: 1 1 0px;
+            padding: 6px 4px;
+            font-size: 11px;
+            border-radius: 8px;
+        }
 
         @include respond-to('sm') {
-            padding: 4px 10px;
+            flex: 1 1 0px;
+            padding: 6px 3px;
             font-size: 10.5px;
-            border-radius: 9999px;
+            border-radius: 6px;
         }
 
         &:hover {

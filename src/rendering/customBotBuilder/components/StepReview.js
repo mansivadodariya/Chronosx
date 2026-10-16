@@ -130,17 +130,17 @@ export default function StepReview({ data, onEditStep, onRunBacktest, onDeployBo
                         <div className={styles.reviewMetricsGrid}>
                             <div className={styles.metricBlockGreen}>
                                 <span className={styles.metricLabel}>Take Profit</span>
-                                <span className={styles.metricValue}>+{takeProfitPips} Pips</span>
+                                <span className={styles.metricValue}>+{Number(takeProfitPips || 0).toLocaleString()} Pips</span>
                             </div>
                             <div className={styles.metricBlockRed}>
                                 <span className={styles.metricLabel}>Stop Loss</span>
-                                <span className={styles.metricValue}>-{stopLossPips} Pips</span>
+                                <span className={styles.metricValue}>-{Number(stopLossPips || 0).toLocaleString()} Pips</span>
                             </div>
                         </div>
                         <div className={styles.trailingStatusRow}>
                             <span className={styles.trailingStatusDot} data-active={trailingStop ? 'true' : 'false'} />
                             <span className={styles.trailingStatusText}>
-                                Trailing Stop: {trailingStop ? `Enabled (${trailingDistance || 0} pips)` : 'Disabled'}
+                                Trailing Stop: {trailingStop ? `Enabled (${Number(trailingDistance || 0).toLocaleString()} pips)` : 'Disabled'}
                             </span>
                         </div>
                     </div>

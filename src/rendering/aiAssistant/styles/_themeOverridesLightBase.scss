@@ -2,6 +2,7 @@
    Comprehensive Light Theme Overrides for AI Assistant (Copilot & Chart) - Base
    ========================================================================== */
 :global(html.light) .aiAssistant,
+:global(html[data-theme="light"]) .aiAssistant,
 .aiAssistant.isLight {
     color: #0F172A;
 
@@ -25,6 +26,8 @@
         .chatCard {
             background: #ffffff;
             border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            overflow: hidden;
             box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
 
             .chatHeader {
@@ -79,9 +82,19 @@
 
             .chatBody {
                 background: #f8fafc;
+                scrollbar-width: thin;
+                scrollbar-color: #10B981 #F1F5F9;
+
+                &::-webkit-scrollbar-track {
+                    background: #F1F5F9;
+                }
 
                 &::-webkit-scrollbar-thumb {
-                    background: rgba(16, 185, 129, 0.25);
+                    background: #10B981;
+
+                    &:hover {
+                        background: #059669;
+                    }
                 }
             }
         }
@@ -209,130 +222,281 @@
         }
     }
 
-    /* Messages & Chat Rows */
-    .messageRow {
-        .pairBadge {
-            background: #ecfdf5;
-            color: #059669;
-            border: 1px solid rgba(16, 185, 129, 0.3);
+    /* Messages & Chat Rows (Left Panel & Direct) */
+    .chatSingleBody,
+    & {
+        .messageRow {
+            .pairBadge {
+                background: #ecfdf5;
+                color: #059669;
+                border: 1px solid rgba(16, 185, 129, 0.3);
+            }
+
+            .userHeaderBadges {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                align-self: flex-end;
+                margin-bottom: 3px;
+            }
+
+            .queuedBadge {
+                background: #fef3c7;
+                color: #b45309;
+                border: 1px solid rgba(245, 158, 11, 0.5);
+                box-shadow: 0 1px 3px rgba(180, 83, 9, 0.15);
+            }
+
+            .queuedPulseDot {
+                background-color: #d97706;
+                box-shadow: 0 0 5px rgba(217, 119, 6, 0.85);
+            }
+
+            .queueCountIndicator {
+                color: #b45309;
+                background: #fef3c7;
+                border: 1px solid rgba(245, 158, 11, 0.4);
+            }
+
+            .assistantMessage {
+                background: #ffffff !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 14px 14px 14px 2px !important;
+                padding: 12px 18px !important;
+                color: #0f172a !important;
+                box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
+
+                p, li, span, div, label {
+                    color: #1e293b !important;
+                }
+
+                .formattedList li {
+                    color: #1e293b !important;
+                }
+
+                .chatMarkdown {
+                    color: #0f172a !important;
+
+                    h1, h2, h3, h4, h5, h6 {
+                        color: #047857 !important;
+                        font-weight: 700 !important;
+                    }
+
+                    p {
+                        color: #1e293b !important;
+                    }
+
+                    ul, ol {
+                        margin: 8px 0 !important;
+                        padding-left: 20px !important;
+
+                        li {
+                            color: #1e293b !important;
+
+                            &::marker {
+                                color: #059669 !important;
+                            }
+                        }
+                    }
+
+                    li {
+                        color: #1e293b !important;
+                    }
+
+                    strong, b {
+                        color: #0f172a !important;
+                        font-weight: 700 !important;
+                    }
+
+                    em, i {
+                        color: #334155 !important;
+                    }
+
+                    table {
+                        background: #ffffff !important;
+                        border: 1px solid #cbd5e1 !important;
+                        border-collapse: collapse !important;
+                        margin: 12px 0 !important;
+                        width: 100% !important;
+
+                        th {
+                            background: #092c1d !important;
+                            color: #10b981 !important;
+                            font-weight: 700 !important;
+                            border: 1px solid #064e3b !important;
+                            padding: 8px 12px !important;
+                            font-size: 13px !important;
+                        }
+
+                        td {
+                            background: #ffffff !important;
+                            color: #0f172a !important;
+                            border: 1px solid #e2e8f0 !important;
+                            padding: 8px 12px !important;
+                            font-size: 13px !important;
+                            font-weight: 500 !important;
+                        }
+
+                        tr:nth-child(even) td,
+                        tr:nth-child(even) {
+                            background: #f8fafc !important;
+                        }
+                    }
+
+                    hr {
+                        background: #e2e8f0 !important;
+                        border-top: 1px solid #e2e8f0 !important;
+                    }
+
+                    code {
+                        background: #f1f5f9 !important;
+                        color: #047857 !important;
+                        border: 1px solid #e2e8f0 !important;
+                    }
+
+                    pre {
+                        background: #f8fafc !important;
+                        border: 1px solid #e2e8f0 !important;
+
+                        code {
+                            background: transparent !important;
+                            color: #0f172a !important;
+                            border: none !important;
+                        }
+                    }
+
+                    blockquote {
+                        border-left-color: #10b981 !important;
+                        background: #f0fdf4 !important;
+                        color: #1e293b !important;
+                    }
+                }
+
+                .visionWarningCard {
+                    background: #fef2f2 !important;
+                    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+                    color: #dc2626 !important;
+
+                    p, span, div {
+                        color: #dc2626 !important;
+                    }
+                }
+
+                .visionOverviewCard {
+                    background: #f8fafc !important;
+                    border: 1px solid #e2e8f0 !important;
+                    color: #475569 !important;
+                    opacity: 1 !important;
+
+                    p, span, div, em, i {
+                        color: #475569 !important;
+                    }
+
+                    .chatMarkdown p {
+                        color: #475569 !important;
+                    }
+                }
+            }
         }
 
-        .assistantMessage {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 14px 14px 14px 2px;
-            padding: 12px 18px;
-            color: #1e293b;
-            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
-
-            p, li, span {
-                color: #1e293b;
-            }
-
-            .formattedList li {
-                color: #1e293b;
-            }
-
-            .visionWarningCard {
-                background: #fef2f2;
-                border-color: rgba(239, 68, 68, 0.3);
-                color: #dc2626;
-            }
-
-            .visionOverviewCard {
-                background: #f8fafc;
-                border-color: #e2e8f0;
-                color: #475569;
-            }
-        }
-    }
-
-    .userRow {
-        .userMessage {
-            background: #10b981;
-            border: 1px solid #059669;
-            color: #ffffff;
-            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
-
-            p, span {
+        .userRow {
+            .userMessage {
+                background: #10b981;
+                border: 1px solid #059669;
                 color: #ffffff;
+                box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+
+                p, span {
+                    color: #ffffff;
+                }
+
+                &.userMessageQueued {
+                    background: linear-gradient(135deg, #10b981 0%, #059669 85%, #d97706 100%);
+                    border: 1.5px dashed rgba(217, 119, 6, 0.7);
+                    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.2);
+                }
             }
         }
     }
 
-    /* Markdown Formatted Reports & Content */
+    /* Markdown Formatted Reports & Content (Global fallback) */
     .chatMarkdown {
-        color: #1e293b;
+        color: #1e293b !important;
 
         h1, h2, h3, h4, h5, h6 {
-            color: #0f172a;
-            font-weight: 700;
+            color: #047857 !important;
+            font-weight: 700 !important;
         }
 
         p, li {
-            color: #1e293b;
+            color: #1e293b !important;
 
             &::marker {
-                color: #059669;
+                color: #059669 !important;
             }
         }
 
         strong, b {
-            color: #0f172a;
-            font-weight: 700;
+            color: #0f172a !important;
+            font-weight: 700 !important;
         }
 
         ul, ol {
             li {
-                color: #1e293b;
+                color: #1e293b !important;
             }
         }
 
         table {
-            border: 1px solid #e2e8f0;
+            border: 1px solid #cbd5e1 !important;
+            background: #ffffff !important;
 
             th, td {
-                border-color: #e2e8f0;
+                border-color: #e2e8f0 !important;
             }
 
             th {
-                background: #f8fafc;
-                color: #0f172a;
-                font-weight: 700;
+                background: #092c1d !important;
+                color: #10b981 !important;
+                font-weight: 700 !important;
             }
 
             td {
-                background: #ffffff;
-                color: #1e293b;
+                background: #ffffff !important;
+                color: #0f172a !important;
+            }
+
+            tr:nth-child(even) td {
+                background: #f8fafc !important;
             }
         }
 
         hr {
-            background: #e2e8f0;
-            border-top: 1px solid #e2e8f0;
+            background: #e2e8f0 !important;
+            border-top: 1px solid #e2e8f0 !important;
         }
 
         code {
-            background: #f1f5f9;
-            color: #059669;
-            border: 1px solid #e2e8f0;
+            background: #f1f5f9 !important;
+            color: #059669 !important;
+            border: 1px solid #e2e8f0 !important;
         }
 
         pre {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
+            background: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
 
             code {
-                background: transparent;
-                border: none;
-                color: #0f172a;
+                background: transparent !important;
+                border: none !important;
+                color: #0f172a !important;
             }
         }
 
         blockquote {
-            border-left-color: #10b981;
-            background: #f0fdf4;
-            color: #1e293b;
+            border-left-color: #10b981 !important;
+            background: #f0fdf4 !important;
+            color: #1e293b !important;
         }
     }
 

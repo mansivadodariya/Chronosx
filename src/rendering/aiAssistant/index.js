@@ -43,6 +43,7 @@ const AiAssistant = ({ initialTab, initialOpenId, initialPrompt } = {}) => {
         loadingHistory,
         isLoadingChat,
         pendingRequest,
+        queuedCount,
         confirmDeleteOpen,
         setConfirmDeleteOpen,
         pendingDeleteItem,
@@ -62,6 +63,16 @@ const AiAssistant = ({ initialTab, initialOpenId, initialPrompt } = {}) => {
     } = useAiAssistantStore();
 
     const [isDragging, setIsDragging] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 1024);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     // Refs
     const dropdownRef = useRef(null);
@@ -485,14 +496,14 @@ const AiAssistant = ({ initialTab, initialOpenId, initialPrompt } = {}) => {
             <div
                 ref={gridRef}
                 className={`${styles.splitLayoutGrid} ${isDragging ? styles.isDraggingGrid : ''}`}
-                style={{
+                style={!isMobile ? {
                     gridTemplateColumns: `minmax(380px, ${chatWidthPercent}%) 10px minmax(360px, 1fr)`,
                     transition: isDragging ? 'none' : 'grid-template-columns 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
-                }}
+                } : undefined}
             >
                 {/* Center / Left Panel: Chatbot conversation view */}
-                <div className={styles.chatSingleBody} data-lenis-prevent="true">
-                    <div className={styles.chatCard} data-lenis-prevent="true">
+                <div className={styles.chatSingleBody}>
+                    <div className={styles.chatCard}>
                         <div className={`${styles.chatHeader} ${chatWidthPercent <= 42 ? styles.compactHeader : ''}`}>
                             <div className={styles.headerInfo}>
                                 <h3>{t('aiAssistant.copilotTitle', 'ChronosX Copilot')}</h3>
@@ -524,6 +535,7 @@ const AiAssistant = ({ initialTab, initialOpenId, initialPrompt } = {}) => {
                             chatMessages={chatMessages}
                             isLoadingChat={isLoadingChat}
                             pendingRequest={pendingRequest}
+                            queuedCount={queuedCount}
                             selectedPair={selectedPair}
                             chatEndRef={chatEndRef}
                             t={t}
@@ -545,6 +557,7 @@ const AiAssistant = ({ initialTab, initialOpenId, initialPrompt } = {}) => {
                         handlePaste={handlePaste}
                         handleDrop={handleDrop}
                         pendingRequest={pendingRequest}
+                        queuedCount={queuedCount}
                         activeAnalysisMode={activeAnalysisMode}
                         setActiveAnalysisMode={setActiveAnalysisMode}
                         selectedPair={selectedPair}

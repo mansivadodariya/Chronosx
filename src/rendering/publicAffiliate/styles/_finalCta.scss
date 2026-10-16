@@ -29,7 +29,9 @@
     border-radius: 20px;
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     background: linear-gradient(180deg, rgba(24, 201, 139, 0.12) 0%, #FFFFFF 100%);
     border-color: rgba(24, 201, 139, 0.45);
     box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
@@ -67,7 +69,9 @@
     margin-bottom: 14px;
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     color: #0F172A;
   }
 }
@@ -90,7 +94,9 @@
     margin-bottom: 24px;
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     color: #475569;
   }
 }
@@ -177,7 +183,9 @@
     box-shadow: 0 6px 20px rgba(24, 201, 139, 0.25);
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     background: #FFFFFF;
     border-color: rgba(5, 150, 105, 0.35);
     color: #059669;

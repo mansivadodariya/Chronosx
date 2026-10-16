@@ -32,7 +32,8 @@ export default function StepExitRules({ data, errors = {}, onChange }) {
         const clean = String(rawVal).replace(/[^0-9.]/g, '');
         const num = parseFloat(clean);
         if (!isNaN(num)) {
-            onChange(field, Math.max(0, num));
+            const clamped = Math.min(10000, Math.max(0, num));
+            onChange(field, clamped);
         } else {
             onChange(field, '');
         }
@@ -48,7 +49,7 @@ export default function StepExitRules({ data, errors = {}, onChange }) {
                         <div className={styles.exitIconBoxGreen}>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <circle cx="12" cy="12" r="10" />
-                                <circle cx="12" cy="12" r="6" />
+                                <circle cx="12" cy="6" r="6" />
                                 <circle cx="12" cy="12" r="2" />
                             </svg>
                         </div>
@@ -62,10 +63,11 @@ export default function StepExitRules({ data, errors = {}, onChange }) {
                         <input
                             type="number"
                             min="0.1"
+                            max="10000"
                             step="1"
                             onKeyDown={preventNegativeKeys}
                             className={`${styles.textInput} ${errors.takeProfitPips ? styles.inputError : ''}`}
-                            placeholder="e.g. 50"
+                            placeholder="e.g. 50 (max 10,000)"
                             value={takeProfitPips}
                             onChange={(e) => handlePositiveNumber('takeProfitPips', e.target.value)}
                         />
@@ -76,7 +78,7 @@ export default function StepExitRules({ data, errors = {}, onChange }) {
                             </span>
                         )}
                         <span className={styles.exitHelperText}>
-                            Bot closes the trade in profit when price moves this many pips in your favor.
+                            Bot closes the trade in profit when price moves this many pips in your favor (max 10,000 pips).
                         </span>
                     </div>
                 </div>
@@ -100,10 +102,11 @@ export default function StepExitRules({ data, errors = {}, onChange }) {
                         <input
                             type="number"
                             min="0.1"
+                            max="10000"
                             step="1"
                             onKeyDown={preventNegativeKeys}
                             className={`${styles.textInput} ${errors.stopLossPips ? styles.inputError : ''}`}
-                            placeholder="e.g. 25"
+                            placeholder="e.g. 25 (max 10,000)"
                             value={stopLossPips}
                             onChange={(e) => handlePositiveNumber('stopLossPips', e.target.value)}
                         />
@@ -114,7 +117,7 @@ export default function StepExitRules({ data, errors = {}, onChange }) {
                             </span>
                         )}
                         <span className={styles.exitHelperText}>
-                            Bot closes the trade at a loss when price moves this many pips against you.
+                            Bot closes the trade at a loss when price moves this many pips against you (max 10,000 pips).
                         </span>
                     </div>
                 </div>
@@ -127,7 +130,7 @@ export default function StepExitRules({ data, errors = {}, onChange }) {
                         <div className={styles.exitIconBoxCyan}>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <circle cx="12" cy="12" r="10" />
-                                <circle cx="12" cy="12" r="6" />
+                                <circle cx="12" cy="6" r="6" />
                                 <circle cx="12" cy="12" r="2" />
                             </svg>
                         </div>
@@ -153,10 +156,11 @@ export default function StepExitRules({ data, errors = {}, onChange }) {
                             <input
                                 type="number"
                                 min="0.1"
+                                max="10000"
                                 step="1"
                                 onKeyDown={preventNegativeKeys}
                                 className={`${styles.textInput} ${errors.trailingDistance ? styles.inputError : ''}`}
-                                placeholder="e.g. 15"
+                                placeholder="e.g. 15 (max 10,000)"
                                 value={trailingDistance}
                                 onChange={(e) => handlePositiveNumber('trailingDistance', e.target.value)}
                             />
@@ -167,7 +171,7 @@ export default function StepExitRules({ data, errors = {}, onChange }) {
                                 </span>
                             )}
                             <span className={styles.exitHelperText}>
-                                Stop loss moves in your favor, locking in profits as price moves
+                                Stop loss moves in your favor, locking in profits as price moves (max 10,000 pips).
                             </span>
                         </div>
                     </div>

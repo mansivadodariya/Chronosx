@@ -55,7 +55,9 @@
         }
     }
 
-    :global(html.light) & {
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) & {
         background: #FFFFFF;
         border: 1px solid rgba(5, 150, 105, 0.25);
         box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
@@ -164,7 +166,9 @@
         }
     }
 
-    :global(html.light) & {
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) & {
         background: rgba(5, 150, 105, 0.08);
         border-color: rgba(5, 150, 105, 0.3);
         color: #059669;
@@ -188,12 +192,18 @@
 .headerTopRow {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
+    justify-content: flex-end;
+    gap: 10px;
     flex-wrap: wrap;
+    flex-shrink: 0;
+    margin-left: auto;
+    margin-top: 1px;
 
     @media (max-width: 640px) {
-        display: contents;
+        width: 100%;
+        justify-content: flex-start;
+        margin-left: 0;
+        margin-top: 4px;
     }
 }
 
@@ -215,9 +225,19 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 
+    :global([dir="rtl"]) & {
+        margin-left: 0;
+        margin-right: auto;
+    }
+
     @media (max-width: 640px) {
         order: 1;
         margin-bottom: 2px;
+        margin-left: 0;
+
+        :global([dir="rtl"]) & {
+            margin-right: 0;
+        }
     }
 
     .badgeIconWrap {
@@ -238,7 +258,6 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-left: auto;
     position: relative;
     z-index: 50;
 
@@ -260,11 +279,12 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
-    flex-wrap: wrap;
+    width: 100%;
 
     @media (max-width: 640px) {
-        order: 2;
-        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
     }
 }
 

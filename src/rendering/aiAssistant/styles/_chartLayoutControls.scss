@@ -11,12 +11,13 @@
         transition: grid-template-columns 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
         @include respond-to('md') {
-            display: flex;
-            flex-direction: column;
+            display: flex !important;
+            flex-direction: column !important;
             gap: 16px;
-            height: auto;
+            height: auto !important;
             min-height: 0;
-            overflow: visible;
+            overflow: visible !important;
+            touch-action: pan-y;
         }
     }
 
@@ -71,7 +72,8 @@
         }
     }
 
-    .chartSidePanel {
+    .chartSidePanel,
+    .chartSingleBody {
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -79,12 +81,14 @@
         width: 100%;
         overflow: hidden;
         position: relative;
+        border-radius: 14px;
 
         @include respond-to('md') {
             height: 500px;
             min-height: 450px;
             flex-shrink: 0;
             width: 100%;
+            touch-action: pan-y;
         }
     }
 
@@ -98,8 +102,9 @@
         height: 100%;
         background: #040605;
         border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 0;
-        overflow: visible;
+        border-radius: 14px;
+        overflow: hidden;
+        touch-action: pan-y;
         font-family: 'Inter', system-ui, sans-serif;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 

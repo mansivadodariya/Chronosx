@@ -300,6 +300,7 @@ export const fxApi = {
     chat: (arg1, arg2, arg3) => {
         let payload = {};
         if (typeof arg1 === 'object' && arg1 !== null) {
+            const resolvedId = arg1.id || arg1.chat_id || arg1.conversation_id || arg1.session_id || arg1.sessionId;
             payload = {
                 message: arg1.message || '',
                 pair: arg1.pair || 'XAUUSD',
@@ -307,9 +308,7 @@ export const fxApi = {
                 image_base64: arg1.image_base64 || null,
                 stream: arg1.stream ?? false,
                 ...(arg1.user_id ? { user_id: arg1.user_id } : {}),
-                ...(arg1.conversation_id ? { conversation_id: arg1.conversation_id } : {}),
-                ...(arg1.session_id ? { session_id: arg1.session_id } : {}),
-                ...(arg1.sessionId ? { session_id: arg1.sessionId } : {})
+                ...(resolvedId ? { id: resolvedId } : {})
             };
         } else {
             payload = {

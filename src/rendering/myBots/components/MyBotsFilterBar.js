@@ -23,7 +23,7 @@ export default function MyBotsFilterBar({
                     className={`${styles.filterPill} ${filterCreationType === 'all' ? styles.activePill : ''}`}
                     onClick={() => setFilterCreationType('all')}
                 >
-                    {t('myBots.filterAll', 'All')} ({botsCount})
+                    {t('myBots.filterAll', 'All')}
                 </button>
                 <button
                     type="button"
@@ -31,7 +31,7 @@ export default function MyBotsFilterBar({
                     onClick={() => setFilterCreationType('ai')}
                     title="Filter bots generated via AI"
                 >
-                    {t('myBots.filterAi', 'AI Bots')} ({aiCount})
+                    {t('myBots.filterAi', 'AI Bots')}
                 </button>
                 <button
                     type="button"
@@ -39,7 +39,7 @@ export default function MyBotsFilterBar({
                     onClick={() => setFilterCreationType('manual')}
                     title="Filter bots created manually"
                 >
-                    {t('myBots.filterManual', 'Manual / Custom Bots')} ({manualCount})
+                    {t('myBots.filterManual', 'Manual / Custom Bots')}
                 </button>
             </div>
 

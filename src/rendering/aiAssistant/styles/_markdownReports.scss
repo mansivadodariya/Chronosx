@@ -104,7 +104,7 @@
 
     :global(p) {
         margin: 0 0 8px;
-        color: #E2E8F0;
+        color: inherit;
         text-align: justify;
         text-justify: inter-word;
     }
@@ -124,12 +124,12 @@
         font-size: 14px;
         font-weight: 600;
         margin: 6px 0 4px;
-        color: #FFFFFF;
+        color: inherit;
     }
 
     :global(strong),
     :global(b) {
-        color: #FFFFFF;
+        color: inherit;
         font-weight: 700;
     }
 
@@ -139,13 +139,51 @@
         padding-left: 18px;
 
         :global(li) {
-            color: #CBD5E1;
+            color: inherit;
             margin-bottom: 4px;
             text-align: justify;
             text-justify: inter-word;
 
             &::marker {
                 color: #18C98B;
+            }
+        }
+    }
+}
+
+:global(html.light) .chatMarkdown,
+:global(html[data-theme="light"]) .chatMarkdown,
+:global(.isLight) .chatMarkdown {
+    color: #1e293b !important;
+
+    :global(p) {
+        color: #1e293b !important;
+    }
+
+    :global(h1),
+    :global(h2),
+    :global(h3) {
+        color: #047857 !important;
+    }
+
+    :global(h4),
+    :global(h5),
+    :global(h6) {
+        color: #0f172a !important;
+    }
+
+    :global(strong),
+    :global(b) {
+        color: #0f172a !important;
+    }
+
+    :global(ul),
+    :global(ol) {
+        :global(li) {
+            color: #1e293b !important;
+
+            &::marker {
+                color: #059669 !important;
             }
         }
     }

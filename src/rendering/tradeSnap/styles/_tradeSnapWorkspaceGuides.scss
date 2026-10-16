@@ -544,9 +544,40 @@ $success: #10b981;
     }
 
     .snapshotHeader {
-        background: #F1F5F9;
+        background: #FFFFFF;
         border-bottom-color: rgba(5, 150, 105, 0.15);
         color: #0F172A;
+
+        h3 {
+            color: #0F172A !important;
+
+            svg {
+                color: #059669 !important;
+                stroke: #059669 !important;
+            }
+        }
+    }
+
+    .btnAnalyze {
+        &.isAnalyzingBtn,
+        &:has(.analyzingTextWrap) {
+            opacity: 1 !important;
+            cursor: wait !important;
+            background: #ECFDF5 !important;
+            border: 1px solid rgba(16, 185, 129, 0.4) !important;
+            color: #047857 !important;
+            box-shadow: 0 1px 4px rgba(16, 185, 129, 0.15) !important;
+
+            .analyzingTextWrap {
+                color: #047857 !important;
+                font-weight: 700 !important;
+            }
+
+            .pulseDot {
+                background: #10B981 !important;
+                box-shadow: 0 0 6px #10B981 !important;
+            }
+        }
     }
 
     .btnSecondary {

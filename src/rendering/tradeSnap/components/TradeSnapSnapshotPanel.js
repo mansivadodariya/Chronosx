@@ -62,7 +62,7 @@ export default function TradeSnapSnapshotPanel({
                     </h3>
                     <button
                         type="button"
-                        className={styles.btnAnalyze}
+                        className={`${styles.btnAnalyze} ${isAnalyzing ? styles.isAnalyzingBtn : ''}`}
                         onClick={analyzeImage}
                         disabled={isAnalyzing || !capturedImage}
                     >

@@ -24,6 +24,10 @@ export default function TradeSnapResultsPanel({
         exportToPdf(resultsContainerRef.current, symbol, timeframe);
     };
 
+    if (isAnalyzing) {
+        return null;
+    }
+
     return (
         <div className={styles.resultsColumn}>
             <div className={styles.resultsPanel} data-lenis-prevent="true">

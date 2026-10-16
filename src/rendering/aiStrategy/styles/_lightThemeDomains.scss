@@ -263,7 +263,33 @@
 
                 .pillarScoreWrap {
                     .pillarScoreText {
-                        color: #0F172A;
+                        color: #0F172A !important;
+                        font-weight: 700;
+
+                        .pillarMaxScore {
+                            color: #64748B !important;
+                            font-weight: 600;
+                        }
+                    }
+
+                    .pillarSentimentBadge {
+                        &.trendBadge {
+                            color: #047857 !important;
+                            border-color: rgba(5, 150, 105, 0.35) !important;
+                            background: #ECFDF5 !important;
+                        }
+
+                        &.momentumBadge {
+                            color: #7C3AED !important;
+                            border-color: rgba(124, 58, 237, 0.35) !important;
+                            background: #F5F3FF !important;
+                        }
+
+                        &.structureBadge {
+                            color: #0284C7 !important;
+                            border-color: rgba(2, 132, 199, 0.35) !important;
+                            background: #F0F9FF !important;
+                        }
                     }
                 }
             }
@@ -502,7 +528,33 @@
 
                 .pillarScoreWrap {
                     .pillarScoreText {
-                        color: #0F172A;
+                        color: #0F172A !important;
+                        font-weight: 700;
+
+                        .pillarMaxScore {
+                            color: #64748B !important;
+                            font-weight: 600;
+                        }
+                    }
+
+                    .pillarSentimentBadge {
+                        &.trendBadge {
+                            color: #047857 !important;
+                            border-color: rgba(5, 150, 105, 0.35) !important;
+                            background: #ECFDF5 !important;
+                        }
+
+                        &.momentumBadge {
+                            color: #7C3AED !important;
+                            border-color: rgba(124, 58, 237, 0.35) !important;
+                            background: #F5F3FF !important;
+                        }
+
+                        &.structureBadge {
+                            color: #0284C7 !important;
+                            border-color: rgba(2, 132, 199, 0.35) !important;
+                            background: #F0F9FF !important;
+                        }
                     }
                 }
             }

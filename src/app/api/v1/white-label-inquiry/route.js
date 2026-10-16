@@ -78,32 +78,42 @@ export async function POST(request) {
             created_at: new Date().toISOString()
         };
 
-        // 1. First attempt: call the Supabase RPC function
-        let { data: rpcData, error: rpcError } = await supabaseAdmin.rpc('submit_white_label_inquiry', {
-            p_full_name: payload.full_name,
-            p_company_name: payload.company_name,
-            p_email: payload.email,
-            p_phone: payload.phone,
-            p_country: payload.country,
-            p_website: payload.website,
-            p_business_type: payload.business_type,
-            p_active_users: payload.active_users,
-            p_capabilities: payload.capabilities,
-            p_message: payload.message
-        });
+        let inserted = false;
+        let inquiryId = null;
 
-        if (rpcError) {
-            console.warn('RPC submit_white_label_inquiry not found or failed, falling back to direct insert:', rpcError.message);
+        // 1. Primary: Direct Supabase Admin Insert (Service role writes directly to public.white_label_inquiries)
+        const { data: insertData, error: insertError } = await supabaseAdmin
+            .from('white_label_inquiries')
+            .insert([payload])
+            .select();
 
-            // 2. Fallback: direct table insert
-            const { data: insertData, error: insertError } = await supabaseAdmin
-                .from('white_label_inquiries')
-                .insert([payload])
-                .select();
+        if (!insertError && insertData?.length > 0) {
+            inserted = true;
+            inquiryId = insertData[0]?.id;
+        } else {
+            console.warn('Direct table insert failed, trying RPC submit_white_label_inquiry:', insertError?.message);
 
-            if (insertError) {
-                console.error('Table insert error in white-label inquiry API:', insertError);
-                throw insertError;
+            // 2. Fallback: Supabase RPC function (validating internal success flag)
+            const { data: rpcData, error: rpcError } = await supabaseAdmin.rpc('submit_white_label_inquiry', {
+                p_full_name: payload.full_name,
+                p_company_name: payload.company_name,
+                p_email: payload.email,
+                p_phone: payload.phone,
+                p_country: payload.country,
+                p_website: payload.website,
+                p_business_type: payload.business_type,
+                p_active_users: payload.active_users,
+                p_capabilities: payload.capabilities,
+                p_message: payload.message
+            });
+
+            if (!rpcError && rpcData?.success !== false) {
+                inserted = true;
+                inquiryId = rpcData?.id;
+            } else {
+                const failReason = rpcData?.error || rpcError?.message || insertError?.message || 'Database insert failed.';
+                console.error('All white-label inquiry submission methods failed:', failReason);
+                throw new Error(failReason);
             }
         }
 

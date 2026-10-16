@@ -45,6 +45,8 @@ function validateStep(step, data, t) {
             errors.botName = t ? t('botBuilder.validation.botNameRequired', 'Bot name is required') : 'Bot name is required';
         } else if (data.botName.trim().length < 3) {
             errors.botName = t ? t('botBuilder.validation.botNameMin', 'Bot name must be at least 3 characters') : 'Bot name must be at least 3 characters';
+        } else if (data.botName.trim().length > 50) {
+            errors.botName = 'Bot name cannot exceed 50 characters';
         }
 
         if (!data.tradingPair) {
@@ -73,13 +75,19 @@ function validateStep(step, data, t) {
     if (step === 3) {
         if (!data.takeProfitPips || Number(data.takeProfitPips) <= 0) {
             errors.takeProfitPips = t ? t('botBuilder.validation.tpRequired', 'Take Profit (pips) is required') : 'Take Profit must be greater than 0 pips';
+        } else if (Number(data.takeProfitPips) > 10000) {
+            errors.takeProfitPips = 'Take Profit cannot exceed 10,000 pips';
         }
         if (!data.stopLossPips || Number(data.stopLossPips) <= 0) {
             errors.stopLossPips = t ? t('botBuilder.validation.slRequired', 'Stop Loss (pips) is required') : 'Stop Loss must be greater than 0 pips';
+        } else if (Number(data.stopLossPips) > 10000) {
+            errors.stopLossPips = 'Stop Loss cannot exceed 10,000 pips';
         }
         if (data.trailingStop) {
             if (!data.trailingDistance || Number(data.trailingDistance) <= 0) {
                 errors.trailingDistance = 'Trailing distance must be greater than 0 pips';
+            } else if (Number(data.trailingDistance) > 10000) {
+                errors.trailingDistance = 'Trailing distance cannot exceed 10,000 pips';
             }
         }
     }
@@ -87,9 +95,13 @@ function validateStep(step, data, t) {
     if (step === 4) {
         if (!data.lotSize || Number(data.lotSize) <= 0) {
             errors.lotSize = 'Lot size must be greater than 0 (e.g. 0.10)';
+        } else if (Number(data.lotSize) > 50) {
+            errors.lotSize = 'Lot size cannot exceed 50 lots';
         }
         if (!data.maxOpenPositions || Number(data.maxOpenPositions) < 1) {
             errors.maxOpenPositions = 'Max open positions must be at least 1';
+        } else if (Number(data.maxOpenPositions) > 50) {
+            errors.maxOpenPositions = 'Max open positions cannot exceed 50';
         }
         if (!data.riskPerTrade || Number(data.riskPerTrade) <= 0 || Number(data.riskPerTrade) > 100) {
             errors.riskPerTrade = 'Risk per trade must be between 0.1% and 100%';
@@ -136,7 +148,11 @@ export default function CustomBotBuilderView() {
         if (numericFields.includes(field) && value !== '' && value !== undefined && value !== null) {
             const num = Number(value);
             if (!isNaN(num)) {
-                sanitizedValue = Math.max(0, num);
+                let maxCap = Infinity;
+                if (['takeProfitPips', 'stopLossPips', 'trailingDistance'].includes(field)) maxCap = 10000;
+                if (['lotSize', 'maxOpenPositions'].includes(field)) maxCap = 50;
+                if (['riskPerTrade', 'maxDailyLoss'].includes(field)) maxCap = 100;
+                sanitizedValue = Math.min(maxCap, Math.max(0, num));
             }
         }
 
@@ -221,16 +237,24 @@ export default function CustomBotBuilderView() {
             const botId = apiResult?.data?.id || apiResult?.data?.strategy_id || ('custom_bot_' + Date.now());
             const newBot = {
                 id: botId,
+                strategyId: botId,
                 name: formData.botName || 'Custom Algo Bot',
                 symbol: formData.tradingPair || 'EUR/USD',
                 timeframe: formData.timeframe || '1h',
                 type: 'Custom Bot',
+                creationType: 'manual',
+                creation_type: 'manual',
+                created_by: 'manual',
                 status: 'active',
                 winRate: '68.4%',
                 profitFactor: '1.92',
                 totalPnl: '+$0.00',
                 lotSize: formData.lotSize || 0.1,
                 riskLevel: formData.riskLevel || 'medium',
+                takeProfitPips: formData.takeProfitPips,
+                stopLossPips: formData.stopLossPips,
+                trailingStop: formData.trailingStop,
+                trailingDistance: formData.trailingDistance,
                 createdAt: new Date().toISOString(),
                 rawStrategy: apiResult?.data || null
             };
@@ -243,10 +267,21 @@ export default function CustomBotBuilderView() {
                 console.warn('LocalStorage save notice:', storageErr);
             }
 
+            // Clear the form and reset step
+            setFormData(INITIAL_FORM_DATA);
+            setCurrentStep(1);
+            setErrors({});
+
+            try {
+                if (typeof window !== 'undefined') {
+                    sessionStorage.setItem('myBots_filter', 'manual');
+                }
+            } catch (_) {}
+
             toast.success(`Custom Bot "${newBot.name}" deployed successfully!`, { id: 'deploy-bot-toast' });
             setTimeout(() => {
-                router.push('/my-bots');
-            }, 800);
+                router.push('/my-bots?filter=manual');
+            }, 600);
         } catch (e) {
             console.error('Error deploying bot:', e);
             toast.error(e.message || 'Failed to deploy bot strategy', { id: 'deploy-bot-toast' });

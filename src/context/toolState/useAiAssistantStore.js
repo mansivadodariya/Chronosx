@@ -9,6 +9,39 @@ import { historyDeletes } from '@/lib/historyDeletes';
 import { ALL_PAIRS, normalizeSymbol } from '@/rendering/aiAssistant/TradingViewChartPane';
 import { parseAssistantResponse, buildAssistantMessage } from '@/rendering/aiAssistant/utils/chatResponseParser';
 
+function extractChatId(raw) {
+    if (!raw) return null;
+    const envelope = raw?.data || raw;
+
+    const findId = (obj) => {
+        if (!obj || typeof obj !== 'object') return null;
+        return (
+            obj.session_id ||
+            obj.sessionId ||
+            obj.conversation_id ||
+            obj.chat_id ||
+            obj.chatId ||
+            obj.id ||
+            obj._id ||
+            obj.question_id ||
+            obj.history_id ||
+            obj.uuid ||
+            null
+        );
+    };
+
+    let id = findId(raw) || findId(envelope);
+    if (id) return id;
+
+    const chats = (Array.isArray(envelope?.chats) && envelope.chats) || (Array.isArray(raw?.chats) && raw.chats) || null;
+    if (chats && chats.length > 0) {
+        id = findId(chats[chats.length - 1]) || findId(chats[0]);
+        if (id) return id;
+    }
+
+    return null;
+}
+
 export function useCreateAiAssistantStore() {
     const [userId, setUserId] = useState(null);
     const [chatHistory, setChatHistory] = useState([]);
@@ -33,7 +66,17 @@ export function useCreateAiAssistantStore() {
     const [chatWidthPercent, setChatWidthPercent] = useState(46);
     const [exportData, setExportData] = useState(null);
 
+    // Queue state and references for sequential message handling
+    const [queuedCount, setQueuedCount] = useState(0);
+    const messageQueueRef = useRef([]);
+    const isProcessingQueueRef = useRef(false);
+
     const activeRequestIdRef = useRef(null);
+    const currentConversationIdRef = useRef(null);
+
+    useEffect(() => {
+        currentConversationIdRef.current = currentConversationId;
+    }, [currentConversationId]);
 
     // Sync User ID
     useEffect(() => {
@@ -48,16 +91,18 @@ export function useCreateAiAssistantStore() {
 
     const fetchChatHistory = useCallback(async (uid) => {
         const activeUid = uid || userId || getStoredUserId();
-        if (!activeUid) return;
+        if (!activeUid) return [];
         setLoadingHistory(true);
         try {
             const data = await fxApi.getQuestionHistory(activeUid);
             let historyList = Array.isArray(data) ? data : (data?.data || data?.questions || []);
             historyList = historyList.filter(item => item?.is_delete !== true);
             setChatHistory(historyList);
+            return historyList;
         } catch (err) {
             console.warn('Could not fetch chat history:', err.message);
             setChatHistory([]);
+            return [];
         } finally {
             setLoadingHistory(false);
         }
@@ -71,11 +116,15 @@ export function useCreateAiAssistantStore() {
 
     const handleCreateNew = useCallback(() => {
         activeRequestIdRef.current = null;
+        messageQueueRef.current = [];
+        isProcessingQueueRef.current = false;
+        setQueuedCount(0);
         setIsLoadingChat(false);
         setPendingRequest(false);
         setHistoryModalOpen(false);
         setSelectedChat(null);
         setCurrentConversationId(null);
+        currentConversationIdRef.current = null;
         setChatMessages([]);
         setChatInput('');
         setActiveAnalysisMode(null);
@@ -93,10 +142,14 @@ export function useCreateAiAssistantStore() {
     }, []);
 
     const handleSelectChat = useCallback(async (item) => {
-        const convId = item?.session_id || item?.sessionId || item?.conversation_id || item?.id || item?.history_id || item?._id || item?.question_id || item?.uuid;
+        messageQueueRef.current = [];
+        isProcessingQueueRef.current = false;
+        setQueuedCount(0);
+        const convId = extractChatId(item);
         setHistoryModalOpen(false);
         setSelectedChat(item);
         setCurrentConversationId(convId || null);
+        currentConversationIdRef.current = convId || null;
         setChatWidthPercent(60);
         [100, 200, 300, 400].forEach((ms) => {
             setTimeout(() => window.dispatchEvent(new Event('resize')), ms);
@@ -221,6 +274,98 @@ export function useCreateAiAssistantStore() {
         }
     }, []);
 
+    const processQueue = useCallback(async () => {
+        if (isProcessingQueueRef.current) return;
+        if (!messageQueueRef.current || messageQueueRef.current.length === 0) {
+            setPendingRequest(false);
+            setQueuedCount(0);
+            return;
+        }
+
+        isProcessingQueueRef.current = true;
+        setPendingRequest(true);
+
+        const nextItem = messageQueueRef.current.shift();
+        setQueuedCount(messageQueueRef.current.length);
+
+        // Update message status in chatMessages from 'queued' to 'active'
+        setChatMessages(prev =>
+            prev.map(msg =>
+                msg.id === nextItem.msgId ? { ...msg, status: 'active' } : msg
+            )
+        );
+
+        const requestId = Date.now();
+        activeRequestIdRef.current = requestId;
+
+        try {
+            const activeUid = userId || getStoredUserId();
+            const activeConvId = currentConversationIdRef.current || currentConversationId;
+            const chatPayload = {
+                message: nextItem.userMsgText,
+                ...(nextItem.cleanPair ? { pair: nextItem.cleanPair, timeframe: '15m' } : {}),
+                image_base64: nextItem.activeAttachment?.url || null,
+                stream: false,
+                ...(activeUid ? { user_id: activeUid } : {}),
+                ...(activeConvId ? { id: activeConvId } : {})
+            };
+
+            const rawResp = await fxApi.chat(chatPayload);
+
+            setChatMessages(prev =>
+                prev.map(msg =>
+                    msg.id === nextItem.msgId ? { ...msg, status: 'delivered' } : msg
+                )
+            );
+
+            const parsed = parseAssistantResponse(rawResp);
+            const assistantMsg = buildAssistantMessage(parsed);
+            setChatMessages(prev => {
+                const lastMsg = prev[prev.length - 1];
+                if (lastMsg && lastMsg.role === 'assistant' && lastMsg.content && assistantMsg.content && lastMsg.content.trim() === assistantMsg.content.trim()) {
+                    return prev;
+                }
+                return [...prev, { ...assistantMsg, isNewlyGenerated: true }];
+            });
+
+            // Capture chat id from first message response to use for subsequent messages
+            const newChatId = extractChatId(rawResp);
+            if (newChatId) {
+                currentConversationIdRef.current = newChatId;
+                setCurrentConversationId(newChatId);
+            }
+
+            if (activeUid) {
+                syncCreditsAfterAction(activeUid);
+                notifyCreditsUpdated();
+                fetchChatHistory(activeUid).then((updatedList) => {
+                    if (!currentConversationIdRef.current && Array.isArray(updatedList) && updatedList.length > 0) {
+                        const topId = extractChatId(updatedList[0]);
+                        if (topId) {
+                            currentConversationIdRef.current = topId;
+                            setCurrentConversationId(topId);
+                        }
+                    }
+                }).catch(() => {});
+            }
+        } catch (err) {
+            console.error('AI Assistant request error:', err);
+            const errorMessage = err?.message || 'I apologize, but the AI Assistant is temporarily unavailable. Please try again.';
+            setChatMessages(prev => [...prev, { role: 'assistant', content: errorMessage }]);
+            toast.error(errorMessage);
+        } finally {
+            isProcessingQueueRef.current = false;
+            if (messageQueueRef.current && messageQueueRef.current.length > 0) {
+                setTimeout(() => {
+                    processQueue();
+                }, 80);
+            } else {
+                setPendingRequest(false);
+                setQueuedCount(0);
+            }
+        }
+    }, [userId, currentConversationId, fetchChatHistory]);
+
     const handleSendChatMessage = useCallback(async (customText, customAttachment, customMode) => {
         const text = (customText !== undefined ? customText : chatInput).trim();
         const activeAttachment = customAttachment !== undefined ? customAttachment : attachmentDraft;
@@ -251,70 +396,38 @@ export function useCreateAiAssistantStore() {
             }
         }
 
+        const msgId = 'msg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
+        const isCurrentlyBusy = pendingRequest || isProcessingQueueRef.current;
+
         const newUserMsg = {
+            id: msgId,
             role: 'user',
             content: userMsgText,
             pair: cleanPair,
-            attachment: activeAttachment ? { ...activeAttachment } : null
+            attachment: activeAttachment ? { ...activeAttachment } : null,
+            status: isCurrentlyBusy ? 'queued' : 'active'
         };
 
         setChatMessages(prev => [...prev, newUserMsg]);
         setChatInput('');
         setAttachmentDraft(null);
         setActiveAnalysisMode(null);
-        setPendingRequest(true);
 
-        const requestId = Date.now();
-        activeRequestIdRef.current = requestId;
+        const queueItem = {
+            msgId,
+            userMsgText,
+            cleanPair,
+            activeAttachment: activeAttachment ? { ...activeAttachment } : null,
+            currentMode
+        };
 
-        try {
-            const activeUid = userId || getStoredUserId();
-            const chatPayload = {
-                message: userMsgText,
-                ...(cleanPair ? { pair: cleanPair, timeframe: '15m' } : {}),
-                image_base64: activeAttachment?.url || null,
-                stream: false,
-                ...(activeUid ? { user_id: activeUid } : {}),
-                ...(currentConversationId ? {
-                    conversation_id: currentConversationId,
-                    session_id: currentConversationId
-                } : {})
-            };
+        messageQueueRef.current.push(queueItem);
+        setQueuedCount(messageQueueRef.current.length);
 
-            const rawResp = await fxApi.chat(chatPayload);
-            if (activeRequestIdRef.current !== requestId) return;
-
-            const parsed = parseAssistantResponse(rawResp);
-            const assistantMsg = buildAssistantMessage(parsed);
-            setChatMessages(prev => {
-                const lastMsg = prev[prev.length - 1];
-                if (lastMsg && lastMsg.role === 'assistant' && lastMsg.content && assistantMsg.content && lastMsg.content.trim() === assistantMsg.content.trim()) {
-                    return prev;
-                }
-                return [...prev, { ...assistantMsg, isNewlyGenerated: true }];
-            });
-
-            if (activeUid) {
-                syncCreditsAfterAction(activeUid);
-                notifyCreditsUpdated();
-                fetchChatHistory(activeUid);
-            }
-            const newSessionId = rawResp?.session_id || rawResp?.sessionId || rawResp?.conversation_id || rawResp?.id;
-            if (newSessionId) {
-                setCurrentConversationId(newSessionId);
-            }
-        } catch (err) {
-            if (activeRequestIdRef.current !== requestId) return;
-            console.error('AI Assistant request error:', err);
-            const errorMessage = err?.message || 'I apologize, but the AI Assistant is temporarily unavailable. Please try again.';
-            setChatMessages(prev => [...prev, { role: 'assistant', content: errorMessage }]);
-            toast.error(errorMessage);
-        } finally {
-            if (activeRequestIdRef.current === requestId) {
-                setPendingRequest(false);
-            }
+        if (!isCurrentlyBusy) {
+            processQueue();
         }
-    }, [chatInput, attachmentDraft, activeAnalysisMode, selectedPair, userId, currentConversationId, fetchChatHistory]);
+    }, [chatInput, attachmentDraft, activeAnalysisMode, selectedPair, pendingRequest, processQueue]);
 
     const handleConfirmDelete = useCallback(async () => {
         if (!pendingDeleteItem) return;
@@ -370,6 +483,7 @@ export function useCreateAiAssistantStore() {
         setIsLoadingChat,
         pendingRequest,
         setPendingRequest,
+        queuedCount,
         confirmDeleteOpen,
         setConfirmDeleteOpen,
         pendingDeleteItem,

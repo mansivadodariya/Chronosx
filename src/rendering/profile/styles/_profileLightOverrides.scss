@@ -2,7 +2,9 @@
    COMPLETE LIGHT THEME (html.light) FOR PROFILE
    ============================================================ */
 :global(html.light) .profile,
-:global([data-theme='light']) .profile {
+:global(html[data-theme='light']) .profile,
+:global([data-theme='light']) .profile,
+:global(.light) .profile {
     color: #0F172A;
 
     .pageHeader {
@@ -19,9 +21,13 @@
     /* Left Navigation */
     .leftSidebar {
         .navMenuCard {
-            background: #FFFFFF;
-            border: 1px solid rgba(15, 23, 42, 0.09);
-            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+            background: 
+                radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+                radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+                radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+                #f3f3f3;
+            border: 1px solid rgba(24, 201, 139, 0.2);
+            box-shadow: 0 8px 30px rgba(24, 201, 139, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.9);
         }
     }
 
@@ -43,25 +49,44 @@
     }
 
     .navMenuItemActive {
-        background: rgba(24, 201, 139, 0.12);
+        background: #e7e7e7;
         color: #047857;
-        box-shadow: 0 2px 8px rgba(24, 201, 139, 0.15);
+        border: none;
+        outline: none;
+        box-shadow: none;
+
+        &:hover {
+            background: #CED4D2;
+            border: none;
+            box-shadow: none;
+        }
 
         .navItemIcon {
             color: #047857;
             filter: none;
         }
+
+        &::after {
+            background: #10B981;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+        }
     }
 
     /* Hero Profile Card & Personal Details Card */
     .heroProfileCard,
-    .personalDetailsCard {
-        background: #FFFFFF;
-        border: 1px solid rgba(15, 23, 42, 0.09);
-        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06);
+    .personalDetailsCard,
+    .tradingProfileAnalysisCard {
+        background: 
+            radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+            radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            #f3f3f3;
+        border: 1px solid rgba(24, 201, 139, 0.2);
+        box-shadow: 0 8px 30px rgba(24, 201, 139, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 
-        .heroCardHeader {
-            border-bottom-color: rgba(15, 23, 42, 0.08);
+        .heroCardHeader,
+        .detailsCardHeader {
+            border-bottom-color: rgba(24, 201, 139, 0.15);
 
             .cardHeaderIcon {
                 background: rgba(24, 201, 139, 0.12);
@@ -76,7 +101,7 @@
 
             .editProfileBtn {
                 background: #F8FAFC;
-                border-color: rgba(24, 201, 139, 0.4);
+                border: 1px solid rgba(24, 201, 139, 0.4);
                 color: #047857;
 
                 &:hover {
@@ -112,10 +137,26 @@
                 }
             }
 
-            .uidRow {
-                color: #64748B;
+            .metaBadgesRow {
+                .uidBadge {
+                    color: #475569;
+                    background: #E2E8F0;
+                    border: 1px solid #CBD5E1;
+                }
+
+                .joinedBadge {
+                    color: #64748B;
+
+                    svg {
+                        stroke: #64748B;
+                    }
+                    span {
+                        color: #64748B;
+                    }
+                }
             }
 
+            .uidRow,
             .joinedRow {
                 color: #64748B;
 
@@ -128,12 +169,22 @@
 
     /* Personal Details Card */
     .personalDetailsCard {
-        background: #FFFFFF;
-        border: 1px solid rgba(15, 23, 42, 0.09);
-        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06);
+        background: 
+            radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+            radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            #f3f3f3;
+        border: 1px solid rgba(24, 201, 139, 0.2);
+        box-shadow: 0 8px 30px rgba(24, 201, 139, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 
         .detailsCardHeader {
+            border-bottom: 1px solid rgba(24, 201, 139, 0.15);
             h3 { color: #0F172A; }
+            p { color: #64748B; }
+            .cardHeaderTexts {
+                h3 { color: #0F172A; }
+                p { color: #64748B; }
+            }
             .cardHeaderIcon {
                 background: rgba(24, 201, 139, 0.12);
                 border-color: rgba(24, 201, 139, 0.3);
@@ -143,11 +194,12 @@
 
         .detailFieldItem,
         .detailPillBox {
-            background: #F8FAFC;
+            background: #FFFFFF;
             border: 1px solid rgba(15, 23, 42, 0.08);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 
             &:hover {
-                background: #F1F5F9;
+                background: #F8FAFC;
                 border-color: rgba(24, 201, 139, 0.4);
             }
 
@@ -165,9 +217,13 @@
 
     /* Onboarding Survey & Strategy Profile Card */
     .onboardingSurveyCard {
-        background: #FFFFFF;
-        border: 1px solid rgba(15, 23, 42, 0.09);
-        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06);
+        background: 
+            radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+            radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            #f3f3f3;
+        border: 1px solid rgba(24, 201, 139, 0.2);
+        box-shadow: 0 8px 30px rgba(24, 201, 139, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 
         .surveyCardHeader {
             border-bottom-color: rgba(15, 23, 42, 0.08);
@@ -291,12 +347,16 @@
     /* Right Column */
     .rightSummaryColumn,
     .rightSidebar {
-        background: #FFFFFF;
-        border: 1px solid rgba(15, 23, 42, 0.09);
-        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06);
+        background: 
+            radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+            radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            #f3f3f3;
+        border: 1px solid rgba(24, 201, 139, 0.2);
+        box-shadow: 0 8px 30px rgba(24, 201, 139, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 
         .rightCard {
-            border-bottom-color: rgba(15, 23, 42, 0.08);
+            border-bottom-color: rgba(24, 201, 139, 0.15);
 
             .rightCardTitle {
                 color: #0F172A;
@@ -333,8 +393,9 @@
             }
 
             .creditsCardBox {
-                background: #F8FAFC;
-                border: 1px solid rgba(15, 23, 42, 0.08);
+                background: #FFFFFF;
+                border: 1px solid rgba(24, 201, 139, 0.2);
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
 
                 .creditsHead {
                     .creditsLabel { color: #64748B; }
@@ -348,8 +409,9 @@
             }
 
             .verificationList .verifItem {
-                background: #F8FAFC;
+                background: #FFFFFF;
                 border: 1px solid rgba(15, 23, 42, 0.08);
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
 
                 .verifLeft { color: #0F172A; }
                 .verifActionBtn {
@@ -359,9 +421,10 @@
             }
 
             .quickActionsGrid .actionGridBtn {
-                background: #F8FAFC;
+                background: #FFFFFF;
                 border: 1px solid rgba(15, 23, 42, 0.08);
                 color: #0F172A;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
 
                 &:hover {
                     background: #F1F5F9;
@@ -389,8 +452,8 @@
         }
 
         .securityPriorityCard {
-            background: #F8FAFC;
-            border: 1px solid rgba(15, 23, 42, 0.08);
+            background: #FFFFFF;
+            border: 1px solid rgba(24, 201, 139, 0.2);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 
             .securityPriorityLeft {
@@ -417,8 +480,8 @@
     }
 
     .securityPriorityCard {
-        background: #F8FAFC;
-        border: 1px solid rgba(15, 23, 42, 0.08);
+        background: #FFFFFF;
+        border: 1px solid rgba(24, 201, 139, 0.2);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 
         .securityPriorityLeft {
@@ -446,9 +509,13 @@
     /* Tab Content Panels (Security, Activity) */
     .tabContentPanel,
     .tabCardContainer {
-        background: #FFFFFF;
-        border: 1px solid rgba(15, 23, 42, 0.09);
-        box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06);
+        background: 
+            radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+            radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            #f3f3f3;
+        border: 1px solid rgba(24, 201, 139, 0.2);
+        box-shadow: 0 8px 30px rgba(24, 201, 139, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 
         .panelHeaderRow h3,
         .cardHeaderBox h3,
@@ -456,6 +523,8 @@
             color: #0F172A;
         }
 
+        .panelHeaderRow p,
+        .panelHeaderRow .panelSubtitle,
         .cardHeaderBox p,
         .tabHeaderRow .tabSubtitle {
             color: #64748B;

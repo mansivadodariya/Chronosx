@@ -602,7 +602,7 @@ export function useTradeAnalysisExport() {
                     <div class="pdfNarrativeText">${formatMarkdownToHtml(dynamicReportMarkdown || '')}</div>
                 </div>
 
-                <!-- TAB 4: TRADE LEDGER (UP TO 50 EXECUTIONS) -->
+                <!-- TAB 4: TRADE LEDGER (ALL EXECUTIONS) -->
                 ${trades && trades.length > 0 ? `
                 <div class="pdfSectionCard" style="page-break-before: always; break-before: page; margin-top: 14px;">
                     <div class="pdfSectionTitle">4. Executed Trades Ledger (${trades.length} Executions)</div>
@@ -620,11 +620,11 @@ export function useTradeAnalysisExport() {
                             </tr>
                         </thead>
                         <tbody>
-                            ${trades.slice(0, 50).map((t, idx) => {
+                            ${trades.map((t, idx) => {
                                 const pnlNum = Number(t.pnl || 0);
                                 const isWin = pnlNum > 0 || (t.outcome || '').toUpperCase() === 'WIN';
                                 return `
-                                <tr>
+                                <tr style="page-break-inside: avoid; break-inside: avoid;">
                                     <td>${idx + 1}</td>
                                     <td><strong>${t.symbol || 'N/A'}</strong></td>
                                     <td>${(t.side || 'BUY').toUpperCase()}</td>
@@ -658,7 +658,7 @@ export function useTradeAnalysisExport() {
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
                 pagebreak: {
                     mode: ['avoid-all', 'css', 'legacy'],
-                    avoid: ['.pdfBlock', 'p', 'tr', 'table', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', '.pdfScoreHero', '.pdfStatBox', '.pdfPillarCard', '.pdfTable']
+                    avoid: ['.pdfBlock', 'p', 'tr', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', '.pdfScoreHero', '.pdfStatBox', '.pdfPillarCard']
                 }
             };
 

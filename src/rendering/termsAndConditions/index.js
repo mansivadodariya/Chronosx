@@ -106,7 +106,7 @@ export default function TermsAndConditions() {
                         <p><strong>{t('termsAndConditions.sec16LegalEntity', 'ChronosX Financial Technologies FZ-LLC')}</strong></p>
                         <p>{t('termsAndConditions.sec16RegNo', 'Reg No: FZ-LLC-2024-CX8901')}</p>
                         <p>{t('termsAndConditions.sec16Address', 'Dubai Silicon Oasis, IFZA Business Park, Building A1, Dubai, UAE')}</p>
-                        <p>{t('termsAndConditions.sec16Email', 'Email: support@chronosx.com')}</p>
+                        <p><strong>{(t('termsAndConditions.sec16Email', 'Email:') || 'Email:').replace(/support@chronosx\.com/gi, '').trim() || 'Email:'}</strong> <a href="mailto:support@chronosx.com">support@chronosx.com</a></p>
                         <p>{t('termsAndConditions.sec16SupportDesk', 'Global Support Desk: Available 24/5 (Sun 22:00 GMT – Fri 22:00 GMT)')}</p>
                     </section>
                 </div>

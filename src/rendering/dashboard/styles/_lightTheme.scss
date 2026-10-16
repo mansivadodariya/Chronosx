@@ -7,7 +7,7 @@
 
     /* Barometer */
     .marketBarometer {
-        background: 
+        background:
             radial-gradient(ellipse 40% 90% at 0% 50%, rgba(24, 201, 139, 0.08) 0%, transparent 70%),
             radial-gradient(ellipse 40% 90% at 100% 50%, rgba(24, 201, 139, 0.08) 0%, transparent 70%),
             #FFFFFF;
@@ -27,7 +27,7 @@
 
     /* 1. Hologram Hero Terminal in Light Mode */
     .hologramHero {
-        background: 
+        background:
             radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
             radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
             radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
@@ -59,7 +59,7 @@
 
     /* Hero Chart Section in Light Mode */
     .heroChartSection {
-        background: 
+        background:
             radial-gradient(ellipse 60% 60% at 50% 0%, rgba(24, 201, 139, 0.08) 0%, transparent 70%),
             #F8FAFC;
         border: 1px solid rgba(24, 201, 139, 0.18);
@@ -90,9 +90,11 @@
             .timeframeFilterGroup {
                 background: #FFFFFF;
                 border: 1px solid rgba(15, 23, 42, 0.1);
+                border-radius: 50px;
 
                 .tfBtn {
                     color: #64748B;
+                    border-radius: 50px;
 
                     &:hover {
                         color: #0F172A;
@@ -171,6 +173,7 @@
                         .dayName {
                             color: #047857;
                         }
+
                         .dayVal {
                             color: #047857;
                         }
@@ -182,7 +185,7 @@
 
     /* 2. Daily Stats Side Card in Light Mode */
     .dailyStatsSideCard {
-        background: 
+        background:
             radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
             radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
             radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
@@ -221,14 +224,14 @@
 
         .dailyStatsRows {
             .statPillRow {
-                background: 
+                background:
                     radial-gradient(ellipse 60% 80% at 0% 0%, rgba(24, 201, 139, 0.08) 0%, transparent 70%),
                     #F8FAFC;
                 border: 1px solid rgba(24, 201, 139, 0.18);
                 box-shadow: 0 2px 8px rgba(24, 201, 139, 0.04);
 
                 &:hover {
-                    background: 
+                    background:
                         radial-gradient(ellipse 60% 80% at 0% 0%, rgba(24, 201, 139, 0.14) 0%, transparent 70%),
                         #F1F5F9;
                     border-color: rgba(24, 201, 139, 0.45);
@@ -273,6 +276,22 @@
         }
     }
 
+    /* Featured Brokers Section in Light Mode */
+    .featuredBrokersSection {
+        .featuredBrokersHeader {
+            .featuredBrokersTitle {
+                color: #0F172A;
+            }
+        }
+
+        :global([data-component="broker-card"]),
+        :global(.brokerCard) {
+            background: #faf9f9;
+            border: 1px solid rgba(24, 201, 139, 0.2);
+            box-shadow: 0 8px 30px rgba(24, 201, 139, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+    }
+
     /* 3. Recent Activity & Feed Column in Light Mode */
     .feedColumn {
         .feedHeader {
@@ -300,14 +319,16 @@
 
         .feedCardContainer {
             .activityRowItem {
-                background: 
-                    radial-gradient(ellipse 60% 80% at 0% 0%, rgba(24, 201, 139, 0.08) 0%, transparent 70%),
+                background:
+                    radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+                    radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+                    radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
                     #f3f3f3;
-                border: 1px solid rgba(24, 201, 139, 0.18);
-                box-shadow: 0 3px 12px rgba(24, 201, 139, 0.04);
+                border: 1px solid rgba(24, 201, 139, 0.2);
+                box-shadow: 0 8px 30px rgba(24, 201, 139, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 
                 &:hover {
-                    background: 
+                    background:
                         radial-gradient(ellipse 60% 80% at 0% 0%, rgba(24, 201, 139, 0.14) 0%, transparent 70%),
                         #F8FAFC;
                     border-color: rgba(24, 201, 139, 0.45);
@@ -331,12 +352,10 @@
                 }
 
                 .skeletonBar {
-                    background: linear-gradient(
-                        90deg, 
-                        #E2E8F0 25%, 
-                        rgba(24, 201, 139, 0.2) 50%, 
-                        #E2E8F0 75%
-                    );
+                    background: linear-gradient(90deg,
+                            #E2E8F0 25%,
+                            rgba(24, 201, 139, 0.2) 50%,
+                            #E2E8F0 75%);
                     background-size: 200% 100%;
                 }
 
@@ -361,6 +380,7 @@
                                 border-color: rgba(239, 68, 68, 0.3);
                                 color: #DC2626;
                             }
+
                             &.signalBuy {
                                 background: rgba(16, 185, 129, 0.12);
                                 border-color: rgba(16, 185, 129, 0.3);
@@ -416,6 +436,7 @@
                     border: 1px solid rgba(24, 201, 139, 0.3);
                     border-radius: 9px;
                 }
+
                 h3 {
                     color: #0F172A;
                     font-size: 16px;
@@ -426,12 +447,16 @@
         }
 
         .modernToolCard {
-            background:#fff;
-            border: 1px solid rgba(24, 201, 139, 0.25);
-            box-shadow: 0 4px 16px rgba(24, 201, 139, 0.08);
+            background:
+                radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+                radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+                radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+                #f3f3f3;
+            border: none;
+            box-shadow: none;
 
             &:hover {
-                background: 
+                background:
                     radial-gradient(ellipse 60% 70% at 0% 0%, rgba(24, 201, 139, 0.24) 0%, transparent 70%),
                     radial-gradient(ellipse 60% 70% at 100% 100%, rgba(24, 201, 139, 0.2) 0%, transparent 70%),
                     #E3F4EC;
@@ -448,6 +473,7 @@
                     .toolCtaText {
                         color: #047857;
                     }
+
                     .toolCtaArrow {
                         background: #10B981;
                         color: #FFFFFF;
@@ -486,6 +512,7 @@
                     background: transparent;
                     background-color: transparent;
                 }
+
                 .toolDescription {
                     color: #475569;
                     background: transparent;
@@ -552,7 +579,7 @@
         }
 
         .marketOverviewCard {
-            background: 
+            background:
                 radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
                 radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
                 radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
@@ -581,9 +608,13 @@
 
     /* 6. Matrix & Other Legacy Cards in Light Mode */
     .glassStatCard {
-        background: #FFFFFF;
-        border: 1px solid rgba(15, 23, 42, 0.09);
-        box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+        background:
+            radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+            radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            #f3f3f3;
+        border: 1px solid rgba(24, 201, 139, 0.2);
+        box-shadow: 0 8px 30px rgba(24, 201, 139, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 
         .statNum {
             color: #0F172A;
@@ -604,24 +635,40 @@
     }
 
     .watchlistSection {
-        background: #FFFFFF;
-        border: 1px solid rgba(15, 23, 42, 0.09);
-        box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+        background:
+            radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+            radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            #f3f3f3;
+        border: 1px solid rgba(24, 201, 139, 0.2);
+        box-shadow: 0 8px 30px rgba(24, 201, 139, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 
         .sectionTitleBlock {
-            h2 { color: #0F172A; }
-            p { color: #64748B; }
-        }
-
-        .watchCard {
-            background: #F8FAFC;
-            border-color: rgba(15, 23, 42, 0.08);
-
-            .watchSymbol, .watchPrice {
+            h2 {
                 color: #0F172A;
             }
 
-            .watchName, .rangeInfo {
+            p {
+                color: #64748B;
+            }
+        }
+
+        .watchCard {
+            background:
+                radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+                radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+                radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+                #f3f3f3;
+            border: 1px solid rgba(24, 201, 139, 0.2);
+            box-shadow: 0 8px 30px rgba(24, 201, 139, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+            .watchSymbol,
+            .watchPrice {
+                color: #0F172A;
+            }
+
+            .watchName,
+            .rangeInfo {
                 color: #64748B;
             }
         }

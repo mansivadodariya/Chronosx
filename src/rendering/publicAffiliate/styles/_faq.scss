@@ -13,7 +13,9 @@
     padding: 50px 0;
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     background: #FFFFFF;
     border-top-color: #E2E8F0;
     border-bottom-color: #E2E8F0;
@@ -55,7 +57,9 @@
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     background: #F8FAFC;
     border-color: #E2E8F0;
     box-shadow: 0 4px 15px rgba(15, 23, 42, 0.03);
@@ -103,7 +107,9 @@
     }
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     color: #0F172A;
   }
 }
@@ -126,7 +132,9 @@
     line-height: 1.55;
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     color: #475569;
   }
 }

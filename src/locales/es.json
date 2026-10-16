@@ -2768,7 +2768,7 @@
     "sec16LegalEntity": "ChronosX Financial Technologies FZ-LLC",
     "sec16RegNo": "Reg No: FZ-LLC-2024-CX8901",
     "sec16Address": "Dubai Silicon Oasis, IFZA Business Park, Building A1, Dubai, UAE",
-    "sec16Email": "Correo electrónico: support@chronosx.com",
+    "sec16Email": "Correo electrónico:",
     "sec16SupportDesk": "Mesa de soporte global: Disponible 24/5"
   },
   "privacyPolicy": {
@@ -2810,7 +2810,7 @@
     "sec12Content": "Nos reservamos el derecho de actualizar esta política en cualquier momento.",
     "sec13Title": "Contacto",
     "sec13P1": "Para dudas sobre privacidad, contáctenos en:",
-    "sec13Email": "Correo electrónico: support@chronosx.com"
+    "sec13Email": "Correo electrónico:"
   },
   "riskDisclosure": {
     "title": "Declaración de Divulgación de Riesgos",
@@ -2834,7 +2834,7 @@
     "sec7Content": "El usuario es el único responsable de sus decisiones de trading y gestión de riesgo.",
     "sec8Title": "8. Consultas",
     "sec8P1": "Si tiene preguntas sobre esta declaración de riesgos, contacte con:",
-    "sec8Email": "Correo electrónico: support@chronosx.com"
+    "sec8Email": "Correo electrónico:"
   },
   "myBots": {
     "headerBadge": "CHRONOSX AI TRADING BOT SUITE",

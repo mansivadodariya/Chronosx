@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
+import { useTheme } from '@/context/ThemeContext';
 import styles from '../aiStrategy.module.scss';
 import SpeedometerGauge from './SpeedometerGauge';
 import { IndicatorIcon, getScoreColor } from '@/icons/analysisIcons';
@@ -9,6 +10,8 @@ import { IndicatorIcon, getScoreColor } from '@/icons/analysisIcons';
 export default function TechnicalScoreSection({
     technicalScore = {},
 }) {
+    const { theme } = useTheme();
+    const isLight = theme === 'light';
     const scoreColor = getScoreColor(technicalScore.label);
     const breakdown = technicalScore.breakdown || {};
 
@@ -26,11 +29,11 @@ export default function TechnicalScoreSection({
             <div className={styles.sectionHeaderRow}>
                 <div className={styles.headerTitleGroup}>
                     <div className={styles.titleIconPulse} style={{ backgroundColor: scoreColor }} />
-                    <span className={styles.headerMainTitle}>TECHNICAL SCORE</span>
+                    <span className={styles.headerMainTitle} style={{ color: isLight ? '#0F172A' : '#FFFFFF' }}>TECHNICAL SCORE</span>
                 </div>
                 <div className={styles.headerConfidencePill}>
-                    <span className={styles.confLabel}>CONFIDENCE</span>
-                    <span className={styles.confValText}>{technicalScore.confidence || '56%'}</span>
+                    <span className={styles.confLabel} style={{ color: isLight ? '#64748B' : 'rgba(255, 255, 255, 0.5)' }}>CONFIDENCE</span>
+                    <span className={styles.confValText} style={{ color: isLight ? '#047857' : '#10B981' }}>{technicalScore.confidence || '56%'}</span>
                 </div>
             </div>
 
@@ -51,19 +54,30 @@ export default function TechnicalScoreSection({
                     {/* 1. Trend Pillar */}
                     <div className={styles.pillarSummaryRow}>
                         <div className={styles.pillarMeta}>
-                            <div className={styles.pillarIconWrap} style={{ color: '#10B981' }}>
+                            <div className={styles.pillarIconWrap} style={{ color: isLight ? '#047857' : '#10B981' }}>
                                 <IndicatorIcon type="trend" />
                             </div>
-                            <span className={styles.pillarName}>Trend Analysis</span>
+                            <span className={styles.pillarName} style={{ color: isLight ? '#0F172A' : '#FFFFFF' }}>Trend Analysis</span>
                         </div>
                         <div className={styles.pillarTrackWrap}>
                             <div className={styles.pillarTrack}>
-                                <div className={styles.pillarFill} style={{ width: `${trendPct}%`, background: '#10B981' }} />
+                                <div className={styles.pillarFill} style={{ width: `${trendPct}%`, background: isLight ? '#059669' : '#10B981' }} />
                             </div>
                         </div>
                         <div className={styles.pillarScoreWrap}>
-                            <span className={styles.pillarScoreText}>{trendBreakdown.score || 25} <span style={{ color: 'rgba(255,255,255,0.4)' }}>/ 25</span></span>
-                            <span className={styles.pillarSentimentBadge} style={{ color: '#10B981', borderColor: 'rgba(16, 185, 129, 0.3)', background: 'rgba(16, 185, 129, 0.1)' }}>
+                            <span className={styles.pillarScoreText} style={{ color: isLight ? '#0F172A' : '#FFFFFF' }}>
+                                {trendBreakdown.score || 25}{' '}
+                                <span className={styles.pillarMaxScore} style={{ color: isLight ? '#64748B' : 'rgba(255,255,255,0.45)' }}>/ 25</span>
+                            </span>
+                            <span
+                                className={`${styles.pillarSentimentBadge} ${styles.trendBadge}`}
+                                style={{
+                                    color: isLight ? '#047857' : '#10B981',
+                                    borderColor: isLight ? 'rgba(5, 150, 105, 0.4)' : 'rgba(16, 185, 129, 0.3)',
+                                    background: isLight ? '#ECFDF5' : 'rgba(16, 185, 129, 0.1)',
+                                    fontWeight: 700
+                                }}
+                            >
                                 {trendBreakdown.label || 'Bullish'}
                             </span>
                         </div>
@@ -72,19 +86,30 @@ export default function TechnicalScoreSection({
                     {/* 2. Momentum Pillar */}
                     <div className={styles.pillarSummaryRow}>
                         <div className={styles.pillarMeta}>
-                            <div className={styles.pillarIconWrap} style={{ color: '#C084FC' }}>
+                            <div className={styles.pillarIconWrap} style={{ color: isLight ? '#7C3AED' : '#C084FC' }}>
                                 <IndicatorIcon type="momentum" />
                             </div>
-                            <span className={styles.pillarName}>Momentum Dynamics</span>
+                            <span className={styles.pillarName} style={{ color: isLight ? '#0F172A' : '#FFFFFF' }}>Momentum Dynamics</span>
                         </div>
                         <div className={styles.pillarTrackWrap}>
                             <div className={styles.pillarTrack}>
-                                <div className={styles.pillarFill} style={{ width: `${momentumPct}%`, background: '#C084FC' }} />
+                                <div className={styles.pillarFill} style={{ width: `${momentumPct}%`, background: isLight ? '#8B5CF6' : '#C084FC' }} />
                             </div>
                         </div>
                         <div className={styles.pillarScoreWrap}>
-                            <span className={styles.pillarScoreText}>{momentumBreakdown.score || 21} <span style={{ color: 'rgba(255,255,255,0.4)' }}>/ 25</span></span>
-                            <span className={styles.pillarSentimentBadge} style={{ color: '#C084FC', borderColor: 'rgba(192, 132, 252, 0.3)', background: 'rgba(192, 132, 252, 0.1)' }}>
+                            <span className={styles.pillarScoreText} style={{ color: isLight ? '#0F172A' : '#FFFFFF' }}>
+                                {momentumBreakdown.score || 21}{' '}
+                                <span className={styles.pillarMaxScore} style={{ color: isLight ? '#64748B' : 'rgba(255,255,255,0.45)' }}>/ 25</span>
+                            </span>
+                            <span
+                                className={`${styles.pillarSentimentBadge} ${styles.momentumBadge}`}
+                                style={{
+                                    color: isLight ? '#7C3AED' : '#C084FC',
+                                    borderColor: isLight ? 'rgba(124, 58, 237, 0.4)' : 'rgba(192, 132, 252, 0.3)',
+                                    background: isLight ? '#F5F3FF' : 'rgba(192, 132, 252, 0.1)',
+                                    fontWeight: 700
+                                }}
+                            >
                                 {momentumBreakdown.label || 'Bullish'}
                             </span>
                         </div>
@@ -93,19 +118,30 @@ export default function TechnicalScoreSection({
                     {/* 3. Structure Pillar */}
                     <div className={styles.pillarSummaryRow}>
                         <div className={styles.pillarMeta}>
-                            <div className={styles.pillarIconWrap} style={{ color: '#38BDF8' }}>
+                            <div className={styles.pillarIconWrap} style={{ color: isLight ? '#0284C7' : '#38BDF8' }}>
                                 <IndicatorIcon type="structure" />
                             </div>
-                            <span className={styles.pillarName}>Market Structure</span>
+                            <span className={styles.pillarName} style={{ color: isLight ? '#0F172A' : '#FFFFFF' }}>Market Structure</span>
                         </div>
                         <div className={styles.pillarTrackWrap}>
                             <div className={styles.pillarTrack}>
-                                <div className={styles.pillarFill} style={{ width: `${structurePct}%`, background: '#38BDF8' }} />
+                                <div className={styles.pillarFill} style={{ width: `${structurePct}%`, background: isLight ? '#0EA5E9' : '#38BDF8' }} />
                             </div>
                         </div>
                         <div className={styles.pillarScoreWrap}>
-                            <span className={styles.pillarScoreText}>{structureBreakdown.score || 12} <span style={{ color: 'rgba(255,255,255,0.4)' }}>/ 25</span></span>
-                            <span className={styles.pillarSentimentBadge} style={{ color: '#38BDF8', borderColor: 'rgba(56, 189, 248, 0.3)', background: 'rgba(56, 189, 248, 0.1)' }}>
+                            <span className={styles.pillarScoreText} style={{ color: isLight ? '#0F172A' : '#FFFFFF' }}>
+                                {structureBreakdown.score || 12}{' '}
+                                <span className={styles.pillarMaxScore} style={{ color: isLight ? '#64748B' : 'rgba(255,255,255,0.45)' }}>/ 25</span>
+                            </span>
+                            <span
+                                className={`${styles.pillarSentimentBadge} ${styles.structureBadge}`}
+                                style={{
+                                    color: isLight ? '#0284C7' : '#38BDF8',
+                                    borderColor: isLight ? 'rgba(2, 132, 199, 0.4)' : 'rgba(56, 189, 248, 0.3)',
+                                    background: isLight ? '#F0F9FF' : 'rgba(56, 189, 248, 0.1)',
+                                    fontWeight: 700
+                                }}
+                            >
                                 {structureBreakdown.label || 'Neutral'}
                             </span>
                         </div>
@@ -113,9 +149,9 @@ export default function TechnicalScoreSection({
 
                     {/* Confluence Formula Line */}
                     <div className={styles.confluenceFormulaLine}>
-                        <span className={styles.formulaTitle}>SCORING EQUATION:</span>
-                        <span className={styles.formulaEquation}>
-                            Trend ({trendBreakdown.score || 25}) + Momentum ({momentumBreakdown.score || 21}) + Structure ({structureBreakdown.score || 12}) = <strong style={{ color: '#10B981' }}>{technicalScore.total || 68} / 100</strong>
+                        <span className={styles.formulaTitle} style={{ color: isLight ? '#64748B' : 'rgba(255, 255, 255, 0.5)' }}>SCORING EQUATION:</span>
+                        <span className={styles.formulaEquation} style={{ color: isLight ? '#0F172A' : 'rgba(255, 255, 255, 0.85)' }}>
+                            Trend ({trendBreakdown.score || 25}) + Momentum ({momentumBreakdown.score || 21}) + Structure ({structureBreakdown.score || 12}) = <strong style={{ color: isLight ? '#047857' : '#10B981' }}>{technicalScore.total || 68} / 100</strong>
                         </span>
                     </div>
                 </div>

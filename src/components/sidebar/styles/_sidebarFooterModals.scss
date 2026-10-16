@@ -337,7 +337,7 @@
             }
 
             &[data-active='true'] {
-                background: #D7DBDA;
+                background: #e7e7e7;
                 color: #047857;
                 border: none;
                 box-shadow: none;
@@ -416,7 +416,7 @@
 
             &.active,
             &[data-active='true'] {
-                background: #D7DBDA;
+                background: #e7e7e7;
                 border: none;
                 outline: none;
                 box-shadow: none;
@@ -487,7 +487,7 @@
                 }
 
                 &[data-active='true'] {
-                    background: #D7DBDA;
+                    background: #e7e7e7;
                     color: #047857;
                     border: none;
                     outline: none;

@@ -56,7 +56,7 @@ export default function RiskDisclosure() {
                     <section>
                         <h2>{t('riskDisclosure.sec8Title', '8. Contact for Inquiries')}</h2>
                         <p>{t('riskDisclosure.sec8P1', 'If you have any questions regarding this Risk Disclosure Statement, please reach out to our legal and compliance desk at:')}</p>
-                        <p><strong>{t('riskDisclosure.sec8Email', 'Email:')}</strong> <a href="mailto:support@chronosx.com">support@chronosx.com</a></p>
+                        <p><strong>{(t('riskDisclosure.sec8Email', 'Email:') || 'Email:').replace(/support@chronosx\.com/gi, '').trim() || 'Email:'}</strong> <a href="mailto:support@chronosx.com">support@chronosx.com</a></p>
                     </section>
                 </div>
             </div>

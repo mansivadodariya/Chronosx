@@ -15,10 +15,16 @@
     flex-direction: column;
     gap: 16px;
 
-    [data-theme='light'] & {
-        background: #FFFFFF;
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.04);
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global(.light) & {
+        background: 
+            radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+            radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            #f3f3f3;
+        border: 1px solid rgba(24, 201, 139, 0.2);
+        box-shadow: 0 8px 30px rgba(24, 201, 139, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.9);
     }
 }
 
@@ -159,6 +165,11 @@
         color: rgba(255, 255, 255, 0.5);
         text-transform: uppercase;
         letter-spacing: 0.5px;
+
+        [data-theme='light'] &,
+        :global(html.light) & {
+            color: #64748B;
+        }
     }
 
     .tileValue {
@@ -167,7 +178,8 @@
         font-family: "Euclid-Bold", sans-serif;
         color: #FFFFFF;
 
-        [data-theme='light'] & {
+        [data-theme='light'] &,
+        :global(html.light) & {
             color: #0F172A;
         }
     }
@@ -179,9 +191,11 @@
         font-family: "Euclid-Medium", sans-serif;
     }
 
-    [data-theme='light'] & {
-        background: #F8FAFC;
-        border-color: rgba(0, 0, 0, 0.06);
+    [data-theme='light'] &,
+    :global(html.light) & {
+        background: #FFFFFF;
+        border-color: rgba(24, 201, 139, 0.18);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
     }
 }
 
@@ -199,9 +213,11 @@
         border-color: rgba(24, 201, 139, 0.35);
     }
 
-    [data-theme='light'] & {
-        background: #F8FAFC;
-        border-color: rgba(0, 0, 0, 0.06);
+    [data-theme='light'] &,
+    :global(html.light) & {
+        background: #FFFFFF;
+        border-color: rgba(24, 201, 139, 0.18);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
     }
 }
 
@@ -217,6 +233,11 @@
 
     strong {
         color: #18C98B;
+    }
+
+    [data-theme='light'] &,
+    :global(html.light) & {
+        color: #64748B;
     }
 }
 

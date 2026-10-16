@@ -12,9 +12,10 @@ $danger: #F87171;
 
 /* Light Mode Overrides */
 :global(html.light) .affiliatePage,
-:global(html[data-theme='light']) .affiliatePage {
+:global(html[data-theme='light']) .affiliatePage,
+:global([data-theme='light']) .affiliatePage {
     .kpiGrid .kpiCard {
-        background: #FFFFFF;
+        background: #f3f3f3;
         border-color: rgba(24, 201, 139, 0.3);
         box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
 

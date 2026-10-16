@@ -249,6 +249,36 @@
                             }
                         }
 
+                        .inlineWidgetCard {
+                            background: #FFFFFF;
+                            border: 1px solid #E2E8F0;
+                            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+
+                            .inlineWidgetHeader {
+                                border-bottom: 1px solid #E2E8F0;
+
+                                .inlineWidgetTitle {
+                                    color: #0F172A;
+                                }
+
+                                .srToggleBtn {
+                                    background: #F1F5F9;
+                                    color: #0F172A;
+                                    border: 1px solid #CBD5E1;
+
+                                    &:hover {
+                                        background: #E2E8F0;
+                                    }
+
+                                    &.srToggleActive {
+                                        background: #ECFDF5;
+                                        color: #059669;
+                                        border-color: #10B981;
+                                    }
+                                }
+                            }
+                        }
+
                         .downloadReportRow {
                             margin-top: 18px;
                             padding-top: 14px;
@@ -341,6 +371,36 @@
                                     background: #000000;
                                     color: #F1F5F9;
                                     border-color: rgba(24, 201, 139, 0.15);
+                                }
+
+                                tr:nth-child(even) td {
+                                    background: #080B0A;
+                                    color: #F1F5F9;
+                                }
+                            }
+
+                            .inlineWidgetCard {
+                                background: #050505;
+                                border: 1px solid rgba(24, 201, 139, 0.28);
+                                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+
+                                .inlineWidgetHeader {
+                                    border-bottom: 1px solid rgba(24, 201, 139, 0.18);
+
+                                    .inlineWidgetTitle {
+                                        color: #18C98B;
+                                    }
+
+                                    .srToggleBtn {
+                                        background: rgba(24, 201, 139, 0.1);
+                                        color: #18C98B;
+                                        border: 1px solid rgba(24, 201, 139, 0.3);
+
+                                        &.srToggleActive {
+                                            background: #18C98B;
+                                            color: #000000;
+                                        }
+                                    }
                                 }
                             }
 
@@ -499,6 +559,56 @@
                             font-size: 13px;
                             font-weight: 700;
                             color: #18C98B;
+                        }
+
+                        .srToggleBtn {
+                            background: rgba(24, 201, 139, 0.1);
+                            color: #18C98B;
+                            border: 1px solid rgba(24, 201, 139, 0.3);
+                            padding: 4px 10px;
+                            border-radius: 6px;
+                            font-size: 11px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+
+                            &.srToggleActive {
+                                background: #18C98B;
+                                color: #000000;
+                            }
+                        }
+                    }
+
+                    :global(html.light) &,
+                    :global([data-theme='light']) &,
+                    :global(.light) &,
+                    :global(body.light-theme) & {
+                        background: #FFFFFF;
+                        border: 1px solid #E2E8F0;
+                        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+
+                        .inlineWidgetHeader {
+                            border-bottom: 1px solid #E2E8F0;
+
+                            .inlineWidgetTitle {
+                                color: #0F172A;
+                            }
+
+                            .srToggleBtn {
+                                background: #F1F5F9;
+                                color: #0F172A;
+                                border: 1px solid #CBD5E1;
+
+                                &:hover {
+                                    background: #E2E8F0;
+                                }
+
+                                &.srToggleActive {
+                                    background: #ECFDF5;
+                                    color: #059669;
+                                    border-color: #10B981;
+                                }
+                            }
                         }
                     }
                 }

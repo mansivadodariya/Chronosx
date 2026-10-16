@@ -31,6 +31,7 @@ export default function StepBasics({ data, errors = {}, onChange }) {
                     </label>
                     <input
                         type="text"
+                        maxLength={50}
                         className={`${styles.textInput} ${errors.botName ? styles.inputError : ''}`}
                         placeholder="e.g. BTC Momentum Scalper"
                         value={data.botName}
@@ -50,6 +51,7 @@ export default function StepBasics({ data, errors = {}, onChange }) {
                     <textarea
                         className={styles.textareaInput}
                         rows={3}
+                        maxLength={300}
                         placeholder="Describe your strategy logic, execution rules, or purpose (optional)..."
                         value={data.description}
                         onChange={(e) => onChange('description', e.target.value)}

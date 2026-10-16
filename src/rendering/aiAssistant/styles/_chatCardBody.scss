@@ -11,17 +11,21 @@
             min-height: 480px;
             max-height: 85vh;
             flex-shrink: 0;
+            overscroll-behavior: auto;
+            touch-action: pan-y;
         }
 
         .chatCard {
             flex: 1;
             background: #040605;
             border: 1px solid rgba(24, 201, 139, 0.2);
-            border-radius: 0;
+            border-radius: 14px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            touch-action: pan-y;
+            overscroll-behavior: auto;
 
             .chatHeader {
                 display: flex;
@@ -228,6 +232,7 @@
                 padding: 20px;
                 overflow-y: auto;
                 overscroll-behavior: auto;
+                touch-action: pan-y;
                 -webkit-overflow-scrolling: touch;
                 display: flex;
                 flex-direction: column;
@@ -242,6 +247,9 @@
                     gap: 16px;
                 }
 
+                scrollbar-width: thin;
+                scrollbar-color: rgba(24, 201, 139, 0.25) transparent;
+
                 &::-webkit-scrollbar {
                     width: 6px;
                 }
@@ -251,8 +259,27 @@
                 }
 
                 &::-webkit-scrollbar-thumb {
-                    background: rgba(24, 201, 139, 0.15);
+                    background: rgba(24, 201, 139, 0.25);
                     border-radius: 4px;
+                }
+
+                :global(html.light) &,
+                :global([data-theme='light']) &,
+                :global(.light) &,
+                :global(body.light-theme) & {
+                    scrollbar-color: #10B981 #F1F5F9;
+
+                    &::-webkit-scrollbar-track {
+                        background: #F1F5F9;
+                    }
+
+                    &::-webkit-scrollbar-thumb {
+                        background: #10B981;
+
+                        &:hover {
+                            background: #059669;
+                        }
+                    }
                 }
 
                 .welcomeContainer {

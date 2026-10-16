@@ -73,7 +73,7 @@ export default function CustomSelect({
         if (opt.icon) return <span className={styles.optionCustomIcon}>{opt.icon}</span>;
 
         // Check if value/label is a trading pair
-        const isPair = ['EUR/USD', 'GBP/USD', 'USD/JPY', 'AUD/USD', 'USD/CAD', 'USD/CHF', 'XAU/USD', 'BTC/USD', 'ETH/USD', 'US30', 'NAS100'].some(
+        const isPair = ['EUR/USD', 'GBP/USD', 'GBP/JPY', 'EUR/JPY', 'USD/CAD', 'XAU/USD', 'USD/JPY', 'AUD/USD', 'USD/CHF', 'BTC/USD', 'ETH/USD', 'US30', 'NAS100'].some(
             (p) => String(opt.value).startsWith(p) || String(opt.label).startsWith(p)
         );
         if (isPair) {

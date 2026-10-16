@@ -71,12 +71,22 @@
                     font-weight: 700;
                     font-family: "Euclid-Bold", sans-serif;
                     margin: 0 0 2px;
+
+                    [data-theme='light'] &,
+                    :global(html.light) & {
+                        color: #0F172A;
+                    }
                 }
 
                 p {
                     color: rgba(255, 255, 255, 0.55);
                     font-size: 13px;
                     margin: 0;
+
+                    [data-theme='light'] &,
+                    :global(html.light) & {
+                        color: #64748B;
+                    }
                 }
             }
         }
@@ -99,6 +109,18 @@
                 color: #040605;
                 border-color: #18C98B;
                 box-shadow: 0 0 12px rgba(24, 201, 139, 0.3);
+            }
+
+            [data-theme='light'] &,
+            :global(html.light) & {
+                background: #F8FAFC;
+                border-color: rgba(24, 201, 139, 0.4);
+                color: #047857;
+
+                &:hover {
+                    background: #18C98B;
+                    color: #040605;
+                }
             }
         }
     }
@@ -140,6 +162,17 @@
                 text-transform: uppercase;
                 user-select: none;
             }
+
+            [data-theme='light'] &,
+            :global(html.light) & {
+                background: #F8FAFC;
+                border-color: #18C98B;
+                box-shadow: 0 4px 16px rgba(24, 201, 139, 0.2);
+
+                .avatarInitialsText {
+                    color: #047857;
+                }
+            }
         }
     }
 
@@ -161,6 +194,11 @@
                 font-weight: 700;
                 font-family: "Euclid-Bold", sans-serif;
                 margin: 0;
+
+                [data-theme='light'] &,
+                :global(html.light) & {
+                    color: #0F172A;
+                }
             }
         }
 
@@ -173,6 +211,11 @@
             .emailText {
                 color: rgba(255, 255, 255, 0.7);
                 font-size: 14px;
+
+                [data-theme='light'] &,
+                :global(html.light) & {
+                    color: #475569;
+                }
             }
 
             .verifiedPill {
@@ -183,6 +226,13 @@
                 font-weight: 700;
                 padding: 2px 7px;
                 border-radius: 5px;
+
+                [data-theme='light'] &,
+                :global(html.light) & {
+                    background: #DCFCE7;
+                    border-color: #86EFAC;
+                    color: #15803D;
+                }
             }
         }
 
@@ -202,6 +252,13 @@
                 padding: 2px 8px;
                 border-radius: 6px;
                 letter-spacing: 0.3px;
+
+                [data-theme='light'] &,
+                :global(html.light) & {
+                    color: #475569;
+                    background: #E2E8F0;
+                    border-color: #CBD5E1;
+                }
             }
 
             .joinedBadge {
@@ -210,6 +267,18 @@
                 gap: 5px;
                 color: rgba(255, 255, 255, 0.5);
                 font-size: 12px;
+
+                [data-theme='light'] &,
+                :global(html.light) & {
+                    color: #64748B;
+
+                    svg {
+                        stroke: #64748B;
+                    }
+                    span {
+                        color: #64748B;
+                    }
+                }
             }
         }
     }

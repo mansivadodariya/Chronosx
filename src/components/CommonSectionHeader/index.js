@@ -112,32 +112,33 @@ export default function CommonSectionHeader({
                 )}
 
                 <div className={styles.headerContentCol}>
-                    {/* Top Row: Tag Pill Badge & Action Tools */}
-                    <div className={styles.headerTopRow}>
-                        {badge && (
-                            <div className={styles.badgePill}>
-                                {badgeIcon && (
-                                    <span className={styles.badgeIconWrap}>
-                                        {badgeIcon}
-                                    </span>
-                                )}
-                                <span>{badge}</span>
-                            </div>
-                        )}
-
-                        {rightAction && (
-                            <div className={styles.rightActions}>
-                                {rightAction}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Main Row: Title, Highlight, Subtitle, and Tabs */}
+                    {/* Main Row: Title, Subtitle, Badge, and Actions */}
                     <div className={styles.headerMainRow}>
                         <div className={styles.textGroup}>
                             {renderHeadline()}
                             {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
                         </div>
+
+                        {(badge || rightAction) && (
+                            <div className={styles.headerTopRow}>
+                                {badge && (
+                                    <div className={styles.badgePill}>
+                                        {badgeIcon && (
+                                            <span className={styles.badgeIconWrap}>
+                                                {badgeIcon}
+                                            </span>
+                                        )}
+                                        <span>{badge}</span>
+                                    </div>
+                                )}
+
+                                {rightAction && (
+                                    <div className={styles.rightActions}>
+                                        {rightAction}
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
                         {tabs && tabs.length > 0 && (
                             <div className={styles.tabBar}>

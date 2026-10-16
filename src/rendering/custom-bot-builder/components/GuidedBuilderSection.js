@@ -189,10 +189,12 @@ export default function GuidedBuilderSection({ refProp }) {
                       <div className={styles.formGroup}>
                         <label>Trading Pair / Market</label>
                         <select name="pair" value={formData.pair} onChange={handleChange}>
+                          <option value="XAU/USD">XAU/USD (Gold)</option>
                           <option value="EUR/USD">EUR/USD</option>
                           <option value="GBP/USD">GBP/USD</option>
-                          <option value="XAU/USD">XAU/USD (Gold)</option>
-                          <option value="BTC/USD">BTC/USD</option>
+                          <option value="GBP/JPY">GBP/JPY</option>
+                          <option value="EUR/JPY">EUR/JPY</option>
+                          <option value="USD/CAD">USD/CAD</option>
                         </select>
                       </div>
                       <div className={styles.formGroup}>

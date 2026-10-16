@@ -95,22 +95,45 @@
             .dropdownItem {
                 background: transparent;
                 border: 1px solid transparent;
+                transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 
                 &:hover {
-                    background: #F0FDF4;
-                    border-color: rgba(24, 201, 139, 0.25);
+                    background: #059669;
+                    border-color: #059669;
+                    box-shadow: 0 8px 24px rgba(5, 150, 105, 0.28);
+                    transform: none;
 
                     .itemIconBox {
                         background: transparent;
                         border: none;
                         border-color: transparent;
-                        color: #059669;
-                        transform: scale(1.12);
-                        filter: drop-shadow(0 0 6px rgba(5, 150, 105, 0.3));
+                        color: #FFFFFF;
+                        transform: scale(1.08);
+                        filter: none;
                     }
 
-                    .itemContent .itemTitleRow .itemTitle {
-                        color: #059669;
+                    .itemContent {
+                        .itemTitleRow {
+                            .itemTitle {
+                                color: #FFFFFF;
+                            }
+
+                            .itemBadge {
+                                background: #FFFFFF;
+                                border-color: #FFFFFF;
+                                color: #047857;
+
+                                &.comingSoonBadge {
+                                    background: #FFFFFF;
+                                    border-color: #FFFFFF;
+                                    color: #047857;
+                                }
+                            }
+                        }
+
+                        .itemDesc {
+                            color: rgba(255, 255, 255, 0.92);
+                        }
                     }
                 }
 
@@ -119,6 +142,7 @@
                     border: none;
                     border-color: transparent;
                     color: #0F172A;
+                    transition: all 0.2s ease;
                 }
 
                 .itemContent {
@@ -126,12 +150,14 @@
                         .itemTitle {
                             color: #0F172A;
                             font-weight: 700;
+                            transition: color 0.2s ease;
                         }
 
                         .itemBadge {
                             background: #ECFDF5;
                             border-color: #A7F3D0;
                             color: #047857;
+                            transition: all 0.2s ease;
 
                             &.comingSoonBadge {
                                 background: #ECFDF5;
@@ -144,6 +170,7 @@
 
                     .itemDesc {
                         color: #475569;
+                        transition: color 0.2s ease;
                     }
                 }
             }
@@ -236,19 +263,33 @@
             box-shadow: none;
 
             &:hover {
-                background: #F1F5F9;
-                border-color: rgba(24, 201, 139, 0.35);
+                background: #059669;
+                border-color: #059669;
 
                 .subIconWrap {
                     background: transparent;
-                    color: #047857;
+                    color: #FFFFFF;
                     border: none;
                     border-color: transparent;
-                    transform: scale(1.1);
+                    transform: scale(1.08);
                 }
 
-                .subTitle {
-                    color: #047857;
+                .subContent {
+                    .subTitleRow {
+                        .subTitle {
+                            color: #FFFFFF;
+                        }
+
+                        .subBadge {
+                            background: #FFFFFF;
+                            border-color: #FFFFFF;
+                            color: #047857;
+                        }
+                    }
+
+                    .subDesc {
+                        color: rgba(255, 255, 255, 0.92);
+                    }
                 }
             }
 

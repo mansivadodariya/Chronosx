@@ -121,7 +121,7 @@ export default function NoRefundPolicy() {
                     <section>
                         <h2>{t('noRefundPolicy.sec12Title', '12. Contact Us')}</h2>
                         <p>{t('noRefundPolicy.sec12P1', 'If you have a billing question, believe you were charged incorrectly, or need assistance with your account, please contact ChronosX Support.')}</p>
-                        <p><strong>{t('noRefundPolicy.sec12Email', 'Email:')}</strong> <a href="mailto:support@chronosx.com">support@chronosx.com</a></p>
+                        <p><strong>{(t('noRefundPolicy.sec12Email', 'Email:') || 'Email:').replace(/support@chronosx\.com/gi, '').trim() || 'Email:'}</strong> <a href="mailto:support@chronosx.com">support@chronosx.com</a></p>
                         <p>{t('noRefundPolicy.sec12P2', 'Please include your registered email address and relevant transaction details so we can locate your account and investigate the matter.')}</p>
                     </section>
                 </div>

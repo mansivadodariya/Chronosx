@@ -232,7 +232,7 @@ export const InlineCandlestickWidget = React.memo(function InlineCandlestickWidg
                 text: `${symbol} Price Action & Key Levels`,
                 align: 'left',
                 margin: 10,
-                style: { color: '#18C98B', fontSize: '13px', fontWeight: 700 }
+                style: { color: isDark ? '#18C98B' : '#047857', fontSize: '13px', fontWeight: 700 }
             },
             legend: {
                 show: false
@@ -351,6 +351,15 @@ export const InlineSentimentRadarWidget = React.memo(function InlineSentimentRad
                 polygons: {
                     strokeColors: isDark ? 'rgba(24, 201, 139, 0.25)' : 'rgba(16, 185, 129, 0.25)',
                     connectorColors: isDark ? 'rgba(24, 201, 139, 0.15)' : 'rgba(16, 185, 129, 0.15)'
+                }
+            }
+        },
+        xaxis: {
+            labels: {
+                style: {
+                    colors: isDark ? ['#E2E8F0', '#E2E8F0', '#E2E8F0', '#E2E8F0'] : ['#0F172A', '#0F172A', '#0F172A', '#0F172A'],
+                    fontSize: '11px',
+                    fontWeight: 600
                 }
             }
         },

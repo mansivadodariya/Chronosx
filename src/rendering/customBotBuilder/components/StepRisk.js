@@ -33,7 +33,9 @@ export default function StepRisk({ data, errors = {}, onChange }) {
         const clean = String(rawVal).replace(isInt ? /[^0-9]/g : /[^0-9.]/g, '');
         const num = isInt ? parseInt(clean, 10) : parseFloat(clean);
         if (!isNaN(num)) {
-            onChange(field, Math.max(0, num));
+            const maxVal = field === 'lotSize' ? 50 : field === 'maxOpenPositions' ? 50 : 100;
+            const clamped = Math.min(maxVal, Math.max(0, num));
+            onChange(field, clamped);
         } else {
             onChange(field, '');
         }
@@ -82,10 +84,10 @@ export default function StepRisk({ data, errors = {}, onChange }) {
                             type="number"
                             step="0.01"
                             min="0.01"
-                            max="10.0"
+                            max="50.0"
                             onKeyDown={preventNegativeKeys}
                             className={`${styles.riskNumberInput} ${errors.lotSize ? styles.inputError : ''}`}
-                            placeholder="e.g. 0.10"
+                            placeholder="e.g. 0.10 (max 50)"
                             value={lotSize}
                             onChange={(e) => handlePositiveNumber('lotSize', e.target.value)}
                         />
@@ -128,11 +130,11 @@ export default function StepRisk({ data, errors = {}, onChange }) {
                         <input
                             type="number"
                             min="1"
-                            max="20"
+                            max="50"
                             step="1"
                             onKeyDown={preventNegativeKeys}
                             className={`${styles.riskNumberInput} ${errors.maxOpenPositions ? styles.inputError : ''}`}
-                            placeholder="e.g. 3"
+                            placeholder="e.g. 3 (max 50)"
                             value={maxOpenPositions}
                             onChange={(e) => handlePositiveNumber('maxOpenPositions', e.target.value, true)}
                         />
@@ -174,11 +176,11 @@ export default function StepRisk({ data, errors = {}, onChange }) {
                             <input
                                 type="number"
                                 min="0.1"
-                                max="20"
+                                max="100"
                                 step="0.5"
                                 onKeyDown={preventNegativeKeys}
                                 className={`${styles.riskNumberInput} ${errors.riskPerTrade ? styles.inputError : ''}`}
-                                placeholder="e.g. 2.0"
+                                placeholder="e.g. 2.0 (max 100%)"
                                 value={riskPerTrade}
                                 onChange={(e) => handlePositiveNumber('riskPerTrade', e.target.value)}
                             />
@@ -223,11 +225,11 @@ export default function StepRisk({ data, errors = {}, onChange }) {
                             <input
                                 type="number"
                                 min="1"
-                                max="50"
+                                max="100"
                                 step="1"
                                 onKeyDown={preventNegativeKeys}
                                 className={`${styles.riskNumberInput} ${errors.maxDailyLoss ? styles.inputError : ''}`}
-                                placeholder="e.g. 5.0"
+                                placeholder="e.g. 5.0 (max 100%)"
                                 value={maxDailyLoss}
                                 onChange={(e) => handlePositiveNumber('maxDailyLoss', e.target.value)}
                             />

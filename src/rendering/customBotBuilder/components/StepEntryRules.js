@@ -15,6 +15,7 @@ export default function StepEntryRules({ data, errors = {}, onChange, indicators
         }));
 
     const handleAddCondition = () => {
+        if (entryConditions.length >= 10) return;
         const availableKeys = Object.keys(activeIndicators);
         const defaultKey = activeIndicators.ema_crossover ? 'ema_crossover' : (availableKeys[0] || 'ema_crossover');
         const emaDefaults = defaultKey === 'ema_crossover' ? getNextEmaDefaults(entryConditions, -1, false) : {};
@@ -74,13 +75,13 @@ export default function StepEntryRules({ data, errors = {}, onChange, indicators
         onChange('entryConditions', updated);
     };
 
-    const handleParamChange = (index, paramKey, value, step = 1) => {
+    const handleParamChange = (index, paramKey, value, step = 1, maxLimit = 1000) => {
         const updated = [...entryConditions];
         let parsedVal = value;
         if (value !== '') {
             const clean = String(value).replace(step < 1 ? /[^0-9.]/g : /[^0-9]/g, '');
             const num = step < 1 ? parseFloat(clean) : parseInt(clean, 10);
-            parsedVal = isNaN(num) ? '' : Math.max(0, num);
+            parsedVal = isNaN(num) ? '' : Math.min(maxLimit, Math.max(0, num));
         }
         updated[index] = {
             ...updated[index],
@@ -234,7 +235,7 @@ export default function StepEntryRules({ data, errors = {}, onChange, indicators
                                                 className={`${styles.paramInput} ${isInvalid ? styles.inputError : ''}`}
                                                 placeholder={String(defaultVal)}
                                                 value={val}
-                                                onChange={(e) => handleParamChange(index, paramKey, e.target.value, step)}
+                                                onChange={(e) => handleParamChange(index, paramKey, e.target.value, step, max)}
                                             />
                                         </div>
                                     );

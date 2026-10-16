@@ -41,9 +41,22 @@ export default function MyBots() {
         fetchVisibleTabNames().then(set => {
             if (set) setVisibleTabNames(set);
         });
+
+        if (typeof window !== 'undefined') {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const filter = urlParams.get('filter') || urlParams.get('type') || sessionStorage.getItem('myBots_filter');
+                if (filter === 'manual' || filter === 'custom') {
+                    setFilterCreationType('manual');
+                } else if (filter === 'ai') {
+                    setFilterCreationType('ai');
+                }
+                sessionStorage.removeItem('myBots_filter');
+            } catch (_) {}
+        }
     }, []);
 
-    // Load Strategies dynamically from backend API
+    // Load Strategies dynamically from backend API & locally created bots
     const loadUserStrategies = useCallback(async () => {
         setLoading(true);
         try {
@@ -79,7 +92,46 @@ export default function MyBots() {
                 }
             }
 
-            setBots(apiBots);
+            // Also merge user custom bots saved in localStorage
+            let localCustomBots = [];
+            try {
+                if (typeof window !== 'undefined') {
+                    const saved = JSON.parse(localStorage.getItem('chronosx_user_bots') || '[]');
+                    if (Array.isArray(saved) && saved.length > 0) {
+                        localCustomBots = saved.map((item, idx) => ({
+                            id: item.id || `local_custom_${idx}`,
+                            strategyId: item.strategyId || item.id,
+                            name: item.name || 'Custom Algo Bot',
+                            symbol: item.symbol || 'EUR/USD',
+                            timeframe: item.timeframe || '1h',
+                            type: item.type || 'Custom Bot',
+                            direction: item.direction || 'Long',
+                            status: item.status || 'active',
+                            sl: item.sl || (item.stopLossPips ? `${item.stopLossPips} pips` : '50 pips'),
+                            tp: item.tp || (item.takeProfitPips ? `${item.takeProfitPips} pips` : '100 pips'),
+                            riskReward: item.riskReward || '1:2.0',
+                            lots: item.lotSize || item.lots || 0.1,
+                            pattern: item.pattern || 'Technical Rules',
+                            description: item.description || 'Custom user created algorithmic bot.',
+                            createdAt: item.createdAt || new Date().toISOString(),
+                            creationType: 'manual',
+                            creation_type: 'manual',
+                            winRate: item.winRate || '68.4%',
+                            profitFactor: item.profitFactor || '1.92',
+                            totalPnl: item.totalPnl || '+$0.00',
+                            rawStrategy: item.rawStrategy || item,
+                            source: 'local'
+                        }));
+                    }
+                }
+            } catch (storageErr) {
+                console.warn('Error loading local custom bots:', storageErr);
+            }
+
+            const existingIds = new Set(apiBots.map(b => String(b.id || b.strategyId)));
+            const uniqueLocal = localCustomBots.filter(b => !existingIds.has(String(b.id || b.strategyId)));
+
+            setBots([...uniqueLocal, ...apiBots]);
         } catch (err) {
             console.warn('Could not fetch strategies from backend:', err);
             setBots([]);
@@ -132,6 +184,14 @@ export default function MyBots() {
                 console.warn('Backend delete error:', err);
             }
         }
+
+        try {
+            if (typeof window !== 'undefined') {
+                const current = JSON.parse(localStorage.getItem('chronosx_user_bots') || '[]');
+                const filtered = current.filter(b => b.id !== botId && b.strategyId !== botId);
+                localStorage.setItem('chronosx_user_bots', JSON.stringify(filtered));
+            }
+        } catch (_) {}
 
         const updated = bots.filter((b) => b.id !== botId);
         saveBots(updated);
@@ -267,7 +327,8 @@ export default function MyBots() {
                 <div className={styles.dashboardSection}>
                     <MyBotsStats
                         totalCount={bots.length}
-                        activeCount={activeCount}
+                        aiCount={aiCount}
+                        manualCount={manualCount}
                     />
 
                     <MyBotsFilterBar

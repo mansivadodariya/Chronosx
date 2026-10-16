@@ -26,6 +26,7 @@ const ChatMessageList = React.memo(function ChatMessageList({
     chatMessages,
     isLoadingChat,
     pendingRequest,
+    queuedCount = 0,
     selectedPair,
     chatEndRef,
     t,
@@ -55,7 +56,6 @@ const ChatMessageList = React.memo(function ChatMessageList({
     return (
         <div 
             className={styles.chatBody}
-            data-lenis-prevent="true"
             onWheel={(e) => e.stopPropagation()}
         >
             {chatMessages.length === 0 && !isLoadingChat ? (
@@ -68,24 +68,37 @@ const ChatMessageList = React.memo(function ChatMessageList({
             ) : (
                 chatMessages.map((msg, index) => {
                     const isDeepAnalysis = msg.response_format === "deep_analysis" || msg.response_format === "deep_decision";
+                    const isQueued = msg.role === 'user' && msg.status === 'queued';
+                    const hasPair = msg.role === 'user' &&
+                        msg.pair &&
+                        typeof msg.pair === 'string' &&
+                        msg.pair.trim() !== '' &&
+                        msg.pair !== 'No Pair' &&
+                        msg.pair !== 'NO_PAIR' &&
+                        !msg.pair.toLowerCase().includes('no pair') &&
+                        msg.pair.toLowerCase() !== 'none';
+
                     return (
                         <div
-                            key={index}
-                            className={`${styles.messageRow} ${msg.role === 'user' ? styles.userRow : ''} ${msg.fullReport ? styles.reportRow : ''}`}
+                            key={msg.id || index}
+                            className={`${styles.messageRow} ${msg.role === 'user' ? styles.userRow : ''} ${msg.fullReport ? styles.reportRow : ''} ${isQueued ? styles.userRowQueued : ''}`}
                         >
-                            {msg.role === 'user' &&
-                             msg.pair &&
-                             typeof msg.pair === 'string' &&
-                             msg.pair.trim() !== '' &&
-                             msg.pair !== 'No Pair' &&
-                             msg.pair !== 'NO_PAIR' &&
-                             !msg.pair.toLowerCase().includes('no pair') &&
-                             msg.pair.toLowerCase() !== 'none' && (
-                                <span className={styles.pairBadge}>
-                                    <ChatIcon size={12} /> {msg.pair.toUpperCase()}
-                                </span>
+                            {msg.role === 'user' && (hasPair || isQueued) && (
+                                <div className={styles.userHeaderBadges}>
+                                    {hasPair && (
+                                        <span className={styles.pairBadge}>
+                                            <ChatIcon size={12} /> {msg.pair.toUpperCase()}
+                                        </span>
+                                    )}
+                                    {isQueued && (
+                                        <span className={styles.queuedBadge}>
+                                            <span className={styles.queuedPulseDot} />
+                                            {t ? t('aiAssistant.queued', 'Queued') : 'Queued'}
+                                        </span>
+                                    )}
+                                </div>
                             )}
-                            <div {...getBidiProps(msg.content, msg.role === 'user' ? styles.userMessage : styles.assistantMessage)}>
+                            <div {...getBidiProps(msg.content, `${msg.role === 'user' ? styles.userMessage : styles.assistantMessage} ${isQueued ? styles.userMessageQueued : ''}`)}>
                                 {msg.role === 'user' ? (
                                     <>
                                         {(msg.attachment?.url || msg.image_url) && (
@@ -242,7 +255,7 @@ const ChatMessageList = React.memo(function ChatMessageList({
 
                                             {/* 3. Disclaimer Footer if present on plain message */}
                                             {disclaimerFooter && (
-                                                <div className={styles.visionOverviewCard} style={{ marginTop: 12, opacity: 0.8, fontSize: '11.5px', fontStyle: 'italic' }}>
+                                                <div className={styles.visionOverviewCard} style={{ marginTop: 12, fontSize: '11.5px', fontStyle: 'italic' }}>
                                                     <div className={styles.chatMarkdown}>
                                                         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={bidiMarkdownComponents}>
                                                             {disclaimerFooter}
@@ -287,6 +300,11 @@ const ChatMessageList = React.memo(function ChatMessageList({
                             <span className={styles.analyzingStatusText}>
                                 {analyzingPhrases[phraseIndex]}
                             </span>
+                            {queuedCount > 0 && (
+                                <span className={styles.queueCountIndicator}>
+                                    • {queuedCount} {t ? t('aiAssistant.inQueue', 'in queue') : 'in queue'}
+                                </span>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import CommonSectionHeader from '@/components/CommonSectionHeader';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import styles from './calculator.module.scss';
 import PipCalculator from './components/PipCalculator';
@@ -14,6 +14,17 @@ export default function ForexCalculator() {
     const { t } = useLanguage();
     const [activeTab, setActiveTab] = useState('pip'); // 'pip' | 'margin' | 'fibonacci' | 'pivot' | 'profit'
     const [copied, setCopied] = useState(false);
+    const tabRefs = useRef({});
+
+    useEffect(() => {
+        if (tabRefs.current[activeTab]) {
+            tabRefs.current[activeTab].scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'center'
+            });
+        }
+    }, [activeTab]);
 
     const handleCopy = (text) => {
         if (typeof navigator !== 'undefined' && navigator.clipboard) {
@@ -45,6 +56,7 @@ export default function ForexCalculator() {
             {/* Navigation Tabs */}
             <div className={styles.tabBarWrapper}>
                 <button
+                    ref={(el) => (tabRefs.current['pip'] = el)}
                     type="button"
                     className={`${styles.tabBtn} ${activeTab === 'pip' ? styles.activeTab : ''}`}
                     onClick={() => setActiveTab('pip')}
@@ -53,6 +65,7 @@ export default function ForexCalculator() {
                     <span>{t('calculator.pipValueTab', 'PIP Value')}</span>
                 </button>
                 <button
+                    ref={(el) => (tabRefs.current['margin'] = el)}
                     type="button"
                     className={`${styles.tabBtn} ${activeTab === 'margin' ? styles.activeTab : ''}`}
                     onClick={() => setActiveTab('margin')}
@@ -61,6 +74,7 @@ export default function ForexCalculator() {
                     <span>{t('calculator.marginTab', 'Margin')}</span>
                 </button>
                 <button
+                    ref={(el) => (tabRefs.current['fibonacci'] = el)}
                     type="button"
                     className={`${styles.tabBtn} ${activeTab === 'fibonacci' ? styles.activeTab : ''}`}
                     onClick={() => setActiveTab('fibonacci')}
@@ -69,6 +83,7 @@ export default function ForexCalculator() {
                     <span>{t('calculator.fibonacci', 'Fibonacci')}</span>
                 </button>
                 <button
+                    ref={(el) => (tabRefs.current['pivot'] = el)}
                     type="button"
                     className={`${styles.tabBtn} ${activeTab === 'pivot' ? styles.activeTab : ''}`}
                     onClick={() => setActiveTab('pivot')}
@@ -77,6 +92,7 @@ export default function ForexCalculator() {
                     <span>{t('calculator.pivotPoints', 'Pivot Points')}</span>
                 </button>
                 <button
+                    ref={(el) => (tabRefs.current['profit'] = el)}
                     type="button"
                     className={`${styles.tabBtn} ${activeTab === 'profit' ? styles.activeTab : ''}`}
                     onClick={() => setActiveTab('profit')}

@@ -81,12 +81,20 @@
                 .cardBodyRow {
                     .leftLevelsColumn {
                         .levelRow {
+                            background: transparent !important;
+                            border: none !important;
+                            border-bottom: none !important;
+                            box-shadow: none !important;
+                            padding: 2px 0;
+
                             .levelLabel {
-                                color: #475569;
+                                color: #334155;
+                                font-weight: 600;
                             }
 
                             .levelValue {
                                 color: #0F172A;
+                                font-weight: 700;
 
                                 &.entryColor {
                                     color: #0F172A;
@@ -102,6 +110,7 @@
                             .timeTagValue,
                             .riskRewardValue {
                                 color: #0F172A;
+                                font-weight: 700;
                             }
 
                             .directionBadgePill {
@@ -121,12 +130,14 @@
                                 background: rgba(16, 185, 129, 0.1);
                                 border-color: rgba(16, 185, 129, 0.35);
                                 color: #065F46;
+                                font-weight: 700;
                             }
 
                             .volumeBadgePill {
                                 color: #047857;
                                 background: rgba(16, 185, 129, 0.1);
                                 border-color: rgba(16, 185, 129, 0.35);
+                                font-weight: 700;
                             }
                         }
                     }

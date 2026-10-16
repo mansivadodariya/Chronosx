@@ -310,7 +310,7 @@ const TradingViewChartPane = forwardRef(function TradingViewChartPane(
                 mouseWheel: false,
                 pressedMouseMove: true,
                 horzTouchDrag: true,
-                vertTouchDrag: true,
+                vertTouchDrag: false,
             },
             handleScale: {
                 axisPressedMouseMove: {

@@ -4,7 +4,7 @@ import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import styles from '../myBots.module.scss';
 
-export default function MyBotsStats({ totalCount, activeCount }) {
+export default function MyBotsStats({ totalCount, aiCount, manualCount }) {
     const { t } = useLanguage();
 
     return (
@@ -14,8 +14,12 @@ export default function MyBotsStats({ totalCount, activeCount }) {
                 <span className={styles.statVal}>{totalCount}</span>
             </div>
             <div className={styles.statBox}>
-                <span className={styles.statLabel}>{t('myBots.activeDeployments', 'ACTIVE DEPLOYMENTS')}</span>
-                <span className={`${styles.statVal} ${styles.activeColor}`}>{activeCount}</span>
+                <span className={styles.statLabel}>{t('myBots.aiBots', 'AI BOTS')}</span>
+                <span className={styles.statVal}>{aiCount}</span>
+            </div>
+            <div className={styles.statBox}>
+                <span className={styles.statLabel}>{t('myBots.manualBots', 'MANUAL BOTS')}</span>
+                <span className={styles.statVal}>{manualCount}</span>
             </div>
         </div>
     );

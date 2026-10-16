@@ -45,7 +45,9 @@
     animation: pulse 2s infinite;
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     background: rgba(24, 201, 139, 0.14);
     border-color: rgba(24, 201, 139, 0.4);
     color: #059669;
@@ -72,7 +74,9 @@
     display: inline;
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     color: #0F172A;
 
     .highlight {
@@ -104,7 +108,9 @@
     margin-bottom: 28px;
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     color: #475569;
   }
 }
@@ -190,7 +196,9 @@
     transform: translateY(-2px);
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     background: #FFFFFF;
     border-color: rgba(5, 150, 105, 0.35);
     color: #059669;
@@ -270,7 +278,9 @@
     }
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     background: #FFFFFF;
     border-color: #E2E8F0;
     box-shadow: 0 8px 25px rgba(15, 23, 42, 0.04);

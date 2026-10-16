@@ -399,7 +399,7 @@ export default function TradeSnap() {
                     />
                 )}
 
-                {allAnalyses.length > 0 && (
+                {allAnalyses.length > 0 && !isAnalyzing && (
                     <TradeSnapResultsPanel
                         isAnalyzing={isAnalyzing}
                         allAnalyses={allAnalyses}

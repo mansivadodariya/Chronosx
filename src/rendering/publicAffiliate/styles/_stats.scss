@@ -13,7 +13,9 @@
     padding: 50px 0;
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     background: #FFFFFF;
     border-top-color: #E2E8F0;
     border-bottom-color: #E2E8F0;
@@ -88,7 +90,9 @@
     }
   }
 
-  :global(html.light) & {
+  :global(html.light) &,
+  :global(html[data-theme='light']) &,
+  :global([data-theme='light']) & {
     background: linear-gradient(135deg, rgba(24, 201, 139, 0.06) 0%, #F8FAFC 100%);
     border-color: rgba(24, 201, 139, 0.3);
 

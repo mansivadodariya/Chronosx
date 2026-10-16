@@ -274,6 +274,12 @@
     font-weight: 700;
     font-family: var(--font-plus-jakarta), sans-serif;
     margin-bottom: 12px;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) & {
+        color: #0F172A;
+    }
 }
 
 .successDesc {
@@ -282,14 +288,34 @@
     line-height: 1.65;
     max-width: 540px;
     margin-bottom: 28px;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) & {
+        color: #475569;
+    }
 }
 
 .highlightName {
     color: #FFFFFF;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) & {
+        color: #0F172A;
+        font-weight: 700;
+    }
 }
 
 .highlightEmail {
     color: #18C98B;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) & {
+        color: #047857;
+        font-weight: 600;
+    }
 }
 
 .resetBtn {
@@ -307,6 +333,20 @@
         background: #18C98B;
         color: #040300;
         box-shadow: 0 0 20px rgba(24, 201, 139, 0.4);
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) & {
+        background: rgba(24, 201, 139, 0.12);
+        border-color: rgba(24, 201, 139, 0.4);
+        color: #047857;
+
+        &:hover {
+            background: #10B981;
+            color: #FFFFFF;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+        }
     }
 }
 

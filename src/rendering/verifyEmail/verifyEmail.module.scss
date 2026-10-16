@@ -205,7 +205,9 @@
 }
 
 /* Specific Light Mode Rules for Verify Email */
-:global(html.light) .authCard {
+:global(html.light) .authCard,
+:global(html[data-theme='light']) .authCard,
+:global([data-theme='light']) .authCard {
     background: #FFFFFF;
     border: none;
     box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.08);

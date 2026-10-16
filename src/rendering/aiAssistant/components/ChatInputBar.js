@@ -18,6 +18,7 @@ export default function ChatInputBar({
     handlePaste,
     handleDrop,
     pendingRequest,
+    queuedCount = 0,
     activeAnalysisMode,
     setActiveAnalysisMode,
     selectedPair,
@@ -67,7 +68,7 @@ export default function ChatInputBar({
         }
     }, [chatInput, textareaRef]);
     const getPlaceholderText = () => {
-        if (pendingRequest) return t('aiAssistant.loadingChart', 'Processing analysis...');
+        if (pendingRequest) return t('aiAssistant.queuePlaceholder', 'Type a follow-up to queue (will send after response)...');
         if (activeAnalysisMode === 'deep') {
             const raw = t('aiAssistant.deepPlaceholder', `Ask for deep technical structure, key levels, trade setup for ${selectedPair || 'market'}...`);
             if (!raw || raw === 'aiAssistant.deepPlaceholder') {
@@ -306,12 +307,12 @@ export default function ChatInputBar({
                         {isListening && <span className={styles.voicePulseRing} />}
                     </button>
 
-                    {/* Send trigger */}
+                    {/* Send / Queue trigger */}
                     <button
-                        className={styles.sendBtn}
+                        className={`${styles.sendBtn} ${pendingRequest ? styles.sendBtnQueue : ''}`}
                         onClick={handleSendChatMessage}
-                        disabled={pendingRequest || (!chatInput.trim() && !attachmentDraft && !activeAnalysisMode)}
-                        title={t('aiAssistant.send', 'Send message')}
+                        disabled={!chatInput.trim() && !attachmentDraft && !activeAnalysisMode}
+                        title={pendingRequest ? t('aiAssistant.addToQueue', 'Queue message (will send after response)') : t('aiAssistant.send', 'Send message')}
                     >
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <line x1="12" y1="19" x2="12" y2="5"></line>

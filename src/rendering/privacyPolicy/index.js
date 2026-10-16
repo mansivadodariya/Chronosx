@@ -88,7 +88,7 @@ export default function PrivacyPolicy() {
                     <section>
                         <h2>{t('privacyPolicy.sec13Title', 'Contact Information')}</h2>
                         <p>{t('privacyPolicy.sec13P1', 'If you have any questions, concerns, requests, or complaints regarding this Privacy Policy or our privacy practices, please contact us at:')}</p>
-                        <p><strong>{t('privacyPolicy.sec13Email', 'Email:')}</strong> <a href="mailto:support@chronosx.com">support@chronosx.com</a></p>
+                        <p><strong>{(t('privacyPolicy.sec13Email', 'Email:') || 'Email:').replace(/support@chronosx\.com/gi, '').trim() || 'Email:'}</strong> <a href="mailto:support@chronosx.com">support@chronosx.com</a></p>
                     </section>
                 </div>
             </div>

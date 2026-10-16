@@ -2716,7 +2716,7 @@
     "sec16LegalEntity": "ChronosX Financial Technologies FZ-LLC",
     "sec16RegNo": "Reg No: FZ-LLC-2024-CX8901",
     "sec16Address": "Dubai Silicon Oasis, IFZA Business Park, Building A1, Dubai, UAE",
-    "sec16Email": "Email: support@chronosx.com",
+    "sec16Email": "Email:",
     "sec16SupportDesk": "Global Support Desk: Available 24/5 (Sun 22:00 GMT – Fri 22:00 GMT)"
   },
   "privacyPolicy": {
@@ -2758,7 +2758,7 @@
     "sec12Content": "We reserve the right to modify, update, or revise this Privacy Policy at any time. Any changes will become effective upon publication on the platform. Continued use of ChronosX following the publication of changes constitutes acceptance of the updated Privacy Policy.",
     "sec13Title": "Contact Information",
     "sec13P1": "If you have any questions, concerns, requests, or complaints regarding this Privacy Policy or our privacy practices, please contact us at:",
-    "sec13Email": "Email: support@chronosx.com"
+    "sec13Email": "Email:"
   },
   "riskDisclosure": {
     "title": "Risk Disclosure Statement",
@@ -2782,7 +2782,7 @@
     "sec7Content": "You acknowledge that you are solely responsible for all trading decisions, position sizing, stop-loss configurations, risk parameters, and financial outcomes. You agree that ChronosX, its developers, founders, affiliates, and partners shall not be held liable for any direct, indirect, incidental, or consequential trading losses or damages resulting from the use of the platform.",
     "sec8Title": "8. Contact for Inquiries",
     "sec8P1": "If you have any questions regarding this Risk Disclosure Statement, please reach out to our legal and compliance desk at:",
-    "sec8Email": "Email: support@chronosx.com"
+    "sec8Email": "Email:"
   },
   "myBots": {
     "headerBadge": "مجموعة روبوتات التداول بالذكاء الاصطناعي CHRONOSX",

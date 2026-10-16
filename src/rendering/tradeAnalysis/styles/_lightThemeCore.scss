@@ -63,6 +63,7 @@
                 .stepTitle {
                     color: #334155;
                 }
+
                 .stepSub {
                     color: #64748B;
                 }
@@ -73,14 +74,17 @@
                     .stepNum {
                         color: #047857;
                     }
+
                     .pulseHalo {
                         border-color: rgba(24, 201, 139, 0.5);
                     }
                 }
+
                 .stepMeta {
                     .stepTitle {
                         color: #0F172A;
                     }
+
                     .stepSub {
                         color: #047857;
                     }
@@ -92,6 +96,7 @@
             .connectorLine {
                 background: linear-gradient(90deg, rgba(15, 23, 42, 0.06) 0%, rgba(24, 201, 139, 0.35) 50%, rgba(15, 23, 42, 0.06) 100%);
             }
+
             .connectorDot {
                 background: #18C98B;
                 box-shadow: 0 0 6px rgba(24, 201, 139, 0.6);
@@ -100,13 +105,21 @@
     }
 
     .uploadCard {
-        background: radial-gradient(ellipse 50% 75% at 50% 30%, rgba(24, 201, 139, 0.08) 0%, rgba(248, 250, 252, 0.7) 60%, #FFFFFF 100%), #FFFFFF;
+        background:
+            radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+            radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            #f3f3f3;
         border: 2px dashed rgba(24, 201, 139, 0.45);
         box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 
         &:hover,
         &.activeDrag {
-            background: #F0FDF4;
+            background:
+                radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+                radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+                radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+                #f7f6f6;
             border-color: #18C98B;
             box-shadow: 0 12px 32px rgba(24, 201, 139, 0.15);
         }
@@ -115,6 +128,7 @@
             .pedestalGlow {
                 background: radial-gradient(circle, rgba(24, 201, 139, 0.2) 0%, transparent 70%);
             }
+
             .pedestalIcon {
                 background: linear-gradient(135deg, rgba(24, 201, 139, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
                 border: 1px solid rgba(24, 201, 139, 0.35);
@@ -127,6 +141,7 @@
             h2 {
                 color: #0F172A;
             }
+
             p {
                 color: #475569;
             }
@@ -160,9 +175,11 @@
                 border: 1px solid rgba(24, 201, 139, 0.25);
                 color: #047857;
             }
+
             h4 {
                 color: #0F172A;
             }
+
             p {
                 color: #64748B;
             }
@@ -191,6 +208,7 @@
             h3 {
                 color: #0F172A;
             }
+
             p {
                 color: #64748B;
             }
@@ -217,6 +235,7 @@
                     h5 {
                         color: #0F172A;
                     }
+
                     p {
                         color: #475569;
                     }
@@ -236,15 +255,26 @@
                 span.fileName {
                     color: #0F172A;
                 }
+
                 span.fileSub {
                     color: #64748B;
                 }
             }
 
             .completePillBadge {
-                background: rgba(16, 185, 129, 0.12);
-                border: 1px solid rgba(16, 185, 129, 0.35);
+                background: rgba(16, 185, 129, 0.14);
+                border: 1px solid rgba(16, 185, 129, 0.4);
                 color: #047857;
+
+                span {
+                    color: #047857 !important;
+                    font-weight: 700 !important;
+                }
+
+                svg {
+                    color: #047857 !important;
+                    stroke: #047857 !important;
+                }
             }
 
             .checkTitleGroup {
@@ -253,6 +283,7 @@
                     border-color: rgba(24, 201, 139, 0.4);
                     color: #047857;
                 }
+
                 h3 {
                     color: #047857;
                 }
@@ -308,12 +339,15 @@
         .statementTitleRow .titleLeft {
             h2 {
                 color: #0F172A;
+
                 span.platformName {
                     color: #047857;
                 }
             }
+
             .metaPills span {
                 color: #64748B;
+
                 strong {
                     color: #0F172A;
                 }
@@ -327,12 +361,20 @@
                 span.metricLabel {
                     color: #64748B;
                 }
+
                 .valBadgeRow {
                     span.metricVal {
                         color: #0F172A;
-                        &.green { color: #047857; }
-                        &.red { color: #DC2626; }
+
+                        &.green {
+                            color: #047857;
+                        }
+
+                        &.red {
+                            color: #DC2626;
+                        }
                     }
+
                     .pillBadge.green {
                         background: rgba(16, 185, 129, 0.14);
                         color: #047857;
@@ -367,25 +409,37 @@
         table {
             thead tr {
                 border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+
                 th {
                     color: #64748B;
                 }
             }
+
             tbody tr {
                 border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+
                 &:hover {
                     background: #F8FAFC;
                 }
+
                 td {
                     color: #334155;
+
                     &:first-child {
                         color: #0F172A;
                     }
+
                     &:last-child {
                         color: #0F172A;
                     }
-                    &.greenText { color: #047857; }
-                    &.redText { color: #DC2626; }
+
+                    &.greenText {
+                        color: #047857;
+                    }
+
+                    &.redText {
+                        color: #DC2626;
+                    }
                 }
             }
         }
@@ -396,19 +450,30 @@
             background: #FEF2F2;
             border: 1px solid rgba(239, 68, 68, 0.25);
             color: #991B1B;
-            strong.prefix { color: #DC2626; }
+
+            strong.prefix {
+                color: #DC2626;
+            }
         }
+
         &.peak {
             background: #F0F9FF;
             border: 1px solid rgba(56, 189, 248, 0.3);
             color: #075985;
-            strong.prefix { color: #0284C7; }
+
+            strong.prefix {
+                color: #0284C7;
+            }
         }
+
         &.recommendation {
             background: #F0FDF4;
             border: 1px solid rgba(16, 185, 129, 0.3);
             color: #166534;
-            strong.prefix { color: #059669; }
+
+            strong.prefix {
+                color: #059669;
+            }
         }
     }
 
@@ -427,6 +492,7 @@
                     border: 1px solid rgba(16, 185, 129, 0.25);
                     color: #166534;
                 }
+
                 .itemCard.bad {
                     background: #FEF2F2;
                     border: 1px solid rgba(239, 68, 68, 0.25);
@@ -436,18 +502,29 @@
         }
     }
 
-    .resultsTabRow .tabBtn {
-        color: #64748B;
+    .resultsTabRow {
+        background: #F8FAFC;
+        border: 1px solid #E2E8F0;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 
-        &:hover {
-            color: #0F172A;
-            background: #F1F5F9;
-        }
+        .tabBtn {
+            color: #64748B;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 6px 16px;
+            border-radius: 8px;
 
-        &.active {
-            background: rgba(24, 201, 139, 0.14);
-            color: #047857;
-            font-weight: 700;
+            &:hover {
+                color: #0F172A;
+                background: #F1F5F9;
+            }
+
+            &.active {
+                background: #FFFFFF;
+                color: #047857;
+                font-weight: 700;
+                box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+            }
         }
     }
 
@@ -459,21 +536,27 @@
             color: #047857;
             border-left-color: #047857;
         }
+
         .reportH4 {
             color: #0F172A;
         }
+
         .reportP {
             color: #334155;
+
             strong {
                 color: #0F172A;
             }
         }
+
         .reportUl .reportLi {
             color: #334155;
+
             strong {
                 color: #047857;
             }
         }
+
         .tableWrapper {
             background: #FFFFFF;
             border: 1px solid rgba(15, 23, 42, 0.08);
@@ -482,20 +565,26 @@
                 thead {
                     background: #F8FAFC;
                     border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+
                     th {
                         color: #047857;
                     }
                 }
+
                 tbody tr {
                     border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+
                     &:hover {
                         background: #F8FAFC;
                     }
+
                     td {
                         color: #334155;
+
                         &:first-child {
                             color: #0F172A;
                         }
+
                         &:last-child {
                             color: #0F172A;
                         }

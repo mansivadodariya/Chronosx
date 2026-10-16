@@ -160,6 +160,8 @@
     margin-bottom: 14px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    overscroll-behavior-x: contain;
     scrollbar-width: none;
 
     &::-webkit-scrollbar {
@@ -168,21 +170,22 @@
 
     @include respond-to('tab') {
         gap: 6px;
-        padding: 5px;
-        margin-bottom: 22px;
+        padding: 5px 6px;
+        margin-bottom: 18px;
+        border-radius: 14px;
     }
 
     @include respond-to('sm') {
-        border-radius: 9999px;
-        gap: 4px;
-        padding: 4px;
-        margin-bottom: 18px;
+        gap: 6px;
+        padding: 4px 6px;
+        margin-bottom: 16px;
+        border-radius: 12px;
     }
 
     .tabBtn {
         flex: 1;
         min-width: 110px;
-        display: flex;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
@@ -196,19 +199,26 @@
         cursor: pointer;
         transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
         white-space: nowrap;
+        flex-shrink: 0;
 
         @include respond-to('tab') {
-            padding: 10px 16px;
+            flex: 0 0 auto;
+            min-width: auto;
+            padding: 9px 15px;
             font-size: 13px;
-            min-width: 95px;
+            border-radius: 10px;
             gap: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         @include respond-to('sm') {
+            flex: 0 0 auto;
+            min-width: auto;
             padding: 8px 12px;
             font-size: 12px;
-            min-width: 85px;
-            border-radius: 9999px;
+            border-radius: 8px;
+            gap: 5px;
 
             svg {
                 width: 14px;
@@ -218,7 +228,7 @@
 
         &:hover {
             color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         &.activeTab {

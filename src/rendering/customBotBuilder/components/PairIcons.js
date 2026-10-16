@@ -149,9 +149,11 @@ export const ASSET_ICONS = {
 const PAIR_MAP = {
     'EUR/USD': { base: 'EUR', quote: 'USD' },
     'GBP/USD': { base: 'GBP', quote: 'USD' },
+    'GBP/JPY': { base: 'GBP', quote: 'JPY' },
+    'EUR/JPY': { base: 'EUR', quote: 'JPY' },
+    'USD/CAD': { base: 'USD', quote: 'CAD' },
     'USD/JPY': { base: 'USD', quote: 'JPY' },
     'AUD/USD': { base: 'AUD', quote: 'USD' },
-    'USD/CAD': { base: 'USD', quote: 'CAD' },
     'USD/CHF': { base: 'USD', quote: 'CHF' },
     'XAU/USD': { base: 'XAU', quote: 'USD' },
     'BTC/USD': { base: 'BTC', quote: 'USD' },

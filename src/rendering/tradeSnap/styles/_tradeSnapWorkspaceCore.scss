@@ -321,6 +321,21 @@ $success: #10b981;
             box-shadow: none;
         }
 
+        &.isAnalyzingBtn,
+        &:has(.analyzingTextWrap) {
+            opacity: 1 !important;
+            cursor: wait !important;
+            background: rgba(24, 201, 139, 0.18) !important;
+            border: 1px solid rgba(24, 201, 139, 0.45) !important;
+            color: #18C98B !important;
+            box-shadow: 0 0 14px rgba(24, 201, 139, 0.25) !important;
+
+            .analyzingTextWrap {
+                color: #18C98B !important;
+                font-weight: 700 !important;
+            }
+        }
+
         svg {
             color: #040605;
         }

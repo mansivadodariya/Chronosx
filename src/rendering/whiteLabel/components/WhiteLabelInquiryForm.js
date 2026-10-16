@@ -223,10 +223,10 @@ export default function WhiteLabelInquiryForm() {
                     p_message: formData.message.trim()
                 });
 
-                if (!rpcError) {
+                if (!rpcError && rpcData?.success !== false) {
                     submitted = true;
                 } else {
-                    console.warn('Direct RPC failed, trying direct table insert:', rpcError.message);
+                    console.warn('Direct RPC failed, trying direct table insert:', rpcError?.message || rpcData?.error);
                     const { error: insertError } = await supabase
                         .from('white_label_inquiries')
                         .insert([{
@@ -248,6 +248,10 @@ export default function WhiteLabelInquiryForm() {
                         submitted = true;
                     }
                 }
+            }
+
+            if (!submitted) {
+                throw new Error('Failed to record inquiry in database. Please check your network or try again.');
             }
 
             setIsSubmitting(false);
