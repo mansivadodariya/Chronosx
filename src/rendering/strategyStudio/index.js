@@ -11,6 +11,7 @@ import ChatHistoryDrawer from './components/ChatHistoryDrawer';
 import useStrategyChatHistory from './hooks/useStrategyChatHistory';
 import StudioEmptyState from './components/StudioEmptyState';
 import useStudioSessionStorage from './hooks/useStudioSessionStorage';
+import { clearStudioSession } from './utils/sessionPersistence';
 import { toast } from '@/components/toast';
 import { strategyStudioApi } from './utils/strategyApi';
 import { parseRoundTrips } from './utils/backtestEngine';
@@ -207,8 +208,9 @@ export default function StrategyStudio() {
 
             if (res && !res.isError && (res.status === 'success' || res.success || res.data || res.reply)) {
                 const resultData = res.data || res;
-                if (!currentSessionId && (resultData.session_id || res.session_id)) {
-                    setCurrentSessionId(resultData.session_id || res.session_id);
+                if (!currentSessionId) {
+                    const nextSessionId = resultData.session_id || res.session_id || (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : 'sess_' + Date.now());
+                    setCurrentSessionId(nextSessionId);
                     loadHistoryList();
                 }
                 const rawReply = resultData.reply || res.reply || 'I have analyzed your strategy request.';
@@ -368,6 +370,10 @@ export default function StrategyStudio() {
     const handleNewChat = useCallback(() => {
         clearStudioSession();
         resetHistoryChat();
+        setMessages([]);
+        setCurrentDraft(null);
+        setCurrentStrategy(null);
+        setCurrentSessionId(null);
         setChatInput('');
         setResults(null);
         setRoundTrips([]);
@@ -376,7 +382,7 @@ export default function StrategyStudio() {
         setGeneratingStrategy(false);
         setAdvisorLoading(false);
         setSimulationLoading(false);
-    }, [resetHistoryChat]);
+    }, [resetHistoryChat, setCurrentSessionId]);
 
     /**
      * Execute Backtest Simulation

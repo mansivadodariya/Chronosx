@@ -233,77 +233,167 @@ export default function OverviewAnalyticsTab({
                         <ScaleIcon />
                         <h3>{t('tradeAnalysis.buySellTitle', 'BUY vs SELL Breakdown')}</h3>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>{t('tradeAnalysis.typeHeader', 'Type')}</th>
-                                <th>{t('tradeAnalysis.tradesHeader', 'Trades')}</th>
-                                <th>{t('tradeAnalysis.winRateHeader', 'Win Rate')}</th>
-                                <th>{t('tradeAnalysis.grossProfitHeader', 'Gross Profit')}</th>
-                                <th>{t('tradeAnalysis.netProfitHeader', 'Net Profit')}</th>
-                                <th>{t('tradeAnalysis.avgProfitHeader', 'Avg Profit/Trade')}</th>
-                                <th>{t('tradeAnalysis.actionHeader', 'Action')}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>BUY</td>
-                                <td>{summary.buy_stats?.trades ?? summary.buy_trades_count ?? trades.filter(t => (t.side || '').toUpperCase() === 'BUY').length}</td>
-                                <td>{summary.buy_stats?.win_rate ?? '100.0'}%</td>
-                                <td>+$0.00</td>
-                                <td className={styles.profitCell}>
-                                    {formatCurrency(summary.buy_stats?.net_profit ?? summary.buy_net_pnl ?? 0)}
-                                </td>
-                                <td>{formatCurrency(summary.buy_stats?.avg_profit_per_trade ?? ((summary.buy_stats?.trades || 1) ? (summary.buy_stats?.net_profit || 0) / (summary.buy_stats?.trades || 1) : 0))}</td>
-                                <td>
-                                    <button
-                                        type="button"
-                                        className={styles.tableAnalyzeBtn}
-                                        onClick={() => {
-                                            const firstBuyTrade = trades.find(t => (t.side || '').toUpperCase() === 'BUY');
-                                            if (firstBuyTrade) {
-                                                handleAnalyzeIndividualTrade(firstBuyTrade);
-                                            } else {
-                                                setFilterSide('BUY');
-                                                setActiveTab('ledger');
-                                            }
-                                        }}
-                                    >
-                                        <SparklesIcon />
-                                        <span>{t('tradeAnalysis.analyzeBuy', 'Analyze BUY')}</span>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>SELL</td>
-                                <td>{summary.sell_stats?.trades ?? summary.sell_trades_count ?? trades.filter(t => (t.side || '').toUpperCase() === 'SELL').length}</td>
-                                <td>{summary.sell_stats?.win_rate ?? '100.0'}%</td>
-                                <td>+$0.00</td>
-                                <td className={styles.profitCell}>
-                                    {formatCurrency(summary.sell_stats?.net_profit ?? summary.sell_net_pnl ?? 0)}
-                                </td>
-                                <td>{formatCurrency(summary.sell_stats?.avg_profit_per_trade ?? ((summary.sell_stats?.trades || 1) ? (summary.sell_stats?.net_profit || 0) / (summary.sell_stats?.trades || 1) : 0))}</td>
-                                <td>
-                                    <button
-                                        type="button"
-                                        className={styles.tableAnalyzeBtn}
-                                        onClick={() => {
-                                            const firstSellTrade = trades.find(t => (t.side || '').toUpperCase() === 'SELL');
-                                            if (firstSellTrade) {
-                                                handleAnalyzeIndividualTrade(firstSellTrade);
-                                            } else {
-                                                setFilterSide('SELL');
-                                                setActiveTab('ledger');
-                                            }
-                                        }}
-                                    >
-                                        <SparklesIcon />
-                                        <span>{t('tradeAnalysis.analyzeSell', 'Analyze SELL')}</span>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    {/* Table View (Desktops & Tablets with Horizontal Scroll) */}
+                    <div className={styles.buySellTableScroll}>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>{t('tradeAnalysis.typeHeader', 'Type')}</th>
+                                    <th>{t('tradeAnalysis.tradesHeader', 'Trades')}</th>
+                                    <th>{t('tradeAnalysis.winRateHeader', 'Win Rate')}</th>
+                                    <th>{t('tradeAnalysis.grossProfitHeader', 'Gross Profit')}</th>
+                                    <th>{t('tradeAnalysis.netProfitHeader', 'Net Profit')}</th>
+                                    <th>{t('tradeAnalysis.avgProfitHeader', 'Avg Profit/Trade')}</th>
+                                    <th>{t('tradeAnalysis.actionHeader', 'Action')}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>BUY</td>
+                                    <td>{summary.buy_stats?.trades ?? summary.buy_trades_count ?? trades.filter(t => (t.side || '').toUpperCase() === 'BUY').length}</td>
+                                    <td>{summary.buy_stats?.win_rate ?? '100.0'}%</td>
+                                    <td>+$0.00</td>
+                                    <td className={styles.profitCell}>
+                                        {formatCurrency(summary.buy_stats?.net_profit ?? summary.buy_net_pnl ?? 0)}
+                                    </td>
+                                    <td>{formatCurrency(summary.buy_stats?.avg_profit_per_trade ?? ((summary.buy_stats?.trades || 1) ? (summary.buy_stats?.net_profit || 0) / (summary.buy_stats?.trades || 1) : 0))}</td>
+                                    <td>
+                                        <button
+                                            type="button"
+                                            className={styles.tableAnalyzeBtn}
+                                            onClick={() => {
+                                                const firstBuyTrade = trades.find(t => (t.side || '').toUpperCase() === 'BUY');
+                                                if (firstBuyTrade) {
+                                                    handleAnalyzeIndividualTrade(firstBuyTrade);
+                                                } else {
+                                                    setFilterSide('BUY');
+                                                    setActiveTab('ledger');
+                                                }
+                                            }}
+                                        >
+                                            <SparklesIcon />
+                                            <span>{t('tradeAnalysis.analyzeBuy', 'Analyze BUY')}</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SELL</td>
+                                    <td>{summary.sell_stats?.trades ?? summary.sell_trades_count ?? trades.filter(t => (t.side || '').toUpperCase() === 'SELL').length}</td>
+                                    <td>{summary.sell_stats?.win_rate ?? '100.0'}%</td>
+                                    <td>+$0.00</td>
+                                    <td className={styles.profitCell}>
+                                        {formatCurrency(summary.sell_stats?.net_profit ?? summary.sell_net_pnl ?? 0)}
+                                    </td>
+                                    <td>{formatCurrency(summary.sell_stats?.avg_profit_per_trade ?? ((summary.sell_stats?.trades || 1) ? (summary.sell_stats?.net_profit || 0) / (summary.sell_stats?.trades || 1) : 0))}</td>
+                                    <td>
+                                        <button
+                                            type="button"
+                                            className={styles.tableAnalyzeBtn}
+                                            onClick={() => {
+                                                const firstSellTrade = trades.find(t => (t.side || '').toUpperCase() === 'SELL');
+                                                if (firstSellTrade) {
+                                                    handleAnalyzeIndividualTrade(firstSellTrade);
+                                                } else {
+                                                    setFilterSide('SELL');
+                                                    setActiveTab('ledger');
+                                                }
+                                            }}
+                                        >
+                                            <SparklesIcon />
+                                            <span>{t('tradeAnalysis.analyzeSell', 'Analyze SELL')}</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* Mobile Native Card View (<= 640px) */}
+                    <div className={styles.buySellMobileCards}>
+                        <div className={styles.buySellMobileCard}>
+                            <div className={styles.mobileCardHeader}>
+                                <span className={`${styles.typeBadge} ${styles.buyBadge}`}>BUY</span>
+                                <span className={styles.mobileWinRate}>{summary.buy_stats?.win_rate ?? '100.0'}% {t('tradeAnalysis.winRateHeader', 'Win Rate')}</span>
+                            </div>
+                            <div className={styles.mobileCardGrid}>
+                                <div className={styles.mobileCardMetric}>
+                                    <span className={styles.metricLabel}>{t('tradeAnalysis.tradesHeader', 'Trades')}</span>
+                                    <span className={styles.metricVal}>{summary.buy_stats?.trades ?? summary.buy_trades_count ?? trades.filter(t => (t.side || '').toUpperCase() === 'BUY').length}</span>
+                                </div>
+                                <div className={styles.mobileCardMetric}>
+                                    <span className={styles.metricLabel}>{t('tradeAnalysis.netProfitHeader', 'Net Profit')}</span>
+                                    <span className={`${styles.metricVal} ${styles.profitCell}`}>{formatCurrency(summary.buy_stats?.net_profit ?? summary.buy_net_pnl ?? 0)}</span>
+                                </div>
+                                <div className={styles.mobileCardMetric}>
+                                    <span className={styles.metricLabel}>{t('tradeAnalysis.grossProfitHeader', 'Gross Profit')}</span>
+                                    <span className={styles.metricVal}>+$0.00</span>
+                                </div>
+                                <div className={styles.mobileCardMetric}>
+                                    <span className={styles.metricLabel}>{t('tradeAnalysis.avgProfitHeader', 'Avg Profit/Trade')}</span>
+                                    <span className={styles.metricVal}>{formatCurrency(summary.buy_stats?.avg_profit_per_trade ?? ((summary.buy_stats?.trades || 1) ? (summary.buy_stats?.net_profit || 0) / (summary.buy_stats?.trades || 1) : 0))}</span>
+                                </div>
+                            </div>
+                            <button
+                                type="button"
+                                className={styles.mobileAnalyzeBtn}
+                                onClick={() => {
+                                    const firstBuyTrade = trades.find(t => (t.side || '').toUpperCase() === 'BUY');
+                                    if (firstBuyTrade) {
+                                        handleAnalyzeIndividualTrade(firstBuyTrade);
+                                    } else {
+                                        setFilterSide('BUY');
+                                        setActiveTab('ledger');
+                                    }
+                                }}
+                            >
+                                <SparklesIcon />
+                                <span>{t('tradeAnalysis.analyzeBuy', 'Analyze BUY')}</span>
+                            </button>
+                        </div>
+
+                        <div className={styles.buySellMobileCard}>
+                            <div className={styles.mobileCardHeader}>
+                                <span className={`${styles.typeBadge} ${styles.sellBadge}`}>SELL</span>
+                                <span className={styles.mobileWinRate}>{summary.sell_stats?.win_rate ?? '100.0'}% {t('tradeAnalysis.winRateHeader', 'Win Rate')}</span>
+                            </div>
+                            <div className={styles.mobileCardGrid}>
+                                <div className={styles.mobileCardMetric}>
+                                    <span className={styles.metricLabel}>{t('tradeAnalysis.tradesHeader', 'Trades')}</span>
+                                    <span className={styles.metricVal}>{summary.sell_stats?.trades ?? summary.sell_trades_count ?? trades.filter(t => (t.side || '').toUpperCase() === 'SELL').length}</span>
+                                </div>
+                                <div className={styles.mobileCardMetric}>
+                                    <span className={styles.metricLabel}>{t('tradeAnalysis.netProfitHeader', 'Net Profit')}</span>
+                                    <span className={`${styles.metricVal} ${Number(summary.sell_stats?.net_profit ?? summary.sell_net_pnl ?? 0) >= 0 ? styles.profitCell : styles.lossCell}`}>
+                                        {formatCurrency(summary.sell_stats?.net_profit ?? summary.sell_net_pnl ?? 0)}
+                                    </span>
+                                </div>
+                                <div className={styles.mobileCardMetric}>
+                                    <span className={styles.metricLabel}>{t('tradeAnalysis.grossProfitHeader', 'Gross Profit')}</span>
+                                    <span className={styles.metricVal}>+$0.00</span>
+                                </div>
+                                <div className={styles.mobileCardMetric}>
+                                    <span className={styles.metricLabel}>{t('tradeAnalysis.avgProfitHeader', 'Avg Profit/Trade')}</span>
+                                    <span className={styles.metricVal}>{formatCurrency(summary.sell_stats?.avg_profit_per_trade ?? ((summary.sell_stats?.trades || 1) ? (summary.sell_stats?.net_profit || 0) / (summary.sell_stats?.trades || 1) : 0))}</span>
+                                </div>
+                            </div>
+                            <button
+                                type="button"
+                                className={styles.mobileAnalyzeBtn}
+                                onClick={() => {
+                                    const firstSellTrade = trades.find(t => (t.side || '').toUpperCase() === 'SELL');
+                                    if (firstSellTrade) {
+                                        handleAnalyzeIndividualTrade(firstSellTrade);
+                                    } else {
+                                        setFilterSide('SELL');
+                                        setActiveTab('ledger');
+                                    }
+                                }}
+                            >
+                                <SparklesIcon />
+                                <span>{t('tradeAnalysis.analyzeSell', 'Analyze SELL')}</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 {/* 3-Layer Insights Callout Cards */}

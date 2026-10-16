@@ -452,7 +452,7 @@ table th .bidi-rtl {
 }
 
 ::-webkit-scrollbar-track {
-  background: #040605;
+  background: transparent;
   border-radius: 99px;
 }
 
@@ -470,7 +470,7 @@ table th .bidi-rtl {
 /* Scrollbar Standards */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #18c98b #040605;
+  scrollbar-color: #18c98b transparent;
 }
 
 /* Light Theme Scrollbars Across Everything in Light Mode */
@@ -485,7 +485,7 @@ html[data-theme="light"] *,
 body.light-theme,
 body.light-theme * {
   scrollbar-width: thin;
-  scrollbar-color: #10B981 #F1F5F9;
+  scrollbar-color: #10B981 transparent;
 }
 
 html.light ::-webkit-scrollbar-track,
@@ -498,7 +498,7 @@ html[data-theme="light"] *::-webkit-scrollbar-track,
 .light *::-webkit-scrollbar-track,
 body.light-theme ::-webkit-scrollbar-track,
 body.light-theme *::-webkit-scrollbar-track {
-  background: #F1F5F9;
+  background: transparent;
 }
 
 html.light ::-webkit-scrollbar-thumb,

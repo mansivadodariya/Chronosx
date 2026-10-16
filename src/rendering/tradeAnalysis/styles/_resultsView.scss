@@ -211,6 +211,7 @@
 
     table {
         width: 100%;
+        min-width: 680px;
         border-collapse: collapse;
         font-size: 13px;
 
@@ -225,6 +226,7 @@
                     font-weight: 700;
                     text-transform: uppercase;
                     text-align: left;
+                    white-space: nowrap;
                 }
             }
         }
@@ -240,6 +242,7 @@
                 td {
                     padding: 9px 12px;
                     color: $textMuted;
+                    white-space: nowrap;
 
                     &:first-child {
                         color: $textWhite;
@@ -265,77 +268,6 @@
     }
 }
 
-.buySellTableCard {
-    background: $cardObsidian;
-    border: 1px solid $cardBlackBorder;
-    border-radius: 14px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-
-    @include respond-to('sm') {
-        padding: 16px 14px;
-        border-radius: 12px;
-    }
-
-    .tableSectionHeader {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-
-        h3 {
-            font-size: 16px;
-            font-weight: 800;
-            margin: 0;
-            color: $textWhite;
-        }
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 12px;
-
-        thead {
-            tr {
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
-                th {
-                    padding: 8px 10px;
-                    color: $textDim;
-                    font-size: 10.5px;
-                    font-weight: 700;
-                    text-transform: uppercase;
-                    text-align: right;
-
-                    &:first-child {
-                        text-align: left;
-                    }
-                }
-            }
-        }
-
-        tbody {
-            tr {
-                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-
-                td {
-                    padding: 10px;
-                    text-align: right;
-                    color: $textWhite;
-
-                    &:first-child {
-                        text-align: left;
-                        font-weight: 700;
-                    }
-                }
-            }
-        }
-    }
-}
 
 .threeLayerBox {
     background: $cardObsidian;
@@ -463,26 +395,52 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 4px;
+    padding: 5px;
     margin: 0;
-    width: fit-content;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 12px;
+
+    @include respond-to('sm') {
+        padding: 4px;
+        gap: 4px;
+        border-radius: 10px;
+    }
 
     .tabBtn {
         background: transparent;
         border: none;
         color: $textMuted;
         font-size: 13px;
-        font-weight: 500;
-        padding: 6px 16px;
+        font-weight: 600;
+        padding: 8px 16px;
         border-radius: 8px;
         cursor: pointer;
         transition: all 0.2s ease;
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        gap: 8px;
+        justify-content: center;
+        gap: 6px;
+        white-space: nowrap;
+        flex: 0 0 auto;
+
+        @include respond-to('sm') {
+            padding: 7px 13px;
+            font-size: 12px;
+            border-radius: 7px;
+        }
 
         &:hover {
             color: $textWhite;
@@ -569,6 +527,7 @@
 
 .reportTable {
     width: 100%;
+    min-width: 540px;
     border-collapse: collapse;
     font-size: 13px;
 
@@ -584,6 +543,7 @@
             font-size: 11px;
             letter-spacing: 0.5px;
             text-align: left;
+            white-space: nowrap;
 
             &:last-child {
                 text-align: right;
@@ -607,6 +567,7 @@
             td {
                 padding: 10px 14px;
                 color: #FFFFFF;
+                white-space: nowrap;
 
                 &:first-child {
                     font-weight: 600;

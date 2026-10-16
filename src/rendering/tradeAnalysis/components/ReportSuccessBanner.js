@@ -27,10 +27,6 @@ export default function ReportSuccessBanner({
                             {fileDetails.sizeText} • {totalTradesCount} Trades • Uploaded just now
                         </span>
                     </div>
-                    <div className={styles.completePillBadge}>
-                        <CheckIcon />
-                        <span>Processing Complete</span>
-                    </div>
                 </div>
 
                 <div className={styles.bannerMessageRow}>

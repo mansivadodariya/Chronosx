@@ -68,6 +68,16 @@ export default function TradeAnalysis() {
     }, [singleTradeModalData, showHistoryModal]);
 
     // Drag and drop handlers
+    const tabRefs = useRef({});
+    useEffect(() => {
+        if (activeTab && tabRefs.current[activeTab]) {
+            tabRefs.current[activeTab].scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'center'
+            });
+        }
+    }, [activeTab]);
     const handleDragOver = (e) => {
         e.preventDefault();
         setIsDragging(true);
@@ -411,6 +421,7 @@ export default function TradeAnalysis() {
                                 transition={{ duration: 0.4, delay: 0.16 }}
                             >
                                 <button
+                                    ref={(el) => (tabRefs.current['scorecard'] = el)}
                                     type="button"
                                     className={`${styles.tabBtn} ${activeTab === 'scorecard' ? styles.active : ''}`}
                                     onClick={() => setActiveTab('scorecard')}
@@ -418,6 +429,7 @@ export default function TradeAnalysis() {
                                     <span>{t('tradeAnalysis.scorecardTab', 'Trader Scorecard')}</span>
                                 </button>
                                 <button
+                                    ref={(el) => (tabRefs.current['overview'] = el)}
                                     type="button"
                                     className={`${styles.tabBtn} ${activeTab === 'overview' ? styles.active : ''}`}
                                     onClick={() => setActiveTab('overview')}
@@ -425,6 +437,7 @@ export default function TradeAnalysis() {
                                     <span>{t('tradeAnalysis.overviewTab', 'Overview & Analytics')}</span>
                                 </button>
                                 <button
+                                    ref={(el) => (tabRefs.current['ledger'] = el)}
                                     type="button"
                                     className={`${styles.tabBtn} ${activeTab === 'ledger' ? styles.active : ''}`}
                                     onClick={() => setActiveTab('ledger')}
@@ -432,6 +445,7 @@ export default function TradeAnalysis() {
                                     <span>{t('tradeAnalysis.ledgerTab', 'Trade Ledger')} ({totalTradesCount})</span>
                                 </button>
                                 <button
+                                    ref={(el) => (tabRefs.current['report'] = el)}
                                     type="button"
                                     className={`${styles.tabBtn} ${activeTab === 'report' ? styles.active : ''}`}
                                     onClick={() => setActiveTab('report')}

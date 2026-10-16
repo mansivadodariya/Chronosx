@@ -50,13 +50,40 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(24, 201, 139, 0.4) transparent !important;
 
     &::-webkit-scrollbar {
-        display: none;
-        width: 0;
-        height: 0;
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent !important;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(24, 201, 139, 0.4) !important;
+        border-radius: 9999px;
+
+        &:hover {
+            background: rgba(24, 201, 139, 0.75) !important;
+        }
+    }
+
+    [data-theme='light'] & {
+        scrollbar-color: rgba(5, 150, 105, 0.45) transparent !important;
+
+        &::-webkit-scrollbar-track {
+            background: transparent !important;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: rgba(5, 150, 105, 0.45) !important;
+
+            &:hover {
+                background: rgba(5, 150, 105, 0.75) !important;
+            }
+        }
     }
 }
 

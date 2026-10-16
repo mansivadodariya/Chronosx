@@ -445,6 +445,67 @@
         }
     }
 
+    .buySellTableScroll {
+        &::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: rgba(5, 150, 105, 0.25);
+
+            &:hover {
+                background: rgba(5, 150, 105, 0.45);
+            }
+        }
+    }
+
+    .buySellMobileCards {
+        .buySellMobileCard {
+            background: #F8FAFC;
+            border-color: #E2E8F0;
+
+            .mobileCardHeader {
+                .mobileWinRate {
+                    color: #0F172A;
+                }
+            }
+
+            .mobileCardGrid {
+                background: #FFFFFF;
+                border: 1px solid #E2E8F0;
+
+                .mobileCardMetric {
+                    .metricLabel {
+                        color: #64748B;
+                    }
+
+                    .metricVal {
+                        color: #0F172A;
+
+                        &.profitCell {
+                            color: #047857;
+                        }
+
+                        &.lossCell {
+                            color: #DC2626;
+                        }
+                    }
+                }
+            }
+
+            .mobileAnalyzeBtn {
+                background: #ECFDF5;
+                border-color: rgba(5, 150, 105, 0.25);
+                color: #059669;
+
+                &:hover {
+                    background: #D1FAE5;
+                    color: #047857;
+                }
+            }
+        }
+    }
+
     .threeLayerBox .calloutStack .calloutCard {
         &.fact {
             background: #FEF2F2;
@@ -506,13 +567,32 @@
         background: #F8FAFC;
         border: 1px solid #E2E8F0;
         box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-x pan-y;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
 
         .tabBtn {
             color: #64748B;
             font-size: 13px;
-            font-weight: 500;
-            padding: 6px 16px;
+            font-weight: 600;
+            padding: 8px 16px;
             border-radius: 8px;
+            white-space: nowrap;
+            flex: 0 0 auto;
+
+            @include respond-to('sm') {
+                padding: 7px 13px;
+                font-size: 12px;
+                border-radius: 7px;
+            }
 
             &:hover {
                 color: #0F172A;

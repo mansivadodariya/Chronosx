@@ -27,12 +27,17 @@ export default function StudioComposerCard({
     const textareaRef = useRef(null);
     const [isExpanded, setIsExpanded] = useState(() => Boolean(input && input.trim()));
 
-    // Keep expanded if user has written text
+    // Keep expanded if user has written text, collapse when reset
     useEffect(() => {
-        if (input && input.trim() && !isExpanded) {
-            setIsExpanded(true);
+        if (input && input.trim()) {
+            if (!isExpanded) setIsExpanded(true);
+        } else {
+            setIsExpanded(false);
+            if (textareaRef.current) {
+                textareaRef.current.style.height = 'auto';
+            }
         }
-    }, [input, isExpanded]);
+    }, [input]);
 
     // Auto-grow input up to 4-5 lines (~115px), then scroll
     useEffect(() => {
@@ -162,7 +167,11 @@ export default function StudioComposerCard({
                                 <button
                                     type="button"
                                     className={styles.btnNewChat}
-                                    onClick={onNewChat}
+                                    onClick={(e) => {
+                                        if (e && e.stopPropagation) e.stopPropagation();
+                                        setIsExpanded(false);
+                                        onNewChat();
+                                    }}
                                     title="Start a new chat session"
                                 >
                                     <PlusIcon size={14} />
