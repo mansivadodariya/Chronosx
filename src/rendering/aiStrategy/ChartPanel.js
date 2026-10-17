@@ -586,6 +586,13 @@ export default function ChartPanel({ symbol, strategyId, timeframe = '1H', neare
                 <div className={styles.chartTitleArea}>
                     <h3>{symbol}</h3>
                     <span className={styles.chartTimeframeBadge}>{timeframe}</span>
+                    <div
+                        className={styles.chartFeedBadge}
+                        title="Institutional tick bridge. Quotes update dynamically (standard 15m indicative delay may apply during low-liquidity periods)."
+                    >
+                        <span className={styles.chartFeedDot} />
+                        <span className={styles.chartFeedLabel}>LIVE FEED</span>
+                    </div>
                 </div>
 
                 {loading && !activePrice ? (

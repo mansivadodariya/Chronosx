@@ -275,9 +275,73 @@
 .liveAnalysisLayout {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 14px;
     width: 100%;
     padding-bottom: 30px;
+}
+
+.feedDisclosureBanner {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: rgba(24, 201, 139, 0.06);
+    border: 1px solid rgba(24, 201, 139, 0.2);
+
+    .feedStatusPill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 8px;
+        border-radius: 4px;
+        background: rgba(24, 201, 139, 0.15);
+        color: #18C98B;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+
+        .feedStatusDot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #18C98B;
+            box-shadow: 0 0 6px #18C98B;
+            animation: pulseFeedDot 1.8s infinite ease-in-out;
+        }
+    }
+
+    .feedDisclosureText {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.65);
+        line-height: 1.4;
+
+        [data-theme='light'] &,
+        :global(html.light) &,
+        :global([data-theme='light']) & {
+            color: #475569;
+        }
+    }
+
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        background: #F0FDF4;
+        border-color: rgba(24, 201, 139, 0.3);
+    }
+}
+
+@keyframes pulseFeedDot {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.4;
+        transform: scale(0.85);
+    }
 }
 
 .topPanelsRow {

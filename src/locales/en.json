@@ -239,7 +239,7 @@
     "noScreenSharing": "No screen sharing active",
     "screenShareNotSupported": "Screen sharing not supported",
     "waitScreenLoading": "Please wait while we load your screen",
-    "clickStartSharing": "Click ",
+    "clickStartSharing": "Click \"Start Sharing\" to begin",
     "desktopRequiredDesc": "Screen sharing is not supported on mobile Safari or iOS devices. Please open on desktop Chrome, Edge, or Mac Safari.",
     "scannerTitle": "AI Live Chart Scanner",
     "scannerDesc": "Share your live chart screen or capture snapshots to get real-time AI technical analysis, key levels, and trade setups.",

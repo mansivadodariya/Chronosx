@@ -239,7 +239,7 @@
     "noScreenSharing": "No hay pantalla compartida activa",
     "screenShareNotSupported": "No se admite compartir pantalla",
     "waitScreenLoading": "Espere mientras cargamos su pantalla",
-    "clickStartSharing": "Haga clic",
+    "clickStartSharing": "Haga clic en \"Iniciar pantalla compartida\" para comenzar",
     "desktopRequiredDesc": "Compartir pantalla no se admite en dispositivos móviles Safari o iOS. Ábralo en el escritorio Chrome, Edge o Mac Safari.",
     "scannerTitle": "Escáner de gráficos en vivo con IA",
     "scannerDesc": "Comparta su pantalla de gráficos en vivo o capture instantáneas para obtener análisis técnicos de IA, niveles clave y configuraciones comerciales en tiempo real.",

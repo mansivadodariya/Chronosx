@@ -51,37 +51,37 @@
     flex-direction: column;
     gap: 14px;
     scrollbar-width: thin;
-    scrollbar-color: rgba(24, 201, 139, 0.4) transparent !important;
+    scrollbar-color: rgba(24, 201, 139, 0.4) transparent;
 
     &::-webkit-scrollbar {
         width: 5px;
     }
 
     &::-webkit-scrollbar-track {
-        background: transparent !important;
+        background: transparent;
     }
 
     &::-webkit-scrollbar-thumb {
-        background: rgba(24, 201, 139, 0.4) !important;
+        background: rgba(24, 201, 139, 0.4);
         border-radius: 9999px;
 
         &:hover {
-            background: rgba(24, 201, 139, 0.75) !important;
+            background: rgba(24, 201, 139, 0.75);
         }
     }
 
     [data-theme='light'] & {
-        scrollbar-color: rgba(5, 150, 105, 0.45) transparent !important;
+        scrollbar-color: rgba(5, 150, 105, 0.45) transparent;
 
         &::-webkit-scrollbar-track {
-            background: transparent !important;
+            background: transparent;
         }
 
         &::-webkit-scrollbar-thumb {
-            background: rgba(5, 150, 105, 0.45) !important;
+            background: rgba(5, 150, 105, 0.45);
 
             &:hover {
-                background: rgba(5, 150, 105, 0.75) !important;
+                background: rgba(5, 150, 105, 0.75);
             }
         }
     }

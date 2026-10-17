@@ -239,7 +239,7 @@
     "noScreenSharing": "没有活动屏幕共享",
     "screenShareNotSupported": "不支持屏幕共享",
     "waitScreenLoading": "我们正在加载您的屏幕，请稍候",
-    "clickStartSharing": "点击",
+    "clickStartSharing": "点击“开始共享”以开始",
     "desktopRequiredDesc": "移动 Safari 或 iOS 设备不支持屏幕共享。请在桌面 Chrome、Edge 或 Mac Safari 上打开。",
     "scannerTitle": "AI 实时图表扫描仪",
     "scannerDesc": "分享您的实时图表屏幕或捕获快照，以获得实时人工��能技术分析、关键水平和交易设置。",

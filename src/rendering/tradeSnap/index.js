@@ -4,7 +4,7 @@ import CommonSectionHeader from '@/components/CommonSectionHeader';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './tradeSnap.module.scss';
 import HistoryButton from '@/components/historyButton';
-import { analyzeTradeScreenshots, dataUrlToBlob, extractTradesFromPayload } from '@/lib/tradeSnapApi';
+import { analyzeTradeScreenshots, dataUrlToBlob, extractTradesFromPayload, notifyBrowserTradeSnapReady } from '@/lib/tradeSnapApi';
 import { getStoredUserId } from '@/lib/authSession';
 import { toast } from '@/components/toast';
 import { notifyCreditsUpdated } from '@/lib/credits';
@@ -44,6 +44,7 @@ export default function TradeSnap() {
         setStream,
         capturedImage,
         setCapturedImage,
+        discardSnapshot,
         showSnapshot,
         setShowSnapshot,
         isAnalyzing,
@@ -118,19 +119,14 @@ export default function TradeSnap() {
         }
         if (videoRef.current) videoRef.current.srcObject = null;
         setIsSharing(false);
-        setCapturedImage(null);
-        setAllAnalyses([]);
-        setShowAnalysis(false);
-        setShowSnapshot(false);
+        // Preserved: Captured screenshot & analyses stay intact across screen sharing sessions
         setAutoCaptureInterval(null);
         setNextScreenshotEndTime(null);
         setAnalysisError(null);
-    }, [stream, setStream, setIsSharing, setCapturedImage, setAllAnalyses, setShowAnalysis, setShowSnapshot, setAutoCaptureInterval, setNextScreenshotEndTime]);
+    }, [stream, setStream, setIsSharing, setAutoCaptureInterval, setNextScreenshotEndTime]);
 
     const startScreenShare = useCallback(async () => {
         try {
-            setCapturedImage(null);
-            setShowSnapshot(false);
             setAutoCaptureInterval(null);
             setNextScreenshotEndTime(null);
             setAnalysisError(null);
@@ -173,7 +169,7 @@ export default function TradeSnap() {
                 setError(err?.message || 'Failed to start screen sharing');
             }
         }
-    }, [stopScreenShare, isScreenShareSupported, setCapturedImage, setShowSnapshot, setAutoCaptureInterval, setNextScreenshotEndTime, setStream, setIsSharing]);
+    }, [stopScreenShare, isScreenShareSupported, setAutoCaptureInterval, setNextScreenshotEndTime, setStream, setIsSharing]);
 
     useEffect(() => {
         if (videoRef.current && stream) {
@@ -244,14 +240,46 @@ export default function TradeSnap() {
         setIsAnalyzing(true);
         setAnalysisError(null);
         setShowAnalysis(true);
+
+        if (typeof window !== 'undefined') {
+            try {
+                if ('Notification' in window && Notification.permission === 'default') {
+                    Notification.requestPermission().catch(() => {});
+                }
+                sessionStorage.setItem('chronosx_tradesnap_active_job', JSON.stringify({
+                    startedAt: Date.now(),
+                    isRunning: true
+                }));
+            } catch (_) {}
+        }
+
         try {
             const blob = await dataUrlToBlob(capturedImage);
             const result = await analyzeTradeScreenshots([blob], getUserId());
             if (applyAnalyzeResult(result, { onInvalidChart: () => setShowSnapshot(true) })) {
                 setShowSnapshot(false);
                 setAnalysisError(null);
+                notifyBrowserTradeSnapReady(
+                    t('tradeSnap.scannerTitle', 'AI Live Chart Scanner'),
+                    t('tradeSnap.analysisReadyNotification', 'AI Chart analysis complete! Trade setup generated.')
+                );
+                toast.success(t('tradeSnap.analysisSuccessToast', 'AI Chart analysis complete! Trade setup generated.'));
+                if (typeof window !== 'undefined') {
+                    try { sessionStorage.removeItem('chronosx_tradesnap_active_job'); } catch (_) {}
+                }
             }
         } catch (err) {
+            if (typeof window !== 'undefined') {
+                try { sessionStorage.removeItem('chronosx_tradesnap_active_job'); } catch (_) {}
+            }
+
+            if (err?.message?.includes('timed out') || err?.name === 'AbortError') {
+                const timeoutMsg = err?.message || 'Analysis timed out after 75s. The server is under high load. Please retry.';
+                setAnalysisError(timeoutMsg);
+                setError(timeoutMsg);
+                return;
+            }
+
             if (err?.detail?.error_code === 'INSUFFICIENT_CREDITS' || err?.message?.toLowerCase().includes('insufficient credits')) {
                 const creditMsg = t('tradeSnap.insufficientCredits', 'Insufficient credits. Please upgrade your plan.');
                 setAnalysisError(creditMsg);
@@ -267,7 +295,7 @@ export default function TradeSnap() {
             }
 
             // User-friendly toast message for non-chart/invalid images or backend vision processing failures
-            const friendlyMsg = t('tradeSnap.pleaseAddGraphScreenshot', 'Please add a graph screenshot to analyze');
+            const friendlyMsg = err?.message || t('tradeSnap.pleaseAddGraphScreenshot', 'Please add a graph screenshot to analyze');
             setAnalysisError(friendlyMsg);
             setError(friendlyMsg);
         } finally {
@@ -385,21 +413,22 @@ export default function TradeSnap() {
                     />
                 </div>
 
-                {!isSharing && allAnalyses.length === 0 && (
+                {!isSharing && !capturedImage && allAnalyses.length === 0 && (
                     <TradeSnapGuidePanel onStartSharing={startScreenShare} t={t} />
                 )}
 
-                {isSharing && showSnapshot && (
+                {capturedImage && (showSnapshot || isAnalyzing || allAnalyses.length === 0) && (
                     <TradeSnapSnapshotPanel
                         capturedImage={capturedImage}
                         isAnalyzing={isAnalyzing}
                         analyzeImage={analyzeImage}
                         error={analysisError}
                         retryAnalysis={analyzeImage}
+                        onDiscard={discardSnapshot}
                     />
                 )}
 
-                {allAnalyses.length > 0 && !isAnalyzing && (
+                {allAnalyses.length > 0 && !isAnalyzing && (!showSnapshot || !capturedImage) && (
                     <TradeSnapResultsPanel
                         isAnalyzing={isAnalyzing}
                         allAnalyses={allAnalyses}

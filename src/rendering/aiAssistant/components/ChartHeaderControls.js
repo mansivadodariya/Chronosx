@@ -42,6 +42,13 @@ export default function ChartHeaderControls({
                         <span className={styles.livePctTag}>
                             {isUp ? `+${changePercent.toFixed(2)}%` : `${changePercent.toFixed(2)}%`}
                         </span>
+                        <div
+                            className={styles.chartFeedBadge}
+                            title="Streaming via WebSocket MT5 Bridge (standard 15m delay may apply during non-liquid or off-market hours)"
+                        >
+                            <span className={styles.chartFeedDot} />
+                            <span>LIVE FEED</span>
+                        </div>
                     </div>
                 )}
             </div>

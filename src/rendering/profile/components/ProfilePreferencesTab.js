@@ -148,11 +148,11 @@ export default function ProfilePreferencesTab({ t }) {
         } catch (_) {}
     }, []);
 
-    const handleThemeSelect = (selectedTheme) => {
+    const handleThemeSelect = (selectedTheme, event) => {
         if (setTheme) {
-            setTheme(selectedTheme);
+            setTheme(selectedTheme, event);
         } else if (theme !== selectedTheme && toggleTheme) {
-            toggleTheme();
+            toggleTheme(event);
         }
         toast.success(
             selectedTheme === 'dark'
@@ -230,7 +230,7 @@ export default function ProfilePreferencesTab({ t }) {
                     {/* Dark Theme Card */}
                     <div
                         className={`${styles.themeCard} ${theme === 'dark' ? styles.themeActive : ''}`}
-                        onClick={() => handleThemeSelect('dark')}
+                        onClick={(e) => handleThemeSelect('dark', e)}
                         role="button"
                         tabIndex={0}
                     >
@@ -256,7 +256,7 @@ export default function ProfilePreferencesTab({ t }) {
                     {/* Light Theme Card */}
                     <div
                         className={`${styles.themeCard} ${theme === 'light' ? styles.themeActive : ''}`}
-                        onClick={() => handleThemeSelect('light')}
+                        onClick={(e) => handleThemeSelect('light', e)}
                         role="button"
                         tabIndex={0}
                     >

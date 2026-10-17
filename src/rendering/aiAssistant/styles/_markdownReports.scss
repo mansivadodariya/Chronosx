@@ -154,36 +154,36 @@
 :global(html.light) .chatMarkdown,
 :global(html[data-theme="light"]) .chatMarkdown,
 :global(.isLight) .chatMarkdown {
-    color: #1e293b !important;
+    color: #1e293b;
 
     :global(p) {
-        color: #1e293b !important;
+        color: #1e293b;
     }
 
     :global(h1),
     :global(h2),
     :global(h3) {
-        color: #047857 !important;
+        color: #047857;
     }
 
     :global(h4),
     :global(h5),
     :global(h6) {
-        color: #0f172a !important;
+        color: #0f172a;
     }
 
     :global(strong),
     :global(b) {
-        color: #0f172a !important;
+        color: #0f172a;
     }
 
     :global(ul),
     :global(ol) {
         :global(li) {
-            color: #1e293b !important;
+            color: #1e293b;
 
             &::marker {
-                color: #059669 !important;
+                color: #059669;
             }
         }
     }

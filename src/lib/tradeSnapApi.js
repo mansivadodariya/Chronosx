@@ -365,20 +365,43 @@ export async function analyzeTradeScreenshots(fileBlobs, userId, _isRetry = fals
         formData.append('user_id', storedId);
     }
 
+    const timeoutMs = 75000;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+        controller.abort();
+    }, timeoutMs);
+
     let res;
     try {
-        res = await fetch(`${TRADE_SNAP_BASE}/api/v1/ai-snap`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                Authorization: `Bearer ${token}`,
-                'ngrok-skip-browser-warning': 'true',
-            },
-            body: formData,
-        });
+        try {
+            res = await fetch(`${TRADE_SNAP_BASE}/api/v1/ai-snap`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${token}`,
+                    'ngrok-skip-browser-warning': 'true',
+                },
+                body: formData,
+                signal: controller.signal,
+            });
 
-        // Fallback to /api/v1/analyze if /api/v1/ai-snap returns 404
-        if (res.status === 404) {
+            // Fallback to /api/v1/analyze if /api/v1/ai-snap returns 404
+            if (res.status === 404) {
+                res = await fetch(`${TRADE_SNAP_BASE}/api/v1/analyze`, {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${token}`,
+                        'ngrok-skip-browser-warning': 'true',
+                    },
+                    body: formData,
+                    signal: controller.signal,
+                });
+            }
+        } catch (fetchErr) {
+            if (fetchErr.name === 'AbortError' || controller.signal.aborted) {
+                throw new Error('Analysis timed out after 75s. Server is under high load. Please retry.');
+            }
             res = await fetch(`${TRADE_SNAP_BASE}/api/v1/analyze`, {
                 method: 'POST',
                 headers: {
@@ -387,18 +410,17 @@ export async function analyzeTradeScreenshots(fileBlobs, userId, _isRetry = fals
                     'ngrok-skip-browser-warning': 'true',
                 },
                 body: formData,
+                signal: controller.signal,
             });
         }
-    } catch {
-        res = await fetch(`${TRADE_SNAP_BASE}/api/v1/analyze`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                Authorization: `Bearer ${token}`,
-                'ngrok-skip-browser-warning': 'true',
-            },
-            body: formData,
-        });
+    } catch (err) {
+        clearTimeout(timeoutId);
+        if (err.name === 'AbortError' || controller.signal.aborted) {
+            throw new Error('Analysis timed out after 75s. Server is under high load. Please retry.');
+        }
+        throw err;
+    } finally {
+        clearTimeout(timeoutId);
     }
 
     const data = await res.json().catch(() => ({}));
@@ -446,4 +468,16 @@ export async function analyzeTradeScreenshots(fileBlobs, userId, _isRetry = fals
 export async function dataUrlToBlob(dataUrl) {
     const res = await fetch(dataUrl);
     return res.blob();
+}
+
+export function notifyBrowserTradeSnapReady(title = 'AI Chart Scanner', body = 'Your AI technical analysis & trade setup is ready!') {
+    if (typeof window === 'undefined') return;
+    try {
+        if ('Notification' in window && Notification.permission === 'granted') {
+            new Notification(title, {
+                body,
+                icon: '/favicon.ico',
+            });
+        }
+    } catch (_) {}
 }

@@ -304,11 +304,11 @@ html.light .children-wrapper {
 @media all and (display-mode: standalone) {
   html,
   body {
-    height: auto !important;
-    min-height: 100% !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    touch-action: pan-y !important;
+    height: auto;
+    min-height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
   }
 }
 
@@ -567,4 +567,37 @@ html.light .sidebar-wrapper,
 html.light main {
   background-color: var(--bg-global);
   color: var(--text-primary);
+}
+
+/* ============================================================
+   CIRCULAR REVEAL THEME VIEW TRANSITIONS
+   ============================================================ */
+:root {
+  --theme-x: 90%;
+  --theme-y: 40px;
+  --theme-r: 150vmax;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 999999;
+  animation: theme-circle-grow 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes theme-circle-grow {
+  0% {
+    clip-path: circle(0px at var(--theme-x) var(--theme-y));
+  }
+  100% {
+    clip-path: circle(var(--theme-r) at var(--theme-x) var(--theme-y));
+  }
 }

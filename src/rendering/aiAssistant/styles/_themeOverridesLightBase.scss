@@ -232,13 +232,9 @@
                 border: 1px solid rgba(16, 185, 129, 0.3);
             }
 
-            .userHeaderBadges {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                align-self: flex-end;
-                margin-bottom: 3px;
-            }
+            
+
+            
 
             .queuedBadge {
                 background: #fef3c7;
@@ -259,141 +255,141 @@
             }
 
             .assistantMessage {
-                background: #ffffff !important;
-                border: 1px solid #e2e8f0 !important;
-                border-radius: 14px 14px 14px 2px !important;
-                padding: 12px 18px !important;
-                color: #0f172a !important;
-                box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 14px 14px 14px 2px;
+                padding: 12px 18px;
+                color: #0f172a;
+                box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
 
                 p, li, span, div, label {
-                    color: #1e293b !important;
+                    color: #1e293b;
                 }
 
                 .formattedList li {
-                    color: #1e293b !important;
+                    color: #1e293b;
                 }
 
                 .chatMarkdown {
-                    color: #0f172a !important;
+                    color: #0f172a;
 
                     h1, h2, h3, h4, h5, h6 {
-                        color: #047857 !important;
-                        font-weight: 700 !important;
+                        color: #047857;
+                        font-weight: 700;
                     }
 
                     p {
-                        color: #1e293b !important;
+                        color: #1e293b;
                     }
 
                     ul, ol {
-                        margin: 8px 0 !important;
-                        padding-left: 20px !important;
+                        margin: 8px 0;
+                        padding-left: 20px;
 
                         li {
-                            color: #1e293b !important;
+                            color: #1e293b;
 
                             &::marker {
-                                color: #059669 !important;
+                                color: #059669;
                             }
                         }
                     }
 
                     li {
-                        color: #1e293b !important;
+                        color: #1e293b;
                     }
 
                     strong, b {
-                        color: #0f172a !important;
-                        font-weight: 700 !important;
+                        color: #0f172a;
+                        font-weight: 700;
                     }
 
                     em, i {
-                        color: #334155 !important;
+                        color: #334155;
                     }
 
                     table {
-                        background: #ffffff !important;
-                        border: 1px solid #cbd5e1 !important;
-                        border-collapse: collapse !important;
-                        margin: 12px 0 !important;
-                        width: 100% !important;
+                        background: #ffffff;
+                        border: 1px solid #cbd5e1;
+                        border-collapse: collapse;
+                        margin: 12px 0;
+                        width: 100%;
 
                         th {
-                            background: #092c1d !important;
-                            color: #10b981 !important;
-                            font-weight: 700 !important;
-                            border: 1px solid #064e3b !important;
-                            padding: 8px 12px !important;
-                            font-size: 13px !important;
+                            background: #092c1d;
+                            color: #10b981;
+                            font-weight: 700;
+                            border: 1px solid #064e3b;
+                            padding: 8px 12px;
+                            font-size: 13px;
                         }
 
                         td {
-                            background: #ffffff !important;
-                            color: #0f172a !important;
-                            border: 1px solid #e2e8f0 !important;
-                            padding: 8px 12px !important;
-                            font-size: 13px !important;
-                            font-weight: 500 !important;
+                            background: #ffffff;
+                            color: #0f172a;
+                            border: 1px solid #e2e8f0;
+                            padding: 8px 12px;
+                            font-size: 13px;
+                            font-weight: 500;
                         }
 
                         tr:nth-child(even) td,
                         tr:nth-child(even) {
-                            background: #f8fafc !important;
+                            background: #f8fafc;
                         }
                     }
 
                     hr {
-                        background: #e2e8f0 !important;
-                        border-top: 1px solid #e2e8f0 !important;
+                        background: #e2e8f0;
+                        border-top: 1px solid #e2e8f0;
                     }
 
                     code {
-                        background: #f1f5f9 !important;
-                        color: #047857 !important;
-                        border: 1px solid #e2e8f0 !important;
+                        background: #f1f5f9;
+                        color: #047857;
+                        border: 1px solid #e2e8f0;
                     }
 
                     pre {
-                        background: #f8fafc !important;
-                        border: 1px solid #e2e8f0 !important;
+                        background: #f8fafc;
+                        border: 1px solid #e2e8f0;
 
                         code {
-                            background: transparent !important;
-                            color: #0f172a !important;
-                            border: none !important;
+                            background: transparent;
+                            color: #0f172a;
+                            border: none;
                         }
                     }
 
                     blockquote {
-                        border-left-color: #10b981 !important;
-                        background: #f0fdf4 !important;
-                        color: #1e293b !important;
+                        border-left-color: #10b981;
+                        background: #f0fdf4;
+                        color: #1e293b;
                     }
                 }
 
                 .visionWarningCard {
-                    background: #fef2f2 !important;
-                    border: 1px solid rgba(239, 68, 68, 0.3) !important;
-                    color: #dc2626 !important;
+                    background: #fef2f2;
+                    border: 1px solid rgba(239, 68, 68, 0.3);
+                    color: #dc2626;
 
                     p, span, div {
-                        color: #dc2626 !important;
+                        color: #dc2626;
                     }
                 }
 
                 .visionOverviewCard {
-                    background: #f8fafc !important;
-                    border: 1px solid #e2e8f0 !important;
-                    color: #475569 !important;
-                    opacity: 1 !important;
+                    background: #f8fafc;
+                    border: 1px solid #e2e8f0;
+                    color: #475569;
+                    opacity: 1;
 
                     p, span, div, em, i {
-                        color: #475569 !important;
+                        color: #475569;
                     }
 
                     .chatMarkdown p {
-                        color: #475569 !important;
+                        color: #475569;
                     }
                 }
             }
@@ -421,82 +417,82 @@
 
     /* Markdown Formatted Reports & Content (Global fallback) */
     .chatMarkdown {
-        color: #1e293b !important;
+        color: #1e293b;
 
         h1, h2, h3, h4, h5, h6 {
-            color: #047857 !important;
-            font-weight: 700 !important;
+            color: #047857;
+            font-weight: 700;
         }
 
         p, li {
-            color: #1e293b !important;
+            color: #1e293b;
 
             &::marker {
-                color: #059669 !important;
+                color: #059669;
             }
         }
 
         strong, b {
-            color: #0f172a !important;
-            font-weight: 700 !important;
+            color: #0f172a;
+            font-weight: 700;
         }
 
         ul, ol {
             li {
-                color: #1e293b !important;
+                color: #1e293b;
             }
         }
 
         table {
-            border: 1px solid #cbd5e1 !important;
-            background: #ffffff !important;
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
 
             th, td {
-                border-color: #e2e8f0 !important;
+                border-color: #e2e8f0;
             }
 
             th {
-                background: #092c1d !important;
-                color: #10b981 !important;
-                font-weight: 700 !important;
+                background: #092c1d;
+                color: #10b981;
+                font-weight: 700;
             }
 
             td {
-                background: #ffffff !important;
-                color: #0f172a !important;
+                background: #ffffff;
+                color: #0f172a;
             }
 
             tr:nth-child(even) td {
-                background: #f8fafc !important;
+                background: #f8fafc;
             }
         }
 
         hr {
-            background: #e2e8f0 !important;
-            border-top: 1px solid #e2e8f0 !important;
+            background: #e2e8f0;
+            border-top: 1px solid #e2e8f0;
         }
 
         code {
-            background: #f1f5f9 !important;
-            color: #059669 !important;
-            border: 1px solid #e2e8f0 !important;
+            background: #f1f5f9;
+            color: #059669;
+            border: 1px solid #e2e8f0;
         }
 
         pre {
-            background: #f8fafc !important;
-            border: 1px solid #e2e8f0 !important;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
 
             code {
-                background: transparent !important;
-                border: none !important;
-                color: #0f172a !important;
+                background: transparent;
+                border: none;
+                color: #0f172a;
             }
         }
 
         blockquote {
-            border-left-color: #10b981 !important;
-            background: #f0fdf4 !important;
-            color: #1e293b !important;
+            border-left-color: #10b981;
+            background: #f0fdf4;
+            color: #1e293b;
         }
     }
 

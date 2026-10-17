@@ -457,7 +457,9 @@ $success: #10b981;
 }
 
 :global(html.light) .tradeSnap,
-:global(html[data-theme='light']) .tradeSnap {
+:global(html[data-theme='light']) .tradeSnap,
+:global([data-theme='light']) .tradeSnap,
+:global(.light) .tradeSnap {
     .panel,
     .resultsPanel {
         background: #FFFFFF;
@@ -549,33 +551,35 @@ $success: #10b981;
         color: #0F172A;
 
         h3 {
-            color: #0F172A !important;
+            color: #0F172A;
 
             svg {
-                color: #059669 !important;
-                stroke: #059669 !important;
+                color: #059669;
+                stroke: #059669;
             }
         }
     }
 
     .btnAnalyze {
         &.isAnalyzingBtn,
-        &:has(.analyzingTextWrap) {
-            opacity: 1 !important;
-            cursor: wait !important;
-            background: #ECFDF5 !important;
-            border: 1px solid rgba(16, 185, 129, 0.4) !important;
-            color: #047857 !important;
-            box-shadow: 0 1px 4px rgba(16, 185, 129, 0.15) !important;
+        &:has(.analyzingTextWrap),
+        &:disabled.isAnalyzingBtn,
+        &:disabled:has(.analyzingTextWrap) {
+            opacity: 1;
+            cursor: wait;
+            background: #ECFDF5;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #047857;
+            box-shadow: 0 1px 4px rgba(16, 185, 129, 0.15);
 
             .analyzingTextWrap {
-                color: #047857 !important;
-                font-weight: 700 !important;
+                color: #047857;
+                font-weight: 700;
             }
 
             .pulseDot {
-                background: #10B981 !important;
-                box-shadow: 0 0 6px #10B981 !important;
+                background: #10B981;
+                box-shadow: 0 0 6px #10B981;
             }
         }
     }
@@ -600,88 +604,128 @@ $success: #10b981;
         }
     }
 
-        .guidePanel {
-            background: #FFFFFF;
-            border-color: rgba(5, 150, 105, 0.25);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 0 20px rgba(5, 150, 105, 0.05);
+    .guideMainTitle,
+    .guideTitle {
+        color: #0F172A;
+    }
 
-            .guideTitle {
+    .guideSubtitle,
+    .guideSub {
+        color: #64748B;
+    }
+
+    .guidePanel {
+        background: #FFFFFF;
+        border-color: rgba(5, 150, 105, 0.25);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 0 20px rgba(5, 150, 105, 0.05);
+
+        .guideEngineBadge {
+            background: #ECFDF5;
+            border-color: rgba(16, 185, 129, 0.35);
+            color: #047857;
+        }
+
+        .guideTitle,
+        .guideMainTitle,
+        h3.guideMainTitle {
+            color: #0F172A;
+        }
+
+        .guideSub,
+        .guideSubtitle,
+        p.guideSubtitle {
+            color: #64748B;
+        }
+
+        .guideLivePill {
+            color: #64748B;
+        }
+
+        .guideStepCard {
+            background: #F8FAFC;
+            border-color: rgba(5, 150, 105, 0.15);
+
+            &:hover {
+                background: #F0FDF4;
+                border-color: rgba(5, 150, 105, 0.35);
+            }
+
+            .stepIconBox {
+                background: #ECFDF5;
+                border-color: rgba(16, 185, 129, 0.3);
+                color: #047857;
+            }
+
+            .stepConnectorLine {
+                background: rgba(16, 185, 129, 0.25);
+            }
+
+            .stepTitle {
                 color: #0F172A;
             }
 
-            .guideSub {
+            .stepBadge {
+                color: #047857;
+                background: #ECFDF5;
+                border-color: rgba(16, 185, 129, 0.3);
+            }
+
+            .stepDesc {
                 color: #64748B;
             }
 
-            .guideLivePill {
-                color: #64748B;
+            .stepTagItem {
+                background: #FFFFFF;
+                border-color: #E2E8F0;
+                color: #475569;
+            }
+        }
+
+        .guideFeatureCard {
+            background: #F8FAFC;
+            border-color: rgba(5, 150, 105, 0.12);
+
+            .featureBullet {
+                background: #059669;
             }
 
-            .guideStepCard {
-                background: #F8FAFC;
-                border-color: rgba(5, 150, 105, 0.15);
+            .featureName {
+                color: #0F172A;
+            }
+
+            .featureSub {
+                color: #64748B;
+            }
+        }
+
+        .guideFooterCallout {
+            background: #F0FDF4;
+            border-color: rgba(5, 150, 105, 0.25);
+
+            .tipIconWrap {
+                color: #059669;
+
+                svg {
+                    stroke: #059669;
+                }
+            }
+
+            .tipText {
+                color: #475569;
+
+                strong {
+                    color: #059669;
+                }
+            }
+
+            .guideQuickStartBtn {
+                background: #059669;
+                color: #FFFFFF;
 
                 &:hover {
-                    background: #F0FDF4;
-                    border-color: rgba(5, 150, 105, 0.35);
-                }
-
-                .stepTitle {
-                    color: #0F172A;
-                }
-
-                .stepDesc {
-                    color: #64748B;
-                }
-
-                .stepTagItem {
-                    background: #FFFFFF;
-                    border-color: #E2E8F0;
-                    color: #475569;
-                }
-            }
-
-            .guideFeatureCard {
-                background: #F8FAFC;
-                border-color: rgba(5, 150, 105, 0.12);
-
-                .featureName {
-                    color: #0F172A;
-                }
-
-                .featureSub {
-                    color: #64748B;
-                }
-            }
-
-            .guideFooterCallout {
-                background: #F0FDF4;
-                border-color: rgba(5, 150, 105, 0.25);
-
-                .tipIconWrap {
-                    color: #059669;
-
-                    svg {
-                        stroke: #059669;
-                    }
-                }
-
-                .tipText {
-                    color: #475569;
-
-                    strong {
-                        color: #059669;
-                    }
-                }
-
-                .guideQuickStartBtn {
-                    background: #059669;
-                    color: #FFFFFF;
-
-                    &:hover {
-                        background: #047857;
-                    }
+                    background: #047857;
                 }
             }
         }
     }
+}

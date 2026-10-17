@@ -18,15 +18,18 @@ export default function TradeSnapSnapshotPanel({
     isAnalyzing,
     analyzeImage,
     error,
-    retryAnalysis
+    retryAnalysis,
+    onDiscard
 }) {
     const [scanStageIndex, setScanStageIndex] = useState(0);
     const [dynamicProgress, setDynamicProgress] = useState(18);
+    const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
     useEffect(() => {
         if (!isAnalyzing) {
             setScanStageIndex(0);
             setDynamicProgress(18);
+            setElapsedSeconds(0);
             return;
         }
 
@@ -44,9 +47,14 @@ export default function TradeSnapSnapshotPanel({
             });
         }, 300);
 
+        const timerInterval = setInterval(() => {
+            setElapsedSeconds((prev) => prev + 1);
+        }, 1000);
+
         return () => {
             clearInterval(stageInterval);
             clearInterval(progressInterval);
+            clearInterval(timerInterval);
         };
     }, [isAnalyzing]);
 
@@ -60,21 +68,33 @@ export default function TradeSnapSnapshotPanel({
                         <CameraIcon />
                         Latest Snapshot
                     </h3>
-                    <button
-                        type="button"
-                        className={`${styles.btnAnalyze} ${isAnalyzing ? styles.isAnalyzingBtn : ''}`}
-                        onClick={analyzeImage}
-                        disabled={isAnalyzing || !capturedImage}
-                    >
-                        {isAnalyzing ? (
-                            <span className={styles.analyzingTextWrap}>
-                                <span className={styles.pulseDot} />
-                                {activeStage.text}
-                            </span>
-                        ) : (
-                            <span>Analyze</span>
+                    <div className={styles.snapshotHeaderActions}>
+                        {!isAnalyzing && onDiscard && (
+                            <button
+                                type="button"
+                                className={styles.btnDiscard}
+                                onClick={onDiscard}
+                                title="Discard snapshot and return to guide or live feed"
+                            >
+                                Discard
+                            </button>
                         )}
-                    </button>
+                        <button
+                            type="button"
+                            className={`${styles.btnAnalyze} ${isAnalyzing ? styles.isAnalyzingBtn : ''}`}
+                            onClick={analyzeImage}
+                            disabled={isAnalyzing || !capturedImage}
+                        >
+                            {isAnalyzing ? (
+                                <span className={styles.analyzingTextWrap}>
+                                    <span className={styles.pulseDot} />
+                                    {activeStage.text}
+                                </span>
+                            ) : (
+                                <span>Analyze</span>
+                            )}
+                        </button>
+                    </div>
                 </div>
 
                 <div className={styles.snapshotWrapper}>
@@ -184,7 +204,7 @@ export default function TradeSnapSnapshotPanel({
 
                                                 <div className={styles.analyzingMetaFooter}>
                                                     <span className={styles.analyzingTelemetryText}>
-                                                        Multi-Timeframe Neural Pipeline
+                                                        Multi-Timeframe Neural Pipeline • {elapsedSeconds}s (max 75s)
                                                     </span>
                                                     <span className={styles.analyzingPercentNumber}>
                                                         {dynamicProgress}%
