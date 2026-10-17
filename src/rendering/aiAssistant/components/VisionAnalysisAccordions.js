@@ -385,17 +385,17 @@ export default function VisionAnalysisAccordions({ chartSections, textSummary, i
                 return (
                     <div className={styles.visionSectionDetails}>
                         {sectionData.opening_phase && (
-                            <div className={styles.visionLevelCardGreen} style={{ borderColor: 'rgba(24, 201, 139, 0.25)', background: 'rgba(13, 14, 19, 0.6)' }}>
+                            <div className={styles.visionLevelCardGreen}>
                                 <p className={styles.visionLevelInfo}><strong>Opening Phase:</strong> {sectionData.opening_phase}</p>
                             </div>
                         )}
                         {sectionData.mid_session && (
-                            <div className={styles.visionLevelCardGreen} style={{ borderColor: 'rgba(24, 201, 139, 0.25)', background: 'rgba(13, 14, 19, 0.6)' }}>
+                            <div className={styles.visionLevelCardGreen}>
                                 <p className={styles.visionLevelInfo}><strong>Mid Session:</strong> {sectionData.mid_session}</p>
                             </div>
                         )}
                         {sectionData.late_session && (
-                            <div className={styles.visionLevelCardGreen} style={{ borderColor: 'rgba(24, 201, 139, 0.25)', background: 'rgba(13, 14, 19, 0.6)' }}>
+                            <div className={styles.visionLevelCardGreen}>
                                 <p className={styles.visionLevelInfo}><strong>Late Session:</strong> {sectionData.late_session}</p>
                             </div>
                         )}
@@ -434,7 +434,7 @@ export default function VisionAnalysisAccordions({ chartSections, textSummary, i
                     <div className={styles.visionSectionDetails}>
                         <div className={styles.visionCardsCol}>
                             {candles.map((c, idx) => (
-                                <div key={idx} className={styles.visionLevelCardGreen} style={{ borderColor: 'rgba(24, 201, 139, 0.25)', background: 'rgba(13, 14, 19, 0.6)' }}>
+                                <div key={idx} className={styles.visionLevelCardGreen}>
                                     <div className={styles.visionBadgesRow}>
                                         <Badge text={c.observation || `Candle Pattern #${idx + 1}`} color="blue" />
                                         {c.location_context && <Badge text={c.location_context} color="slate" />}
@@ -459,7 +459,7 @@ export default function VisionAnalysisAccordions({ chartSections, textSummary, i
                     <div className={styles.visionSectionDetails}>
                         <div className={styles.visionCardsCol}>
                             {patterns.map((p, idx) => (
-                                <div key={idx} className={styles.visionLevelCardGreen} style={{ borderColor: 'rgba(24, 201, 139, 0.25)', background: 'rgba(13, 14, 19, 0.6)' }}>
+                                <div key={idx} className={styles.visionLevelCardGreen}>
                                     <div className={styles.visionBadgesRow}>
                                         <Badge text={p.structure_description || `Pattern #${idx + 1}`} color="amber" />
                                     </div>

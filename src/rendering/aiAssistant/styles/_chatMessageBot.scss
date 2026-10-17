@@ -516,6 +516,31 @@
                         tr:nth-child(even) {
                             background: rgba(255, 255, 255, 0.02);
                         }
+
+                        :global(html.light) &,
+                        :global([data-theme='light']) &,
+                        :global(.light) &,
+                        :global(body.light-theme) & {
+                            background: #FFFFFF;
+                            border: 1px solid #E2E8F0;
+
+                            th {
+                                background: #F8FAFC;
+                                color: #0F172A;
+                                border: 1px solid #E2E8F0;
+                                border-bottom: 2px solid #CBD5E1;
+                            }
+
+                            td {
+                                background: #FFFFFF;
+                                color: #1E293B;
+                                border: 1px solid #E2E8F0;
+                            }
+
+                            tr:nth-child(even) td {
+                                background: #F8FAFC;
+                            }
+                        }
                     }
 
                     blockquote {
