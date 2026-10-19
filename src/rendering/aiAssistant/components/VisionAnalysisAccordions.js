@@ -477,6 +477,19 @@ export default function VisionAnalysisAccordions({ chartSections, textSummary, i
             }
 
             default:
+                if (Array.isArray(sectionData)) {
+                    return (
+                        <div className={styles.visionSectionDetails}>
+                            {sectionData.map((item, idx) => (
+                                <div key={idx} className={styles.visionFieldBlock}>
+                                    <div className={styles.visionBlockContent}>
+                                        {renderFormattedValue(item)}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    );
+                }
                 return (
                     <div className={styles.visionSectionDetails}>
                         {sectionData.description && (
@@ -489,9 +502,11 @@ export default function VisionAnalysisAccordions({ chartSections, textSummary, i
                             .filter(([k]) => !['description', 'summary', 'trend_type', 'trend_strength', 'structure_state', 'overall_summary'].includes(k))
                             .map(([k, v]) => (
                                 <div key={k} className={styles.visionFieldBlock}>
-                                    <span className={styles.visionBlockHeading}>
-                                        {k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                                    </span>
+                                    {!/^\d+$/.test(k) && (
+                                        <span className={styles.visionBlockHeading}>
+                                            {k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                        </span>
+                                    )}
                                     <div className={styles.visionBlockContent}>
                                         {renderFormattedValue(v)}
                                     </div>

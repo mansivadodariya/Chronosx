@@ -185,6 +185,15 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     overflow-x: auto;
     scrollbar-width: none;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    @media (max-height: 850px) {
+        padding: 6px 12px;
+        margin-bottom: 6px;
+        gap: 10px;
+    }
 
     &::-webkit-scrollbar {
         display: none;
@@ -277,7 +286,14 @@
     flex-direction: column;
     gap: 14px;
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     padding-bottom: 30px;
+
+    @media (max-height: 850px) {
+        gap: 8px;
+        padding-bottom: 14px;
+    }
 }
 
 .feedDisclosureBanner {
@@ -289,6 +305,23 @@
     border-radius: 8px;
     background: rgba(24, 201, 139, 0.06);
     border: 1px solid rgba(24, 201, 139, 0.2);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    @media (max-height: 850px) {
+        padding: 5px 12px;
+        gap: 8px;
+
+        .feedStatusPill {
+            padding: 2px 6px;
+            font-size: 10px;
+        }
+
+        .feedDisclosureText {
+            font-size: 11px;
+        }
+    }
 
     .feedStatusPill {
         display: inline-flex;
@@ -350,11 +383,28 @@
     gap: 4px;
     height: 620px;
     min-height: 540px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    @media (max-height: 900px) {
+        height: calc(100dvh - 235px);
+        min-height: 430px;
+    }
+
+    @media (max-height: 800px) {
+        height: calc(100dvh - 200px);
+        min-height: 380px;
+    }
+
+    @media (max-height: 720px) {
+        height: calc(100dvh - 175px);
+        min-height: 330px;
+    }
 
     @include respond-to('lg') {
         grid-template-columns: 280px 1fr;
-        gap: 12px;
-        height: 570px;
+        gap: 8px;
     }
 
     @include respond-to('md') {

@@ -12,11 +12,43 @@ export async function exportAssistantMessageToPdf(msg, defaultPair = 'XAU/USD', 
     try {
         toast('Generating institutional white-theme PDF report...');
 
-        // Dynamically import html2pdf
+        // Dynamically import html2pdf and logo helper
         const html2pdf = (await import('html2pdf.js')).default;
+        const { getPdfLogoDataUrl } = await import('@/lib/pdfLogoHelper');
+        const logoDataUrl = getPdfLogoDataUrl(false);
 
-        const pair = msg.detected_pair || msg.pair || defaultPair || 'MARKET';
-        const cleanPair = String(pair).replace(/[^A-Za-z0-9]/g, '').toUpperCase() || 'MARKET';
+        // Resolve authentic instrument symbol
+        const promptText = String(msg.user_prompt || msg.prompt || msg.question || msg.userMsgText || '').toUpperCase();
+        const promptMatch = promptText.match(/\b(XAUUSD|XAU\/USD|GOLD|EURUSD|EUR\/USD|GBPUSD|GBP\/USD|USDJPY|USD\/JPY|AUDUSD|AUD\/USD|USDCAD|USD\/CAD|USDCHF|USD\/CHF|NZDUSD|NZD\/USD|GBPJPY|GBP\/JPY|EURJPY|EUR\/JPY|EURGBP|EUR\/GBP|BTCUSD|BTC\/USD|ETHUSD|ETH\/USD|US30|NAS100)\b/i);
+
+        let pair = 'XAU/USD';
+        if (promptMatch) {
+            let sym = promptMatch[1].toUpperCase().replace('GOLD', 'XAU/USD');
+            if (sym.length === 6 && !sym.includes('/')) sym = `${sym.slice(0, 3)}/${sym.slice(3)}`;
+            pair = sym;
+        } else if (defaultPair && defaultPair !== 'No Pair' && defaultPair !== 'NO_PAIR' && defaultPair !== 'MARKET' && defaultPair !== 'none') {
+            pair = defaultPair;
+        } else if (msg.pair && msg.pair !== 'No Pair' && msg.pair !== 'NO_PAIR') {
+            pair = msg.pair;
+        } else {
+            const contentText = String(msg.content || msg.fullReport || msg.textSummary || '').toUpperCase();
+            const contentMatch = contentText.match(/\b(XAUUSD|XAU\/USD|GOLD|EURUSD|EUR\/USD|GBPUSD|GBP\/USD|USDJPY|USD\/JPY|AUDUSD|AUD\/USD|USDCAD|USD\/CAD|USDCHF|USD\/CHF|NZDUSD|NZD\/USD|GBPJPY|GBP\/JPY|EURJPY|EUR\/JPY|EURGBP|EUR\/GBP|BTCUSD|BTC\/USD|ETHUSD|ETH\/USD|US30|NAS100)\b/i);
+            if (contentMatch) {
+                let sym = contentMatch[1].toUpperCase().replace('GOLD', 'XAU/USD');
+                if (sym.length === 6 && !sym.includes('/')) sym = `${sym.slice(0, 3)}/${sym.slice(3)}`;
+                pair = sym;
+            } else if (/\b(?:41[0-9]{2}|42[0-9]{2}|27[0-9]{2}|26[0-9]{2})\b/.test(contentText)) {
+                pair = 'XAU/USD';
+            } else if (msg.detected_pair && msg.detected_pair !== 'No Pair') {
+                let sym = msg.detected_pair.toUpperCase();
+                if (sym.length === 6 && !sym.includes('/')) sym = `${sym.slice(0, 3)}/${sym.slice(3)}`;
+                pair = sym;
+            } else {
+                pair = 'XAU/USD';
+            }
+        }
+
+        const cleanPair = String(pair).replace(/[^A-Za-z0-9]/g, '').toUpperCase() || 'XAUUSD';
         const dateStr = new Date().toISOString().split('T')[0];
         const timeStr = new Date().toLocaleTimeString();
 
@@ -210,11 +242,14 @@ export async function exportAssistantMessageToPdf(msg, defaultPair = 'XAU/USD', 
                             if (typeof item === 'object' && item !== null) {
                                 return `
                                     <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 4px; padding: 4px 8px; margin-bottom: 2px;">
-                                        ${Object.entries(item).map(([k, v]) => `
-                                            <div style="font-size: 10px; line-height: 1.4; color: #334155;">
-                                                <strong style="color: #0F172A; text-transform: capitalize;">${k.replace(/_/g, ' ')}:</strong> ${formatReadableValue(v)}
-                                            </div>
-                                        `).join('')}
+                                        ${Object.entries(item).map(([k, v]) => {
+                                            if (/^\d+$/.test(k)) return `<div style="font-size: 10px; line-height: 1.4; color: #334155;">${formatReadableValue(v)}</div>`;
+                                            return `
+                                                <div style="font-size: 10px; line-height: 1.4; color: #334155;">
+                                                    <strong style="color: #0F172A; text-transform: capitalize;">${k.replace(/_/g, ' ')}:</strong> ${formatReadableValue(v)}
+                                                </div>
+                                            `;
+                                        }).join('')}
                                     </div>
                                 `;
                             }
@@ -226,11 +261,14 @@ export async function exportAssistantMessageToPdf(msg, defaultPair = 'XAU/USD', 
             if (typeof val === 'object') {
                 return `
                     <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 4px; padding: 4px 8px; margin-top: 2px;">
-                        ${Object.entries(val).map(([k, v]) => `
-                            <div style="font-size: 10px; line-height: 1.4; color: #334155; margin-bottom: 2px;">
-                                <strong style="color: #0F172A; text-transform: capitalize;">${k.replace(/_/g, ' ')}:</strong> ${formatReadableValue(v)}
-                            </div>
-                        `).join('')}
+                        ${Object.entries(val).map(([k, v]) => {
+                            if (/^\d+$/.test(k)) return `<div style="font-size: 10px; line-height: 1.4; color: #334155; margin-bottom: 2px;">${formatReadableValue(v)}</div>`;
+                            return `
+                                <div style="font-size: 10px; line-height: 1.4; color: #334155; margin-bottom: 2px;">
+                                    <strong style="color: #0F172A; text-transform: capitalize;">${k.replace(/_/g, ' ')}:</strong> ${formatReadableValue(v)}
+                                </div>
+                            `;
+                        }).join('')}
                     </div>
                 `;
             }
@@ -386,21 +424,33 @@ export async function exportAssistantMessageToPdf(msg, defaultPair = 'XAU/USD', 
                         </div>
                     `;
                 } else {
-                    // Universal object formatter for volatility, mood, candlesticks, patterns, session
-                    const rows = [];
-                    Object.entries(content).forEach(([k, v]) => {
-                        if (v === null || v === undefined || v === '') return;
-                        const label = k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-                        rows.push(`
-                            <div style="margin-bottom: 4px;">
-                                <span style="font-size: 9px; font-weight: 800; color: #475569; text-transform: uppercase;">${label}:</span>
-                                <div style="margin-top: 1px; font-size: 9.5px; color: #1E293B; line-height: 1.4;">
-                                    ${formatReadableValue(v)}
+                    // Universal object or array formatter for volatility, mood, candlesticks, patterns, session
+                    if (Array.isArray(content)) {
+                        bodyHtml = content.map(item => formatReadableValue(item)).join('');
+                    } else {
+                        const rows = [];
+                        Object.entries(content).forEach(([k, v]) => {
+                            if (v === null || v === undefined || v === '') return;
+                            if (/^\d+$/.test(k)) {
+                                rows.push(`
+                                    <div style="margin-bottom: 4px;">
+                                        ${formatReadableValue(v)}
+                                    </div>
+                                `);
+                                return;
+                            }
+                            const label = k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                            rows.push(`
+                                <div style="margin-bottom: 4px;">
+                                    <span style="font-size: 9px; font-weight: 800; color: #475569; text-transform: uppercase;">${label}:</span>
+                                    <div style="margin-top: 1px; font-size: 9.5px; color: #1E293B; line-height: 1.4;">
+                                        ${formatReadableValue(v)}
+                                    </div>
                                 </div>
-                            </div>
-                        `);
-                    });
-                    bodyHtml = rows.join('');
+                            `);
+                        });
+                        bodyHtml = rows.join('');
+                    }
                 }
             }
 
@@ -498,19 +548,21 @@ export async function exportAssistantMessageToPdf(msg, defaultPair = 'XAU/USD', 
             </style>
 
             <!-- INSTITUTIONAL COVER HEADER -->
-            <div class="pdfBlock" style="border-bottom: 2px solid #0F172A; padding-bottom: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-end; page-break-inside: avoid; break-inside: avoid; width: 100%;">
+            <div class="pdfBlock" style="border-bottom: 2px solid #0F172A; padding-bottom: 10px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; page-break-inside: avoid; break-inside: avoid; width: 100%;">
                 <div>
-                    <div style="font-size: 8px; font-weight: 800; color: #10B981; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 2px;">CHRONOSX AI INTELLIGENCE SYSTEM</div>
-                    <div style="font-size: 16px; font-weight: 900; color: #0F172A; margin: 0; letter-spacing: -0.3px;">${reportType}</div>
+                    <div style="margin-bottom: 6px;">
+                        <img src="${logoDataUrl || '/assets/logo/darklogo.png'}" alt="ChronosX" style="height: 28px; width: auto; max-width: 150px; object-fit: contain; display: block;" />
+                    </div>
+                    <div style="font-size: 15px; font-weight: 900; color: #0F172A; margin: 0; letter-spacing: -0.3px;">${reportType}</div>
                     <div style="font-size: 9.5px; color: #64748B; margin-top: 2px;">
                         Instrument: <strong style="color: #0F172A;">${pair}</strong> • Audit Date: <strong style="color: #0F172A;">${dateStr} ${timeStr}</strong>
                     </div>
                 </div>
                 <div style="text-align: right;">
-                    <div style="background: #F0FDF4; border: 1px solid #10B981; color: #047857; font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block;">
+                    <div style="background: #F0FDF4; border: 1px solid #10B981; color: #047857; font-size: 9px; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block;">
                         INSTITUTIONAL GRADE
                     </div>
-                    <div style="font-size: 8px; color: #94A3B8; margin-top: 2px;">CONFIDENTIAL AUDIT</div>
+                    <div style="font-size: 8px; color: #94A3B8; margin-top: 3px; font-weight: 600;">CONFIDENTIAL AUDIT</div>
                 </div>
             </div>
 

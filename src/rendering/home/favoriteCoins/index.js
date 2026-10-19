@@ -1,9 +1,10 @@
 "use client";
 import { useLanguage } from '@/context/LanguageContext';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { authNavigate, navigateFeature } from '@/lib/authRedirect';
+import { useLiveTickerPrices } from '@/lib/useLiveTickerPrices';
 import styles from './favoriteCoins.module.scss';
 import SectionHeader from '@/components/sectionHeader';
 
@@ -55,12 +56,23 @@ function SparklineCurve({ isUp }) {
 // Row 1 Assets (Forex Pairs 1-8) - Official TradingView Symbol Logos & Truth Details
 const row1Assets = [
   {
+    name: 'XAU / USD',
+    symbol: 'XAUUSD',
+    price: '4,171.41',
+    change: '+0.14%',
+    isUp: true,
+    signal: 'STRONG BUY',
+    logoUrl: 'https://s3-symbol-logo.tradingview.com/metal/gold.svg',
+    fallbackChar: 'Au',
+    color: '#F59E0B'
+  },
+  {
     name: 'EUR / USD',
     symbol: 'EURUSD',
-    price: '1.0854',
-    change: '+0.25%',
-    isUp: true,
-    signal: 'BULLISH',
+    price: '1.1221',
+    change: '-0.16%',
+    isUp: false,
+    signal: 'BEARISH',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/EU.svg',
     fallbackChar: '€',
     color: '#003399'
@@ -68,10 +80,10 @@ const row1Assets = [
   {
     name: 'USD / JPY',
     symbol: 'USDJPY',
-    price: '154.650',
-    change: '-0.34%',
-    isUp: false,
-    signal: 'BEARISH',
+    price: '158.179',
+    change: '+0.13%',
+    isUp: true,
+    signal: 'BULLISH',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/JP.svg',
     fallbackChar: '¥',
     color: '#BC002D'
@@ -79,10 +91,10 @@ const row1Assets = [
   {
     name: 'GBP / USD',
     symbol: 'GBPUSD',
-    price: '1.2945',
-    change: '+0.42%',
+    price: '1.3335',
+    change: '+0.10%',
     isUp: true,
-    signal: 'BULLISH',
+    signal: 'CONFLUENCE',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/GB.svg',
     fallbackChar: '£',
     color: '#C8102E'
@@ -90,10 +102,10 @@ const row1Assets = [
   {
     name: 'AUD / USD',
     symbol: 'AUDUSD',
-    price: '0.6580',
-    change: '+0.15%',
+    price: '0.6987',
+    change: '+0.60%',
     isUp: true,
-    signal: 'STRONG BUY',
+    signal: 'BULLISH',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/AU.svg',
     fallbackChar: 'A$',
     color: '#00008B'
@@ -101,8 +113,8 @@ const row1Assets = [
   {
     name: 'USD / CAD',
     symbol: 'USDCAD',
-    price: '1.3830',
-    change: '-0.18%',
+    price: '1.4080',
+    change: '-0.41%',
     isUp: false,
     signal: 'BEARISH',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/CA.svg',
@@ -112,10 +124,10 @@ const row1Assets = [
   {
     name: 'USD / CHF',
     symbol: 'USDCHF',
-    price: '0.8650',
-    change: '+0.12%',
+    price: '0.8251',
+    change: '+0.13%',
     isUp: true,
-    signal: 'BULLISH',
+    signal: 'STRONG BUY',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/CH.svg',
     fallbackChar: 'Fr',
     color: '#D52B1E'
@@ -123,10 +135,10 @@ const row1Assets = [
   {
     name: 'NZD / USD',
     symbol: 'NZDUSD',
-    price: '0.5876',
-    change: '-0.02%',
-    isUp: false,
-    signal: 'CONFLUENCE',
+    price: '0.5668',
+    change: '+0.35%',
+    isUp: true,
+    signal: 'STABLE',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/NZ.svg',
     fallbackChar: 'NZ$',
     color: '#00247D'
@@ -134,9 +146,9 @@ const row1Assets = [
   {
     name: 'EUR / JPY',
     symbol: 'EURJPY',
-    price: '167.850',
-    change: '+0.38%',
-    isUp: true,
+    price: '177.491',
+    change: '-0.03%',
+    isUp: false,
     signal: 'MOMENTUM',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/EU.svg',
     fallbackChar: '€',
@@ -229,9 +241,15 @@ export default function FavoriteCoins() {
   const { t } = useLanguage();
   const router = useRouter();
 
+  const allInitialAssets = useMemo(() => [...row1Assets, ...row2Assets], []);
+  const { assets: liveAllAssets, flashMap } = useLiveTickerPrices(allInitialAssets);
+
+  const liveRow1 = liveAllAssets.slice(0, row1Assets.length);
+  const liveRow2 = liveAllAssets.slice(row1Assets.length);
+
   // Duplicate arrays 3x for seamless infinite marquee loop
-  const marqueeRow1 = [...row1Assets, ...row1Assets, ...row1Assets];
-  const marqueeRow2 = [...row2Assets, ...row2Assets, ...row2Assets];
+  const marqueeRow1 = [...liveRow1, ...liveRow1, ...liveRow1];
+  const marqueeRow2 = [...liveRow2, ...liveRow2, ...liveRow2];
 
   const signalMap = {
     'BULLISH': t('homeSections.favoriteCoins.signals.bullish', 'BULLISH'),
@@ -272,6 +290,7 @@ export default function FavoriteCoins() {
         <div className={`${styles.marqueeTrack} ${styles.trackLeft}`}>
           {marqueeRow1.map((item, idx) => {
             const data = getAssetData(item);
+            const flashDir = flashMap[item.symbol];
             return (
               <div key={`row1-${idx}`} className={styles.assetCard} onClick={() => navigateFeature(router, '/ai-chart-scanner', '/chart-scanner')}>
                 <TradingViewLogo
@@ -290,7 +309,9 @@ export default function FavoriteCoins() {
                   </div>
                   <div className={styles.bottomRow}>
                     <div className={styles.priceGroup}>
-                      <span className={styles.priceText}>{data.price}</span>
+                      <span className={`${styles.priceText} ${flashDir === 'up' ? styles.flashUp : flashDir === 'down' ? styles.flashDown : ''}`}>
+                        {data.price}
+                      </span>
                       <span className={`${styles.changeBadge} ${data.isUp ? styles.green : styles.red}`}>
                         {data.change}
                       </span>
@@ -307,6 +328,7 @@ export default function FavoriteCoins() {
         <div className={`${styles.marqueeTrack} ${styles.trackRight}`}>
           {marqueeRow2.map((item, idx) => {
             const data = getAssetData(item);
+            const flashDir = flashMap[item.symbol];
             return (
               <div key={`row2-${idx}`} className={styles.assetCard} onClick={() => navigateFeature(router, '/ai-chart-scanner', '/chart-scanner')}>
                 <TradingViewLogo
@@ -325,7 +347,9 @@ export default function FavoriteCoins() {
                   </div>
                   <div className={styles.bottomRow}>
                     <div className={styles.priceGroup}>
-                      <span className={styles.priceText}>{data.price}</span>
+                      <span className={`${styles.priceText} ${flashDir === 'up' ? styles.flashUp : flashDir === 'down' ? styles.flashDown : ''}`}>
+                        {data.price}
+                      </span>
                       <span className={`${styles.changeBadge} ${data.isUp ? styles.green : styles.red}`}>
                         {data.change}
                       </span>

@@ -2,17 +2,29 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { navigateFeature } from '@/lib/authRedirect';
+import { useLiveTickerPrices } from '@/lib/useLiveTickerPrices';
 import styles from './herobanner.module.scss';
 
-// Official TradingView Country Flags & Currency Logos
+// Official TradingView Country Flags & Currency Logos (Real-time baseline quotes)
 const TICKER_ASSETS = [
+  {
+    name: 'XAU / USD',
+    symbol: 'XAUUSD',
+    price: '4,171.41',
+    change: '+0.14%',
+    isUp: true,
+    signal: 'STRONG BUY',
+    logoUrl: 'https://s3-symbol-logo.tradingview.com/metal/gold.svg',
+    fallbackChar: 'Au',
+    color: '#F59E0B'
+  },
   {
     name: 'EUR / USD',
     symbol: 'EURUSD',
-    price: '1.0854',
-    change: '+0.25%',
-    isUp: true,
-    signal: 'BULLISH',
+    price: '1.1221',
+    change: '-0.16%',
+    isUp: false,
+    signal: 'BEARISH',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/EU.svg',
     fallbackChar: '€',
     color: '#003399'
@@ -20,10 +32,10 @@ const TICKER_ASSETS = [
   {
     name: 'USD / JPY',
     symbol: 'USDJPY',
-    price: '154.650',
-    change: '-0.34%',
-    isUp: false,
-    signal: 'BEARISH',
+    price: '158.179',
+    change: '+0.13%',
+    isUp: true,
+    signal: 'BULLISH',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/JP.svg',
     fallbackChar: '¥',
     color: '#BC002D'
@@ -31,8 +43,8 @@ const TICKER_ASSETS = [
   {
     name: 'GBP / USD',
     symbol: 'GBPUSD',
-    price: '1.2945',
-    change: '+0.42%',
+    price: '1.3335',
+    change: '+0.10%',
     isUp: true,
     signal: 'CONFLUENCE',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/GB.svg',
@@ -42,8 +54,8 @@ const TICKER_ASSETS = [
   {
     name: 'AUD / USD',
     symbol: 'AUDUSD',
-    price: '0.6580',
-    change: '+0.15%',
+    price: '0.6987',
+    change: '+0.60%',
     isUp: true,
     signal: 'BULLISH',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/AU.svg',
@@ -53,8 +65,8 @@ const TICKER_ASSETS = [
   {
     name: 'USD / CAD',
     symbol: 'USDCAD',
-    price: '1.3830',
-    change: '-0.18%',
+    price: '1.4080',
+    change: '-0.41%',
     isUp: false,
     signal: 'BEARISH',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/CA.svg',
@@ -64,8 +76,8 @@ const TICKER_ASSETS = [
   {
     name: 'USD / CHF',
     symbol: 'USDCHF',
-    price: '0.8650',
-    change: '+0.12%',
+    price: '0.8251',
+    change: '+0.13%',
     isUp: true,
     signal: 'STRONG BUY',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/CH.svg',
@@ -75,9 +87,9 @@ const TICKER_ASSETS = [
   {
     name: 'NZD / USD',
     symbol: 'NZDUSD',
-    price: '0.5876',
-    change: '-0.02%',
-    isUp: false,
+    price: '0.5668',
+    change: '+0.35%',
+    isUp: true,
     signal: 'STABLE',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/NZ.svg',
     fallbackChar: 'NZ$',
@@ -86,9 +98,9 @@ const TICKER_ASSETS = [
   {
     name: 'EUR / JPY',
     symbol: 'EURJPY',
-    price: '167.850',
-    change: '+0.38%',
-    isUp: true,
+    price: '177.491',
+    change: '-0.03%',
+    isUp: false,
     signal: 'MOMENTUM',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/EU.svg',
     fallbackChar: '€',
@@ -97,8 +109,8 @@ const TICKER_ASSETS = [
   {
     name: 'GBP / JPY',
     symbol: 'GBPJPY',
-    price: '198.400',
-    change: '+0.65%',
+    price: '210.929',
+    change: '+0.21%',
     isUp: true,
     signal: 'BREAKOUT',
     logoUrl: 'https://s3-symbol-logo.tradingview.com/country/GB.svg',
@@ -122,7 +134,7 @@ const SparklineMini = React.memo(function SparklineMini({ isUp }) {
   );
 });
 
-const TickerCard = React.memo(function TickerCard({ item, onClick }) {
+const TickerCard = React.memo(function TickerCard({ item, flashDir, onClick }) {
   const [imgError, setImgError] = useState(false);
 
   return (
@@ -154,7 +166,9 @@ const TickerCard = React.memo(function TickerCard({ item, onClick }) {
           <span className={styles.tickerSignalPill}>{item.signal}</span>
         </div>
         <div className={styles.tickerCardBottom}>
-          <span className={styles.tickerPrice}>{item.price}</span>
+          <span className={`${styles.tickerPrice} ${flashDir === 'up' ? styles.flashUp : flashDir === 'down' ? styles.flashDown : ''}`}>
+            {item.price}
+          </span>
           <span className={`${styles.tickerChange} ${item.isUp ? styles.green : styles.red}`}>
             {item.change}
           </span>
@@ -167,6 +181,7 @@ const TickerCard = React.memo(function TickerCard({ item, onClick }) {
 
 export default React.memo(function HeroTickerMarquee() {
   const router = useRouter();
+  const { assets: liveAssets, flashMap } = useLiveTickerPrices(TICKER_ASSETS);
 
   const handleCardClick = React.useCallback(() => {
     navigateFeature(router, '/ai-chart-scanner', '/chart-scanner');
@@ -178,10 +193,11 @@ export default React.memo(function HeroTickerMarquee() {
         <div className={styles.heroMarqueeTrack} dir="ltr">
           {/* First loop group */}
           <div className={styles.marqueeGroup} dir="ltr">
-            {TICKER_ASSETS.map((item, idx) => (
+            {liveAssets.map((item, idx) => (
               <TickerCard
-                key={`hero-ticker-a-${idx}`}
+                key={`hero-ticker-a-${item.symbol || idx}`}
                 item={item}
+                flashDir={flashMap[item.symbol]}
                 onClick={handleCardClick}
               />
             ))}
@@ -189,10 +205,11 @@ export default React.memo(function HeroTickerMarquee() {
 
           {/* Second identical loop group for 100% seamless, mathematically exact infinite scroll */}
           <div className={styles.marqueeGroup} aria-hidden="true" dir="ltr">
-            {TICKER_ASSETS.map((item, idx) => (
+            {liveAssets.map((item, idx) => (
               <TickerCard
-                key={`hero-ticker-b-${idx}`}
+                key={`hero-ticker-b-${item.symbol || idx}`}
                 item={item}
+                flashDir={flashMap[item.symbol]}
                 onClick={handleCardClick}
               />
             ))}

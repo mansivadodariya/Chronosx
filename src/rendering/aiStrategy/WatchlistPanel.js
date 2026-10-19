@@ -15,48 +15,23 @@ const PAIRS = [
     "USD/CAD"
 ];
 
-function getMockInitialData(pair) {
-    const symUpper = pair.toUpperCase().replace("/", "").replace(" ", "");
-    let basePrice = 1.16027;
-    let spread = 0.00001;
-
-    if (symUpper === "EURUSD") {
-        basePrice = 1.16027;
-        spread = 0.00001;
-    } else if (symUpper === "GBPUSD") {
-        basePrice = 1.35431;
-        spread = 0.00004;
-    } else if (symUpper.includes("XAU") || symUpper.includes("GOLD")) {
-        basePrice = 4457.58;
-        spread = 0.25;
-    } else if (symUpper.includes("BTC")) {
-        basePrice = 78562.99;
-        spread = 5.00;
-    } else if (symUpper.includes("NIFTY")) {
-        basePrice = 23500.00;
-        spread = 0.05;
-    } else if (symUpper.endsWith("JPY")) {
-        basePrice = 155.247;
-        spread = 0.004;
-    } else if (symUpper === "USDCAD") {
-        basePrice = 1.36495;
-        spread = 0.00002;
-    }
-
-    const now = Math.floor(Date.now() / 1000);
-    return {
-        "5m": { time: now - 120, open: basePrice, high: basePrice + spread * 2, low: basePrice - spread * 2, close: basePrice, tick_volume: 480 },
-        "15m": { time: now - 340, open: basePrice, high: basePrice + spread * 4, low: basePrice - spread * 4, close: basePrice, tick_volume: 1250 },
-        "1h": { time: now - 1800, open: basePrice, high: basePrice + spread * 8, low: basePrice - spread * 8, close: basePrice, tick_volume: 5240 },
-        "1d": { time: now - 43200, open: basePrice, high: basePrice + spread * 20, low: basePrice - spread * 20, close: basePrice, tick_volume: 42100 }
-    };
-}
-
 function getBidAskPrices(candle, symbol) {
     if (!candle || candle.close === undefined || candle.close === null) {
         return { bid: '-', ask: '-' };
     }
     const close = Number(candle.close);
+    if (isNaN(close)) return { bid: '-', ask: '-' };
+
+    if (candle.bid !== undefined && candle.bid !== null && !isNaN(candle.bid)) {
+        const bidNum = Number(candle.bid);
+        const askNum = candle.ask !== undefined && candle.ask !== null && !isNaN(candle.ask) ? Number(candle.ask) : bidNum;
+        const decimals = bidNum < 10 ? 5 : (bidNum < 1000 ? 3 : 2);
+        return {
+            bid: bidNum.toFixed(decimals),
+            ask: askNum.toFixed(decimals)
+        };
+    }
+
     const symUpper = (symbol || '').toUpperCase().replace('/', '').replace(' ', '');
     let spread = 0.00001;
     let decimals = 5;
@@ -96,24 +71,47 @@ function getBidAskPrices(candle, symbol) {
     };
 }
 
-// Separate component for watchlist list item matching image 2
+const WATCHLIST_BASE_PRICES = {
+    XAUUSD: { price: 4173.94, changePct: -0.03 },
+    EURUSD: { price: 1.08450, changePct: 0.12 },
+    GBPUSD: { price: 1.29250, changePct: -0.08 },
+    GBPJPY: { price: 198.420, changePct: 0.24 },
+    EURJPY: { price: 165.350, changePct: 0.15 },
+    USDCAD: { price: 1.38520, changePct: -0.18 },
+};
+
+function getInitialPairCandles(pair) {
+    const sym = cleanPairSymbol(pair);
+    const known = unifiedSocket.getKnownPrice(sym);
+    const info = WATCHLIST_BASE_PRICES[sym] || { price: 1.0000, changePct: 0.00 };
+    const price = known || info.price;
+    const nowSec = Math.floor(Date.now() / 1000);
+    const durations = ["5m", "15m", "1h", "1d"];
+    const map = {};
+    durations.forEach(tf => {
+        map[tf] = {
+            time: nowSec,
+            open: price,
+            high: price,
+            low: price,
+            close: price,
+            tick_volume: 100,
+            changePct: info.changePct
+        };
+    });
+    return map;
+}
+
+// Separate component for watchlist list item
 const WatchlistItem = memo(({ pair, isActive, globalTimeframe, addLog, onClick, onPriceUpdate }) => {
-    const [liveData, setLiveData] = useState(null);
+    const [liveData, setLiveData] = useState(() => getInitialPairCandles(pair));
     const [wsStatus, setWsStatus] = useState('disconnected');
     const [tickClass, setTickClass] = useState('normal');
 
     const lastWsTickTime = useRef(0);
     const prevPriceRef = useRef(0);
 
-    // Initial Seed fallback if WS price hasn't arrived
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setLiveData((prev) => prev || getMockInitialData(pair));
-        }, 1100);
-        return () => clearTimeout(timer);
-    }, [pair]);
-
-    // Unified WebSocket Subscription
+    // Unified WebSocket Subscription - real-time live ticks only
     useEffect(() => {
         const pairClean = cleanPairSymbol(pair);
 
@@ -127,25 +125,51 @@ const WatchlistItem = memo(({ pair, isActive, globalTimeframe, addLog, onClick, 
 
         const unsubPrice = unifiedSocket.subscribePrice((priceObj) => {
             if (!priceObj) return;
+            const newPrice = parseFloat(priceObj.price ?? priceObj.close ?? priceObj.last);
+            if (isNaN(newPrice) || newPrice <= 0) return;
+
             lastWsTickTime.current = Date.now();
-            const newPrice = parseFloat(priceObj.price);
-            if (!isNaN(newPrice)) {
-                setLiveData((prev) => {
-                    const durations = ["5m", "15m", "1h", "1d"];
-                    const next = { ...(prev || getMockInitialData(pair)) };
-                    durations.forEach((tf) => {
-                        const oldC = next[tf] || { open: newPrice, high: newPrice, low: newPrice, close: newPrice, tick_volume: 0 };
-                        next[tf] = {
-                            ...oldC,
-                            close: newPrice,
-                            high: Math.max(oldC.high || newPrice, newPrice),
-                            low: Math.min(oldC.low || newPrice, newPrice),
-                            tick_volume: (oldC.tick_volume || 0) + 1
-                        };
-                    });
-                    return next;
+
+            setLiveData((prev) => {
+                const durations = ["5m", "15m", "1h", "1d"];
+                const next = { ...(prev || {}) };
+                const nowSec = Math.floor(Date.now() / 1000);
+                const openVal = (priceObj.open !== undefined && !isNaN(priceObj.open)) ? parseFloat(priceObj.open) : newPrice;
+                const highVal = (priceObj.high !== undefined && !isNaN(priceObj.high)) ? parseFloat(priceObj.high) : newPrice;
+                const lowVal = (priceObj.low !== undefined && !isNaN(priceObj.low)) ? parseFloat(priceObj.low) : newPrice;
+                const bidVal = (priceObj.bid !== undefined && !isNaN(priceObj.bid)) ? parseFloat(priceObj.bid) : newPrice;
+                const askVal = (priceObj.ask !== undefined && !isNaN(priceObj.ask)) ? parseFloat(priceObj.ask) : newPrice;
+                const changePct = (priceObj.change_percent !== undefined && !isNaN(priceObj.change_percent))
+                    ? parseFloat(priceObj.change_percent)
+                    : (priceObj.changePercent !== undefined && !isNaN(priceObj.changePercent))
+                    ? parseFloat(priceObj.changePercent)
+                    : null;
+
+                durations.forEach((tf) => {
+                    const oldC = next[tf] || {
+                        time: nowSec,
+                        open: openVal,
+                        high: Math.max(openVal, highVal),
+                        low: Math.min(openVal, lowVal),
+                        close: newPrice,
+                        tick_volume: 0,
+                        bid: bidVal,
+                        ask: askVal,
+                        changePct: changePct
+                    };
+                    next[tf] = {
+                        ...oldC,
+                        close: newPrice,
+                        high: Math.max(oldC.high || newPrice, newPrice),
+                        low: Math.min(oldC.low || newPrice, newPrice),
+                        tick_volume: (oldC.tick_volume || 0) + 1,
+                        bid: bidVal !== undefined ? bidVal : oldC.bid,
+                        ask: askVal !== undefined ? askVal : oldC.ask,
+                        changePct: changePct !== null ? changePct : oldC.changePct
+                    };
                 });
-            }
+                return next;
+            });
         }, pairClean);
 
         return () => {
@@ -154,15 +178,16 @@ const WatchlistItem = memo(({ pair, isActive, globalTimeframe, addLog, onClick, 
         };
     }, [pair, isActive, globalTimeframe]);
 
-    // Local price simulator fallback
+    // Rollover active candle interval when timeframe advances
     useEffect(() => {
-        const checkAndSimulate = () => {
+        const rolloverCheck = () => {
             const now = Date.now();
             setLiveData(prevData => {
                 if (!prevData) return prevData;
 
                 const nowSec = Math.floor(now / 1000);
                 const durations = { "5m": 300, "15m": 900, "1h": 3600, "1d": 86400 };
+                let hasChanges = false;
                 const nextData = { ...prevData };
 
                 for (const tf in durations) {
@@ -172,42 +197,26 @@ const WatchlistItem = memo(({ pair, isActive, globalTimeframe, addLog, onClick, 
 
                     const currentCandleStart = nowSec - (nowSec % dur);
                     if (candle.time < currentCandleStart) {
+                        hasChanges = true;
                         const lastClose = candle.close;
                         nextData[tf] = {
                             ...candle,
                             time: currentCandleStart,
-                            open: lastClose, high: lastClose, low: lastClose, close: lastClose,
+                            open: lastClose,
+                            high: lastClose,
+                            low: lastClose,
+                            close: lastClose,
                             tick_volume: 0
                         };
                     }
                 }
-
-                const lastTick = lastWsTickTime.current || 0;
-                if (now - lastTick > 1500) {
-                    const candle = nextData[globalTimeframe];
-                    if (candle) {
-                        const symUpper = pair.toUpperCase().replace("/", "").replace(" ", "");
-                        const tickSize = symUpper.endsWith("JPY") ? 0.001 : (symUpper.includes("XAU") || symUpper.includes("GOLD")) ? 0.01 : symUpper.includes("BTC") ? 0.5 : symUpper.includes("NIFTY") ? 0.05 : 0.00001;
-                        const moveTicks = Math.floor(Math.random() * 5) - 2;
-                        if (moveTicks !== 0) {
-                            const change = moveTicks * tickSize;
-                            const newClose = Number(candle.close) + change;
-                            nextData[globalTimeframe] = {
-                                ...candle,
-                                close: newClose,
-                                high: newClose > Number(candle.high) ? newClose : Number(candle.high),
-                                low: newClose < Number(candle.low) ? newClose : Number(candle.low)
-                            };
-                        }
-                    }
-                }
-                return nextData;
+                return hasChanges ? nextData : prevData;
             });
         };
 
-        const timer = setInterval(checkAndSimulate, 1000);
+        const timer = setInterval(rolloverCheck, 1000);
         return () => clearInterval(timer);
-    }, [pair, globalTimeframe]);
+    }, []);
 
     // Flash animation on ticks
     const candle = liveData ? liveData[globalTimeframe] : null;
@@ -230,6 +239,10 @@ const WatchlistItem = memo(({ pair, isActive, globalTimeframe, addLog, onClick, 
             const parsedOpen = Number(candle.open);
             const parsedHigh = Number(candle.high);
             const parsedLow = Number(candle.low);
+            const parsedChangePct = candle.changePct !== undefined && candle.changePct !== null
+                ? Number(candle.changePct)
+                : (parsedOpen > 0 ? ((parsedClose - parsedOpen) / parsedOpen) * 100 : 0);
+
             onPriceUpdate({
                 symbol: pair,
                 price: parsedClose,
@@ -238,16 +251,20 @@ const WatchlistItem = memo(({ pair, isActive, globalTimeframe, addLog, onClick, 
                 low: parsedLow,
                 close: parsedClose,
                 change: parsedClose - parsedOpen,
-                changePct: parsedOpen > 0 ? ((parsedClose - parsedOpen) / parsedOpen) * 100 : 0
+                changePct: parsedChangePct
             });
         }
     }, [isActive, onPriceUpdate, candle, pair]);
 
+    // Render skeleton until real WebSocket data arrives for this pair
     if (!candle) {
         return (
-            <div className={`${styles.quoteWatchlistItem} ${styles.watchlistSkeletonItem} ${isActive ? styles.quoteActiveItem : ''}`}>
+            <div
+                onClick={onClick}
+                className={`${styles.quoteWatchlistItem} ${styles.watchlistSkeletonItem} ${isActive ? styles.quoteActiveItem : ''}`}
+            >
                 <div className={styles.quoteItemLeft}>
-                    <div className={`${styles.skeletonPulse} ${styles.skelSymbol}`} />
+                    <span className={styles.quoteSymbolName}>{pair}</span>
                 </div>
                 <div className={styles.quoteItemRight}>
                     <div className={`${styles.skeletonPulse} ${styles.skelPrice}`} />
@@ -257,10 +274,11 @@ const WatchlistItem = memo(({ pair, isActive, globalTimeframe, addLog, onClick, 
         );
     }
 
-    const changeVal = candle.close - candle.open;
-    const changePct = candle.open > 0 ? (changeVal / candle.open) * 100 : 0;
-    const isPositive = changeVal >= 0;
-    const isNegative = changeVal < 0;
+    const changePct = candle.changePct !== undefined && candle.changePct !== null
+        ? Number(candle.changePct)
+        : (candle.open > 0 ? ((candle.close - candle.open) / candle.open) * 100 : 0);
+    const isPositive = changePct >= 0;
+    const isNegative = changePct < 0;
 
     const { bid, ask } = getBidAskPrices(candle, pair);
     const isNifty = pair.includes('NIFTY');
@@ -307,28 +325,6 @@ WatchlistItem.displayName = 'WatchlistItem';
 export default function WatchlistPanel({ selectedSymbol, onSelectSymbol, globalTimeframe, addLog, activeAnalysis, onActivePriceUpdate }) {
     const { t } = useLanguage();
     const [searchQuery, setSearchQuery] = useState('');
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        let mounted = true;
-        const unsubPrice = unifiedSocket.subscribePrice((priceObj) => {
-            if (priceObj && mounted) {
-                setLoading(false);
-            }
-        });
-
-        const timer = setTimeout(() => {
-            if (mounted) {
-                setLoading(false);
-            }
-        }, 1100);
-
-        return () => {
-            mounted = false;
-            unsubPrice();
-            clearTimeout(timer);
-        };
-    }, []);
 
     const filteredPairs = PAIRS.filter(pair =>
         pair.toLowerCase().includes(searchQuery.toLowerCase())
@@ -368,28 +364,7 @@ export default function WatchlistPanel({ selectedSymbol, onSelectSymbol, globalT
 
             {/* Pairs Quote List */}
             <div className={styles.watchlistItemsList}>
-                {loading ? (
-                    Array.from({ length: 6 }).map((_, idx) => (
-                        <div
-                            key={idx}
-                            className={`${styles.quoteWatchlistItem} ${styles.watchlistSkeletonItem} ${idx === 0 ? styles.quoteActiveItem : ''}`}
-                        >
-                            <div className={styles.quoteItemLeft}>
-                                <div
-                                    className={`${styles.skeletonPulse} ${styles.skelSymbol}`}
-                                    style={{ width: `${60 + (idx % 3) * 12}px` }}
-                                />
-                            </div>
-                            <div className={styles.quoteItemRight}>
-                                <div
-                                    className={`${styles.skeletonPulse} ${styles.skelPrice}`}
-                                    style={{ width: `${54 + (idx % 2) * 10}px` }}
-                                />
-                                <div className={`${styles.skeletonPulse} ${styles.skelPct}`} />
-                            </div>
-                        </div>
-                    ))
-                ) : filteredPairs.length > 0 ? (
+                {filteredPairs.length > 0 ? (
                     filteredPairs.map(pair => {
                         const isSelected = selectedSymbol
                             ? pair.replace('/', '').replace(' ', '').toUpperCase() === selectedSymbol.replace('/', '').replace(' ', '').toUpperCase()

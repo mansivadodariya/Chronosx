@@ -150,7 +150,7 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
       if (lowerLabel === 'profile' || lowerLabel === 'settings' || mapped === 'profile') return true;
 
       // Group parent container check: "AI Trading Bot" is shown if any of its sub-items is enabled
-      if (lowerLabel === 'ai trading bot' || mapped === 'ai trading bot') {
+      if (routeHref === '/my-bots' || lowerLabel === 'ai trading bot' || mapped === 'ai trading bot') {
         return (
           checkPermissionInSet(visibleTabNames, 'my bots') ||
           checkPermissionInSet(visibleTabNames, 'ai bot builder') ||
@@ -160,7 +160,7 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
       }
 
       // Group parent container check: "AI Trading Signal" is shown if any of its sub-items is enabled
-      if (lowerLabel === 'ai trading signal' || mapped === 'ai trading signal') {
+      if (routeHref === '/trading-signal' || routeHref === '/strategy-hub' || lowerLabel === 'ai trading signal' || mapped === 'ai trading signal') {
         return (
           checkPermissionInSet(visibleTabNames, 'strategy signal') ||
           checkPermissionInSet(visibleTabNames, 'signal terminal') ||

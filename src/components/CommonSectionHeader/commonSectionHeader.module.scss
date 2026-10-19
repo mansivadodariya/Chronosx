@@ -5,26 +5,28 @@
 
 .sectionHeaderCard {
     background: 
-        radial-gradient(ellipse 25% 85% at 0% 50%, rgba(24, 201, 139, 0.16) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
-        radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
-        radial-gradient(ellipse 25% 85% at 100% 50%, rgba(24, 201, 139, 0.16) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
-        #0C0E0D;
+        radial-gradient(ellipse 25% 85% at 0% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
+        radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.12) 0%, rgba(110, 231, 183, 0.05) 50%, transparent 70%),
+        radial-gradient(ellipse 25% 85% at 100% 50%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 75%),
+        #121514;
     border-radius: 14px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
     border: none;
+    box-shadow: none;
     position: relative;
     overflow: visible;
     padding: 13px 20px;
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     margin-bottom: 10px;
     display: flex;
     flex-direction: column;
     gap: 6px;
     transition: box-shadow 0.2s ease;
 
-    @media (max-height: 800px) {
-        padding: 9px 18px;
-        margin-bottom: 8px;
+    @media (max-height: 850px) {
+        padding: 8px 16px;
+        margin-bottom: 6px;
         gap: 4px;
     }   
 
@@ -58,9 +60,13 @@
     :global(html.light) &,
     :global(html[data-theme='light']) &,
     :global([data-theme='light']) & {
-        background: #FFFFFF;
-        border: 1px solid rgba(5, 150, 105, 0.25);
-        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+        background:
+            radial-gradient(ellipse 35% 85% at 0% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            radial-gradient(ellipse 50% 60% at 50% 30%, rgba(0, 242, 254, 0.08) 0%, rgba(110, 231, 183, 0.03) 50%, transparent 70%),
+            radial-gradient(ellipse 35% 85% at 100% 50%, rgba(24, 201, 139, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
+            #f3f3f3;
+        border: none;
+        box-shadow:none;
 
         &::before {
             background: linear-gradient(90deg, transparent 0%, rgba(5, 150, 105, 0.45) 50%, transparent 100%);

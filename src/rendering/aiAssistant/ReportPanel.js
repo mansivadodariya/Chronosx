@@ -10,6 +10,7 @@ import { ATR } from 'technicalindicators';
 import { useTheme } from '@/context/ThemeContext';
 import { getBidiProps, bidiMarkdownComponents } from '@/lib/bidi';
 import RenderMarkdownWithWidgets from './components/MarkdownWidgetRenderer';
+import { getPdfLogoDataUrl } from '@/lib/pdfLogoHelper';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -309,6 +310,12 @@ const ReportPanel = ({ fullReport, visualData, symbol, isLoading, scrollToTopSig
     if (inline) {
         return (
             <div className={styles.inlineReportContainer}>
+                {forceLight && (
+                    <div style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid #E2E8F0', paddingBottom: '10px' }}>
+                        <img src={getPdfLogoDataUrl(false) || "/assets/logo/darklogo.png"} alt="ChronosX" style={{ height: '28px', width: 'auto', maxHeight: '28px', objectFit: 'contain' }} />
+                        <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px' }}>ChronosX AI Intelligence Report</span>
+                    </div>
+                )}
                 <h3>{fullReport ? 'Analysis Center' : 'No Report Selected'}</h3>
                 {isLoading ? (
                     <div className={styles.reportLoading}>Analyzing market data...</div>

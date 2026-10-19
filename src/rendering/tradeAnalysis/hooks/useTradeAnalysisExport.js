@@ -39,8 +39,10 @@ export function useTradeAnalysisExport() {
             const dateStr = new Date().toISOString().split('T')[0];
             toast('Generating institutional PDF report in clean white theme...');
 
-            // Dynamically import html2pdf
+            // Dynamically import html2pdf and logo helper
             const html2pdf = (await import('html2pdf.js')).default;
+            const { getPdfLogoDataUrl } = await import('@/lib/pdfLogoHelper');
+            const logoDataUrl = await getPdfLogoDataUrl(false);
 
             // Helper: parse markdown text into rich formatted HTML with clean tables & bold tags
             function formatMarkdownToHtml(markdown) {
@@ -431,12 +433,18 @@ export function useTradeAnalysisExport() {
                 </style>
 
                 <!-- HEADER -->
-                <div class="pdfHeaderBox">
+                <div class="pdfHeaderBox" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #E2E8F0; padding-bottom: 12px; margin-bottom: 14px; width: 100%; box-sizing: border-box; page-break-inside: avoid; break-inside: avoid;">
                     <div>
-                        <div class="pdfTitle">ChronosX Statement Audit & Behavioral Quant Report</div>
-                        <div class="pdfSub">Statement: <strong>${fileName}</strong> • Uploaded: ${dateStr} • Trades: <strong>${totalTradesCount}</strong></div>
+                        <div style="margin-bottom: 6px;">
+                            <img src="${logoDataUrl || '/assets/logo/darklogo.png'}" alt="ChronosX" style="height: 28px; width: auto; max-width: 150px; object-fit: contain; display: block;" />
+                        </div>
+                        <div class="pdfTitle" style="font-size: 15px; font-weight: 800; color: #0F172A; margin: 0 0 3px 0;">Statement Audit & Behavioral Quant Report</div>
+                        <div class="pdfSub" style="font-size: 10px; color: #64748B; margin: 0;">Statement: <strong>${fileName}</strong> • Uploaded: ${dateStr} • Trades: <strong>${totalTradesCount}</strong></div>
                     </div>
-                    <div class="pdfBadge">STATEMENT AUDIT</div>
+                    <div style="text-align: right;">
+                        <div class="pdfBadge">STATEMENT AUDIT</div>
+                        <div style="font-size: 8.5px; color: #94A3B8; margin-top: 4px; font-weight: 600;">INSTITUTIONAL QUANT REPORT</div>
+                    </div>
                 </div>
 
                 <!-- TAB 1: TRADER SCORECARD & BEHAVIORAL QUANT PROFILE -->

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../aiStrategy.module.scss';
 import MiniCandlestickChart from './MiniCandlestickChart';
 import StrategyGridSkeleton from './StrategyGridSkeleton';
@@ -21,6 +22,7 @@ const ensureDollarPrice = (val, shortPair = '') => {
 
 export default function StrategyExecutionView({ selectedStrategyId, strategies = [] }) {
     const router = useRouter();
+    const { t } = useLanguage();
     const { setupsList, wsStatus, loading, initialLoaded } = useStrategyStream();
 
     const selectedStrategy = Array.isArray(strategies) ? strategies.find(s => (s.id || s.strategy_id) === selectedStrategyId) : null;
@@ -42,11 +44,11 @@ export default function StrategyExecutionView({ selectedStrategyId, strategies =
             <div className={styles.strategyControlBar}>
                 <div className={styles.controlTitleGroup}>
                     <span className={styles.strategyPulseDot}></span>
-                    <h3>Active Strategy Setups</h3>
+                    <h3>{t('aiStrategy.activeSetups', 'Active Strategy Setups')}</h3>
                 </div>
                 <div className={`${styles.wsStatusIndicator} ${styles[wsStatus]}`}>
                     <span>
-                        {wsStatus === 'connected' ? '● Live' : wsStatus === 'connecting' ? '◌ Connecting...' : '○ Offline'}
+                        {wsStatus === 'connected' ? t('aiStrategy.wsLive', '● Live') : wsStatus === 'connecting' ? t('aiStrategy.wsConnecting', '◌ Connecting...') : t('aiStrategy.wsOffline', '○ Offline')}
                     </span>
                 </div>
             </div>
@@ -64,8 +66,8 @@ export default function StrategyExecutionView({ selectedStrategyId, strategies =
                                 <line x1="12" y1="16" x2="12.01" y2="16" />
                             </svg>
                         </div>
-                        <h4>No Active Setups</h4>
-                        <p>There are currently no active setups for this strategy. Real-time setups will stream live as soon as market conditions trigger.</p>
+                        <h4>{t('aiStrategy.noActiveSetups', 'No Active Setups')}</h4>
+                        <p>{t('aiStrategy.noActiveSetupsDesc', 'There are currently no active setups for this strategy. Real-time setups will stream live as soon as market conditions trigger.')}</p>
                     </div>
                 ) : (
                     finalSetups.map((item) => {
@@ -119,7 +121,7 @@ export default function StrategyExecutionView({ selectedStrategyId, strategies =
                                     <div className={styles.priceMetaBlock}>
                                         <span className={styles.pricePrimary}>{displayCurrentPrice}</span>
                                         <span className={`${styles.changeMeta} ${isPositive ? styles.changePositive : styles.changeNegative}`}>
-                                            24h change <span className={styles.arrowIcon}>{changeSymbol}</span> {Math.abs(diffPercent).toFixed(2)}%
+                                            {t('aiStrategy.change24h', '24h change')} <span className={styles.arrowIcon}>{changeSymbol}</span> {Math.abs(diffPercent).toFixed(2)}%
                                         </span>
                                     </div>
                                 </div>
@@ -131,21 +133,21 @@ export default function StrategyExecutionView({ selectedStrategyId, strategies =
                                 <div className={styles.leftLevelsColumn}>
                                     {/* Direction Row */}
                                     <div className={styles.levelRow}>
-                                        <span className={styles.levelLabel}>Direction</span>
+                                        <span className={styles.levelLabel}>{t('aiStrategy.direction', 'Direction')}</span>
                                         <span className={`${styles.directionBadgePill} ${isBuy ? styles.buyPill : styles.sellPill}`}>
-                                            {isBuy ? 'BUY' : 'SELL'}
+                                            {isBuy ? t('aiStrategy.buy', 'BUY') : t('aiStrategy.sell', 'SELL')}
                                         </span>
                                     </div>
 
                                     {/* Strategy Row */}
                                     <div className={styles.levelRow}>
-                                        <span className={styles.levelLabel}>Strategy</span>
+                                        <span className={styles.levelLabel}>{t('aiStrategy.strategy', 'Strategy')}</span>
                                         <span className={styles.strategyPill}>{strategyName}</span>
                                     </div>
 
                                     {/* Entry Target */}
                                     <div className={styles.levelRow}>
-                                        <span className={styles.levelLabel}>Entry Target</span>
+                                        <span className={styles.levelLabel}>{t('aiStrategy.entryTarget', 'Entry Target')}</span>
                                         <span className={`${styles.levelValue} ${styles.entryColor}`}>
                                             {ensureDollarPrice(sig.entry_display || sig.entry, meta.short)}
                                         </span>
@@ -153,7 +155,7 @@ export default function StrategyExecutionView({ selectedStrategyId, strategies =
 
                                     {/* Stop Loss */}
                                     <div className={styles.levelRow}>
-                                        <span className={styles.levelLabel}>Stop Loss</span>
+                                        <span className={styles.levelLabel}>{t('aiStrategy.stopLoss', 'Stop Loss')}</span>
                                         <span className={`${styles.levelValue} ${styles.slColor}`}>
                                             {ensureDollarPrice(sig.sl_display || sig.sl, meta.short)}
                                         </span>
@@ -161,7 +163,7 @@ export default function StrategyExecutionView({ selectedStrategyId, strategies =
 
                                     {/* Take Profit 1 */}
                                     <div className={styles.levelRow}>
-                                        <span className={styles.levelLabel}>Take Profit 1 ({rrLabel})</span>
+                                        <span className={styles.levelLabel}>{t('aiStrategy.takeProfit1', 'Take Profit 1')} ({rrLabel})</span>
                                         <span className={`${styles.levelValue} ${styles.tpColor}`}>
                                             {ensureDollarPrice(sig.tp_display || sig.tp, meta.short)}
                                         </span>
@@ -169,19 +171,19 @@ export default function StrategyExecutionView({ selectedStrategyId, strategies =
 
                                     {/* Time Tag */}
                                     <div className={styles.levelRow}>
-                                        <span className={styles.levelLabel}>Time Tag</span>
+                                        <span className={styles.levelLabel}>{t('aiStrategy.timeTag', 'Time Tag')}</span>
                                         <span className={styles.timeTagValue}>{timeTag}</span>
                                     </div>
 
                                     {/* Risk Reward */}
                                     <div className={styles.levelRow}>
-                                        <span className={styles.levelLabel}>Risk Reward</span>
+                                        <span className={styles.levelLabel}>{t('aiStrategy.riskReward', 'Risk Reward')}</span>
                                         <span className={styles.riskRewardValue}>{riskReward}</span>
                                     </div>
 
                                     {/* Volume */}
                                     <div className={styles.levelRow}>
-                                        <span className={styles.levelLabel}>Volume</span>
+                                        <span className={styles.levelLabel}>{t('aiStrategy.volume', 'Volume')}</span>
                                         <span className={styles.volumeBadgePill}>{volumeStrength}</span>
                                     </div>
                                 </div>
@@ -206,7 +208,7 @@ export default function StrategyExecutionView({ selectedStrategyId, strategies =
                             {/* 3. Footer: Tags on Left + "View Trade Detail" Action Button on Right (Both in One Line) */}
                             <div className={styles.pairCardFooter}>
                                 <div className={styles.tagsContainerRow}>
-                                    <span className={styles.tagsHeadingLabel}>Tags:</span>
+                                    <span className={styles.tagsHeadingLabel}>{t('aiStrategy.tags', 'Tags:')}</span>
                                     <div className={styles.tagsPillsGroup}>
                                         {tags.map((tag, idx) => (
                                             <span key={idx} className={styles.tagPillBadge}>
@@ -221,7 +223,7 @@ export default function StrategyExecutionView({ selectedStrategyId, strategies =
                                     onClick={() => handleViewDetail(item)}
                                     title={`View detailed chart and execution for ${meta.short}`}
                                 >
-                                    <span>View Trade Detail</span>
+                                    <span>{t('aiStrategy.viewTradeDetail', 'View Trade Detail')}</span>
                                 </button>
                             </div>
                         </div>

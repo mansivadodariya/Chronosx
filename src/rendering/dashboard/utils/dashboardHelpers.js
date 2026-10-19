@@ -89,14 +89,28 @@ export async function exportDashboardPdf({ name, stats }) {
         doc.setFillColor(18, 21, 20);
         doc.rect(0, 0, 210, 297, 'F');
 
-        // Header Title
-        doc.setTextColor(24, 201, 139);
-        doc.setFontSize(22);
-        doc.setFont('helvetica', 'bold');
-        doc.text('CHRONOSX AI TRADING DESK', 15, 20);
+        // Header: Embed Site Logo instead of plain text name
+        const { getPdfLogoDataUrl } = await import('@/lib/pdfLogoHelper');
+        const logoData = await getPdfLogoDataUrl(true);
+        if (logoData) {
+            try {
+                doc.addImage(logoData, 'PNG', 15, 12, 44, 11);
+            } catch (_) {
+                doc.setTextColor(24, 201, 139);
+                doc.setFontSize(22);
+                doc.setFont('helvetica', 'bold');
+                doc.text('CHRONOSX', 15, 20);
+            }
+        } else {
+            doc.setTextColor(24, 201, 139);
+            doc.setFontSize(22);
+            doc.setFont('helvetica', 'bold');
+            doc.text('CHRONOSX', 15, 20);
+        }
 
         doc.setTextColor(255, 255, 255);
-        doc.setFontSize(16);
+        doc.setFontSize(15);
+        doc.setFont('helvetica', 'bold');
         doc.text('AI Telemetry & Usage Report', 15, 30);
 
         doc.setFontSize(10);

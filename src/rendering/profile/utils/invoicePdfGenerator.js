@@ -18,30 +18,7 @@ export function formatTransactionId(rawId, index = 1) {
     return `TXN-${String(index).padStart(7, '0')}`;
 }
 
-/**
- * Loads logo image as Data URL from /assets/logo/logo.png
- */
-async function loadLogoDataUrl() {
-    if (typeof window === 'undefined') return null;
-    return new Promise((resolve) => {
-        const img = new Image();
-        img.crossOrigin = 'Anonymous';
-        img.onload = () => {
-            try {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.naturalWidth || img.width || 300;
-                canvas.height = img.naturalHeight || img.height || 80;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
-                resolve(canvas.toDataURL('image/png'));
-            } catch (_) {
-                resolve(null);
-            }
-        };
-        img.onerror = () => resolve(null);
-        img.src = '/assets/logo/logo.png';
-    });
-}
+import { getPdfLogoDataUrl } from '@/lib/pdfLogoHelper';
 
 /**
  * Generates an executive, institutional PDF invoice for a transaction
@@ -91,7 +68,7 @@ export async function generateInvoicePdf(item, index = 1) {
         doc.rect(0, 0, 210, 5, 'F');
 
         // Embed Logo if available
-        const logoData = await loadLogoDataUrl();
+        const logoData = await getPdfLogoDataUrl(false);
         if (logoData) {
             try {
                 // width: 44mm, height: 12mm

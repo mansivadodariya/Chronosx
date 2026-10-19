@@ -28,32 +28,39 @@ export function formatPairCurrency(val, symbol) {
     return val.toFixed(2);
 }
 
-export function generateFallbackCandles(symbol = 'XAUUSD', timeframe = '1H') {
+export function generateFallbackCandles(symbol = 'XAUUSD', timeframe = '1H', anchorPrice = null) {
     const candlesList = [];
-    let basePrice = 4457.50;
+    const symUpper = (symbol || '').toUpperCase().replace('/', '').replace(' ', '');
+
+    let basePrice = 4163.90;
     let step = 1.5;
 
-    const symUpper = (symbol || '').toUpperCase().replace('/', '').replace(' ', '');
-    if (symUpper.endsWith('JPY')) {
-        basePrice = 155.25;
+    if (anchorPrice && !isNaN(anchorPrice) && Number(anchorPrice) > 0) {
+        basePrice = Number(anchorPrice);
+        step = Math.max(0.0001, basePrice * 0.0006);
+    } else if (symUpper.endsWith('JPY')) {
+        basePrice = 158.30;
         step = 0.15;
     } else if (symUpper.includes('EUR') || symUpper === 'EURUSD') {
-        basePrice = 1.16027;
+        basePrice = 1.1215;
         step = 0.0004;
     } else if (symUpper.includes('GBP') || symUpper === 'GBPUSD') {
-        basePrice = 1.35431;
+        basePrice = 1.3320;
         step = 0.0005;
     } else if (symUpper.includes('USDCAD')) {
-        basePrice = 1.36495;
+        basePrice = 1.3850;
         step = 0.0004;
     } else if (symUpper.includes('BTC')) {
-        basePrice = 78562.99;
+        basePrice = 82500.00;
         step = 45.0;
+    } else if (symUpper.includes('ETH')) {
+        basePrice = 2425.00;
+        step = 6.0;
     } else if (symUpper.includes('NIFTY')) {
         basePrice = 23500.00;
         step = 12.0;
     } else if (symUpper.includes('XAU') || symUpper.includes('GOLD')) {
-        basePrice = 4457.58;
+        basePrice = 4163.90;
         step = 2.5;
     }
 
@@ -114,3 +121,241 @@ export function EyeToggleIcon({ visible, className }) {
         </svg>
     );
 }
+
+export function getTimeframeSeconds(tf) {
+    const s = String(tf || '1H').toUpperCase();
+    if (s.includes('1M') || s === '1') return 60;
+    if (s.includes('5M') || s === '5') return 300;
+    if (s.includes('15M') || s === '15') return 900;
+    if (s.includes('30M') || s === '30') return 1800;
+    if (s.includes('4H') || s === '240') return 14400;
+    if (s.includes('D') || s === '1D') return 86400;
+    return 3600; // default 1H
+}
+
+export function calculateLiveCandleUpdate(candles, newPrice, timeframe, meta = {}) {
+    if (!candles || candles.length === 0 || !newPrice || isNaN(newPrice) || newPrice <= 0) {
+        return null;
+    }
+
+    const lastCandle = candles[candles.length - 1];
+
+    // Sanity check: prevent artificial multi-hundred-dollar plunge/spike artifacts.
+    // If incoming price deviates by > 4.5% from last candle close, flag need for resync
+    // and do not mutate the existing candle into an unrealistic stretched needle.
+    const deviation = Math.abs(newPrice - lastCandle.close) / (lastCandle.close || 1);
+    if (deviation > 0.045) {
+        return {
+            updatedBar: null,
+            needsResync: true,
+            isSameCandle: false,
+            change: 0,
+            changePct: 0
+        };
+    }
+
+    const tfSec = getTimeframeSeconds(timeframe);
+    const nowSec = Math.floor(Date.now() / 1000);
+
+    const isSameCandle = nowSec < (lastCandle.time + tfSec);
+    let updatedBar;
+
+    const highVal = meta.high !== undefined && !isNaN(meta.high) ? Math.max(newPrice, parseFloat(meta.high)) : newPrice;
+    const lowVal = meta.low !== undefined && !isNaN(meta.low) ? Math.min(newPrice, parseFloat(meta.low)) : newPrice;
+
+    if (isSameCandle) {
+        updatedBar = {
+            time: lastCandle.time,
+            open: lastCandle.open,
+            high: Math.max(lastCandle.high, highVal),
+            low: Math.min(lastCandle.low, lowVal),
+            close: newPrice,
+            tick_volume: (lastCandle.tick_volume || 1500) + 1,
+        };
+        candles[candles.length - 1] = updatedBar;
+    } else {
+        const bucketTime = nowSec - (nowSec % tfSec);
+        const newTime = bucketTime > lastCandle.time ? bucketTime : lastCandle.time + tfSec;
+        updatedBar = {
+            time: newTime,
+            open: lastCandle.close,
+            high: Math.max(lastCandle.close, highVal),
+            low: Math.min(lastCandle.close, lowVal),
+            close: newPrice,
+            tick_volume: 15,
+        };
+        candles.push(updatedBar);
+    }
+
+    const prevCandle = candles.length > 1 ? candles[candles.length - 2] : updatedBar;
+    const change = updatedBar.close - prevCandle.close;
+    const changePct = prevCandle.close > 0 ? (change / prevCandle.close) * 100 : 0;
+
+    return {
+        updatedBar,
+        isSameCandle,
+        change: meta.change !== undefined && !isNaN(meta.change) ? Number(meta.change) : change,
+        changePct: meta.changePct !== undefined && !isNaN(meta.changePct) ? Number(meta.changePct) : changePct,
+    };
+}
+
+export function getChartConfig(width, height, isLight, isDark) {
+    return {
+        width,
+        height,
+        layout: {
+            background: { type: 'solid', color: 'transparent' },
+            textColor: isLight ? '#475569' : '#94A3B8',
+            fontSize: 11,
+            fontFamily: "'Inter', sans-serif",
+            attributionLogo: false,
+        },
+        grid: {
+            vertLines: { color: isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)' },
+            horzLines: { color: isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)' },
+        },
+        crosshair: {
+            vertLine: { color: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)', width: 1 },
+            horzLine: { color: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)', width: 1 },
+        },
+        handleScroll: {
+            mouseWheel: false,
+            pressedMouseMove: true,
+            horzTouchDrag: true,
+            vertTouchDrag: false,
+        },
+        handleScale: {
+            axisPressedMouseMove: { time: true, price: true },
+            axisDoubleClickReset: { time: true, price: true },
+            mouseWheel: false,
+            pinch: true,
+        },
+        timeScale: {
+            borderColor: isLight ? '#cbd5e1' : 'rgba(255, 255, 255, 0.12)',
+            timeVisible: true,
+            secondsVisible: false,
+            rightOffset: 20,
+            barSpacing: 6.5,
+            minBarSpacing: 2,
+            rightBarStaysOnScroll: true,
+        },
+        rightPriceScale: {
+            borderColor: isLight ? '#cbd5e1' : 'rgba(255, 255, 255, 0.12)',
+            scaleMargins: { top: 0.08, bottom: 0.12 },
+        },
+    };
+}
+
+export function handleCrosshairMove(param, chartRef, chartDataRef, setHoveredData, setDotPositions) {
+    if (!param.time) {
+        setHoveredData(null);
+        setDotPositions(null);
+        return;
+    }
+
+    const t = param.time;
+    const data = chartDataRef.current;
+    if (!data.candles || data.candles.length === 0) return;
+
+    const idx = data.candles.findIndex(c => c.time === t);
+    if (idx !== -1) {
+        const hoveredCandle = data.candles[idx];
+        const prevCandle = idx > 0 ? data.candles[idx - 1] : hoveredCandle;
+
+        const open = hoveredCandle.open;
+        const high = hoveredCandle.high;
+        const low = hoveredCandle.low;
+        const close = hoveredCandle.close;
+
+        const change = close - prevCandle.close;
+        const changePct = prevCandle.close > 0 ? (change / prevCandle.close) * 100 : 0;
+
+        const ema20 = data.ema20Map?.get(t);
+        const ema50 = data.ema50Map?.get(t);
+        const supertrendObj = data.supertrendMap?.get(t);
+
+        setHoveredData({
+            open,
+            high,
+            low,
+            close,
+            change,
+            changePct,
+            isBullish: close >= open,
+            ema20,
+            ema50,
+            supertrend: supertrendObj?.value,
+            supertrendColor: supertrendObj?.color,
+        });
+
+        if (chartRef.current?.chart && chartRef.current?.series) {
+            const timeScale = chartRef.current.chart.timeScale();
+            const seriesInstance = chartRef.current.series;
+            const x = timeScale.timeToCoordinate(t);
+            const positions = {};
+            if (x !== null) {
+                if (ema20 !== undefined && ema20 !== null && seriesInstance.ema20) {
+                    const y = seriesInstance.ema20.priceToCoordinate(ema20);
+                    if (y !== null) positions.ema20 = { x, y, color: '#38bdf8' };
+                }
+                if (ema50 !== undefined && ema50 !== null && seriesInstance.ema50) {
+                    const y = seriesInstance.ema50.priceToCoordinate(ema50);
+                    if (y !== null) positions.ema50 = { x, y, color: '#00E5FF' };
+                }
+                if (supertrendObj?.value !== undefined && supertrendObj?.value !== null && seriesInstance.supertrend) {
+                    const y = seriesInstance.supertrend.priceToCoordinate(supertrendObj.value);
+                    if (y !== null) positions.supertrend = { x, y, color: supertrendObj.color };
+                }
+            }
+            setDotPositions(positions);
+        }
+    } else {
+        setHoveredData(null);
+        setDotPositions(null);
+    }
+}
+
+export function createWheelZoomHandler(chartRef) {
+    return (e) => {
+        const targetEl = e.target;
+        if (
+            targetEl &&
+            (targetEl.closest('[class*="dropdown"]') ||
+                targetEl.closest('[class*="Dropdown"]') ||
+                targetEl.closest('[class*="tickerSearch"]') ||
+                targetEl.closest('[class*="tickerList"]') ||
+                targetEl.closest('[class*="modal"]') ||
+                targetEl.closest('[class*="Modal"]') ||
+                targetEl.closest('[class*="menu"]') ||
+                targetEl.closest('[class*="Menu"]') ||
+                targetEl.closest('[class*="popup"]') ||
+                targetEl.closest('[class*="settings"]') ||
+                targetEl.closest('[class*="control"]') ||
+                targetEl.closest('[class*="pill"]') ||
+                targetEl.closest('[class*="Pill"]') ||
+                targetEl.closest('input, select, textarea, button'))
+        ) {
+            return;
+        }
+
+        if (e.cancelable) {
+            e.preventDefault();
+        }
+        e.stopPropagation();
+
+        if (!chartRef.current?.chart) return;
+        const timeScale = chartRef.current.chart.timeScale();
+        const currentSpacing = timeScale.options().barSpacing || 6.5;
+
+        const zoomIn = e.deltaY < 0;
+        const zoomMultiplier = zoomIn ? 1.15 : 0.87;
+        const nextSpacing = Math.max(2, Math.min(80, currentSpacing * zoomMultiplier));
+
+        timeScale.applyOptions({
+            barSpacing: nextSpacing,
+            rightBarStaysOnScroll: true,
+        });
+    };
+}
+
+

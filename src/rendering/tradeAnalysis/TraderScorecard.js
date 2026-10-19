@@ -2,6 +2,7 @@
 
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from './TraderScorecard.module.scss';
 
 
@@ -31,6 +32,7 @@ const LightbulbIcon = () => (
  * 4-Axis Responsive SVG Radar Chart
  */
 function CategoryRadarChart({ data }) {
+    const { t } = useLanguage();
     // Categories in fixed clockwise order: Top, Right, Bottom, Left
     const size = 300;
     const cx = size / 2;
@@ -43,10 +45,10 @@ function CategoryRadarChart({ data }) {
     // Index 2 (Bottom, 90 deg): Consistency
     // Index 3 (Left, 180 deg): Discipline
     const categories = [
-        { key: 'Profitability', label: 'Profitability', angle: -Math.PI / 2 },
-        { key: 'Risk Management', label: 'Risk Management', angle: 0 },
-        { key: 'Consistency', label: 'Consistency', angle: Math.PI / 2 },
-        { key: 'Discipline', label: 'Discipline', angle: Math.PI }
+        { key: 'Profitability', label: t('tradeAnalysis.profitability', 'Profitability'), angle: -Math.PI / 2 },
+        { key: 'Risk Management', label: t('tradeAnalysis.riskManagement', 'Risk Management'), angle: 0 },
+        { key: 'Consistency', label: t('tradeAnalysis.consistency', 'Consistency'), angle: Math.PI / 2 },
+        { key: 'Discipline', label: t('tradeAnalysis.discipline', 'Discipline'), angle: Math.PI }
     ];
 
     const getScore = (key) => {
@@ -142,16 +144,16 @@ function CategoryRadarChart({ data }) {
 
                 {/* Labels at outer perimeter */}
                 <text x={cx} y={cy - radius - 12} textAnchor="middle" className={styles.radarLabel}>
-                    Profitability
+                    {t('tradeAnalysis.profitability', 'Profitability')}
                 </text>
                 <text x={cx + radius + 10} y={cy + 4} textAnchor="start" className={styles.radarLabel}>
-                    Risk Management
+                    {t('tradeAnalysis.riskManagement', 'Risk Management')}
                 </text>
                 <text x={cx} y={cy + radius + 18} textAnchor="middle" className={styles.radarLabel}>
-                    Consistency
+                    {t('tradeAnalysis.consistency', 'Consistency')}
                 </text>
                 <text x={cx - radius - 10} y={cy + 4} textAnchor="end" className={styles.radarLabel}>
-                    Discipline
+                    {t('tradeAnalysis.discipline', 'Discipline')}
                 </text>
             </svg>
         </div>
@@ -238,6 +240,7 @@ export default function TraderScorecard({
     totalTrades = 32,
     onDeleteStatement
 }) {
+    const { t } = useLanguage();
 
     // Normalize scorecard object from prop
     const scorecard = useMemo(() => {
@@ -331,17 +334,17 @@ export default function TraderScorecard({
             <div className={styles.scorecardHeroHeader}>
                 <div className={styles.headerTitleRow}>
                     <div className={styles.titleInfo}>
-                        <div className={styles.badgePill}>SCORECARD</div>
-                        <h2>Trader Scorecard</h2>
+                        <div className={styles.badgePill}>{t('tradeAnalysis.scorecardBadge', 'SCORECARD')}</div>
+                        <h2>{t('tradeAnalysis.scorecardTitle', 'Trader Scorecard')}</h2>
                         <p>
-                            A single grade for your trading — built from your profitability, risk control, consistency, and discipline. See exactly what is working and what to fix.
+                            {t('tradeAnalysis.scorecardDesc', 'A single grade for your trading — built from your profitability, risk control, consistency, and discipline. See exactly what is working and what to fix.')}
                         </p>
                     </div>
                 </div>
 
                 <div className={styles.headerStatsPills}>
                     <div className={styles.statPill}>
-                        <span className={styles.statPillLabel}>OVERALL</span>
+                        <span className={styles.statPillLabel}>{t('tradeAnalysis.overall', 'OVERALL')}</span>
                         <span className={styles.statPillValue}>
                             {typeof scorecard.overall_score === 'number'
                                 ? (Number.isInteger(scorecard.overall_score) ? scorecard.overall_score : scorecard.overall_score.toFixed(1))
@@ -350,11 +353,11 @@ export default function TraderScorecard({
                         </span>
                     </div>
                     <div className={styles.statPill}>
-                        <span className={styles.statPillLabel}>GRADE</span>
+                        <span className={styles.statPillLabel}>{t('tradeAnalysis.grade', 'GRADE')}</span>
                         <span className={styles.statPillValue}>{scorecard.grade}</span>
                     </div>
                     <div className={styles.statPill}>
-                        <span className={styles.statPillLabel}>TRADES</span>
+                        <span className={styles.statPillLabel}>{t('tradeAnalysis.trades', 'TRADES')}</span>
                         <span className={styles.statPillValue}>{totalTrades}</span>
                     </div>
                 </div>
@@ -376,7 +379,7 @@ export default function TraderScorecard({
                 {/* Right Card: Category Overview Radar */}
                 <div className={styles.radarCard}>
                     <div className={styles.cardHeader}>
-                        <h3>Category Overview</h3>
+                        <h3>{t('tradeAnalysis.categoryOverview', 'Category Overview')}</h3>
                     </div>
                     <CategoryRadarChart data={scorecard.radar_data} />
                 </div>
@@ -423,7 +426,7 @@ export default function TraderScorecard({
                             {/* Highlights List */}
                             {highlights.length > 0 && (
                                 <div className={styles.sectionBlock}>
-                                    <span className={styles.blockLabelGreen}>Highlights</span>
+                                    <span className={styles.blockLabelGreen}>{t('tradeAnalysis.highlights', 'Highlights')}</span>
                                     <ul className={styles.itemsList}>
                                         {highlights.map((h, hIdx) => (
                                             <li key={hIdx} className={styles.highlightItem}>
@@ -438,7 +441,7 @@ export default function TraderScorecard({
                             {/* Penalties List */}
                             {penalties.length > 0 && (
                                 <div className={styles.sectionBlock}>
-                                    <span className={styles.blockLabelAmber}>Penalties & Risks</span>
+                                    <span className={styles.blockLabelAmber}>{t('tradeAnalysis.penaltiesRisks', 'Penalties & Risks')}</span>
                                     <ul className={styles.itemsList}>
                                         {penalties.map((p, pIdx) => (
                                             <li key={pIdx} className={styles.penaltyItem}>
@@ -462,8 +465,8 @@ export default function TraderScorecard({
                             <LightbulbIcon />
                         </div>
                         <div>
-                            <h3>Actionable Level-Up Tips</h3>
-                            <p>Concrete steps to raise your trader grade and eliminate volatility leakage</p>
+                            <h3>{t('tradeAnalysis.levelUpTips', 'Actionable Level-Up Tips')}</h3>
+                            <p>{t('tradeAnalysis.levelUpTipsDesc', 'Concrete steps to raise your trader grade and eliminate volatility leakage')}</p>
                         </div>
                     </div>
 

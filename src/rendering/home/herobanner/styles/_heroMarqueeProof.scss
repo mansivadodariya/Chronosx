@@ -171,6 +171,17 @@
             font-weight: 800;
             color: #FFFFFF;
             letter-spacing: -0.3px;
+            transition: color 0.25s ease, text-shadow 0.25s ease;
+
+            &.flashUp {
+                color: #34D399 !important;
+                text-shadow: 0 0 10px rgba(52, 211, 153, 0.7);
+            }
+
+            &.flashDown {
+                color: #F87171 !important;
+                text-shadow: 0 0 10px rgba(248, 113, 113, 0.7);
+            }
         }
 
         .tickerChange {

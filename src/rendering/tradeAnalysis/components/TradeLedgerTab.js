@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../tradeAnalysis.module.scss';
 import { SparklesIcon, formatCurrency } from '@/icons/tradeAnalysisIcons';
 
@@ -9,57 +10,59 @@ export default function TradeLedgerTab({
     analyzingTradeId,
     handleAnalyzeIndividualTrade
 }) {
+    const { t } = useLanguage();
+
     return (
         <div className={styles.dataTableCard}>
             <div className={styles.tableSectionHeader}>
-                <h3>Normalized Trades Ledger ({filteredTrades.length})</h3>
+                <h3>{t('tradeAnalysis.ledgerTitle', 'Normalized Trades Ledger')} ({filteredTrades.length})</h3>
             </div>
             <table>
                 <thead>
                     <tr>
-                        <th>Date & Time</th>
-                        <th>Symbol</th>
-                        <th>Side</th>
-                        <th>Lots</th>
-                        <th>Entry Price</th>
-                        <th>Outcome</th>
-                        <th>Net PnL</th>
-                        <th>Action</th>
+                        <th>{t('tradeAnalysis.dateTime', 'Date & Time')}</th>
+                        <th>{t('tradeAnalysis.symbol', 'Symbol')}</th>
+                        <th>{t('tradeAnalysis.side', 'Side')}</th>
+                        <th>{t('tradeAnalysis.lots', 'Lots')}</th>
+                        <th>{t('tradeAnalysis.entryPrice', 'Entry Price')}</th>
+                        <th>{t('tradeAnalysis.outcome', 'Outcome')}</th>
+                        <th>{t('tradeAnalysis.netPnl', 'Net PnL')}</th>
+                        <th>{t('tradeAnalysis.action', 'Action')}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredTrades.map((t, i) => {
-                        const tId = t.trade_id || t.id || t.ticket || t.ticket_id || `trade_${i + 1}`;
+                    {filteredTrades.map((tItem, i) => {
+                        const tId = tItem.trade_id || tItem.id || tItem.ticket || tItem.ticket_id || `trade_${i + 1}`;
                         const isAnalyzing = analyzingTradeId === tId;
 
                         return (
                             <tr key={i}>
-                                <td>{t.date} {t.time}</td>
-                                <td className={styles.symbolCell}>{t.symbol}</td>
-                                <td className={(t.side || '').toUpperCase() === 'BUY' ? styles.greenText : styles.redText}>
-                                    {t.side || 'BUY'}
+                                <td>{tItem.date} {tItem.time}</td>
+                                <td className={styles.symbolCell}>{tItem.symbol}</td>
+                                <td className={(tItem.side || '').toUpperCase() === 'BUY' ? styles.greenText : styles.redText}>
+                                    {tItem.side || 'BUY'}
                                 </td>
-                                <td>{t.quantity ?? '0.1'}</td>
-                                <td>{t.entry_price ?? '—'}</td>
-                                <td className={Number(t.pnl) >= 0 ? styles.greenText : styles.redText}>
-                                    {t.outcome || (Number(t.pnl) >= 0 ? 'WIN' : 'LOSS')}
+                                <td>{tItem.quantity ?? '0.1'}</td>
+                                <td>{tItem.entry_price ?? '—'}</td>
+                                <td className={Number(tItem.pnl) >= 0 ? styles.greenText : styles.redText}>
+                                    {tItem.outcome || (Number(tItem.pnl) >= 0 ? t('tradeAnalysis.win', 'WIN') : t('tradeAnalysis.loss', 'LOSS'))}
                                 </td>
-                                <td className={Number(t.pnl) >= 0 ? styles.greenText : styles.redText}>
-                                    {formatCurrency(t.pnl)}
+                                <td className={Number(tItem.pnl) >= 0 ? styles.greenText : styles.redText}>
+                                    {formatCurrency(tItem.pnl)}
                                 </td>
                                 <td>
                                     <button
                                         type="button"
                                         className={styles.rowAnalyzeBtn}
-                                        onClick={() => handleAnalyzeIndividualTrade(t, i)}
+                                        onClick={() => handleAnalyzeIndividualTrade(tItem, i)}
                                         disabled={isAnalyzing}
                                     >
                                         {isAnalyzing ? (
-                                            <span>Analyzing...</span>
+                                            <span>{t('tradeAnalysis.analyzing', 'Analyzing...')}</span>
                                         ) : (
                                             <>
                                                 <SparklesIcon />
-                                                <span>Analyze</span>
+                                                <span>{t('tradeAnalysis.analyze', 'Analyze')}</span>
                                             </>
                                         )}
                                     </button>

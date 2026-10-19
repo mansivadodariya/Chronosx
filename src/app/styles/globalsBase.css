@@ -579,10 +579,11 @@ html.light main {
 :root {
   --theme-x: 90%;
   --theme-y: 40px;
+  --theme-r: 150vmax;
 }
 
 ::view-transition-group(root) {
-  animation-duration: 0.5s;
+  animation-duration: 0.45s;
 }
 
 ::view-transition-old(root) {
@@ -592,16 +593,24 @@ html.light main {
 }
 
 ::view-transition-new(root) {
-  animation: theme-circle-reveal 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: theme-circle-reveal 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   mix-blend-mode: normal;
   z-index: 9999;
 }
 
 @keyframes theme-circle-reveal {
   0% {
-    clip-path: circle(0% at var(--theme-x, 90%) var(--theme-y, 40px));
+    clip-path: circle(0px at var(--theme-x, 90%) var(--theme-y, 40px));
   }
   100% {
-    clip-path: circle(150% at var(--theme-x, 90%) var(--theme-y, 40px));
+    clip-path: circle(var(--theme-r, 150vmax) at var(--theme-x, 90%) var(--theme-y, 40px));
   }
+}
+
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease !important;
+  transition-delay: 0s !important;
 }

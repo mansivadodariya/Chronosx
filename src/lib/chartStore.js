@@ -69,6 +69,12 @@ export async function fetchChartCandlesOnce(symbol, timeframe = '15m', strategyI
             candidateEndpoints.push(`/api/v1/chart/candles?symbol=${cleanSymbol}&timeframe=${timeframe}&strategy_id=${strategyId}`);
         }
 
+        // 3. Guaranteed Production Endpoint
+        const prodBackend = 'https://api.chronosx.com';
+        if (!candidateEndpoints.some(u => u.startsWith(prodBackend))) {
+            candidateEndpoints.push(`${prodBackend}/api/v1/chart/candles?symbol=${cleanSymbol}&timeframe=${timeframe}&strategy_id=${strategyId}`);
+        }
+
         // Try candidates sequentially
         for (const url of candidateEndpoints) {
             try {

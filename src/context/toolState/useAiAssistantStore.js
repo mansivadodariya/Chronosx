@@ -325,7 +325,12 @@ export function useCreateAiAssistantStore() {
                 if (lastMsg && lastMsg.role === 'assistant' && lastMsg.content && assistantMsg.content && lastMsg.content.trim() === assistantMsg.content.trim()) {
                     return prev;
                 }
-                return [...prev, { ...assistantMsg, isNewlyGenerated: true }];
+                return [...prev, {
+                    ...assistantMsg,
+                    pair: nextItem.cleanPair || assistantMsg.detected_pair || selectedPair,
+                    user_prompt: nextItem.userMsgText,
+                    isNewlyGenerated: true
+                }];
             });
 
             // Capture chat id from first message response to use for subsequent messages

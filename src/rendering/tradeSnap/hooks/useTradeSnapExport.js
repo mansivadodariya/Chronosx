@@ -20,8 +20,10 @@ export function useTradeSnapExport() {
             const dateStr = new Date().toISOString().split('T')[0];
             toast(`Generating PDF report for ${cleanSymbol}...`);
 
-            // Dynamically import html2pdf
+            // Dynamically import html2pdf and logo
             const html2pdf = (await import('html2pdf.js')).default;
+            const { getPdfLogoDataUrl } = await import('@/lib/pdfLogoHelper');
+            const logoDataUrl = await getPdfLogoDataUrl(false);
 
             const opt = {
                 margin: [6, 6, 6, 6],
@@ -57,6 +59,28 @@ export function useTradeSnapExport() {
                         const target = clonedElement || clonedDoc.body;
                         if (target && target.classList) {
                             target.classList.add('pdfExportLight', 'pdfExportContainer');
+
+                            // Prepend institutional branded header with site logo
+                            let existingHeader = target.querySelector('.pdfScanBrandedHeader');
+                            if (!existingHeader) {
+                                const brandedHeader = clonedDoc.createElement('div');
+                                brandedHeader.className = 'pdfScanBrandedHeader';
+                                brandedHeader.style.cssText = 'display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #E2E8F0; padding-bottom: 10px; margin-bottom: 14px; width: 100%; box-sizing: border-box; page-break-inside: avoid; break-inside: avoid;';
+                                brandedHeader.innerHTML = `
+                                    <div>
+                                        <img src="${logoDataUrl || '/assets/logo/darklogo.png'}" alt="ChronosX" style="height: 28px; width: auto; max-width: 150px; object-fit: contain; display: block; margin-bottom: 4px;" />
+                                        <div style="font-size: 14px; font-weight: 800; color: #0F172A; margin: 0;">AI Neural Chart Vision & Pattern Scan</div>
+                                        <div style="font-size: 10px; color: #64748B; margin-top: 2px;">Instrument: <strong style="color: #0F172A;">${cleanSymbol}</strong> (${cleanTf}) • Generated: ${dateStr}</div>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <div style="background: #F0FDF4; border: 1px solid #10B981; color: #047857; font-size: 9px; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block;">
+                                            CHART SCAN AUDIT
+                                        </div>
+                                        <div style="font-size: 8px; color: #94A3B8; margin-top: 3px; font-weight: 600;">CONFIDENTIAL REPORT</div>
+                                    </div>
+                                `;
+                                target.insertBefore(brandedHeader, target.firstChild);
+                            }
                         }
 
                         // 3. Hide interactive buttons (Download, Retry, Close) in the clone

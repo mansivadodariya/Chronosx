@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import styles from '../styles/strategyStudio.module.scss';
 import CustomSelect from './CustomSelect';
 import CustomDatePicker from '@/components/customDatePicker';
@@ -58,6 +59,7 @@ export default function StudioToolbar({
     onRunBacktest,
     loading
 }) {
+    const { t } = useLanguage();
     // 3-Year past limit & 1-Year maximum range difference
     const todayStr = getTodayDateStr();
     const threeYearsAgoStr = getPastYearsDateStr(3);
@@ -95,7 +97,7 @@ export default function StudioToolbar({
                 <div className={styles.paramGroup}>
                     <div className={styles.paramLabelRow}>
                         <ChartTrendIcon size={12} />
-                        <span>Symbol</span>
+                        <span>{t('strategyStudio.symbol', 'Symbol')}</span>
                     </div>
                     <div className={styles.paramControlWrap}>
                         <CustomSelect
@@ -111,7 +113,7 @@ export default function StudioToolbar({
                 <div className={styles.paramGroup}>
                     <div className={styles.paramLabelRow}>
                         <ClockIntervalIcon size={12} />
-                        <span>Interval</span>
+                        <span>{t('strategyStudio.interval', 'Interval')}</span>
                     </div>
                     <div className={styles.paramControlWrap}>
                         <CustomSelect
@@ -127,7 +129,7 @@ export default function StudioToolbar({
                 <div className={styles.paramGroup}>
                     <div className={styles.paramLabelRow}>
                         <CalendarDateIcon size={12} />
-                        <span>From</span>
+                        <span>{t('strategyStudio.from', 'From')}</span>
                     </div>
                     <div className={styles.paramControlWrap}>
                         <CustomDatePicker
@@ -136,7 +138,7 @@ export default function StudioToolbar({
                             max={fromMaxAttr}
                             onChange={handleFromChange}
                             width="125px"
-                            placeholder="Select Date"
+                            placeholder={t('strategyStudio.selectDate', 'Select Date')}
                         />
                     </div>
                 </div>
@@ -145,7 +147,7 @@ export default function StudioToolbar({
                 <div className={styles.paramGroup}>
                     <div className={styles.paramLabelRow}>
                         <CalendarDateIcon size={12} />
-                        <span>To</span>
+                        <span>{t('strategyStudio.to', 'To')}</span>
                     </div>
                     <div className={styles.paramControlWrap}>
                         <CustomDatePicker
@@ -154,7 +156,7 @@ export default function StudioToolbar({
                             max={toMaxAttr}
                             onChange={handleToChange}
                             width="125px"
-                            placeholder="Select Date"
+                            placeholder={t('strategyStudio.selectDate', 'Select Date')}
                         />
                     </div>
                 </div>
@@ -163,7 +165,7 @@ export default function StudioToolbar({
                 <div className={styles.paramGroup}>
                     <div className={styles.paramLabelRow}>
                         <CoinsCapitalIcon size={12} />
-                        <span>Capital ($)</span>
+                        <span>{t('strategyStudio.capital', 'Capital ($)')}</span>
                     </div>
                     <div className={styles.paramControlWrap}>
                         <input
@@ -198,7 +200,7 @@ export default function StudioToolbar({
                 <div className={styles.paramGroup}>
                     <div className={styles.paramLabelRow}>
                         <QuantityHashIcon size={12} />
-                        <span>Volume (Lots)</span>
+                        <span>{t('strategyStudio.volume', 'Volume (Lots)')}</span>
                     </div>
                     <div className={styles.paramControlWrap}>
                         <input
@@ -260,12 +262,12 @@ export default function StudioToolbar({
                     {loading ? (
                         <>
                             <div className={`${styles.spinner} ${styles.spinnerSmall}`} />
-                            <span>Simulating...</span>
+                            <span>{t('strategyStudio.simulating', 'Simulating...')}</span>
                         </>
                     ) : (
                         <>
                             <RocketRunIcon size={15} />
-                            <span>Run Backtest</span>
+                            <span>{t('strategyStudio.runBacktest', 'Run Backtest')}</span>
                         </>
                     )}
                 </button>

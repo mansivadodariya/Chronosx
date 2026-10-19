@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styles from '../tradeAnalysis.module.scss';
+import { useLanguage } from '@/context/LanguageContext';
 import { CheckIcon, UploadIcon, DownloadIcon } from '@/icons/tradeAnalysisIcons';
 
 export default function ReportSuccessBanner({
@@ -12,6 +13,8 @@ export default function ReportSuccessBanner({
     onDownloadReport,
     isExporting = false
 }) {
+    const { t } = useLanguage();
+
     return (
         <div className={styles.reportSuccessBannerCard}>
             <div className={styles.bannerContentLeft}>
@@ -24,7 +27,7 @@ export default function ReportSuccessBanner({
                             {fileDetails.name}
                         </span>
                         <span className={styles.fileSub}>
-                            {fileDetails.sizeText} • {totalTradesCount} Trades • Uploaded just now
+                            {fileDetails.sizeText} • {totalTradesCount} {t('tradeAnalysis.tradesUnit', 'trades')} • {t('tradeAnalysis.uploadedJustNow', 'Uploaded just now')}
                         </span>
                     </div>
                 </div>
@@ -34,10 +37,10 @@ export default function ReportSuccessBanner({
                         <div className={styles.checkCircle}>
                             <CheckIcon />
                         </div>
-                        <h3>AI has successfully processed your report!</h3>
+                        <h3>{t('tradeAnalysis.aiProcessedSuccess', 'AI has successfully processed your report!')}</h3>
                     </div>
                     <p className={styles.bannerSubtext}>
-                        We found {totalTradesCount} trades in your report.
+                        {t('tradeAnalysis.foundTradesCount', 'We found {{count}} trades in your report.', { count: totalTradesCount })}
                     </p>
                 </div>
 
@@ -47,7 +50,7 @@ export default function ReportSuccessBanner({
                         className={styles.viewTradesBtn}
                         onClick={onViewTrades}
                     >
-                        VIEW TRADES
+                        {t('tradeAnalysis.viewTrades', 'VIEW TRADES')}
                     </button>
                     <button
                         type="button"
@@ -55,7 +58,7 @@ export default function ReportSuccessBanner({
                         onClick={onReupload}
                     >
                         <UploadIcon />
-                        <span>Upload New Statement</span>
+                        <span>{t('tradeAnalysis.uploadNewStatement', 'Upload New Statement')}</span>
                     </button>
                     <button
                         type="button"
@@ -65,7 +68,7 @@ export default function ReportSuccessBanner({
                         title="Download Complete Statement Audit Report (PDF)"
                     >
                         <DownloadIcon />
-                        <span>{isExporting ? 'Generating PDF...' : 'Download Report'}</span>
+                        <span>{isExporting ? t('tradeAnalysis.exportingPdf', 'Generating PDF...') : t('tradeAnalysis.downloadReport', 'Download Report')}</span>
                     </button>
                 </div>
             </div>
@@ -76,3 +79,4 @@ export default function ReportSuccessBanner({
         </div>
     );
 }
+

@@ -171,12 +171,17 @@ export async function GET(request) {
 
         const strippedSymbol = rawSymbol.replace(/[^A-Z0-9]/gi, '').toUpperCase();
 
-        // 1. Primary: Fetch real live MT5 candles directly from configured Backend API
+        // 1. Primary: Fetch real live MT5 candles directly from configured Backend API or Production Fallback
         const backendBase = (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL || '').replace(/\/+$/, '');
-        if (backendBase) {
+        const candidateBases = [
+            backendBase,
+            'https://api.chronosx.com'
+        ].filter(Boolean);
+
+        for (const base of Array.from(new Set(candidateBases))) {
             let liveRes = null;
             try {
-                const liveBackendUrl = `${backendBase}/api/v1/chart/candles?symbol=${strippedSymbol}&timeframe=${rawTimeframe}&strategy_id=${strategyId}`;
+                const liveBackendUrl = `${base}/api/v1/chart/candles?symbol=${strippedSymbol}&timeframe=${rawTimeframe}&strategy_id=${strategyId}`;
                 liveRes = await serverFetch(liveBackendUrl, {
                     timeoutMs: 4000,
                     clientSignal: request.signal,
@@ -205,7 +210,7 @@ export async function GET(request) {
                 if (liveRes && !liveRes.bodyUsed) {
                     await liveRes.body?.cancel().catch(() => {});
                 }
-                console.warn('[CandlesRoute] Live API fetch notice:', backendErr.message);
+                console.warn('[CandlesRoute] Live API fetch notice for', base, backendErr.message);
             }
         }
 

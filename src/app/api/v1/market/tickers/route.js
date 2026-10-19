@@ -51,7 +51,12 @@ export async function GET(request) {
             'FX:NZDUSD',
             'FX:GBPJPY',
             'FX:EURJPY',
-            'FX:EURGBP'
+            'FX:EURGBP',
+            'FX:AUDJPY',
+            'FX:EURAUD',
+            'FX:CADJPY',
+            'FX:GBPAUD',
+            'FX:EURCAD'
         ];
 
         const cfdSymbols = [
@@ -80,7 +85,7 @@ export async function GET(request) {
 
                 let signal = 'BULLISH';
                 if (cleanKey === 'XAUUSD' || cleanKey === 'GOLD') {
-                    signal = 'SAFE HAVEN';
+                    signal = (changePct ?? 0) >= 0 ? 'STRONG BUY' : 'PULLBACK';
                 } else if (score > 0.5) {
                     signal = 'STRONG BUY';
                 } else if (score > 0.1) {
@@ -99,13 +104,13 @@ export async function GET(request) {
                 // Format price appropriately
                 let formattedPrice = '';
                 if (cleanKey === 'XAUUSD' || cleanKey === 'GOLD') {
-                    formattedPrice = `$${Number(close).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                    formattedPrice = Number(close).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 } else if (cleanKey.includes('JPY')) {
                     formattedPrice = Number(close).toFixed(3);
                 } else if (cleanKey === 'SILVER' || cleanKey === 'XAGUSD') {
-                    formattedPrice = `$${Number(close).toFixed(2)}`;
+                    formattedPrice = Number(close).toFixed(2);
                 } else if (cleanKey === 'USOIL') {
-                    formattedPrice = `$${Number(close).toFixed(2)}`;
+                    formattedPrice = Number(close).toFixed(2);
                 } else {
                     formattedPrice = Number(close).toFixed(4);
                 }

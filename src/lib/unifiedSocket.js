@@ -15,12 +15,14 @@
  */
 
 const BASE_FALLBACK_PRICES = {
-    XAUUSD: 4160.00,
+    XAUUSD: 4173.94,
     EURUSD: 1.08450,
-    GBPUSD: 1.29200,
+    GBPUSD: 1.29250,
     USDJPY: 154.200,
+    GBPJPY: 198.420,
+    EURJPY: 165.350,
     AUDUSD: 0.65400,
-    USDCAD: 1.38500,
+    USDCAD: 1.38520,
     USDCHF: 0.88400,
     NZDUSD: 0.59800,
     BTCUSD: 88500.00,
@@ -361,38 +363,47 @@ class UnifiedSocketManager {
             // When live socket packet has a gap (> 450ms) or during fallback, emit smooth micro-ticks
             const now = Date.now();
             if (now - this.lastPacketTime > 450) {
-                const sym = this.currentSymbol;
-                const basePrice = this.knownPrices.get(sym) || this.lastPriceUpdate?.price || BASE_FALLBACK_PRICES[sym] || 4308.18;
-                // High-frequency natural micro-pip fluctuation (0.008% step)
-                const delta = (Math.random() - 0.495) * (basePrice * 0.00008);
-                const newPrice = +(basePrice + delta).toFixed(sym.includes('JPY') ? 3 : (basePrice > 500 ? 2 : 5));
-                this.setKnownPrice(sym, newPrice);
-
-                const pulsePayload = {
-                    symbol: sym,
-                    price: newPrice,
-                    bid: +(newPrice - 0.12).toFixed(2),
-                    ask: +(newPrice + 0.12).toFixed(2),
-                    last: newPrice,
-                    volume: Math.floor(Math.random() * 80) + 120,
-                    change_percent: this.lastPriceUpdate?.change_percent !== undefined ? this.lastPriceUpdate.change_percent : 0.04,
-                    timestamp: Math.floor(now / 1000),
-                    is_continuous: true
-                };
-
-                this.lastPriceUpdate = pulsePayload;
-
-                this.priceListeners.forEach(({ callback, symbolFilter }) => {
-                    if (!symbolFilter || cleanPairSymbol(symbolFilter) === sym) {
-                        try {
-                            callback(pulsePayload);
-                        } catch (_) {}
-                    }
+                const targetSymbols = new Set([this.currentSymbol]);
+                this.priceListeners.forEach(({ symbolFilter }) => {
+                    if (symbolFilter) targetSymbols.add(cleanPairSymbol(symbolFilter));
                 });
 
-                if (typeof window !== 'undefined') {
-                    window.dispatchEvent(new CustomEvent('livePriceUpdate', { detail: pulsePayload }));
-                }
+                targetSymbols.forEach((sym) => {
+                    const basePrice = this.knownPrices.get(sym) || (sym === this.currentSymbol && this.lastPriceUpdate?.price) || BASE_FALLBACK_PRICES[sym] || 100;
+                    const delta = (Math.random() - 0.495) * (basePrice * 0.00008);
+                    const decimals = sym.includes('JPY') ? 3 : (basePrice > 500 ? 2 : 5);
+                    const newPrice = +(basePrice + delta).toFixed(decimals);
+                    this.setKnownPrice(sym, newPrice);
+
+                    const spread = decimals === 5 ? 0.00002 : (sym.includes('JPY') ? 0.02 : 0.12);
+                    const pulsePayload = {
+                        symbol: sym,
+                        price: newPrice,
+                        bid: +(newPrice - spread).toFixed(decimals),
+                        ask: +(newPrice + spread).toFixed(decimals),
+                        last: newPrice,
+                        volume: Math.floor(Math.random() * 80) + 120,
+                        change_percent: sym === this.currentSymbol && this.lastPriceUpdate?.change_percent !== undefined ? this.lastPriceUpdate.change_percent : 0.04,
+                        timestamp: Math.floor(now / 1000),
+                        is_continuous: true
+                    };
+
+                    if (sym === this.currentSymbol) {
+                        this.lastPriceUpdate = pulsePayload;
+                    }
+
+                    this.priceListeners.forEach(({ callback, symbolFilter }) => {
+                        if (!symbolFilter || cleanPairSymbol(symbolFilter) === sym) {
+                            try {
+                                callback(pulsePayload);
+                            } catch (_) {}
+                        }
+                    });
+
+                    if (typeof window !== 'undefined') {
+                        window.dispatchEvent(new CustomEvent('livePriceUpdate', { detail: pulsePayload }));
+                    }
+                });
             }
         }, 350);
     }
@@ -413,37 +424,47 @@ class UnifiedSocketManager {
                 return;
             }
 
-            const sym = this.currentSymbol;
-            const basePrice = this.knownPrices.get(sym) || this.lastPriceUpdate?.price || BASE_FALLBACK_PRICES[sym] || 4308.18;
-            const delta = (Math.random() - 0.495) * (basePrice * 0.0001);
-            const newPrice = +(basePrice + delta).toFixed(sym.includes('JPY') ? 3 : (basePrice > 500 ? 2 : 5));
-            this.setKnownPrice(sym, newPrice);
-
-            const fallbackPayload = {
-                symbol: sym,
-                price: newPrice,
-                bid: +(newPrice - 0.15).toFixed(2),
-                ask: +(newPrice + 0.15).toFixed(2),
-                last: newPrice,
-                volume: Math.floor(Math.random() * 80) + 120,
-                change_percent: +( (Math.random() * 0.4) - 0.1 ).toFixed(2),
-                timestamp: Math.floor(Date.now() / 1000),
-                is_fallback: true
-            };
-
-            this.lastPriceUpdate = fallbackPayload;
-
-            this.priceListeners.forEach(({ callback, symbolFilter }) => {
-                if (!symbolFilter || cleanPairSymbol(symbolFilter) === sym) {
-                    try {
-                        callback(fallbackPayload);
-                    } catch (_) {}
-                }
+            const targetSymbols = new Set([this.currentSymbol]);
+            this.priceListeners.forEach(({ symbolFilter }) => {
+                if (symbolFilter) targetSymbols.add(cleanPairSymbol(symbolFilter));
             });
 
-            if (typeof window !== 'undefined') {
-                window.dispatchEvent(new CustomEvent('livePriceUpdate', { detail: fallbackPayload }));
-            }
+            targetSymbols.forEach((sym) => {
+                const basePrice = this.knownPrices.get(sym) || (sym === this.currentSymbol && this.lastPriceUpdate?.price) || BASE_FALLBACK_PRICES[sym] || 100;
+                const delta = (Math.random() - 0.495) * (basePrice * 0.0001);
+                const decimals = sym.includes('JPY') ? 3 : (basePrice > 500 ? 2 : 5);
+                const newPrice = +(basePrice + delta).toFixed(decimals);
+                this.setKnownPrice(sym, newPrice);
+
+                const spread = decimals === 5 ? 0.00002 : (sym.includes('JPY') ? 0.02 : 0.15);
+                const fallbackPayload = {
+                    symbol: sym,
+                    price: newPrice,
+                    bid: +(newPrice - spread).toFixed(decimals),
+                    ask: +(newPrice + spread).toFixed(decimals),
+                    last: newPrice,
+                    volume: Math.floor(Math.random() * 80) + 120,
+                    change_percent: +( (Math.random() * 0.4) - 0.1 ).toFixed(2),
+                    timestamp: Math.floor(Date.now() / 1000),
+                    is_fallback: true
+                };
+
+                if (sym === this.currentSymbol) {
+                    this.lastPriceUpdate = fallbackPayload;
+                }
+
+                this.priceListeners.forEach(({ callback, symbolFilter }) => {
+                    if (!symbolFilter || cleanPairSymbol(symbolFilter) === sym) {
+                        try {
+                            callback(fallbackPayload);
+                        } catch (_) {}
+                    }
+                });
+
+                if (typeof window !== 'undefined') {
+                    window.dispatchEvent(new CustomEvent('livePriceUpdate', { detail: fallbackPayload }));
+                }
+            });
         };
 
         emitTick();
@@ -634,6 +655,10 @@ class UnifiedSocketManager {
             this.candleListeners.delete(sub);
             this._checkIdle();
         };
+    }
+
+    subscribeCandle(callback, symbolFilter, tfFilter) {
+        return this.subscribeCandles(callback, symbolFilter, tfFilter);
     }
 
     /**

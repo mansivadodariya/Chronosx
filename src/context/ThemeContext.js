@@ -65,9 +65,17 @@ export const ThemeProvider = ({ children }) => {
         if (!Number.isFinite(x) || x <= 0) x = Math.round(window.innerWidth - 80);
         if (!Number.isFinite(y) || y <= 0) y = 35;
 
-        // Set origin coordinates for CSS keyframes
+        const maxRadius = Math.ceil(
+            Math.hypot(
+                Math.max(x, window.innerWidth - x),
+                Math.max(y, window.innerHeight - y)
+            )
+        );
+
+        // Set origin coordinates and radius for CSS keyframes
         document.documentElement.style.setProperty('--theme-x', `${x}px`);
         document.documentElement.style.setProperty('--theme-y', `${y}px`);
+        document.documentElement.style.setProperty('--theme-r', `${maxRadius}px`);
 
         const isViewTransitionSupported =
             typeof document !== 'undefined' &&
@@ -78,8 +86,10 @@ export const ThemeProvider = ({ children }) => {
         if (isViewTransitionSupported) {
             try {
                 document.startViewTransition(() => {
-                    setThemeState(nextTheme);
-                    applyTheme(nextTheme);
+                    flushSync(() => {
+                        setThemeState(nextTheme);
+                        applyTheme(nextTheme);
+                    });
                 });
                 return;
             } catch (_) {
@@ -88,8 +98,12 @@ export const ThemeProvider = ({ children }) => {
         }
 
         // Direct apply fallback for older browsers or reduced-motion
+        document.documentElement.classList.add('theme-transitioning');
         setThemeState(nextTheme);
         applyTheme(nextTheme);
+        setTimeout(() => {
+            document.documentElement.classList.remove('theme-transitioning');
+        }, 400);
     };
 
     const setTheme = (newTheme, event) => {

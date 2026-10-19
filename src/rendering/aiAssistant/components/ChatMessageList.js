@@ -114,6 +114,10 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                         {msg.content}
                                     </>
                                 ) : (() => {
+                                    const userMsg = index > 0 ? chatMessages[index - 1] : null;
+                                    const userPrompt = userMsg?.role === 'user' ? (userMsg.content || userMsg.text) : '';
+                                    const enrichedMsg = { ...msg, user_prompt: msg.user_prompt || userPrompt };
+
                                     const parsed = parseChatMessage(msg.content, msg.fullReport);
                                     const sections = msg.chart_sections || (parsed.jsonData ? (parsed.jsonData.chart_sections || parsed.jsonData) : null);
                                     const disclaimerHeader = msg.disclaimer_header || parsed.disclaimerHeader;
@@ -164,7 +168,7 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                                 <div className={styles.downloadReportRow} style={{ marginTop: 10 }}>
                                                     <button
                                                         type="button"
-                                                        onClick={(e) => exportAssistantMessageToPdf(msg, selectedPair, e.currentTarget.closest('.' + styles.chatMessageBubble) || e.currentTarget.closest('.' + styles.analysisCenterCard))}
+                                                        onClick={(e) => exportAssistantMessageToPdf(enrichedMsg, selectedPair, e.currentTarget.closest('.' + styles.chatMessageBubble) || e.currentTarget.closest('.' + styles.analysisCenterCard))}
                                                         className={styles.downloadFullReportBtn}
                                                         style={{ color: '#FFFFFF' }}
                                                     >
@@ -218,7 +222,7 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                                         <div className={styles.downloadReportRow}>
                                                             <button
                                                                 type="button"
-                                                                onClick={(e) => exportAssistantMessageToPdf(msg, selectedPair, e.currentTarget.closest('.' + styles.chatMessageBubble) || e.currentTarget.closest('.' + styles.analysisCenterCard))}
+                                                                onClick={(e) => exportAssistantMessageToPdf(enrichedMsg, selectedPair, e.currentTarget.closest('.' + styles.chatMessageBubble) || e.currentTarget.closest('.' + styles.analysisCenterCard))}
                                                                 className={styles.downloadFullReportBtn}
                                                                 style={{ color: '#FFFFFF' }}
                                                             >
@@ -242,7 +246,7 @@ const ChatMessageList = React.memo(function ChatMessageList({
                                                         <div className={styles.downloadReportRow} style={{ marginTop: 8 }}>
                                                             <button
                                                                 type="button"
-                                                                onClick={(e) => exportAssistantMessageToPdf(msg, selectedPair, e.currentTarget.closest('.' + styles.chatMessageBubble) || e.currentTarget.closest('.' + styles.analysisCenterCard))}
+                                                                onClick={(e) => exportAssistantMessageToPdf(enrichedMsg, selectedPair, e.currentTarget.closest('.' + styles.chatMessageBubble) || e.currentTarget.closest('.' + styles.analysisCenterCard))}
                                                                 className={styles.downloadFullReportBtn}
                                                                 style={{ padding: '6px 12px', fontSize: '11.5px', color: '#FFFFFF' }}
                                                             >
