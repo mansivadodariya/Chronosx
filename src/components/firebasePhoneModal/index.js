@@ -23,6 +23,7 @@ export default function FirebasePhoneModal({
     title,
     subtitle,
     onClose,
+    onSkip,
     onSuccess,
     autoTriggerSend = true,
 }) {
@@ -243,11 +244,36 @@ export default function FirebasePhoneModal({
         executeVerification();
     };
 
+    const handleSkip = () => {
+        if (typeof onSkip === 'function') {
+            onSkip();
+        } else if (typeof onClose === 'function') {
+            if (typeof window !== 'undefined') {
+                sessionStorage.setItem('skipPhoneVerification', 'true');
+                if (window.location.pathname !== '/dashboard') {
+                    window.location.assign('/dashboard');
+                }
+            }
+            onClose();
+        } else if (typeof window !== 'undefined') {
+            sessionStorage.setItem('skipPhoneVerification', 'true');
+            window.location.assign('/dashboard');
+        }
+    };
+
+    const handleClose = () => {
+        if (typeof onClose === 'function') {
+            onClose();
+        } else {
+            handleSkip();
+        }
+    };
+
     if (!isOpen) return null;
 
     return (
         <AnimatePresence>
-            <div className={styles.modalOverlay} onClick={onClose}>
+            <div className={styles.modalOverlay} onClick={handleClose}>
                 <div id="firebase-recaptcha-container"></div>
                 <motion.div
                     className={styles.modalCard}
@@ -259,8 +285,8 @@ export default function FirebasePhoneModal({
                 >
                     <div className={styles.topGlowLayer} />
 
-                    {onClose && step !== 'success' && (
-                        <button className={styles.closeBtn} onClick={onClose} aria-label={t('common.close', 'Close')}>
+                    {(onClose || onSkip) && step !== 'success' && (
+                        <button className={styles.closeBtn} onClick={handleClose} aria-label={t('common.close', 'Close')}>
                             ✕
                         </button>
                     )}
@@ -328,6 +354,16 @@ export default function FirebasePhoneModal({
                                         fullWidth
                                         icon={ArrowIcon}
                                     />
+                                    {(onClose || onSkip) && (
+                                        <button
+                                            type="button"
+                                            className={styles.skipBtn}
+                                            onClick={handleSkip}
+                                            disabled={loading}
+                                        >
+                                            {t('auth.skipForNow', 'Skip for now')}
+                                        </button>
+                                    )}
                                 </div>
                             </form>
                         </div>
@@ -378,6 +414,16 @@ export default function FirebasePhoneModal({
                                         fullWidth
                                         icon={ArrowIcon}
                                     />
+                                    {(onClose || onSkip) && (
+                                        <button
+                                            type="button"
+                                            className={styles.skipBtn}
+                                            onClick={handleSkip}
+                                            disabled={loading}
+                                        >
+                                            {t('auth.skipForNow', 'Skip for now')}
+                                        </button>
+                                    )}
                                 </div>
                             </form>
 

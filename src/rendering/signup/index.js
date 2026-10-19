@@ -478,6 +478,18 @@ const Signup = () => {
                                             <button
                                                 type="button"
                                                 onClick={() => {
+                                                    if (typeof window !== 'undefined') {
+                                                        sessionStorage.setItem('skipPhoneVerification', 'true');
+                                                        window.location.assign('/dashboard');
+                                                    }
+                                                }}
+                                                className={styles.skipBtn}
+                                            >
+                                                {t('auth.skipForNow', 'Skip for now')}
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => {
                                                     clearAuthSession();
                                                     window.location.assign('/');
                                                 }}
@@ -625,7 +637,20 @@ const Signup = () => {
             <FirebasePhoneModal
                 isOpen={showOtpModal}
                 phoneNumber={phoneNumber}
-                onClose={() => setShowOtpModal(false)}
+                onClose={() => {
+                    setShowOtpModal(false);
+                    if (typeof window !== 'undefined') {
+                        sessionStorage.setItem('skipPhoneVerification', 'true');
+                        window.location.assign('/dashboard');
+                    }
+                }}
+                onSkip={() => {
+                    setShowOtpModal(false);
+                    if (typeof window !== 'undefined') {
+                        sessionStorage.setItem('skipPhoneVerification', 'true');
+                        window.location.assign('/dashboard');
+                    }
+                }}
                 onSuccess={handleOtpSuccess}
             />
         </div>

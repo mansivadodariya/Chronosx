@@ -246,6 +246,11 @@ const layout = ({ children }) => {
             const checkPhoneStatus = async () => {
                 if (!supabase || !uid) return;
                 try {
+                    const hasSkipped = typeof window !== 'undefined' && sessionStorage.getItem('skipPhoneVerification') === 'true';
+                    if (hasSkipped) {
+                        return;
+                    }
+
                     const { data: dbUser } = await supabase
                         .from('users')
                         .select('phone_number, is_phone_verified')
@@ -305,10 +310,21 @@ const layout = ({ children }) => {
         };
     }, []);
 
+    const handleCloseOrSkipPhoneModal = () => {
+        setShowPhoneVerifyModal(false);
+        if (typeof window !== 'undefined') {
+            sessionStorage.setItem('skipPhoneVerification', 'true');
+            if (window.location.pathname !== '/dashboard') {
+                window.location.assign('/dashboard');
+            }
+        }
+    };
+
     const handlePhoneVerifySuccess = (verifiedPhone) => {
         setShowPhoneVerifyModal(false);
         setUserPhoneNumber(verifiedPhone);
         if (typeof window !== 'undefined') {
+            sessionStorage.removeItem('skipPhoneVerification');
             try {
                 const parsed = JSON.parse(localStorage.getItem('user') || '{}');
                 parsed.phone_number = verifiedPhone;
@@ -416,6 +432,8 @@ const layout = ({ children }) => {
                             phoneNumber={userPhoneNumber}
                             autoTriggerSend={false}
                             onSuccess={handlePhoneVerifySuccess}
+                            onClose={handleCloseOrSkipPhoneModal}
+                            onSkip={handleCloseOrSkipPhoneModal}
                         />
                     )}
                 </ToolStateProvider>

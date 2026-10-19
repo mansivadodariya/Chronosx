@@ -389,7 +389,20 @@ const ContinueWithGoogle = ({ redirectTo = '/dashboard', onPendingPhone }) => {
             <FirebasePhoneModal
                 isOpen={showPhoneModal}
                 phoneNumber={phoneNumber}
-                onClose={() => setShowPhoneModal(false)}
+                onClose={() => {
+                    setShowPhoneModal(false);
+                    if (typeof window !== 'undefined') {
+                        sessionStorage.setItem('skipPhoneVerification', 'true');
+                        window.location.assign('/dashboard');
+                    }
+                }}
+                onSkip={() => {
+                    setShowPhoneModal(false);
+                    if (typeof window !== 'undefined') {
+                        sessionStorage.setItem('skipPhoneVerification', 'true');
+                        window.location.assign('/dashboard');
+                    }
+                }}
                 onSuccess={() => {
                     setShowPhoneModal(false);
                     const target = redirectRef.current || '/dashboard';
