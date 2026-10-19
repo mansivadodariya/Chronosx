@@ -56,6 +56,7 @@ const ChatMessageList = React.memo(function ChatMessageList({
     return (
         <div 
             className={styles.chatBody}
+            data-lenis-prevent
             onWheel={(e) => e.stopPropagation()}
         >
             {chatMessages.length === 0 && !isLoadingChat ? (

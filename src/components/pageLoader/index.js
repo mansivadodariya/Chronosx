@@ -10,13 +10,16 @@ export default function PageLoader() {
     const pathname = usePathname();
     const [isNavigating, setIsNavigating] = useState(false);
     const timeoutRef = useRef(null);
+    const delayRef = useRef(null);
     const currentPathRef = useRef(pathname);
 
     // Stop loading when pathname changes
     useEffect(() => {
-        if (isNavigating) {
-            setIsNavigating(false);
+        if (delayRef.current) {
+            clearTimeout(delayRef.current);
+            delayRef.current = null;
         }
+        setIsNavigating(false);
         currentPathRef.current = pathname;
         if (timeoutRef.current) {
             clearTimeout(timeoutRef.current);
@@ -26,6 +29,18 @@ export default function PageLoader() {
 
     // Listen to link clicks across the application
     useEffect(() => {
+        const scheduleLoading = () => {
+            if (delayRef.current) clearTimeout(delayRef.current);
+            // Wait 200ms before showing loader; instant/prefetched transitions complete without flashing
+            delayRef.current = setTimeout(() => {
+                setIsNavigating(true);
+                if (timeoutRef.current) clearTimeout(timeoutRef.current);
+                timeoutRef.current = setTimeout(() => {
+                    setIsNavigating(false);
+                }, 4000);
+            }, 200);
+        };
+
         const handleClick = (e) => {
             const anchor = e.target.closest('a');
             if (!anchor) return;
@@ -53,26 +68,24 @@ export default function PageLoader() {
             const target = href.split('?')[0].replace(/\/$/, '') || '/';
 
             if (current !== target) {
-                setIsNavigating(true);
-
-                if (timeoutRef.current) clearTimeout(timeoutRef.current);
-                timeoutRef.current = setTimeout(() => {
-                    setIsNavigating(false);
-                }, 4000);
+                scheduleLoading();
             }
         };
 
         const handleStartLoading = () => {
-            setIsNavigating(true);
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
-            timeoutRef.current = setTimeout(() => {
-                setIsNavigating(false);
-            }, 4000);
+            scheduleLoading();
         };
 
         const handleStopLoading = () => {
+            if (delayRef.current) {
+                clearTimeout(delayRef.current);
+                delayRef.current = null;
+            }
             setIsNavigating(false);
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+                timeoutRef.current = null;
+            }
         };
 
         document.addEventListener('click', handleClick, true);
@@ -83,6 +96,7 @@ export default function PageLoader() {
             document.removeEventListener('click', handleClick, true);
             window.removeEventListener('page:loading:start', handleStartLoading);
             window.removeEventListener('page:loading:stop', handleStopLoading);
+            if (delayRef.current) clearTimeout(delayRef.current);
             if (timeoutRef.current) clearTimeout(timeoutRef.current);
         };
     }, []);

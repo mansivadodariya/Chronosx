@@ -24,6 +24,8 @@ const resolveBacktestApiBase = () => {
     return raw.endsWith('/backtest/v1') ? raw : `${raw}/backtest/v1`;
 };
 
+let inFlightBotsFetch = null;
+
 export default function MyBots() {
     const router = useRouter();
     const { t } = useLanguage();
@@ -36,6 +38,9 @@ export default function MyBots() {
     const [botToDelete, setBotToDelete] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
     const [visibleTabNames, setVisibleTabNames] = useState(() => getVisibleTabNamesSync());
+
+    const hasFetchedRef = React.useRef(false);
+    const isFetchingRef = React.useRef(false);
 
     useEffect(() => {
         fetchVisibleTabNames().then(set => {
@@ -57,7 +62,11 @@ export default function MyBots() {
     }, []);
 
     // Load Strategies dynamically from backend API & locally created bots
-    const loadUserStrategies = useCallback(async () => {
+    const loadUserStrategies = useCallback(async (force = false) => {
+        if (isFetchingRef.current) return;
+        if (!force && hasFetchedRef.current) return;
+        isFetchingRef.current = true;
+        hasFetchedRef.current = true;
         setLoading(true);
         try {
             const uid = getStoredUserId() || 'test_user';
@@ -74,15 +83,26 @@ export default function MyBots() {
 
             const apiBase = resolveBacktestApiBase();
             const endpoint = `${apiBase}/ai-bot-builder/${encodeURIComponent(uid)}`;
-            const res = await fetch(endpoint, {
-                method: 'GET',
-                headers,
-                cache: 'no-store'
-            }).catch(() => null);
+
+            if (!inFlightBotsFetch || force) {
+                inFlightBotsFetch = fetch(endpoint, {
+                    method: 'GET',
+                    headers,
+                    cache: 'no-store'
+                }).then(async (res) => {
+                    if (res && res.ok) {
+                        return await res.json();
+                    }
+                    return null;
+                }).catch(() => null).finally(() => {
+                    inFlightBotsFetch = null;
+                });
+            }
+
+            const json = await inFlightBotsFetch;
 
             let apiBots = [];
-            if (res && res.ok) {
-                const json = await res.json();
+            if (json) {
                 const rawList = Array.isArray(json.data)
                     ? json.data
                     : (Array.isArray(json) ? json : (json.strategies || []));
@@ -136,6 +156,7 @@ export default function MyBots() {
             console.warn('Could not fetch strategies from backend:', err);
             setBots([]);
         } finally {
+            isFetchingRef.current = false;
             setLoading(false);
         }
     }, []);

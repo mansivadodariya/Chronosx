@@ -47,67 +47,37 @@ export const ThemeProvider = ({ children }) => {
         let y = 35;
 
         if (event) {
-            const targetEl = event.currentTarget || (event.target && event.target.closest('button')) || event.target;
-            if (targetEl && typeof targetEl.getBoundingClientRect === 'function') {
-                const rect = targetEl.getBoundingClientRect();
-                x = Math.round(rect.left + rect.width / 2);
-                y = Math.round(rect.top + rect.height / 2);
-            } else if (typeof event.clientX === 'number' && event.clientX > 0) {
-                x = Math.round(event.clientX);
-                y = Math.round(event.clientY);
-            }
+            try {
+                const targetEl = event.currentTarget || (event.target && typeof event.target.closest === 'function' ? event.target.closest('button') : null) || event.target;
+                if (targetEl && typeof targetEl.getBoundingClientRect === 'function') {
+                    const rect = targetEl.getBoundingClientRect();
+                    if (rect.width > 0 && rect.height > 0) {
+                        x = Math.round(rect.left + rect.width / 2);
+                        y = Math.round(rect.top + rect.height / 2);
+                    }
+                } else if (typeof event.clientX === 'number' && event.clientX > 0) {
+                    x = Math.round(event.clientX);
+                    y = Math.round(event.clientY);
+                }
+            } catch (_) { }
         }
 
-        const endRadius = Math.ceil(
-            Math.hypot(
-                Math.max(x, window.innerWidth - x),
-                Math.max(y, window.innerHeight - y)
-            )
-        );
+        if (!Number.isFinite(x) || x <= 0) x = Math.round(window.innerWidth - 80);
+        if (!Number.isFinite(y) || y <= 0) y = 35;
 
-        // Feed exact pixel coordinates into CSS keyframe animation
+        // Set origin coordinates for CSS keyframes
         document.documentElement.style.setProperty('--theme-x', `${x}px`);
         document.documentElement.style.setProperty('--theme-y', `${y}px`);
-        document.documentElement.style.setProperty('--theme-r', `${endRadius}px`);
 
         const isViewTransitionSupported =
             typeof document !== 'undefined' &&
             typeof document.startViewTransition === 'function' &&
             !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        // Native View Transition API (Chrome, Edge, Safari 18+, Opera)
+        // Native View Transition API (handled on GPU via CSS @keyframes theme-circle-reveal)
         if (isViewTransitionSupported) {
             try {
-                const transition = document.startViewTransition(() => {
-                    try {
-                        flushSync(() => {
-                            setThemeState(nextTheme);
-                        });
-                    } catch (_) {
-                        setThemeState(nextTheme);
-                    }
-                    applyTheme(nextTheme);
-                });
-
-                transition.ready.then(() => {
-                    try {
-                        document.documentElement.animate(
-                            {
-                                clipPath: [
-                                    `circle(0px at ${x}px ${y}px)`,
-                                    `circle(${endRadius}px at ${x}px ${y}px)`
-                                ]
-                            },
-                            {
-                                duration: 650,
-                                easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-                                pseudoElement: '::view-transition-new(root)',
-                            }
-                        );
-                    } catch (_) {
-                        // Handled natively by @keyframes theme-circle-grow in globalsBase.css
-                    }
-                }).catch(() => {
+                document.startViewTransition(() => {
                     setThemeState(nextTheme);
                     applyTheme(nextTheme);
                 });
@@ -117,38 +87,9 @@ export const ThemeProvider = ({ children }) => {
             }
         }
 
-        // Fallback expanding circle overlay for browsers without View Transition API
-        const overlay = document.createElement('div');
-        overlay.style.position = 'fixed';
-        overlay.style.top = `${y}px`;
-        overlay.style.left = `${x}px`;
-        overlay.style.width = '0px';
-        overlay.style.height = '0px';
-        overlay.style.borderRadius = '50%';
-        overlay.style.transform = 'translate(-50%, -50%)';
-        overlay.style.backgroundColor = nextTheme === 'dark' ? '#07090E' : '#F8FAFC';
-        overlay.style.pointerEvents = 'none';
-        overlay.style.zIndex = '999999';
-        overlay.style.transition = 'width 500ms cubic-bezier(0.25, 1, 0.5, 1), height 500ms cubic-bezier(0.25, 1, 0.5, 1), opacity 200ms ease';
-        overlay.style.boxShadow = `0 0 50px ${nextTheme === 'dark' ? 'rgba(24, 201, 139, 0.3)' : 'rgba(5, 150, 105, 0.2)'}`;
-
-        document.body.appendChild(overlay);
-
-        requestAnimationFrame(() => {
-            overlay.style.width = `${endRadius * 2.2}px`;
-            overlay.style.height = `${endRadius * 2.2}px`;
-        });
-
-        setTimeout(() => {
-            setThemeState(nextTheme);
-            applyTheme(nextTheme);
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                if (overlay.parentNode) {
-                    overlay.parentNode.removeChild(overlay);
-                }
-            }, 220);
-        }, 420);
+        // Direct apply fallback for older browsers or reduced-motion
+        setThemeState(nextTheme);
+        applyTheme(nextTheme);
     };
 
     const setTheme = (newTheme, event) => {

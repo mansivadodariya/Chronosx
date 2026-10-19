@@ -29,8 +29,17 @@ export async function fetchUserNotifications(userId, { page = 1, limit = 20, cat
         const list = Array.isArray(rawList) ? rawList : [];
         const formatted = list.map((item) => {
             const isBroadcast = item.user_id === null || item.is_broadcast === true;
+            let cleanMessage = item.message || '';
+            if (cleanMessage) {
+                cleanMessage = cleanMessage
+                    .replace(/successfully logged in from\s+(?:\d{1,3}\.){3}\d{1,3}\.?/gi, 'have successfully logged in to your account.')
+                    .replace(/\s*(?:from\s+)?(?:\d{1,3}\.){3}\d{1,3}\.?/gi, '.')
+                    .replace(/\.\.+/g, '.')
+                    .trim();
+            }
             return {
                 ...item,
+                message: cleanMessage,
                 is_read: Boolean(item.is_read),
                 is_broadcast: isBroadcast,
             };

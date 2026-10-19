@@ -5,7 +5,6 @@ import AuthGuard from '@/components/authGuard';
 import dynamic from 'next/dynamic';
 import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { ThemeProvider } from '@/context/ThemeContext';
 import { ToolStateProvider } from '@/context/toolState';
 import { SubscriptionProvider } from '@/context/SubscriptionContext';
 import { extractAvailableCredits, CREDITS_UPDATED_EVENT, notifyCreditsUpdated, refreshCreditsFromServer } from '@/lib/credits';
@@ -360,9 +359,7 @@ const layout = ({ children }) => {
     if (!isTabAllowed) {
         return (
             <AuthGuard>
-                <ThemeProvider>
-                    <AccessDeniedScreen />
-                </ThemeProvider>
+                <AccessDeniedScreen />
             </AuthGuard>
         );
     }
@@ -371,8 +368,7 @@ const layout = ({ children }) => {
 
     return (
         <AuthGuard>
-            <ThemeProvider>
-                <SubscriptionProvider>
+            <SubscriptionProvider>
                 <ToolStateProvider>
                     <div className={`user-layout ${effectiveCollapsed ? 'collapsed' : ''}`}>
                         <div className={`sidebar-wrapper ${effectiveCollapsed ? 'collapsed' : ''} ${isSidebarOpen ? 'open' : ''}`}>
@@ -423,8 +419,7 @@ const layout = ({ children }) => {
                         />
                     )}
                 </ToolStateProvider>
-                </SubscriptionProvider>
-            </ThemeProvider>
+            </SubscriptionProvider>
         </AuthGuard>
     );
 }

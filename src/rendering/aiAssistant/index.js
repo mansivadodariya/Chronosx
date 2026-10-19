@@ -67,7 +67,7 @@ const AiAssistant = ({ initialTab, initialOpenId, initialPrompt } = {}) => {
 
     useEffect(() => {
         const checkMobile = () => {
-            setIsMobile(window.innerWidth <= 1024);
+            setIsMobile(window.innerWidth <= 1200);
         };
         checkMobile();
         window.addEventListener('resize', checkMobile);
@@ -496,7 +496,7 @@ const AiAssistant = ({ initialTab, initialOpenId, initialPrompt } = {}) => {
             <div
                 ref={gridRef}
                 className={`${styles.splitLayoutGrid} ${isDragging ? styles.isDraggingGrid : ''}`}
-                style={!isMobile ? {
+                style={!isMobile && (typeof window === 'undefined' || window.innerWidth > 1200) ? {
                     gridTemplateColumns: `minmax(380px, ${chatWidthPercent}%) 10px minmax(360px, 1fr)`,
                     transition: isDragging ? 'none' : 'grid-template-columns 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
                 } : undefined}

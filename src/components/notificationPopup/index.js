@@ -56,6 +56,7 @@ export default function NotificationPopup({ userId: propUserId, onOpenFullModal 
     const [isSlidingOut, setIsSlidingOut] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const [activeUserId, setActiveUserId] = useState(propUserId || '');
+    const [isHovered, setIsHovered] = useState(false);
 
     const isAuthRoute = Boolean(
         pathname && (
@@ -219,6 +220,17 @@ export default function NotificationPopup({ userId: propUserId, onOpenFullModal 
         }, 380);
     };
 
+    // Auto-dismiss popup after 6 seconds (pauses on hover)
+    useEffect(() => {
+        if (!isActuallyShowing || isHovered) return;
+
+        const autoDismissTimer = setTimeout(() => {
+            dismissCurrent();
+        }, 6000);
+
+        return () => clearTimeout(autoDismissTimer);
+    }, [isActuallyShowing, isHovered, currentIndex, currentItem?.id]);
+
     const formatTime = (isoString) => {
         if (!isoString) return '';
         try {
@@ -278,7 +290,11 @@ export default function NotificationPopup({ userId: propUserId, onOpenFullModal 
 
     return (
         <aside className={styles.popupContainer} aria-label="Notification Popup">
-            <div className={`${styles.slideNotify} ${isVisible && !isSlidingOut ? styles.slideIn : styles.slideOut}`}>
+            <div
+                className={`${styles.slideNotify} ${isVisible && !isSlidingOut ? styles.slideIn : styles.slideOut}`}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+            >
                 {/* Top Row: Category Tag + Progress Counter Pill + Close Button */}
                 <div className={styles.topRow}>
                     <div className={styles.badgeWrap}>

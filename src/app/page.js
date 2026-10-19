@@ -1,7 +1,9 @@
 
+import { headers, cookies } from "next/headers";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import HomePage from "@/rendering/home";
+import ArabicMetaPixel from "@/components/ArabicMetaPixel";
 
 export const metadata = {
   title: {
@@ -71,9 +73,19 @@ const jsonLd = {
   ]
 };
 
-export default function Home() {
+export default async function Home() {
+  let isArabicSSR = false;
+  try {
+    const headerStore = await headers();
+    const headerLang = headerStore.get('x-chronosx-lang');
+    const cookieStore = await cookies();
+    const cookieLang = cookieStore.get('app_language')?.value || cookieStore.get('NEXT_LOCALE')?.value;
+    isArabicSSR = headerLang === 'ar' || headerLang === 'ary' || cookieLang === 'ar' || cookieLang === 'ary';
+  } catch (_) {}
+
   return (
     <>
+      <ArabicMetaPixel initialIsArabic={isArabicSSR} />
       <script
         type="application/ld+json"
         suppressHydrationWarning

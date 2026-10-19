@@ -118,6 +118,8 @@ body {
   background: var(--bg-global);
   color: var(--text-primary);
   overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 0;
 }
 
@@ -294,7 +296,9 @@ html.light .children-wrapper {
     width: 100%;
     max-width: 100%;
     margin-left: 0;
-    overflow-x: clip;
+    overflow: visible;
+    min-height: 100vh;
+    height: auto;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
   }
@@ -575,29 +579,29 @@ html.light main {
 :root {
   --theme-x: 90%;
   --theme-y: 40px;
-  --theme-r: 150vmax;
 }
 
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
+::view-transition-group(root) {
+  animation-duration: 0.5s;
 }
 
 ::view-transition-old(root) {
+  animation: none;
+  mix-blend-mode: normal;
   z-index: 1;
 }
 
 ::view-transition-new(root) {
-  z-index: 999999;
-  animation: theme-circle-grow 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation: theme-circle-reveal 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  mix-blend-mode: normal;
+  z-index: 9999;
 }
 
-@keyframes theme-circle-grow {
+@keyframes theme-circle-reveal {
   0% {
-    clip-path: circle(0px at var(--theme-x) var(--theme-y));
+    clip-path: circle(0% at var(--theme-x, 90%) var(--theme-y, 40px));
   }
   100% {
-    clip-path: circle(var(--theme-r) at var(--theme-x) var(--theme-y));
+    clip-path: circle(150% at var(--theme-x, 90%) var(--theme-y, 40px));
   }
 }

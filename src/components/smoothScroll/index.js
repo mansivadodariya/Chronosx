@@ -4,6 +4,11 @@ import Lenis from 'lenis';
 
 export default function SmoothScrollProvider({ children }) {
   useEffect(() => {
+    // Preserve 100% native momentum scrolling on mobile & touch devices
+    if (typeof window !== 'undefined' && window.matchMedia('(max-width: 1024px)').matches) {
+      return;
+    }
+
     const lenis = new Lenis({
       lerp: 0.12,
       wheelMultiplier: 1.0,
