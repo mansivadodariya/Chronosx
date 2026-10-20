@@ -5,7 +5,7 @@ import Script from 'next/script';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
 
-const META_PIXEL_ID = '29652189137701283';
+const META_PIXEL_ID = '1090886467268392';
 
 function MetaPixelInner({ initialIsArabic = false }) {
     const { language } = useLanguage();
