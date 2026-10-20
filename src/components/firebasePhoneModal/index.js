@@ -9,11 +9,13 @@ import { authApi } from '@/lib/api';
 import { toast } from '@/components/toast';
 import { getStoredUserId, setPhoneVerifiedInSession } from '@/lib/authSession';
 import { useLanguage } from '@/context/LanguageContext';
+import { useTheme } from '@/context/ThemeContext';
 import Button from '@/components/button';
 import { supabase } from '@/lib/supabaseClient';
 
 const LineImage = '/assets/images/line.png';
-const BrandLogo = '/assets/logo/logo.png';
+const DarkLogo = '/assets/logo/logo.png';
+const LightLogo = '/assets/logo/darklogo.png';
 const AuthIcon = '/assets/icons/auth.svg';
 const ArrowIcon = '/assets/icons/arrow.svg';
 
@@ -28,6 +30,8 @@ export default function FirebasePhoneModal({
     autoTriggerSend = true,
 }) {
     const { t } = useLanguage();
+    const { theme } = useTheme();
+    const logoSrc = theme === 'light' ? LightLogo : DarkLogo;
     const [step, setStep] = useState('phone'); // 'phone' | 'otp' | 'success'
     const [phone, setPhone] = useState(initialPhoneNumber);
     const [hasTyped, setHasTyped] = useState(false);
@@ -273,10 +277,11 @@ export default function FirebasePhoneModal({
 
     return (
         <AnimatePresence>
-            <div className={styles.modalOverlay} onClick={handleClose}>
+            <div className={styles.modalOverlay} data-theme={theme} onClick={handleClose}>
                 <div id="firebase-recaptcha-container"></div>
                 <motion.div
                     className={styles.modalCard}
+                    data-theme={theme}
                     initial={{ opacity: 0, scale: 0.92, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.92, y: 20 }}
@@ -292,7 +297,7 @@ export default function FirebasePhoneModal({
                     )}
 
                     <div className={styles.brandLogoHeader}>
-                        <img src={BrandLogo} alt="ChronosX" className={styles.brandLogoImg} />
+                        <img src={logoSrc} alt="ChronosX" className={styles.brandLogoImg} />
                     </div>
 
                     {step === 'phone' && (

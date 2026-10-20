@@ -231,7 +231,9 @@
 }
 
 /* Light Theme */
-:global(html.light) {
+:global(html.light),
+:global(html[data-theme='light']),
+:global([data-theme='light']) {
     .modalBackdrop {
         background: rgba(15, 23, 42, 0.65);
     }

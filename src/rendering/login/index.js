@@ -14,7 +14,8 @@ import {
     clearAuthSession,
     setOnboardingCompletedInSession,
     clearOnboardingInSession,
-    fetchUserOnboardingStatus
+    fetchUserOnboardingStatus,
+    isUserOnboardingCompleted
 } from '@/lib/authSession';
 import { validateLogin } from '@/lib/validation';
 import { toast } from '@/components/toast';
@@ -122,8 +123,24 @@ const Login = () => {
     const [phoneError, setPhoneError] = useState('');
     const [savingPhone, setSavingPhone] = useState(false);
     const [showOtpModal, setShowOtpModal] = useState(false);
+    const onboardingCompletedRef = React.useRef(null);
 
+    const resolvePostAuthTarget = (preferredTarget = redirectTo) => {
+        let isDone = onboardingCompletedRef.current;
+        if (isDone === null || isDone === undefined) {
+            isDone = isUserOnboardingCompleted();
+        }
 
+        if (!isDone) {
+            return '/onboarding';
+        }
+
+        let destination = preferredTarget || '/dashboard';
+        if (!destination || destination === '/onboarding' || destination === '/steper' || destination.startsWith('/onboarding') || destination.startsWith('/steper')) {
+            destination = '/dashboard';
+        }
+        return destination;
+    };
 
     useEffect(() => {
         const checkSession = async () => {
@@ -141,6 +158,14 @@ const Login = () => {
                         return;
                     }
 
+                    const isOnboardingDone = Boolean(status.onboarding_completed);
+                    onboardingCompletedRef.current = isOnboardingDone;
+                    if (isOnboardingDone) {
+                        setOnboardingCompletedInSession();
+                    } else {
+                        clearOnboardingInSession();
+                    }
+
                     const isPhoneVerified = status.is_phone_verified === true || status.user?.is_phone_verified === true;
                     if (status.user && !isPhoneVerified) {
                         setPendingPhoneUserId(status.user.id || uid);
@@ -149,18 +174,7 @@ const Login = () => {
                         return;
                     }
 
-                    let destination = redirectTo;
-                    if (!destination || destination === '/onboarding' || destination === '/steper' || destination.startsWith('/onboarding') || destination.startsWith('/steper')) {
-                        destination = '/dashboard';
-                    }
-
-                    if (status.onboarding_completed) {
-                        setOnboardingCompletedInSession();
-                        window.location.assign(destination);
-                    } else {
-                        clearOnboardingInSession();
-                        window.location.assign('/onboarding');
-                    }
+                    window.location.assign(resolvePostAuthTarget());
                 } catch (e) {
                     console.error('Error fetching user status in checkSession', e);
                 }
@@ -206,6 +220,14 @@ const Login = () => {
                 return;
             }
 
+            const isOnboardingDone = Boolean(status.onboarding_completed);
+            onboardingCompletedRef.current = isOnboardingDone;
+            if (isOnboardingDone) {
+                setOnboardingCompletedInSession();
+            } else {
+                clearOnboardingInSession();
+            }
+
             const isPhoneVerified = status.is_phone_verified === true || status.user?.is_phone_verified === true;
             if (status.user && !isPhoneVerified) {
                 setPendingPhoneUserId(status.user.id || uid);
@@ -214,18 +236,7 @@ const Login = () => {
                 return;
             }
 
-            let destination = redirectTo;
-            if (!destination || destination === '/onboarding' || destination === '/steper' || destination.startsWith('/onboarding') || destination.startsWith('/steper')) {
-                destination = '/dashboard';
-            }
-
-            if (status.onboarding_completed) {
-                setOnboardingCompletedInSession();
-                window.location.assign(destination);
-            } else {
-                clearOnboardingInSession();
-                window.location.assign('/onboarding');
-            }
+            window.location.assign(resolvePostAuthTarget());
         } catch (err) {
             toast.dismiss();
             const status = err?.status;
@@ -326,15 +337,7 @@ const Login = () => {
             }
 
             toast.success(apiRes?.message || 'Phone number verified and saved!');
-            let destination = redirectTo;
-            if (!destination || destination === '/onboarding' || destination === '/steper' || destination.startsWith('/onboarding') || destination.startsWith('/steper')) {
-                destination = '/dashboard';
-            }
-            if (!isOnboardingDone) {
-                window.location.assign('/onboarding');
-            } else {
-                window.location.assign(destination);
-            }
+            window.location.assign(resolvePostAuthTarget());
         } catch (err) {
             console.error('Failed to save phone number after verification:', err);
             const msg = String(err.message || '');
@@ -465,7 +468,7 @@ const Login = () => {
                                                 onClick={() => {
                                                     if (typeof window !== 'undefined') {
                                                         sessionStorage.setItem('skipPhoneVerification', 'true');
-                                                        window.location.assign('/dashboard');
+                                                        window.location.assign(resolvePostAuthTarget());
                                                     }
                                                 }}
                                                 className={styles.skipBtn}
@@ -567,14 +570,14 @@ const Login = () => {
                     setShowOtpModal(false);
                     if (typeof window !== 'undefined') {
                         sessionStorage.setItem('skipPhoneVerification', 'true');
-                        window.location.assign('/dashboard');
+                        window.location.assign(resolvePostAuthTarget());
                     }
                 }}
                 onSkip={() => {
                     setShowOtpModal(false);
                     if (typeof window !== 'undefined') {
                         sessionStorage.setItem('skipPhoneVerification', 'true');
-                        window.location.assign('/dashboard');
+                        window.location.assign(resolvePostAuthTarget());
                     }
                 }}
                 onSuccess={handleOtpSuccess}

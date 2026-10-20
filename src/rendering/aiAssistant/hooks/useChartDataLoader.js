@@ -23,6 +23,12 @@ export default function useChartDataLoader({
     updateIndicators
 }) {
     const wsRef = useRef(null);
+    const updateIndicatorsRef = useRef(updateIndicators);
+    const lastIndicatorUpdateRef = useRef(0);
+
+    useEffect(() => {
+        updateIndicatorsRef.current = updateIndicators;
+    }, [updateIndicators]);
 
     // Fallback real-time tick simulator if WS endpoint offline
     const startMockTickSimulator = (isMounted) => {
@@ -147,6 +153,8 @@ export default function useChartDataLoader({
                         seriesRef.current = chartRef.current.addSeries(LineSeries, {
                             color: '#18C98B',
                             lineWidth: 2,
+                            priceLineVisible: true,
+                            lastValueVisible: true,
                         });
                     } else if (chartType === 'area') {
                         seriesRef.current = chartRef.current.addSeries(AreaSeries, {
@@ -154,6 +162,8 @@ export default function useChartDataLoader({
                             bottomColor: 'rgba(24, 201, 139, 0.0)',
                             lineColor: '#18C98B',
                             lineWidth: 2,
+                            priceLineVisible: true,
+                            lastValueVisible: true,
                         });
                     } else {
                         seriesRef.current = chartRef.current.addSeries(CandlestickSeries, {
@@ -163,6 +173,8 @@ export default function useChartDataLoader({
                             downColor: bearishColor,
                             borderDownColor: bearishColor,
                             wickDownColor: bearishColor,
+                            priceLineVisible: true,
+                            lastValueVisible: true,
                         });
                     }
                     currentChartTypeRef.current = chartType;
@@ -175,7 +187,31 @@ export default function useChartDataLoader({
                         precision: precision,
                         minMove: minMove,
                     },
+                    priceLineVisible: true,
+                    lastValueVisible: true,
                 });
+
+                // Anchor initial latest candle close to live price if already known
+                const initialLive = (livePrice && !isNaN(livePrice) && Number(livePrice) > 0)
+                    ? Number(livePrice)
+                    : (unifiedSocket?.getKnownPrice ? unifiedSocket.getKnownPrice(activeSymbolClean) : null);
+
+                if (initialLive && formattedCandles.length > 0) {
+                    const lastIdx = formattedCandles.length - 1;
+                    const c = formattedCandles[lastIdx];
+                    const numLive = Number(Number(initialLive).toFixed(precision));
+                    const ratio = numLive / c.close;
+                    if (ratio <= 1.25 && ratio >= 0.75) {
+                        formattedCandles[lastIdx] = {
+                            ...c,
+                            high: Math.max(c.high, numLive),
+                            low: Math.min(c.low, numLive),
+                            close: numLive,
+                            value: numLive,
+                            volumeColor: numLive >= c.open ? 'rgba(38, 166, 154, 0.7)' : 'rgba(239, 83, 80, 0.7)',
+                        };
+                    }
+                }
 
                 seriesRef.current.setData(formattedCandles);
                 try {
@@ -328,4 +364,91 @@ export default function useChartDataLoader({
             isMounted = false;
         };
     }, [activeSymbolClean, currentTimeframe, chartType]);
+
+    // Update forming candle and chart series in real-time on live price ticks
+    useEffect(() => {
+        if (!livePrice || isNaN(livePrice) || Number(livePrice) <= 0) return;
+        if (!seriesRef.current || !candlesDataRef.current || candlesDataRef.current.length === 0) return;
+
+        const { precision } = getSymbolPrecision(activeSymbolClean);
+        const price = Number(Number(livePrice).toFixed(precision));
+        if (isNaN(price) || price <= 0) return;
+
+        const candles = candlesDataRef.current;
+        const lastIdx = candles.length - 1;
+        const lastCandle = candles[lastIdx];
+        if (!lastCandle) return;
+
+        // Prevent cross-symbol price distortion or sudden giant spikes (> 25% single-tick gap)
+        const lastClose = lastCandle.close;
+        const ratio = price / lastClose;
+        if (ratio > 1.25 || ratio < 0.75) return;
+
+        const interval = (typeof getTimeframeInterval === 'function' ? getTimeframeInterval(currentTimeframe) : 900) || 900;
+        const nowSec = Math.floor(Date.now() / 1000);
+        const bucketTime = Math.floor(nowSec / interval) * interval;
+
+        let updatedBar;
+        // If bucketTime has advanced into the immediate next timeframe period (within 2 intervals)
+        if (bucketTime > lastCandle.time && (bucketTime - lastCandle.time) <= interval * 2) {
+            const open = lastCandle.close;
+            updatedBar = {
+                time: bucketTime,
+                open: open,
+                high: Math.max(open, price),
+                low: Math.min(open, price),
+                close: price,
+                value: price,
+                volume: 500,
+                volumeColor: price >= open ? 'rgba(38, 166, 154, 0.7)' : 'rgba(239, 83, 80, 0.7)',
+            };
+            candles.push(updatedBar);
+        } else {
+            // Update current forming candle in place
+            const open = lastCandle.open;
+            const high = Math.max(lastCandle.high, price);
+            const low = Math.min(lastCandle.low, price);
+            updatedBar = {
+                ...lastCandle,
+                time: lastCandle.time,
+                open,
+                high,
+                low,
+                close: price,
+                value: price,
+                volumeColor: price >= open ? 'rgba(38, 166, 154, 0.7)' : 'rgba(239, 83, 80, 0.7)',
+            };
+            candles[lastIdx] = updatedBar;
+        }
+
+        unifiedSocket.setKnownPrice(activeSymbolClean, price);
+
+        try {
+            seriesRef.current.update(updatedBar);
+        } catch (err) {
+            console.warn('Series livePrice update notice:', err);
+        }
+
+        if (volumeSeriesRef.current) {
+            try {
+                volumeSeriesRef.current.update({
+                    time: updatedBar.time,
+                    value: updatedBar.volume || 1000,
+                    color: updatedBar.volumeColor,
+                });
+            } catch {}
+        }
+
+        setLatestCandle(updatedBar);
+
+        if (updateIndicatorsRef.current) {
+            const now = Date.now();
+            if (now - lastIndicatorUpdateRef.current > 1500) {
+                lastIndicatorUpdateRef.current = now;
+                try {
+                    updateIndicatorsRef.current(candles);
+                } catch {}
+            }
+        }
+    }, [livePrice, activeSymbolClean, currentTimeframe]);
 }

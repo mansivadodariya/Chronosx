@@ -489,7 +489,10 @@ $border-gold: rgba(24, 201, 139, 0.28);
 }
 
 /* Specific Light Mode Rules for Newera Credits Modal */
-:global(html.light) .box {
+:global(html.light) .box,
+:global(html[data-theme='light']) .box,
+:global([data-theme='light']) .box,
+:global(.light) .box {
     background: #FFFFFF;
     border-color: rgba(15, 23, 42, 0.09);
     box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);

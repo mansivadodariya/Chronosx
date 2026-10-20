@@ -10,6 +10,7 @@ import {
     fetchUserOnboardingStatus,
     setOnboardingCompletedInSession,
     clearOnboardingInSession,
+    isUserOnboardingCompleted,
 } from '@/lib/authSession';
 import { toast } from '@/components/toast';
 import { supabase } from '@/lib/supabaseClient';
@@ -28,6 +29,24 @@ const ContinueWithGoogle = ({ redirectTo = '/dashboard', onPendingPhone }) => {
     const initialized = useRef(false);
     const btnContainerRef = useRef(null);
     const redirectRef = useRef(redirectTo);
+    const onboardingCompletedRef = useRef(null);
+
+    const resolvePostAuthTarget = (preferredTarget = redirectRef.current) => {
+        let isDone = onboardingCompletedRef.current;
+        if (isDone === null || isDone === undefined) {
+            isDone = isUserOnboardingCompleted();
+        }
+
+        if (!isDone) {
+            return '/onboarding';
+        }
+
+        let target = preferredTarget || '/dashboard';
+        if (!target || target === '/onboarding' || target === '/steper' || target.startsWith('/onboarding') || target.startsWith('/steper')) {
+            target = '/dashboard';
+        }
+        return target;
+    };
 
     useEffect(() => {
         redirectRef.current = redirectTo;
@@ -130,6 +149,13 @@ const ContinueWithGoogle = ({ redirectTo = '/dashboard', onPendingPhone }) => {
                 const email = sessionUser?.email || '';
 
                 const status = await fetchUserOnboardingStatus(uid, email);
+                const isOnboardingDone = Boolean(status.onboarding_completed);
+                onboardingCompletedRef.current = isOnboardingDone;
+                if (isOnboardingDone) {
+                    setOnboardingCompletedInSession();
+                } else {
+                    clearOnboardingInSession();
+                }
 
                 const isPhoneVerified = status.is_phone_verified === true || status.user?.is_phone_verified === true;
                 if (status.user && !isPhoneVerified) {
@@ -138,25 +164,11 @@ const ContinueWithGoogle = ({ redirectTo = '/dashboard', onPendingPhone }) => {
                     return;
                 }
 
-                let target = redirectRef.current || '/dashboard';
-                if (!target || target === '/onboarding' || target === '/steper' || target.startsWith('/onboarding') || target.startsWith('/steper')) {
-                    target = '/dashboard';
-                }
-
-                if (status.onboarding_completed) {
-                    setOnboardingCompletedInSession();
-                    if (typeof window !== 'undefined') {
-                        window.location.assign(target);
-                    } else {
-                        router.replace(target);
-                    }
+                const target = resolvePostAuthTarget();
+                if (typeof window !== 'undefined') {
+                    window.location.assign(target);
                 } else {
-                    clearOnboardingInSession();
-                    if (typeof window !== 'undefined') {
-                        window.location.assign('/onboarding');
-                    } else {
-                        router.replace('/onboarding');
-                    }
+                    router.replace(target);
                 }
                 return;
             }
@@ -246,7 +258,7 @@ const ContinueWithGoogle = ({ redirectTo = '/dashboard', onPendingPhone }) => {
             toast.success(apiRes?.message || 'Profile completed successfully!');
             setShowPhoneModal(false);
 
-            const target = redirectRef.current || '/dashboard';
+            const target = resolvePostAuthTarget();
             if (typeof window !== 'undefined') {
                 window.location.assign(target);
             } else {
@@ -393,19 +405,21 @@ const ContinueWithGoogle = ({ redirectTo = '/dashboard', onPendingPhone }) => {
                     setShowPhoneModal(false);
                     if (typeof window !== 'undefined') {
                         sessionStorage.setItem('skipPhoneVerification', 'true');
-                        window.location.assign('/dashboard');
+                        const target = resolvePostAuthTarget();
+                        window.location.assign(target);
                     }
                 }}
                 onSkip={() => {
                     setShowPhoneModal(false);
                     if (typeof window !== 'undefined') {
                         sessionStorage.setItem('skipPhoneVerification', 'true');
-                        window.location.assign('/dashboard');
+                        const target = resolvePostAuthTarget();
+                        window.location.assign(target);
                     }
                 }}
                 onSuccess={() => {
                     setShowPhoneModal(false);
-                    const target = redirectRef.current || '/dashboard';
+                    const target = resolvePostAuthTarget();
                     if (typeof window !== 'undefined') {
                         window.location.assign(target);
                     } else {

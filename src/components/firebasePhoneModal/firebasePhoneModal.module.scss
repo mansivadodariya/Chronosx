@@ -15,6 +15,13 @@
     justify-content: center;
     z-index: 9999;
     padding: 16px;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    &[data-theme='light'] {
+        background: rgba(15, 23, 42, 0.45);
+    }
 }
 
 .modalCard {
@@ -28,6 +35,17 @@
     box-shadow: 0 32px 80px rgba(0, 0, 0, 0.95), 0 0 48px rgba(24, 201, 139, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     color: #FFFFFF;
     overflow: hidden;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    &[data-theme='light'],
+    [data-theme='light'] & {
+        background: #FFFFFF;
+        border: 1px solid rgba(24, 201, 139, 0.3);
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.12), 0 0 32px rgba(24, 201, 139, 0.08);
+        color: #0F172A;
+    }
 
     @include respond-to('sm') {
         border-radius: 16px;
@@ -48,6 +66,13 @@
     transform: translateX(-50%);
     opacity: 0.3;
     pointer-events: none;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        opacity: 0.15;
+    }
 }
 
 .brandLogoHeader {
@@ -102,6 +127,21 @@
         border-color: #18C98B;
         transform: scale(1.06);
     }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        background: #F1F5F9;
+        border-color: #CBD5E1;
+        color: #475569;
+
+        &:hover {
+            background: rgba(24, 201, 139, 0.15);
+            color: #059669;
+            border-color: #18C98B;
+        }
+    }
 }
 
 .modalBody {
@@ -135,6 +175,13 @@
     font-family: "Euclid-Bold", sans-serif;
     line-height: 1.25;
 
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        color: #0F172A;
+    }
+
     @include respond-to('sm') {
         font-size: 22px;
     }
@@ -166,6 +213,25 @@
     strong {
         color: #18C98B;
         font-weight: 700;
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        color: #475569;
+
+        .verifyFirstNotice {
+            color: #059669;
+        }
+
+        .enterPhoneLine {
+            color: #475569;
+        }
+
+        strong {
+            color: #059669;
+        }
     }
 }
 
@@ -223,6 +289,34 @@
         background: #0A0A0D;
         color: #FFFFFF;
     }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        background: #F8FAFC;
+        border: 1px solid #CBD5E1;
+        color: #0F172A;
+
+        &:focus-within {
+            background: #FFFFFF;
+            border-color: #18C98B;
+            box-shadow: 0 0 0 3px rgba(24, 201, 139, 0.16);
+        }
+
+        :global(.PhoneInputInput) {
+            color: #0F172A;
+
+            &::placeholder {
+                color: #94A3B8;
+            }
+        }
+
+        :global(.PhoneInputCountrySelect) {
+            background: #FFFFFF;
+            color: #0F172A;
+        }
+    }
 }
 
 .phoneHintError {
@@ -269,6 +363,27 @@
         border-color: #18C98B;
         color: #18C98B;
     }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        background: #F8FAFC;
+        border: 1px solid #CBD5E1;
+        color: #0F172A;
+
+        &:focus {
+            background: #FFFFFF;
+            border-color: #18C98B;
+            box-shadow: 0 0 0 3px rgba(24, 201, 139, 0.16);
+        }
+
+        &.filled {
+            background: rgba(24, 201, 139, 0.12);
+            border-color: #18C98B;
+            color: #059669;
+        }
+    }
 }
 
 .errorBanner {
@@ -281,6 +396,15 @@
     width: 100%;
     margin-bottom: 16px;
     text-align: center;
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        background: #FEE2E2;
+        border-color: #FCA5A5;
+        color: #DC2626;
+    }
 }
 
 .actionBtnWrapper {
@@ -353,6 +477,17 @@
     strong {
         color: #18C98B;
     }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        color: #64748B;
+
+        strong {
+            color: #059669;
+        }
+    }
 }
 
 .resendBtn {
@@ -366,6 +501,17 @@
 
     &:hover:not(:disabled) {
         text-decoration: underline;
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        color: #059669;
+
+        &:hover:not(:disabled) {
+            color: #047857;
+        }
     }
 }
 
@@ -382,6 +528,17 @@
 
     &:hover {
         color: #34e0a4;
+    }
+
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        color: #059669;
+
+        &:hover {
+            color: #047857;
+        }
     }
 }
 

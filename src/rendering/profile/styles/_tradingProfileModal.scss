@@ -16,6 +16,11 @@
         padding: 8px;
         align-items: flex-end;
     }
+    :global(html.light) &,
+    :global([data-theme='light']) &,
+    [data-theme='light'] & {
+        background: rgba(15, 23, 42, 0.55);
+    }
 }
 
 .tradingAnalysisModalCard {
