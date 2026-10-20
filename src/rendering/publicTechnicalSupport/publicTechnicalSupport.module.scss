@@ -1,0 +1,352 @@
+@use '../../scss/main.scss' as *;
+@use '../../scss/breakpoints/breakpoints.scss' as *;
+
+/* ── Page Container ── */
+.page {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    color: #ffffff;
+    padding-top: 100px; /* clear fixed header */
+    background: #040605;
+
+    @include respond-to('md') {
+        padding-top: 90px;
+    }
+
+    @include respond-to('sm') {
+        padding-top: 80px;
+    }
+}
+
+/* ── Ambient Background Glows ── */
+.ambientGlowTop {
+    position: absolute;
+    top: -120px;
+    left: 50%;
+    width: 720px;
+    height: 440px;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse, rgba(24, 201, 139, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.ambientGlowLeft {
+    position: absolute;
+    top: 30%;
+    left: -160px;
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.ambientGlowRight {
+    position: absolute;
+    top: 50%;
+    right: -160px;
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(24, 201, 139, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.gridOverlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(24, 201, 139, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(24, 201, 139, 0.03) 1px, transparent 1px);
+    background-size: 64px 64px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── Common Section Header Wrapper ── */
+.headerWrap {
+    position: relative;
+    z-index: 2;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 24px 20px 24px;
+
+    @include respond-to('sm') {
+        padding: 16px 12px 16px;
+    }
+}
+
+/* ── Main Content Layout ── */
+.mainSection {
+    position: relative;
+    z-index: 2;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+
+    @include respond-to('sm') {
+        padding: 0 12px 40px;
+    }
+}
+
+/* Equal-height two-column grid */
+.contentLayout {
+    display: grid;
+    grid-template-columns: 1fr 1.35fr;
+    gap: 28px;
+    align-items: stretch; /* both columns same height */
+
+    @include respond-to('md') {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}
+
+/* ── Left Column ── */
+.infoColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    height: 100%;
+}
+
+/* Info card grows to fill available space */
+.infoCard {
+    position: relative;
+    padding: 26px 22px;
+    border-radius: 20px;
+    background: linear-gradient(165deg, rgba(13, 22, 18, 0.95) 0%, rgba(4, 8, 6, 0.95) 100%);
+    border: 1px solid rgba(24, 201, 139, 0.2);
+    backdrop-filter: blur(16px);
+    overflow: hidden;
+    flex: 1; /* fills remaining height */
+}
+
+.infoCardGlow {
+    position: absolute;
+    top: 0;
+    left: 15%;
+    right: 15%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(24, 201, 139, 0.6), transparent);
+    pointer-events: none;
+}
+
+.infoIcon {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    background: rgba(24, 201, 139, 0.1);
+    border: 1px solid rgba(24, 201, 139, 0.25);
+    color: #18c98b;
+}
+
+.infoTitle {
+    font-family: var(--font-plus-jakarta), sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 8px;
+}
+
+.infoDescription {
+    font-size: 14px;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 0;
+}
+
+/* Feature grid — fixed at bottom of left column */
+.featureGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    flex-shrink: 0;
+
+    @include respond-to('sm') {
+        grid-template-columns: 1fr;
+    }
+}
+
+.featureItem {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 14px 12px;
+    border-radius: 14px;
+    background: rgba(24, 201, 139, 0.04);
+    border: 1px solid rgba(24, 201, 139, 0.12);
+    transition: border-color 0.25s ease, background 0.25s ease;
+
+    &:hover {
+        border-color: rgba(24, 201, 139, 0.3);
+        background: rgba(24, 201, 139, 0.08);
+    }
+}
+
+.featureIcon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(24, 201, 139, 0.1);
+    color: #18c98b;
+    flex-shrink: 0;
+}
+
+.featureMeta {
+    flex: 1;
+    min-width: 0;
+}
+
+.featureLabel {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 2px;
+}
+
+.featureDesc {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+/* ── Right Column: Form Card ── */
+.formColumn {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Form card stretches to full column height */
+.formCard {
+    position: relative;
+    padding: 28px 26px 32px;
+    border-radius: 22px;
+    background: linear-gradient(165deg, rgba(13, 22, 18, 0.95) 0%, rgba(4, 8, 6, 0.95) 100%);
+    border: 1px solid rgba(24, 201, 139, 0.25);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(24, 201, 139, 0.1);
+    overflow: hidden;
+    flex: 1;
+
+    @include respond-to('sm') {
+        padding: 22px 14px 26px;
+        border-radius: 18px;
+    }
+}
+
+.formCardGlow {
+    position: absolute;
+    top: 0;
+    left: 15%;
+    right: 15%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(24, 201, 139, 0.7), transparent);
+    pointer-events: none;
+}
+
+.formHeader {
+    margin-bottom: 20px;
+}
+
+.formBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(24, 201, 139, 0.1);
+    border: 1px solid rgba(24, 201, 139, 0.3);
+    color: #18c98b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.formTitle {
+    font-family: var(--font-plus-jakarta), sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 5px;
+}
+
+.formSubtitle {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+}
+
+/* ── Light Theme ── */
+:global(html.light) .page,
+:global(html[data-theme='light']) .page {
+    color: #0f172a;
+    background: #f8fafc;
+}
+
+:global(html.light) .infoCard,
+:global(html.light) .formCard,
+:global(html[data-theme='light']) .infoCard,
+:global(html[data-theme='light']) .formCard {
+    background: linear-gradient(165deg, #ffffff 0%, #f8fafc 100%);
+    border-color: rgba(24, 201, 139, 0.2);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+:global(html.light) .infoTitle,
+:global(html.light) .formTitle,
+:global(html.light) .featureLabel,
+:global(html[data-theme='light']) .infoTitle,
+:global(html[data-theme='light']) .formTitle,
+:global(html[data-theme='light']) .featureLabel {
+    color: #0f172a;
+}
+
+:global(html.light) .infoDescription,
+:global(html.light) .formSubtitle,
+:global(html.light) .featureDesc,
+:global(html[data-theme='light']) .infoDescription,
+:global(html[data-theme='light']) .formSubtitle,
+:global(html[data-theme='light']) .featureDesc {
+    color: #64748b;
+}
+
+:global(html.light) .featureItem,
+:global(html[data-theme='light']) .featureItem {
+    background: rgba(24, 201, 139, 0.03);
+    border-color: rgba(15, 23, 42, 0.08);
+
+    &:hover {
+        background: rgba(24, 201, 139, 0.06);
+        border-color: rgba(24, 201, 139, 0.2);
+    }
+}
+
+:global(html.light) .ambientGlowTop,
+:global(html.light) .ambientGlowLeft,
+:global(html.light) .ambientGlowRight,
+:global(html[data-theme='light']) .ambientGlowTop,
+:global(html[data-theme='light']) .ambientGlowLeft,
+:global(html[data-theme='light']) .ambientGlowRight {
+    opacity: 0.5;
+}
+
+:global(html.light) .gridOverlay,
+:global(html[data-theme='light']) .gridOverlay {
+    background-image:
+        linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+}

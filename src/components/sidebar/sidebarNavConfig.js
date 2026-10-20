@@ -22,6 +22,7 @@ import {
   SubCalendarIcon,
   SubCalculatorIcon,
   EducationIcon,
+  SupportTicketIcon,
 } from '@/icons/sidebarIcons';
 
 export const BrandDarkLogo = "/assets/logo/darklogo.png";
@@ -82,6 +83,7 @@ export const getNavSections = (t) => [
       { label: t('nav.broker', 'Associated Brokers'), href: "/brokers", icon: BrokerBankIcon },
       { label: t('nav.affiliate', 'Affiliate Program'), href: "/affiliate", icon: AffiliateIcon },
       { label: t('nav.profile', 'Settings'), href: "/profile", icon: ProfileUserIcon },
+      { label: t('nav.technicalSupport', 'Technical Support'), href: "/technical-support", icon: SupportTicketIcon },
     ]
   }
 ];

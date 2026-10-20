@@ -294,6 +294,19 @@ export default function Header() {
                 </svg>
             )
         },
+        {
+            label: t('header.company.support.title', 'Technical Support'),
+            desc: t('header.company.support.desc', 'Report bugs, raise tickets and get help from our engineering team'),
+            href: '/support-ticket',
+            badge: t('header.company.support.badge', 'HELP DESK'),
+            icon: (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+            )
+        },
 
     ], [t]);
 
@@ -337,7 +350,13 @@ export default function Header() {
 
     const isLinkActive = (item) => {
         if (!pathname) return false;
-        const current = pathname.split('?')[0].replace(/\/$/, '') || '/';
+        // Strip locale prefix for comparison
+        const pathParts = pathname.split('/').filter(Boolean);
+        const locales = ['en', 'ar', 'ary', 'es', 'ru', 'zh', 'vi', 'id', 'fil', 'arabic', 'spanish', 'russian', 'chinese', 'vietnamese', 'indonesian', 'filipino', 'darija'];
+        const strippedPath = pathParts.length > 0 && locales.includes(pathParts[0].toLowerCase())
+            ? '/' + pathParts.slice(1).join('/')
+            : pathname;
+        const current = strippedPath.split('?')[0].replace(/\/$/, '') || '/';
         const target = (item.href || '').split('#')[0].replace(/\/$/, '') || '/';
 
         // For dropdown menus, only activate if user is visiting a specific non-root subpage

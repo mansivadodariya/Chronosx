@@ -134,6 +134,7 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
     '/market-news': 'Market News', '/credit-history': 'Credit History', '/plans': 'Subscription Plans',
     '/subscription-plans': 'Subscription Plans', '/broker': 'Associated Brokers', '/brokers': 'Associated Brokers',
     '/affiliate': 'Affiliate', '/dashboard/affiliate': 'Affiliate', '/profile': 'Profile', '/settings': 'Profile',
+    '/technical-support': 'Technical Support', '/support': 'Technical Support',
   };
 
   const rawSections = getNavSections(t);
@@ -144,10 +145,11 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
       const lowerLabel = (tabLabel || '').toLowerCase().trim();
       const mapped = (ROUTE_TAB_MAP[routeHref] || '').toLowerCase().trim();
 
-      // Affiliate & Education (Edufins external link) & Settings/Profile are always accessible
+      // Affiliate & Education (Edufins external link) & Settings/Profile & Technical Support are always accessible
       if (lowerLabel.includes('affiliate') || mapped.includes('affiliate')) return true;
       if (lowerLabel.includes('education') || lowerLabel.includes('edufins') || routeHref?.includes('edufins')) return true;
       if (lowerLabel === 'profile' || lowerLabel === 'settings' || mapped === 'profile') return true;
+      if (lowerLabel.includes('technical support') || mapped.includes('technical support') || routeHref === '/technical-support') return true;
 
       // Group parent container check: "AI Trading Bot" is shown if any of its sub-items is enabled
       if (routeHref === '/my-bots' || lowerLabel === 'ai trading bot' || mapped === 'ai trading bot') {
@@ -193,13 +195,15 @@ const Sidebar = ({ onClose, isCollapsed = false, onToggleCollapse }) => {
           return null;
         }
 
-        // Settings/Profile is always accessible
+        // Settings/Profile & Technical Support are always accessible
         if (
           parentTabName.includes('profile') ||
           parentTabName.includes('settings') ||
           parentTabName.includes('affiliate') ||
+          parentTabName.includes('technical support') ||
           item.href === '/affiliate' ||
-          item.href === '/dashboard/affiliate'
+          item.href === '/dashboard/affiliate' ||
+          item.href === '/technical-support'
         ) return item;
 
         // Single menu item check

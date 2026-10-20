@@ -18,6 +18,7 @@ import {
     CustomBotIcon,
     BotLibraryIcon,
     BacktestIcon,
+    SupportTicketIcon,
 } from '@/icons/sidebarIcons';
 
 const HomeIcon = () => (
@@ -80,6 +81,14 @@ export const getQuickJumpSections = (t) => [
                 href: '/profile',
                 keywords: ['profile', 'settings', 'user', 'account', 'security', 'preferences'],
                 icon: <ProfileUserIcon />,
+            },
+            {
+                id: 'technical-support',
+                title: t('nav.technicalSupport', 'Technical Support'),
+                subtitle: t('quickJump.technicalSupportSub', 'Raise a ticket for product or technical help'),
+                href: '/technical-support',
+                keywords: ['support', 'ticket', 'help', 'technical', 'contact', 'issue', 'bug'],
+                icon: <SupportTicketIcon />,
             },
         ],
     },
@@ -327,6 +336,8 @@ export function checkItemPermission(item, visibleTabNames) {
     // Public / external items
     if (item.id === 'home' || item.href === '/') return true;
     if (item.id === 'education' || item.isExternal || item.href?.includes('edufins')) return true;
+    if (item.id === 'technical-support' || item.href === '/technical-support') return true;
+    if (item.id === 'profile' || item.href === '/profile') return true;
 
     // Check by ID mapping
     const targetTabById = ID_PERMISSION_MAP[item.id];

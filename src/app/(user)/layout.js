@@ -102,6 +102,8 @@ const ROUTE_TAB_MAP = {
     '/dashboard/affiliate': 'Affiliate',
     '/profile': 'Profile',
     '/settings': 'Profile',
+    '/technical-support': 'Technical Support',
+    '/support': 'Technical Support',
 };
 
 const layout = ({ children }) => {
@@ -346,7 +348,8 @@ const layout = ({ children }) => {
                 !currentTabName ||
                 currentTabName === 'Dashboard' ||
                 currentTabName === 'Affiliate' ||
-                currentTabName === 'Profile'
+                currentTabName === 'Profile' ||
+                currentTabName === 'Technical Support'
             ) {
                 setIsTabAllowed(true);
                 return;

@@ -245,6 +245,14 @@ export const LandingHomeIcon = ({ width = 20, height = 20, className = '', ...pr
     </svg>
 );
 
+export const SupportTicketIcon = ({ width = 20, height = 20, className = '', ...props }) => (
+    <svg width={width} height={height} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} style={{ flexShrink: 0 }} {...props}>
+        <circle cx="12" cy="12" r="10" />
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+        <circle cx="12" cy="17" r="0.5" fill="currentColor" stroke="currentColor" strokeWidth="1" />
+    </svg>
+);
+
 
 
 
