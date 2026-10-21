@@ -83,7 +83,7 @@ export const getNavSections = (t) => [
       { label: t('nav.broker', 'Associated Brokers'), href: "/brokers", icon: BrokerBankIcon },
       { label: t('nav.affiliate', 'Affiliate Program'), href: "/affiliate", icon: AffiliateIcon },
       { label: t('nav.profile', 'Settings'), href: "/profile", icon: ProfileUserIcon },
-      { label: t('nav.technicalSupport', 'Technical Support'), href: "/technical-support", icon: SupportTicketIcon },
+      { label: t('nav.customerSupport', 'Customer Support'), href: "/support", icon: SupportTicketIcon },
     ]
   }
 ];

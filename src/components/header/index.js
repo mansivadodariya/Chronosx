@@ -295,9 +295,9 @@ export default function Header() {
             )
         },
         {
-            label: t('header.company.support.title', 'Technical Support'),
-            desc: t('header.company.support.desc', 'Report bugs, raise tickets and get help from our engineering team'),
-            href: '/support-ticket',
+            label: t('header.company.support.title', 'Customer Support'),
+            desc: t('header.company.support.desc', 'Get help from our customer support team for your account, orders and queries'),
+            href: '/customer-support',
             badge: t('header.company.support.badge', 'HELP DESK'),
             icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">

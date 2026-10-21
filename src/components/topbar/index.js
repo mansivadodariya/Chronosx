@@ -60,7 +60,9 @@ const ROUTE_TITLE_MAP = {
   '/brokers': 'nav.broker|Associated Brokers',
   '/profile': 'nav.profile|Profile',
   '/settings': 'nav.settings|Settings',
-  '/technical-support': 'nav.technicalSupport|Technical Support',
+  '/customer-support': 'nav.customerSupport|Customer Support',
+  '/technical-support': 'nav.customerSupport|Customer Support',
+  '/support': 'nav.customerSupport|Customer Support',
 };
 
 const Topbar = ({ onMenuClick }) => {

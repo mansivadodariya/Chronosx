@@ -1,9 +1,9 @@
 import TechnicalSupport from '@/rendering/technicalSupport';
 
 export const metadata = {
-    title: 'Technical Support — Raise a Ticket | ChronosX',
+    title: 'Customer Support — Raise a Query | ChronosX',
     description:
-        'Submit a ChronosX technical support ticket with your contact details and an optional screenshot for faster diagnosis.',
+        'Submit a ChronosX customer support query with your contact details and an optional screenshot for faster diagnosis.',
 };
 
 export default function Page() {

@@ -83,11 +83,11 @@ export const getQuickJumpSections = (t) => [
                 icon: <ProfileUserIcon />,
             },
             {
-                id: 'technical-support',
-                title: t('nav.technicalSupport', 'Technical Support'),
-                subtitle: t('quickJump.technicalSupportSub', 'Raise a ticket for product or technical help'),
-                href: '/technical-support',
-                keywords: ['support', 'ticket', 'help', 'technical', 'contact', 'issue', 'bug'],
+                id: 'customer-support',
+                title: t('nav.customerSupport', 'Customer Support'),
+                subtitle: t('quickJump.customerSupportSub', 'Raise a query for product or account help'),
+                href: '/support',
+                keywords: ['support', 'ticket', 'help', 'customer', 'technical', 'contact', 'issue', 'query', 'bug'],
                 icon: <SupportTicketIcon />,
             },
         ],
@@ -336,7 +336,7 @@ export function checkItemPermission(item, visibleTabNames) {
     // Public / external items
     if (item.id === 'home' || item.href === '/') return true;
     if (item.id === 'education' || item.isExternal || item.href?.includes('edufins')) return true;
-    if (item.id === 'technical-support' || item.href === '/technical-support') return true;
+    if (item.id === 'customer-support' || item.id === 'technical-support' || item.href === '/customer-support' || item.href === '/technical-support') return true;
     if (item.id === 'profile' || item.href === '/profile') return true;
 
     // Check by ID mapping

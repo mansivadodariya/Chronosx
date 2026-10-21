@@ -26,7 +26,7 @@ function formatBytes(bytes) {
 
 /**
  * Shared Support Ticket Form component.
- * Used by both the user dashboard (/technical-support) and the public outer page (/support-ticket).
+ * Used by both the user dashboard (/customer-support) and the public outer page (/customer-support).
  */
 export default function SupportTicketForm() {
     const { t } = useLanguage();
@@ -126,11 +126,11 @@ export default function SupportTicketForm() {
             });
             setIsSubmitted(true);
             toast.success(
-                t('technicalSupport.toastSuccess', 'Support ticket submitted. Our team will get back to you shortly.')
+                t('technicalSupport.toastSuccess', 'Support query submitted. Our team will get back to you shortly.')
             );
         } catch (err) {
             console.error('Support ticket submit error:', err);
-            toast.error(err?.message || t('technicalSupport.toastError', 'Failed to submit ticket. Please try again.'));
+            toast.error(err?.message || t('technicalSupport.toastError', 'Failed to submit query. Please try again.'));
         } finally {
             setIsSubmitting(false);
         }
@@ -239,87 +239,82 @@ export default function SupportTicketForm() {
                         </div>
                     </div>
 
-                    <div className={styles.field}>
-                        <div className={styles.labelRow}>
-                            <label className={styles.label} htmlFor="support-description">
-                                {t('technicalSupport.labelDescription', 'Issue Description')}
-                                <span className={styles.required}>*</span>
-                            </label>
-                            <span className={styles.charCount}>{formData.description.length}/2000</span>
-                        </div>
-                        <textarea
-                            id="support-description"
-                            className={styles.textarea}
-                            name="description"
-                            rows={5}
-                            maxLength={2000}
-                            value={formData.description}
-                            onChange={handleInputChange}
-                            placeholder={t(
-                                'technicalSupport.phDescription',
-                                'Describe the problem, steps to reproduce, and any error messages…'
-                            )}
-                            required
-                        />
-                    </div>
-
-                    <div className={styles.field}>
-                        <div className={styles.labelRow}>
-                            <label className={styles.label} htmlFor="support-image">
-                                {t('technicalSupport.labelImage', 'Screenshot / Attachment')}
-                            </label>
-                            <span className={styles.optional}>{t('common.optional', 'Optional')}</span>
-                        </div>
-                        <label className={styles.uploadBox} htmlFor="support-image">
-                            <input
-                                id="support-image"
-                                className={styles.fileInput}
-                                type="file"
-                                accept="image/jpeg,image/png,image/webp,image/gif"
-                                onChange={handleFileChange}
+                    <div className={styles.descImageRow}>
+                        <div className={styles.field}>
+                            <div className={styles.labelRow}>
+                                <label className={styles.label} htmlFor="support-description">
+                                    {t('technicalSupport.labelDescription', 'Issue Description')}
+                                    <span className={styles.required}>*</span>
+                                </label>
+                                <span className={styles.charCount}>{formData.description.length}/2000</span>
+                            </div>
+                            <textarea
+                                id="support-description"
+                                className={styles.textarea}
+                                name="description"
+                                maxLength={2000}
+                                value={formData.description}
+                                onChange={handleInputChange}
+                                placeholder={t(
+                                    'technicalSupport.phDescription',
+                                    'Describe the problem, steps to reproduce, and any error messages…'
+                                )}
+                                required
                             />
-                            {imageFile && previewUrl ? (
-                                <div className={styles.previewRow}>
-                                    <img
-                                        src={previewUrl}
-                                        alt={t('technicalSupport.previewAlt', 'Attachment preview')}
-                                        className={styles.previewThumb}
-                                    />
-                                    <div className={styles.previewMeta}>
-                                        <span className={styles.previewName}>{imageFile.name}</span>
-                                        <span className={styles.previewSize}>{formatBytes(imageFile.size)}</span>
+                        </div>
+
+                        <div className={styles.field}>
+                            <div className={styles.labelRow}>
+                                <label className={styles.label} htmlFor="support-image">
+                                    {t('technicalSupport.labelImage', 'Screenshot / Attachment')}
+                                </label>
+                                <span className={styles.optional}>{t('common.optional', 'Optional')}</span>
+                            </div>
+                            <label className={styles.uploadBox} htmlFor="support-image">
+                                <input
+                                    id="support-image"
+                                    className={styles.fileInput}
+                                    type="file"
+                                    accept="image/jpeg,image/png,image/webp,image/gif"
+                                    onChange={handleFileChange}
+                                />
+                                {imageFile && previewUrl ? (
+                                    <div className={styles.previewRow}>
+                                        <img
+                                            src={previewUrl}
+                                            alt={t('technicalSupport.previewAlt', 'Attachment preview')}
+                                            className={styles.previewThumb}
+                                        />
+                                        <div className={styles.previewMeta}>
+                                            <span className={styles.previewName}>{imageFile.name}</span>
+                                            <span className={styles.previewSize}>{formatBytes(imageFile.size)}</span>
+                                        </div>
+                                        <button type="button" className={styles.clearFileBtn} onClick={clearImage}>
+                                            {t('common.remove', 'Remove')}
+                                        </button>
                                     </div>
-                                    <button type="button" className={styles.clearFileBtn} onClick={clearImage}>
-                                        {t('common.remove', 'Remove')}
-                                    </button>
-                                </div>
-                            ) : (
-                                <>
-                                    <span className={styles.uploadIcon}>
-                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                            <polyline points="17 8 12 3 7 8" />
-                                            <line x1="12" y1="3" x2="12" y2="15" />
-                                        </svg>
-                                    </span>
-                                    <span className={styles.uploadText}>
-                                        {t('technicalSupport.uploadCta', 'Click to upload a screenshot')}
-                                    </span>
-                                    <span className={styles.uploadHint}>
-                                        {t('technicalSupport.uploadHint', `JPEG, PNG, WebP or GIF · max ${maxMbLabel} MB`)}
-                                    </span>
-                                </>
-                            )}
-                        </label>
+                                ) : (
+                                    <>
+                                        <span className={styles.uploadIcon}>
+                                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                                <polyline points="17 8 12 3 7 8" />
+                                                <line x1="12" y1="3" x2="12" y2="15" />
+                                            </svg>
+                                        </span>
+                                        <span className={styles.uploadText}>
+                                            {t('technicalSupport.uploadCta', 'Click to upload a screenshot')}
+                                        </span>
+                                        <span className={styles.uploadHint}>
+                                            {t('technicalSupport.uploadHint', `JPEG, PNG, WebP or GIF · max ${maxMbLabel} MB`)}
+                                        </span>
+                                    </>
+                                )}
+                            </label>
+                        </div>
                     </div>
 
                     <div className={styles.actions}>
-                        <p className={styles.helperNote}>
-                            {t(
-                                'technicalSupport.helperNote',
-                                'Our technical desk typically responds within a few hours during business days.'
-                            )}
-                        </p>
                         <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
                             {isSubmitting ? (
                                 <>
@@ -328,7 +323,7 @@ export default function SupportTicketForm() {
                                 </>
                             ) : (
                                 <>
-                                    {t('technicalSupport.btnSubmit', 'Submit Ticket')}
+                                    {t('technicalSupport.btnSubmit', 'Submit Query')}
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                         <line x1="22" y1="2" x2="11" y2="13" />
                                         <polygon points="22 2 15 22 11 13 2 9 22 2" />
@@ -336,6 +331,18 @@ export default function SupportTicketForm() {
                                 </>
                             )}
                         </button>
+                        <p className={styles.helperNote}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                            <span>
+                                {t(
+                                    'technicalSupport.helperNote',
+                                    'Our technical desk typically responds within a few hours during business days.'
+                                )}
+                            </span>
+                        </p>
                     </div>
                 </motion.form>
             ) : (
@@ -353,16 +360,16 @@ export default function SupportTicketForm() {
                         </svg>
                     </div>
                     <h2 className={styles.successTitle}>
-                        {t('technicalSupport.successTitle', 'Ticket Submitted')}
+                        {t('technicalSupport.successTitle', 'Query Submitted')}
                     </h2>
                     <p className={styles.successDesc}>
                         {t('technicalSupport.thankYou', 'Thank you')},{' '}
                         <span className={styles.highlight}>{formData.name}</span>.{' '}
-                        {t('technicalSupport.successDesc', 'We received your ticket and will reply at')}{' '}
+                        {t('technicalSupport.successDesc', 'We received your query and will reply at')}{' '}
                         <span className={styles.highlight}>{formData.email}</span>.
                     </p>
                     <button type="button" className={styles.resetBtn} onClick={handleReset}>
-                        {t('technicalSupport.btnAnother', 'Submit Another Ticket')}
+                        {t('technicalSupport.btnAnother', 'Submit Another Query')}
                     </button>
                 </motion.div>
             )}

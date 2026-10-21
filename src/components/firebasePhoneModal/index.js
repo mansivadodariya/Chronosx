@@ -317,7 +317,7 @@ export default function FirebasePhoneModal({
                                     <PhoneInput
                                         international
                                         limitMaxLength
-                                        defaultCountry="US"
+                                        defaultCountry="AE"
                                         value={phone}
                                         onChange={(val) => {
                                             setPhone(val || '');

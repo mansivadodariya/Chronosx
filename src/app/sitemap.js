@@ -124,6 +124,12 @@ export default function sitemap() {
             priority: 0.7,
         },
         {
+            url: `${baseUrl}/customer-support`,
+            lastModified,
+            changeFrequency: 'weekly',
+            priority: 0.7,
+        },
+        {
             url: `${baseUrl}/support-ticket`,
             lastModified,
             changeFrequency: 'monthly',

@@ -129,7 +129,7 @@ export default function Footer() {
               <li><Link href="/economic-calendar">{t('header.company.economicCalendar.title', 'Economic Calendar')}</Link></li>
               <li><Link href="/white-label">{t('footer.whiteLabel', 'White Label')}</Link></li>
               <li><Link href="/contact-us">{t('footer.contactUs', 'Contact Us')}</Link></li>
-              <li><Link href="/support-ticket">{t('footer.technicalSupport', 'Technical Support')}</Link></li>
+              <li><Link href="/customer-support">{t('footer.customerSupport', 'Customer Support')}</Link></li>
             </ul>
           </div>
 

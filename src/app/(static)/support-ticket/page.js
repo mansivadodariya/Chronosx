@@ -1,16 +1,16 @@
 import PublicTechnicalSupport from '@/rendering/publicTechnicalSupport';
 
 export const metadata = {
-    title: 'Technical Support — Raise a Support Ticket | ChronosX',
+    title: 'Customer Support — Raise a Query | ChronosX',
     description:
-        'Submit a ChronosX technical support ticket with your contact details and an optional screenshot. Our team responds within hours.',
+        'Submit a ChronosX customer support query with your contact details and an optional screenshot. Our team responds within hours.',
     alternates: {
         canonical: 'https://chronosx.com/support-ticket',
     },
     openGraph: {
-        title: 'Technical Support — Raise a Support Ticket | ChronosX',
+        title: 'Customer Support — Raise a Query | ChronosX',
         description:
-            'Submit a ChronosX technical support ticket with your contact details and an optional screenshot. Our team responds within hours.',
+            'Submit a ChronosX customer support query with your contact details and an optional screenshot. Our team responds within hours.',
         url: 'https://chronosx.com/support-ticket',
         siteName: 'ChronosX',
         images: [
@@ -18,7 +18,7 @@ export const metadata = {
                 url: '/assets/logo/logo.png',
                 width: 1200,
                 height: 630,
-                alt: 'ChronosX Technical Support',
+                alt: 'ChronosX Customer Support',
             },
         ],
         locale: 'en_US',
@@ -26,9 +26,9 @@ export const metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Technical Support — Raise a Support Ticket | ChronosX',
+        title: 'Customer Support — Raise a Query | ChronosX',
         description:
-            'Submit a ChronosX technical support ticket with your contact details and an optional screenshot for faster diagnosis.',
+            'Submit a ChronosX customer support query with your contact details and an optional screenshot for faster diagnosis.',
         images: ['/assets/logo/logo.png'],
     },
 };
@@ -36,10 +36,10 @@ export const metadata = {
 const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'ContactPage',
-    name: 'ChronosX Technical Support',
+    name: 'ChronosX Customer Support',
     url: 'https://chronosx.com/support-ticket',
     description:
-        'Submit a ChronosX technical support ticket with your contact details and an optional screenshot. Our team responds within hours.',
+        'Submit a ChronosX customer support query with your contact details and an optional screenshot. Our team responds within hours.',
     mainEntity: {
         '@type': 'Organization',
         name: 'ChronosX',
@@ -47,7 +47,7 @@ const jsonLd = {
         logo: 'https://chronosx.com/assets/logo/logo.png',
         contactPoint: {
             '@type': 'ContactPoint',
-            contactType: 'Technical Support',
+            contactType: 'Customer Support',
             availableLanguage: ['English', 'Arabic'],
         },
     },
