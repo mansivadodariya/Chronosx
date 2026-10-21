@@ -1,14 +1,17 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 /**
  * useStreamingText — Ultra-smooth, frame-perfect streaming text renderer
- * 
+ *
  * Powered by requestAnimationFrame & performance.now() delta timing.
  * Delivers continuous, fluid character streaming (60-120fps) without jerky
  * word pops, sudden punctuation freezes, or React state thrashing.
- * 
+ *
+ * Respects prefers-reduced-motion - shows full text immediately when enabled.
+ *
  * @param {string} fullText - The complete text to stream
  * @param {object} options - Configuration
  * @param {number} options.msPerChar - Milliseconds per character (default: 18ms ≈ 55 chars/sec)
@@ -18,6 +21,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
  * @returns {{ displayedText: string, isStreaming: boolean, cursorVisible: boolean, skipToEnd: function }}
  */
 export function useStreamingText(fullText, options = {}) {
+    const prefersReducedMotion = useReducedMotion();
     const {
         msPerChar = 18,
         enabled = true,
@@ -25,7 +29,10 @@ export function useStreamingText(fullText, options = {}) {
         onProgress = null
     } = options;
 
-    const [displayedText, setDisplayedText] = useState(() => (enabled ? '' : (fullText || '')));
+    // If reduced motion is preferred, show full text immediately
+    const shouldStream = enabled && !prefersReducedMotion && Boolean(fullText);
+
+    const [displayedText, setDisplayedText] = useState(() => (shouldStream ? '' : (fullText || '')));
     const [isStreaming, setIsStreaming] = useState(false);
 
     const rafRef = useRef(null);
@@ -53,9 +60,11 @@ export function useStreamingText(fullText, options = {}) {
             rafRef.current = null;
         }
 
-        if (!fullText || !enabled) {
+        // If reduced motion or disabled, show full text immediately
+        if (!shouldStream) {
             setDisplayedText(fullText || '');
             setIsStreaming(false);
+            if (onCompleteRef.current) onCompleteRef.current();
             return;
         }
 
@@ -100,9 +109,9 @@ export function useStreamingText(fullText, options = {}) {
                 rafRef.current = null;
             }
         };
-    }, [fullText, enabled, msPerChar]);
+    }, [fullText, enabled, msPerChar, prefersReducedMotion, shouldStream]);
 
-    return { displayedText, isStreaming, cursorVisible: true, skipToEnd };
+    return { displayedText, isStreaming, cursorVisible: isStreaming, skipToEnd };
 }
 
 /**

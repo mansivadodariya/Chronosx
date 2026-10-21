@@ -12,6 +12,7 @@
   );
   transition: opacity 0.25s ease;
   mix-blend-mode: screen;
+  will-change: opacity;
 
   [data-theme="light"] &,
   :global(html.light) &,
@@ -24,6 +25,12 @@
       transparent 65%
     );
     mix-blend-mode: normal;
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    animation: none !important;
+    transition: none !important;
   }
 }
 
@@ -56,6 +63,10 @@
     );
     opacity: 0.65;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 0.15;
+  }
 }
 
 /* ── Continuous Moving Smoky Cyber Waves Background ── */
@@ -69,6 +80,7 @@
   z-index: 0;
   transition: opacity 0.3s ease;
   opacity: 0.95;
+  will-change: opacity;
 
   [data-theme="light"] &,
   :global(html.light) &,
@@ -77,11 +89,32 @@
   &.isLightModeWaves {
     opacity: 0.45;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 0.3;
+    transition: none;
+  }
 }
 
+/* Optimized ambient radial glows - reduced blur, use transform instead of filter where possible */
+.ambientRadialTopRight,
+.ambientRadialBottomLeft,
+.ambientRadialBottomRight,
+.ambientRadialCenter {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  will-change: transform, opacity;
+  /* Replace heavy blur filters with box-shadow for better performance */
+  /* Filter blur is kept minimal for the glow effect */
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none !important;
+    opacity: 0.3 !important;
+  }
+}
 
 .ambientRadialTopRight {
-  position: absolute;
   top: -10%;
   right: -10%;
   width: 65%;
@@ -92,10 +125,8 @@
     rgba(0, 242, 254, 0.07) 50%,
     transparent 70%
   );
-  filter: blur(60px);
-  pointer-events: none;
-  animation: ambientGlow1 16s ease-in-out infinite alternate;
-  will-change: transform, opacity;
+  filter: blur(30px); /* Reduced from 60px */
+  animation: ambientGlow1 20s ease-in-out infinite alternate; /* Slower */
 
   [data-theme="light"] &,
   :global(html.light) &,
@@ -108,12 +139,11 @@
       rgba(6, 182, 212, 0.35) 45%,
       transparent 70%
     );
-    filter: blur(36px);
+    filter: blur(24px); /* Reduced from 36px */
   }
 }
 
 .ambientRadialBottomLeft {
-  position: absolute;
   bottom: -8%;
   left: -8%;
   width: 70%;
@@ -124,10 +154,8 @@
     rgba(24, 201, 139, 0.1) 45%,
     transparent 75%
   );
-  filter: blur(55px);
-  pointer-events: none;
-  animation: ambientGlow2 18s ease-in-out infinite alternate;
-  will-change: transform, opacity;
+  filter: blur(28px); /* Reduced from 55px */
+  animation: ambientGlow2 22s ease-in-out infinite alternate; /* Slower */
 
   [data-theme="light"] &,
   :global(html.light) &,
@@ -140,12 +168,11 @@
       rgba(24, 201, 139, 0.35) 45%,
       transparent 75%
     );
-    filter: blur(36px);
+    filter: blur(24px); /* Reduced from 36px */
   }
 }
 
 .ambientRadialBottomRight {
-  position: absolute;
   bottom: -10%;
   right: -8%;
   width: 65%;
@@ -156,10 +183,8 @@
     rgba(6, 182, 212, 0.08) 50%,
     transparent 70%
   );
-  filter: blur(55px);
-  pointer-events: none;
-  animation: ambientGlow1 15s ease-in-out infinite alternate;
-  will-change: transform, opacity;
+  filter: blur(28px); /* Reduced from 55px */
+  animation: ambientGlow1 19s ease-in-out infinite alternate; /* Slower */
 
   [data-theme="light"] &,
   :global(html.light) &,
@@ -172,12 +197,11 @@
       rgba(16, 185, 129, 0.35) 50%,
       transparent 70%
     );
-    filter: blur(36px);
+    filter: blur(24px); /* Reduced from 36px */
   }
 }
 
 .ambientRadialCenter {
-  position: absolute;
   top: 20%;
   left: 20%;
   width: 60%;
@@ -187,10 +211,8 @@
     rgba(24, 201, 139, 0.12) 0%,
     transparent 65%
   );
-  filter: blur(50px);
-  pointer-events: none;
-  animation: ambientGlow3 14s ease-in-out infinite alternate;
-  will-change: transform, opacity;
+  filter: blur(25px); /* Reduced from 50px */
+  animation: ambientGlow3 18s ease-in-out infinite alternate; /* Slower */
 
   [data-theme="light"] &,
   :global(html.light) &,
@@ -203,7 +225,7 @@
       rgba(6, 182, 212, 0.25) 45%,
       transparent 65%
     );
-    filter: blur(32px);
+    filter: blur(20px); /* Reduced from 32px */
   }
 }
 
@@ -219,123 +241,114 @@
   :global([data-theme="light"]) &,
   :global(html[data-theme="light"]) &,
   .isLightModeWaves & {
-    filter: drop-shadow(0 0 14px rgba(5, 150, 105, 0.35)) drop-shadow(0 0 28px rgba(2, 132, 199, 0.2));
+    /* Removed expensive drop-shadow filters */
+    filter: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 0.5;
   }
 }
 
+/* SVG Wave Groups - Optimized animations */
+.waveGroupRight,
+.waveGroupLeft,
+.waveGroupBottom {
+  will-change: transform, opacity;
+  animation-duration: 25s; /* Slower, smoother */
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none !important;
+    opacity: 0.4;
+  }
+}
 
 .waveGroupRight {
-  animation: waveFloatRight 18s ease-in-out infinite alternate;
+  animation-name: waveFloatRight;
   transform-origin: 80% 20%;
-  will-change: transform, opacity;
-
-  [data-theme="light"] &,
-  :global(html.light) &,
-  :global([data-theme="light"]) &,
-  :global(html[data-theme="light"]) &,
-  .isLightModeWaves & {
-    opacity: 1;
-  }
 }
 
 .waveGroupLeft {
-  animation: waveFloatLeft 22s ease-in-out infinite alternate;
+  animation-name: waveFloatLeft;
   transform-origin: 20% 80%;
-  will-change: transform, opacity;
-
-  [data-theme="light"] &,
-  :global(html.light) &,
-  :global([data-theme="light"]) &,
-  :global(html[data-theme="light"]) &,
-  .isLightModeWaves & {
-    opacity: 1;
-  }
 }
 
 .waveGroupBottom {
-  animation: waveFloatBottom 20s ease-in-out infinite alternate;
+  animation-name: waveFloatBottom;
   transform-origin: 50% 90%;
-  will-change: transform, opacity;
+}
 
-  [data-theme="light"] &,
-  :global(html.light) &,
-  :global([data-theme="light"]) &,
-  :global(html[data-theme="light"]) &,
-  .isLightModeWaves & {
-    opacity: 1;
+.floatingCurve1,
+.floatingCurve2 {
+  will-change: transform, opacity;
+  animation-duration: 30s; /* Much slower */
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none !important;
+    opacity: 0.2;
   }
 }
 
 .floatingCurve1 {
-  animation: floatingCurveMove1 24s ease-in-out infinite alternate;
+  animation-name: floatingCurveMove1;
   transform-origin: 30% 70%;
-  will-change: transform, opacity;
-
-  [data-theme="light"] &,
-  :global(html.light) &,
-  :global([data-theme="light"]) &,
-  :global(html[data-theme="light"]) &,
-  .isLightModeWaves & {
-    opacity: 0.85;
-  }
 }
 
 .floatingCurve2 {
-  animation: floatingCurveMove2 26s ease-in-out infinite alternate;
+  animation-name: floatingCurveMove2;
   transform-origin: 75% 25%;
-  will-change: transform, opacity;
-
-  [data-theme="light"] &,
-  :global(html.light) &,
-  :global([data-theme="light"]) &,
-  :global(html[data-theme="light"]) &,
-  .isLightModeWaves & {
-    opacity: 0.8;
-  }
 }
 
-/* ── Smooth Continuous Loop Light Movements & Vector Drifts ── */
+/* ── Smooth Continuous Loop Light Movements & Vector Drifts ──
+   Optimized: Slower animations, smaller transforms, use translate3d for GPU acceleration */
+
 @keyframes ambientGlow1 {
   0% {
-    transform: scale(1) translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) scale(1);
     opacity: 0.8;
   }
   50% {
-    transform: scale(1.12) translate3d(-20px, 15px, 0);
+    transform: translate3d(-15px, 10px, 0) scale(1.08);
     opacity: 1;
   }
   100% {
-    transform: scale(0.95) translate3d(15px, -10px, 0);
+    transform: translate3d(10px, -8px, 0) scale(0.96);
     opacity: 0.75;
   }
 }
 
 @keyframes ambientGlow2 {
   0% {
-    transform: scale(1) translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) scale(1);
     opacity: 0.75;
   }
   50% {
-    transform: scale(1.15) translate3d(25px, -15px, 0);
+    transform: translate3d(18px, -12px, 0) scale(1.1);
     opacity: 0.95;
   }
   100% {
-    transform: scale(0.92) translate3d(-15px, 20px, 0);
+    transform: translate3d(-12px, 15px, 0) scale(0.94);
     opacity: 0.7;
   }
 }
 
 @keyframes ambientGlow3 {
   0% {
-    transform: scale(1) translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) scale(1);
     opacity: 0.6;
   }
   50% {
-    transform: scale(1.2) translate3d(10px, 15px, 0);
+    transform: translate3d(8px, 12px, 0) scale(1.12);
     opacity: 0.9;
   }
   100% {
-    transform: scale(0.9) translate3d(-10px, -15px, 0);
+    transform: translate3d(-8px, -12px, 0) scale(0.92);
     opacity: 0.55;
   }
 }
@@ -346,11 +359,11 @@
     opacity: 0.9;
   }
   50% {
-    transform: translate3d(-22px, 16px, 0) rotate(1.4deg) scale(1.03);
+    transform: translate3d(-15px, 12px, 0) rotate(1deg) scale(1.02);
     opacity: 1;
   }
   100% {
-    transform: translate3d(14px, -22px, 0) rotate(-1.2deg) scale(0.97);
+    transform: translate3d(10px, -15px, 0) rotate(-0.8deg) scale(0.98);
     opacity: 0.85;
   }
 }
@@ -361,11 +374,11 @@
     opacity: 0.9;
   }
   50% {
-    transform: translate3d(24px, -18px, 0) rotate(-1.8deg) scale(1.04);
+    transform: translate3d(18px, -14px, 0) rotate(-1.2deg) scale(1.02);
     opacity: 1;
   }
   100% {
-    transform: translate3d(-15px, 20px, 0) rotate(1.4deg) scale(0.96);
+    transform: translate3d(-12px, 15px, 0) rotate(1deg) scale(0.98);
     opacity: 0.85;
   }
 }
@@ -376,11 +389,11 @@
     opacity: 0.85;
   }
   50% {
-    transform: translate3d(-18px, -16px, 0) scaleY(1.05);
+    transform: translate3d(-14px, -12px, 0) scaleY(1.03);
     opacity: 1;
   }
   100% {
-    transform: translate3d(22px, 12px, 0) scaleY(0.95);
+    transform: translate3d(16px, 10px, 0) scaleY(0.97);
     opacity: 0.8;
   }
 }
@@ -391,11 +404,11 @@
     opacity: 0.35;
   }
   50% {
-    transform: translate3d(-30px, 22px, 0) rotate(2.5deg);
+    transform: translate3d(-20px, 15px, 0) rotate(1.5deg);
     opacity: 0.65;
   }
   100% {
-    transform: translate3d(22px, -18px, 0) rotate(-2deg);
+    transform: translate3d(15px, -12px, 0) rotate(-1.2deg);
     opacity: 0.28;
   }
 }
@@ -406,11 +419,29 @@
     opacity: 0.3;
   }
   50% {
-    transform: translate3d(28px, -24px, 0) rotate(-3deg);
+    transform: translate3d(20px, -16px, 0) rotate(-1.8deg);
     opacity: 0.6;
   }
   100% {
-    transform: translate3d(-20px, 18px, 0) rotate(2deg);
+    transform: translate3d(-14px, 12px, 0) rotate(1.2deg);
     opacity: 0.25;
+  }
+}
+
+/* Reduced motion support for this component's specific classes */
+@media (prefers-reduced-motion: reduce) {
+  .smokyWavesWrapper,
+  .ambientRadialTopRight,
+  .ambientRadialBottomLeft,
+  .ambientRadialBottomRight,
+  .ambientRadialCenter,
+  .waveGroupRight,
+  .waveGroupLeft,
+  .waveGroupBottom,
+  .floatingCurve1,
+  .floatingCurve2 {
+    animation: none !important;
+    opacity: 0.3 !important;
+    transition: none !important;
   }
 }

@@ -226,76 +226,83 @@
         z-index: 1;
     }
 
-    // Dynamic Ambient Atmosphere Glows
-    .ambientGlowTop {
+    // Dynamic Ambient Atmosphere Glows - Optimized for performance
+    // Reduced blur radii significantly (from 85-100px to 40-50px) for better GPU performance
+    .ambientGlowTop,
+    .ambientGlowCenter,
+    .ambientGlowLeft,
+    .ambientGlowRight,
+    .ambientGlowBottom {
         position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(ellipse at 50% 30%, rgba(24, 201, 139, 0.35) 0%, rgba(24, 201, 139, 0.12) 50%, transparent 80%);
+        filter: blur(45px); /* Reduced from 85-100px */
+        pointer-events: none;
+        z-index: 1;
+        will-change: opacity;
+        transition: opacity 0.5s ease;
+
+        // Respect reduced motion
+        @media (prefers-reduced-motion: reduce) {
+            filter: blur(30px);
+            opacity: 0.3 !important;
+            transition: none;
+        }
+    }
+
+    .ambientGlowTop {
         top: -140px;
         left: 50%;
         transform: translateX(-50%);
         width: 100%;
         max-width: 1500px;
         height: 600px;
-        border-radius: 50%;
-        background: radial-gradient(ellipse at 50% 30%, rgba(24, 201, 139, 0.38) 0%, rgba(24, 201, 139, 0.16) 48%, transparent 80%);
-        filter: blur(85px);
-        pointer-events: none;
-        z-index: 1;
-        transition: all 0.5s ease;
     }
 
     .ambientGlowCenter {
-        position: absolute;
         top: 45%;
         left: 50%;
         transform: translate(-50%, -50%);
         width: 100%;
         max-width: 1600px;
         height: 800px;
-        border-radius: 50%;
-        background: radial-gradient(ellipse, rgba(24, 201, 139, 0.28) 0%, rgba(24, 201, 139, 0.12) 55%, transparent 85%);
-        filter: blur(95px);
-        pointer-events: none;
-        z-index: 1;
-        transition: all 0.5s ease;
+        background: radial-gradient(ellipse, rgba(24, 201, 139, 0.25) 0%, rgba(24, 201, 139, 0.1) 55%, transparent 85%);
     }
 
     .ambientGlowLeft {
-        position: absolute;
         top: 25%;
         left: -120px;
         width: 800px;
         height: 800px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(24, 201, 139, 0.24) 0%, rgba(24, 201, 139, 0.08) 50%, transparent 75%);
-        filter: blur(100px);
-        pointer-events: none;
-        z-index: 1;
+        background: radial-gradient(circle, rgba(24, 201, 139, 0.2) 0%, rgba(24, 201, 139, 0.06) 50%, transparent 75%);
     }
 
     .ambientGlowRight {
-        position: absolute;
         top: 25%;
         right: -120px;
         width: 800px;
         height: 800px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(24, 201, 139, 0.24) 0%, rgba(24, 201, 139, 0.08) 50%, transparent 75%);
-        filter: blur(100px);
-        pointer-events: none;
-        z-index: 1;
+        background: radial-gradient(circle, rgba(24, 201, 139, 0.2) 0%, rgba(24, 201, 139, 0.06) 50%, transparent 75%);
     }
 
     .ambientGlowBottom {
-        position: absolute;
         bottom: -220px;
         right: 15%;
         width: 900px;
         height: 550px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(24, 201, 139, 0.22) 0%, rgba(24, 201, 139, 0.08) 45%, transparent 75%);
-        filter: blur(90px);
-        pointer-events: none;
-        z-index: 1;
+        background: radial-gradient(circle, rgba(24, 201, 139, 0.18) 0%, rgba(24, 201, 139, 0.06) 45%, transparent 75%);
+    }
+
+    // Light mode - even lighter blurs
+    :global(html.light) & {
+        .ambientGlowTop,
+        .ambientGlowCenter,
+        .ambientGlowLeft,
+        .ambientGlowRight,
+        .ambientGlowBottom {
+            filter: blur(35px);
+            opacity: 0.15;
+        }
     }
 
     // Interactive Cursor Spotlight Glow (GPU Composited with CSS custom variables)
@@ -309,13 +316,19 @@
         transform: translate3d(-50%, -50%, 0);
         border-radius: 50%;
         background: radial-gradient(circle, rgba(24, 201, 139, 0.24) 0%, rgba(24, 201, 139, 0.05) 50%, transparent 75%);
-        filter: blur(35px);
+        filter: blur(25px); /* Reduced from 35px */
         pointer-events: none;
         z-index: 2;
         transition: opacity 0.25s ease;
         will-change: left, top, opacity;
 
         @include respond-to("sm") {
+            display: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            filter: blur(15px);
+            opacity: 0 !important;
             display: none;
         }
     }
@@ -361,6 +374,10 @@
         overflow: hidden;
         transform: translateZ(0);
         will-change: transform;
+
+        @media (prefers-reduced-motion: reduce) {
+            display: none;
+        }
     }
 
     .sideDotsLeft,
@@ -391,6 +408,11 @@
         animation-timing-function: ease-in-out;
         transform: translateZ(0);
         will-change: transform, opacity;
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none !important;
+            opacity: 0.3;
+        }
     }
 
     // Animated Slope Laser Beams along Perspective Candlestick Stairs
@@ -402,6 +424,10 @@
         overflow: hidden;
         transform: translateZ(0);
         will-change: transform;
+
+        @media (prefers-reduced-motion: reduce) {
+            display: none;
+        }
     }
 
     .slopeLasersSvg {
@@ -419,6 +445,11 @@
         animation-name: slopeBeamFlow;
         animation-iteration-count: infinite;
         animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none !important;
+            opacity: 0.2;
+        }
     }
 
     :global(.container) {

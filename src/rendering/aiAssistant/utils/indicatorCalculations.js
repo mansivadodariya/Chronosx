@@ -52,17 +52,17 @@ export function renderChartTypeIcon(type) {
 // Get icon symbol representation for trading pairs
 export function getSymbolIcon(pairStr) {
     const s = (pairStr || '').toUpperCase();
-    if (s.includes('XAU') || s.includes('GOLD')) return '🥇';
-    if (s.includes('BTC')) return '₿';
-    if (s.includes('ETH')) return 'Ξ';
-    if (s.includes('EUR')) return '💶';
-    if (s.includes('GBP')) return '💷';
-    if (s.includes('JPY')) return '💴';
-    if (s.includes('AUD')) return '🇦🇺';
-    if (s.includes('CAD')) return '🇨🇦';
-    if (s.includes('NZD')) return '🇳🇿';
-    if (s.includes('CHF')) return '🇨🇭';
-    return '💵';
+    if (s.includes('XAU') || s.includes('GOLD')) return 'GOLD';
+    if (s.includes('BTC')) return 'BTC';
+    if (s.includes('ETH')) return 'ETH';
+    if (s.includes('EUR')) return 'EUR';
+    if (s.includes('GBP')) return 'GBP';
+    if (s.includes('JPY')) return 'JPY';
+    if (s.includes('AUD')) return 'AUD';
+    if (s.includes('CAD')) return 'CAD';
+    if (s.includes('NZD')) return 'NZD';
+    if (s.includes('CHF')) return 'CHF';
+    return 'USD';
 }
 
 export function getTimeframeInterval(tf) {

@@ -241,15 +241,21 @@ export function parseRoundTrips(tradesInput, initialCapital, quantity) {
         }
     } else if (Array.isArray(tradesInput?.trades)) {
         trades = tradesInput.trades;
+    } else if (Array.isArray(tradesInput?.positions)) {
+        trades = tradesInput.positions;
     } else if (Array.isArray(tradesInput?.round_trips)) {
         trades = tradesInput.round_trips;
     } else if (Array.isArray(tradesInput?.roundTrips)) {
         trades = tradesInput.roundTrips;
     } else if (Array.isArray(tradesInput?.data?.[0]?.trades)) {
         trades = tradesInput.data[0].trades;
+    } else if (Array.isArray(tradesInput?.data?.[0]?.positions)) {
+        trades = tradesInput.data[0].positions;
     } else if (Array.isArray(tradesInput?.data)) {
         if (tradesInput.data.length > 0 && Array.isArray(tradesInput.data[0]?.trades)) {
             trades = tradesInput.data[0].trades;
+        } else if (tradesInput.data.length > 0 && Array.isArray(tradesInput.data[0]?.positions)) {
+            trades = tradesInput.data[0].positions;
         } else {
             trades = tradesInput.data;
         }
@@ -371,9 +377,9 @@ export function parseRoundTrips(tradesInput, initialCapital, quantity) {
 
             return {
                 index: t.index || idx + 1,
-                entryDate: (t.entryDate || t.entry_date || t.Date || "2024-01-05 10:00").replace(" IST", ""),
+                entryDate: (t.entryDate || t.entry_date || t.entry_time || t.Date || "2024-01-05 10:00").replace(" IST", ""),
                 entryPrice: entryPrice,
-                exitDate: (t.exitDate || t.exit_date || t.date || "2024-01-05 14:30").replace(" IST", ""),
+                exitDate: (t.exitDate || t.exit_date || t.exit_time || t.date || "2024-01-05 14:30").replace(" IST", ""),
                 exitPrice: exitPrice,
                 side: side,
                 trigger: t.trigger || (pnl > 0 ? "TARGET" : "STOPLOSS"),

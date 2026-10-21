@@ -19,7 +19,7 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         trend: [1.0810, 1.0813, 1.0818, 1.0821, 1.0819, 1.0823, 1.08245],
         category: 'Forex',
         is_popular: true,
-        icon: '🇪🇺🇺🇸'
+        icon: 'EUR/USD'
     },
     {
         symbol: 'GBPUSD',
@@ -31,7 +31,7 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         trend: [1.2990, 1.2982, 1.2974, 1.2965, 1.2968, 1.2960, 1.29570],
         category: 'Forex',
         is_popular: true,
-        icon: '🇬🇧🇺🇸'
+        icon: 'GBP/USD'
     },
     {
         symbol: 'XAUUSD',
@@ -43,7 +43,7 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         trend: [2315.0, 2318.5, 2322.0, 2326.4, 2324.2, 2327.9, 2329.65],
         category: 'Commodities',
         is_popular: true,
-        icon: '🥇'
+        icon: 'GOLD'
     },
     {
         symbol: 'USDJPY',
@@ -55,7 +55,7 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         trend: [155.20, 155.35, 155.48, 155.40, 155.55, 155.62, 155.673],
         category: 'Forex',
         is_popular: true,
-        icon: '🇺🇸🇯🇵'
+        icon: 'USD/JPY'
     },
     {
         symbol: 'BTCUSD',
@@ -67,7 +67,7 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         trend: [67400.0, 67250.0, 67000.0, 66850.0, 66720.0, 66600.0, 66542.21],
         category: 'Crypto',
         is_popular: true,
-        icon: '₿'
+        icon: 'BTC'
     },
     {
         symbol: 'ETHUSD',
@@ -79,7 +79,7 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         trend: [3410.0, 3425.0, 3445.0, 3460.0, 3452.0, 3470.0, 3485.50],
         category: 'Crypto',
         is_popular: true,
-        icon: '⟠'
+        icon: 'ETH'
     },
     {
         symbol: 'SOLUSD',
@@ -91,7 +91,7 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         trend: [150.2, 152.0, 154.5, 153.8, 156.2, 157.5, 158.40],
         category: 'Crypto',
         is_popular: true,
-        icon: '◎'
+        icon: 'SOL'
     },
 
     // Forex Extended
@@ -105,7 +105,7 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         trend: [0.6510, 0.6520, 0.6532, 0.6528, 0.6536, 0.6540, 0.65420],
         category: 'Forex',
         is_popular: false,
-        icon: '🇦🇺🇺🇸'
+        icon: 'AUD/USD'
     },
     {
         symbol: 'USDCAD',
@@ -117,7 +117,7 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         trend: [1.3850, 1.3842, 1.3835, 1.3828, 1.3822, 1.3815, 1.38120],
         category: 'Forex',
         is_popular: false,
-        icon: '🇺🇸🇨🇦'
+        icon: 'USD/CAD'
     },
     {
         symbol: 'USDCHF',
@@ -129,7 +129,7 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         trend: [0.8835, 0.8838, 0.8841, 0.8839, 0.8843, 0.8844, 0.88450],
         category: 'Forex',
         is_popular: false,
-        icon: '🇺🇸🇨🇭'
+        icon: 'USD/CHF'
     },
     {
         symbol: 'EURGBP',
@@ -141,7 +141,7 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         trend: [0.8505, 0.8512, 0.8518, 0.8515, 0.8520, 0.85230],
         category: 'Forex',
         is_popular: false,
-        icon: '🇪🇺🇬🇧'
+        icon: 'EUR/GBP'
     },
     {
         symbol: 'GBPJPY',
@@ -153,7 +153,7 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         trend: [202.10, 201.85, 201.70, 201.60, 201.450],
         category: 'Forex',
         is_popular: false,
-        icon: '🇬🇧🇯🇵'
+        icon: 'GBP/JPY'
     },
 
     // Crypto Extended
@@ -167,7 +167,7 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         trend: [578.0, 579.5, 581.0, 582.5, 581.8, 583.4, 584.20],
         category: 'Crypto',
         is_popular: false,
-        icon: '🔶'
+        icon: 'BNB'
     },
 
     // Commodities Extended
@@ -181,7 +181,7 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         trend: [29.20, 29.35, 29.50, 29.62, 29.55, 29.74, 29.85],
         category: 'Commodities',
         is_popular: false,
-        icon: '🥈'
+        icon: 'SILVER'
     },
     {
         symbol: 'USOIL',
@@ -193,7 +193,7 @@ export const DEFAULT_MARKET_OVERVIEW_ITEMS = [
         trend: [79.20, 78.90, 78.75, 78.60, 78.50, 78.42],
         category: 'Commodities',
         is_popular: false,
-        icon: '🛢️'
+        icon: 'OIL'
     }
 ];
 

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import styles from '../styles/strategyStudio.module.scss';
 import { RightArrowSelectedIcon, SendPaperAirplaneIcon } from './StudioIcons';
+import { getTradingOptionDescription } from '../utils/chatUiHelpers';
 
 export default function InteractiveQuestionWizard({
     latestAiMessage,
@@ -56,9 +57,34 @@ export default function InteractiveQuestionWizard({
         if (!latestAiMessage || latestAiMessage.isError || latestAiMessage.role === 'user' || isReadyToProceed) return [];
         let raw = [];
         if (latestAiMessage.questions && Array.isArray(latestAiMessage.questions) && latestAiMessage.questions.length > 0) {
-            raw = latestAiMessage.questions;
+            raw = latestAiMessage.questions.map((q) => ({
+                ...q,
+                options: (q.options || []).map((opt) => {
+                    const val = typeof opt === 'string' ? opt : (opt.value || opt.label || '');
+                    const lbl = typeof opt === 'string' ? opt : (opt.label || opt.title || opt.value || '');
+                    return {
+                        label: lbl,
+                        value: val,
+                        description: (typeof opt === 'object' && opt.description) ? opt.description : getTradingOptionDescription(val, lbl),
+                        is_custom: Boolean(typeof opt === 'object' && opt.is_custom)
+                    };
+                })
+            }));
         } else if (latestAiMessage.current_question) {
-            raw = [latestAiMessage.current_question];
+            const cq = latestAiMessage.current_question;
+            raw = [{
+                ...cq,
+                options: (cq.options || []).map((opt) => {
+                    const val = typeof opt === 'string' ? opt : (opt.value || opt.label || '');
+                    const lbl = typeof opt === 'string' ? opt : (opt.label || opt.title || opt.value || '');
+                    return {
+                        label: lbl,
+                        value: val,
+                        description: (typeof opt === 'object' && opt.description) ? opt.description : getTradingOptionDescription(val, lbl),
+                        is_custom: Boolean(typeof opt === 'object' && opt.is_custom)
+                    };
+                })
+            }];
         } else if (latestAiMessage.options && Array.isArray(latestAiMessage.options) && latestAiMessage.options.length > 0) {
             raw = [
                 {
@@ -67,16 +93,59 @@ export default function InteractiveQuestionWizard({
                     total_questions: 1,
                     question: latestAiMessage.question || 'How would you like to configure your strategy rules?',
                     question_title: latestAiMessage.question || 'How would you like to configure your strategy rules?',
-                    description: 'Select your preferred strategy configuration workflow:',
-                    options: latestAiMessage.options.map((opt) =>
-                        typeof opt === 'string'
-                            ? { label: opt, description: '', value: opt }
-                            : {
-                                label: opt.label || opt.title || opt.value || '',
-                                description: opt.description || opt.desc || '',
-                                value: opt.value || opt.label || opt.title || ''
-                            }
-                    )
+                    description: latestAiMessage.description || 'Select your preferred strategy configuration workflow:',
+                    options: latestAiMessage.options.map((opt) => {
+                        const val = typeof opt === 'string' ? opt : (opt.value || opt.label || opt.title || '');
+                        const lbl = typeof opt === 'string' ? opt : (opt.label || opt.title || opt.value || '');
+                        return {
+                            label: lbl,
+                            description: (typeof opt === 'object' && opt.description) ? opt.description : getTradingOptionDescription(val, lbl),
+                            value: val,
+                            is_custom: Boolean(typeof opt === 'object' && opt.is_custom)
+                        };
+                    })
+                }
+            ];
+        } else if ((latestAiMessage.cta_buttons || latestAiMessage.ctaButtons) && Array.isArray(latestAiMessage.cta_buttons || latestAiMessage.ctaButtons) && (latestAiMessage.cta_buttons || latestAiMessage.ctaButtons).length > 0) {
+            const ctas = latestAiMessage.cta_buttons || latestAiMessage.ctaButtons;
+            let qTitle = latestAiMessage.question || latestAiMessage.question_title || '';
+            if (!qTitle && latestAiMessage.text) {
+                const questionMatches = latestAiMessage.text.match(/([^.?!:\n]+\?)/g);
+                if (questionMatches && questionMatches.length > 0) {
+                    qTitle = questionMatches[questionMatches.length - 1].trim();
+                }
+            }
+            if (!qTitle) qTitle = 'Which trading pair would you like to use for this strategy?';
+
+            const isForex = ctas.some((c) => {
+                const s = typeof c === 'string' ? c : (c.value || c.label || '');
+                return /XAU|EUR|GBP|USD|JPY|BTC|ETH|CAD|AUD/i.test(s);
+            });
+
+            const qDesc = latestAiMessage.description || (
+                isForex
+                    ? 'Select from our 6 verified institutional Forex pairs or Gold (XAUUSD):'
+                    : 'Select your preferred strategy configuration workflow:'
+            );
+
+            raw = [
+                {
+                    question_id: latestAiMessage.question_id || `q_${latestAiMessage.step || 1}`,
+                    question_number: 1,
+                    total_questions: 1,
+                    question: qTitle,
+                    question_title: qTitle,
+                    description: qDesc,
+                    options: ctas.map((c) => {
+                        const val = typeof c === 'string' ? c : (c.value || c.label || '');
+                        const lbl = typeof c === 'string' ? c : (c.label || c.value || '');
+                        return {
+                            label: lbl,
+                            value: val,
+                            description: (typeof c === 'object' && c.description) ? c.description : getTradingOptionDescription(val, lbl),
+                            is_custom: Boolean(typeof c === 'object' && c.is_custom)
+                        };
+                    })
                 }
             ];
         } else if (latestAiMessage.suggestions && Array.isArray(latestAiMessage.suggestions) && latestAiMessage.suggestions.length > 0) {
@@ -89,7 +158,7 @@ export default function InteractiveQuestionWizard({
                     question_title: 'Select a recommended strategy direction:',
                     description: 'Choose one of our optimized algorithmic parameters:',
                     options: latestAiMessage.suggestions.map((sug) => {
-                        const clean = sug.replace(/^🚀\s*/, '');
+                        const clean = sug.replace(/^[\p{Emoji}\s]+/u, '').trim();
                         return {
                             label: clean,
                             description: clean.toLowerCase().includes('backtest')
@@ -129,10 +198,11 @@ export default function InteractiveQuestionWizard({
         isSubmittingRef.current = false;
     }, [latestAiMessage, questionsList.length]);
 
-    const totalQuestions = Math.max(1, latestAiMessage?.total_questions || questionsList.length);
+    const totalQuestions = Math.max(1, latestAiMessage?.total_questions || latestAiMessage?.total_steps || questionsList.length || 5);
     const safeCurrentIndex = Math.min(Math.max(0, currentIndex), Math.max(0, questionsList.length - 1));
     const activeQuestion = questionsList[safeCurrentIndex] || questionsList[0] || null;
-    const displayStepNumber = Math.min(safeCurrentIndex + 1, totalQuestions);
+    const currentStepVal = latestAiMessage?.step || latestAiMessage?.step_number || (safeCurrentIndex + 1);
+    const displayStepNumber = Math.min(currentStepVal, totalQuestions);
 
     const activeOptions = useMemo(() => {
         if (!activeQuestion || !activeQuestion.options || !Array.isArray(activeQuestion.options)) {

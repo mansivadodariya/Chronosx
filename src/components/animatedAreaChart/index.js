@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './animatedAreaChart.module.scss';
 import classNames from 'classnames';
 import { useLanguage } from '@/context/LanguageContext';
@@ -33,7 +33,8 @@ export default function AnimatedAreaChart({
     { x: 1490, y: 200, label: "23:30", val: "2,756.40" },
     { x: 1540, y: 360, label: "23:45", val: "2,718.00" },
     { x: 1600, y: 420, label: "LIVE",  val: "2,705.50" }
-  ]
+  ],
+  disableAnimations = false
 }) {
   const svgRef = useRef(null);
   const { t } = useLanguage();
@@ -44,6 +45,19 @@ export default function AnimatedAreaChart({
     label: "17:30",
     visible: true
   });
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  // Check for reduced motion preference
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+    const handler = (e) => setPrefersReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  const shouldDisableAnimations = prefersReducedMotion || disableAnimations;
 
   // Construct SVG Path String (Line & Area Fill)
   const linePath = dataPoints.reduce((acc, point, index) => {
@@ -54,7 +68,7 @@ export default function AnimatedAreaChart({
 
   // Handle Mouse Move for Fancy Glowing Pointer Tracking
   const handleMouseMove = (e) => {
-    if (!svgRef.current) return;
+    if (!svgRef.current || shouldDisableAnimations) return;
     const rect = svgRef.current.getBoundingClientRect();
     const mouseX = ((e.clientX - rect.left) / rect.width) * 1600;
 
@@ -80,8 +94,63 @@ export default function AnimatedAreaChart({
   };
 
   const handleMouseLeave = () => {
+    if (shouldDisableAnimations) return;
     setActivePoint(prev => ({ ...prev, x: 1400, y: 30, val: "2,810.10", label: "22:30" }));
   };
+
+  // Build shimmer gradient - only include animate elements if animations enabled
+  const shimmerGradientStops = shouldDisableAnimations ? (
+    <>
+      <stop offset="0%" stopColor="#ffffff" stopOpacity="0.15" />
+      <stop offset="30%" stopColor="#18c98b" stopOpacity="0.9" />
+      <stop offset="50%" stopColor="#ffffff" stopOpacity="0.9" />
+      <stop offset="70%" stopColor="#18c98b" stopOpacity="0.9" />
+      <stop offset="100%" stopColor="#ffffff" stopOpacity="0.15" />
+    </>
+  ) : (
+    <>
+      <stop offset="0%" stopColor="#ffffff" stopOpacity="0.15">
+        <animate
+          attributeName="offset"
+          values="-1; 1"
+          dur="3.2s"
+          repeatCount="indefinite"
+        />
+      </stop>
+      <stop offset="30%" stopColor="#18c98b" stopOpacity="0.9">
+        <animate
+          attributeName="offset"
+          values="-0.7; 1.3"
+          dur="3.2s"
+          repeatCount="indefinite"
+        />
+      </stop>
+      <stop offset="50%" stopColor="#ffffff" stopOpacity="0.9">
+        <animate
+          attributeName="offset"
+          values="-0.5; 1.5"
+          dur="3.2s"
+          repeatCount="indefinite"
+        />
+      </stop>
+      <stop offset="70%" stopColor="#18c98b" stopOpacity="0.9">
+        <animate
+          attributeName="offset"
+          values="-0.3; 1.7"
+          dur="3.2s"
+          repeatCount="indefinite"
+        />
+      </stop>
+      <stop offset="100%" stopColor="#ffffff" stopOpacity="0.15">
+        <animate
+          attributeName="offset"
+          values="0; 2"
+          dur="3.2s"
+          repeatCount="indefinite"
+        />
+      </stop>
+    </>
+  );
 
   return (
     <div className={classNames(styles.chartContainer, isBackground ? styles.bgMode : "")}>
@@ -117,8 +186,9 @@ export default function AnimatedAreaChart({
           className={styles.chartSvg}
           viewBox={`0 0 1600 ${height}`}
           preserveAspectRatio="none"
-          onMouseMove={!isBackground ? handleMouseMove : undefined}
-          onMouseLeave={!isBackground ? handleMouseLeave : undefined}
+          onMouseMove={!isBackground && !shouldDisableAnimations ? handleMouseMove : undefined}
+          onMouseLeave={!isBackground && !shouldDisableAnimations ? handleMouseLeave : undefined}
+          style={shouldDisableAnimations ? { animation: 'none' } : {}}
         >
           <defs>
             {/* Area Fill Mint Gradient */}
@@ -150,46 +220,7 @@ export default function AnimatedAreaChart({
 
             {/* Continuous Shimmer Gradient along stroke path */}
             <linearGradient id="shimmerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.15">
-                <animate
-                  attributeName="offset"
-                  values="-1; 1"
-                  dur="3.2s"
-                  repeatCount="indefinite"
-                />
-              </stop>
-              <stop offset="30%" stopColor="#18c98b" stopOpacity="0.9">
-                <animate
-                  attributeName="offset"
-                  values="-0.7; 1.3"
-                  dur="3.2s"
-                  repeatCount="indefinite"
-                />
-              </stop>
-              <stop offset="50%" stopColor="#ffffff" stopOpacity="0.9">
-                <animate
-                  attributeName="offset"
-                  values="-0.5; 1.5"
-                  dur="3.2s"
-                  repeatCount="indefinite"
-                />
-              </stop>
-              <stop offset="70%" stopColor="#18c98b" stopOpacity="0.9">
-                <animate
-                  attributeName="offset"
-                  values="-0.3; 1.7"
-                  dur="3.2s"
-                  repeatCount="indefinite"
-                />
-              </stop>
-              <stop offset="100%" stopColor="#ffffff" stopOpacity="0.15">
-                <animate
-                  attributeName="offset"
-                  values="0; 2"
-                  dur="3.2s"
-                  repeatCount="indefinite"
-                />
-              </stop>
+              {shimmerGradientStops}
             </linearGradient>
           </defs>
 
@@ -202,13 +233,13 @@ export default function AnimatedAreaChart({
           {/* Base Vector Line with Dynamic Fading & Entrance path draw animation */}
           <path
             d={linePath}
-            className={`${styles.chartPathBase} ${styles.chartPathEntrance}`}
+            className={`${styles.chartPathBase} ${shouldDisableAnimations ? '' : styles.chartPathEntrance}`}
           />
 
           {/* Continuous Moving Shimmer Layer */}
           <path
             d={linePath}
-            className={styles.chartPathShimmer}
+            className={shouldDisableAnimations ? styles.chartPathBase : styles.chartPathShimmer}
           />
         </svg>
       </div>

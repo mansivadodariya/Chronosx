@@ -78,7 +78,7 @@ export default function StrategyDropdown({ strategies: propStrategies = [], sele
                             return `${proto}//${parsed.host}`;
                         } catch (_) {}
                     }
-                    return 'http://192.168.0.153:8000';
+                    return '';
                 };
 
                 const apiBase = getApiBase();

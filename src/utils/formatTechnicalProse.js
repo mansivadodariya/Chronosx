@@ -72,7 +72,7 @@ export function formatTechnicalProse(input, defaultSymbol = 'XAU/USD') {
     const lines = [];
 
     // 1. Header & Headline
-    lines.push(`### ⚡ Executive Trade Overview: ${sym}`);
+    lines.push(`### Executive Trade Overview: ${sym}`);
 
     const headline = aiSummary.headline || decision.rationale || assessment.rationale || '';
     if (headline) {

@@ -1,25 +1,47 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './pointerGlow.module.scss';
 
 /**
  * Reusable Cursor/Pointer Move Emerald Glow Component
  * Follows the user's mouse pointer with smooth 60fps interpolation.
  * Optimized to pause animation loop when mouse is stationary to save CPU/GPU.
+ * Respects prefers-reduced-motion.
  */
 export default function PointerGlow({
     color = 'rgba(24, 201, 139, 0.35)',
     size = 560,
     contained = false,
-    className = ''
+    className = '',
+    enabled = true // Allow disabling entirely
 }) {
     const glowRef = useRef(null);
     const posRef = useRef({ currentX: -1000, currentY: -1000, targetX: -1000, targetY: -1000, isVisible: false, isAnimating: false });
     const rafIdRef = useRef(null);
+    const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+    // Check reduced motion preference
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        setPrefersReducedMotion(mediaQuery.matches);
+        const handler = (e) => setPrefersReducedMotion(e.matches);
+        mediaQuery.addEventListener('change', handler);
+        return () => mediaQuery.removeEventListener('change', handler);
+    }, []);
+
+    // Disable entirely if reduced motion or not enabled
+    if (prefersReducedMotion || !enabled) {
+        return null;
+    }
 
     useEffect(() => {
         const glowEl = glowRef.current;
         if (!glowEl) return;
+
+        // Force GPU acceleration
+        glowEl.style.willChange = 'transform, opacity';
+        glowEl.style.transform = 'translate3d(-1000px, -1000px, 0) translate(-50%, -50%)';
 
         const animate = () => {
             const { currentX, currentY, targetX, targetY, isVisible } = posRef.current;
@@ -27,7 +49,8 @@ export default function PointerGlow({
             const dx = targetX - currentX;
             const dy = targetY - currentY;
 
-            if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+            // Use a threshold to stop animation when close enough
+            if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) {
                 posRef.current.currentX = targetX;
                 posRef.current.currentY = targetY;
                 if (glowEl && isVisible) {
@@ -38,7 +61,8 @@ export default function PointerGlow({
                 return;
             }
 
-            const ease = 0.14;
+            // Slightly higher ease for more responsive feel
+            const ease = 0.18;
             const newX = currentX + dx * ease;
             const newY = currentY + dy * ease;
 
@@ -46,6 +70,7 @@ export default function PointerGlow({
             posRef.current.currentY = newY;
 
             if (glowEl && isVisible) {
+                // Use translate3d for GPU acceleration
                 glowEl.style.transform = `translate3d(${newX}px, ${newY}px, 0) translate(-50%, -50%)`;
             }
 
@@ -93,7 +118,7 @@ export default function PointerGlow({
             target.removeEventListener('pointerleave', handlePointerLeave);
             if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
         };
-    }, [contained]);
+    }, [contained, enabled]);
 
     return (
         <div
@@ -102,7 +127,8 @@ export default function PointerGlow({
             style={{
                 width: `${size}px`,
                 height: `${size}px`,
-                background: `radial-gradient(circle at center, ${color} 0%, rgba(24, 201, 139, 0.18) 32%, rgba(16, 185, 129, 0.05) 55%, transparent 72%)`
+                background: `radial-gradient(circle at center, ${color} 0%, rgba(24, 201, 139, 0.18) 32%, rgba(16, 185, 129, 0.05) 55%, transparent 72%)`,
+                willChange: 'transform, opacity'
             }}
             aria-hidden="true"
         />

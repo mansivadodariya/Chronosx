@@ -4,13 +4,27 @@ import React, { useState, useEffect } from 'react';
 import styles from '../styles/strategyStudio.module.scss';
 import { useTheme } from '@/context/ThemeContext';
 
-export default function BackgroundCyberWaves({ opacity, lightOpacity = 0.65, className = '' }) {
+export default function BackgroundCyberWaves({ opacity, lightOpacity = 0.65, className = '', disableAnimations = false }) {
     const { theme } = useTheme();
     const [mounted, setMounted] = useState(false);
+    const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
     useEffect(() => {
         setMounted(true);
     }, []);
+
+    // Check for reduced motion preference
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        setPrefersReducedMotion(mediaQuery.matches);
+        const handler = (e) => setPrefersReducedMotion(e.matches);
+        mediaQuery.addEventListener('change', handler);
+        return () => mediaQuery.removeEventListener('change', handler);
+    }, []);
+
+    // Disable animations if reduced motion or explicitly disabled
+    const shouldDisableAnimations = prefersReducedMotion || disableAnimations;
 
     const isLight = mounted ? theme === 'light' : false;
     const computedOpacity = opacity !== undefined ? opacity : undefined;
@@ -24,6 +38,9 @@ export default function BackgroundCyberWaves({ opacity, lightOpacity = 0.65, cla
     const stroke3 = isLight ? 'url(#strokeNeonLight3)' : 'url(#strokeNeon3)';
 
     const glowFilter = isLight ? 'url(#waveGlowFilterLight)' : 'url(#waveGlowFilterDark)';
+
+    // Apply reduced motion class to wrapper
+    const wrapperClassName = `${styles.smokyWavesWrapper} ${isLight ? styles.isLightModeWaves : ''} ${className} ${shouldDisableAnimations ? 'reduce-motion' : ''}`;
 
     return (
         <div

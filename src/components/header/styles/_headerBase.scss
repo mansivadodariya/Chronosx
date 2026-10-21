@@ -6,6 +6,9 @@
     z-index: 100;
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     box-sizing: border-box;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 
     @include respond-to("xl") {
         top: 10px;
@@ -48,12 +51,13 @@
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         width: 100%;
         box-sizing: border-box;
+        transform: translateZ(0);
         background:
             radial-gradient(ellipse 70% 80% at 100% 0%, rgba(24, 201, 139, 0.2) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 80%),
             radial-gradient(ellipse 70% 80% at 0% 100%, rgba(0, 242, 254, 0.12) 0%, transparent 75%),
             rgba(18, 21, 20, 0.85);
-        backdrop-filter: blur(24px) saturate(180%);
-        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
         border: 1px solid rgba(24, 201, 139, 0.3);
         box-shadow: 0 10px 32px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(24, 201, 139, 0.08);
 
@@ -63,8 +67,8 @@
                 radial-gradient(ellipse 70% 70% at 0% 100%, rgba(0, 242, 254, 0.14) 0%, transparent 70%),
                 rgba(18, 21, 20, 0.95);
             border-color: rgba(24, 201, 139, 0.45);
-            backdrop-filter: blur(45px) saturate(200%);
-            -webkit-backdrop-filter: blur(45px) saturate(200%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             box-shadow: 0 14px 40px rgba(0, 0, 0, 0.75), 0 0 22px rgba(24, 201, 139, 0.18);
         }
 
@@ -169,6 +173,13 @@
                     gap: 9px;
                 }
 
+                &:hover > li:not(:hover) {
+                    > a,
+                    .dropdownTrigger {
+                        opacity: 0.45;
+                    }
+                }
+
                 li {
                     position: relative;
                     flex-shrink: 0;
@@ -180,7 +191,7 @@
                         font-size: 15px;
                         font-family: "Euclid-Medium", sans-serif;
                         font-weight: 500;
-                        transition: color 0.25s ease;
+                        transition: color 0.25s ease, opacity 0.25s ease;
                         padding: 8px 4px;
                         display: inline-flex;
                         align-items: center;
@@ -338,6 +349,13 @@
                                         gap: 6px 10px;
                                     }
 
+                                    // Sibling dimming: hovering any item subtly subdues others while keeping text crisp and readable
+                                    &:hover .dropdownItem:not(:hover),
+                                    &:has(.dropdownItem:hover) .dropdownItem:not(:hover) {
+                                        opacity: 0.58;
+                                        filter: grayscale(12%);
+                                    }
+
                                     .dropdownItem {
                                         display: flex;
                                         align-items: flex-start;
@@ -345,12 +363,14 @@
                                         padding: 10px 12px;
                                         border-radius: 10px;
                                         text-decoration: none;
-                                        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                                        transition: opacity 0.22s ease, filter 0.22s ease, transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s ease, border-color 0.2s ease;
                                         background: transparent;
                                         border: 1px solid transparent;
                                         white-space: normal;
 
                                         &:hover {
+                                            opacity: 1 !important;
+                                            filter: none !important;
                                             background: rgba(24, 201, 139, 0.12);
                                             transform: translateX(3px);
                                         }

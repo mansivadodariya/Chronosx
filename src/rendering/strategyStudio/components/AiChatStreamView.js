@@ -190,7 +190,7 @@ export default function AiChatStreamView({
 
         // Backtest triggers
         if (lower.includes('run backtest') || lower.includes('backtest now')) {
-            onSendMessage('🚀 Run Backtest Now');
+            onSendMessage('Run Backtest Now');
             return;
         }
 

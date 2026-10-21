@@ -33,22 +33,22 @@ export const PRIMARY_GOALS = [
 ];
 
 export const AVAILABLE_PAIRS = [
-    { id: 'EUR/USD', symbol: 'EUR/USD', icon: '💶', tag: 'FX Major' },
-    { id: 'GBP/USD', symbol: 'GBP/USD', icon: '💷', tag: 'FX Major' },
-    { id: 'USD/JPY', symbol: 'USD/JPY', icon: '💴', tag: 'FX Major' },
-    { id: 'XAU/USD', symbol: 'XAU/USD', icon: '🪙', tag: 'Gold' },
-    { id: 'GBP/JPY', symbol: 'GBP/JPY', icon: '💱', tag: 'FX Cross' },
-    { id: 'AUD/USD', symbol: 'AUD/USD', icon: '🇦🇺', tag: 'FX Major' },
-    { id: 'USD/CAD', symbol: 'USD/CAD', icon: '🍁', tag: 'FX Major' },
-    { id: 'USD/CHF', symbol: 'USD/CHF', icon: '🇨🇭', tag: 'FX Major' },
+    { id: 'EUR/USD', symbol: 'EUR/USD', icon: 'EUR', tag: 'FX Major' },
+    { id: 'GBP/USD', symbol: 'GBP/USD', icon: 'GBP', tag: 'FX Major' },
+    { id: 'USD/JPY', symbol: 'USD/JPY', icon: 'JPY', tag: 'FX Major' },
+    { id: 'XAU/USD', symbol: 'XAU/USD', icon: 'GOLD', tag: 'Gold' },
+    { id: 'GBP/JPY', symbol: 'GBP/JPY', icon: 'GBP/JPY', tag: 'FX Cross' },
+    { id: 'AUD/USD', symbol: 'AUD/USD', icon: 'AUD', tag: 'FX Major' },
+    { id: 'USD/CAD', symbol: 'USD/CAD', icon: 'CAD', tag: 'FX Major' },
+    { id: 'USD/CHF', symbol: 'USD/CHF', icon: 'CHF', tag: 'FX Major' },
 ];
 
 export const AVAILABLE_SESSIONS = [
-    { id: 'London Session', label: 'London Session', icon: '🇬🇧' },
-    { id: 'New York Session', label: 'New York Session', icon: '🇺🇸' },
-    { id: 'Tokyo / Asian Session', label: 'Tokyo / Asian Session', icon: '🇯🇵' },
-    { id: 'Sydney Session', label: 'Sydney Session', icon: '🇦🇺' },
-    { id: 'Overlap (London + NY)', label: 'Overlap (London + NY)', icon: '🌐' }
+    { id: 'London Session', label: 'London Session', icon: 'LON' },
+    { id: 'New York Session', label: 'New York Session', icon: 'NY' },
+    { id: 'Tokyo / Asian Session', label: 'Tokyo / Asian Session', icon: 'TKY' },
+    { id: 'Sydney Session', label: 'Sydney Session', icon: 'SYD' },
+    { id: 'Overlap (London + NY)', label: 'Overlap (London + NY)', icon: 'LN' }
 ];
 
 

@@ -223,6 +223,27 @@ export default async function RootLayout({ children }) {
             `,
           }}
         />
+        <Script
+          id="reduced-motion-detector"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+                if (mq.matches) {
+                  document.documentElement.classList.add('reduce-motion');
+                }
+                mq.addEventListener('change', function(e) {
+                  if (e.matches) {
+                    document.documentElement.classList.add('reduce-motion');
+                  } else {
+                    document.documentElement.classList.remove('reduce-motion');
+                  }
+                });
+              } catch (_) {}
+            `,
+          }}
+        />
       </head>
       <body suppressHydrationWarning>
         <Script

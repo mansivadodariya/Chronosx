@@ -20,7 +20,8 @@ import { fetchVisibleTabNames, getVisibleTabNamesSync, checkPermissionInSet } fr
 import { mapStrategyToBot } from './utils/botHelpers';
 
 const resolveBacktestApiBase = () => {
-    const raw = (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_BACKTEST_API_URL || 'http://192.168.0.153:8000').replace(/\/+$/, '');
+    const raw = (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_BACKTEST_API_URL || '').replace(/\/+$/, '');
+    if (!raw) return '/backtest/v1';
     return raw.endsWith('/backtest/v1') ? raw : `${raw}/backtest/v1`;
 };
 

@@ -76,6 +76,18 @@ export default function StudioComposerCard({
         }
     };
 
+    const handleInternalKeyDown = (e) => {
+        if (onKeyDown) {
+            onKeyDown(e);
+            if (e.defaultPrevented) return;
+        }
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            e.stopPropagation();
+            handleSendAction();
+        }
+    };
+
     const containerClass = isExploreMode
         ? `${styles.exploreInputCard} ${isExpanded ? styles.inputCardExpanded : styles.inputCardCollapsed}`
         : `${styles.chatInputWrapper} ${isExpanded ? styles.inputCardExpanded : styles.inputCardCollapsed}`;
@@ -132,7 +144,7 @@ export default function StudioComposerCard({
                             setInput(val);
                             if (setActiveSuggestionIndex) setActiveSuggestionIndex(0);
                         }}
-                        onKeyDown={onKeyDown}
+                        onKeyDown={handleInternalKeyDown}
                         rows={1}
                     />
 

@@ -315,7 +315,12 @@ export default function GuidedBuilderSection({ refProp }) {
                     <div className={styles.stepHeaderTitle}>Summary — Assembled Bot Strategy</div>
                     <div className={styles.stepHeaderSub}>Deterministic execution logic assembled without writing code.</div>
                     <div style={{ background: 'rgba(24, 201, 139, 0.1)', padding: 20, borderRadius: 12, border: '1px solid rgba(24, 201, 139, 0.3)' }}>
-                      <p style={{ margin: 0, fontWeight: 700, fontSize: '1.1rem', color: '#18C98B' }}>⚡ {formData.botName}</p>
+                      <p style={{ margin: 0, fontWeight: 700, fontSize: '1.1rem', color: '#18C98B', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#18C98B" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink: 0}}>
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                        </svg>
+                        {formData.botName}
+                      </p>
                       <p style={{ margin: '8px 0', fontSize: '0.9rem', color: '#E2E8F0' }}>{formData.description}</p>
                       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 10, marginTop: 12, fontSize: '0.85rem' }}>
                         <div>Market: <strong>{formData.pair}</strong></div>

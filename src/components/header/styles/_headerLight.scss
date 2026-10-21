@@ -92,12 +92,21 @@
         }
 
         .dropdownGrid {
+            // Sibling dimming in light mode: hovering any item subtly subdues others while keeping text crisp and readable
+            &:hover .dropdownItem:not(:hover),
+            &:has(.dropdownItem:hover) .dropdownItem:not(:hover) {
+                opacity: 0.58;
+                filter: grayscale(12%);
+            }
+
             .dropdownItem {
                 background: transparent;
                 border: 1px solid transparent;
-                transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+                transition: opacity 0.22s ease, filter 0.22s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 
                 &:hover {
+                    opacity: 1 !important;
+                    filter: none !important;
                     background: #059669;
                     border-color: #059669;
                     box-shadow: 0 8px 24px rgba(5, 150, 105, 0.28);

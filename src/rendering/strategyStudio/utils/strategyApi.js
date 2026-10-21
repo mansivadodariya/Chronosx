@@ -28,14 +28,14 @@ const getAuthHeaders = () => {
  */
 export const getApiBase = () => {
 
-    const backend = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/, '');
+    const backend = (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_BACKTEST_API_URL || '').replace(/\/+$/, '');
     if (backend) {
         if (backend.endsWith('/backtest/v1')) {
             return backend;
         }
         return `${backend}/backtest/v1`;
     }
-    return 'http://192.168.0.153:8000/backtest/v1';
+    return '/backtest/v1';
 };
 
 export const strategyStudioApi = {
@@ -371,4 +371,72 @@ export const strategyStudioApi = {
         }
     }
 };
+
+/**
+ * Resolves the Interactive Strategy Copilot base URL.
+ * Priority:
+ * 1. localStorage 'copilot_api' (if customized via UI)
+ * 2. process.env.NEXT_PUBLIC_BACKTEST_API_URL or process.env.NEXT_PUBLIC_BACKEND_URL
+ */
+export const getInteractiveApiBase = () => {
+    if (typeof window !== 'undefined') {
+        const custom = localStorage.getItem('copilot_api');
+        if (custom) return custom.replace(/\/+$/, '');
+    }
+    const envBacktest = process.env.NEXT_PUBLIC_BACKTEST_API_URL || process.env.NEXT_PUBLIC_BACKEND_URL;
+    if (envBacktest) {
+        const clean = envBacktest.replace(/\/+$/, '');
+        return clean.endsWith('/backtest/v1') ? clean : `${clean}/backtest/v1`;
+    }
+    return '/backtest/v1';
+};
+
+/**
+ * Interactive Strategy Copilot API Client
+ * (Endpoints: /interactive-metadata, /interactive-chat, /interactive-modify, /interactive-run)
+ */
+export const interactiveCopilotApi = {
+    getMetadata: async () => {
+        const base = getInteractiveApiBase();
+        const res = await fetch(`${base}/interactive-metadata`, {
+            headers: getAuthHeaders(),
+        });
+        const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
+        return { ok: res.ok, status: res.status, body };
+    },
+
+    chat: async (payload) => {
+        const base = getInteractiveApiBase();
+        const res = await fetch(`${base}/interactive-chat`, {
+            method: 'POST',
+            headers: getAuthHeaders(),
+            body: JSON.stringify(payload),
+        });
+        const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
+        return { ok: res.ok, status: res.status, body };
+    },
+
+    modify: async ({ sessionId, strategy }) => {
+        const base = getInteractiveApiBase();
+        const res = await fetch(`${base}/interactive-modify`, {
+            method: 'POST',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ session_id: sessionId, strategy }),
+        });
+        const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
+        return { ok: res.ok, status: res.status, body };
+    },
+
+    run: async ({ sessionId, includePlot = false }) => {
+        const base = getInteractiveApiBase();
+        const res = await fetch(`${base}/interactive-run`, {
+            method: 'POST',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ session_id: sessionId, include_plot: includePlot }),
+        });
+        const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
+        return { ok: res.ok, status: res.status, body };
+    },
+};
+
 

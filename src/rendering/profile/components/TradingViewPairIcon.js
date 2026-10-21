@@ -172,11 +172,11 @@ export const PAIR_CONFIG = {
 
 // Session Flags Map
 export const SESSION_CONFIG = {
-    'London Session': { icon: 'GBP', label: 'London Session', flag: '🇬🇧' },
-    'New York Session': { icon: 'USD', label: 'New York Session', flag: '🇺🇸' },
-    'Tokyo / Asian Session': { icon: 'JPY', label: 'Tokyo / Asian Session', flag: '🇯🇵' },
-    'Sydney Session': { icon: 'AUD', label: 'Sydney Session', flag: '🇦🇺' },
-    'Overlap (London + NY)': { icon: 'GLOBE', label: 'Overlap (London + NY)', flag: '🌐' }
+    'London Session': { icon: 'GBP', label: 'London Session' },
+    'New York Session': { icon: 'USD', label: 'New York Session' },
+    'Tokyo / Asian Session': { icon: 'JPY', label: 'Tokyo / Asian Session' },
+    'Sydney Session': { icon: 'AUD', label: 'Sydney Session' },
+    'Overlap (London + NY)': { icon: 'GLOBE', label: 'Overlap (London + NY)' }
 };
 
 /**

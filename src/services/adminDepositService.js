@@ -2,9 +2,7 @@ import axios from "axios";
 import { supabase } from "@/lib/supabaseClient";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  process.env.NEXT_PUBLIC_BACKEND_URL ||
-  "http://192.168.0.153:8000";
+  (process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BACKEND_URL || "").replace(/\/+$/, "");
 
 const getAuthHeaders = () => {
   let token = "";

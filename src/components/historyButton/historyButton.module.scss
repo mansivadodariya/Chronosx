@@ -2,9 +2,9 @@
 @use '../../scss/breakpoints/breakpoints.scss' as *;
 
 .historyBtn {
-    height: 40px;
-    min-height: 40px;
-    padding: 0 20px;
+    height: 38px;
+    min-height: 38px;
+    padding: 0 16px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -15,7 +15,7 @@
     font-size: 14px;
     font-weight: 600;
     font-family: "Euclid-SemiBold", sans-serif;
-    border-radius: 9999px;
+    border-radius: 10px;
     cursor: pointer;
     user-select: none;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -50,11 +50,13 @@
         transform: scale(0.97);
     }
 
-    :global(html.light) & {
+    :global(html.light) &,
+    :global(html[data-theme='light']) &,
+    :global([data-theme='light']) & {
         background: #FFFFFF;
         border-color: rgba(24, 201, 139, 0.4);
         color: #047857;
-        box-shadow: none;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
 
         svg {
             color: #047857;

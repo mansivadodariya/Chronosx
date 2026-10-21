@@ -1,6 +1,6 @@
 import { tryRefreshToken } from '@/lib/api';
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://192.168.0.153:8000'}/api/v1`;
+const BASE_URL = `${(process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/, '')}/api/v1`;
 
 function getAuthHeaders() {
     if (typeof window !== 'undefined') {

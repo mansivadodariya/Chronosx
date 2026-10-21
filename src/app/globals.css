@@ -2,6 +2,7 @@
 @import './styles/globalsUtilities.css';
 @import './styles/globalsLightTheme.css';
 @import './styles/globalsAutofill.css';
+@import './styles/globalsReducedMotion.css';
 
 /* Remove Google reCAPTCHA floating side badge */
 .grecaptcha-badge {

@@ -6,10 +6,10 @@ import { getStoredUserId } from '@/lib/authSession';
  * Priority:
  * 1. process.env.NEXT_PUBLIC_BACKEND_URL (appended with /api/v1 if not present)
  * 2. process.env.NEXT_PUBLIC_API_URL
- * 3. Fallback: http://192.168.0.153:8000/api/v1
  */
 export const getBotBuilderApiBase = () => {
-    const raw = (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'http://192.168.0.153:8000').replace(/\/+$/, '');
+    const raw = (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || '').replace(/\/+$/, '');
+    if (!raw) return '/api/v1';
     return raw.endsWith('/api/v1') ? raw : `${raw}/api/v1`;
 };
 

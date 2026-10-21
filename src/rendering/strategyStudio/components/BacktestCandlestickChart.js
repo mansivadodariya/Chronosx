@@ -437,7 +437,7 @@ export default function BacktestCandlestickChart({
                 if (matchingEntry) {
                     tradeBadgeHtml += `
                         <div style="margin-top: 6px; padding: 4px 8px; background: rgba(16, 185, 129, 0.2); border-radius: 4px; color: #10b981; font-weight: 700; font-size: 10px;">
-                            🟢 BUY Entry #${matchingEntry.index || ''} @ ${fmt(matchingEntry.entryPrice)}
+                            [BUY] Entry #${matchingEntry.index || ''} @ ${fmt(matchingEntry.entryPrice)}
                         </div>
                     `;
                 }
@@ -445,7 +445,7 @@ export default function BacktestCandlestickChart({
                     const win = matchingExit.pnlNum > 0;
                     tradeBadgeHtml += `
                         <div style="margin-top: 4px; padding: 4px 8px; background: ${win ? 'rgba(245, 158, 11, 0.2)' : 'rgba(239, 68, 68, 0.2)'}; border-radius: 4px; color: ${win ? '#f59e0b' : '#ef4444'}; font-weight: 700; font-size: 10px;">
-                            ${win ? '🟠' : '🔴'} ${matchingExit.trigger || (win ? 'TARGET' : 'STOPLOSS')} Exit @ ${fmt(matchingExit.exitPrice)} (${win ? '+' : ''}$${matchingExit.pnlNum.toFixed(2)})
+                            ${win ? '[TP]' : '[SL]'} ${matchingExit.trigger || (win ? 'TARGET' : 'STOPLOSS')} Exit @ ${fmt(matchingExit.exitPrice)} (${win ? '+' : ''}$${matchingExit.pnlNum.toFixed(2)})
                         </div>
                     `;
                 }

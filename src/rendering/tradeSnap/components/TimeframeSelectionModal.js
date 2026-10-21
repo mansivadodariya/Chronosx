@@ -2,15 +2,15 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from '../aiSnapDashboard.module.scss';
-import { ClockIcon, FlameIcon, TrendingUpIcon } from '@/icons/aiSnapIcons';
+import { ClockIcon, FlameIcon, TrendingUpIcon, GlobeIcon } from '@/icons/aiSnapIcons';
 
 export default function TimeframeSelectionModal({ open, onClose, onSelectTimeframe, timeframeOptions }) {
     if (!open) return null;
 
     const defaultOptions = timeframeOptions || [
-        { label: "Short Term (Intraday)", value: "D1", desc: "For day trading & quick scalp momentum setups", icon: "⚡" },
-        { label: "Mid Term (Swing)", value: "W1", desc: "For multi-day swing positions & structural trends", icon: "📈" },
-        { label: "Long Term (Positional)", value: "MN", desc: "For macro position trading & major cycles", icon: "🌐" }
+        { label: "Short Term (Intraday)", value: "D1", desc: "For day trading & quick scalp momentum setups", icon: <FlameIcon size={20} color="#18C98B" /> },
+        { label: "Mid Term (Swing)", value: "W1", desc: "For multi-day swing positions & structural trends", icon: <TrendingUpIcon size={20} color="#18C98B" /> },
+        { label: "Long Term (Positional)", value: "MN", desc: "For macro position trading & major cycles", icon: <GlobeIcon size={20} color="#18C98B" /> }
     ];
 
     return (
@@ -53,7 +53,7 @@ export default function TimeframeSelectionModal({ open, onClose, onSelectTimefra
                                 }}
                             >
                                 <div className={styles.tfCardTopRow}>
-                                    <span className={styles.tfCardEmoji}>{opt.icon || <ClockIcon size={20} color="#18C98B" />}</span>
+                                    <span className={styles.tfCardEmoji}>{typeof opt.icon === 'string' ? <ClockIcon size={20} color="#18C98B" /> : (opt.icon || <ClockIcon size={20} color="#18C98B" />)}</span>
                                     <span className={styles.tfBadge}>{opt.value}</span>
                                 </div>
                                 <h3 className={styles.tfCardLabel}>{opt.label}</h3>

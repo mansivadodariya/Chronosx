@@ -20,7 +20,7 @@ function stripLocalePrefix(path) {
 
 export default function BackToTop() {
     const [isVisible, setIsVisible] = useState(false);
-    const [scrollProgress, setScrollProgress] = useState(0);
+    const circleRef = React.useRef(null);
     const pathname = usePathname();
     const { t } = useLanguage();
 
@@ -62,23 +62,25 @@ export default function BackToTop() {
         )
     );
 
+    // Circle radius & stroke calculation for 50x50 SVG (desktop) & 44x44 (mobile)
+    const radius = 22;
+    const circumference = 2 * Math.PI * radius;
+
     const handleScroll = useCallback(() => {
         if (typeof window === 'undefined') return;
 
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
         const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
-        if (scrollHeight > 0) {
+        if (scrollHeight > 0 && circleRef.current) {
             const progress = Math.min(100, Math.max(0, (scrollTop / scrollHeight) * 100));
-            setScrollProgress(progress);
+            const offset = circumference - (progress / 100) * circumference;
+            circleRef.current.style.strokeDashoffset = `${offset}px`;
         }
 
-        if (scrollTop > 250) {
-            setIsVisible(true);
-        } else {
-            setIsVisible(false);
-        }
-    }, []);
+        const shouldBeVisible = scrollTop > 250;
+        setIsVisible((prev) => (prev === shouldBeVisible ? prev : shouldBeVisible));
+    }, [circumference]);
 
     useEffect(() => {
         let ticking = false;
@@ -120,11 +122,6 @@ export default function BackToTop() {
         }
     };
 
-    // Circle radius & stroke calculation for 50x50 SVG (desktop) & 44x44 (mobile)
-    const radius = 22;
-    const circumference = 2 * Math.PI * radius;
-    const strokeDashoffset = circumference - (scrollProgress / 100) * circumference;
-
     const positionClass = isNotifPopupOpen
         ? (isWhatsAppVisible ? styles.aboveNotifAndWhatsapp : styles.aboveNotification)
         : (isWhatsAppVisible ? styles.aboveWhatsapp : styles.standalone);
@@ -165,10 +162,11 @@ export default function BackToTop() {
                                 cy="25"
                             />
                             <circle
+                                ref={circleRef}
                                 className={styles.progressRingIndicator}
                                 strokeWidth="2.5"
                                 strokeDasharray={circumference}
-                                strokeDashoffset={strokeDashoffset}
+                                strokeDashoffset={circumference}
                                 strokeLinecap="round"
                                 fill="transparent"
                                 r={radius}

@@ -98,12 +98,9 @@ export function getWsCandidateUrls(symbol = 'XAUUSD', timeframe = 'H1', strategy
     }
 
     if (!isHttps) {
-        candidates.push(`ws://192.168.0.153:8000/api/v1/ws/${ep}${qs}`);
-        candidates.push(`wss://192.168.0.153:8000/api/v1/ws/${ep}${qs}`);
-
         if (typeof window !== 'undefined' && window.location) {
             const host = window.location.hostname || '127.0.0.1';
-            if (host !== '192.168.0.153' && (host.includes('localhost') || host.includes('127.0.0.1'))) {
+            if (host.includes('localhost') || host.includes('127.0.0.1')) {
                 candidates.push(`ws://${host}:8000/api/v1/ws/${ep}${qs}`);
                 candidates.push(`wss://${host}:8000/api/v1/ws/${ep}${qs}`);
             }

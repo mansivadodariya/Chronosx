@@ -19,7 +19,8 @@ import {
     CoinsCapitalIcon,
     QuantityHashIcon,
     RocketRunIcon,
-    DocumentJsonIcon
+    DocumentJsonIcon,
+    CloseXIcon
 } from './StudioIcons';
 
 const SYMBOL_OPTIONS = [
@@ -57,7 +58,8 @@ export default function StudioToolbar({
     setQuantity,
     onManualClick,
     onRunBacktest,
-    loading
+    loading,
+    onClose
 }) {
     const { t } = useLanguage();
     // 3-Year past limit & 1-Year maximum range difference
@@ -271,6 +273,30 @@ export default function StudioToolbar({
                         </>
                     )}
                 </button>
+                {onClose && (
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        title="Close Backtest Panel"
+                        style={{
+                            background: 'rgba(255, 255, 255, 0.06)',
+                            border: '1px solid rgba(255, 255, 255, 0.12)',
+                            borderRadius: '8px',
+                            padding: '8px 12px',
+                            color: '#94A3B8',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            fontSize: '12px',
+                            fontWeight: 600,
+                            transition: 'all 0.2s ease'
+                        }}
+                    >
+                        <CloseXIcon size={12} color="currentColor" />
+                        <span>Close</span>
+                    </button>
+                )}
             </div>
         </div>
     );
