@@ -118,6 +118,7 @@ export default function SupportTicketForm() {
         setIsSubmitting(true);
         try {
             await createSupportTicket({
+                project_id: 1,
                 name: formData.name,
                 email: formData.email,
                 contact_no: formData.contact_no,

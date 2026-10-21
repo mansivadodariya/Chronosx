@@ -47,6 +47,7 @@ export async function createSupportTicket(payload) {
     }
 
     const formData = new FormData();
+    formData.append('project_id', String(payload?.project_id ?? 1));
     formData.append('name', name);
     formData.append('email', email);
     formData.append('contact_no', contactNo);

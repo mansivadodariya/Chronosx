@@ -51,6 +51,8 @@ export async function POST(request) {
         }
 
         const outbound = new FormData();
+        const projectId = incoming.get('project_id') || '1';
+        outbound.append('project_id', String(projectId));
         outbound.append('name', name);
         outbound.append('email', email.toLowerCase());
         outbound.append('contact_no', contactNo);
