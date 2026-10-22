@@ -1,0 +1,231 @@
+/* ══════════════════════════════════════════════════════════════
+   IN-CHAT STRATEGY SPECIFICATION CARD WITH DYNAMIC JSON VIEWER
+   ══════════════════════════════════════════════════════════════ */
+
+.strategySpecCard {
+    width: 100%;
+    background: rgba(14, 24, 19, 0.95);
+    border: 1px solid rgba(24, 201, 139, 0.3);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 16px rgba(24, 201, 139, 0.12);
+    transition: all 0.2s ease;
+
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        background: #FFFFFF;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06), 0 0 12px rgba(5, 150, 105, 0.08);
+    }
+}
+
+.strategySpecHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.strategySpecHeaderLeft {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.strategySpecTitleWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.strategySpecTitle {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.25;
+
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        color: #0f172a;
+    }
+}
+
+.strategySpecMeta {
+    font-size: 12px;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        color: #64748b;
+    }
+}
+
+.strategySpecReadyBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #18c98b;
+    background: rgba(24, 201, 139, 0.12);
+    border: 1px solid rgba(24, 201, 139, 0.28);
+    padding: 1px 8px;
+    border-radius: 999px;
+
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        background: #ecfdf5;
+        color: #059669;
+        border-color: #a7f3d0;
+    }
+}
+
+.strategySpecPulseDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #18c98b;
+    box-shadow: 0 0 8px rgba(24, 201, 139, 0.8);
+    animation: statusPulse 2s infinite ease-in-out;
+}
+
+.strategySpecIcon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(24, 201, 139, 0.14);
+    border: 1px solid rgba(24, 201, 139, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #18c98b;
+    flex-shrink: 0;
+}
+
+.strategySpecActions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.strategyJsonContainer {
+    width: 100%;
+    border-radius: 10px;
+    background: rgba(4, 9, 7, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        background: #f8fafc;
+        border-color: #e2e8f0;
+    }
+}
+
+.strategyJsonBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 11.5px;
+    color: #94a3b8;
+
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        background: #f1f5f9;
+        border-bottom-color: #e2e8f0;
+        color: #64748b;
+    }
+}
+
+.strategyJsonBarLeft {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: monospace;
+    font-weight: 600;
+}
+
+.strategyJsonBadge {
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    background: rgba(24, 201, 139, 0.15);
+    color: #18c98b;
+    border: 1px solid rgba(24, 201, 139, 0.3);
+
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        background: #ecfdf5;
+        color: #059669;
+        border-color: #a7f3d0;
+    }
+}
+
+.strategyCopyBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+
+    &:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    [data-theme='light'] &:hover {
+        color: #0f172a;
+        background: rgba(0, 0, 0, 0.05);
+    }
+}
+
+.strategyJsonCode {
+    margin: 0;
+    padding: 12px 14px;
+    font-family: "JetBrains Mono", "Fira Code", Menlo, Monaco, Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.55;
+    color: #34d399;
+    max-height: 280px;
+    overflow-y: auto;
+    overflow-x: auto;
+    white-space: pre;
+
+    code {
+        font-family: inherit;
+        color: inherit;
+    }
+
+    [data-theme='light'] &,
+    :global(html.light) &,
+    :global([data-theme='light']) & {
+        color: #047857;
+    }
+}

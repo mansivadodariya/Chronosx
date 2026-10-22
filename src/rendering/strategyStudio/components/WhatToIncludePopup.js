@@ -132,9 +132,6 @@ export default function WhatToIncludePopup({
                 <div className={styles.wtiHeaderLeft}>
                     <SparklesMiniIcon size={15} color="#18C98B" />
                     <span className={styles.wtiHeaderTitle}>What to include</span>
-                    <span className={styles.wtiStepBadge}>
-                        Step {currentStepIndex + 1} of {totalSteps}
-                    </span>
                 </div>
                 <div className={styles.wtiHeaderRight}>
                     <button
@@ -188,12 +185,14 @@ export default function WhatToIncludePopup({
 
             {/* Current Question & Options */}
             <div className={styles.wtiQuestionArea}>
-                <div className={styles.wtiCategoryTag}>
-                    {currentStep.category}
+                <div className={styles.wtiQuestionHeader}>
+                    <h3 className={styles.wtiQuestionTitle}>
+                        {currentStep.question}
+                    </h3>
+                    <div className={styles.wtiCategoryTag}>
+                        {currentStep.category}
+                    </div>
                 </div>
-                <h3 className={styles.wtiQuestionTitle}>
-                    {currentStep.question}
-                </h3>
 
                 <div className={styles.wtiOptionsGrid}>
                     {currentStep.options.map((opt, i) => {
@@ -247,9 +246,6 @@ export default function WhatToIncludePopup({
                             <ChevronRightMiniIcon size={12} color="#ffffff" style={{marginRight: '4px', verticalAlign: 'middle'}} /> Done
                         </button>
                     )}
-                </div>
-                <div className={styles.wtiFooterNote}>
-                    <SparklesMiniIcon size={14} color="#18C98B" style={{marginRight: '6px', verticalAlign: 'middle'}} /> Tapping a suggestion adds a sentence to your text, so it stays plain English.
                 </div>
             </div>
         </div>

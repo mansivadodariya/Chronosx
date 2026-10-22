@@ -158,7 +158,8 @@ export default function StrategyLiveCard({
                             onClick={onSwitchToEdit}
                             disabled={busy}
                         >
-                            <EditPencilIcon size={14} color="currentColor" style={{marginRight: '6px', verticalAlign: 'middle'}} /> Modify strategy
+                            <EditPencilIcon size={14} color="currentColor" />
+                            <span>Modify strategy</span>
                         </button>
                         <button
                             type="button"
@@ -166,7 +167,14 @@ export default function StrategyLiveCard({
                             onClick={onRunBacktest}
                             disabled={busy}
                         >
-                            {busy ? 'Running backtest…' : (<><RocketRunIcon size={14} color="#ffffff" style={{marginRight: '6px', verticalAlign: 'middle'}} /> Run backtest</>)}
+                            {busy ? (
+                                <span>Running backtest…</span>
+                            ) : (
+                                <>
+                                    <RocketRunIcon size={14} color="currentColor" />
+                                    <span>Run backtest</span>
+                                </>
+                            )}
                         </button>
                     </>
                 ) : (

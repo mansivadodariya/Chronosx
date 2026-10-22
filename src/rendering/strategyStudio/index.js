@@ -8,6 +8,8 @@ import ChatHistoryDrawer from './components/ChatHistoryDrawer';
 import StudioToolbar from './components/StudioToolbar';
 import SimulationProgressLoader from './components/SimulationProgressLoader';
 import BacktestResultsView from './components/BacktestResultsView';
+import StrategyModifyForm from './components/StrategyModifyForm';
+import { EditPencilIcon, CloseXIcon } from './components/StudioIcons';
 import useStrategyCopilot from './hooks/useStrategyCopilot';
 import { strategyStudioApi } from './utils/strategyApi';
 import { parseRoundTrips, generateSimulatedBacktest } from './utils/backtestEngine';
@@ -24,6 +26,7 @@ export default function StrategyStudio() {
         busy,
         boot,
         sendMessage,
+        retryMessage,
         saveDraft,
         runBacktest,
     } = useStrategyCopilot();
@@ -47,6 +50,7 @@ export default function StrategyStudio() {
     });
 
     const [isBacktestPanelOpen, setIsBacktestPanelOpen] = useState(false);
+    const [isEditingForm, setIsEditingForm] = useState(false);
     const [simulationLoading, setSimulationLoading] = useState(false);
     const [backtestResults, setBacktestResults] = useState(null);
     const [backtestRoundTrips, setBacktestRoundTrips] = useState([]);
@@ -74,6 +78,7 @@ export default function StrategyStudio() {
 
     const handleNewChatAction = () => {
         setIsBacktestPanelOpen(false);
+        setIsEditingForm(false);
         setBacktestResults(null);
         setBacktestRoundTrips([]);
         boot(false);
@@ -81,6 +86,7 @@ export default function StrategyStudio() {
 
     // Full High-Fidelity Backtest Simulation via /interactive-run
     const handleExecuteBacktest = useCallback(async (customParams = null) => {
+        setIsEditingForm(false);
         setIsBacktestPanelOpen(true);
         setSimulationLoading(true);
         setBacktestResults(null);
@@ -194,8 +200,8 @@ export default function StrategyStudio() {
             {/* Ambient Animated Cyber Waves */}
             <BackgroundCyberWaves />
 
-            {/* Main Workspace Layout (Centered single-column chat OR 2-panel with Backtest Studio) */}
-            <div className={`${styles.activeBodyGrid} ${!isBacktestPanelOpen ? styles.singleMode : ''}`}>
+            {/* Main Workspace Layout (Centered single-column chat OR 2-panel with Backtest Studio or Modify Form) */}
+            <div className={`${styles.activeBodyGrid} ${(!isBacktestPanelOpen && !isEditingForm) ? styles.singleMode : ''}`}>
                 <div className={styles.activeChat}>
                     <StrategyCopilotChat
                         messages={messages}
@@ -209,9 +215,15 @@ export default function StrategyStudio() {
                         result={result}
                         onSaveDraft={saveDraft}
                         onSendMessage={sendMessage}
+                        onRetryMessage={retryMessage}
                         onRunBacktest={handleExecuteBacktest}
                         onOpenHistory={() => setIsHistoryOpen(true)}
                         onNewChat={handleNewChatAction}
+                        onOpenModifyForm={() => {
+                            setIsEditingForm(true);
+                            setIsBacktestPanelOpen(false);
+                        }}
+                        isEditingForm={isEditingForm}
                     />
                 </div>
 
@@ -258,6 +270,48 @@ export default function StrategyStudio() {
                                     <p>Configure parameters above and click &quot;Run Backtest&quot; to simulate performance.</p>
                                 </div>
                             )}
+                        </div>
+                    </div>
+                )}
+
+                {/* ── RIGHT PANEL: Side-by-side Strategy Modification Form ── */}
+                {isEditingForm && !isBacktestPanelOpen && (
+                    <div className={styles.activeSidePanel}>
+                        <div className={styles.sidePanelHeader}>
+                            <div className={styles.sidePanelHeaderLeft}>
+                                <div className={styles.headerIconWrap}>
+                                    <EditPencilIcon size={16} color="#18c98b" />
+                                </div>
+                                <div>
+                                    <div className={styles.title}>Modify Strategy Form</div>
+                                    <div className={styles.statusPillSmall}>
+                                        <span className={styles.statusDot} />
+                                        <span>{resp?.strategy?.strategy_name || 'Dynamic Strategy Configuration'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button
+                                type="button"
+                                className={styles.sidePanelCloseBtn}
+                                onClick={() => setIsEditingForm(false)}
+                                title="Close strategy form"
+                            >
+                                <CloseXIcon size={14} />
+                            </button>
+                        </div>
+                        <div className={styles.sidePanelContentArea}>
+                            <StrategyModifyForm
+                                initialStrategy={resp?.strategy}
+                                metadata={metadata}
+                                indIndex={indIndex}
+                                formErrors={formErrors}
+                                busy={busy}
+                                onSave={async (draft) => {
+                                    await saveDraft(draft);
+                                    setIsEditingForm(false);
+                                }}
+                                onCancel={() => setIsEditingForm(false)}
+                            />
                         </div>
                     </div>
                 )}

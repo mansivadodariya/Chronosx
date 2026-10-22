@@ -406,14 +406,22 @@ export const interactiveCopilotApi = {
     },
 
     chat: async (payload) => {
-        const base = getInteractiveApiBase();
-        const res = await fetch(`${base}/interactive-chat`, {
-            method: 'POST',
-            headers: getAuthHeaders(),
-            body: JSON.stringify(payload),
-        });
-        const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
-        return { ok: res.ok, status: res.status, body };
+        try {
+            const base = getInteractiveApiBase();
+            const res = await fetch(`${base}/interactive-chat`, {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: JSON.stringify(payload),
+            });
+            const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
+            return { ok: res.ok, status: res.status, body };
+        } catch (err) {
+            return {
+                ok: false,
+                status: 0,
+                body: { success: false, error: err.message || 'Failed to fetch' },
+            };
+        }
     },
 
     modify: async ({ sessionId, strategy }) => {
@@ -437,6 +445,91 @@ export const interactiveCopilotApi = {
         const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
         return { ok: res.ok, status: res.status, body };
     },
+};
+
+/**
+ * Categorize chat errors into actionable states:
+ * - 'credits': User out of AI credits -> Upgrade Plan & Get Credits
+ * - 'api_unavailable': Server down / Failed to fetch / 502 / 503 / network -> Try Again Later
+ * - 'general': Unexpected error / validation -> Try Again
+ */
+export const categorizeChatError = (errOrBody, status) => {
+    const text = String(
+        errOrBody?.error ||
+        errOrBody?.message ||
+        errOrBody?.detail ||
+        (typeof errOrBody === 'string' ? errOrBody : '')
+    ).toLowerCase();
+
+    const errorCode = String(
+        errOrBody?.error_code ||
+        errOrBody?.code ||
+        errOrBody?.detail?.error_code ||
+        ''
+    ).toUpperCase();
+
+    // 1. Check for Credit / Balance issues
+    const isCredits =
+        status === 402 ||
+        errorCode === 'INSUFFICIENT_CREDITS' ||
+        errorCode === 'OUT_OF_CREDITS' ||
+        errorCode === 'NO_CREDITS' ||
+        text.includes('credit') ||
+        text.includes('insufficient credits') ||
+        text.includes('out of credits') ||
+        text.includes('no credit') ||
+        text.includes('payment required') ||
+        text.includes('upgrade plan') ||
+        text.includes('quota exceeded') ||
+        text.includes('limit reached');
+
+    if (isCredits) {
+        return {
+            errorType: 'credits',
+            title: 'Insufficient AI Credits',
+            message: 'You have run out of AI compute credits to continue chatting and generating strategies.',
+            suggestion: 'Top up your credits or upgrade your subscription plan to continue building and backtesting strategies.',
+            action: 'upgrade',
+            actionLabel: 'Upgrade Plan & AI Credits',
+            actionUrl: '/subscription-plans',
+        };
+    }
+
+    // 2. Check for Network / Server / API offline / Failed to fetch
+    const isApiOffline =
+        status === 0 ||
+        !status ||
+        (status >= 500 && status <= 504) ||
+        text.includes('failed to fetch') ||
+        text.includes('network') ||
+        text.includes('connection') ||
+        text.includes('econnrefused') ||
+        text.includes('timeout') ||
+        text.includes('unreachable') ||
+        text.includes('unavailable') ||
+        text.includes('service unavailable') ||
+        text.includes('load failed');
+
+    if (isApiOffline) {
+        return {
+            errorType: 'api_unavailable',
+            title: 'AI Service Temporarily Unavailable',
+            message: 'Unable to communicate with the Strategy Copilot API at this moment. The backend service may be offline or restarting.',
+            suggestion: 'Please try again in a few moments. Your request has been preserved and can be retried immediately.',
+            action: 'retry',
+            actionLabel: 'Try Again Later',
+        };
+    }
+
+    // 3. Fallback General Error
+    return {
+        errorType: 'general',
+        title: 'Unable to Process Strategy Request',
+        message: errOrBody?.error || errOrBody?.message || 'An unexpected error occurred while processing your strategy prompt.',
+        suggestion: 'Please refine your prompt or try again.',
+        action: 'retry',
+        actionLabel: 'Try Again',
+    };
 };
 
 

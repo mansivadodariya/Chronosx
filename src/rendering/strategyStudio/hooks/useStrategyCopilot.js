@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { interactiveCopilotApi, getInteractiveApiBase } from '../utils/strategyApi';
+import { interactiveCopilotApi, getInteractiveApiBase, categorizeChatError } from '../utils/strategyApi';
 
 const generateSessionId = () =>
     'sess_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
@@ -61,7 +61,7 @@ export default function useStrategyCopilot() {
             setBusy(true);
 
             try {
-                const { ok, body } = await interactiveCopilotApi.chat({
+                const { ok, status, body } = await interactiveCopilotApi.chat({
                     session_id: sid,
                     ...payload,
                 });
@@ -69,11 +69,15 @@ export default function useStrategyCopilot() {
                 setBusy(false);
 
                 if (!ok || !body?.success) {
-                    const errMsg =
-                        body?.error || body?.message || 'Unable to communicate with Strategy Copilot';
+                    const errorDetail = categorizeChatError(body, status);
                     setMessages((prev) => [
                         ...prev,
-                        { id: 'sys_' + Date.now(), role: 'sys', text: `Error: ${errMsg}` },
+                        {
+                            id: 'err_' + Date.now(),
+                            role: 'error',
+                            ...errorDetail,
+                            retryPayload: { payload, userText, sid, extra }
+                        },
                     ]);
                     return;
                 }
@@ -86,13 +90,31 @@ export default function useStrategyCopilot() {
                 applyResponse(body.data, true);
             } catch (err) {
                 setBusy(false);
+                const errorDetail = categorizeChatError(err.message, 0);
                 setMessages((prev) => [
                     ...prev,
-                    { id: 'sys_' + Date.now(), role: 'sys', text: `Connection error: ${err.message}` },
+                    {
+                        id: 'err_' + Date.now(),
+                        role: 'error',
+                        ...errorDetail,
+                        retryPayload: { payload, userText, sid, extra }
+                    },
                 ]);
             }
         },
         [busy, sessionId, applyResponse]
+    );
+
+    // Retry a failed message seamlessly
+    const retryMessage = useCallback(
+        (retryPayload) => {
+            if (!retryPayload || busy) return;
+            const { payload, sid, extra } = retryPayload;
+            // Remove previous error bubble
+            setMessages((prev) => prev.filter((m) => m.role !== 'error'));
+            chat(payload, null, sid || sessionId, extra);
+        },
+        [busy, chat, sessionId]
     );
 
     // Send a message typed by user or clicked via CTA
@@ -283,6 +305,7 @@ export default function useStrategyCopilot() {
         bootError,
         boot,
         sendMessage,
+        retryMessage,
         saveDraft,
         runBacktest,
         handleUpdateApiBase,

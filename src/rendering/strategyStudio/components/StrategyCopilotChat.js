@@ -19,12 +19,13 @@ import { useLanguage } from '@/context/LanguageContext';
 import { fetchIndicatorsFromSupabase, getStrategyExploreSuggestions } from '@/lib/indicatorsData';
 import { renderFormattedMarkdown } from '../utils/markdownRenderer';
 import { useStreamingText } from '../utils/streamingRenderer';
-import StrategyModifyForm from './StrategyModifyForm';
 import StrategyBacktestCard from './StrategyBacktestCard';
+import StrategySpecCard from './StrategySpecCard';
 import WhatToIncludePopup from './WhatToIncludePopup';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 
-import { StreamingAiBubble, CircuitStrategyDivider, DynamicThinkingLoader } from './StudioChatBubbles';
+import { StreamingAiBubble, CircuitStrategyDivider, DynamicThinkingLoader, InteractiveErrorBubble } from './StudioChatBubbles';
+import { categorizeChatError } from '../utils/strategyApi';
 
 const EXPLORE_TAGLINES = [
     'Start with a message, ChronosX takes it from there',
@@ -47,9 +48,12 @@ export default function StrategyCopilotChat({
     result = null,
     onSaveDraft,
     onSendMessage,
+    onRetryMessage,
     onRunBacktest,
     onOpenHistory,
     onNewChat,
+    onOpenModifyForm,
+    isEditingForm = false,
 }) {
     const { t } = useLanguage();
     const prefersReducedMotion = useReducedMotion();
@@ -57,7 +61,6 @@ export default function StrategyCopilotChat({
     const [inputValue, setInputValue] = useState('');
     const [isStrategyMenuOpen, setIsStrategyMenuOpen] = useState(false);
     const [isWhatToIncludeOpen, setIsWhatToIncludeOpen] = useState(false);
-    const [isEditingForm, setIsEditingForm] = useState(false);
     const [isOptionBoxDismissed, setIsOptionBoxDismissed] = useState(false);
     const [user, setUser] = useState(null);
     const [dynamicOptions, setDynamicOptions] = useState(() => getStrategyExploreSuggestions());
@@ -440,6 +443,23 @@ export default function StrategyCopilotChat({
                             const hasCompleted = completedStreamsRef.current.has(msgKey);
                             const shouldStream = isLatestAi && !hasCompleted && !msg.fromHistory;
 
+                            if (msg.role === 'error' || msg.errorType || (msg.role === 'sys' && /error|failed to fetch|credit|unreachable|unavailable/i.test(msg.text))) {
+                                const errorData = msg.errorType ? msg : {
+                                    ...msg,
+                                    ...categorizeChatError(msg.text, 0),
+                                    retryPayload: msg.retryPayload || { userText: messages[index - 1]?.text, payload: { message: messages[index - 1]?.text } },
+                                };
+                                return (
+                                    <div key={msg.id || index} className={styles.messageRow}>
+                                        <InteractiveErrorBubble
+                                            error={errorData}
+                                            onRetry={onRetryMessage}
+                                            isRetrying={busy}
+                                        />
+                                    </div>
+                                );
+                            }
+
                             if (msg.role === 'sys') {
                                 return (
                                     <div key={msg.id || index} className={styles.messageRow} style={{ justifyContent: 'center' }}>
@@ -519,73 +539,17 @@ export default function StrategyCopilotChat({
                             </div>
                         )}
 
-                        {/* In-Chat Strategy Draft Summary Card — ONLY when json_fulfilled === true */}
+                        {/* In-Chat Strategy Draft Specification Card with Dynamic JSON Viewer */}
                         {Boolean(resp?.json_fulfilled) && (
                             <div className={styles.messageRow} style={{ marginTop: '8px' }}>
-                                {isEditingForm ? (
-                                    <div className={styles.strategyModifyCard}>
-                                        <div className={styles.strategyModifyHeader}>
-                                            <span className={styles.strategyModifyTitle}>
-                                                Modify Strategy Parameters
-                                            </span>
-                                            <button
-                                                type="button"
-                                                className={styles.btnDangerAction}
-                                                onClick={() => setIsEditingForm(false)}
-                                                style={{ padding: '3px 8px', fontSize: '11px' }}
-                                                title="Close modify form"
-                                            >
-                                                <CloseXIcon size={12} color="currentColor" style={{marginRight: '4px', verticalAlign: 'middle'}} /> Close
-                                            </button>
-                                        </div>
-                                        <StrategyModifyForm
-                                            initialStrategy={resp?.strategy}
-                                            metadata={metadata}
-                                            indIndex={indIndex}
-                                            formErrors={formErrors}
-                                            busy={busy}
-                                            onSave={async (draft) => {
-                                                await onSaveDraft?.(draft);
-                                                setIsEditingForm(false);
-                                            }}
-                                            onCancel={() => setIsEditingForm(false)}
-                                        />
-                                    </div>
-                                ) : (
-                                    <div className={styles.strategyReadyBanner}>
-                                        <div>
-                                            <div className={styles.strategyReadyTitle}>
-                                                {summary?.title || resp?.strategy?.strategy_name || 'Configured Strategy'}
-                                            </div>
-                                            <div className={styles.strategyReadyMeta}>
-                                                {summary?.market?.pair || resp?.strategy?.stock_name || '—'} · {summary?.market?.timeframe || resp?.strategy?.interval || '—'} ·{' '}
-                                                <span className={styles.strategyReadyTag}>
-                                                    Ready to Run
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div style={{ display: 'flex', gap: '8px' }}>
-                                            <button
-                                                type="button"
-                                                className={styles.btnGhostAction}
-                                                style={{ padding: '7px 14px', fontSize: '12.5px' }}
-                                                onClick={() => setIsEditingForm(true)}
-                                            >
-                                                <EditPencilIcon size={14} color="currentColor" style={{marginRight: '6px', verticalAlign: 'middle'}} /> Modify Strategy Form
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className={styles.btnPrimaryAction}
-                                                style={{ padding: '7px 16px', fontSize: '12.5px' }}
-                                                onClick={() => onRunBacktest?.()}
-                                                disabled={busy}
-                                            >
-                                                <RocketRunIcon size={14} color="currentColor" style={{marginRight: '6px', verticalAlign: 'middle'}} /> Run Backtest
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
+                                <StrategySpecCard
+                                    strategy={resp?.strategy}
+                                    summary={summary}
+                                    onOpenModifyForm={onOpenModifyForm}
+                                    onRunBacktest={onRunBacktest}
+                                    busy={busy}
+                                    isFormOpen={isEditingForm}
+                                />
                             </div>
                         )}
 

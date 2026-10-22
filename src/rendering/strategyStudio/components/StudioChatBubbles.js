@@ -1,8 +1,15 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import styles from '../styles/strategyStudio.module.scss';
-import { EditPencilIcon } from './StudioIcons';
+import {
+    EditPencilIcon,
+    CoinsCapitalIcon,
+    AlertTriangleIcon,
+    RefreshResetIcon,
+    SparklesMagicIcon,
+} from './StudioIcons';
 import { renderFormattedMarkdown } from '../utils/markdownRenderer';
 import { useStreamingText } from '../utils/streamingRenderer';
 
@@ -100,6 +107,102 @@ export function DynamicThinkingLoader() {
             <span key={stageIdx} className={styles.thinkingText}>
                 {THINKING_STAGES[stageIdx]}
             </span>
+        </div>
+    );
+}
+
+export function InteractiveErrorBubble({
+    error,
+    onRetry,
+    isRetrying = false,
+}) {
+    const router = useRouter();
+    const isCredits = error?.errorType === 'credits';
+
+    const handlePrimaryClick = () => {
+        if (isCredits) {
+            router.push('/subscription-plans');
+        } else if (onRetry && error?.retryPayload) {
+            onRetry(error.retryPayload);
+        }
+    };
+
+    return (
+        <div
+            className={`${styles.errorBubble} ${
+                isCredits ? styles.errorCredits : styles.errorApi
+            }`}
+            role="alert"
+        >
+            <div className={styles.errorHeader}>
+                <div className={styles.errorHeaderLeft}>
+                    <div className={styles.errorIconBadge}>
+                        {isCredits ? (
+                            <CoinsCapitalIcon size={16} color="currentColor" />
+                        ) : (
+                            <AlertTriangleIcon size={16} color="currentColor" />
+                        )}
+                    </div>
+                    <span className={styles.errorTitle}>
+                        {error?.title || (isCredits ? 'Insufficient AI Credits' : 'AI Service Temporarily Unavailable')}
+                    </span>
+                </div>
+                <span className={styles.errorTag}>
+                    {isCredits ? 'No Credits' : 'Service Offline'}
+                </span>
+            </div>
+
+            <div className={styles.errorBody}>
+                <div className={styles.errorDesc}>
+                    {error?.text || error?.message || (isCredits
+                        ? 'You do not have enough AI credits to continue generating strategies.'
+                        : 'Unable to communicate with the Strategy Copilot API. The service may be temporarily unavailable.')}
+                </div>
+                {error?.suggestion && (
+                    <div className={styles.errorSuggestion}>{error.suggestion}</div>
+                )}
+            </div>
+
+            <div className={styles.errorActions}>
+                {isCredits ? (
+                    <>
+                        <button
+                            type="button"
+                            className={styles.errorPrimaryBtn}
+                            onClick={handlePrimaryClick}
+                        >
+                            <SparklesMagicIcon size={14} color="#000000" />
+                            <span>Upgrade Plan &amp; AI Credits</span>
+                        </button>
+                        <button
+                            type="button"
+                            className={styles.errorSecondaryBtn}
+                            onClick={() => router.push('/profile')}
+                        >
+                            <span>Check Balance</span>
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <button
+                            type="button"
+                            className={styles.errorPrimaryBtn}
+                            onClick={handlePrimaryClick}
+                            disabled={isRetrying}
+                        >
+                            <RefreshResetIcon size={14} color="currentColor" />
+                            <span>{isRetrying ? 'Retrying…' : (error?.actionLabel || 'Try Again')}</span>
+                        </button>
+                        <button
+                            type="button"
+                            className={styles.errorSecondaryBtn}
+                            onClick={() => router.push('/support')}
+                        >
+                            <span>Contact Support</span>
+                        </button>
+                    </>
+                )}
+            </div>
         </div>
     );
 }

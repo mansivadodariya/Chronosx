@@ -370,7 +370,14 @@ export default function StrategyModifyForm({
                     className={styles.btnPrimaryAction}
                     disabled={busy}
                 >
-                    {busy ? 'Saving…' : (<><UploadFileIcon size={14} color="#ffffff" style={{marginRight: '6px', verticalAlign: 'middle'}} /> Save strategy</>)}
+                    {busy ? (
+                        <span>Saving…</span>
+                    ) : (
+                        <>
+                            <UploadFileIcon size={14} color="#ffffff" />
+                            <span>Save strategy</span>
+                        </>
+                    )}
                 </button>
                 <button
                     type="button"

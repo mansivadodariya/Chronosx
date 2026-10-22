@@ -404,9 +404,15 @@
     }
     &.activeChip {
         background: rgba(24, 201, 139, 0.22);
-        border-color: #18c98b;
-        color: #18c98b;
-        box-shadow: 0 0 12px rgba(24, 201, 139, 0.2);
+        border-color: transparent;
+        color: #ffffff;
+        box-shadow: none;
+
+        &:hover:not(:disabled) {
+            background: rgba(24, 201, 139, 0.28);
+            border-color: transparent;
+            color: #ffffff;
+        }
     }
     &:disabled {
         opacity: 0.5;
@@ -426,8 +432,15 @@
 
         &.activeChip {
             background: #dcfce7;
-            border-color: #059669;
-            color: #059669;
+            border-color: transparent;
+            color: #000000;
+            box-shadow: none;
+
+            &:hover:not(:disabled) {
+                background: #bbf7d0;
+                border-color: transparent;
+                color: #000000;
+            }
         }
     }
 }
