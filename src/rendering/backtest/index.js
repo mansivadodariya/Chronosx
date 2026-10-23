@@ -101,16 +101,7 @@ export default function BacktestPage() {
 
         try {
             const res = await strategyStudioApi.runBacktestById({
-                strategy_id: stratMeta.strategy_id,
-                source: stratMeta.source === 'user_strategies' ? 'user_strategies' : 'trading_strategies',
-                fallbackParams: {
-                    symbol: stratMeta.symbol || symbol,
-                    interval: stratMeta.interval || interval,
-                    capital: stratMeta.capital || capital,
-                    quantity: stratMeta.quantity || quantity,
-                    fromDate: stratMeta.fromDate || fromDate,
-                    toDate: stratMeta.toDate || toDate
-                }
+                strategy_id: stratMeta.strategy_id
             });
 
             if (res && res.success && res.data) {

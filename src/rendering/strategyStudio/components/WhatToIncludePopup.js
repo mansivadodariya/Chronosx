@@ -6,71 +6,202 @@ import { CloseXIcon, SparklesMiniIcon, ChevronRightMiniIcon, ChevronDownIcon } f
 
 export const WHAT_TO_INCLUDE_STEPS = [
     {
-        id: 'market',
-        category: 'Market and chart',
-        shortLabel: 'Market',
-        question: 'Which market do you trade?',
+        id: 'asset_symbol',
+        category: 'Asset / Symbol',
+        shortLabel: 'Asset',
+        question: 'Which MT5 pair or metal do you trade?',
+        strategyKey: 'stock_name',
         options: [
-            { label: '+ EURUSD', text: 'I trade EURUSD.' },
-            { label: '+ Gold', text: 'I trade Gold.' },
-            { label: '+ Nasdaq', text: 'I trade Nasdaq.' },
-            { label: '+ 15 minute chart', text: 'I trade on a 15-minute chart.' },
-            { label: '+ 1 hour chart', text: 'I trade on a 1-hour chart.' }
+            { label: '+ Gold (XAUUSD)', text: 'Trade Gold (XAUUSD)', value: 'XAUUSD', mapping: { stock_name: ['XAUUSD'] } },
+            { label: '+ EURUSD', text: 'Trade EURUSD', value: 'EURUSD', mapping: { stock_name: ['EURUSD'] } },
+            { label: '+ GBPUSD', text: 'Trade GBPUSD', value: 'GBPUSD', mapping: { stock_name: ['GBPUSD'] } },
+            { label: '+ GBPJPY', text: 'Trade GBPJPY', value: 'GBPJPY', mapping: { stock_name: ['GBPJPY'] } },
+            { label: '+ EURJPY', text: 'Trade EURJPY', value: 'EURJPY', mapping: { stock_name: ['EURJPY'] } },
+            { label: '+ USDCAD', text: 'Trade USDCAD', value: 'USDCAD', mapping: { stock_name: ['USDCAD'] } }
         ]
     },
     {
-        id: 'entry',
-        category: 'When you enter',
-        shortLabel: 'Entry',
-        question: 'When do you buy or sell?',
+        id: 'timeframe',
+        category: 'Timeframe',
+        shortLabel: 'Timeframe',
+        question: 'What chart timeframe should the bot analyze?',
+        strategyKey: 'interval',
         options: [
-            { label: '+ EMA cross', text: 'I enter when EMAs cross.' },
-            { label: '+ Breakout', text: 'I enter on a breakout.' },
-            { label: '+ RSI bounce', text: 'I enter on an RSI bounce.' }
+            { label: '+ 5min (Scalping)', text: '5min chart timeframe', value: '5min', mapping: { interval: '5min' } },
+            { label: '+ 15min (Intraday)', text: '15min chart timeframe', value: '15min', mapping: { interval: '15min' } },
+            { label: '+ 30min (Short Swing)', text: '30min chart timeframe', value: '30min', mapping: { interval: '30min' } },
+            { label: '+ 1hour (Trend Swing)', text: '1hour chart timeframe', value: '1hour', mapping: { interval: '1hour' } },
+            { label: '+ 4hour (Positional)', text: '4hour chart timeframe', value: '4hour', mapping: { interval: '4hour' } }
         ]
     },
     {
-        id: 'direction',
-        category: 'Long or short',
+        id: 'trade_direction',
+        category: 'Trade Direction',
         shortLabel: 'Direction',
-        question: 'Long, short or both?',
+        question: 'What is your trade direction / bias?',
+        strategyKey: 'entry_type',
         options: [
-            { label: '+ Both', text: 'I take both long and short trades.' },
-            { label: '+ Long only', text: 'I only take long trades.' },
-            { label: '+ Short only', text: 'I only take short trades.' }
+            { label: '+ Buy / Long Only', text: 'Buy / Long Only', value: 'Buy', mapping: { entry_type: 0 } },
+            { label: '+ Sell / Short Only', text: 'Sell / Short Only', value: 'Sell', mapping: { entry_type: 1 } },
+            { label: '+ Both (Long & Short)', text: 'Both (Long & Short)', value: 'Both', mapping: { entry_type: null } }
+        ]
+    },
+    {
+        id: 'entry_strategy',
+        category: 'Entry Strategy',
+        shortLabel: 'Entry',
+        question: 'Which indicator signal triggers market entry?',
+        strategyKey: 'entry_conditions',
+        options: [
+            {
+                label: '+ EMA 9 / 21 Crossover',
+                text: 'EMA 9 / 21 Crossover',
+                value: 'EMA 9/21 Crossover',
+                mapping: {
+                    entry_conditions: {
+                        rules: [{ indicator1: 'ema-9', operator: 'crossover', indicator2: 'ema-21' }]
+                    }
+                }
+            },
+            {
+                label: '+ EMA 20 / 50 Trend Cross',
+                text: 'EMA 20 / 50 Trend Cross',
+                value: 'EMA 20/50 Trend Cross',
+                mapping: {
+                    entry_conditions: {
+                        rules: [{ indicator1: 'ema-20', operator: 'crossover', indicator2: 'ema-50' }]
+                    }
+                }
+            },
+            {
+                label: '+ RSI Oversold Bounce (< 30)',
+                text: 'RSI Oversold Bounce (< 30)',
+                value: 'RSI Oversold Bounce',
+                mapping: {
+                    entry_conditions: {
+                        rules: [{ indicator1: 'rsi-14', operator: '<', value: 30 }]
+                    }
+                }
+            },
+            {
+                label: '+ Supertrend Flip (10, 3)',
+                text: 'Supertrend Flip (10, 3)',
+                value: 'Supertrend Flip',
+                mapping: {
+                    entry_conditions: {
+                        rules: [{ indicator1: 'supertrend-10-3', operator: 'flip', value: 'bullish' }]
+                    }
+                }
+            },
+            {
+                label: '+ MACD Signal Cross (12, 26, 9)',
+                text: 'MACD Signal Cross (12, 26, 9)',
+                value: 'MACD Signal Cross',
+                mapping: {
+                    entry_conditions: {
+                        rules: [{ indicator1: 'macd-12-26', operator: 'crossover', indicator2: 'macd-signal-9' }]
+                    }
+                }
+            }
         ]
     },
     {
         id: 'stop_loss',
-        category: 'Stop loss',
-        shortLabel: 'Stop loss',
-        question: 'Where does your stop loss go?',
+        category: 'Stop Loss',
+        shortLabel: 'Stop Loss',
+        question: 'How do you want to protect downside risk?',
+        strategyKey: 'exit_conditions.stoploss',
         options: [
-            { label: '+ Last swing', text: 'My stop loss is at the last swing.' },
-            { label: '+ 20 pips', text: 'My stop loss is 20 pips.' },
-            { label: '+ 1.5 ATR', text: 'My stop loss is 1.5 ATR.' }
+            {
+                label: '+ 25 Pips (250 Points)',
+                text: '25 Pips (250 Points) SL',
+                value: '25 Pips SL',
+                mapping: { exit_conditions: { stoploss: 250, stoploss_type: 'points' } }
+            },
+            {
+                label: '+ 50 Pips (500 Points)',
+                text: '50 Pips (500 Points) SL',
+                value: '50 Pips SL',
+                mapping: { exit_conditions: { stoploss: 500, stoploss_type: 'points' } }
+            },
+            {
+                label: '+ 1.5x ATR Dynamic SL',
+                text: '1.5x ATR Dynamic SL',
+                value: '1.5x ATR SL',
+                mapping: { exit_conditions: { stoploss: 1.5, stoploss_type: 'atr', atr_length: 14 } }
+            },
+            {
+                label: '+ 15 Pips Tight SL (150 Points)',
+                text: '15 Pips Tight SL (150 Points)',
+                value: '15 Pips SL',
+                mapping: { exit_conditions: { stoploss: 150, stoploss_type: 'points' } }
+            }
         ]
     },
     {
         id: 'take_profit',
-        category: 'Take profit',
-        shortLabel: 'Take profit',
-        question: 'Where do you take profit?',
+        category: 'Take Profit',
+        shortLabel: 'Take Profit',
+        question: 'Where do you want to exit with profit?',
+        strategyKey: 'exit_conditions.target',
         options: [
-            { label: '+ 2 × my risk', text: 'I take profit at 2 times my risk.' },
-            { label: '+ Session close', text: 'I take profit at the session close.' },
-            { label: '+ Opposite signal', text: 'I take profit on an opposite signal.' }
+            {
+                label: '+ 1:2 RR (50 Pips / 500 Points)',
+                text: '1:2 RR (50 Pips / 500 Points) TP',
+                value: '1:2 RR (500 Points)',
+                mapping: { exit_conditions: { target: 500, target_type: 'points', trailing_stoploss: false } }
+            },
+            {
+                label: '+ 1:3 RR (75 Pips / 750 Points)',
+                text: '1:3 RR (75 Pips / 750 Points) TP',
+                value: '1:3 RR (750 Points)',
+                mapping: { exit_conditions: { target: 750, target_type: 'points', trailing_stoploss: false } }
+            },
+            {
+                label: '+ 100 Pips Runner (1000 Points)',
+                text: '100 Pips Runner (1000 Points)',
+                value: '100 Pips Runner (1000 Points)',
+                mapping: { exit_conditions: { target: 1000, target_type: 'points', trailing_stoploss: false } }
+            },
+            {
+                label: '+ Trailing Stop (Follow Trend)',
+                text: 'Trailing Stop (Follow Trend)',
+                value: 'Trailing Stop',
+                mapping: { exit_conditions: { trailing_stoploss: true } }
+            }
         ]
     },
     {
-        id: 'risk',
-        category: 'Risk per trade',
-        shortLabel: 'Risk',
-        question: 'Not said yet. How much do you risk per trade?',
+        id: 'lot_sizing',
+        category: 'Lot Sizing',
+        shortLabel: 'Lot Sizing',
+        question: 'What MT5 volume / lot size per trade?',
+        strategyKey: 'quantity',
         options: [
-            { label: '+ 0.5%', text: 'I risk 0.5% per trade.' },
-            { label: '+ 1%', text: 'I risk 1% per trade.' },
-            { label: '+ 2%', text: 'I risk 2% per trade.' }
+            {
+                label: '+ 0.01 Lots (Micro - Recommended)',
+                text: '0.01 Lots (Micro)',
+                value: '0.01 Lots',
+                mapping: { quantity: 0.01, sizing_mode: 'lots', inital_capital: 10000.0 }
+            },
+            {
+                label: '+ 0.05 Lots (Balanced)',
+                text: '0.05 Lots (Balanced)',
+                value: '0.05 Lots',
+                mapping: { quantity: 0.05, sizing_mode: 'lots', inital_capital: 10000.0 }
+            },
+            {
+                label: '+ 0.10 Lots (Mini Lot)',
+                text: '0.10 Lots (Mini Lot)',
+                value: '0.10 Lots',
+                mapping: { quantity: 0.10, sizing_mode: 'lots', inital_capital: 10000.0 }
+            },
+            {
+                label: '+ 1.00 Standard Lot',
+                text: '1.00 Standard Lot',
+                value: '1.00 Standard Lot',
+                mapping: { quantity: 1.00, sizing_mode: 'lots', inital_capital: 10000.0 }
+            }
         ]
     }
 ];

@@ -274,10 +274,15 @@ export const strategyStudioApi = {
 
     /**
      * Run Backtest Execution
+     * If strategy_id is present, executes POST /backtest/v1/run-by-id with { strategy_id }
      */
     runBacktest: async (payload) => {
         try {
             const apiBase = getApiBase();
+            const stratId = payload?.strategy_id || payload?.strategyId;
+            if (stratId) {
+                return await strategyStudioApi.runBacktestById({ strategy_id: stratId });
+            }
             const currentUserId = payload?.user_id || getStoredUserId() || undefined;
             const res = await fetch(apiBase, {
                 method: "POST",
@@ -329,18 +334,17 @@ export const strategyStudioApi = {
     /**
      * Run Backtest Execution by Strategy ID
      * POST /backtest/v1/run-by-id
-     * Payload: { strategy_id, user_id }
+     * Payload: { strategy_id }
      */
-    runBacktestById: async ({ strategy_id, source, fallbackParams = {}, userId }) => {
+    runBacktestById: async ({ strategy_id, strategyId, userId }) => {
         try {
             const apiBase = getApiBase();
-            const currentUserId = userId || getStoredUserId() || undefined;
+            const effectiveStratId = strategy_id || strategyId;
             const res = await fetch(`${apiBase}/run-by-id`, {
                 method: "POST",
                 headers: getAuthHeaders(),
                 body: JSON.stringify({
-                    strategy_id,
-                    ...(currentUserId ? { user_id: currentUserId } : {})
+                    strategy_id: effectiveStratId
                 })
             });
             if (res.ok) {
@@ -442,12 +446,14 @@ export const interactiveCopilotApi = {
         return { ok: res.ok, status: res.status, body };
     },
 
-    run: async ({ sessionId, includePlot = true, strategy, strategy_json, strategyJson, userId, ...extra } = {}) => {
+    run: async ({ sessionId, includePlot = true, strategy, strategy_json, strategyJson, strategy_id, strategyId, userId, ...extra } = {}) => {
         const base = getInteractiveApiBase();
         const currentUserId = userId || getStoredUserId() || '';
         const strat = strategy_json || strategyJson || strategy || {};
+        const effectiveStratId = strategy_id || strategyId || strat?.strategy_id || strat?.id || extra?.strategy_id;
         const payload = {
             session_id: sessionId || '',
+            ...(effectiveStratId ? { strategy_id: effectiveStratId } : {}),
             strategy: strategy || strat,
             strategy_json: strat,
             include_plot: includePlot ?? true,

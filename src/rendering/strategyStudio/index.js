@@ -105,6 +105,7 @@ export default function StrategyStudio() {
         setBacktestRoundTrips([]);
 
         const activeStrat = resp?.strategy || {};
+        const stratId = customParams?.strategy_id || customParams?.strategyId || activeStrat?.strategy_id || activeStrat?.id || resp?.strategy_id || resp?.id;
         const sym = customParams?.symbol || (Array.isArray(activeStrat.stock_name) ? activeStrat.stock_name[0] : activeStrat.stock_name) || symbol || 'XAUUSD';
         const intv = customParams?.interval || activeStrat.interval || interval || '15min';
         const cap = parseFloat(customParams?.capital || activeStrat.inital_capital || capital) || 10000;
@@ -115,9 +116,18 @@ export default function StrategyStudio() {
         try {
             let resData = null;
 
-            // 1. Primary: Run via interactive-run API (/interactive-run with sessionId)
-            if (sessionId) {
+            // 1. Direct Run via /backtest/v1/run-by-id if strategy_id exists
+            if (stratId) {
+                const byIdRes = await strategyStudioApi.runBacktestById({ strategy_id: stratId }).catch(() => null);
+                if (byIdRes && (byIdRes.status === 'success' || byIdRes.success) && byIdRes.data) {
+                    resData = byIdRes.data;
+                }
+            }
+
+            // 2. Run via interactive-run API (/interactive-run with sessionId & strategy_id)
+            if (!resData && sessionId) {
                 const runRes = await runBacktest({
+                    strategy_id: stratId,
                     includePlot: true,
                     strategy: activeStrat,
                     strategy_json: activeStrat,

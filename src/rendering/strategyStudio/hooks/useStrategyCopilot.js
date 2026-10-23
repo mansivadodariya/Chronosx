@@ -234,12 +234,14 @@ export default function useStrategyCopilot() {
 
     // Run Backtest
     const runBacktest = useCallback(
-        async ({ includePlot = true, strategy: customStrat, strategy_json: customJson, userId } = {}) => {
+        async ({ includePlot = true, strategy: customStrat, strategy_json: customJson, strategy_id: customStratId, strategyId, userId } = {}) => {
             setBusy(true);
             try {
                 const stratToRun = customJson || customStrat || resp?.strategy || {};
+                const effectiveStratId = customStratId || strategyId || stratToRun?.strategy_id || stratToRun?.id || resp?.strategy_id || resp?.id;
                 const { ok, body } = await interactiveCopilotApi.run({
                     sessionId,
+                    strategy_id: effectiveStratId,
                     includePlot,
                     strategy: stratToRun,
                     strategy_json: stratToRun,

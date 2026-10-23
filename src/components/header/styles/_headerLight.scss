@@ -229,10 +229,12 @@
         }
 
         .mobileChevron {
-            color: #64748B;
+            color: #64748B !important;
+            stroke: #64748B;
 
             &.mobileChevronOpen {
-                color: #047857;
+                color: #047857 !important;
+                stroke: #047857;
             }
         }
 
@@ -246,7 +248,8 @@
             }
 
             .mobileChevron {
-                color: #047857;
+                color: #047857 !important;
+                stroke: #047857;
             }
         }
 
@@ -259,7 +262,18 @@
     .mobileDropdownItem {
         background: transparent;
         border: none;
+
+        .mobileDropdownTrigger {
+            .mobileChevron {
+                color: #64748B !important;
+
+                &.mobileChevronOpen {
+                    color: #047857 !important;
+                }
+            }
+        }
     }
+
 
     .mobileSubList {
         background: transparent;
