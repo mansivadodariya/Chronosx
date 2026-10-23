@@ -29,9 +29,20 @@ export default function StrategyStudio() {
         retryMessage,
         saveDraft,
         runBacktest,
+        historyList,
+        setHistoryList,
+        historyLoading,
+        loadHistoryList,
+        loadSession,
+        newChat,
     } = useStrategyCopilot();
 
     const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+
+    const handleOpenHistoryAction = useCallback(() => {
+        setIsHistoryOpen(true);
+        loadHistoryList();
+    }, [loadHistoryList]);
 
     // Backtest Parameters & State
     const [symbol, setSymbol] = useState('XAUUSD');
@@ -88,13 +99,14 @@ export default function StrategyStudio() {
         e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
     }, []);
 
-    const handleNewChatAction = () => {
+    const handleNewChatAction = useCallback(() => {
         setIsBacktestPanelOpen(false);
         setIsEditingForm(false);
         setBacktestResults(null);
         setBacktestRoundTrips([]);
-        boot(false);
-    };
+        setIsHistoryOpen(false);
+        newChat();
+    }, [newChat]);
 
     // Full High-Fidelity Backtest Simulation via /interactive-run
     const handleExecuteBacktest = useCallback(async (customParams = null) => {
@@ -252,7 +264,7 @@ export default function StrategyStudio() {
                         onSendMessage={sendMessage}
                         onRetryMessage={retryMessage}
                         onRunBacktest={handleExecuteBacktest}
-                        onOpenHistory={() => setIsHistoryOpen(true)}
+                        onOpenHistory={handleOpenHistoryAction}
                         onNewChat={handleNewChatAction}
                         onOpenModifyForm={() => {
                             setIsEditingForm(true);
@@ -363,11 +375,17 @@ export default function StrategyStudio() {
             <ChatHistoryDrawer
                 isOpen={isHistoryOpen}
                 onClose={() => setIsHistoryOpen(false)}
-                historyList={[]}
-                loading={false}
+                historyList={historyList}
+                loading={historyLoading}
                 currentSessionId={sessionId}
-                onSelectSession={() => {}}
-                onDeleteSession={() => {}}
+                onSelectSession={async (sid) => {
+                    await loadSession(sid);
+                    setIsHistoryOpen(false);
+                }}
+                onDeleteSession={(sid, e) => {
+                    if (e) e.stopPropagation();
+                    setHistoryList((prev) => prev.filter((item) => (item.session_id || item.id) !== sid));
+                }}
                 onNewChat={handleNewChatAction}
             />
         </div>

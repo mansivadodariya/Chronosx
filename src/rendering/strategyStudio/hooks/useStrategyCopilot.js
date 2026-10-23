@@ -30,13 +30,28 @@ export default function useStrategyCopilot() {
     // Apply Copilot Response to state and chat messages
     const applyResponse = useCallback((r, withMessage = true) => {
         setResp(r);
-        if (withMessage && r?.reply) {
+        const replyText = r?.reply || r?.text || r?.message || '';
+        const rawButtons =
+            (Array.isArray(r?.cta_buttons) && r.cta_buttons.length > 0)
+                ? r.cta_buttons
+                : (Array.isArray(r?.options) && r.options.length > 0)
+                    ? r.options
+                    : (Array.isArray(r?.buttons) && r.buttons.length > 0)
+                        ? r.buttons
+                        : (Array.isArray(r?.ctaButtons) && r.ctaButtons.length > 0)
+                            ? r.ctaButtons
+                            : [];
+
+        if (withMessage && (replyText || rawButtons.length > 0)) {
             setMessages((prev) => [
                 ...prev,
                 {
                     id: 'ai_' + Date.now() + Math.random(),
                     role: 'ai',
-                    text: r.reply,
+                    text: replyText,
+                    cta_buttons: rawButtons,
+                    options: rawButtons,
+                    buttons: rawButtons,
                     ...(typeof r === 'object' ? r : {})
                 },
             ]);
@@ -87,7 +102,32 @@ export default function useStrategyCopilot() {
                     setSessionId(body.session_id);
                 }
 
-                applyResponse(body.data, true);
+                // Merge body and body.data to ensure cta_buttons / options are never missed
+                const combinedData = {
+                    ...(typeof body === 'object' ? body : {}),
+                    ...(typeof body?.data === 'object' ? body.data : {})
+                };
+
+                const buttons =
+                    (Array.isArray(combinedData.cta_buttons) && combinedData.cta_buttons.length > 0)
+                        ? combinedData.cta_buttons
+                        : (Array.isArray(combinedData.options) && combinedData.options.length > 0)
+                            ? combinedData.options
+                            : (Array.isArray(body?.cta_buttons) && body.cta_buttons.length > 0)
+                                ? body.cta_buttons
+                                : (Array.isArray(body?.data?.cta_buttons) && body.data.cta_buttons.length > 0)
+                                    ? body.data.cta_buttons
+                                    : (Array.isArray(body?.options) && body.options.length > 0)
+                                        ? body.options
+                                        : (Array.isArray(body?.data?.options) && body.data.options.length > 0)
+                                            ? body.data.options
+                                            : [];
+
+                combinedData.cta_buttons = buttons;
+                combinedData.options = buttons;
+                combinedData.buttons = buttons;
+
+                applyResponse(combinedData, true);
             } catch (err) {
                 setBusy(false);
                 const errorDetail = categorizeChatError(err.message, 0);
@@ -303,6 +343,88 @@ export default function useStrategyCopilot() {
         [boot]
     );
 
+    const [historyList, setHistoryList] = useState([]);
+    const [historyLoading, setHistoryLoading] = useState(false);
+
+    // Load user chat sessions from /interactive-sessions
+    const loadHistoryList = useCallback(async () => {
+        setHistoryLoading(true);
+        try {
+            const { ok, body } = await interactiveCopilotApi.getSessions();
+            if (ok && body) {
+                const sessions = Array.isArray(body.data) ? body.data : (Array.isArray(body) ? body : []);
+                setHistoryList(sessions);
+            }
+        } catch (err) {
+            console.warn('[useStrategyCopilot] loadHistoryList error:', err);
+        } finally {
+            setHistoryLoading(false);
+        }
+    }, []);
+
+    // Load past session messages and strategy state from /interactive-sessions?session_id=...
+    const loadSession = useCallback(async (sid) => {
+        if (!sid) return;
+        setBusy(true);
+        try {
+            const { ok, body } = await interactiveCopilotApi.getSessionState(sid);
+            setBusy(false);
+            if (ok && body) {
+                setSessionId(sid);
+                const sData = body.data || body;
+                setResp(sData);
+
+                const rawMsgs = sData.messages || sData.history || body.messages || body.history || [];
+                let normalized = [];
+                if (Array.isArray(rawMsgs) && rawMsgs.length > 0) {
+                    normalized = rawMsgs.map((m, idx) => {
+                        const rawText = typeof m.content === 'string'
+                            ? m.content
+                            : (m.text || m.message || m.reply || (m.content ? JSON.stringify(m.content) : ''));
+                        const rawButtons = m.cta_buttons || m.options || m.buttons || [];
+                        return {
+                            id: m.id || `hist_${idx}_${Date.now()}`,
+                            role: (m.role === 'user' || m.role === 'human') ? 'user' : 'ai',
+                            text: rawText,
+                            cta_buttons: Array.isArray(rawButtons) ? rawButtons : [],
+                            options: Array.isArray(rawButtons) ? rawButtons : [],
+                            buttons: Array.isArray(rawButtons) ? rawButtons : [],
+                            fromHistory: true,
+                        };
+                    });
+                } else if (sData.reply || body.reply) {
+                    const rawButtons = sData.cta_buttons || sData.options || body.cta_buttons || body.options || [];
+                    normalized.push({
+                        id: `hist_0_${Date.now()}`,
+                        role: 'ai',
+                        text: sData.reply || body.reply,
+                        cta_buttons: Array.isArray(rawButtons) ? rawButtons : [],
+                        options: Array.isArray(rawButtons) ? rawButtons : [],
+                        buttons: Array.isArray(rawButtons) ? rawButtons : [],
+                        fromHistory: true,
+                    });
+                }
+
+                setMessages(normalized);
+                if (sData.draft || sData.strategy) {
+                    setEditDraft(sData.draft || sData.strategy);
+                }
+            }
+        } catch (err) {
+            setBusy(false);
+            console.warn('[useStrategyCopilot] loadSession error:', err);
+        }
+    }, []);
+
+    // Start a fresh new chat session
+    const newChat = useCallback(() => {
+        setSessionId(generateSessionId());
+        setMessages([]);
+        setResp(null);
+        setResult(null);
+        setEditDraft(null);
+    }, []);
+
     return {
         sessionId,
         metadata,
@@ -325,5 +447,11 @@ export default function useStrategyCopilot() {
         saveDraft,
         runBacktest,
         handleUpdateApiBase,
+        historyList,
+        setHistoryList,
+        historyLoading,
+        loadHistoryList,
+        loadSession,
+        newChat,
     };
 }

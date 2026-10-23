@@ -310,22 +310,18 @@ export default function InteractiveQuestionWizard({
 
         // 2. Fallback to static wizard when AI gives nothing
         if (raw.length === 0) {
-            return STATIC_STRATEGY_QUESTIONS;
+            if (previouslyAnsweredSet.size === 0) return STATIC_STRATEGY_QUESTIONS;
+            return STATIC_STRATEGY_QUESTIONS.filter((q) => {
+                const qId = (q.question_id || '').toLowerCase().trim();
+                const qTitle = (q.question_title || q.question || '').toLowerCase().trim();
+                if (qId && previouslyAnsweredSet.has(qId)) return false;
+                if (qTitle && previouslyAnsweredSet.has(qTitle)) return false;
+                return true;
+            });
         }
 
-        if (previouslyAnsweredSet.size === 0) return raw;
-
-        // Auto-filter out questions already answered in previous turns
-        const filtered = raw.filter((q) => {
-            const qId = (q.question_id || '').toLowerCase().trim();
-            if (qId === 'quick_actions') return true;
-            const qTitle = (q.question_title || q.question || '').toLowerCase().trim();
-            if (qId && previouslyAnsweredSet.has(qId)) return false;
-            if (qTitle && previouslyAnsweredSet.has(qTitle)) return false;
-            return true;
-        });
-
-        return filtered;
+        // When AI explicitly provides options or questions for the active turn, always present them
+        return raw;
     }, [latestAiMessage, previouslyAnsweredSet]);
 
     // Reset when a brand new AI message arrives with questions

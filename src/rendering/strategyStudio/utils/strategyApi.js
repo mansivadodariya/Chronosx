@@ -468,6 +468,39 @@ export const interactiveCopilotApi = {
         const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
         return { ok: res.ok, status: res.status, body };
     },
+
+    getSessions: async ({ userId, page = 1, limit = 30 } = {}) => {
+        try {
+            const base = getInteractiveApiBase();
+            const uid = userId || getStoredUserId() || '';
+            const queryParams = new URLSearchParams();
+            if (uid) queryParams.set('user_id', uid);
+            if (page) queryParams.set('page', String(page));
+            if (limit) queryParams.set('limit', String(limit));
+
+            const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
+            const res = await fetch(`${base}/interactive-sessions${queryString}`, {
+                headers: getAuthHeaders(),
+            });
+            const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
+            return { ok: res.ok, status: res.status, body };
+        } catch (err) {
+            return { ok: false, status: 0, body: { success: false, error: err.message || 'Failed to fetch' } };
+        }
+    },
+
+    getSessionState: async (sessionId) => {
+        try {
+            const base = getInteractiveApiBase();
+            const res = await fetch(`${base}/interactive-sessions?session_id=${encodeURIComponent(sessionId)}`, {
+                headers: getAuthHeaders(),
+            });
+            const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
+            return { ok: res.ok, status: res.status, body };
+        } catch (err) {
+            return { ok: false, status: 0, body: { success: false, error: err.message || 'Failed to fetch' } };
+        }
+    },
 };
 
 /**
