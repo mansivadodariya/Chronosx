@@ -47,11 +47,9 @@ export function useLivePrice(symbol = 'XAUUSD') {
         // 1. Listen for global livePriceUpdate events
         const handleGlobalPriceUpdate = (e) => {
             const payload = e?.detail;
-            if (!payload || payload.price === undefined || payload.price === null) return;
-            if (payload.symbol) {
-                const eventSym = cleanPairSymbol(payload.symbol);
-                if (eventSym && eventSym !== cleanSymbol) return;
-            }
+            if (!payload || !payload.symbol || payload.price === undefined || payload.price === null) return;
+            const eventSym = cleanPairSymbol(payload.symbol);
+            if (eventSym !== cleanSymbol) return;
             updatePrice(
                 payload.price,
                 payload.change_percent ?? payload.changePercent,

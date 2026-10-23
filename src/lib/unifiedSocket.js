@@ -15,7 +15,7 @@
  */
 
 const BASE_FALLBACK_PRICES = {
-    XAUUSD: 4173.94,
+    XAUUSD: 4022.50,
     EURUSD: 1.08450,
     GBPUSD: 1.29250,
     USDJPY: 154.200,
@@ -191,7 +191,7 @@ class UnifiedSocketManager {
     getKnownPrice(symbol) {
         if (!symbol) return null;
         const sym = cleanPairSymbol(symbol);
-        return this.knownPrices.get(sym) || this.lastPriceUpdate?.price || BASE_FALLBACK_PRICES[sym] || null;
+        return this.knownPrices.get(sym) || (sym === this.currentSymbol ? this.lastPriceUpdate?.price : null) || null;
     }
 
     getStatus() {
@@ -369,7 +369,8 @@ class UnifiedSocketManager {
                 });
 
                 targetSymbols.forEach((sym) => {
-                    const basePrice = this.knownPrices.get(sym) || (sym === this.currentSymbol && this.lastPriceUpdate?.price) || BASE_FALLBACK_PRICES[sym] || 100;
+                    const basePrice = this.knownPrices.get(sym) || (sym === this.currentSymbol && this.lastPriceUpdate?.price) || null;
+                    if (!basePrice || basePrice <= 0) return;
                     const delta = (Math.random() - 0.495) * (basePrice * 0.00008);
                     const decimals = sym.includes('JPY') ? 3 : (basePrice > 500 ? 2 : 5);
                     const newPrice = +(basePrice + delta).toFixed(decimals);
@@ -430,7 +431,8 @@ class UnifiedSocketManager {
             });
 
             targetSymbols.forEach((sym) => {
-                const basePrice = this.knownPrices.get(sym) || (sym === this.currentSymbol && this.lastPriceUpdate?.price) || BASE_FALLBACK_PRICES[sym] || 100;
+                const basePrice = this.knownPrices.get(sym) || (sym === this.currentSymbol && this.lastPriceUpdate?.price) || null;
+                if (!basePrice || basePrice <= 0) return;
                 const delta = (Math.random() - 0.495) * (basePrice * 0.0001);
                 const decimals = sym.includes('JPY') ? 3 : (basePrice > 500 ? 2 : 5);
                 const newPrice = +(basePrice + delta).toFixed(decimals);
@@ -504,7 +506,9 @@ class UnifiedSocketManager {
                 timestamp: payload.timestamp || Math.floor(Date.now() / 1000)
             };
 
-            this.lastPriceUpdate = formatted;
+            if (sym === this.currentSymbol) {
+                this.lastPriceUpdate = formatted;
+            }
 
             // Notify price subscribers
             this.priceListeners.forEach(({ callback, symbolFilter }) => {

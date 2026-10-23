@@ -191,17 +191,17 @@ export default function useChartDataLoader({
                     lastValueVisible: true,
                 });
 
-                // Anchor initial latest candle close to live price if already known
+                // Anchor initial latest candle close only if a live prop is explicitly provided
                 const initialLive = (livePrice && !isNaN(livePrice) && Number(livePrice) > 0)
                     ? Number(livePrice)
-                    : (unifiedSocket?.getKnownPrice ? unifiedSocket.getKnownPrice(activeSymbolClean) : null);
+                    : null;
 
                 if (initialLive && formattedCandles.length > 0) {
                     const lastIdx = formattedCandles.length - 1;
                     const c = formattedCandles[lastIdx];
                     const numLive = Number(Number(initialLive).toFixed(precision));
                     const ratio = numLive / c.close;
-                    if (ratio <= 1.25 && ratio >= 0.75) {
+                    if (ratio <= 1.012 && ratio >= 0.988) {
                         formattedCandles[lastIdx] = {
                             ...c,
                             high: Math.max(c.high, numLive),
@@ -291,10 +291,10 @@ export default function useChartDataLoader({
                         const lastIndex = candlesDataRef.current.length - 1;
                         const lastCandle = candlesDataRef.current[lastIndex];
 
-                        // Prevent cross-symbol price distortion or sudden giant spikes (> 25% single-tick gap)
+                        // Prevent cross-symbol price distortion or sudden giant spikes (> 1.2% single-tick gap)
                         const lastClose = lastCandle.close;
                         const ratio = closePrice / lastClose;
-                        if (ratio > 1.25 || ratio < 0.75) {
+                        if (ratio > 1.012 || ratio < 0.988) {
                             return;
                         }
 

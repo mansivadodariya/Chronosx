@@ -307,6 +307,10 @@ export default function AiCockpitLiveChart({ livePrice = 4308.18, isPositiveChan
     const price = parseFloat(livePrice);
     if (isNaN(price) || price <= 0) return;
 
+    // Sanity check: discard anomalous spikes / cross-symbol price mismatches (> 1.2% gap)
+    const deviation = Math.abs(price - lastCandle.close) / (lastCandle.close || 1);
+    if (deviation > 0.012) return;
+
     const updatedCandle = {
       time: formattedTime,
       open: lastCandle.open,

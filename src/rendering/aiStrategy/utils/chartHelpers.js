@@ -141,10 +141,10 @@ export function calculateLiveCandleUpdate(candles, newPrice, timeframe, meta = {
     const lastCandle = candles[candles.length - 1];
 
     // Sanity check: prevent artificial multi-hundred-dollar plunge/spike artifacts.
-    // If incoming price deviates by > 4.5% from last candle close, flag need for resync
+    // If incoming price deviates by > 1.2% from last candle close, flag need for resync
     // and do not mutate the existing candle into an unrealistic stretched needle.
     const deviation = Math.abs(newPrice - lastCandle.close) / (lastCandle.close || 1);
-    if (deviation > 0.045) {
+    if (deviation > 0.012) {
         return {
             updatedBar: null,
             needsResync: true,

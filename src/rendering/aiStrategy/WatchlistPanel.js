@@ -72,7 +72,7 @@ function getBidAskPrices(candle, symbol) {
 }
 
 const WATCHLIST_BASE_PRICES = {
-    XAUUSD: { price: 4173.94, changePct: -0.03 },
+    XAUUSD: { price: 4022.50, changePct: 0.15 },
     EURUSD: { price: 1.08450, changePct: 0.12 },
     GBPUSD: { price: 1.29250, changePct: -0.08 },
     GBPJPY: { price: 198.420, changePct: 0.24 },
