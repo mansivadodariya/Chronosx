@@ -361,28 +361,40 @@ export function parseRoundTrips(tradesInput, initialCapital, quantity) {
     const firstSym = (tradesInput?.stock_name || tradesInput?.symbol || trades[0]?.symbol || trades[0]?.stock_name || 'EURUSD');
     const effectiveUnits = getContractUnits(firstSym, qty);
 
-    // Check if trades are already parsed round-trip objects
+    // Check if trades are already parsed round-trip objects (camelCase or snake_case)
     const firstTrade = trades[0];
-    if (firstTrade && (firstTrade.pnl !== undefined || (firstTrade.entryPrice !== undefined && firstTrade.exitPrice !== undefined))) {
+    const hasRealPnl = firstTrade && firstTrade.pnl !== undefined;
+    const hasCamelPrices = firstTrade && firstTrade.entryPrice !== undefined && firstTrade.exitPrice !== undefined;
+    const hasSnakePrices = firstTrade && firstTrade.entry_price !== undefined && firstTrade.exit_price !== undefined;
+    if (hasRealPnl || hasCamelPrices || hasSnakePrices) {
         let runningBalance = initCap;
         return trades.map((t, idx) => {
             const entryPrice = Number(t.entryPrice || t.entry_price || t.Price || 0);
-            const exitPrice = Number(t.exitPrice || t.exit_date_price || t.exit_price || 0);
-            const side = (t.side || t.buy_sell_label || t.action || "BUY").toUpperCase();
-            const isBuy = side === "BUY";
-            let pnl = t.pnl !== undefined ? Number(t.pnl) : (isBuy ? (exitPrice - entryPrice) * effectiveUnits : (entryPrice - exitPrice) * effectiveUnits);
+            const exitPrice = Number(t.exitPrice || t.exit_price || t.exit_date_price || entryPrice);
+            const rawSide = String(t.side || t.type || t.buy_sell_label || t.action || 'BUY').toUpperCase();
+            const isBuy = rawSide === 'BUY' || rawSide === 'LONG';
+            const side = isBuy ? 'BUY' : 'SELL';
+            // Use backend pnl directly; for OPEN positions pnl is 0
+            let pnl = (t.pnl !== undefined && t.pnl !== null)
+                ? Number(t.pnl)
+                : (exitPrice > 0 && exitPrice !== entryPrice
+                    ? (isBuy ? (exitPrice - entryPrice) * effectiveUnits : (entryPrice - exitPrice) * effectiveUnits)
+                    : 0);
             pnl = parseFloat(pnl.toFixed(2));
-            const pnlPercent = t.pnlPercent !== undefined ? Number(t.pnlPercent) : (entryPrice > 0 ? parseFloat(((pnl / (entryPrice * effectiveUnits)) * 100).toFixed(2)) : 0);
+            const pnlPercent = t.pnlPercent !== undefined
+                ? Number(t.pnlPercent)
+                : (entryPrice > 0 ? parseFloat(((pnl / (entryPrice * effectiveUnits)) * 100).toFixed(2)) : 0);
             runningBalance += pnl;
 
+            const isOpen = t.status === 'OPEN' || (!t.exit_time && !t.exitDate && !t.exit_date);
             return {
-                index: t.index || idx + 1,
-                entryDate: (t.entryDate || t.entry_date || t.entry_time || t.Date || "2024-01-05 10:00").replace(" IST", ""),
+                index: t.index || t.position_id || idx + 1,
+                entryDate: (t.entryDate || t.entry_date || t.entry_time || t.Date || '2024-01-05 10:00').replace(' IST', ''),
                 entryPrice: entryPrice,
-                exitDate: (t.exitDate || t.exit_date || t.exit_time || t.date || "2024-01-05 14:30").replace(" IST", ""),
-                exitPrice: exitPrice,
+                exitDate: isOpen ? 'OPEN' : (t.exitDate || t.exit_date || t.exit_time || t.date || '2024-01-05 14:30').replace(' IST', ''),
+                exitPrice: isOpen ? entryPrice : exitPrice,
                 side: side,
-                trigger: t.trigger || (pnl > 0 ? "TARGET" : "STOPLOSS"),
+                trigger: t.trigger || t.exit_trigger || (pnl > 0 ? 'TARGET' : (pnl < 0 ? 'STOPLOSS' : 'OPEN')),
                 pnl: pnl,
                 pnlPercent: pnlPercent,
                 runningBalance: t.runningBalance !== undefined ? Number(t.runningBalance) : parseFloat(runningBalance.toFixed(2))

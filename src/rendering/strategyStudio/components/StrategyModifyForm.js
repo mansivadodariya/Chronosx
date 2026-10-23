@@ -6,6 +6,43 @@ import StrategyRulesEditor from './StrategyRulesEditor';
 import CustomSelect from './CustomSelect';
 import { UploadFileIcon } from './StudioIcons';
 
+// Date helpers to enforce max 1-year range
+function addOneYear(dateStr) {
+    if (!dateStr) return '';
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return '';
+    const y = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10);
+    const d = parseInt(parts[2], 10);
+    if (!y || !m || !d) return '';
+    const targetDay = (m === 2 && d === 29) ? 28 : d;
+    const nextYear = y + 1;
+    return `${nextYear}-${String(m).padStart(2, '0')}-${String(targetDay).padStart(2, '0')}`;
+}
+
+function subtractOneYear(dateStr) {
+    if (!dateStr) return '';
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return '';
+    const y = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10);
+    const d = parseInt(parts[2], 10);
+    if (!y || !m || !d) return '';
+    const targetDay = (m === 2 && d === 29) ? 28 : d;
+    const prevYear = y - 1;
+    return `${prevYear}-${String(m).padStart(2, '0')}-${String(targetDay).padStart(2, '0')}`;
+}
+
+function getDaysDiff(fromStr, toStr) {
+    if (!fromStr || !toStr) return 0;
+    const [y1, m1, d1] = fromStr.split('-').map(Number);
+    const [y2, m2, d2] = toStr.split('-').map(Number);
+    if (!y1 || !m1 || !d1 || !y2 || !m2 || !d2) return 0;
+    const from = Date.UTC(y1, m1 - 1, d1);
+    const to = Date.UTC(y2, m2 - 1, d2);
+    return (to - from) / (1000 * 60 * 60 * 24);
+}
+
 export default function StrategyModifyForm({
     initialStrategy,
     metadata,
@@ -15,6 +52,7 @@ export default function StrategyModifyForm({
     onSave,
     onCancel,
 }) {
+    const [dateError, setDateError] = useState('');
     const [draft, setDraft] = useState(() => {
         const base = structuredClone(initialStrategy || {});
         if (!base.entry_conditions) {
@@ -127,6 +165,48 @@ export default function StrategyModifyForm({
         }));
     };
 
+    const handleFromDateChange = (newVal) => {
+        const fromVal = newVal || null;
+        let toVal = draft.to_date;
+        if (fromVal && toVal) {
+            const diff = getDaysDiff(fromVal, toVal);
+            if (diff < 0) {
+                // If From Date is after To Date, move To Date to 1 year ahead
+                toVal = addOneYear(fromVal);
+            } else if (diff > 366) {
+                // Maximum range is 1 year -> clamp To Date
+                toVal = addOneYear(fromVal);
+            }
+        }
+        setDateError('');
+        setDraft((prev) => ({
+            ...prev,
+            from_date: fromVal,
+            to_date: toVal,
+        }));
+    };
+
+    const handleToDateChange = (newVal) => {
+        const toVal = newVal || null;
+        let fromVal = draft.from_date;
+        if (toVal && fromVal) {
+            const diff = getDaysDiff(fromVal, toVal);
+            if (diff < 0) {
+                // If To Date is before From Date, move From Date to 1 year before
+                fromVal = subtractOneYear(toVal);
+            } else if (diff > 366) {
+                // Maximum range is 1 year -> clamp From Date
+                fromVal = subtractOneYear(toVal);
+            }
+        }
+        setDateError('');
+        setDraft((prev) => ({
+            ...prev,
+            from_date: fromVal,
+            to_date: toVal,
+        }));
+    };
+
     const handleEntryChange = (updatedEntry) => {
         setDraft((prev) => ({
             ...prev,
@@ -143,6 +223,18 @@ export default function StrategyModifyForm({
 
     const handleSubmit = async (e) => {
         e?.preventDefault?.();
+        if (draft.from_date && draft.to_date) {
+            const diff = getDaysDiff(draft.from_date, draft.to_date);
+            if (diff < 0) {
+                setDateError('To Date cannot be earlier than From Date.');
+                return;
+            }
+            if (diff > 366) {
+                setDateError('Date range cannot exceed 1 year (max 366 days).');
+                return;
+            }
+        }
+        setDateError('');
         onSave(draft);
     };
 
@@ -193,7 +285,9 @@ export default function StrategyModifyForm({
                     <input
                         type="date"
                         value={draft.from_date || ''}
-                        onChange={(e) => handleFieldChange('from_date', e.target.value || null)}
+                        min={draft.to_date ? subtractOneYear(draft.to_date) : undefined}
+                        max={draft.to_date || undefined}
+                        onChange={(e) => handleFromDateChange(e.target.value)}
                     />
                 </div>
 
@@ -202,9 +296,17 @@ export default function StrategyModifyForm({
                     <input
                         type="date"
                         value={draft.to_date || ''}
-                        onChange={(e) => handleFieldChange('to_date', e.target.value || null)}
+                        min={draft.from_date || undefined}
+                        max={draft.from_date ? addOneYear(draft.from_date) : undefined}
+                        onChange={(e) => handleToDateChange(e.target.value)}
                     />
                 </div>
+
+                {dateError && (
+                    <div style={{ gridColumn: '1 / -1', color: '#ef4444', fontSize: '12px', fontWeight: 600, marginTop: '-4px' }}>
+                        {dateError}
+                    </div>
+                )}
 
                 <div className={styles.formField}>
                     <label>Direction</label>

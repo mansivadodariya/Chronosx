@@ -117,11 +117,24 @@ export default function StrategyStudio() {
 
             // 1. Primary: Run via interactive-run API (/interactive-run with sessionId)
             if (sessionId) {
-                const runRes = await runBacktest({ includePlot: true }).catch(() => null);
+                const runRes = await runBacktest({
+                    includePlot: true,
+                    strategy: activeStrat,
+                    strategy_json: activeStrat,
+                }).catch(() => null);
                 if (runRes && runRes.ok && runRes.body) {
                     const body = runRes.body;
-                    if (body.success || body.total_trades !== undefined || body.data) {
-                        resData = body;
+                    const hasPositions = Array.isArray(body?.positions) && body.positions.length > 0;
+                    const hasData = Array.isArray(body?.data) && body.data.length > 0;
+                    if (body.success || body.total_trades !== undefined || hasPositions || hasData) {
+                        // Normalize: pull data[0] candles/chart_markers to root for easy component access
+                        const stockData = hasData ? (body.data[0] || {}) : {};
+                        resData = {
+                            ...body,
+                            candles: stockData.candles || body.candles || [],
+                            chart_markers: body.chart_markers || stockData.chart_markers || [],
+                            positions: hasPositions ? body.positions : (stockData.positions || []),
+                        };
                     }
                 }
             }

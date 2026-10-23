@@ -484,13 +484,16 @@ export default function StrategyCopilotChat({
                                                     <div className={styles.qaListBlock}>
                                                         {msg.qaList.map((item, qIdx) => (
                                                             <div key={qIdx} className={styles.qaPairItem}>
-                                                                <div className={styles.qaQuestionLabel}>{item.question}</div>
                                                                 <div className={styles.qaAnswerValue}>{item.answer || item.label}</div>
                                                             </div>
                                                         ))}
                                                     </div>
                                                 ) : (
-                                                    renderFormattedMarkdown(msg.text)
+                                                    renderFormattedMarkdown(
+                                                        typeof msg.text === 'string' && msg.text.includes('?') && msg.text.includes('\n')
+                                                            ? msg.text.split('\n').filter((l) => !l.includes('?')).join('\n').trim() || msg.text
+                                                            : msg.text
+                                                    )
                                                 )}
                                             </div>
                                         ) : (

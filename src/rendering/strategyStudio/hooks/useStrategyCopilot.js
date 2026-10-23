@@ -234,12 +234,16 @@ export default function useStrategyCopilot() {
 
     // Run Backtest
     const runBacktest = useCallback(
-        async ({ includePlot = true } = {}) => {
+        async ({ includePlot = true, strategy: customStrat, strategy_json: customJson, userId } = {}) => {
             setBusy(true);
             try {
+                const stratToRun = customJson || customStrat || resp?.strategy || {};
                 const { ok, body } = await interactiveCopilotApi.run({
                     sessionId,
                     includePlot,
+                    strategy: stratToRun,
+                    strategy_json: stratToRun,
+                    userId,
                 });
                 setBusy(false);
                 setResult(body);
@@ -282,7 +286,7 @@ export default function useStrategyCopilot() {
                 return { ok: false, error: err.message };
             }
         },
-        [sessionId]
+        [sessionId, resp]
     );
 
     const handleUpdateApiBase = useCallback(

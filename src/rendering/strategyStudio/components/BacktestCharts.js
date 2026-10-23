@@ -53,8 +53,10 @@ export default function BacktestCharts({
     const equityData = useMemo(() => {
         const safeTrips = Array.isArray(roundTrips) ? roundTrips : [];
         if (safeTrips.length > 0) {
-            const rawPoints = [{ date: 'Start', balance: initialCapital }, ...safeTrips.map(t => ({
-                date: t.exitDate ? t.exitDate.split(' ')[0] : `T${t.index}`,
+            const closedTrips = safeTrips.filter(t => t.exitDate && t.exitDate !== 'OPEN' && Number.isFinite(Number(t.runningBalance)));
+            const baseTrips = closedTrips.length > 0 ? closedTrips : safeTrips;
+            const rawPoints = [{ date: 'Start', balance: initialCapital }, ...baseTrips.map(t => ({
+                date: t.exitDate && t.exitDate !== 'OPEN' ? t.exitDate.split(' ')[0] : `T${t.index}`,
                 balance: Number(t.runningBalance) || initialCapital
             }))];
 
@@ -72,6 +74,7 @@ export default function BacktestCharts({
 
             return { rawDates, labels: formattedLabels, balances };
         }
+
 
         // When no individual round-trip array but real backend results with plot / PnL exist
         const rawCandles = results?.candles || results?.plot || results?.stats?.plot || [];

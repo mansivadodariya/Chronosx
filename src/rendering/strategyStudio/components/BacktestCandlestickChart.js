@@ -59,24 +59,17 @@ function formatCategoryDate(dateVal) {
  */
 function buildCandlestickData(results, roundTrips, symbol = 'EURUSD', interval = '15min') {
     // 1. Check if backend returned explicit candles / ohlc in any nested property
-    const rawCandles = results?.candles
+    // After normalization in index.js, results.candles is always the real data[0].candles
+    const rawCandles = (Array.isArray(results?.candles) && results.candles.length > 0 ? results.candles : null)
+        || (Array.isArray(results?.data) ? (results.data[0]?.candles || null) : null)
         || results?.plot
-        || results?.stats?.plot
         || results?.stats?.candles
-        || (Array.isArray(results?.data) && (results.data[0]?.candles || results.data[0]?.plot || results.data[0]?.stats?.plot || results.data[0]?.stock_data))
         || results?.data?.candles
-        || results?.data?.plot
-        || results?.data?.stats?.plot
-        || results?.data?.stock_data
-        || results?.data?.[0]?.stock_data
         || results?.stock_data
         || results?.market_data
         || results?.ohlc
-        || results?.historical_candles
-        || results?.bars
-        || results?.raw?.data?.[0]?.stats?.plot
-        || results?.raw?.stock_data
-        || results?.raw?.data?.[0]?.stock_data;
+        || results?.bars;
+
 
     if (Array.isArray(rawCandles) && rawCandles.length > 0) {
         const parsed = rawCandles.map(c => {

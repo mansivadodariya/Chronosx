@@ -305,14 +305,13 @@ export default function AdvisorChatView({
         return () => clearInterval(interval);
     }, []);
 
-    // Render User Message: Format as Image 2 structured Q&A or standard markdown
+    // Render User Message: Format as clean answer bubble or standard markdown
     const renderUserBubbleContent = (msg) => {
         if (msg.qaList && Array.isArray(msg.qaList) && msg.qaList.length > 0) {
             return (
                 <div className={styles.qaListBlock}>
                     {msg.qaList.map((item, idx) => (
                         <div key={idx} className={styles.qaPairItem}>
-                            <div className={styles.qaQuestionLabel}>{item.question}</div>
                             <div className={styles.qaAnswerValue}>{item.answer || item.label}</div>
                         </div>
                     ))}
@@ -329,11 +328,9 @@ export default function AdvisorChatView({
                         {blocks.map((block, bIdx) => {
                             const lines = block.trim().split('\n');
                             if (lines.length >= 2) {
-                                const questionLine = lines[0].trim();
                                 const answerLine = lines.slice(1).join(' ').trim();
                                 return (
                                     <div key={bIdx} className={styles.qaPairItem}>
-                                        <div className={styles.qaQuestionLabel}>{questionLine}</div>
                                         <div className={styles.qaAnswerValue}>{answerLine}</div>
                                     </div>
                                 );

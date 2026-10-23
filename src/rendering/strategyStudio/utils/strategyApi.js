@@ -442,12 +442,22 @@ export const interactiveCopilotApi = {
         return { ok: res.ok, status: res.status, body };
     },
 
-    run: async ({ sessionId, includePlot = false }) => {
+    run: async ({ sessionId, includePlot = true, strategy, strategy_json, strategyJson, userId, ...extra } = {}) => {
         const base = getInteractiveApiBase();
+        const currentUserId = userId || getStoredUserId() || '';
+        const strat = strategy_json || strategyJson || strategy || {};
+        const payload = {
+            session_id: sessionId || '',
+            strategy: strategy || strat,
+            strategy_json: strat,
+            include_plot: includePlot ?? true,
+            user_id: currentUserId,
+            ...extra,
+        };
         const res = await fetch(`${base}/interactive-run`, {
             method: 'POST',
             headers: getAuthHeaders(),
-            body: JSON.stringify({ session_id: sessionId, include_plot: includePlot }),
+            body: JSON.stringify(payload),
         });
         const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
         return { ok: res.ok, status: res.status, body };

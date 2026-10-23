@@ -5,6 +5,27 @@ import styles from '../styles/strategyStudio.module.scss';
 import { RightArrowSelectedIcon, SendPaperAirplaneIcon } from './StudioIcons';
 import { getTradingOptionDescription } from '../utils/chatUiHelpers';
 
+function extractQuestionTitle(aiMsg) {
+    if (!aiMsg) return 'Select an option:';
+    if (aiMsg.question) return aiMsg.question;
+    if (aiMsg.question_title) return aiMsg.question_title;
+    if (aiMsg.asking_for) return `Please select ${aiMsg.asking_for}:`;
+    if (aiMsg.step_name) return `Configure ${aiMsg.step_name}:`;
+
+    const text = (aiMsg.text || aiMsg.reply || '').trim();
+    if (text) {
+        const qMatches = text.match(/([^.?!:\n]+\?)/g);
+        if (qMatches && qMatches.length > 0) {
+            return qMatches[qMatches.length - 1].trim();
+        }
+        const sentences = text.split(/(?<=[.!\n])\s+/);
+        const cta = sentences.find((s) => /please select|select|choose|pick|configure/i.test(s));
+        if (cta) return cta.trim();
+        if (sentences.length > 0) return sentences[sentences.length - 1].trim();
+    }
+    return 'Select an option:';
+}
+
 export default function InteractiveQuestionWizard({
     latestAiMessage,
     messages = [],
@@ -53,7 +74,11 @@ export default function InteractiveQuestionWizard({
 
     // Parse questions list from latest AI message & omit already answered questions
     const questionsList = useMemo(() => {
-        const isReadyToProceed = Boolean(latestAiMessage?.complete === true);
+        const isReadyToProceed = Boolean(
+            latestAiMessage?.complete === true ||
+            latestAiMessage?.json_fulfilled === true ||
+            latestAiMessage?.is_complete === true
+        );
         if (!latestAiMessage || latestAiMessage.isError || latestAiMessage.role === 'user' || isReadyToProceed) return [];
         let raw = [];
         if (latestAiMessage.questions && Array.isArray(latestAiMessage.questions) && latestAiMessage.questions.length > 0) {
@@ -86,14 +111,15 @@ export default function InteractiveQuestionWizard({
                 })
             }];
         } else if (latestAiMessage.options && Array.isArray(latestAiMessage.options) && latestAiMessage.options.length > 0) {
+            const title = extractQuestionTitle(latestAiMessage);
             raw = [
                 {
                     question_id: latestAiMessage.question_id || (latestAiMessage.question ? latestAiMessage.question.slice(0, 40) : `q_${latestAiMessage.step || 1}`),
                     question_number: 1,
                     total_questions: 1,
-                    question: latestAiMessage.question || 'How would you like to configure your strategy rules?',
-                    question_title: latestAiMessage.question || 'How would you like to configure your strategy rules?',
-                    description: latestAiMessage.description || 'Select your preferred strategy configuration workflow:',
+                    question: title,
+                    question_title: title,
+                    description: latestAiMessage.description || '',
                     options: latestAiMessage.options.map((opt) => {
                         const val = typeof opt === 'string' ? opt : (opt.value || opt.label || opt.title || '');
                         const lbl = typeof opt === 'string' ? opt : (opt.label || opt.title || opt.value || '');
@@ -108,24 +134,12 @@ export default function InteractiveQuestionWizard({
             ];
         } else if ((latestAiMessage.cta_buttons || latestAiMessage.ctaButtons) && Array.isArray(latestAiMessage.cta_buttons || latestAiMessage.ctaButtons) && (latestAiMessage.cta_buttons || latestAiMessage.ctaButtons).length > 0) {
             const ctas = latestAiMessage.cta_buttons || latestAiMessage.ctaButtons;
-            let qTitle = latestAiMessage.question || latestAiMessage.question_title || '';
-            if (!qTitle && latestAiMessage.text) {
-                const questionMatches = latestAiMessage.text.match(/([^.?!:\n]+\?)/g);
-                if (questionMatches && questionMatches.length > 0) {
-                    qTitle = questionMatches[questionMatches.length - 1].trim();
-                }
-            }
-            if (!qTitle) qTitle = 'Which trading pair would you like to use for this strategy?';
-
-            const isForex = ctas.some((c) => {
-                const s = typeof c === 'string' ? c : (c.value || c.label || '');
-                return /XAU|EUR|GBP|USD|JPY|BTC|ETH|CAD|AUD/i.test(s);
-            });
-
+            const qTitle = extractQuestionTitle(latestAiMessage);
+            const isPairQuestion = /pair|symbol|market/i.test(qTitle);
             const qDesc = latestAiMessage.description || (
-                isForex
-                    ? 'Select from our 6 verified institutional Forex pairs or Gold (XAUUSD):'
-                    : 'Select your preferred strategy configuration workflow:'
+                isPairQuestion
+                    ? 'Select from our verified institutional Forex pairs or Gold (XAUUSD):'
+                    : ''
             );
 
             raw = [
@@ -183,7 +197,7 @@ export default function InteractiveQuestionWizard({
             return true;
         });
 
-        return filtered.length > 0 ? filtered : raw;
+        return filtered;
     }, [latestAiMessage, previouslyAnsweredSet]);
 
     // Reset when a brand new AI message arrives with questions
@@ -286,10 +300,10 @@ export default function InteractiveQuestionWizard({
             setInlineAnswer('');
             isSubmittingRef.current = false;
         } else {
-            // All questions answered — compile formatted summary string matching Image 2
+            // All questions answered — compile clean summary containing only user selections/inputs
             const formattedSummary = updatedAnswers
-                .map((item) => `${item.question}\n${item.answer}`)
-                .join('\n\n');
+                .map((item) => item.label || item.answer)
+                .join(', ');
 
             onComplete(formattedSummary, updatedAnswers);
             setCurrentIndex(0);

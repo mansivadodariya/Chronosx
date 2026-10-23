@@ -43,6 +43,11 @@
     position: relative;
     z-index: 4;
 
+    @include respond-to("sm") {
+      width: 42px;
+      padding: 12px 0;
+    }
+
     .sidebarTopGroup {
       display: flex;
       flex-direction: column;
@@ -83,6 +88,16 @@
       align-items: center;
       justify-content: center;
       transition: all 0.25s ease;
+
+      @include respond-to("sm") {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        svg {
+          width: 15px;
+          height: 15px;
+        }
+      }
 
       &:hover {
         color: #10B981;
@@ -201,6 +216,16 @@
     scrollbar-width: thin;
     scrollbar-color: rgba(24, 201, 139, 0.3) transparent;
 
+    @include respond-to("tab") {
+      padding: 12px 14px 8px 14px;
+      gap: 10px;
+    }
+
+    @include respond-to("sm") {
+      padding: 10px 10px 6px 10px;
+      gap: 8px;
+    }
+
     &::-webkit-scrollbar {
       width: 4px;
     }
@@ -291,7 +316,7 @@
   .aiResponseCard {
     position: relative;
     width: 100%;
-    max-width: 82%;
+    max-width: 100%;
     background: #03080A;
     border-radius: 14px;
     padding: 12px 14px;
@@ -305,7 +330,8 @@
     overflow: hidden;
 
     @include respond-to("sm") {
-      max-width: 96%;
+      padding: 10px 10px;
+      gap: 6px;
     }
 
     /* Animated Ambient Corner Glow Aura */
@@ -343,11 +369,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
 
     .aiProfileCluster {
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-wrap: wrap;
 
       .sparkleBadge {
         width: 24px;
@@ -360,6 +389,15 @@
         justify-content: center;
         color: #10B981;
         box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+
+        @include respond-to("sm") {
+          width: 20px;
+          height: 20px;
+          svg {
+            width: 12px;
+            height: 12px;
+          }
+        }
       }
 
       .aiBotName {
@@ -367,6 +405,10 @@
         font-size: 13px;
         letter-spacing: 0.2px;
         color: #FFFFFF;
+
+        @include respond-to("sm") {
+          font-size: 11.5px;
+        }
       }
 
       .verifiedSignalBadge {
@@ -381,6 +423,12 @@
         border: 1px solid rgba(16, 185, 129, 0.35);
         padding: 2px 7px;
         border-radius: 12px;
+        white-space: nowrap;
+
+        @include respond-to("sm") {
+          font-size: 7.5px;
+          padding: 1px 5px;
+        }
       }
     }
 
@@ -388,6 +436,8 @@
       @include font-normal;
       font-size: 9.5px;
       color: #64748B;
+      white-space: nowrap;
+      margin-left: auto;
     }
   }
 
@@ -464,59 +514,6 @@
         font-size: 11px;
         line-height: 1.45;
         color: #CBD5E1;
-      }
-    }
-  }
-
-  /* Mini Candlestick Chart Card - Clean Graph Only */
-  .miniCandleChartCard {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    background: rgba(3, 10, 14, 0.92);
-    border: 1px solid rgba(16, 185, 129, 0.35);
-    border-radius: 10px;
-    padding: 6px 8px;
-    display: flex;
-    flex-direction: column;
-    box-shadow:
-      0 6px 20px rgba(0, 0, 0, 0.6),
-      inset 0 0 15px rgba(16, 185, 129, 0.05);
-
-    .svgContainer {
-      width: 100%;
-      height: 135px;
-      position: relative;
-      overflow: hidden;
-      border-radius: 6px;
-      background: rgba(2, 7, 9, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-
-      @include respond-to("sm") {
-        height: 115px;
-      }
-
-      .candleSvgStage {
-        width: 100%;
-        height: 100%;
-        display: block;
-      }
-
-      .beaconCircle {
-        animation: activeCandleGlow 1.5s infinite alternate ease-in-out;
-      }
-    }
-
-    @keyframes activeCandleGlow {
-      0% {
-        r: 2.5;
-        fill-opacity: 0.8;
-      }
-
-      100% {
-        r: 4.5;
-        fill-opacity: 1;
-        filter: drop-shadow(0 0 6px #10B981);
       }
     }
   }
@@ -613,6 +610,19 @@
     padding: 4px 6px 4px 12px;
     transition: all 0.25s ease;
 
+    @include respond-to("tab") {
+      margin: 6px 14px 12px 14px;
+      padding: 4px 6px 4px 10px;
+      gap: 6px;
+    }
+
+    @include respond-to("sm") {
+      margin: 4px 8px 10px 8px;
+      padding: 3px 5px 3px 8px;
+      gap: 4px;
+      border-radius: 12px;
+    }
+
     &:focus-within {
       border-color: #18c98b;
       box-shadow: 0 0 20px rgba(24, 201, 139, 0.22);
@@ -629,6 +639,15 @@
       justify-content: center;
       padding: 4px;
       transition: color 0.2s ease;
+      flex-shrink: 0;
+
+      @include respond-to("sm") {
+        padding: 2px;
+        svg {
+          width: 15px;
+          height: 15px;
+        }
+      }
 
       &:hover {
         color: #18c98b;
@@ -637,6 +656,7 @@
 
     .terminalInput {
       flex: 1;
+      min-width: 0;
       background: transparent;
       border: none;
       outline: none;
@@ -644,6 +664,12 @@
       font-size: 13px;
       @include font-normal;
       padding: 8px 0;
+      text-overflow: ellipsis;
+
+      @include respond-to("sm") {
+        font-size: 11.5px;
+        padding: 6px 0;
+      }
 
       &::placeholder {
         color: #64748B;
@@ -662,6 +688,16 @@
       cursor: pointer;
       transition: all 0.25s ease;
       box-shadow: 0 0 12px rgba(24, 201, 139, 0.5);
+      flex-shrink: 0;
+
+      @include respond-to("sm") {
+        width: 28px;
+        height: 28px;
+        svg {
+          width: 13px;
+          height: 13px;
+        }
+      }
 
       svg {
         display: block;
