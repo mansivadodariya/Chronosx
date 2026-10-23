@@ -3,6 +3,7 @@
 import React from 'react';
 import styles from '../styles/strategyStudio.module.scss';
 import StrategyOperandEditor, { getDefaultParamsForIndicator } from './StrategyOperandEditor';
+import CustomSelect from './CustomSelect';
 
 export default function StrategyRulesEditor({
     title,
@@ -16,6 +17,40 @@ export default function StrategyRulesEditor({
 }) {
     const cond = conditions || { condition_type: isExit ? 'any' : 'all', rules: [] };
     const rules = cond.rules || [];
+
+    // Ensure condition_type options always include the current value
+    const condTypeOpts = [...conditionTypes];
+    const currentCondType = cond.condition_type || (isExit ? 'any' : 'all');
+    if (condTypeOpts.length === 0) {
+        // Metadata not loaded yet — provide sensible defaults
+        condTypeOpts.push({ value: 'all', label: 'All conditions must match (AND)' });
+        condTypeOpts.push({ value: 'any', label: 'Any condition matches (OR)' });
+    } else if (!condTypeOpts.some((ct) => ct.value === currentCondType)) {
+        condTypeOpts.unshift({ value: currentCondType, label: currentCondType });
+    }
+
+    // Ensure operator options always include current rule operators
+    const operatorOpts = [...operators];
+    if (operatorOpts.length === 0) {
+        // Provide standard operator defaults matching backend /interactive-metadata
+        const defaultOps = [
+            { value: 'crossover', label: 'crosses above' },
+            { value: 'crossdown', label: 'crosses below' },
+            { value: '>', label: 'is greater than (>)' },
+            { value: '>=', label: 'is greater than or equal to (>=)' },
+            { value: '<', label: 'is less than (<)' },
+            { value: '<=', label: 'is less than or equal to (<=)' },
+            { value: '==', label: 'equals (==)' },
+        ];
+        operatorOpts.push(...defaultOps);
+    }
+
+    // Ensure all rule operators exist in the options
+    rules.forEach((r) => {
+        if (r.operator && !operatorOpts.some((o) => o.value === r.operator)) {
+            operatorOpts.push({ value: r.operator, label: r.operator });
+        }
+    });
 
     const handleConditionTypeChange = (e) => {
         onChange({
@@ -62,16 +97,17 @@ export default function StrategyRulesEditor({
             {/* Combine Rules Logic Selector */}
             <div className={styles.formField} style={{ marginBottom: '10px' }}>
                 <label>Combine rules</label>
-                <select
-                    value={cond.condition_type || (isExit ? 'any' : 'all')}
-                    onChange={handleConditionTypeChange}
-                >
-                    {conditionTypes.map((ct) => (
-                        <option key={ct.value} value={ct.value}>
-                            {ct.label}
-                        </option>
-                    ))}
-                </select>
+                <CustomSelect
+                    value={currentCondType}
+                    onChange={(val) =>
+                        onChange({
+                            ...cond,
+                            condition_type: val,
+                        })
+                    }
+                    options={condTypeOpts}
+                    width="100%"
+                />
             </div>
 
             {/* List of Rules */}
@@ -109,18 +145,17 @@ export default function StrategyRulesEditor({
 
                     {/* Operator Select */}
                     <div className={styles.formField} style={{ margin: '8px 0' }}>
-                        <select
+                        <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                            Operator
+                        </label>
+                        <CustomSelect
                             value={rule.operator || '>'}
-                            onChange={(e) =>
-                                handleUpdateRule(idx, { ...rule, operator: e.target.value })
+                            onChange={(val) =>
+                                handleUpdateRule(idx, { ...rule, operator: val })
                             }
-                        >
-                            {operators.map((op) => (
-                                <option key={op.value} value={op.value}>
-                                    {op.label}
-                                </option>
-                            ))}
-                        </select>
+                            options={operatorOpts}
+                            width="100%"
+                        />
                     </div>
 
                     {/* Indicator 2 Operand */}

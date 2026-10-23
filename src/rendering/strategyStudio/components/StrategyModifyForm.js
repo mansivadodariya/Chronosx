@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import styles from '../styles/strategyStudio.module.scss';
 import StrategyRulesEditor from './StrategyRulesEditor';
+import CustomSelect from './CustomSelect';
 import { UploadFileIcon } from './StudioIcons';
 
 export default function StrategyModifyForm({
@@ -39,21 +40,85 @@ export default function StrategyModifyForm({
         return base;
     });
 
-    const m = metadata || {
-        pairs: [],
-        timeframes: [],
-        directions: [],
-        exit_value_types: [],
-        condition_types: [],
-        operators: [],
-        indicator_groups: [],
+    // Resolve metadata - handle different API response shapes with complete fallbacks
+    const rawMeta = metadata || {};
+    const defaultPairs = [
+        { symbol: 'EURUSD', label: 'EUR/USD' },
+        { symbol: 'GBPUSD', label: 'GBP/USD' },
+        { symbol: 'EURJPY', label: 'EUR/JPY' },
+        { symbol: 'GBPJPY', label: 'GBP/JPY' },
+        { symbol: 'USDCAD', label: 'USD/CAD' },
+        { symbol: 'XAUUSD', label: 'XAU/USD (Gold)' },
+    ];
+    const defaultTfs = ['1min', '5min', '15min', '30min', '60min', '1day'];
+    const defaultDirs = [
+        { value: 0, label: 'Long / Buy' },
+        { value: 1, label: 'Short / Sell' },
+    ];
+    const defaultExitTypes = [
+        { value: 'points', label: 'Points (broker points)' },
+        { value: 'pips', label: 'Pips' },
+        { value: 'percent', label: '% of entry price' },
+        { value: 'atr', label: 'x ATR (multiple of ATR)' },
+        { value: 'dollar', label: '$ per lot' },
+    ];
+    const defaultCondTypes = [
+        { value: 'all', label: 'ALL rules must be true (AND)' },
+        { value: 'any', label: 'ANY rule can be true (OR)' },
+    ];
+    const defaultOps = [
+        { value: 'crossover', label: 'crosses above' },
+        { value: 'crossdown', label: 'crosses below' },
+        { value: '>', label: 'is greater than (>)' },
+        { value: '>=', label: 'is greater than or equal to (>=)' },
+        { value: '<', label: 'is less than (<)' },
+        { value: '<=', label: 'is less than or equal to (<=)' },
+        { value: '==', label: 'equals (==)' },
+    ];
+
+    const m = {
+        pairs: (rawMeta.pairs?.length ? rawMeta.pairs : rawMeta.data?.pairs) || defaultPairs,
+        timeframes: (rawMeta.timeframes?.length ? rawMeta.timeframes : rawMeta.data?.timeframes) || defaultTfs,
+        directions: (rawMeta.directions?.length ? rawMeta.directions : rawMeta.data?.directions) || defaultDirs,
+        exit_value_types: (rawMeta.exit_value_types?.length ? rawMeta.exit_value_types : rawMeta.data?.exit_value_types) || defaultExitTypes,
+        condition_types: (rawMeta.condition_types?.length ? rawMeta.condition_types : rawMeta.data?.condition_types) || defaultCondTypes,
+        operators: (rawMeta.operators?.length ? rawMeta.operators : rawMeta.data?.operators) || defaultOps,
+        indicator_groups: rawMeta.indicator_groups || rawMeta.data?.indicator_groups || [],
     };
 
     const en = draft.entry_conditions;
     const ex = draft.exit_conditions;
 
-    const pairOpts = (m.pairs || []).map((p) => ({ value: p.symbol, label: p.label }));
+    const pairOpts = (m.pairs || []).map((p) => ({ value: p.symbol, label: p.label || p.symbol }));
     const tfOpts = (m.timeframes || []).map((t) => ({ value: t, label: t }));
+
+    // Extract current pair safely (string or array)
+    const currentPair = Array.isArray(draft.stock_name)
+        ? (draft.stock_name[0] || '')
+        : (draft.stock_name || draft.symbol || draft.instrument || '');
+    const hasPairInOpts = !currentPair || pairOpts.some((p) => p.value === currentPair);
+    if (!hasPairInOpts) {
+        pairOpts.unshift({ value: currentPair, label: currentPair });
+    }
+
+    const currentTf = draft.interval || draft.timeframe || '';
+    const hasTfInOpts = !currentTf || tfOpts.some((t) => t.value === currentTf);
+    if (!hasTfInOpts) {
+        tfOpts.unshift({ value: currentTf, label: currentTf });
+    }
+
+    const directionOpts = [...(m.directions || [])];
+    let currentDir = draft.entry_type;
+    if (typeof currentDir === 'string') {
+        const lower = currentDir.toLowerCase();
+        if (lower === 'buy' || lower === 'long' || lower === '0') currentDir = 0;
+        else if (lower === 'sell' || lower === 'short' || lower === '1') currentDir = 1;
+    }
+    const hasDirInOpts = currentDir == null || directionOpts.some((d) => String(d.value) === String(currentDir));
+    if (!hasDirInOpts) {
+        const dirLabel = currentDir === 0 ? 'Long / Buy' : currentDir === 1 ? 'Short / Sell' : `Direction ${currentDir}`;
+        directionOpts.unshift({ value: currentDir, label: dirLabel });
+    }
 
     const handleFieldChange = (key, val) => {
         setDraft((prev) => ({
@@ -101,34 +166,26 @@ export default function StrategyModifyForm({
 
                 <div className={styles.formField}>
                     <label>Pair</label>
-                    <select
-                        value={(draft.stock_name || [])[0] || ''}
-                        onChange={(e) =>
-                            handleFieldChange('stock_name', e.target.value ? [e.target.value] : null)
+                    <CustomSelect
+                        value={currentPair}
+                        onChange={(val) =>
+                            handleFieldChange('stock_name', val ? [val] : null)
                         }
-                    >
-                        <option value="">Select pair</option>
-                        {pairOpts.map((p) => (
-                            <option key={p.value} value={p.value}>
-                                {p.label}
-                            </option>
-                        ))}
-                    </select>
+                        options={pairOpts}
+                        placeholder="Select pair"
+                        width="100%"
+                    />
                 </div>
 
                 <div className={styles.formField}>
                     <label>Timeframe</label>
-                    <select
-                        value={draft.interval || ''}
-                        onChange={(e) => handleFieldChange('interval', e.target.value || null)}
-                    >
-                        <option value="">Select timeframe</option>
-                        {tfOpts.map((t) => (
-                            <option key={t.value} value={t.value}>
-                                {t.label}
-                            </option>
-                        ))}
-                    </select>
+                    <CustomSelect
+                        value={currentTf}
+                        onChange={(val) => handleFieldChange('interval', val || null)}
+                        options={tfOpts}
+                        placeholder="Select timeframe"
+                        width="100%"
+                    />
                 </div>
 
                 <div className={styles.formField}>
@@ -151,22 +208,18 @@ export default function StrategyModifyForm({
 
                 <div className={styles.formField}>
                     <label>Direction</label>
-                    <select
-                        value={draft.entry_type ?? ''}
-                        onChange={(e) =>
+                    <CustomSelect
+                        value={currentDir != null ? currentDir : ''}
+                        onChange={(val) =>
                             handleFieldChange(
                                 'entry_type',
-                                e.target.value === '' ? null : parseInt(e.target.value, 10)
+                                val === '' ? null : parseInt(val, 10)
                             )
                         }
-                    >
-                        <option value="">Select direction</option>
-                        {(m.directions || []).map((d) => (
-                            <option key={d.value} value={d.value}>
-                                {d.label}
-                            </option>
-                        ))}
-                    </select>
+                        options={directionOpts}
+                        placeholder="Select direction"
+                        width="100%"
+                    />
                 </div>
 
                 <div className={styles.formField}>
@@ -195,13 +248,15 @@ export default function StrategyModifyForm({
 
                 <div className={styles.formField}>
                     <label>Close At Day End</label>
-                    <select
+                    <CustomSelect
                         value={draft.is_mis ? 'true' : 'false'}
-                        onChange={(e) => handleFieldChange('is_mis', e.target.value === 'true')}
-                    >
-                        <option value="false">No</option>
-                        <option value="true">Yes</option>
-                    </select>
+                        onChange={(val) => handleFieldChange('is_mis', val === 'true')}
+                        options={[
+                            { value: 'false', label: 'No' },
+                            { value: 'true', label: 'Yes' },
+                        ]}
+                        width="100%"
+                    />
                 </div>
 
                 <div className={styles.formField}>
@@ -263,16 +318,12 @@ export default function StrategyModifyForm({
 
                 <div className={styles.formField}>
                     <label>TP Unit</label>
-                    <select
+                    <CustomSelect
                         value={ex?.target_type || 'points'}
-                        onChange={(e) => handleExitChange({ ...ex, target_type: e.target.value })}
-                    >
-                        {(m.exit_value_types || []).map((vt) => (
-                            <option key={vt.value} value={vt.value}>
-                                {vt.label}
-                            </option>
-                        ))}
-                    </select>
+                        onChange={(val) => handleExitChange({ ...ex, target_type: val })}
+                        options={m.exit_value_types}
+                        width="100%"
+                    />
                 </div>
 
                 <div className={styles.formField}>
@@ -294,16 +345,12 @@ export default function StrategyModifyForm({
 
                 <div className={styles.formField}>
                     <label>SL Unit</label>
-                    <select
+                    <CustomSelect
                         value={ex?.stoploss_type || 'points'}
-                        onChange={(e) => handleExitChange({ ...ex, stoploss_type: e.target.value })}
-                    >
-                        {(m.exit_value_types || []).map((vt) => (
-                            <option key={vt.value} value={vt.value}>
-                                {vt.label}
-                            </option>
-                        ))}
-                    </select>
+                        onChange={(val) => handleExitChange({ ...ex, stoploss_type: val })}
+                        options={m.exit_value_types}
+                        width="100%"
+                    />
                 </div>
 
                 <div className={styles.formField}>
@@ -324,18 +371,20 @@ export default function StrategyModifyForm({
 
                 <div className={styles.formField}>
                     <label>Trailing Stop</label>
-                    <select
+                    <CustomSelect
                         value={ex?.trailing_stoploss ? 'true' : 'false'}
-                        onChange={(e) =>
+                        onChange={(val) =>
                             handleExitChange({
                                 ...ex,
-                                trailing_stoploss: e.target.value === 'true',
+                                trailing_stoploss: val === 'true',
                             })
                         }
-                    >
-                        <option value="false">No</option>
-                        <option value="true">Yes</option>
-                    </select>
+                        options={[
+                            { value: 'false', label: 'No' },
+                            { value: 'true', label: 'Yes' },
+                        ]}
+                        width="100%"
+                    />
                 </div>
             </div>
 

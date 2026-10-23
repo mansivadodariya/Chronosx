@@ -328,7 +328,7 @@ export default function StrategyCopilotChat({
             {isInitialStartingView ? (
                 /* ── INITIAL EXPLORE HOME SCREEN (EXACT PREVIOUS LOOK) ── */
                 <div className={styles.studioHomeWrapper}>
-                    <div className={styles.exploreHeroArea}>
+                    <div className={`${styles.exploreHeroArea} ${(isWhatToIncludeOpen || isStrategyMenuOpen) ? styles.exploreHeroAreaWithPopup : ''}`}>
                         {/* Rotating Tagline Header */}
                         <div className={styles.rotatingTaglineWrap}>
                             <div className={`${styles.taglineText} ${taglineFading ? styles.taglineFadeOut : styles.taglineFadeIn}`}>

@@ -141,20 +141,30 @@ export default function useStrategyCopilot() {
 
         try {
             const metaRes = await interactiveCopilotApi.getMetadata();
-            if (!metaRes.ok || !metaRes.body?.success) {
-                const errText =
-                    metaRes.body?.error || metaRes.body?.message || `Failed to fetch metadata (HTTP ${metaRes.status})`;
-                setBootError(errText);
-                setBusy(false);
-                return;
+            let m = null;
+            if (metaRes.ok && metaRes.body?.success) {
+                m = metaRes.body;
+            } else {
+                console.warn('[useStrategyCopilot] Metadata fetch unsuccessful, using local fallback catalog.');
             }
 
-            const m = metaRes.body;
-            setMetadata(m);
+            const rawData = m || {};
+            // API may return indicator_groups at top level or nested under .data
+            const metaData = {
+                ...rawData,
+                pairs: rawData.pairs || rawData.data?.pairs || [],
+                timeframes: rawData.timeframes || rawData.data?.timeframes || [],
+                directions: rawData.directions || rawData.data?.directions || [],
+                exit_value_types: rawData.exit_value_types || rawData.data?.exit_value_types || [],
+                condition_types: rawData.condition_types || rawData.data?.condition_types || [],
+                operators: rawData.operators || rawData.data?.operators || [],
+                indicator_groups: rawData.indicator_groups || rawData.data?.indicator_groups || [],
+            };
+            setMetadata(metaData);
 
             // Build indicator index
             const index = {};
-            (m.indicator_groups || []).forEach((g) => {
+            (metaData.indicator_groups || []).forEach((g) => {
                 (g.indicators || []).forEach((ind) => {
                     index[ind.name] = ind;
                 });

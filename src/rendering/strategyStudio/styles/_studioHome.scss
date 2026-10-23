@@ -18,17 +18,30 @@
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(24, 201, 139, 0.25) transparent;
 
     &::-webkit-scrollbar {
-        display: none;
-        width: 0;
-        height: 0;
+        width: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: rgba(24, 201, 139, 0.2);
+        border-radius: 4px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgba(24, 201, 139, 0.4);
     }
 
     background: transparent;
     color: #ffffff;
+
+    @media (max-width: 768px) {
+        padding: 12px 14px 24px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 8px 10px 20px;
+    }
 
     [data-theme="light"] & {
         background: transparent;
@@ -47,6 +60,32 @@
     position: relative;
     z-index: 10;
     padding: 10px 0 20px;
+    transition: margin 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &.exploreHeroAreaWithPopup {
+        margin: clamp(16px, 3.5vh, 44px) auto auto;
+
+        @media (min-height: 980px) {
+            margin: clamp(36px, 8vh, 85px) auto auto;
+        }
+
+        .greetingSubName {
+            margin-bottom: 16px;
+        }
+
+        .rotatingTaglineWrap {
+            margin-bottom: 12px;
+        }
+    }
+
+    @media (max-height: 800px) {
+        margin: clamp(16px, 3.5vh, 36px) auto auto;
+    }
+
+    @media (max-width: 768px) {
+        margin: 16px auto auto;
+        padding: 4px 0 16px;
+    }
 }
 
 /* Rotating Tagline Header */
@@ -59,7 +98,7 @@
 }
 
 .taglineText {
-    font-size: clamp(17px, 2.2vw, 22px);
+    font-size: clamp(15px, 2.2vw, 22px);
     font-weight: 700;
     color: #18c98b;
     letter-spacing: -0.015em;
@@ -70,6 +109,10 @@
         transform 0.35s ease;
     display: inline-block;
     text-shadow: 0 0 24px rgba(24, 201, 139, 0.4);
+
+    @media (max-width: 768px) {
+        font-size: clamp(14px, 3.5vw, 17px);
+    }
 
     [data-theme="light"] & {
         color: #059669;
@@ -89,12 +132,16 @@
 
 /* Greeting Hero Text */
 .greetingTitleLarge {
-    font-size: clamp(28px, 4vw, 42px);
+    font-size: clamp(26px, 4vw, 42px);
     font-weight: 800;
     color: #ffffff;
     letter-spacing: -0.025em;
     line-height: 1.15;
     margin: 0;
+
+    @media (max-width: 768px) {
+        font-size: clamp(22px, 5.5vw, 30px);
+    }
 
     [data-theme="light"] & {
         color: #0f172a;
@@ -102,12 +149,21 @@
 }
 
 .greetingSubName {
-    font-size: clamp(24px, 3.5vw, 36px);
+    font-size: clamp(22px, 3.5vw, 36px);
     font-weight: 700;
     color: #64748b;
     letter-spacing: -0.02em;
     line-height: 1.2;
     margin: 4px 0 28px 0;
+
+    @media (max-width: 768px) {
+        font-size: clamp(18px, 4.5vw, 24px);
+        margin: 2px 0 18px 0;
+    }
+
+    @media (max-width: 480px) {
+        margin-bottom: 14px;
+    }
 
     [data-theme="light"] & {
         color: #94a3b8;
@@ -456,6 +512,10 @@
     overflow: hidden;
     animation: popupFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     text-align: left;
+    max-height: 48vh;
+    display: flex;
+    flex-direction: column;
+
     [data-theme="light"] & {
         background: #ffffff;
         border-color: rgba(0, 0, 0, 0.1);
@@ -480,6 +540,8 @@
     justify-content: space-between;
     padding: 10px 14px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
+
     [data-theme="light"] & {
         border-bottom-color: rgba(0, 0, 0, 0.06);
     }
@@ -517,6 +579,18 @@
 .popupOptionsList {
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    max-height: 38vh;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(24, 201, 139, 0.25) transparent;
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: rgba(24, 201, 139, 0.25);
+        border-radius: 4px;
+    }
 }
 
 .popupOptionItem {
@@ -644,82 +718,5 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-}
-
-/* Step Indicator Pill inside Chat - spans 100% width matching the AI bubble above */
-.stepIndicatorPill {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 8px 16px;
-    border-radius: 10px;
-    background: rgba(14, 24, 19, 0.9);
-    border: 1px solid rgba(24, 201, 139, 0.25);
-    color: #e2e8f0;
-    font-size: 12.5px;
-    font-weight: 600;
-    width: 100%;
-    box-sizing: border-box;
-    margin: 2px 0 4px;
-
-    .stepIndicatorLeft {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        white-space: nowrap;
-        flex-shrink: 0;
-    }
-
-    .stepIndicatorRight {
-        display: inline-flex;
-        align-items: center;
-        flex-shrink: 0;
-        color: #94a3b8;
-        cursor: pointer;
-    }
-
-    .stepMiniDot {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: #18c98b;
-        box-shadow: 0 0 8px #18c98b;
-        flex-shrink: 0;
-    }
-
-    .stepMiniBar {
-        flex: 1;
-        min-width: 80px;
-        height: 5px;
-        border-radius: 9999px;
-        background: rgba(255, 255, 255, 0.1);
-        overflow: hidden;
-
-        span {
-            display: block;
-            height: 100%;
-            background: #18c98b;
-            border-radius: 9999px;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-    }
-
-    [data-theme="light"] & {
-        background: #ffffff;
-        border-color: rgba(0, 0, 0, 0.08);
-        color: #334155;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-
-        .stepMiniDot {
-            background: #059669;
-            box-shadow: 0 0 6px #059669;
-        }
-        .stepMiniBar {
-            background: rgba(0, 0, 0, 0.08);
-            span {
-                background: #059669;
-            }
-        }
-    }
 }
 

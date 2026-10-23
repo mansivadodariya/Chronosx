@@ -4,7 +4,6 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../styles/strategyStudio.module.scss';
 import {
-    EditPencilIcon,
     CoinsCapitalIcon,
     AlertTriangleIcon,
     RefreshResetIcon,
@@ -22,21 +21,16 @@ export function StreamingAiBubble({ text, shouldStream, onStreamComplete, onStre
     });
 
     const activeText = shouldStream ? displayedText : text;
-    const showCursor = Boolean(shouldStream && isStreaming);
+    const isClickable = Boolean(shouldStream && isStreaming);
 
     return (
         <div
             className={`${styles.bubble} ${styles.aiBubble}`}
-            onClick={showCursor ? skipToEnd : undefined}
-            style={{ cursor: showCursor ? 'pointer' : 'default' }}
-            title={showCursor ? 'Click to reveal immediately' : undefined}
+            onClick={isClickable ? skipToEnd : undefined}
+            style={{ cursor: isClickable ? 'pointer' : 'default' }}
+            title={isClickable ? 'Click to reveal immediately' : undefined}
         >
             {renderFormattedMarkdown(activeText)}
-            {showCursor && (
-                <span className={styles.streamingCursorChar}>
-                    <EditPencilIcon size={12} color="#18C98B" />
-                </span>
-            )}
         </div>
     );
 }

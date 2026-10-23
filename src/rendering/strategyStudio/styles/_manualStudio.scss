@@ -331,6 +331,58 @@
     }
 }
 
+.customSelectGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.customSelectGroupLabel {
+    padding: 6px 12px 3px;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #18C98B;
+
+    [data-theme='light'] & {
+        color: #059669;
+    }
+}
+
+.customSelectSearch {
+    padding: 7px 10px;
+    margin: 4px;
+    border-radius: 6px;
+    font-size: 12px;
+    border: 1px solid rgba(24, 201, 139, 0.25);
+    background: rgba(14, 26, 20, 0.6);
+    color: #FFFFFF;
+    outline: none;
+
+    &:focus {
+        border-color: #18C98B;
+    }
+
+    [data-theme='light'] & {
+        background: #F8FAFC;
+        border-color: #CBD5E1;
+        color: #0F172A;
+
+        &:focus {
+            border-color: #059669;
+        }
+    }
+}
+
+.selectedDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+}
+
 .btnToolbarManual {
     background: rgba(99, 102, 241, 0.12);
     border: 1px solid rgba(99, 102, 241, 0.35);

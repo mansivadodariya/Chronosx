@@ -8,7 +8,10 @@ import { getStoredUserId } from '@/lib/authSession';
  * Helper to construct headers with Bearer token if present
  */
 const getAuthHeaders = () => {
-    const headers = { "Content-Type": "application/json" };
+    const headers = {
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true"
+    };
     if (typeof window !== 'undefined') {
         const token = localStorage.getItem('access_token');
         if (token) {
@@ -397,12 +400,16 @@ export const getInteractiveApiBase = () => {
  */
 export const interactiveCopilotApi = {
     getMetadata: async () => {
-        const base = getInteractiveApiBase();
-        const res = await fetch(`${base}/interactive-metadata`, {
-            headers: getAuthHeaders(),
-        });
-        const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
-        return { ok: res.ok, status: res.status, body };
+        try {
+            const base = getInteractiveApiBase();
+            const res = await fetch(`${base}/interactive-metadata`, {
+                headers: getAuthHeaders(),
+            });
+            const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
+            return { ok: res.ok, status: res.status, body };
+        } catch (err) {
+            return { ok: false, status: 0, body: { success: false, error: err.message || 'Failed to fetch' } };
+        }
     },
 
     chat: async (payload) => {

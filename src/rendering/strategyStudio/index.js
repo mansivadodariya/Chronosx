@@ -68,6 +68,18 @@ export default function StrategyStudio() {
         }
     }, [resp]);
 
+    // Close Modify Form popup on Escape key
+    useEffect(() => {
+        if (!isEditingForm) return;
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                setIsEditingForm(false);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isEditingForm]);
+
     const handleMouseMove = useCallback((e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         const x = e.clientX - rect.left;
@@ -200,8 +212,8 @@ export default function StrategyStudio() {
             {/* Ambient Animated Cyber Waves */}
             <BackgroundCyberWaves />
 
-            {/* Main Workspace Layout (Centered single-column chat OR 2-panel with Backtest Studio or Modify Form) */}
-            <div className={`${styles.activeBodyGrid} ${(!isBacktestPanelOpen && !isEditingForm) ? styles.singleMode : ''}`}>
+            {/* Main Workspace Layout (Centered single-column chat OR 2-panel with Backtest Studio) */}
+            <div className={`${styles.activeBodyGrid} ${!isBacktestPanelOpen ? styles.singleMode : ''}`}>
                 <div className={styles.activeChat}>
                     <StrategyCopilotChat
                         messages={messages}
@@ -273,11 +285,18 @@ export default function StrategyStudio() {
                         </div>
                     </div>
                 )}
+            </div>
 
-                {/* ── RIGHT PANEL: Side-by-side Strategy Modification Form ── */}
-                {isEditingForm && !isBacktestPanelOpen && (
-                    <div className={styles.activeSidePanel}>
-                        <div className={styles.sidePanelHeader}>
+            {/* ── MODAL POPUP: Strategy Modification Form (Centered Dialog Overlay) ── */}
+            {isEditingForm && (
+                <div
+                    className={styles.strategyModalOverlay}
+                    onClick={(e) => {
+                        if (e.target === e.currentTarget) setIsEditingForm(false);
+                    }}
+                >
+                    <div className={styles.strategyModalDialog}>
+                        <div className={styles.strategyModalHeader}>
                             <div className={styles.sidePanelHeaderLeft}>
                                 <div className={styles.headerIconWrap}>
                                     <EditPencilIcon size={16} color="#18c98b" />
@@ -299,7 +318,7 @@ export default function StrategyStudio() {
                                 <CloseXIcon size={14} />
                             </button>
                         </div>
-                        <div className={styles.sidePanelContentArea}>
+                        <div className={styles.strategyModalBody}>
                             <StrategyModifyForm
                                 initialStrategy={resp?.strategy}
                                 metadata={metadata}
@@ -314,8 +333,8 @@ export default function StrategyStudio() {
                             />
                         </div>
                     </div>
-                )}
-            </div>
+                </div>
+            )}
 
             {/* Chat History Slide-over Drawer */}
             <ChatHistoryDrawer
