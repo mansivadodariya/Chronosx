@@ -274,28 +274,33 @@ export const strategyStudioApi = {
 
     /**
      * Run Backtest Execution
-     * If strategy_id is present, executes POST /backtest/v1/run-by-id with { strategy_id }
+     * Strictly calls POST /backtest/v1/interactive-run
      */
     runBacktest: async (payload) => {
         try {
             const apiBase = getApiBase();
             const stratId = payload?.strategy_id || payload?.strategyId;
-            if (stratId) {
-                return await strategyStudioApi.runBacktestById({ strategy_id: stratId });
-            }
             const currentUserId = payload?.user_id || getStoredUserId() || undefined;
-            const res = await fetch(apiBase, {
+            const strat = payload?.strategy_json || payload?.strategy || payload;
+            const interactivePayload = {
+                session_id: payload?.session_id || payload?.sessionId || '',
+                ...(stratId ? { strategy_id: stratId } : {}),
+                strategy: strat,
+                strategy_json: strat,
+                include_plot: payload?.include_plot ?? true,
+                ...(currentUserId ? { user_id: currentUserId } : {}),
+                ...payload,
+            };
+
+            const res = await fetch(`${apiBase}/interactive-run`, {
                 method: "POST",
                 headers: getAuthHeaders(),
-                body: JSON.stringify({
-                    ...payload,
-                    ...(currentUserId && !payload?.user_id ? { user_id: currentUserId } : {})
-                })
+                body: JSON.stringify(interactivePayload)
             });
             if (res.ok) {
                 const json = await res.json();
-                if ((json.success || json.status === 'success' || json.message) && json.data) {
-                    const dataItem = Array.isArray(json.data) ? json.data[0] : json.data;
+                if ((json.success || json.status === 'success' || json.message) && (json.data || json.stats || json.total_trades !== undefined)) {
+                    const dataItem = Array.isArray(json.data) ? json.data[0] : (json.data || json);
                     return {
                         status: "success",
                         success: true,
@@ -303,9 +308,15 @@ export const strategyStudioApi = {
                         raw: json
                     };
                 }
+                return {
+                    status: "success",
+                    success: true,
+                    data: json.data || json,
+                    raw: json
+                };
             } else {
                 const errText = await res.text().catch(() => '');
-                console.warn(`[strategyApi] /backtest/v1 returned HTTP ${res.status}:`, errText);
+                console.warn(`[strategyApi] /backtest/v1/interactive-run returned HTTP ${res.status}:`, errText);
                 return {
                     status: "error",
                     success: false,
@@ -333,23 +344,25 @@ export const strategyStudioApi = {
 
     /**
      * Run Backtest Execution by Strategy ID
-     * POST /backtest/v1/run-by-id
-     * Payload: { strategy_id }
+     * POST /backtest/v1/interactive-run with { strategy_id }
      */
-    runBacktestById: async ({ strategy_id, strategyId, userId }) => {
+    runBacktestById: async ({ strategy_id, strategyId, userId, ...extra } = {}) => {
         try {
             const apiBase = getApiBase();
             const effectiveStratId = strategy_id || strategyId;
-            const res = await fetch(`${apiBase}/run-by-id`, {
+            const res = await fetch(`${apiBase}/interactive-run`, {
                 method: "POST",
                 headers: getAuthHeaders(),
                 body: JSON.stringify({
-                    strategy_id: effectiveStratId
+                    strategy_id: effectiveStratId,
+                    include_plot: true,
+                    ...(userId ? { user_id: userId } : {}),
+                    ...extra
                 })
             });
             if (res.ok) {
                 const json = await res.json();
-                const dataItem = Array.isArray(json.data) ? json.data[0] : json.data;
+                const dataItem = Array.isArray(json.data) ? json.data[0] : (json.data || json);
                 return {
                     status: "success",
                     success: true,
@@ -359,7 +372,7 @@ export const strategyStudioApi = {
                 };
             } else {
                 const errText = await res.text().catch(() => '');
-                console.warn(`[strategyApi] /backtest/v1/run-by-id returned HTTP ${res.status}:`, errText);
+                console.warn(`[strategyApi] /backtest/v1/interactive-run returned HTTP ${res.status}:`, errText);
                 return {
                     status: "error",
                     success: false,
@@ -368,7 +381,7 @@ export const strategyStudioApi = {
                 };
             }
         } catch (err) {
-            console.error("Backend backtest server unreachable for run-by-id:", err.message);
+            console.error("Backend backtest server unreachable for interactive-run:", err.message);
             return {
                 status: "error",
                 success: false,
@@ -376,7 +389,7 @@ export const strategyStudioApi = {
                 data: null
             };
         }
-    }
+    },
 };
 
 /**

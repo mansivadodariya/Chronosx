@@ -13,31 +13,7 @@ export const DYNAMIC_LOADING_STAGES = [
 ];
 
 export function getDynamicStepInfo(msg, allMessages) {
-    if (!msg || msg.isError || msg.role === 'user') return null;
-
-    // If step is null or not provided from backend, do not show step progress bar (must not be static)
-    const rawStep = msg.step ?? msg.step_number;
-    const hasValidStepNum = rawStep != null && rawStep !== '' && !isNaN(parseInt(rawStep, 10)) && parseInt(rawStep, 10) > 0;
-    const hasValidBadge = Boolean(msg.step_badge && typeof msg.step_badge === 'string' && msg.step_badge.trim());
-
-    if (!hasValidStepNum && !hasValidBadge) {
-        return null;
-    }
-
-    if (hasValidBadge) {
-        const match = msg.step_badge.match(/Step\s*(\d+)/i);
-        const stepNum = match ? parseInt(match[1], 10) : (hasValidStepNum ? parseInt(rawStep, 10) : 1);
-        const title = msg.step_title || msg.step_badge.replace(/^Step\s*\d+:\s*/i, '') || STEP_TITLES[stepNum - 1] || 'Strategy Configuration';
-        const total = msg.total_steps || 4;
-        const progress = Math.min(100, Math.max(12, Math.round((stepNum / total) * 100)));
-        return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
-    }
-
-    const stepNum = parseInt(rawStep, 10);
-    const total = msg.total_steps || 4;
-    const title = msg.step_title || STEP_TITLES[stepNum - 1] || 'Strategy Configuration';
-    const progress = Math.min(100, Math.max(12, Math.round((stepNum / total) * 100)));
-    return { stepNum, total, title, badgeText: `Step ${stepNum}: ${title}`, progress };
+    return null;
 }
 
 export function formatOptionLabelWithIcon(label) {
@@ -94,10 +70,13 @@ export function getTradingOptionDescription(val = '', lbl = '') {
     if (s.includes('ETHUSD') || s.includes('ETH')) return 'Ethereum / US Dollar – Smart-contract ecosystem driver';
     if (s.includes('NAS100') || s.includes('NASDAQ') || s.includes('US100')) return 'Nasdaq 100 – High beta technology equity index';
     if (s.includes('US30')) return 'Dow Jones 30 – Institutional blue-chip industrial momentum';
-    if (s.includes('15 MIN') || s.includes('15M')) return '15-minute timeframe – High-frequency intraday momentum';
-    if (s.includes('1 HOUR') || s.includes('1H') || s.includes('60 MIN')) return '1-hour timeframe – Balanced intraday and swing trends';
-    if (s.includes('4 HOUR') || s.includes('4H')) return '4-hour timeframe – Macro trend-following and key levels';
-    if (s.includes('1 DAY') || s.includes('1D') || s.includes('DAILY')) return 'Daily timeframe – Strong macro structural trends';
+    if (s.includes('CUSTOM')) return 'Describe custom timeframe';
+    if (s.includes('5MIN') || s.includes('5 MIN') || s.includes('5-MIN') || s.includes('5-MINUTE')) return '5-Minute – Fast scalping signals';
+    if (s.includes('15MIN') || s.includes('15 MIN') || s.includes('15-MIN') || s.includes('15M') || s.includes('15-MINUTE')) return '15-Minute – Optimal for intraday momentum crossovers';
+    if (s.includes('30MIN') || s.includes('30 MIN') || s.includes('30-MIN') || s.includes('30M') || s.includes('30-MINUTE')) return '30-Minute – Balanced intraday swing filters';
+    if (s.includes('60MIN') || s.includes('60 MIN') || s.includes('1HOUR') || s.includes('1 HOUR') || s.includes('1H') || s.includes('1-HOUR')) return '1-Hour – Reliable intermediate trend following';
+    if (s.includes('4HOUR') || s.includes('4 HOUR') || s.includes('4H') || s.includes('4-HOUR')) return '4-Hour – Multi-session swing structural trends';
+    if (s.includes('1DAY') || s.includes('1 DAY') || s.includes('DAILY') || s.includes('1D')) return 'Daily – Macro trend confirmation';
     if (s.includes('EMA')) return 'Exponential Moving Average – Trend and momentum crossover';
     if (s.includes('RSI')) return 'Relative Strength Index – Overbought / oversold oscillator';
     if (s.includes('MACD')) return 'Moving Average Convergence Divergence – Signal momentum';

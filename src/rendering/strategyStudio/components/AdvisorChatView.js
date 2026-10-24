@@ -517,28 +517,6 @@ export default function AdvisorChatView({
                                                         setTimeout(() => scrollToBottom(true), 60);
                                                     }}
                                                 />
-
-                                                {/* Dynamic Step Indicator Badge */}
-                                                {(() => {
-                                                    const stepInfo = getDynamicStepInfo(msg, messages);
-                                                    if (!stepInfo) return null;
-                                                    return (
-                                                        <div className={styles.stepIndicatorPill}>
-                                                            <div className={styles.stepIndicatorLeft}>
-                                                                <span className={styles.stepMiniDot} />
-                                                                <span>{stepInfo.badgeText}</span>
-                                                            </div>
-                                                            <div className={styles.stepMiniBar}>
-                                                                <span style={{ width: `${stepInfo.progress}%` }} />
-                                                            </div>
-                                                            <div className={styles.stepIndicatorRight}>
-                                                                <span title={`Step ${stepInfo.stepNum} of ${stepInfo.total} (${stepInfo.progress}% completed)`}>
-                                                                    <InfoCircleIcon size={13} color="#94A3B8" />
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                })()}
                                             </div>
                                         )}
                                     </div>
@@ -611,7 +589,23 @@ export default function AdvisorChatView({
                     <div className={styles.bottomChatInputBar}>
                         {/* Interactive Step-by-Step Question Wizard Docked Above Input Field */}
                         {(() => {
-                            const isReadyStage = Boolean(latestAiMessage?.complete === true);
+                            const isReadyStage = Boolean(
+                                latestAiMessage?.complete === true ||
+                                String(latestAiMessage?.complete) === 'true' ||
+                                latestAiMessage?.json_fulfilled === true ||
+                                String(latestAiMessage?.json_fulfilled) === 'true' ||
+                                latestAiMessage?.is_complete === true ||
+                                latestAiMessage?.ready_for_backtest === true ||
+                                latestAiMessage?.asking_for === 'none' ||
+                                resp?.complete === true ||
+                                resp?.json_fulfilled === true ||
+                                resp?.ready_for_backtest === true ||
+                                resp?.asking_for === 'none' ||
+                                (resp?.strategy && (
+                                    (Array.isArray(resp.strategy?.stock_name) && resp.strategy.stock_name.length > 0) ||
+                                    (Array.isArray(resp.strategy?.symbols) && resp.strategy.symbols.length > 0)
+                                ))
+                            );
                             if (isReadyStage || isOptionBoxDismissed || loading || !isLatestAiMessage || !isLatestAiStreamCompleted || latestAiMessage?.isError) {
                                 return null;
                             }

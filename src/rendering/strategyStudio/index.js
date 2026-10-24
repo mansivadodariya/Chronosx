@@ -118,21 +118,52 @@ export default function StrategyStudio() {
 
         const activeStrat = resp?.strategy || {};
         const stratId = customParams?.strategy_id || customParams?.strategyId || activeStrat?.strategy_id || activeStrat?.id || resp?.strategy_id || resp?.id;
-        const sym = customParams?.symbol || (Array.isArray(activeStrat.stock_name) ? activeStrat.stock_name[0] : activeStrat.stock_name) || symbol || 'XAUUSD';
-        const intv = customParams?.interval || activeStrat.interval || interval || '15min';
-        const cap = parseFloat(customParams?.capital || activeStrat.inital_capital || capital) || 10000;
-        const qty = parseFloat(customParams?.quantity || activeStrat.quantity || quantity) || 0.01;
-        const from = fromDate;
-        const to = toDate;
+        const sym = customParams?.symbol || symbol || (Array.isArray(activeStrat.stock_name) ? activeStrat.stock_name[0] : activeStrat.stock_name) || 'EURUSD';
+        const intv = customParams?.interval || interval || activeStrat.interval || '30min';
+        const cap = parseFloat(customParams?.capital || capital || activeStrat.inital_capital) || 10000;
+        const qty = parseFloat(customParams?.quantity || quantity || activeStrat.quantity) || 0.01;
+        const rawFrom = customParams?.fromDate || customParams?.from_date || fromDate;
+        const rawTo = customParams?.toDate || customParams?.to_date || toDate;
+        const normalizeIso = (val) => {
+            if (!val || typeof val !== 'string') return val;
+            if (val.includes('/')) {
+                const p = val.split('/');
+                if (p.length === 3 && p[2].length === 4) {
+                    return p[2] + '-' + p[0].padStart(2, '0') + '-' + p[1].padStart(2, '0');
+                }
+            }
+            return val;
+        };
+        const from = normalizeIso(rawFrom);
+        const to = normalizeIso(rawTo);
 
         try {
             let resData = null;
 
             // 1. Direct Run via /backtest/v1/run-by-id if strategy_id exists
             if (stratId) {
-                const byIdRes = await strategyStudioApi.runBacktestById({ strategy_id: stratId }).catch(() => null);
+                const byIdRes = await strategyStudioApi.runBacktestById({
+                    strategy_id: stratId,
+                    symbol: sym,
+                    stock_name: [sym],
+                    interval: intv,
+                    from_date: from,
+                    to_date: to,
+                    inital_capital: cap,
+                    capital: cap,
+                    quantity: qty,
+                }).catch(() => null);
                 if (byIdRes && (byIdRes.status === 'success' || byIdRes.success) && byIdRes.data) {
-                    resData = byIdRes.data;
+                    const dataObj = byIdRes.data || {};
+                    const rawObj = byIdRes.raw || {};
+                    const stockData = Array.isArray(rawObj.data) && rawObj.data.length > 0 ? rawObj.data[0] : (dataObj || {});
+                    resData = {
+                        ...rawObj,
+                        ...dataObj,
+                        candles: stockData.candles || stockData.market_data || dataObj.candles || rawObj.candles || [],
+                        chart_markers: rawObj.chart_markers || stockData.chart_markers || dataObj.chart_markers || [],
+                        positions: rawObj.positions || stockData.positions || dataObj.positions || [],
+                    };
                 }
             }
 
@@ -141,8 +172,32 @@ export default function StrategyStudio() {
                 const runRes = await runBacktest({
                     strategy_id: stratId,
                     includePlot: true,
-                    strategy: activeStrat,
-                    strategy_json: activeStrat,
+                    strategy: {
+                        ...activeStrat,
+                        stock_name: [sym],
+                        interval: intv,
+                        from_date: from,
+                        to_date: to,
+                        inital_capital: cap,
+                        quantity: qty,
+                    },
+                    strategy_json: {
+                        ...activeStrat,
+                        stock_name: [sym],
+                        interval: intv,
+                        from_date: from,
+                        to_date: to,
+                        inital_capital: cap,
+                        quantity: qty,
+                    },
+                    symbol: sym,
+                    stock_name: [sym],
+                    interval: intv,
+                    from_date: from,
+                    to_date: to,
+                    inital_capital: cap,
+                    capital: cap,
+                    quantity: qty,
                 }).catch(() => null);
                 if (runRes && runRes.ok && runRes.body) {
                     const body = runRes.body;
@@ -153,7 +208,7 @@ export default function StrategyStudio() {
                         const stockData = hasData ? (body.data[0] || {}) : {};
                         resData = {
                             ...body,
-                            candles: stockData.candles || body.candles || [],
+                            candles: stockData.candles || stockData.market_data || body.candles || [],
                             chart_markers: body.chart_markers || stockData.chart_markers || [],
                             positions: hasPositions ? body.positions : (stockData.positions || []),
                         };
@@ -161,7 +216,7 @@ export default function StrategyStudio() {
                 }
             }
 
-            // 2. Fallback if session backtest returned empty or offline
+            // 3. Fallback if session backtest returned empty or offline
             if (!resData || (!resData.success && !resData.data && resData.total_trades === undefined)) {
                 const payload = {
                     stock_name: [sym],
@@ -199,7 +254,16 @@ export default function StrategyStudio() {
 
                 const res = await strategyStudioApi.runBacktest(payload).catch(() => null);
                 if (res && (res.status === 'success' || res.success) && res.data) {
-                    resData = Array.isArray(res.data) ? res.data[0] : res.data;
+                    const dataObj = Array.isArray(res.data) ? res.data[0] : res.data;
+                    const rawObj = res.raw || {};
+                    const stockData = Array.isArray(rawObj.data) && rawObj.data.length > 0 ? rawObj.data[0] : (dataObj || {});
+                    resData = {
+                        ...rawObj,
+                        ...dataObj,
+                        candles: stockData.candles || stockData.market_data || dataObj.candles || rawObj.candles || [],
+                        chart_markers: rawObj.chart_markers || stockData.chart_markers || dataObj.chart_markers || [],
+                        positions: rawObj.positions || stockData.positions || dataObj.positions || [],
+                    };
                 } else {
                     resData = generateSimulatedBacktest(payload);
                 }

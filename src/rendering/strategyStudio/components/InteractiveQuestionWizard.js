@@ -135,12 +135,67 @@ const STATIC_STRATEGY_QUESTIONS = [
     },
 ];
 
+const KNOWN_WIZARD_STEPS = {
+    instrument: {
+        title: 'Which trading pair would you like to use for this strategy?',
+        description: 'Select from our 6 verified institutional Forex pairs or Gold (XAUUSD):',
+        stepNumber: 1,
+        totalSteps: 5,
+        hasCustom: false,
+    },
+    pair: {
+        title: 'Which trading pair would you like to use for this strategy?',
+        description: 'Select from our 6 verified institutional Forex pairs or Gold (XAUUSD):',
+        stepNumber: 1,
+        totalSteps: 5,
+        hasCustom: false,
+    },
+    timeframe: {
+        title: 'Which chart timeframe would you like to trade on?',
+        description: 'Chart candle interval for crossover calculation and backtesting.',
+        stepNumber: 2,
+        totalSteps: 5,
+        hasCustom: false,
+    },
+    condition: {
+        title: 'Which crossover condition would you like to execute?',
+        description: 'Select the signal trigger condition for trade entry.',
+        stepNumber: 3,
+        totalSteps: 5,
+        hasCustom: true,
+    },
+    direction: {
+        title: 'Which crossover condition would you like to execute?',
+        description: 'Select the signal trigger condition for trade entry.',
+        stepNumber: 3,
+        totalSteps: 5,
+        hasCustom: true,
+    },
+    fast_period: {
+        title: 'What period do you want for your Fast EMA?',
+        description: 'Fast EMA period (e.g. 5 for scalping or 9 for standard momentum).',
+        stepNumber: 4,
+        totalSteps: 5,
+        hasCustom: true,
+    },
+    slow_period: {
+        title: 'What period do you want for your Slow EMA?',
+        description: 'Slow EMA period (e.g. 20/21 for momentum or 200 for institutional trend).',
+        stepNumber: 5,
+        totalSteps: 5,
+        hasCustom: true,
+    },
+};
+
 function extractQuestionTitle(aiMsg) {
     if (!aiMsg) return 'Select an option:';
     if (aiMsg.question) return aiMsg.question;
     if (aiMsg.question_title) return aiMsg.question_title;
-    if (aiMsg.asking_for) return `Please select ${aiMsg.asking_for}:`;
-    if (aiMsg.step_name) return `Configure ${aiMsg.step_name}:`;
+
+    const stepKey = (aiMsg.step || aiMsg.asking_for || '').toLowerCase().trim();
+    if (KNOWN_WIZARD_STEPS[stepKey]?.title) {
+        return KNOWN_WIZARD_STEPS[stepKey].title;
+    }
 
     const text = (aiMsg.text || aiMsg.reply || '').trim();
     if (text) {
@@ -153,7 +208,34 @@ function extractQuestionTitle(aiMsg) {
         if (cta) return cta.trim();
         if (sentences.length > 0) return sentences[sentences.length - 1].trim();
     }
+
+    if (aiMsg.asking_for) return `Please select ${aiMsg.asking_for}:`;
+    if (aiMsg.step_name) return `Configure ${aiMsg.step_name}:`;
     return 'Select an option:';
+}
+
+function extractQuestionDescription(aiMsg) {
+    if (aiMsg?.question_description) return aiMsg.question_description;
+    if (aiMsg?.description) return aiMsg.description;
+    const stepKey = (aiMsg?.step || aiMsg?.asking_for || '').toLowerCase().trim();
+    if (KNOWN_WIZARD_STEPS[stepKey]?.description) {
+        return KNOWN_WIZARD_STEPS[stepKey].description;
+    }
+    return '';
+}
+
+function formatWizardOption(opt, stepKey) {
+    let val = typeof opt === 'string' ? opt : (opt.value || opt.label || opt.title || '');
+    let lbl = typeof opt === 'string' ? opt : (opt.label || opt.title || opt.value || '');
+    if (stepKey === 'timeframe' && (lbl.toLowerCase() === '1hour' || lbl.toLowerCase() === '1h')) {
+        lbl = '60min';
+    }
+    return {
+        label: lbl,
+        description: (typeof opt === 'object' && opt.description) ? opt.description : getTradingOptionDescription(val, lbl),
+        value: val,
+        is_custom: Boolean(typeof opt === 'object' && opt.is_custom)
+    };
 }
 
 export default function InteractiveQuestionWizard({
@@ -202,15 +284,42 @@ export default function InteractiveQuestionWizard({
         return set;
     }, [messages, latestAiMessage]);
 
-    // Parse questions list from AI message — fallback to static wizard when AI has none
+    // Parse questions list from AI message — never show questions if strategy is complete or fulfilled
     const questionsList = useMemo(() => {
+        const strat = latestAiMessage?.strategy || {};
         const isReadyToProceed = Boolean(
+            !latestAiMessage ||
             latestAiMessage?.complete === true ||
+            String(latestAiMessage?.complete) === 'true' ||
             latestAiMessage?.json_fulfilled === true ||
-            latestAiMessage?.is_complete === true
+            String(latestAiMessage?.json_fulfilled) === 'true' ||
+            latestAiMessage?.is_complete === true ||
+            latestAiMessage?.ready_for_backtest === true ||
+            latestAiMessage?.ready_to_proceed === true ||
+            latestAiMessage?.asking_for === 'none' ||
+            latestAiMessage?.step === 'none' ||
+            (
+                Boolean(strat?.stock_name?.[0]) &&
+                Boolean(strat?.interval) &&
+                Boolean(strat?.from_date && strat?.to_date) &&
+                (strat?.entry_conditions?.rules?.length || 0) > 0 &&
+                (strat?.exit_conditions?.target != null || strat?.exit_conditions?.stoploss != null || (strat?.exit_conditions?.rules?.length || 0) > 0)
+            )
         );
         if (isReadyToProceed) return [];
         if (latestAiMessage?.isError) return [];
+
+        const stepKey = (latestAiMessage?.step || latestAiMessage?.asking_for || '').toLowerCase().trim();
+        // Do not ask duplicate questions for parameters already locked in the strategy
+        if ((stepKey === 'timeframe' || stepKey === 'interval') && strat?.interval) {
+            return [];
+        }
+        if ((stepKey === 'pair' || stepKey === 'instrument' || stepKey === 'symbol') && Array.isArray(strat?.stock_name) && strat.stock_name.length > 0) {
+            return [];
+        }
+        if ((stepKey === 'period' || stepKey === 'duration') && strat?.from_date && strat?.to_date) {
+            return [];
+        }
 
         let raw = [];
 
@@ -245,46 +354,35 @@ export default function InteractiveQuestionWizard({
                 })
             }];
         } else if (latestAiMessage?.options && Array.isArray(latestAiMessage.options) && latestAiMessage.options.length > 0) {
+            const knownStep = KNOWN_WIZARD_STEPS[stepKey];
             const title = extractQuestionTitle(latestAiMessage);
+            const desc = extractQuestionDescription(latestAiMessage);
             raw = [{
-                question_id: latestAiMessage.question_id || `q_${latestAiMessage.step || 1}`,
-                question_number: 1,
-                total_questions: 1,
+                question_id: latestAiMessage.question_id || (stepKey ? stepKey : `q_${latestAiMessage.step || 1}`),
+                question_number: knownStep?.stepNumber || 1,
+                total_questions: knownStep?.totalSteps || 1,
+                has_custom: knownStep?.hasCustom ?? false,
                 question: title,
                 question_title: title,
-                description: latestAiMessage.description || '',
-                options: latestAiMessage.options.map((opt) => {
-                    const val = typeof opt === 'string' ? opt : (opt.value || opt.label || opt.title || '');
-                    const lbl = typeof opt === 'string' ? opt : (opt.label || opt.title || opt.value || '');
-                    return {
-                        label: lbl,
-                        description: (typeof opt === 'object' && opt.description) ? opt.description : getTradingOptionDescription(val, lbl),
-                        value: val,
-                        is_custom: Boolean(typeof opt === 'object' && opt.is_custom)
-                    };
-                })
+                description: desc,
+                options: latestAiMessage.options.map((opt) => formatWizardOption(opt, stepKey))
             }];
         } else if ((latestAiMessage?.cta_buttons || latestAiMessage?.ctaButtons)) {
             const ctas = latestAiMessage.cta_buttons || latestAiMessage.ctaButtons;
             if (Array.isArray(ctas) && ctas.length > 0) {
+                const stepKey = (latestAiMessage.step || latestAiMessage.asking_for || '').toLowerCase().trim();
+                const knownStep = KNOWN_WIZARD_STEPS[stepKey];
                 const qTitle = extractQuestionTitle(latestAiMessage);
+                const qDesc = extractQuestionDescription(latestAiMessage);
                 raw = [{
-                    question_id: latestAiMessage.question_id || `q_${latestAiMessage.step || 1}`,
-                    question_number: 1,
-                    total_questions: 1,
+                    question_id: latestAiMessage.question_id || (stepKey ? stepKey : `q_${latestAiMessage.step || 1}`),
+                    question_number: knownStep?.stepNumber || 1,
+                    total_questions: knownStep?.totalSteps || 1,
+                    has_custom: knownStep?.hasCustom ?? false,
                     question: qTitle,
                     question_title: qTitle,
-                    description: latestAiMessage.description || '',
-                    options: ctas.map((c) => {
-                        const val = typeof c === 'string' ? c : (c.value || c.label || '');
-                        const lbl = typeof c === 'string' ? c : (c.label || c.value || '');
-                        return {
-                            label: lbl,
-                            value: val,
-                            description: (typeof c === 'object' && c.description) ? c.description : getTradingOptionDescription(val, lbl),
-                            is_custom: Boolean(typeof c === 'object' && c.is_custom)
-                        };
-                    })
+                    description: qDesc,
+                    options: ctas.map((c) => formatWizardOption(c, stepKey))
                 }];
             }
         } else if (latestAiMessage?.suggestions && Array.isArray(latestAiMessage.suggestions) && latestAiMessage.suggestions.length > 0) {
@@ -308,16 +406,9 @@ export default function InteractiveQuestionWizard({
             }];
         }
 
-        // 2. Fallback to static wizard when AI gives nothing
+        // 2. When AI provides no options or questions, strictly return empty list (no popup)
         if (raw.length === 0) {
-            if (previouslyAnsweredSet.size === 0) return STATIC_STRATEGY_QUESTIONS;
-            return STATIC_STRATEGY_QUESTIONS.filter((q) => {
-                const qId = (q.question_id || '').toLowerCase().trim();
-                const qTitle = (q.question_title || q.question || '').toLowerCase().trim();
-                if (qId && previouslyAnsweredSet.has(qId)) return false;
-                if (qTitle && previouslyAnsweredSet.has(qTitle)) return false;
-                return true;
-            });
+            return [];
         }
 
         // When AI explicitly provides options or questions for the active turn, always present them
@@ -336,17 +427,57 @@ export default function InteractiveQuestionWizard({
         isSubmittingRef.current = false;
     }, [latestAiMessage, questionsList.length]);
 
-    const totalQuestions = Math.max(1, latestAiMessage?.total_questions || latestAiMessage?.total_steps || questionsList.length || 7);
+    const parsePositiveNum = (val) => {
+        if (typeof val === 'number' && !isNaN(val) && val > 0) return val;
+        if (typeof val === 'string') {
+            const parsed = parseInt(val, 10);
+            if (!isNaN(parsed) && parsed > 0) return parsed;
+            const match = val.match(/\b(\d+)\b/);
+            if (match) {
+                const num = parseInt(match[1], 10);
+                if (!isNaN(num) && num > 0) return num;
+            }
+        }
+        return null;
+    };
+
+    const textStepMatch = typeof latestAiMessage?.text === 'string'
+        ? latestAiMessage.text.match(/Step\s*(\d+)(?:\s*(?:of|\/)\s*(\d+))?/i)
+        : null;
+
     const safeCurrentIndex = Math.min(Math.max(0, currentIndex), Math.max(0, questionsList.length - 1));
     const activeQuestion = questionsList[safeCurrentIndex] || questionsList[0] || null;
-    const currentStepVal = latestAiMessage?.step || latestAiMessage?.step_number || (safeCurrentIndex + 1);
-    const displayStepNumber = Math.min(currentStepVal, totalQuestions);
+
+    const stepKey = (latestAiMessage?.step || latestAiMessage?.asking_for || activeQuestion?.question_id || '').toLowerCase().trim();
+    const knownStep = KNOWN_WIZARD_STEPS[stepKey];
+
+    const totalQuestions = Math.max(
+        1,
+        parsePositiveNum(latestAiMessage?.total_questions)
+            || parsePositiveNum(latestAiMessage?.total_steps)
+            || (textStepMatch && textStepMatch[2] ? parseInt(textStepMatch[2], 10) : null)
+            || parsePositiveNum(activeQuestion?.total_questions)
+            || (knownStep ? knownStep.totalSteps : null)
+            || (questionsList.length > 1 ? questionsList.length : null)
+            || 5
+    );
+
+    const rawStep = activeQuestion?.question_number
+        ?? latestAiMessage?.step_number
+        ?? latestAiMessage?.question_number
+        ?? (parsePositiveNum(latestAiMessage?.step) ? latestAiMessage.step : null)
+        ?? (textStepMatch ? parseInt(textStepMatch[1], 10) : null)
+        ?? (knownStep ? knownStep.stepNumber : null)
+        ?? (safeCurrentIndex + 1);
+
+    const parsedStep = parsePositiveNum(rawStep) || (safeCurrentIndex + 1);
+    const displayStepNumber = Math.min(Math.max(1, parsedStep), totalQuestions);
 
     const activeOptions = useMemo(() => {
         if (!activeQuestion || !activeQuestion.options || !Array.isArray(activeQuestion.options)) {
             return [];
         }
-        const list = activeQuestion.options.map((opt) =>
+        let list = activeQuestion.options.map((opt) =>
             typeof opt === 'string'
                 ? { label: opt, description: '', value: opt }
                 : {
@@ -356,6 +487,24 @@ export default function InteractiveQuestionWizard({
                     is_custom: Boolean(opt.is_custom)
                 }
         );
+
+        const isTimeframeQuestion = Boolean(
+            (activeQuestion.question_id || '').toLowerCase().includes('timeframe') ||
+            (activeQuestion.question_id || '').toLowerCase().includes('interval') ||
+            (activeQuestion.question || '').toLowerCase().includes('timeframe') ||
+            (activeQuestion.question_title || '').toLowerCase().includes('timeframe') ||
+            (latestAiMessage?.step || '').toLowerCase() === 'timeframe' ||
+            (latestAiMessage?.asking_for || '').toLowerCase() === 'timeframe'
+        );
+
+        if (isTimeframeQuestion) {
+            // Strictly exclude any Custom option for timeframe as requested
+            return list.filter((opt) => {
+                const lbl = (opt.label || '').toLowerCase().trim();
+                const val = (opt.value || '').toLowerCase().trim();
+                return lbl !== 'custom' && val !== 'custom' && !opt.is_custom;
+            });
+        }
 
         const hasCustomOption = list.some(
             (opt) =>
@@ -373,7 +522,7 @@ export default function InteractiveQuestionWizard({
         }
 
         return list;
-    }, [activeQuestion]);
+    }, [activeQuestion, latestAiMessage]);
 
     const selectedOption = activeOptions[selectedOptionIndex] || null;
     const isCustomSelected = Boolean(
@@ -399,7 +548,35 @@ export default function InteractiveQuestionWizard({
         }
     }, [isCustomSelected, currentIndex, selectedOptionIndex]);
 
-    if (!activeQuestion || activeOptions.length === 0 || loading || latestAiMessage?.isError) {
+    const strat = latestAiMessage?.strategy || {};
+    const isStrategyCompletedOrFulfilled = Boolean(
+        !latestAiMessage ||
+        latestAiMessage?.complete === true ||
+        String(latestAiMessage?.complete) === 'true' ||
+        latestAiMessage?.json_fulfilled === true ||
+        String(latestAiMessage?.json_fulfilled) === 'true' ||
+        latestAiMessage?.is_complete === true ||
+        latestAiMessage?.ready_for_backtest === true ||
+        latestAiMessage?.ready_to_proceed === true ||
+        latestAiMessage?.asking_for === 'none' ||
+        latestAiMessage?.step === 'none' ||
+        (
+            Boolean(strat?.stock_name?.[0]) &&
+            Boolean(strat?.interval) &&
+            Boolean(strat?.from_date && strat?.to_date) &&
+            (strat?.entry_conditions?.rules?.length || 0) > 0 &&
+            (strat?.exit_conditions?.target != null || strat?.exit_conditions?.stoploss != null || (strat?.exit_conditions?.rules?.length || 0) > 0)
+        )
+    );
+
+    const activeStepKey = (activeQuestion?.step || activeQuestion?.asking_for || latestAiMessage?.step || latestAiMessage?.asking_for || '').toLowerCase().trim();
+    const isRedundantQuestion = Boolean(
+        ((activeStepKey === 'pair' || activeStepKey === 'instrument') && strat?.stock_name?.[0]) ||
+        ((activeStepKey === 'timeframe' || activeStepKey === 'interval') && strat?.interval) ||
+        ((activeStepKey === 'period' || activeStepKey === 'duration') && strat?.from_date && strat?.to_date)
+    );
+
+    if (isStrategyCompletedOrFulfilled || isRedundantQuestion || !activeQuestion || activeOptions.length === 0 || loading || latestAiMessage?.isError) {
         return null;
     }
 
@@ -418,7 +595,7 @@ export default function InteractiveQuestionWizard({
         setCollectedAnswers(updatedAnswers);
 
         // Check if there are more questions in the flow
-        if (currentIndex + 1 < totalQuestions) {
+        if (currentIndex + 1 < questionsList.length) {
             setCurrentIndex((prev) => prev + 1);
             setSelectedOptionIndex(0);
             setInlineAnswer('');
@@ -492,7 +669,7 @@ export default function InteractiveQuestionWizard({
         }
     };
 
-    if (!activeQuestion || questionsList.length === 0 || activeOptions.length === 0) {
+    if (isStrategyCompletedOrFulfilled || !activeQuestion || questionsList.length === 0 || activeOptions.length === 0) {
         return null;
     }
 
@@ -537,7 +714,7 @@ export default function InteractiveQuestionWizard({
                     </span>
                 </div>
                 <div className={styles.stepCounterBadge}>
-                    <span>{activeQuestion.question_title ? `${activeQuestion.question_title} • ` : ''}{displayStepNumber}/{totalQuestions}</span>
+                    <span>{displayStepNumber}/{totalQuestions}</span>
                 </div>
             </div>
 

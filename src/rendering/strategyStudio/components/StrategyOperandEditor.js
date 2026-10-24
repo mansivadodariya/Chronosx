@@ -228,7 +228,7 @@ export default function StrategyOperandEditor({
                                 <span>{p.label || p.name}</span>
                                 <input
                                     type="number"
-                                    step={step}
+                                    step="any"
                                     min={p.min}
                                     max={p.max}
                                     value={val ?? ''}

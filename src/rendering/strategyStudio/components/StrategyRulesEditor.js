@@ -9,6 +9,10 @@ export default function StrategyRulesEditor({
     title,
     conditions,
     isExit = false,
+    target,
+    targetType,
+    stoploss,
+    stoplossType,
     conditionTypes = [],
     operators = [],
     indicatorGroups = [],
@@ -22,7 +26,6 @@ export default function StrategyRulesEditor({
     const condTypeOpts = [...conditionTypes];
     const currentCondType = cond.condition_type || (isExit ? 'any' : 'all');
     if (condTypeOpts.length === 0) {
-        // Metadata not loaded yet — provide sensible defaults
         condTypeOpts.push({ value: 'all', label: 'All conditions must match (AND)' });
         condTypeOpts.push({ value: 'any', label: 'Any condition matches (OR)' });
     } else if (!condTypeOpts.some((ct) => ct.value === currentCondType)) {
@@ -32,7 +35,6 @@ export default function StrategyRulesEditor({
     // Ensure operator options always include current rule operators
     const operatorOpts = [...operators];
     if (operatorOpts.length === 0) {
-        // Provide standard operator defaults matching backend /interactive-metadata
         const defaultOps = [
             { value: 'crossover', label: 'crosses above' },
             { value: 'crossdown', label: 'crosses below' },
@@ -45,19 +47,11 @@ export default function StrategyRulesEditor({
         operatorOpts.push(...defaultOps);
     }
 
-    // Ensure all rule operators exist in the options
     rules.forEach((r) => {
         if (r.operator && !operatorOpts.some((o) => o.value === r.operator)) {
             operatorOpts.push({ value: r.operator, label: r.operator });
         }
     });
-
-    const handleConditionTypeChange = (e) => {
-        onChange({
-            ...cond,
-            condition_type: e.target.value,
-        });
-    };
 
     const handleUpdateRule = (index, updatedRule) => {
         const nextRules = [...rules];
@@ -90,25 +84,74 @@ export default function StrategyRulesEditor({
         });
     };
 
+    // Resolve exit targets from props or cond
+    const effectiveTarget = target !== undefined ? target : cond.target;
+    const effectiveTargetType = targetType || cond.target_type || 'points';
+    const effectiveStoploss = stoploss !== undefined ? stoploss : cond.stoploss;
+    const effectiveStoplossType = stoplossType || cond.stoploss_type || 'points';
+
     return (
         <div style={{ marginTop: '16px' }}>
             <div className={styles.sectionSubheader}>{title}</div>
 
-            {/* Combine Rules Logic Selector */}
-            <div className={styles.formField} style={{ marginBottom: '10px' }}>
-                <label>Combine rules</label>
-                <CustomSelect
-                    value={currentCondType}
-                    onChange={(val) =>
-                        onChange({
-                            ...cond,
-                            condition_type: val,
-                        })
-                    }
-                    options={condTypeOpts}
-                    width="100%"
-                />
-            </div>
+            {/* If this is Exit Rules, display the active Exit Conditions summary */}
+            {isExit && (
+                <div
+                    style={{
+                        padding: '12px 14px',
+                        borderRadius: '8px',
+                        backgroundColor: 'rgba(24, 201, 139, 0.08)',
+                        border: '1px solid rgba(24, 201, 139, 0.25)',
+                        marginBottom: '14px',
+                        fontSize: '12.5px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '6px',
+                    }}
+                >
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <span style={{ fontWeight: 600, color: '#18c98b' }}>Active Exit Conditions:</span>
+                        <span style={{ fontSize: '11px', color: '#94a3b8' }}>Configured via Targets above</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', color: '#f1f5f9' }}>
+                        <div>
+                            <span style={{ color: '#94a3b8' }}>Take Profit: </span>
+                            <strong style={{ color: effectiveTarget != null ? '#18c98b' : '#94a3b8' }}>
+                                {effectiveTarget != null ? `${effectiveTarget} ${effectiveTargetType}` : 'Off'}
+                            </strong>
+                        </div>
+                        <div>
+                            <span style={{ color: '#94a3b8' }}>Stop Loss: </span>
+                            <strong style={{ color: effectiveStoploss != null ? '#f59e0b' : '#94a3b8' }}>
+                                {effectiveStoploss != null ? `${effectiveStoploss} ${effectiveStoplossType}` : 'Off'}
+                            </strong>
+                        </div>
+                    </div>
+                    {rules.length === 0 && (
+                        <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '2px' }}>
+                            Trades will exit when Take Profit or Stop Loss is reached. You can also add indicator exit rules below to close trades early on technical signals (e.g. reverse crossover).
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {/* Combine Rules Logic Selector - only show when there are 2 or more rules */}
+            {rules.length > 1 && (
+                <div className={styles.formField} style={{ marginBottom: '10px' }}>
+                    <label>Combine rules</label>
+                    <CustomSelect
+                        value={currentCondType}
+                        onChange={(val) =>
+                            onChange({
+                                ...cond,
+                                condition_type: val,
+                            })
+                        }
+                        options={condTypeOpts}
+                        width="100%"
+                    />
+                </div>
+            )}
 
             {/* List of Rules */}
             {rules.map((rule, idx) => (
@@ -170,6 +213,13 @@ export default function StrategyRulesEditor({
                 </div>
             ))}
 
+            {/* Empty state for rules */}
+            {rules.length === 0 && !isExit && (
+                <div style={{ fontSize: '12px', color: '#94a3b8', margin: '6px 0 10px 0' }}>
+                    No entry rules added. Click below to add an entry condition rule.
+                </div>
+            )}
+
             {/* Add Rule Button */}
             <button
                 type="button"
@@ -177,7 +227,7 @@ export default function StrategyRulesEditor({
                 style={{ marginTop: '6px', fontSize: '12px', padding: '6px 12px' }}
                 onClick={handleAddRule}
             >
-                {isExit ? '+ Add exit rule' : '+ Add entry rule'}
+                {isExit ? '+ Add indicator exit rule' : '+ Add entry rule'}
             </button>
         </div>
     );

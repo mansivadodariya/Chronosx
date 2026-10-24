@@ -43,7 +43,7 @@ function parseTimestamp(dateVal) {
     return Date.now();
 }
 
-function formatCategoryDate(dateVal) {
+function formatCategoryDate(dateVal, includeYear = false) {
     if (!dateVal) return '';
     const ts = parseTimestamp(dateVal);
     const d = new Date(ts);
@@ -51,75 +51,65 @@ function formatCategoryDate(dateVal) {
     const day = String(d.getDate()).padStart(2, '0');
     const hours = String(d.getHours()).padStart(2, '0');
     const mins = String(d.getMinutes()).padStart(2, '0');
+    if (includeYear) {
+        const yr = String(d.getFullYear()).slice(-2);
+        return `${day} ${month} '${yr} ${hours}:${mins}`;
+    }
     return `${day} ${month} ${hours}:${mins}`;
 }
 
 /**
  * Generate or normalize OHLC Candlestick data from backtest results / roundTrips
  */
-function buildCandlestickData(results, roundTrips, symbol = 'EURUSD', interval = '15min') {
+function buildCandlestickData(results, roundTrips, symbol = 'EURUSD', interval = '30min') {
     // 1. Check if backend returned explicit candles / ohlc in any nested property
-    // After normalization in index.js, results.candles is always the real data[0].candles
     const rawCandles = (Array.isArray(results?.candles) && results.candles.length > 0 ? results.candles : null)
-        || (Array.isArray(results?.data) ? (results.data[0]?.candles || null) : null)
+        || (Array.isArray(results?.data) ? (results.data[0]?.candles || results.data[0]?.market_data || null) : null)
+        || results?.market_data
         || results?.plot
         || results?.stats?.candles
         || results?.data?.candles
         || results?.stock_data
-        || results?.market_data
         || results?.ohlc
         || results?.bars;
 
-
     if (Array.isArray(rawCandles) && rawCandles.length > 0) {
-        const parsed = rawCandles.map(c => {
+        const tempParsed = rawCandles.map(c => {
             const timeVal = c.time || c.Date || c.date || c.timestamp || c.datetime || c.Time;
             const ts = parseTimestamp(timeVal);
-            const label = formatCategoryDate(timeVal || ts);
             const open = Number(c.open ?? c.Open ?? 0);
             const high = Number(c.high ?? c.High ?? open);
             const low = Number(c.low ?? c.Low ?? open);
             const close = Number(c.close ?? c.Close ?? open);
             return {
-                x: label,
-                ts: ts,
+                ts,
+                rawTime: timeVal,
                 y: [open, high, low, close]
             };
-        }).filter(item => item.x && item.y.every(val => !isNaN(val) && val > 0));
+        }).filter(item => item.ts && item.y.every(val => !isNaN(val) && val > 0));
 
-        if (parsed.length > 0) {
-            if (parsed.length <= 250) {
-                return parsed;
-            }
-            // Intelligent OHLC bucket downsampling for instantaneous 60 FPS chart rendering
-            const targetPoints = 180;
-            const bucketSize = Math.ceil(parsed.length / targetPoints);
-            const downsampled = [];
+        if (tempParsed.length > 0) {
+            tempParsed.sort((a, b) => a.ts - b.ts);
 
-            for (let i = 0; i < parsed.length; i += bucketSize) {
-                const chunk = parsed.slice(i, i + bucketSize);
-                if (chunk.length === 0) continue;
+            const spansMultipleYears =
+                new Date(tempParsed[0].ts).getFullYear() !==
+                new Date(tempParsed[tempParsed.length - 1].ts).getFullYear();
 
-                const label = chunk[0].x;
-                const ts = chunk[0].ts;
-                const open = chunk[0].y[0];
-                let high = chunk[0].y[1];
-                let low = chunk[0].y[2];
-                const close = chunk[chunk.length - 1].y[3];
+            const seenCounts = new Map();
+            const parsed = tempParsed.map(item => {
+                const baseLabel = formatCategoryDate(item.rawTime || item.ts, spansMultipleYears);
+                const count = seenCounts.get(baseLabel) || 0;
+                seenCounts.set(baseLabel, count + 1);
+                const uniqueLabel = count === 0 ? baseLabel : `${baseLabel} (${count})`;
+                return {
+                    x: uniqueLabel,
+                    ts: item.ts,
+                    dateLabel: uniqueLabel,
+                    y: item.y
+                };
+            });
 
-                for (let j = 1; j < chunk.length; j++) {
-                    if (chunk[j].y[1] > high) high = chunk[j].y[1];
-                    if (chunk[j].y[2] < low) low = chunk[j].y[2];
-                }
-
-                downsampled.push({
-                    x: label,
-                    ts: ts,
-                    y: [open, high, low, close]
-                });
-            }
-
-            return downsampled;
+            return parsed;
         }
     }
 
@@ -171,45 +161,61 @@ function buildCandlestickData(results, roundTrips, symbol = 'EURUSD', interval =
 
     tradePoints.sort((a, b) => a.time - b.time);
 
-    const startTime = tradePoints.length > 0
-        ? tradePoints[0].time - (12 * 3600 * 1000)
-        : Date.now() - (60 * 24 * 3600 * 1000);
+    const intvClean = (interval || '').toLowerCase().trim();
+    const intervalMs = intvClean === '1min' || intvClean === '1m' ? 60 * 1000
+        : intvClean === '5min' || intvClean === '5m' ? 5 * 60 * 1000
+            : intvClean === '15min' || intvClean === '15m' ? 15 * 60 * 1000
+                : intvClean === '30min' || intvClean === '30m' ? 30 * 60 * 1000
+                    : intvClean === '60min' || intvClean === '1h' || intvClean === '1hour' ? 60 * 60 * 1000
+                        : intvClean === '4h' || intvClean === '4hour' ? 4 * 3600 * 1000
+                            : 24 * 3600 * 1000;
+
     const endTime = tradePoints.length > 0
-        ? tradePoints[tradePoints.length - 1].time + (12 * 3600 * 1000)
+        ? tradePoints[tradePoints.length - 1].time + (6 * 3600 * 1000)
         : Date.now();
+    const startTime = tradePoints.length > 0
+        ? tradePoints[0].time - (6 * 3600 * 1000)
+        : endTime - (30 * 24 * 3600 * 1000);
 
-    const intervalMs = interval === '5min' ? 5 * 60 * 1000
-        : interval === '15min' ? 15 * 60 * 1000
-            : interval === '30min' ? 30 * 60 * 1000
-                : interval === '60min' ? 60 * 60 * 1000
-                    : 24 * 3600 * 1000;
-
-    const totalSteps = Math.min(120, Math.max(50, Math.floor((endTime - startTime) / intervalMs)));
-    const stepTime = (endTime - startTime) / totalSteps;
+    const totalSteps = Math.min(300, Math.max(40, Math.floor((endTime - startTime) / intervalMs)));
+    const stepTime = intervalMs;
+    const effectiveStart = endTime - (totalSteps * stepTime);
 
     let currentPrice = startPrice;
+    const seenSynthCounts = new Map();
 
     for (let i = 0; i <= totalSteps; i++) {
-        const currentTime = Math.floor(startTime + i * stepTime);
+        const currentTime = Math.floor(effectiveStart + i * stepTime);
+        const dayOfWeek = new Date(currentTime).getDay();
+        // Skip weekend bars (Saturday = 6, Sunday = 0) to connect Friday and Monday seamlessly
+        if (dayOfWeek === 6 || dayOfWeek === 0) {
+            continue;
+        }
 
         // Check if there's a trade milestone near this candle
         const nearTrade = tradePoints.find(tp => Math.abs(tp.time - currentTime) < stepTime * 0.9);
         if (nearTrade) {
             currentPrice = nearTrade.price;
         } else {
-            const randomChange = (Math.random() - 0.49) * volatility;
+            const randomChange = (Math.random() - 0.5) * volatility;
             currentPrice += randomChange;
         }
 
         const open = currentPrice;
-        const delta = (Math.random() - 0.48) * volatility * 0.8;
+        const delta = (Math.random() - 0.5) * volatility * 0.8;
         const close = open + delta;
-        const high = Math.max(open, close) + Math.random() * volatility * 0.5;
-        const low = Math.min(open, close) - Math.random() * volatility * 0.5;
+        const high = Math.max(open, close) + Math.random() * volatility * 0.4;
+        const low = Math.min(open, close) - Math.random() * volatility * 0.4;
+
+        const baseLabel = formatCategoryDate(currentTime);
+        const count = seenSynthCounts.get(baseLabel) || 0;
+        seenSynthCounts.set(baseLabel, count + 1);
+        const uniqueLabel = count === 0 ? baseLabel : `${baseLabel} (${count})`;
 
         candles.push({
-            x: formatCategoryDate(currentTime),
+            x: uniqueLabel,
             ts: currentTime,
+            dateLabel: uniqueLabel,
             y: [
                 parseFloat(open.toFixed(isForex ? 5 : 2)),
                 parseFloat(high.toFixed(isForex ? 5 : 2)),
@@ -226,11 +232,11 @@ function buildCandlestickData(results, roundTrips, symbol = 'EURUSD', interval =
 
 // SVG Arrow Data URIs matching modern rounded stem & chevron design
 const BUY_ARROW_SVG = `data:image/svg+xml;utf8,${encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32" fill="none" stroke="#10B981" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="28" x2="12" y2="5"/><polyline points="4 13 12 5 20 13"/></svg>'
+    '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="26" viewBox="0 0 24 32" fill="none" stroke="#10B981" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="28" x2="12" y2="5"/><polyline points="4 13 12 5 20 13"/></svg>'
 )}`;
 
 const SELL_ARROW_SVG = `data:image/svg+xml;utf8,${encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32" fill="none" stroke="#EF4444" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="4" x2="12" y2="27"/><polyline points="4 19 12 27 20 19"/></svg>'
+    '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="26" viewBox="0 0 24 32" fill="none" stroke="#EF4444" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="4" x2="12" y2="27"/><polyline points="4 19 12 27 20 19"/></svg>'
 )}`;
 
 export default function BacktestCandlestickChart({
@@ -244,6 +250,7 @@ export default function BacktestCandlestickChart({
     const { theme } = useTheme();
     const isDark = theme !== 'light';
     const [mounted, setMounted] = useState(false);
+    const [candleWindow, setCandleWindow] = useState('300');
 
     useEffect(() => {
         setMounted(true);
@@ -253,6 +260,14 @@ export default function BacktestCandlestickChart({
     const candleData = useMemo(() => {
         return buildCandlestickData(results, roundTrips, symbol, interval);
     }, [results, roundTrips, symbol, interval]);
+
+    // Slice to continuous sequential window for optimal rendering & candle width
+    const visibleCandles = useMemo(() => {
+        if (!candleData || candleData.length === 0) return [];
+        if (candleWindow === 'all' || candleData.length <= 200) return candleData;
+        const count = parseInt(candleWindow, 10) || 300;
+        return candleData.slice(-count);
+    }, [candleData, candleWindow]);
 
     // Pre-index trades with parsed timestamps for lookup
     const parsedTrips = useMemo(() => {
@@ -265,62 +280,89 @@ export default function BacktestCandlestickChart({
         }));
     }, [roundTrips]);
 
-    // Build Annotations (Green Up Arrow for Buy Entry, Red Down Arrow for Sell/Exit with spacing gap)
+    const intervalMs = useMemo(() => {
+        const intvClean = (interval || '').toLowerCase().trim();
+        if (intvClean === '1min' || intvClean === '1m') return 60 * 1000;
+        if (intvClean === '5min' || intvClean === '5m') return 5 * 60 * 1000;
+        if (intvClean === '15min' || intvClean === '15m') return 15 * 60 * 1000;
+        if (intvClean === '30min' || intvClean === '30m') return 30 * 60 * 1000;
+        if (intvClean === '60min' || intvClean === '1h' || intvClean === '1hour') return 60 * 60 * 1000;
+        if (intvClean === '4h' || intvClean === '4hour') return 4 * 3600 * 1000;
+        if (intvClean === '1d' || intvClean === '1day' || intvClean === 'day') return 24 * 3600 * 1000;
+        return 30 * 60 * 1000;
+    }, [interval]);
+
+    // Fast binary search to find closest candle within visible range
+    const findClosestInVisible = (targetTs) => {
+        if (!visibleCandles || visibleCandles.length === 0) return null;
+        let low = 0;
+        let high = visibleCandles.length - 1;
+        while (low <= high) {
+            const mid = (low + high) >> 1;
+            const midTs = visibleCandles[mid].ts;
+            if (midTs === targetTs) return visibleCandles[mid];
+            if (midTs < targetTs) low = mid + 1;
+            else high = mid - 1;
+        }
+        const c1 = visibleCandles[Math.max(0, high)];
+        const c2 = visibleCandles[Math.min(visibleCandles.length - 1, low)];
+        if (!c1) return c2;
+        if (!c2) return c1;
+        return Math.abs(c1.ts - targetTs) <= Math.abs(c2.ts - targetTs) ? c1 : c2;
+    };
+
+    // Build Annotations (Clean entry/exit markers positioned cleanly without stacking or clutter)
     const annotations = useMemo(() => {
         const points = [];
-        if (!candleData || candleData.length === 0) return { points };
+        if (!visibleCandles || visibleCandles.length === 0) return { points };
 
-        const maxAnnotated = 50;
-        const step = parsedTrips.length > maxAnnotated ? Math.ceil(parsedTrips.length / maxAnnotated) : 1;
+        const seenEntryCategories = new Set();
+        const seenExitCategories = new Set();
+        const firstVisibleTs = visibleCandles[0].ts - intervalMs;
+        const lastVisibleTs = visibleCandles[visibleCandles.length - 1].ts + intervalMs;
 
-        for (let i = 0; i < parsedTrips.length; i += step) {
-            const t = parsedTrips[i];
+        const visibleTrips = parsedTrips.filter(t => 
+            (t.entryTs && t.entryTs >= firstVisibleTs && t.entryTs <= lastVisibleTs) ||
+            (t.exitTs && t.exitTs >= firstVisibleTs && t.exitTs <= lastVisibleTs)
+        );
+
+        for (let i = 0; i < visibleTrips.length; i++) {
+            const t = visibleTrips[i];
             if (t.entryTs && t.entryPrice) {
-                // Find closest candle category
-                const closest = candleData.reduce((prev, curr) => {
-                    if (!prev) return curr;
-                    return Math.abs(curr.ts - t.entryTs) < Math.abs(prev.ts - t.entryTs) ? curr : prev;
-                }, null);
-
-                if (closest) {
+                const closest = findClosestInVisible(t.entryTs);
+                if (closest && Math.abs(closest.ts - t.entryTs) <= intervalMs * 2 && !seenEntryCategories.has(closest.x)) {
+                    seenEntryCategories.add(closest.x);
                     const candleLow = Array.isArray(closest.y) ? closest.y[2] : Number(t.entryPrice);
                     points.push({
                         x: closest.x,
                         y: candleLow,
-                        marker: {
-                            size: 0
-                        },
+                        marker: { size: 0 },
                         image: {
                             path: BUY_ARROW_SVG,
-                            width: 13,
-                            height: 18,
+                            width: 11,
+                            height: 15,
                             offsetX: 0,
-                            offsetY: 22
+                            offsetY: 18
                         }
                     });
                 }
             }
 
             if (t.exitTs && t.exitPrice) {
-                const closest = candleData.reduce((prev, curr) => {
-                    if (!prev) return curr;
-                    return Math.abs(curr.ts - t.exitTs) < Math.abs(prev.ts - t.exitTs) ? curr : prev;
-                }, null);
-
-                if (closest) {
+                const closest = findClosestInVisible(t.exitTs);
+                if (closest && Math.abs(closest.ts - t.exitTs) <= intervalMs * 2 && !seenExitCategories.has(closest.x)) {
+                    seenExitCategories.add(closest.x);
                     const candleHigh = Array.isArray(closest.y) ? closest.y[1] : Number(t.exitPrice);
                     points.push({
                         x: closest.x,
                         y: candleHigh,
-                        marker: {
-                            size: 0
-                        },
+                        marker: { size: 0 },
                         image: {
                             path: SELL_ARROW_SVG,
-                            width: 13,
-                            height: 18,
+                            width: 11,
+                            height: 15,
                             offsetX: 0,
-                            offsetY: -22
+                            offsetY: -18
                         }
                     });
                 }
@@ -328,13 +370,19 @@ export default function BacktestCandlestickChart({
         }
 
         return { points };
-    }, [parsedTrips, candleData]);
+    }, [parsedTrips, visibleCandles, intervalMs]);
 
     const chartOptions = {
         chart: {
             type: 'candlestick',
-            height: 360,
+            height: 380,
             background: 'transparent',
+            autoScaleYaxis: true,
+            zoom: {
+                enabled: true,
+                type: 'x',
+                autoScaleYaxis: true
+            },
             toolbar: {
                 show: true,
                 tools: {
@@ -368,16 +416,28 @@ export default function BacktestCandlestickChart({
         },
         xaxis: {
             type: 'category',
+            tickPlacement: 'on',
             tickAmount: 8,
             labels: {
+                rotate: 0,
+                hideOverlappingLabels: true,
+                showDuplicates: false,
                 style: {
                     colors: isDark ? '#94A3B8' : '#64748B',
                     fontSize: '10px',
                     fontWeight: 500
                 },
-                rotate: 0,
-                hideOverlappingLabels: true,
-                showDuplicates: false
+                formatter: (val, timestamp, opts) => {
+                    if (!val) return '';
+                    const total = visibleCandles.length;
+                    if (total <= 12) return val;
+                    const step = Math.max(1, Math.floor(total / 8));
+                    const idx = opts?.i != null ? opts.i : -1;
+                    if (idx >= 0 && idx % step !== 0 && idx !== total - 1) {
+                        return '';
+                    }
+                    return val;
+                }
             },
             axisBorder: {
                 show: true,
@@ -415,16 +475,17 @@ export default function BacktestCandlestickChart({
                 const h = w.globals.seriesCandleH[seriesIndex][dataPointIndex];
                 const l = w.globals.seriesCandleL[seriesIndex][dataPointIndex];
                 const c = w.globals.seriesCandleC[seriesIndex][dataPointIndex];
-                const item = candleData[dataPointIndex];
-                const dateLabel = item?.x || w.globals.categoryLabels?.[dataPointIndex] || '';
-                const candleTs = item?.ts || parseTimestamp(dateLabel);
+                const item = visibleCandles[dataPointIndex];
+                const candleTs = item?.ts || w.globals.seriesX?.[seriesIndex]?.[dataPointIndex] || item?.x;
+                const dateLabel = item?.dateLabel || formatCategoryDate(candleTs);
                 const isGreen = c >= o;
                 const changePct = o > 0 ? (((c - o) / o) * 100).toFixed(2) : '0.00';
-                const fmt = (v) => typeof v === 'number' ? (v >= 100 ? v.toFixed(2) : v.toFixed(5)) : v;
+                const fmt = (v) => typeof v === 'number' ? (v >= 100 ? v.toFixed(2) : v.toFixed(5)) : (v ?? '');
 
-                // Fast proximity trade lookup (within 4 hours window)
-                const matchingEntry = parsedTrips.find(t => t.entryTs && Math.abs(t.entryTs - candleTs) < 3600 * 1000 * 4);
-                const matchingExit = parsedTrips.find(t => t.exitTs && Math.abs(t.exitTs - candleTs) < 3600 * 1000 * 4);
+                // Proximity trade lookup (exact interval window)
+                const windowMs = intervalMs * 1.5;
+                const matchingEntry = parsedTrips.find(t => t.entryTs && Math.abs(t.entryTs - candleTs) <= windowMs);
+                const matchingExit = parsedTrips.find(t => t.exitTs && Math.abs(t.exitTs - candleTs) <= windowMs);
 
                 let tradeBadgeHtml = '';
                 if (matchingEntry) {
@@ -462,16 +523,46 @@ export default function BacktestCandlestickChart({
     const series = [
         {
             name: `${symbol} Price`,
-            data: candleData
+            data: visibleCandles
         }
     ];
 
-    // Compute Position Sizing Metrics
-    const baseCurr = symbol.slice(0, 3) || 'EUR';
-    const quoteCurr = symbol.slice(3, 6) || 'USD';
-    const lotUnits = 100000;
-    const positionUnits = Math.round(Number(quantity) * lotUnits);
-    const leverage = (positionUnits / (Number(capital) || 10000)).toFixed(2);
+    // Compute Position Sizing Metrics dynamically
+    const assumptions = results?.stats?.backtest_assumptions || {};
+    const symUpper = (symbol || 'EURUSD').toUpperCase();
+    const isGold = symUpper.includes('XAU');
+    const isJpy = symUpper.includes('JPY');
+    const baseCurr = symUpper.slice(0, 3) || (isGold ? 'XAU' : 'EUR');
+    const quoteCurr = symUpper.length >= 6 ? symUpper.slice(3, 6) : 'USD';
+
+    // Contract size: Gold standard 100 oz, FX 100,000 units
+    const lotUnits = Number(assumptions.contract_size || (isGold ? 100 : 100000));
+    const positionUnits = Number(quantity) * lotUnits;
+    const unitLabel = isGold ? 'oz' : baseCurr;
+
+    // Dynamic TP & SL points & pips
+    const tpPts = Number(
+        results?.stats?.target_points ??
+        results?.exit_conditions?.target ??
+        results?.stats?.backtest_assumptions?.tp_points ??
+        results?.executed_payload?.exit_conditions?.target ??
+        500
+    );
+    const slPts = Number(
+        results?.stats?.stoploss_points ??
+        results?.exit_conditions?.stoploss ??
+        results?.stats?.backtest_assumptions?.sl_points ??
+        results?.executed_payload?.exit_conditions?.stoploss ??
+        250
+    );
+    const pipFactor = isJpy ? 100 : 10;
+    const tpPips = (tpPts / pipFactor).toFixed(isGold ? 0 : 1).replace('.0', '');
+    const slPips = (slPts / pipFactor).toFixed(isGold ? 0 : 1).replace('.0', '');
+
+    // Approximate leverage based on nominal value
+    const lastPrice = candleData && candleData.length > 0 ? candleData[candleData.length - 1].y[3] : (isGold ? 2300 : 1.08);
+    const nominalValue = positionUnits * (isGold ? lastPrice : 1);
+    const leverage = ((nominalValue) / (Number(capital) || 10000)).toFixed(2);
 
     return (
         <div className={styles.candlestickChartCard}>
@@ -485,11 +576,11 @@ export default function BacktestCandlestickChart({
                     <span className={styles.badgeSymbolSmall}>{symbol}</span>
                 </div>
                 <div className={styles.sizingItem}>
-                    <strong>{quantity} Lots</strong> ({positionUnits.toLocaleString()} {baseCurr})
+                    <strong>{quantity} Lots</strong> ({positionUnits.toLocaleString(undefined, { maximumFractionDigits: 2 })} {unitLabel})
                 </div>
                 <div className={styles.sizingDivider} />
                 <div className={styles.sizingItem}>
-                    1 Lot = {lotUnits.toLocaleString()} {baseCurr}
+                    1 Lot = {lotUnits.toLocaleString()} {unitLabel}
                 </div>
                 <div className={styles.sizingDivider} />
                 <div className={styles.sizingItem}>
@@ -497,11 +588,11 @@ export default function BacktestCandlestickChart({
                 </div>
                 <div className={styles.sizingDivider} />
                 <div className={styles.sizingItem}>
-                    TP: <strong style={{ color: '#10B981' }}>40 pts (4 pips)</strong>
+                    TP: <strong style={{ color: '#10B981' }}>{tpPts} pts ({tpPips} pips)</strong>
                 </div>
                 <div className={styles.sizingDivider} />
                 <div className={styles.sizingItem}>
-                    SL: <strong style={{ color: '#EF4444' }}>20 pts (2 pips)</strong>
+                    SL: <strong style={{ color: '#EF4444' }}>{slPts} pts ({slPips} pips)</strong>
                 </div>
                 <div className={styles.sizingDivider} />
                 <div className={styles.sizingItem}>
@@ -518,6 +609,30 @@ export default function BacktestCandlestickChart({
                 </div>
 
                 <div className={styles.chartLegendFilterRow}>
+                    {candleData.length > 200 && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.05)', borderRadius: '6px', padding: '2px 4px', marginRight: '8px' }}>
+                            {['150', '300', '500', 'all'].map((opt) => (
+                                <button
+                                    key={opt}
+                                    type="button"
+                                    onClick={() => setCandleWindow(opt)}
+                                    style={{
+                                        background: candleWindow === opt ? '#10B981' : 'transparent',
+                                        color: candleWindow === opt ? '#000000' : (isDark ? '#94A3B8' : '#64748B'),
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        padding: '2px 8px',
+                                        fontSize: '11px',
+                                        fontWeight: 600,
+                                        cursor: 'pointer',
+                                        transition: 'all 0.15s ease'
+                                    }}
+                                >
+                                    {opt === 'all' ? `All (${candleData.length})` : `${opt} bars`}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                     <div className={styles.legendItem}>
                         <svg width="11" height="15" viewBox="0 0 24 32" fill="none" stroke="#10B981" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
                             <line x1="12" y1="28" x2="12" y2="5" />
@@ -545,7 +660,7 @@ export default function BacktestCandlestickChart({
                     />
                 ) : (
                     <ReactApexChart
-                        key={`${symbol}_${interval}_${theme}_${candleData.length}`}
+                        key={`${symbol}_${interval}_${theme}_${visibleCandles.length}_${candleWindow}`}
                         options={chartOptions}
                         series={series}
                         type="candlestick"

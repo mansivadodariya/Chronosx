@@ -231,6 +231,10 @@ export default function StrategyCopilotChat({
         return {
             ...resp,
             ...rawLatestAiMsg,
+            json_fulfilled: rawLatestAiMsg.json_fulfilled ?? resp?.json_fulfilled,
+            complete: rawLatestAiMsg.complete ?? resp?.complete,
+            ready_for_backtest: rawLatestAiMsg.ready_for_backtest ?? resp?.ready_for_backtest,
+            asking_for: rawLatestAiMsg.asking_for ?? resp?.asking_for,
             questions: rawLatestAiMsg.questions || resp?.questions,
             options: rawLatestAiMsg.options || rawLatestAiMsg.cta_buttons || resp?.options || resp?.cta_buttons,
             cta_buttons: rawLatestAiMsg.cta_buttons || rawLatestAiMsg.options || resp?.cta_buttons || ctaButtons,
@@ -242,6 +246,38 @@ export default function StrategyCopilotChat({
             total_steps: rawLatestAiMsg.total_steps || resp?.total_steps,
         };
     }, [rawLatestAiMsg, resp, ctaButtons]);
+
+    const isStrategyComplete = Boolean(
+        resp?.json_fulfilled === true ||
+        String(resp?.json_fulfilled) === 'true' ||
+        resp?.complete === true ||
+        String(resp?.complete) === 'true' ||
+        resp?.ready_for_backtest === true ||
+        resp?.asking_for === 'none' ||
+        latestAiMessage?.json_fulfilled === true ||
+        String(latestAiMessage?.json_fulfilled) === 'true' ||
+        latestAiMessage?.complete === true ||
+        String(latestAiMessage?.complete) === 'true' ||
+        latestAiMessage?.ready_for_backtest === true ||
+        latestAiMessage?.asking_for === 'none' ||
+        Boolean(result) ||
+        (
+            (resp?.strategy || latestAiMessage?.strategy) &&
+            Boolean((resp?.strategy?.stock_name || latestAiMessage?.strategy?.stock_name)?.[0]) &&
+            Boolean(resp?.strategy?.interval || latestAiMessage?.strategy?.interval) &&
+            Boolean(resp?.strategy?.from_date || latestAiMessage?.strategy?.from_date) &&
+            Boolean(resp?.strategy?.to_date || latestAiMessage?.strategy?.to_date) &&
+            ((resp?.strategy?.entry_conditions?.rules?.length || 0) > 0 || (latestAiMessage?.strategy?.entry_conditions?.rules?.length || 0) > 0) &&
+            (
+                (resp?.strategy?.exit_conditions?.target != null) ||
+                (resp?.strategy?.exit_conditions?.stoploss != null) ||
+                ((resp?.strategy?.exit_conditions?.rules?.length || 0) > 0) ||
+                (latestAiMessage?.strategy?.exit_conditions?.target != null) ||
+                (latestAiMessage?.strategy?.exit_conditions?.stoploss != null) ||
+                ((latestAiMessage?.strategy?.exit_conditions?.rules?.length || 0) > 0)
+            )
+        )
+    );
 
     const latestAiMsgKey = latestAiMsgIndex >= 0
         ? `msg_${latestAiMsgIndex}_${(messages[latestAiMsgIndex].text || '').slice(0, 15)}`
@@ -508,26 +544,6 @@ export default function StrategyCopilotChat({
                                                         setTimeout(() => scrollToBottom(true), 60);
                                                     }}
                                                 />
-                                                {(() => {
-                                                    const stepInfo = getDynamicStepInfo(msg, messages);
-                                                    if (!stepInfo) return null;
-                                                    return (
-                                                        <div className={styles.stepIndicatorPill}>
-                                                            <div className={styles.stepIndicatorLeft}>
-                                                                <span className={styles.stepMiniDot} />
-                                                                <span>{stepInfo.badgeText}</span>
-                                                            </div>
-                                                            <div className={styles.stepMiniBar}>
-                                                                <span style={{ width: `${stepInfo.progress}%` }} />
-                                                            </div>
-                                                            <div className={styles.stepIndicatorRight}>
-                                                                <span title={`Step ${stepInfo.stepNum} of ${stepInfo.total} (${stepInfo.progress}% completed)`}>
-                                                                    <InfoCircleIcon size={13} color="#94A3B8" />
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                })()}
                                             </div>
                                         )}
                                     </div>
@@ -569,7 +585,7 @@ export default function StrategyCopilotChat({
 
                     {/* ── BOTTOM DOCKED COMPOSER BAR WITH INTERACTIVE QUESTION WIZARD ── */}
                     <div className={styles.bottomChatInputBar}>
-                        {!isOptionBoxDismissed && !busy && isLatestAiStreamCompleted && (
+                        {!isOptionBoxDismissed && !busy && isLatestAiStreamCompleted && !isStrategyComplete && (
                             <InteractiveQuestionWizard
                                 latestAiMessage={latestAiMessage}
                                 messages={messages}

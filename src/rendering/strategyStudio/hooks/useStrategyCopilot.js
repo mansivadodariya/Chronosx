@@ -299,7 +299,7 @@ export default function useStrategyCopilot() {
                         {
                             id: 'sys_' + Date.now(),
                             role: 'sys',
-                            text: `Backtest finished: ${total} trades, win rate ${winRate}%, PnL $${pnl}. Ask the AI to improve it, modify it yourself, or run again.`,
+                            text: `Backtest finished: ${total} trades, win rate ${winRate}%, PnL $${pnl}.`,
                         },
                     ]);
                 } else {

@@ -49,23 +49,43 @@ export default function BacktestCharts({
         setMounted(true);
     }, []);
 
-    // Equity Curve Data (Optimized for instant loading)
+    // Equity Curve Data (Strictly monotonic, no artificial spline spikes)
     const equityData = useMemo(() => {
         const safeTrips = Array.isArray(roundTrips) ? roundTrips : [];
         if (safeTrips.length > 0) {
-            const closedTrips = safeTrips.filter(t => t.exitDate && t.exitDate !== 'OPEN' && Number.isFinite(Number(t.runningBalance)));
-            const baseTrips = closedTrips.length > 0 ? closedTrips : safeTrips;
-            const rawPoints = [{ date: 'Start', balance: initialCapital }, ...baseTrips.map(t => ({
-                date: t.exitDate && t.exitDate !== 'OPEN' ? t.exitDate.split(' ')[0] : `T${t.index}`,
-                balance: Number(t.runningBalance) || initialCapital
-            }))];
+            // Sort trades chronologically by index
+            const sortedTrips = [...safeTrips].sort((a, b) => (Number(a.index) || 0) - (Number(b.index) || 0));
+            const closedTrips = sortedTrips.filter(t => t.exitDate && t.exitDate !== 'OPEN');
+            const baseTrips = closedTrips.length > 0 ? closedTrips : sortedTrips;
 
-            // Downsample if over 150 points for instant 60 FPS rendering
+            let currentBal = Number(initialCapital) || 10000;
+            const rawPoints = [{ date: 'Start', balance: currentBal }];
+
+            baseTrips.forEach(t => {
+                const pnl = Number(t.pnl);
+                if (Number.isFinite(pnl)) {
+                    currentBal += pnl;
+                } else if (Number.isFinite(Number(t.runningBalance))) {
+                    currentBal = Number(t.runningBalance);
+                }
+                const dateStr = t.exitDate && t.exitDate !== 'OPEN' ? t.exitDate.split(' ')[0] : `T${t.index}`;
+                rawPoints.push({
+                    date: dateStr,
+                    balance: parseFloat(currentBal.toFixed(2))
+                });
+            });
+
+            // Downsample cleanly across time horizon without losing the start or exact end balance
             const maxPoints = 120;
             let sampled = rawPoints;
             if (rawPoints.length > maxPoints) {
-                const step = Math.ceil(rawPoints.length / maxPoints);
-                sampled = rawPoints.filter((_, idx) => idx === 0 || idx === rawPoints.length - 1 || idx % step === 0);
+                const total = rawPoints.length;
+                const step = (total - 1) / (maxPoints - 1);
+                sampled = [];
+                for (let i = 0; i < maxPoints - 1; i++) {
+                    sampled.push(rawPoints[Math.round(i * step)]);
+                }
+                sampled.push(rawPoints[total - 1]);
             }
 
             const rawDates = sampled.map(p => p.date);
@@ -75,11 +95,10 @@ export default function BacktestCharts({
             return { rawDates, labels: formattedLabels, balances };
         }
 
-
         // When no individual round-trip array but real backend results with plot / PnL exist
         const rawCandles = results?.candles || results?.plot || results?.stats?.plot || [];
         const finalPnl = Number(totalPnL || results?.pnl || results?.stats?.pnl || 0);
-        const finalBalance = parseFloat((initialCapital + finalPnl).toFixed(2));
+        const finalBalance = parseFloat(((Number(initialCapital) || 10000) + finalPnl).toFixed(2));
 
         if (Array.isArray(rawCandles) && rawCandles.length > 1) {
             const step = Math.ceil(rawCandles.length / 30);
@@ -104,6 +123,14 @@ export default function BacktestCharts({
     const isProfitable = equityData.balances[equityData.balances.length - 1] >= initialCapital;
     const primaryColor = isProfitable ? '#18C98B' : '#F43F5E';
 
+    // Compute dynamic Y-axis bounds with 10% breathing room to prevent line clipping
+    const minBalance = equityData.balances.length > 0 ? Math.min(...equityData.balances) : initialCapital;
+    const maxBalance = equityData.balances.length > 0 ? Math.max(...equityData.balances) : initialCapital;
+    const balanceRange = Math.abs(maxBalance - minBalance);
+    const yPadding = balanceRange > 0 ? Math.max(15, balanceRange * 0.12) : 50;
+    const yAxisMin = Math.floor(minBalance - yPadding);
+    const yAxisMax = Math.ceil(maxBalance + yPadding);
+
     const equityChartOptions = {
         chart: {
             type: 'area',
@@ -113,8 +140,8 @@ export default function BacktestCharts({
             animations: { enabled: true, easing: 'easeinout', speed: 350, dynamicAnimation: { enabled: false } }
         },
         stroke: {
-            curve: 'smooth',
-            width: 2.5,
+            curve: 'straight',
+            width: 2.2,
             colors: [primaryColor]
         },
         fill: {
@@ -144,6 +171,9 @@ export default function BacktestCharts({
             axisTicks: { show: false }
         },
         yaxis: {
+            min: yAxisMin,
+            max: yAxisMax,
+            tickAmount: 5,
             labels: {
                 style: { colors: isDark ? '#94A3B8' : '#64748B', fontSize: '10px', fontWeight: 500 },
                 formatter: (val) => `$${Number(val).toLocaleString(undefined, { maximumFractionDigits: 0 })}`

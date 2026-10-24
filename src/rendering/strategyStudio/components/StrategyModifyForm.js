@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/strategyStudio.module.scss';
 import StrategyRulesEditor from './StrategyRulesEditor';
 import CustomSelect from './CustomSelect';
@@ -77,6 +77,33 @@ export default function StrategyModifyForm({
         }
         return base;
     });
+
+    useEffect(() => {
+        if (initialStrategy && Object.keys(initialStrategy).length > 0) {
+            const base = structuredClone(initialStrategy);
+            if (!base.entry_conditions) {
+                base.entry_conditions = {
+                    entry_start_time: '00:00',
+                    entry_end_time: '23:59',
+                    condition_type: 'all',
+                    rules: [],
+                };
+            }
+            if (!base.exit_conditions) {
+                base.exit_conditions = {
+                    target: null,
+                    target_type: 'points',
+                    stoploss: null,
+                    stoploss_type: 'points',
+                    atr_length: 14,
+                    trailing_stoploss: false,
+                    condition_type: 'any',
+                    rules: [],
+                };
+            }
+            setDraft(base);
+        }
+    }, [initialStrategy]);
 
     // Resolve metadata - handle different API response shapes with complete fallbacks
     const rawMeta = metadata || {};
@@ -235,11 +262,27 @@ export default function StrategyModifyForm({
             }
         }
         setDateError('');
-        onSave(draft);
+        const cleanedExit = {
+            ...(draft.exit_conditions || {}),
+            atr_length: (draft.exit_conditions?.atr_length !== '' && draft.exit_conditions?.atr_length != null && !isNaN(Number(draft.exit_conditions?.atr_length)))
+                ? Number(draft.exit_conditions.atr_length)
+                : 14,
+        };
+        const cleanedDraft = {
+            ...draft,
+            exit_conditions: cleanedExit,
+            inital_capital: (draft.inital_capital !== '' && draft.inital_capital != null && !isNaN(Number(draft.inital_capital)))
+                ? Number(draft.inital_capital)
+                : 10000,
+            quantity: (draft.quantity !== '' && draft.quantity != null && !isNaN(Number(draft.quantity)))
+                ? Number(draft.quantity)
+                : 0.01,
+        };
+        onSave(cleanedDraft);
     };
 
     return (
-        <form className={styles.copilotCard} onSubmit={handleSubmit}>
+        <form className={styles.copilotCard} onSubmit={handleSubmit} noValidate>
             <div className={styles.cardHeaderRow}>
                 <h2 className={styles.cardTitle}>Modify Strategy</h2>
             </div>
@@ -327,24 +370,28 @@ export default function StrategyModifyForm({
                 <div className={styles.formField}>
                     <label>Lots (Quantity)</label>
                     <input
-                        type="number"
-                        step="0.01"
-                        min="0.01"
-                        value={draft.quantity ?? 0.01}
-                        onChange={(e) => handleFieldChange('quantity', parseFloat(e.target.value) || 0.01)}
+                        type="text"
+                        inputMode="decimal"
+                        placeholder="0.01"
+                        value={draft.quantity ?? ''}
+                        onChange={(e) => {
+                            const val = e.target.value.replace(/[^0-9.]/g, '');
+                            handleFieldChange('quantity', val === '' ? '' : val);
+                        }}
                     />
                 </div>
 
                 <div className={styles.formField}>
                     <label>Initial Capital ($)</label>
                     <input
-                        type="number"
-                        step="100"
-                        min="1"
-                        value={draft.inital_capital ?? 10000}
-                        onChange={(e) =>
-                            handleFieldChange('inital_capital', parseFloat(e.target.value) || 10000)
-                        }
+                        type="text"
+                        inputMode="decimal"
+                        placeholder="10000"
+                        value={draft.inital_capital ?? ''}
+                        onChange={(e) => {
+                            const val = e.target.value.replace(/[^0-9.]/g, '');
+                            handleFieldChange('inital_capital', val === '' ? '' : val);
+                        }}
                     />
                 </div>
 
@@ -397,24 +444,22 @@ export default function StrategyModifyForm({
             />
 
             {/* Exit Section: TP / SL / ATR / Trailing */}
-            <div className={styles.sectionSubheader} style={{ marginTop: '20px' }}>
-                Exit · Take Profit / Stop Loss
-            </div>
+            <div className={styles.sectionSubheader} style={{ marginTop: '20px' }}>Exit Safeguards — Take Profit & Stop Loss</div>
             <div className={styles.formGrid}>
                 <div className={styles.formField}>
                     <label>Take Profit (blank = off)</label>
                     <input
-                        type="number"
-                        step="any"
-                        min="0"
+                        type="text"
+                        inputMode="decimal"
                         placeholder="Off"
                         value={ex?.target ?? ''}
-                        onChange={(e) =>
+                        onChange={(e) => {
+                            const val = e.target.value.replace(/[^0-9.]/g, '');
                             handleExitChange({
                                 ...ex,
-                                target: e.target.value === '' ? null : parseFloat(e.target.value),
-                            })
-                        }
+                                target: val === '' ? null : parseFloat(val),
+                            });
+                        }}
                     />
                 </div>
 
@@ -431,17 +476,17 @@ export default function StrategyModifyForm({
                 <div className={styles.formField}>
                     <label>Stop Loss (blank = off)</label>
                     <input
-                        type="number"
-                        step="any"
-                        min="0"
+                        type="text"
+                        inputMode="decimal"
                         placeholder="Off"
                         value={ex?.stoploss ?? ''}
-                        onChange={(e) =>
+                        onChange={(e) => {
+                            const val = e.target.value.replace(/[^0-9.]/g, '');
                             handleExitChange({
                                 ...ex,
-                                stoploss: e.target.value === '' ? null : parseFloat(e.target.value),
-                            })
-                        }
+                                stoploss: val === '' ? null : parseFloat(val),
+                            });
+                        }}
                     />
                 </div>
 
@@ -458,16 +503,17 @@ export default function StrategyModifyForm({
                 <div className={styles.formField}>
                     <label>ATR Length (for ATR units)</label>
                     <input
-                        type="number"
-                        step="1"
-                        min="1"
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="14"
                         value={ex?.atr_length ?? 14}
-                        onChange={(e) =>
+                        onChange={(e) => {
+                            const val = e.target.value.replace(/[^0-9]/g, '');
                             handleExitChange({
                                 ...ex,
-                                atr_length: parseInt(e.target.value, 10) || 14,
-                            })
-                        }
+                                atr_length: val === '' ? '' : parseInt(val, 10),
+                            });
+                        }}
                     />
                 </div>
 
@@ -492,9 +538,13 @@ export default function StrategyModifyForm({
 
             {/* Exit Indicator Rules Section */}
             <StrategyRulesEditor
-                title="Exit Rules (Optional Indicator Exit)"
+                title="Indicator Exit Rules (Optional)"
                 conditions={ex}
                 isExit={true}
+                target={ex?.target}
+                targetType={ex?.target_type}
+                stoploss={ex?.stoploss}
+                stoplossType={ex?.stoploss_type}
                 conditionTypes={m.condition_types}
                 operators={m.operators}
                 indicatorGroups={m.indicator_groups}
